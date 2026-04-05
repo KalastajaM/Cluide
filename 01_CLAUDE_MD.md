@@ -160,3 +160,35 @@ Below is a complete, working CLAUDE.md for a personal setup. It is intentionally
 > "Read 01_CLAUDE_MD.md and help me write my own CLAUDE.md. Ask me the key questions you need answered."
 
 Claude will walk you through identity, style, and rules — and produce a draft in the format above.
+
+---
+
+## Second Example: Developer Setup
+
+For comparison — a CLAUDE.md for a software engineer who uses Claude for code review, meeting prep, and async communication. Same three sections, different rules.
+
+```markdown
+# About Alex
+- Software engineer, based in Toronto (EST, UTC-5)
+- Works primarily in Python and TypeScript
+- Timezone: America/Toronto
+- Respond in English always
+
+# Communication Style
+- Technical responses are fine — don't simplify unless I ask
+- Be concise; avoid restating what I just said
+- No emojis
+- If I ask for a code review, give direct feedback — don't soften problems
+
+# Critical Rules
+- NEVER commit, push, or run destructive commands autonomously
+- For anything that modifies files or runs code: show the command and wait for confirmation
+- When I paste code, assume it is from my codebase unless I say otherwise
+```
+
+**What is different here:**
+- The critical rule is about code operations, not email. The pattern is the same — "never act autonomously, show first" — but adapted to the domain.
+- "Don't simplify" is the opposite of what many users want, but correct for someone who works technically and finds over-explained answers slow.
+- "Assume it is from my codebase" avoids Claude treating every code snippet as a standalone hypothetical with invented context.
+
+The two examples show the same three-section structure applied to different contexts. The sections do not change; the content inside them reflects real use.

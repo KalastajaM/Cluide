@@ -154,7 +154,7 @@ Without explicit memory instructions, the skill will re-learn the same things fr
 
 **Overlong SKILL.md:** The skill is slow to activate and hard to maintain. Fix: move reference material to a `references/` subfolder.
 
-**Omitting tool names:** The skill says "check the calendar" without naming `gcal_list_events`. The assistant may use a different approach each time. Fix: name the exact tools.
+**Omitting tool names:** The skill says "check the calendar" without naming `gcal_list_events`. The assistant may use a different approach each time. Fix: name the exact tools. Not sure what tools are available in your setup? See [Guide 08 — MCP Servers](./08_MCP_SERVERS.md) for how to discover them.
 
 ---
 
