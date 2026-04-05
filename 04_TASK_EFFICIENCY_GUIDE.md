@@ -239,6 +239,8 @@ This runs the daily digest task automatically when you open Claude — no manual
 
 For the full hooks reference, see the [Claude Code documentation on hooks](https://docs.anthropic.com/en/docs/claude-code/hooks).
 
+A common use of the `SessionStart` hook is to commit task state files before every run — creating a restore point if a run goes wrong. See [Guide 09 — Git Integration](./09_GIT_INTEGRATION.md).
+
 ---
 
 ## Anti-Patterns to Avoid
