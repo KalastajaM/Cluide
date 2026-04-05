@@ -3,6 +3,8 @@
 > A collection of best-practice guides for building a personal AI assistant with Claude.
 > Based on real-world experience. Each guide is standalone but they form a coherent system together.
 
+*Written for Claude Code with Claude Sonnet/Opus models (2025–2026). Core concepts apply to any Claude setup; tool names and hooks syntax may differ across versions.*
+
 ---
 
 ## What This Is
@@ -90,9 +92,48 @@ A concrete template file that implements the system described in Guide 05. Drop 
 ### [07 — Best Practices](./07_BEST_PRACTICES.md)
 *Lessons from real use — a shareable summary.*
 
-Covers: giving Claude good inputs, working effectively session-to-session, building a setup that compounds over time, and knowing when not to use Claude. Includes a 14-point short version for quick reference.
+Covers: giving Claude good inputs, working effectively session-to-session, building a setup that compounds over time, and knowing when not to use Claude. Includes a 15-point short version for quick reference.
 
 **Use this when:** you want a quick overview of what actually matters, or you want something to share with someone just getting started.
+
+---
+
+### [08 — MCP Servers](./08_MCP_SERVERS.md)
+*How Claude connects to external tools — Gmail, Calendar, GitHub, and more.*
+
+Covers: what MCP servers are, how to configure them in Claude Code, the most useful servers for personal assistants, how to reference tool names in skills, and credential security.
+
+**Use this when:** you're setting up a skill that uses external tools (email, calendar, files) and need to understand where those tools come from — or when a skill isn't finding the tools it needs.
+
+---
+
+### [09 — Git Integration](./09_GIT_INTEGRATION.md)
+*Version control for your assistant's state — pre-run snapshots, rollback, and history.*
+
+Covers: what to track in git, the pre-run commit pattern (snapshot before every task run), post-run commits, automating commits via hooks, useful git commands for assistant files, and meaningful commit message conventions.
+
+**Use this when:** you have a scheduled task running regularly and want the ability to roll back bad runs, see what changed between runs, or track how your assistant's knowledge and instructions have evolved over time.
+
+---
+
+### [10 — Development and Execution Workflow](./10_DEV_EXECUTION_WORKFLOW.md)
+*Using Claude Code and Cowork as two distinct tools with two distinct roles.*
+
+Covers: the development/execution split (Claude Code for building and maintaining, Cowork for running), file architecture that works cleanly in both tools, the workflow for adding or changing something, debugging broken runs, reviewing and applying self-improvement proposals, and a new-features checklist.
+
+**Use this when:** you use Claude Code for maintaining your assistant setup and a conversational Claude interface (Cowork or similar) for actually running tasks — and want a clear workflow for how the two fit together.
+
+---
+
+## Quick Start (5 minutes)
+
+Not ready to read all the guides? Start with just one thing:
+
+1. Read **Guide 01** — takes 5 minutes.
+2. Ask Claude: *"Read 01_CLAUDE_MD.md and help me write my CLAUDE.md. Ask me what you need to know."*
+3. Save the result to `.claude/CLAUDE.md`.
+
+That's it. Come back for the rest when you've used it a few times and know what you want to improve.
 
 ---
 

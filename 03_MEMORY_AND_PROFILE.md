@@ -40,6 +40,40 @@ Save things that would change how the assistant responds in a future conversatio
 
 ---
 
+## Memory File Format
+
+Auto-memory files are small markdown files stored in `.auto-memory/`. There is one index file (`MEMORY.md`) and one file per memory entry. Here is what they look like:
+
+**`.auto-memory/MEMORY.md`** (the index — Claude reads this every session):
+
+```markdown
+# Memory Index
+
+- [user-identity](./user-identity.md) — Who the user is, timezone, language preferences
+- [feedback-email-format](./feedback-email-format.md) — How to format email drafts
+- [project-lease-2026](./project-lease-2026.md) — Lease renewal tracking
+- [reference-contracts](./reference-contracts.md) — Where contracts are stored
+```
+
+**Individual memory file** (e.g., `.auto-memory/user-identity.md`):
+
+```markdown
+Michiel is Dutch, lives in Helsinki (timezone: Europe/Helsinki).
+Prefers English responses always, even when sending content in Finnish.
+Uses Gmail (michiel.visser@gmail.com) and Google Calendar as primary tools.
+[updated: 2026-01]
+```
+
+To ensure Claude loads your memory index at the start of each session, add this line to your `CLAUDE.md`:
+
+```markdown
+- Read `.auto-memory/MEMORY.md` at the start of every session.
+```
+
+**Keep `MEMORY.md` under 30 entries.** Every entry in the index is loaded into every session — compactness matters just as much here as in profile files.
+
+---
+
 ## Profile Files: Structure and Purpose
 
 The profile file system divides a person's profile across several files by topic. The key insight is that you almost never need everything at once — you need a compact summary every time, and the full detail files only when you are updating them.
@@ -87,6 +121,8 @@ Would confirm: Direct mention of rate change; new proposal sent with higher figu
 ```
 
 This lets the assistant surface the hypothesis as a proactive suggestion ("I've noticed a few signals you might be re-evaluating your rates — want me to pull together a market comparison?") rather than either ignoring the signal or stating it as fact.
+
+For the full hypothesis lifecycle — how hypotheses are promoted from LOW to CONFIRMED, when to surface them, and when to expire them — see [Guide 05, Part 4](./05_TASK_LEARNING_GUIDE.md#part-4-the-hypothesis-system).
 
 ---
 

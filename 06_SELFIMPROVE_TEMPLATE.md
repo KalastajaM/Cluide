@@ -57,9 +57,9 @@
 
 *(Auto-applied fixes, newest first. Archive to "Archived Fixes" when this list exceeds 10 entries.)*
 
-| Date | ID | What was changed | Why |
-|------|----|-----------------|-----|
-| *(none yet)* | | | |
+| Date | ID | File | What was changed | Why |
+|------|----|------|-----------------|-----|
+| *(none yet)* | | | | |
 
 ---
 
@@ -67,9 +67,9 @@
 
 *(Rotated out of Applied Fixes when the table exceeds 10 entries.)*
 
-| Date | ID | What was changed | Why |
-|------|----|-----------------|-----|
-| *(none yet)* | | | |
+| Date | ID | File | What was changed | Why |
+|------|----|------|-----------------|-----|
+| *(none yet)* | | | | |
 
 ---
 
