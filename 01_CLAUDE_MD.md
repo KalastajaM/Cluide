@@ -1,0 +1,162 @@
+# Best Practices: Writing CLAUDE.md for a Personal Assistant
+
+CLAUDE.md is the always-loaded instruction file that shapes every interaction. It is the difference between an assistant that constantly needs re-explaining and one that just gets it. This document covers what to put in it, how to structure it, and what to avoid.
+
+---
+
+## What CLAUDE.md Is For
+
+CLAUDE.md loads into every conversation automatically. It answers the question: "Before I do anything, what do I need to know about this person and how they want to work?" It is not a task list and not a knowledge base — it is the standing operating contract between you and the assistant.
+
+The key principle: **every line should change behaviour.** If removing a line wouldn't change how the assistant acts, cut it.
+
+---
+
+## Core Sections
+
+### 1. User Identity
+
+Give the assistant a confident mental model of who it is serving. Include:
+
+- Name and location (city + country)
+- Language(s) spoken and language of preference for assistant responses
+- Timezone — critical for scheduling, deadlines, and timestamping
+- Relevant roles (e.g., "Director at X company", "manages affairs for elderly parent")
+
+**Example:**
+```markdown
+# About [User]
+- Software engineer, based in Singapore
+- Timezone: Asia/Singapore (SGT, UTC+8)
+- Respond in English always
+- Works across US, EU, and APAC teams — flag when a message is likely to reach
+  someone outside business hours
+```
+
+What makes this effective: it is specific enough to resolve edge cases — the assistant knows to flag time-zone considerations when scheduling, and responds in English even if the user pastes content in another language.
+
+### 2. Communication Style
+
+Tell the assistant exactly how to format and phrase responses. The default Claude style — bullet points, headers, emojis, verbose summaries — is rarely what a regular user actually wants. Be explicit.
+
+**What to cover:**
+- Prose vs. bullet points (and when each is acceptable)
+- Length/verbosity preference
+- Emoji use
+- Whether to ask clarifying questions or just proceed
+
+**Example:**
+```markdown
+# Communication Style
+- Be direct and practical, no fluff
+- No bullet points or headers for conversational replies — prose only
+- No emojis unless asked
+```
+
+**Why this matters:** Without these instructions, the assistant defaults to structured outputs with bullets and bold text for almost everything, including casual answers. Most people find this exhausting to read over time.
+
+### 3. Critical Rules (the safety boundary)
+
+This is the most important section. Clearly state what the assistant must never do without explicit confirmation. For a personal assistant with access to email, calendar, and files, the rule is almost always:
+
+**Never take real-world actions autonomously.**
+
+Write this section as a hard rule, not a preference. Use "NEVER" intentionally — it signals a constraint, not a style suggestion.
+
+**Example:**
+```markdown
+# Critical Rules
+- NEVER send emails, create calendar events, or take real-world actions autonomously
+- Always propose drafts and wait for explicit confirmation before anything is sent
+- When drafting messages in a second language, produce polished text appropriate in form
+  (formal, friendly, etc.) for the recipient — ready to send as-is
+```
+
+The third point shows a useful pattern: pair the constraint ("never send autonomously") with a positive counterpart ("but do produce a complete, polished draft so the user can send it instantly"). This gives the assistant something concrete to do rather than just a prohibition.
+
+---
+
+## Layering: CLAUDE.md vs. Task-Level Instructions
+
+CLAUDE.md contains standing rules that apply to every interaction. Task-specific instructions (how to run a weekly project status digest, how to track client contracts) belong in dedicated task files like `TASK.md`, which the assistant reads on demand.
+
+The right question for each rule: "Does this apply to every single conversation, regardless of what I'm doing?" If yes → CLAUDE.md. If it's specific to a workflow → the relevant task file.
+
+**Keep CLAUDE.md short.** Aim for under 30 lines. If it grows beyond that, you are likely adding task-specific instructions that belong elsewhere.
+
+---
+
+## What NOT to Put in CLAUDE.md
+
+- **Lists of capabilities** ("you can use Gmail, Calendar, etc.") — the assistant discovers tools from its environment
+- **Workflow steps** — these belong in task files
+- **Information about the user's projects or contacts** — these belong in profile files
+- **Rules that rarely apply** — do not clutter standing instructions with edge cases that come up once a month
+
+---
+
+## Maintenance
+
+CLAUDE.md should evolve. When you correct the assistant on a behaviour repeatedly, that correction belongs in CLAUDE.md. Common triggers for updating it:
+
+- The assistant keeps doing something you don't like (add a rule)
+- You keep explaining the same context at the start of sessions (add it to the identity section)
+- A rule has never mattered (remove it — dead rules dilute the live ones)
+
+A good CLAUDE.md is a living document that reflects a few months of real use, not a first draft from day one.
+
+---
+
+## Quick Reference: Anatomy of a Good CLAUDE.md
+
+```
+# About [User]
+[Who they are, where, timezone, language preference]
+
+# Communication Style
+[Format, verbosity, tone preferences]
+
+# Critical Rules
+[What the assistant may never do; what it should always do instead]
+```
+
+That is usually enough. Add sections only when you have a real behavioural problem they solve.
+
+---
+
+## Real-World Example
+
+Below is a complete, working CLAUDE.md for a personal setup. It is intentionally short — 18 lines of real content — and every line changes behaviour.
+
+```markdown
+# About Michiel
+- Dutch, based in Helsinki, Finland
+- Timezone: Europe/Helsinki (EET UTC+2 / EEST UTC+3 in summer)
+- Always respond in English, even if I write in Finnish or paste Finnish content
+- Uses Gmail (michiel.visser@gmail.com) and Google Calendar
+
+# Communication Style
+- Be direct and practical — no fluff, no filler
+- Prose for conversational replies; only use bullet points or headers when the
+  content genuinely calls for it (e.g. a list of tasks, a structured document)
+- No emojis unless I use them first
+- Don't ask clarifying questions for every task — make a reasonable assumption
+  and proceed; flag the assumption briefly if it matters
+
+# Critical Rules
+- NEVER send emails, create calendar events, or take any real-world action autonomously
+- Always draft first and wait for my explicit confirmation before anything is sent or saved
+- When drafting Finnish messages, produce polished text appropriate for the
+  recipient (formal or casual) — ready to send as-is
+```
+
+**Why this works:**
+- The timezone entry ensures scheduling suggestions are in Helsinki time, not UTC.
+- "Always respond in English" resolves the ambiguity of a Dutch person in Finland who reads Finnish but prefers English responses.
+- The "make a reasonable assumption" instruction prevents the assistant from stalling on every slightly ambiguous request.
+- The Finnish message rule pairs the "don't act autonomously" constraint with a clear positive: produce something I can send immediately.
+
+**Giving this to Claude:**
+> "Read 01_CLAUDE_MD.md and help me write my own CLAUDE.md. Ask me the key questions you need answered."
+
+Claude will walk you through identity, style, and rules — and produce a draft in the format above.

@@ -1,0 +1,16 @@
+# .claudeignore
+# Version Control
+.git/
+
+# Environment & Dependencies
+.venv/
+env/
+node_modules/
+__pycache__/
+*.pyc
+
+# IDE & Logs
+.vscode/
+.DS_Store
+*.log
+CLAUDE_LOG.md.bak

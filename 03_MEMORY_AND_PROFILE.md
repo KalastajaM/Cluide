@@ -1,0 +1,169 @@
+# Best Practices: Memory and Profile Systems
+
+A personal assistant is only as good as its memory. Without memory, every session starts from zero — you re-explain your situation, your preferences, who your contacts are. This document covers two complementary memory systems: the **auto-memory** system (lightweight, cross-session key-value facts) and the **profile file system** (structured, richly maintained knowledge about a person's life and projects).
+
+---
+
+## Which System Should You Use?
+
+**Use auto-memory** (the default) for the vast majority of cases. It handles assistant-wide preferences, corrections, project states, and reference pointers — everything most people need.
+
+**Use profile files** only when you have a scheduled task agent that requires deep, structured knowledge about a person: full relationship maps, historical project tracking, hypotheses about behaviour. This is a more advanced pattern, typically added after auto-memory is already in place.
+
+If you're just getting started: set up auto-memory. Add profile files only when a specific scheduled task clearly needs them.
+
+---
+
+## Two Kinds of Memory
+
+**Auto-memory** is the simpler system. It stores discrete facts about the user, their preferences, and their projects in small markdown files with a shared index (`MEMORY.md`). It is general-purpose and designed for facts that would change how the assistant behaves in any future conversation.
+
+**Profile files** are richer, domain-specific documents that a task agent reads at the start of each run. They capture not just facts but relationships, project states, hypotheses, and history. They are best suited to a recurring agent that needs deep contextual awareness — for example, a daily email analysis task.
+
+Use auto-memory for assistant-wide preferences and quick facts. Use profile files for anything that requires narrative depth, tracking over time, or structured relationships.
+
+---
+
+## Auto-Memory: What to Save
+
+Save things that would change how the assistant responds in a future conversation if it knew them. The four types:
+
+**User memories** — who the person is: role, context, relevant skills, life situation. Example: "Sam is a freelance UX designer, works remotely across multiple time zones, prefers async communication. Has two main long-term clients and takes on smaller projects in between."
+
+**Feedback memories** — corrections and confirmed preferences. This is the most important type. Every time you correct the assistant on something, that correction should be saved so it does not need to be made again. Include why: "Always suggest a subject line when drafting emails. Why: user finds writing subject lines more friction than the email body itself."
+
+**Project memories** — ongoing work the assistant should be aware of: "Website redesign proposal for Hartwell Co. — draft sent 2026-02-14, awaiting feedback. Follow up if no response by 2026-03-01." Convert relative dates to absolute when saving — "next Thursday" means nothing in a future session.
+
+**Reference memories** — where to find things: "Active client contracts are tracked in [workspace]/Clients/CONTRACTS.md"
+
+**What not to save:** code patterns, file structures, git history, anything derivable from reading the project, anything only relevant to the current conversation.
+
+---
+
+## Profile Files: Structure and Purpose
+
+The profile file system divides a person's profile across several files by topic. The key insight is that you almost never need everything at once — you need a compact summary every time, and the full detail files only when you are updating them.
+
+**PROFILE_SUMMARY.md** — the only file read every single run. Keep it under 40–50 lines (roughly 600 tokens). It should answer: who is this person, what are their active projects right now, who are the key contacts, and what are the open action items? If it grows beyond this limit, trim or move content to the detail files.
+
+**PROFILE_identity.md** — key people and relationships: family members, colleagues, service contacts, and what the assistant needs to know about each.
+
+**PROFILE_projects.md** — active projects, their status, and what the assistant should track or surface.
+
+**PROFILE_patterns.md** — behavioural patterns, preferences, recurring habits, subscriptions, services.
+
+**PROFILE_hypotheses.md** — things the assistant believes to be true but hasn't confirmed. More on this below.
+
+**PROFILE_archive.md** — completed projects and resolved items worth keeping for historical reference.
+
+---
+
+## Profile Update Discipline
+
+**Use targeted edits, not full rewrites.** When a new fact arrives, use search + edit to update the specific line or section. Only do a full rewrite when making structural changes. This is faster, less error-prone, and avoids accidentally overwriting still-valid data.
+
+**Timestamp your updates.** Every significant profile edit should include `[updated: YYYY-MM]` so you can see at a glance how fresh the data is. Entries not updated in 3+ months should be flagged as potentially stale.
+
+**Distinguish evidence from confirmed fact.** The assistant will infer things from email patterns and browsing that may not be correct. Use a consistent notation to mark what is confirmed vs. inferred:
+- `[USER]` or `[USER-CONFIRMED]` — manually entered or confirmed by the user; never overwrite
+- No tag — inferred by the assistant; may need verification
+- `[updated: YYYY-MM]` — recently confirmed accurate
+
+**Never overwrite user annotations.** If the user has annotated their profile with a correction or note, treat it as ground truth that takes precedence over any inference.
+
+---
+
+## The Hypothesis System
+
+Some signals are meaningful but not yet confirmed. Rather than either ignoring them or committing to a fact that may be wrong, use a hypothesis layer.
+
+A hypothesis captures: what the assistant believes, why it believes it, and what evidence would confirm or refute it. Example:
+
+```
+H-001: User may be considering raising their day rate
+Evidence: Googled "freelance rate calculator" twice; declined a small project citing time constraints
+Confidence: LOW
+Would confirm: Direct mention of rate change; new proposal sent with higher figure
+```
+
+This lets the assistant surface the hypothesis as a proactive suggestion ("I've noticed a few signals you might be re-evaluating your rates — want me to pull together a market comparison?") rather than either ignoring the signal or stating it as fact.
+
+---
+
+## The PROFILE_SUMMARY.md Hard Limit
+
+The summary file is read into every automated run. Every extra line has a cost in context. Enforce a strict size limit (40–50 lines) and trim before every write. The priority order for what to include:
+
+1. Who the person is (2–3 lines)
+2. Active projects with current status (most important)
+3. Key contacts — quick reference, not full detail
+4. Open action items with IDs (so the agent knows what it's tracking)
+5. User preferences that override defaults
+
+Everything else belongs in the detail files.
+
+---
+
+## Sensitive Information
+
+Not everything should be stored in a profile. As a rule, store the minimum needed to be useful. Specifically:
+
+- Health information: store at the category level ("ongoing condition, actively managed") not the clinical detail
+- Financial specifics: store the project ("reviewing accountant options for next tax year") not account numbers or exact figures
+- Relationship details: note that a contact exists and the role, not sensitive context about the relationship
+
+The test: would you be comfortable if this profile file were accidentally shared? If no, reduce the detail.
+
+---
+
+## Keeping Profile Files Lean
+
+Profile files grow over time and become slow to read and hard to maintain. Apply these rules:
+
+- Split any file that exceeds ~150 lines of genuinely useful content
+- Archive completed projects rather than leaving them in the active section
+- Compress old session logs and history entries to single-line summaries
+- Remove hypotheses that have been confirmed (move the fact to the appropriate detail file) or refuted (delete them)
+
+A profile system that is kept lean stays fast and useful. A profile that becomes a 500-line dump of everything the assistant has ever learned is almost as bad as no profile at all.
+
+---
+
+## Memory Across Multiple Task Agents
+
+If you run more than one scheduled task agent (e.g., a daily email digest agent and a client pipeline tracker), they can share the same profile files. The convention that makes this work:
+
+- All agents read `PROFILE_SUMMARY.md` every run
+- All agents update the relevant detail file when they discover new information
+- No agent overwrites `[USER]`-annotated entries
+- Each agent has its own session/run log so their histories don't collide
+
+The shared profile becomes the connective tissue between agents — the user does not have to explain an ongoing client situation to the email agent and separately to the pipeline tracker. Both of them know.
+
+---
+
+## Real-World Auto-Memory Examples
+
+Here are the kinds of facts that belong in auto-memory, drawn from a working personal assistant setup. Each would be saved as a small markdown file with a pointer in `MEMORY.md`.
+
+**User memory:**
+> Michiel is Dutch, lives in Helsinki (timezone: Europe/Helsinki). Prefers English responses always, even when sending content in Finnish. Uses Gmail and Google Calendar as primary tools.
+
+**Feedback memory:**
+> Always produce Finnish messages in two versions (formal and casual) unless tone is specified. Why: user regularly needs Finnish communication for both official contexts (banks, authorities) and everyday situations — having both versions ready saves time and avoids asking.
+
+**Project memory (example):**
+> Apartment lease renewal due 2026-04-30. User is reviewing options; has not yet replied to landlord's last email (2026-03-15). Flag if no action by 2026-04-01.
+
+**Reference memory:**
+> Active shopping list is tracked in the grocery-list-assistant skill memory. Finnish supermarkets used: Prisma (main) and K-Citymarket (fish/fresh produce).
+
+---
+
+## Giving This to Claude
+
+**To set up auto-memory from scratch:**
+> "Read 03_MEMORY_AND_PROFILE.md and start setting up my memory system. Ask me what you need to know about me, my projects, and my preferences — then save it in the right format."
+
+**To set up profile files for a scheduled task:**
+> "Read 03_MEMORY_AND_PROFILE.md and create the profile file structure for my daily email digest task. The task already has a TASK.md — add the profile files it needs to track context across runs."
