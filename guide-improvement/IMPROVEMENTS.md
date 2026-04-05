@@ -9,8 +9,8 @@
 
 ```json
 {
-  "total_runs": 2,
-  "runs_since_last_refactor": 2,
+  "total_runs": 3,
+  "runs_since_last_refactor": 3,
   "refactor_threshold": 6,
   "last_refactor_date": null,
   "next_refactor_due_at_run": 6
@@ -27,6 +27,11 @@
 
 | Date | ID | File | What was changed | Why |
 |------|----|------|-----------------|-----|
+| 2026-04-05 | FIX-007 | `guide-improvement/IMPROVEMENTS.md` | Closed PROP-001 and PROP-002; incremented run counters | Both proposals were applied in this run |
+| 2026-04-05 | FIX-006 | `04_TASK_EFFICIENCY_GUIDE.md` | Added "How Scheduled Tasks Are Triggered" section with hooks config example | Guides mentioned scheduled tasks but never explained how they are actually triggered |
+| 2026-04-05 | FIX-005 | `06_SELFIMPROVE_TEMPLATE.md` | Added "File" column to Applied Fixes and Archived Fixes tables | Resolved PROP-002: aligns template with Guide 05 and the actual IMPROVEMENTS.md format |
+| 2026-04-05 | FIX-004 | `03_MEMORY_AND_PROFILE.md` | Added cross-link from Hypothesis System section to Guide 05 Part 4 | Resolved PROP-001: readers of Guide 03 now know the full hypothesis lifecycle is in Guide 05 |
+| 2026-04-05 | FIX-003 | `03_MEMORY_AND_PROFILE.md` | Added "Memory File Format" section showing MEMORY.md index and individual file format | Gap: guide described memory files but never showed what they look like |
 | 2026-04-01 | FIX-002 | `05_TASK_LEARNING_GUIDE.md` | Applied Fixes template table header: "What changed" → "What was changed"; added "File" column | Inconsistency with Guide 06 template and actual IMPROVEMENTS.md which both include a "File" column |
 | 2026-03-26 | FIX-001 | `00_INDEX.md` | "13-point short version" → "14-point short version" | Guide 07 has 14 items in its short version, not 13 |
 
@@ -47,27 +52,10 @@
 *(Larger changes awaiting your input. Annotate with [APPROVED], [REJECTED], or [MODIFY: ...].)*
 
 ```json
-[
-  {
-    "id": "PROP-001",
-    "proposed": "2026-04-01",
-    "title": "Add cross-link from Guide 03 to Guide 05's hypothesis lifecycle system",
-    "rationale": "Guide 03 introduces the hypothesis concept with a simple inline format (H-001 notation, 'Would confirm:' field). Guide 05 Part 4 covers a more structured system (confidence stages LOW→MEDIUM→HIGH→CONFIRMED, lifecycle rules, surfacing criteria, expiry). There is no cross-reference between them, which means readers of Guide 03 may not know the full system exists, and a reader following both may be confused by the format differences.",
-    "change": "In Guide 03, at the end of 'The Hypothesis System' section, add one sentence: 'For the full hypothesis lifecycle — confidence stages, when to surface them, and expiry rules — see [Guide 05, Part 4](./05_TASK_LEARNING_GUIDE.md#part-4-the-hypothesis-system).'",
-    "confidence": "HIGH",
-    "status": "PENDING"
-  },
-  {
-    "id": "PROP-002",
-    "proposed": "2026-04-01",
-    "title": "Add 'File' column to Applied Fixes table in Guide 06 template",
-    "rationale": "Guide 05's Applied Fixes template was updated this run (FIX-002) to include a 'File' column, matching the actual IMPROVEMENTS.md implementation. Guide 06 still lacks this column. Aligning them makes both templates consistent.",
-    "change": "In Guide 06, change the Applied Fixes table header from '| Date | ID | What was changed | Why |' to '| Date | ID | File | What was changed | Why |' and update the placeholder row accordingly.",
-    "confidence": "HIGH",
-    "status": "PENDING"
-  }
-]
+[]
 ```
+
+*(No proposals currently pending. PROP-001 and PROP-002 were applied as FIX-004 and FIX-005 on 2026-04-05.)*
 
 ---
 

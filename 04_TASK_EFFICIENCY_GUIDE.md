@@ -201,6 +201,46 @@ Use this to roughly estimate per-run cost and identify the highest-leverage impr
 
 ---
 
+## How Scheduled Tasks Are Triggered
+
+Tasks do not run themselves — they need a trigger. Claude Code supports **hooks**: shell commands that fire automatically in response to events. Hooks are configured in `~/.claude/settings.json`.
+
+The most useful hook for personal assistants is **SessionStart**, which runs a command every time a new Claude session opens.
+
+**Minimal SessionStart example:**
+
+```json
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "claude -p 'Read .claude/tasks/daily-digest/TASK.md and run the daily digest.'"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+This runs the daily digest task automatically when you open Claude — no manual trigger needed.
+
+**Other useful hook events:**
+- **PostToolUse** — fires after a specific tool is used. Useful for follow-up actions (e.g., after a file is written, trigger a summary update).
+- **PreToolUse** — fires before a tool runs. Useful for validation or logging.
+
+**Practical notes:**
+- A SessionStart hook runs once per session, not once per day. If you open multiple sessions in a day, the task runs multiple times. Add run deduplication (checklist item 7 above) to prevent redundant full runs.
+- The `matcher` field filters by context (e.g., directory). Leave it empty (`""`) to fire on all sessions.
+
+For the full hooks reference, see the [Claude Code documentation on hooks](https://docs.anthropic.com/en/docs/claude-code/hooks).
+
+---
+
 ## Anti-Patterns to Avoid
 
 **Full-file read + write for small updates.** If you're changing 2 lines in a 200-line file, use Grep + Edit, not Read + Write.
