@@ -116,6 +116,15 @@ Covers: what to track in git, the pre-run commit pattern (snapshot before every 
 
 ---
 
+### [10 — Development and Execution Workflow](./10_DEV_EXECUTION_WORKFLOW.md)
+*Using Claude Code and Cowork as two distinct tools with two distinct roles.*
+
+Covers: the development/execution split (Claude Code for building and maintaining, Cowork for running), file architecture that works cleanly in both tools, the workflow for adding or changing something, debugging broken runs, reviewing and applying self-improvement proposals, and a new-features checklist.
+
+**Use this when:** you use Claude Code for maintaining your assistant setup and a conversational Claude interface (Cowork or similar) for actually running tasks — and want a clear workflow for how the two fit together.
+
+---
+
 ## Quick Start (5 minutes)
 
 Not ready to read all the guides? Start with just one thing:
