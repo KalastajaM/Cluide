@@ -107,6 +107,15 @@ Covers: what MCP servers are, how to configure them in Claude Code, the most use
 
 ---
 
+### [09 — Git Integration](./09_GIT_INTEGRATION.md)
+*Version control for your assistant's state — pre-run snapshots, rollback, and history.*
+
+Covers: what to track in git, the pre-run commit pattern (snapshot before every task run), post-run commits, automating commits via hooks, useful git commands for assistant files, and meaningful commit message conventions.
+
+**Use this when:** you have a scheduled task running regularly and want the ability to roll back bad runs, see what changed between runs, or track how your assistant's knowledge and instructions have evolved over time.
+
+---
+
 ## Quick Start (5 minutes)
 
 Not ready to read all the guides? Start with just one thing:
