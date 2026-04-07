@@ -40,9 +40,60 @@ When Claude Code starts, it launches each configured server and discovers the to
 
 ---
 
-## Common MCP Servers for Personal Assistants
+## Common MCP Servers
 
-### Filesystem
+Servers are grouped by context. Most setups need one block from Personal or Business, plus the Universal servers at the bottom.
+
+---
+
+### Personal (Google Workspace)
+
+#### Google Workspace
+**Via:** Google's official MCP server
+
+Google publishes an official MCP server covering Gmail, Google Calendar, Google Drive, Docs, and Sheets. Set it up through Google AI Studio or the Google Workspace MCP documentation — it handles OAuth authentication and exposes the full Workspace API surface.
+
+Typical tools: `gmail_search_messages`, `gmail_read_message`, `gmail_create_draft`, `gcal_list_events`, `gcal_create_event`, `drive_search_files`, `drive_read_file`
+
+---
+
+### Business (Microsoft 365 / Atlassian / Slack)
+
+#### Microsoft 365
+Covers Outlook (email), Teams (chat and meetings), SharePoint, and OneDrive. Both Anthropic and community-maintained MCP servers exist for M365. Authentication goes through Azure Active Directory / Microsoft OAuth.
+
+Typical tools: `outlook_email_search`, `outlook_calendar_search`, `chat_message_search`, `find_meeting_availability`, `sharepoint_search`, `sharepoint_folder_search`
+
+---
+
+#### Atlassian (Jira + Confluence)
+Atlassian publishes an official MCP server covering both Jira and Confluence. Useful for assistants that track project work, bugs, or documentation.
+
+Typical tools: `searchJiraIssuesUsingJql`, `getJiraIssue`, `createJiraIssue`, `editJiraIssue`, `getConfluencePage`, `searchConfluenceUsingCql`, `createConfluencePage`
+
+---
+
+#### Slack
+**Package:** `@modelcontextprotocol/server-slack`
+
+Read channel history, search messages, and post to channels. Useful for assistants that monitor team communication.
+
+```json
+"slack": {
+  "command": "npx",
+  "args": ["-y", "@modelcontextprotocol/server-slack"],
+  "env": {
+    "SLACK_BOT_TOKEN": "xoxb-...",
+    "SLACK_TEAM_ID": "T..."
+  }
+}
+```
+
+---
+
+### Universal
+
+#### Filesystem
 **Package:** `@modelcontextprotocol/server-filesystem`
 
 Gives Claude read/write access to specific directories on your machine. Required for any skill that reads or writes local files.
@@ -58,10 +109,10 @@ Key tools: `read_file`, `write_file`, `list_directory`, `search_files`
 
 ---
 
-### GitHub
+#### GitHub
 **Package:** `@modelcontextprotocol/server-github`
 
-Gives Claude access to GitHub repositories, issues, and pull requests. Useful for developer assistants.
+Access to GitHub repositories, issues, and pull requests.
 
 ```json
 "github": {
@@ -77,30 +128,20 @@ Key tools: `list_issues`, `create_issue`, `get_pull_request`, `search_code`
 
 ---
 
-### Gmail and Google Calendar
-**Via:** Zapier MCP or a custom Google OAuth server
+#### Memory
+**Package:** `@modelcontextprotocol/server-memory`
 
-Google does not currently publish an official MCP server, but there are two approaches:
-
-1. **Zapier MCP** — connects Claude to thousands of apps including Gmail and Google Calendar via Zapier's action system. Configure at [zapier.com/mcp](https://zapier.com/mcp). Simpler to set up; action set is limited.
-
-2. **Custom OAuth server** — build or use a community server that handles Google OAuth directly. More powerful; requires more setup.
-
-Once connected, typical tools include: `gmail_search_messages`, `gmail_read_message`, `gmail_create_draft`, `gcal_list_events`, `gcal_create_event`.
+Persistent key-value store Claude can read and write across sessions — an alternative to file-based memory for lightweight state.
 
 ---
 
-### Other useful servers
+### Claude in Chrome
 
-| Server | What it does | Package / source |
-|--------|-------------|-------------------|
-| **Brave Search** | Web search | `@modelcontextprotocol/server-brave-search` |
-| **Slack** | Read and post messages | `@modelcontextprotocol/server-slack` |
-| **PostgreSQL** | Query a database | `@modelcontextprotocol/server-postgres` |
-| **Puppeteer** | Browser automation, web scraping | `@modelcontextprotocol/server-puppeteer` |
-| **Memory** | Persistent key-value memory across sessions | `@modelcontextprotocol/server-memory` |
+The Claude browser extension (available from the Chrome Web Store) lets Claude read the content of the current webpage in any Claude.ai session. This is not an MCP server — it runs in the browser — but it fills a similar gap: getting live web content into Claude without a separate API or scraping script. Useful for research tasks, reading paywalled articles, or extracting data from web apps that have no API.
 
-Find the full list at [modelcontextprotocol.io/servers](https://modelcontextprotocol.io/servers).
+---
+
+Find the full server catalogue at [modelcontextprotocol.io/servers](https://modelcontextprotocol.io/servers).
 
 ---
 

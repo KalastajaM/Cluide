@@ -4,7 +4,7 @@
 > Scans live setup files and the guides themselves to find improvements.
 > Applies unambiguous fixes directly; validates new learnings before adding.
 
-> **Companion files:** `IMPROVEMENTS.md` (state), `LAST_RUN.md` (latest output)
+> **Companion files:** `IMPROVEMENTS.md` (state), `LAST_RUN.md` (latest output), `REVIEWED.md` (deduplication log)
 
 ---
 
@@ -59,6 +59,8 @@ For each file, assess three things:
 
 Do NOT add every observation to the guide. Apply the validation filter in Step 4 first.
 
+Before scanning, read `REVIEWED.md` and note which source files and findings have already been evaluated. Skip any finding that already has a REVIEWED.md entry — do not re-surface it.
+
 ---
 
 ### Step 4 — Validate Learning Candidates
@@ -103,7 +105,19 @@ If `runs_since_last_refactor` ≥ `refactor_threshold` (default: 6):
 
 ---
 
-### Step 7 — Update IMPROVEMENTS.md
+### Step 7 — Append to REVIEWED.md
+
+For every finding evaluated this run (whether applied, proposed, skipped, or rejected), append one line to `REVIEWED.md`:
+
+```
+[YYYY-MM-DD] [source file] [brief description of the finding] — [disposition]
+```
+
+This prevents the same finding from being re-surfaced in future runs.
+
+---
+
+### Step 8 — Update IMPROVEMENTS.md
 
 Write the updated `IMPROVEMENTS.md`:
 - Increment `total_runs` and `runs_since_last_refactor`

@@ -59,7 +59,7 @@ The git approach adds a deployment step but gives you the rollback and history b
 
 ### What to avoid
 
-**Hardcoded paths.** If TASK.md says `Read /Users/michiel/tasks/email-digest/LAST_RUN.md`, it will break if the folder moves or if another user tries to use your setup. Use relative paths from the task folder wherever possible.
+**Hardcoded paths.** If TASK.md says `Read /Users/username/tasks/email-digest/LAST_RUN.md`, it will break if the folder moves or if another user tries to use your setup. Use relative paths from the task folder wherever possible.
 
 **Settings.json in shared files.** Each tool has its own `settings.json` (Claude Code's is at `~/.claude/settings.json`; Cowork has its own). Do not try to share this file — it contains tool-specific configuration. Keep them separate.
 

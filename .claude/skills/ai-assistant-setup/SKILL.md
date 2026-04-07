@@ -1,5 +1,5 @@
 ---
-name: claude-assistant-setup
+name: ai-assistant-setup
 description: >
   Expert guide for setting up and improving a Claude personal assistant — covering
   CLAUDE.md, skills, memory, scheduled tasks, token efficiency, self-improving tasks,

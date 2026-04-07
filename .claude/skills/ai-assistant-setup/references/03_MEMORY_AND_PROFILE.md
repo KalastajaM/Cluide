@@ -58,9 +58,9 @@ Auto-memory files are small markdown files stored in `.auto-memory/`. There is o
 **Individual memory file** (e.g., `.auto-memory/user-identity.md`):
 
 ```markdown
-Michiel is Dutch, lives in Helsinki (timezone: Europe/Helsinki).
+User is Dutch, lives in Helsinki (timezone: Europe/Helsinki).
 Prefers English responses always, even when sending content in Finnish.
-Uses Gmail (michiel.visser@gmail.com) and Google Calendar as primary tools.
+Uses Gmail (firstname.lastname@gmail.com) and Google Calendar as primary tools.
 [updated: 2026-01]
 ```
 
@@ -183,7 +183,7 @@ The shared profile becomes the connective tissue between agents — the user doe
 Here are the kinds of facts that belong in auto-memory, drawn from a working personal assistant setup. Each would be saved as a small markdown file with a pointer in `MEMORY.md`.
 
 **User memory:**
-> Michiel is Dutch, lives in Helsinki (timezone: Europe/Helsinki). Prefers English responses always, even when sending content in Finnish. Uses Gmail and Google Calendar as primary tools.
+> User is Dutch, lives in Helsinki (timezone: Europe/Helsinki). Prefers English responses always, even when sending content in Finnish. Uses Gmail and Google Calendar as primary tools.
 
 **Feedback memory:**
 > Always produce Finnish messages in two versions (formal and casual) unless tone is specified. Why: user regularly needs Finnish communication for both official contexts (banks, authorities) and everyday situations — having both versions ready saves time and avoids asking.

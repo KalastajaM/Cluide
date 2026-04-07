@@ -11,7 +11,6 @@
 ---
 
 ## Core Principle
-
 Every token Claude reads or writes costs usage. The goal is to ensure Claude only loads what it needs for the current run, and only generates what it can't delegate to a script.
 
 The four main levers:
@@ -141,6 +140,9 @@ Trim strategy: compress older entries, remove superseded items, archive resolved
 | Profile summary | 40 lines / ~600 tokens |
 | Run log (active section) | 3 full entries, older compressed to 1-line summaries |
 | Pending actions summary | proportional to open item count; archive resolved promptly |
+
+**Design choice — full history vs. latest only:**
+Tasks can keep either an append-only `RUN_LOG.md` (full history) or a `LAST_RUN.md` (only the most recent run). Full history is better for detecting patterns across runs ("this issue has appeared 3 times"). Latest-only saves tokens. If your task runs daily, use `RUN_LOG.md` with the 3-entry rolling window above. If it runs very frequently or you only need to debug the last run, `LAST_RUN.md` is sufficient.
 
 ---
 
