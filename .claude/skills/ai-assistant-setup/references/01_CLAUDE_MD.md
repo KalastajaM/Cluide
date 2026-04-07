@@ -129,11 +129,11 @@ That is usually enough. Add sections only when you have a real behavioural probl
 Below is a complete, working CLAUDE.md for a personal setup. It is intentionally short — 18 lines of real content — and every line changes behaviour.
 
 ```markdown
-# About Michiel
+# About User
 - Dutch, based in Helsinki, Finland
 - Timezone: Europe/Helsinki (EET UTC+2 / EEST UTC+3 in summer)
 - Always respond in English, even if I write in Finnish or paste Finnish content
-- Uses Gmail (michiel.visser@gmail.com) and Google Calendar
+- Uses Gmail (firstname.lastname@gmail.com) and Google Calendar
 
 # Communication Style
 - Be direct and practical — no fluff, no filler
