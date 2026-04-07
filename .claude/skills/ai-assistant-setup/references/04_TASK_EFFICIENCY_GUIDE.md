@@ -11,6 +11,7 @@
 ---
 
 ## Core Principle
+
 Every token Claude reads or writes costs usage. The goal is to ensure Claude only loads what it needs for the current run, and only generates what it can't delegate to a script.
 
 The four main levers:
