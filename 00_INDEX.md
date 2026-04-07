@@ -125,9 +125,59 @@ Covers: the development/execution split (Claude Code for building and maintainin
 
 ---
 
-## Quick Start (5 minutes)
+### [11 — Personal Data Layer](./11_PERSONAL_DATA_LAYER.md)
+*Five patterns for getting personal data into Claude's hands.*
 
-Not ready to read all the guides? Start with just one thing:
+Covers: Python scripts as data feeders, JSON as a personal database, browser JavaScript extraction for apps with no API, Claude Vision for screenshot ingestion, and multi-step instruction files for complex workflows.
+
+**Use this when:** you want Claude to reason about personal data (investments, spending, bank transactions) but the data lives in apps that have no API, in raw files too large to paste in directly, or in formats Claude can't parse without help.
+
+---
+
+## The Skill: Let Claude Do the Setup For You
+
+All 11 guides are bundled into a single installable skill that turns Claude into an interactive setup coach. Instead of reading guides and acting on them manually, you install the skill once and then just describe what you want — Claude reads the relevant guides and does the work.
+
+**The skill can:**
+- Create a new project (CLAUDE.md, skills, tasks, data layer) from scratch
+- Improve or audit an existing setup
+- Add a specific component (a skill, a memory system, a data pattern) to something you already have
+- Explain how any part of the system works
+
+### Installing the skill
+
+Copy the `claude-assistant-setup/` folder into your Claude skills directory:
+
+```
+~/.claude/skills/claude-assistant-setup/
+```
+
+If that directory doesn't exist yet, create it:
+
+```bash
+mkdir -p ~/.claude/skills
+cp -r /path/to/claude-assistant-setup ~/.claude/skills/
+```
+
+### Using the skill
+
+Once installed, just describe what you need in any Claude Code session:
+
+> "Help me set up Claude as a personal assistant from scratch."
+
+> "I have an investments project — help me add browser extraction to it."
+
+> "My scheduled task is running slowly. Audit it for token efficiency."
+
+> "Create a skill for drafting messages in Finnish."
+
+Claude will detect the request, load the relevant guide(s) from the skill, and help you build or improve the component — interactively where decisions are needed, automatically where they aren't.
+
+---
+
+## Quick Start Without the Skill (5 minutes)
+
+Prefer to do it manually? Start with just one guide:
 
 1. Read **Guide 01** — takes 5 minutes.
 2. Ask Claude: *"Read 01_CLAUDE_MD.md and help me write my CLAUDE.md. Ask me what you need to know."*
@@ -148,14 +198,12 @@ If you're new to this, read and act on the guides in this order:
 
 ---
 
-## Giving a Guide to Claude
+## Giving a Guide to Claude Directly
 
-Each guide is written so Claude can read it and act on it. For example:
+Each guide is also written so Claude can read it and act on it without the skill installed:
 
-> "Read 02_SKILLS.md and then create a skill for drafting project status updates. The skill should follow all the best practices in the guide."
+> "Read 02_SKILLS.md and then create a skill for drafting project status updates."
 
 > "Read 01_CLAUDE_MD.md and help me write my own CLAUDE.md based on what you know about me."
 
 > "Read 04_TASK_EFFICIENCY_GUIDE.md and audit my existing email digest task for token efficiency."
-
-Claude will follow the guide's recommendations when creating or updating the relevant component.
