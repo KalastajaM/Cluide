@@ -14,7 +14,9 @@
 | `KNOWLEDGE_SUMMARY.md` | Compact context that grows smarter over time | Every run |
 | `RUN_LOG.md` | Append-only history of every run | Last 2 entries |
 
-An optional `TASK_REFERENCE.md` can be added for schemas, format templates, and edge-case rules — loaded on demand, not every run.
+Two optional files can be added as the task matures:
+- `TASK_REFERENCE.md` — schemas, format templates, and edge-case rules — loaded on demand, not every run.
+- `LESSONS.md` — append-only reasoning history: why each fix was made, root causes, connector quirks. Useful when IMPROVEMENTS.md Applied Fixes is growing and the *why* behind changes is getting lost. See Guide 05 Part 6.
 
 ---
 

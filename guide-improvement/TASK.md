@@ -14,7 +14,7 @@
 |------|------|
 | Guide folder | `/sessions/busy-exciting-hypatia/mnt/Claude Teacher/` |
 | Task folder | `/sessions/busy-exciting-hypatia/mnt/Claude Teacher/guide-improvement/` |
-| Skills folder | `/sessions/busy-exciting-hypatia/mnt/.claude/skills/` |
+| Skills folder | `/sessions/busy-exciting-hypatia/mnt/Claude Teacher/skills/` |
 | CLAUDE.md | `/sessions/busy-exciting-hypatia/mnt/.claude/CLAUDE.md` (may not exist) |
 | Memory index | `/sessions/busy-exciting-hypatia/mnt/.auto-memory/MEMORY.md` (may not exist) |
 
@@ -31,7 +31,33 @@ Read `guide-improvement/IMPROVEMENTS.md`.
 
 ---
 
-### Step 2 — Scan Guide Files for Internal Issues
+### Step 2 — Optional: External Project Analysis
+
+Ask the user:
+
+> "Would you like to include analysis of other Claude projects in this run? This can surface new patterns and best practices to incorporate into the guides. If yes, I'll ask you which projects to include."
+
+If the user says **no** (or does not respond / is running unattended): skip to Step 3.
+
+If the user says **yes**:
+
+1. Ask the user to confirm which project folders to include. Suggest listing any sibling or known projects by name if you can infer them from the filesystem. Wait for confirmation before proceeding.
+2. For each confirmed project folder, read:
+   - `CLAUDE.md` — standing rules and context
+   - Any `TASK.md` files in task subfolders — automated workflow patterns
+   - Any `SKILL.md` files — skill design and trigger patterns
+   - `KNOWLEDGE_SUMMARY.md` and/or `IMPROVEMENTS.md` if present — applied learnings
+3. For each file read, assess the same three things as Step 4 (live setup scan):
+   - **Gaps** — does it diverge from the guide's recommendations in a way that worked?
+   - **Missing patterns** — does it do something useful the guide doesn't cover?
+   - **Contradictions** — does it contradict guide advice, and which is more reliable?
+4. Carry the findings into Step 5 (Validate Learning Candidates) alongside the live setup findings. Do not add them to the guides directly — they must pass the same validation filter.
+   Also append each analysed project and its source files to `REVIEWED.md` so they are not re-scanned on the next run unless the user opts in again.
+5. Note each analysed project and its findings in `LAST_RUN.md` under a "**External project analysis**" section.
+
+---
+
+### Step 3 — Scan Guide Files for Internal Issues
 
 Read all guide files in `Claude Teacher/` (files matching `0*_*.md`).
 
@@ -48,7 +74,7 @@ For each file, check for:
 
 ---
 
-### Step 3 — Scan Live Setup for Signals
+### Step 4 — Scan Live Setup for Signals
 
 Read each SKILL.md in the skills folder. If CLAUDE.md exists, read it. If the memory index exists, read `MEMORY.md` and any memory files it references.
 
@@ -57,13 +83,13 @@ For each file, assess three things:
 2. **Missing patterns** — does it do something useful that the guide doesn't cover at all?
 3. **Contradictions** — does it contradict guide advice? Determine which is more reliable based on evidence.
 
-Do NOT add every observation to the guide. Apply the validation filter in Step 4 first.
+Do NOT add every observation to the guide. Apply the validation filter in Step 5 first.
 
 Before scanning, read `REVIEWED.md` and note which source files and findings have already been evaluated. Skip any finding that already has a REVIEWED.md entry — do not re-surface it.
 
 ---
 
-### Step 4 — Validate Learning Candidates
+### Step 5 — Validate Learning Candidates
 
 Before proposing any "new learning" as a guide addition, apply this filter:
 
@@ -81,7 +107,7 @@ Candidates failing any → add to the IMPROVEMENTS.md backlog under "Unvalidated
 
 ---
 
-### Step 5 — Write Summary Output
+### Step 6 — Write Summary Output
 
 Write `guide-improvement/LAST_RUN.md` with:
 - Run date and number
@@ -94,7 +120,7 @@ Keep this file under 60 lines. It is the human-facing output for this run.
 
 ---
 
-### Step 6 — Refactor Check
+### Step 7 — Refactor Check
 
 If `runs_since_last_refactor` ≥ `refactor_threshold` (default: 6):
 1. Review all guide files for stale, contradictory, or redundant content — consolidate where possible.
@@ -105,7 +131,7 @@ If `runs_since_last_refactor` ≥ `refactor_threshold` (default: 6):
 
 ---
 
-### Step 7 — Append to REVIEWED.md
+### Step 8 — Append to REVIEWED.md
 
 For every finding evaluated this run (whether applied, proposed, skipped, or rejected), append one line to `REVIEWED.md`:
 
@@ -117,7 +143,7 @@ This prevents the same finding from being re-surfaced in future runs.
 
 ---
 
-### Step 8 — Update IMPROVEMENTS.md
+### Step 9 — Update IMPROVEMENTS.md
 
 Write the updated `IMPROVEMENTS.md`:
 - Increment `total_runs` and `runs_since_last_refactor`

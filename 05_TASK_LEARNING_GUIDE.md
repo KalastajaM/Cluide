@@ -272,6 +272,31 @@ Every task should have an IMPROVEMENTS.md (or equivalent) that tracks the task's
 }
 ```
 
+### Optional companion: LESSONS.md
+
+For tasks with connector dependencies, complex resolution logic, or long operational history, a separate `LESSONS.md` can complement IMPROVEMENTS.md.
+
+**The distinction:** IMPROVEMENTS.md tracks *current state* — what proposals are pending, what fixes have been applied. LESSONS.md preserves *reasoning history* — the mistake, the root cause, what the fix was and why that approach was chosen. This matters when a task has run 30+ times: you can see why a connector query was redesigned without trying to reconstruct the context from a table row.
+
+**How it works:**
+- Append-only — never edit existing entries, only prepend new ones.
+- When applying an approved proposal, log the reasoning here before making the change.
+- When fixing a connector bug or logic error, note the root cause and what signal revealed it.
+
+**Minimal format:**
+
+```markdown
+## [YYYY-MM-DD] Short description (FIX-NNN or PROP-NNN)
+**What happened:** Brief description of the mistake or situation.
+**Root cause:** Why it happened.
+**Fix applied:** What changed and why this approach was chosen.
+```
+
+**When to add it:** Not needed for simple tasks. Add it when:
+- The task has external connector dependencies with known quirks
+- You find yourself asking "why did we change this?" after a few months of runs
+- IMPROVEMENTS.md Applied Fixes is growing faster than it archives and the *why* is getting lost
+
 ---
 
 ## Part 7: Learning Principles
