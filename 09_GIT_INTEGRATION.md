@@ -437,6 +437,97 @@ Use the VS Code integrated terminal (`Ctrl+\`` / `Ctrl+\``) to run Claude Code a
 
 ---
 
+## Bootstrap Pattern: Fresh Clone Readiness
+
+When runtime state files are gitignored, a fresh clone of your repository is missing the files that tasks need to exist before their first run. The bootstrap pattern solves this without committing personal data.
+
+### The Problem
+
+A task like the assistant runs every day and relies on files like `pending_actions.json` (action state), `RUN_LOG.md` (run history), and profile files. These are gitignored because they contain personal data. On a fresh clone, they don't exist — and the task will fail or behave incorrectly on first run.
+
+### The Solution: a `bootstrap/` folder
+
+Commit empty, non-personal stub versions of each required file under `bootstrap/`. These stubs contain structure, not content — they are enough to prevent first-run failures.
+
+**Folder layout:**
+```
+bootstrap/
+├── SETUP.md                   ← copy instructions for a fresh clone
+├── pending_actions.json       ← empty action state
+├── RUN_LOG.md                 ← headers-only run log
+├── PROFILE_SUMMARY.md         ← placeholder profile stub
+├── PROFILE_projects.md        ← placeholder projects stub
+└── PROFILE_patterns.md        ← placeholder patterns stub
+```
+
+**What makes a good stub:**
+- JSON state files → empty arrays/objects with the correct top-level structure
+- Markdown logs → headers and a one-line description, no run entries
+- Profile files → section headings with `[placeholder]` values
+- No real names, emails, paths, or company data — the stub should be safe to share publicly
+
+### Negation rules for globally-ignored filenames
+
+If the gitignored pattern is a bare filename (e.g. `RUN_LOG.md`, `pending_actions.json`) rather than a path-specific pattern, git will also ignore the copy in `bootstrap/`. Fix this with negation rules at the bottom of `.gitignore`:
+
+```
+# Bootstrap stubs are explicitly included despite global ignore rules
+!bootstrap/pending_actions.json
+!bootstrap/RUN_LOG.md
+```
+
+Negation rules must come after the pattern they override. After adding them, verify with:
+```bash
+git check-ignore -v bootstrap/pending_actions.json
+# should show the !bootstrap/ negation rule, not the global pattern
+```
+
+### SETUP.md: copy commands for a fresh clone
+
+Commit a `bootstrap/SETUP.md` with the exact shell commands needed. Anyone (or Claude) cloning the repo for the first time can run these before starting:
+
+```bash
+# State files
+cp bootstrap/pending_actions.json Assistant-Task/pending_actions.json
+cp bootstrap/RUN_LOG.md Assistant-Task/RUN_LOG.md
+
+# Profile files
+mkdir -p Profile
+cp bootstrap/PROFILE_SUMMARY.md Profile/PROFILE_SUMMARY.md
+cp bootstrap/PROFILE_projects.md Profile/PROFILE_projects.md
+cp bootstrap/PROFILE_patterns.md Profile/PROFILE_patterns.md
+```
+
+### Self-bootstrapping tasks
+
+Rather than relying on a human to run the setup commands, tasks can detect and handle a missing state file themselves. Add a first-run check at the top of Step 0 in `TASK.md`:
+
+```markdown
+## Step 0 — Locate working directory and check first-run state
+
+[standard find command]
+
+**First-run check:** Before reading any state file, verify it exists:
+- If `pending_actions.json` does not exist → copy from `bootstrap/pending_actions.json`.
+  If bootstrap copy also missing → create with empty structure: `{"open":[],"resolved_today":[]}`
+- If `RUN_LOG.md` does not exist → copy from `bootstrap/RUN_LOG.md`.
+  If bootstrap copy also missing → create with header only.
+- Note "Bootstrap: first run — state files initialized" in the run log entry for this run.
+```
+
+This makes the task self-contained: it will run correctly on a fresh clone without any manual setup step. The bootstrap files are the authoritative stubs; the task logic is the fallback.
+
+### Checklist: bootstrap-ready repository
+
+- [ ] All gitignored runtime files have a stub in `bootstrap/`
+- [ ] Stubs contain structure only — no personal data
+- [ ] `.gitignore` negation rules allow `bootstrap/` exceptions where needed
+- [ ] `bootstrap/SETUP.md` lists the exact copy commands
+- [ ] Each task's Step 0 includes a first-run check that copies or creates missing state files
+- [ ] `git ls-files bootstrap/` confirms all stubs are tracked
+
+---
+
 ## Giving This to Claude
 
 **To set up git integration for an existing task:**

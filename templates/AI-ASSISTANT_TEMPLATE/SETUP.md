@@ -12,6 +12,26 @@ A personal business assistant for Claude Cowork that monitors your email, Teams,
 
 ---
 
+## Step 0 — Copy bootstrap files (fresh clone only)
+
+If you cloned this repository from GitHub, the gitignored runtime files don't exist yet. Copy the stubs from `bootstrap/` before running any task:
+
+```bash
+# State files
+cp bootstrap/pending_actions.json Assistant-Task/pending_actions.json
+cp bootstrap/RUN_LOG.md Assistant-Task/RUN_LOG.md
+
+# Profile files
+mkdir -p Profile
+cp bootstrap/PROFILE_SUMMARY.md Profile/PROFILE_SUMMARY.md
+cp bootstrap/PROFILE_projects.md Profile/PROFILE_projects.md
+cp bootstrap/PROFILE_patterns.md Profile/PROFILE_patterns.md
+```
+
+These stubs are empty placeholders — no content to fill in yet. The tasks will populate them on their first run. If the `bootstrap/` folder doesn't exist in your repo, skip this step — the tasks will create the files automatically on first run.
+
+---
+
 ## Step 1 — Fill in your details
 
 Open `CLAUDE.md` in this folder and replace every placeholder in the **About** and **Business Context** sections:
