@@ -50,6 +50,125 @@ token.json
 __pycache__/
 ```
 
+See the next section for a more complete breakdown of what belongs in `.gitignore` vs `.claudeignore`, and how to automate this through `CLAUDE.md`.
+
+---
+
+## .gitignore and .claudeignore: What Goes Where
+
+Two separate ignore files serve different purposes:
+
+- **`.gitignore`** — files git will not track or commit
+- **`.claudeignore`** — files Claude will not load as context (but git may still track them)
+
+They are independent: a file can be in one, both, or neither.
+
+### What belongs in `.gitignore`
+
+| Category | Examples | Why |
+|---|---|---|
+| Credentials & secrets | `credentials.json`, `token.json`, `.env`, `*.oauth` | Never commit secrets |
+| Personal data | files with full paths, company names, usernames | Not shareable across machines/users |
+| Local config | `.claude/settings.local.json` | Machine-specific permission allowlists |
+| Run output & logs | `LAST_RUN.md`, `RUN_LOG.md`, `output/` | Auto-generated; git history of these is noise |
+| Compiled/bundled output | `skills/*.skill` | Generated from source in `skills/*/SKILL.md` |
+| OS noise | `.DS_Store`, `*.swp` | Never intentional |
+
+**Starter `.gitignore`:**
+```
+# Credentials
+credentials.json
+token.json
+*.oauth
+.env
+
+# Personal / local config
+.claude/settings.local.json
+
+# Run output
+**/LAST_RUN.md
+**/RUN_LOG.md
+
+# Compiled skill bundles
+skills/*.skill
+
+# OS and editor noise
+.DS_Store
+*.swp
+__pycache__/
+```
+
+### What belongs in `.claudeignore`
+
+Claude loads files as context when it reads a project. Excluding large or redundant files keeps context lean and responses faster.
+
+| Category | Examples | Why |
+|---|---|---|
+| Git internals | `.git/` | Never useful as context |
+| Compiled outputs | `skills/*.skill` | Source files are already in context |
+| Dependencies | `node_modules/`, `.venv/` | Too large, not relevant |
+| Duplicate reference copies | `skills/*/references/` | Already present in the root |
+| Log files | `*.log` | Rarely useful as context |
+
+**Starter `.claudeignore`:**
+```
+# Version control
+.git/
+
+# Dependencies
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+
+# Compiled outputs
+skills/*.skill
+
+# OS and editor noise
+.DS_Store
+*.log
+```
+
+### Untracking a file already in git
+
+If you add a file to `.gitignore` that was already committed, git still tracks it. Untrack it without deleting it:
+
+```bash
+git rm --cached path/to/file
+git commit -m "chore: untrack <file> — added to .gitignore"
+```
+
+For a whole directory:
+```bash
+git rm --cached -r path/to/folder/
+```
+
+---
+
+## Automating File Hygiene Through CLAUDE.md
+
+You can instruct Claude to maintain `.gitignore` and `.claudeignore` automatically by adding a rule to your project's `CLAUDE.md`. This means you never have to manually review new files — Claude will flag and exclude them as part of its normal workflow.
+
+**Add to your project's `CLAUDE.md`:**
+
+```markdown
+## File Hygiene
+
+When creating new files, check whether they belong in `.gitignore` or `.claudeignore`:
+- **Add to `.gitignore`**: run logs, output files, auto-generated bundles,
+  any file containing personal data (paths, names, company names), local config
+- **Add to `.claudeignore`**: large generated files that don't need to be
+  loaded as context (compiled skill bundles, output archives, etc.)
+
+If a newly created file should be ignored but is already tracked by git,
+run `git rm --cached <file>` to untrack it.
+```
+
+With this in place, Claude will add new files to the appropriate ignore file at the time of creation — without needing to be reminded.
+
+**To add this rule to an existing `CLAUDE.md`:**
+> "Read 09_GIT_INTEGRATION.md and add the File Hygiene section to my CLAUDE.md at [path]."
+
 ---
 
 ## The Pre-Run Commit Pattern
