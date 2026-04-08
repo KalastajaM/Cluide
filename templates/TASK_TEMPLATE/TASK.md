@@ -36,13 +36,22 @@
 
 ---
 
-## Step 0 — Locate Working Directory
+## Step 0 — Locate Working Directory and Check First-Run State
 
 ```bash
 find /sessions -maxdepth 5 -path '*/[task-folder]/TASK.md' 2>/dev/null | head -1
 ```
 
 Derive all file paths from this result.
+
+**First-run check:** Before reading any state file, verify the required files exist. If missing, initialize from bootstrap stubs (see `bootstrap/` at the project root) or create minimal empty versions:
+
+| File | Bootstrap source | Empty fallback |
+|------|-----------------|----------------|
+| `RUN_LOG.md` | `bootstrap/RUN_LOG.md` | `# Run Log\n\n---\n` |
+| `[state_file].json` | `bootstrap/[state_file].json` | `{}` or `[]` as appropriate |
+
+If any file was initialized this way, note "Bootstrap: first run — [filename] initialized" in the run log entry for this run. Do not treat this as an error.
 
 ---
 
