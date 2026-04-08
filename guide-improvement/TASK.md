@@ -10,13 +10,15 @@
 
 ## Paths
 
+Paths are relative to the project root (the folder containing this file's parent `guide-improvement/` directory). Resolve them at runtime using the current working directory.
+
 | Item | Path |
 |------|------|
-| Guide folder | `/sessions/busy-exciting-hypatia/mnt/Claude Teacher/` |
-| Task folder | `/sessions/busy-exciting-hypatia/mnt/Claude Teacher/guide-improvement/` |
-| Skills folder | `/sessions/busy-exciting-hypatia/mnt/Claude Teacher/skills/` |
-| CLAUDE.md | `/sessions/busy-exciting-hypatia/mnt/.claude/CLAUDE.md` (may not exist) |
-| Memory index | `/sessions/busy-exciting-hypatia/mnt/.auto-memory/MEMORY.md` (may not exist) |
+| Guide folder | `./` (project root — files matching `0*_*.md`) |
+| Task folder | `./guide-improvement/` |
+| Skills folder | `./skills/` |
+| CLAUDE.md | `./CLAUDE.md` (may not exist) |
+| Memory index | `~/.claude/projects/[project-hash]/memory/MEMORY.md` (may not exist) |
 
 ---
 

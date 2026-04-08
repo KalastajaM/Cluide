@@ -3,6 +3,11 @@
 > A collection of lessons learned from real use. Not theory — things that actually make the difference.
 > These apply whether you're setting up your first skill or optimising a system you've been running for months.
 
+> **Companion guides:** [Guide 01](./01_CLAUDE_MD.md) covers CLAUDE.md — the foundation these practices build on. [Guide 04](./04_TASK_EFFICIENCY_GUIDE.md) covers task efficiency. [Guide 10](./10_DEV_EXECUTION_WORKFLOW.md) covers the development workflow.
+
+> **Giving this guide to Claude:**
+> "Read 07_BEST_PRACTICES.md and review how I'm currently working with you. Identify the top 3 practices I'm not following and suggest how to apply them."
+
 ---
 
 ## Giving Claude Good Inputs

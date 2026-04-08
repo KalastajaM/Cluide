@@ -167,6 +167,52 @@ This keeps the review thoughtful (Claude Code has the full file context and your
 
 ---
 
+## Plan Mode: Review Before Executing
+
+For any change that is structural, multi-file, or hard to undo — use **Plan Mode** before Claude starts editing. Plan Mode separates the "figure out what to do" step from the "do it" step.
+
+**How it works:**
+1. Claude enters Plan Mode (via `EnterPlanMode` or the `/plan` command)
+2. Claude reads relevant files and writes a plan to a plan file — no edits made
+3. You review the plan and approve, reject, or amend it
+4. Claude exits Plan Mode and executes only what was approved
+
+**When to use Plan Mode:**
+- Adding a new feature to a task or skill (multi-step, multiple files)
+- Restructuring a TASK.md or SKILL.md
+- Making changes whose impact is non-obvious
+- Any time you want to review before Claude acts, not after
+
+**When to skip it:**
+- Single-line fixes, typo corrections, adding one entry to a table
+- Changes you'd be happy to just undo if they're wrong
+
+**Prompt to activate:**
+> "Enter plan mode. Read [file] and plan how to [change]. Don't make any edits yet — I'll review first."
+
+---
+
+## Subagents: Parallel Work in Claude Code
+
+Claude Code can spawn **subagents** — specialized parallel Claude instances that work on focused subtasks and report back. This is one of the most powerful efficiency tools available for complex multi-step work.
+
+**Available subagent types:**
+- **Explore** — reads and searches files without making edits. Use for codebase exploration, finding patterns, answering questions about a setup
+- **Plan** — designs implementation approaches, proposes architectures, considers trade-offs
+- **General-purpose** — full tool access; handles research, multi-step tasks, and anything requiring broad capability
+
+**When to use subagents:**
+- You need to explore multiple files or areas in parallel (launch multiple Explore agents simultaneously)
+- You want a plan designed before you execute it
+- A task has multiple independent subtasks that can run concurrently
+
+**Example:**
+> "Launch two Explore subagents in parallel: one to read all TASK.md files and summarise their run procedures, another to read all SKILL.md files and summarise their triggers."
+
+**Important:** Explore and Plan subagents are read-only — they cannot edit files. Use them for understanding and planning; use the main session (or a general-purpose agent) for execution.
+
+---
+
 ## New Features: Development Checklist
 
 When building something new — a skill, a task, a profile update — use this checklist in Claude Code before taking it live in Cowork:

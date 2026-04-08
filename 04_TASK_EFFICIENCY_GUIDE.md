@@ -206,11 +206,28 @@ Use this to roughly estimate per-run cost and identify the highest-leverage impr
 
 ## How Scheduled Tasks Are Triggered
 
-Tasks do not run themselves — they need a trigger. Claude Code supports **hooks**: shell commands that fire automatically in response to events. Hooks are configured in `~/.claude/settings.json`.
+Two mechanisms exist. Choose based on how autonomous the task needs to be.
 
-The most useful hook for personal assistants is **SessionStart**, which runs a command every time a new Claude session opens.
+---
 
-**Minimal SessionStart example:**
+### Option A: Remote / Scheduled Triggers (recommended for production tasks)
+
+The `schedule` skill and `RemoteTrigger` system let you create task agents that run on a cron schedule **independently of any open Claude session** — no session needed, no manual trigger. This is the proper approach for daily digests, automated monitoring tasks, and anything that should run reliably on a fixed schedule.
+
+**To set up a scheduled task:**
+> "Use the `schedule` skill to create a scheduled task that runs my daily digest every morning at 8am."
+
+Claude will configure the trigger, set the schedule, and manage execution. You can list, update, or stop triggers without opening a session.
+
+This approach avoids the main problem with SessionStart hooks: tasks running multiple times if you open several sessions in a day.
+
+---
+
+### Option B: SessionStart Hooks (simpler, for session-triggered automation)
+
+Hooks are shell commands that fire automatically in response to Claude Code events. Configured in `~/.claude/settings.json` (global) or `.claude/settings.json` (project-level).
+
+**SessionStart** fires every time a new Claude Code session opens — useful for lightweight pre-session setup (git snapshots, loading context) rather than full task execution.
 
 ```json
 {
@@ -221,7 +238,7 @@ The most useful hook for personal assistants is **SessionStart**, which runs a c
         "hooks": [
           {
             "type": "command",
-            "command": "claude -p 'Read .claude/tasks/daily-digest/TASK.md and run the daily digest.'"
+            "command": "cd /path/to/project && git add -A && git commit -m 'pre-session snapshot' 2>/dev/null || true"
           }
         ]
       }
@@ -230,19 +247,18 @@ The most useful hook for personal assistants is **SessionStart**, which runs a c
 }
 ```
 
-This runs the daily digest task automatically when you open Claude — no manual trigger needed.
-
-**Other useful hook events:**
-- **PostToolUse** — fires after a specific tool is used. Useful for follow-up actions (e.g., after a file is written, trigger a summary update).
+**Other hook events:**
 - **PreToolUse** — fires before a tool runs. Useful for validation or logging.
+- **PostToolUse** — fires after a tool completes. Useful for follow-up actions (e.g., after a file write, trigger a view regeneration).
+- **Stop** — fires when Claude ends a response.
+- **Notification** — fires when Claude sends a notification.
 
-**Practical notes:**
-- A SessionStart hook runs once per session, not once per day. If you open multiple sessions in a day, the task runs multiple times. Add run deduplication (checklist item 7 above) to prevent redundant full runs.
-- The `matcher` field filters by context (e.g., directory). Leave it empty (`""`) to fire on all sessions.
+**Hook practical notes:**
+- SessionStart fires once per session. Multiple sessions per day = multiple hook runs. Add deduplication (checklist item 7) if running full tasks via hooks.
+- The `matcher` field filters by context. Leave it empty (`""`) to fire on all sessions.
+- For git pre-session snapshots specifically, prefer the hook approach — it's simpler and the right fit. See [Guide 09 — Git Integration](./09_GIT_INTEGRATION.md).
 
-For the full hooks reference, see the [Claude Code documentation on hooks](https://docs.anthropic.com/en/docs/claude-code/hooks).
-
-A common use of the `SessionStart` hook is to commit task state files before every run — creating a restore point if a run goes wrong. See [Guide 09 — Git Integration](./09_GIT_INTEGRATION.md).
+For the full hooks reference: [Claude Code documentation on hooks](https://docs.anthropic.com/en/docs/claude-code/hooks).
 
 ---
 

@@ -9,8 +9,8 @@
 
 ```json
 {
-  "total_runs": 4,
-  "runs_since_last_refactor": 4,
+  "total_runs": 5,
+  "runs_since_last_refactor": 5,
   "refactor_threshold": 6,
   "last_refactor_date": null,
   "next_refactor_due_at_run": 6
@@ -27,6 +27,7 @@
 
 | Date | ID | File | What was changed | Why |
 |------|----|------|-----------------|-----|
+| 2026-04-08 | FIX-020 | Multiple guides + TASK.md | Expert review: 14 fixes across all guides — hardcoded paths, LAST_RUN.md contradiction, Chrome MCP update, scheduling, memory clarification, Plan Mode, subagents, computer use, project-level MCP settings, scripts/ explanation, .claudeignore link, Guide 07 header, Guide 12 bundled in skill | Full expert audit pass |
 | 2026-04-08 | FIX-010 | `00_INDEX.md` + `skills/ai-assistant-setup/references/00_INDEX.md` | "All 11 guides" → "All 12 guides" | Guide 12 (12_LLM_WIKI.md) now bundled in skill references (PROP-004) |
 | 2026-04-08 | FIX-009 | `05_TASK_LEARNING_GUIDE.md`, `templates/TASK_TEMPLATE/LESSONS.md`, `templates/TASK_TEMPLATE/README.md` | Added LESSONS.md as optional companion file: new section in Guide 05 Part 6, placeholder file in TASK_TEMPLATE, README updated | PROP-003: preserves reasoning history separate from IMPROVEMENTS.md for complex long-running tasks |
 | 2026-04-08 | FIX-008 | `00_INDEX.md` + `skills/ai-assistant-setup/references/00_INDEX.md` | `claude-assistant-setup/` → `ai-assistant-setup/` in skill install instructions (both copies) | Wrong folder name — actual skill folder and .skill file are named `ai-assistant-setup` |
@@ -68,7 +69,7 @@
 
 | ID | Description | First observed | Status |
 |----|-------------|----------------|--------|
-| ISS-001 | TASK.md contains hardcoded session path (`/sessions/busy-exciting-hypatia/`) which differs per session. The scheduled task prompt works around this, but the file itself is stale. | 2026-03-26 | ACCEPTED |
+| ISS-001 | TASK.md contains hardcoded session path (`/sessions/busy-exciting-hypatia/`) which differs per session. | 2026-03-26 | RESOLVED — FIX-020 replaced with relative paths |
 
 ---
 
