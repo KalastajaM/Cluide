@@ -25,9 +25,15 @@ For more complex skills, you can add:
 my-skill/
 ├── SKILL.md
 └── references/       (detailed docs the skill reads on demand)
-└── scripts/          (reusable Python/bash scripts)
+└── scripts/          (reusable Python/bash scripts called by the skill)
 └── assets/           (templates, icons, fonts)
 ```
+
+**`references/`** — detailed content the skill needs occasionally but not every activation (schemas, full format specs, domain guides). SKILL.md references these by name; Claude loads them only when needed. Keep SKILL.md itself under ~500 lines and offload the rest here.
+
+**`scripts/`** — Python or bash scripts the skill can execute with the Bash tool. Good for fixed-format artifact generation, data transformation, or any repeatable computation that doesn't need Claude to reason about it.
+
+**Context note:** Files in `references/` and `scripts/` are not loaded into Claude's context automatically — only SKILL.md is. If you want to prevent Claude from loading them even when exploring the project, add the patterns to `.claudeignore`. See [Guide 09 — Git Integration](./09_GIT_INTEGRATION.md) for `.claudeignore` setup.
 
 The SKILL.md file has two parts: a YAML frontmatter block, and the instruction body.
 

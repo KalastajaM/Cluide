@@ -54,9 +54,9 @@ Covers: the anatomy of a SKILL.md file, writing descriptions that trigger reliab
 ---
 
 ### [03 — Memory & Profile](./03_MEMORY_AND_PROFILE.md)
-*Two complementary persistence systems.*
+*Three persistence layers: native memory, auto-memory, and profile files.*
 
-Covers: the auto-memory system (lightweight, always-on), profile files (structured, richly maintained for complex recurring agents), what to store, how to keep files lean, and the hypothesis system.
+Covers: native Claude memory (built-in, zero setup) vs. the `.auto-memory/` folder system (structured, project-specific), profile files for complex recurring agents, what to store, how to keep files lean, and the hypothesis system.
 
 **Use this when:** you want Claude to remember things across sessions — your preferences, corrections, ongoing projects, and key contacts.
 
@@ -65,7 +65,7 @@ Covers: the auto-memory system (lightweight, always-on), profile files (structur
 ### [04 — Task Efficiency](./04_TASK_EFFICIENCY_GUIDE.md)
 *How to design and optimize scheduled tasks for minimal token consumption.*
 
-Covers: splitting instruction files, scripting fixed-format output, targeted file edits, two-pass triage for external data, hard size limits, and run deduplication.
+Covers: splitting instruction files, scripting fixed-format output, targeted file edits, two-pass triage for external data, hard size limits, run deduplication, and the two scheduling mechanisms (remote/scheduled triggers vs. SessionStart hooks).
 
 **Use this when:** you have a scheduled task running regularly and want to audit it for efficiency — or want to set one up correctly from the start.
 
@@ -81,9 +81,9 @@ Covers: what to learn and how to store it, detecting feedback signals, the apply
 ---
 
 ### [06 — Self-Improvement Template](./06_SELFIMPROVE_TEMPLATE.md)
-*A ready-to-use IMPROVEMENTS.md template.*
+*How to install and use the IMPROVEMENTS.md template.*
 
-A concrete template file that implements the system described in Guide 05. Drop it into any task folder and it's ready to use.
+Explains the structure of the template, walks through installation (copy → fill in task name → wire into TASK.md), and documents how to respond to proposals. The template itself lives at [`templates/TASK_TEMPLATE/IMPROVEMENTS.md`](./templates/TASK_TEMPLATE/IMPROVEMENTS.md).
 
 **Use this when:** you're creating a new scheduled task and want the self-improvement system set up from run 1.
 
@@ -101,9 +101,9 @@ Covers: giving Claude good inputs, working effectively session-to-session, build
 ### [08 — MCP Servers](./08_MCP_SERVERS.md)
 *How Claude connects to external tools — Gmail, Calendar, GitHub, and more.*
 
-Covers: what MCP servers are, how to configure them in Claude Code, the most useful servers for personal assistants, how to reference tool names in skills, and credential security.
+Covers: what MCP servers are, global vs. project-level configuration, the most useful servers for personal assistants (including Claude in Chrome and Computer Use), how to reference tool names in skills, and credential security.
 
-**Use this when:** you're setting up a skill that uses external tools (email, calendar, files) and need to understand where those tools come from — or when a skill isn't finding the tools it needs.
+**Use this when:** you're setting up a skill that uses external tools (email, calendar, files, browser, desktop) and need to understand where those tools come from — or when a skill isn't finding the tools it needs.
 
 ---
 
@@ -119,7 +119,7 @@ Covers: what to track in git, what belongs in `.gitignore` vs `.claudeignore`, a
 ### [10 — Development and Execution Workflow](./10_DEV_EXECUTION_WORKFLOW.md)
 *Using Claude Code and Cowork as two distinct tools with two distinct roles.*
 
-Covers: the development/execution split (Claude Code for building and maintaining, Cowork for running), file architecture that works cleanly in both tools, the workflow for adding or changing something, debugging broken runs, reviewing and applying self-improvement proposals, and a new-features checklist.
+Covers: the development/execution split (Claude Code for building and maintaining, Cowork for running), file architecture that works cleanly in both tools, Plan Mode for reviewing changes before executing, subagents for parallel exploration and planning, the workflow for adding or changing something, debugging broken runs, reviewing and applying self-improvement proposals, and a new-features checklist.
 
 **Use this when:** you use Claude Code for maintaining your assistant setup and a conversational Claude interface (Cowork or similar) for actually running tasks — and want a clear workflow for how the two fit together.
 

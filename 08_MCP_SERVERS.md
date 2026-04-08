@@ -14,7 +14,14 @@ From Claude's perspective, MCP tools work just like any built-in capability — 
 
 ## How MCP Servers Connect to Claude Code
 
-MCP servers are configured in Claude Code's settings file at `~/.claude/settings.json`. Each server has a name, a launch command, and optionally environment variables for credentials.
+MCP servers are configured in a settings file. Claude Code supports two scopes:
+
+- **Global** (`~/.claude/settings.json`) — available in every project on the machine
+- **Project-level** (`.claude/settings.json` inside a project folder) — available only when working in that project
+
+Use project-level config when a server is only relevant to a specific project, or when you want different credentials per project. Use global config for servers you use everywhere (filesystem, GitHub, etc.).
+
+Each server has a name, a launch command, and optionally environment variables for credentials.
 
 **Minimal example:**
 
@@ -137,7 +144,38 @@ Persistent key-value store Claude can read and write across sessions — an alte
 
 ### Claude in Chrome
 
-The Claude browser extension (available from the Chrome Web Store) lets Claude read the content of the current webpage in any Claude.ai session. This is not an MCP server — it runs in the browser — but it fills a similar gap: getting live web content into Claude without a separate API or scraping script. Useful for research tasks, reading paywalled articles, or extracting data from web apps that have no API.
+The Claude in Chrome MCP server (`mcp__Claude_in_Chrome__*`) gives Claude full control of your browser — navigating pages, clicking, filling forms, taking screenshots, reading page content, and extracting data. It is installed via the Claude browser extension (Chrome Web Store) and exposes a rich tool set that goes well beyond passive page reading.
+
+Key tools: `navigate`, `read_page`, `get_page_text`, `find`, `left_click`, `form_input`, `javascript_tool`, `screenshot`, `tabs_create`, `tabs_context`
+
+**When to use Claude in Chrome over other options:**
+- The target is a web app with no dedicated MCP and no API
+- You need to interact with a page (click, fill, navigate), not just read it
+- You want Claude to extract structured data from a live web interface
+
+**Limitation:** Browsers are granted at "read" tier in computer use — if you need to click or type in a browser, use the Claude in Chrome MCP rather than the computer use MCP.
+
+Configure by installing the Claude browser extension from the Chrome Web Store and connecting it in your Claude settings.
+
+---
+
+### Computer Use
+
+The computer use MCP (`mcp__computer-use__*`) gives Claude direct control of your desktop — taking screenshots, moving the mouse, clicking, typing, scrolling, and opening applications. Unlike the Claude in Chrome MCP (which is browser-scoped), computer use works across all native apps.
+
+Key tools: `screenshot`, `left_click`, `type`, `scroll`, `key`, `open_application`, `request_access`
+
+**Access control — tiers by app category:**
+- **Browsers** (Chrome, Safari, Firefox…) → read-only; use the Claude in Chrome MCP instead for interaction
+- **Terminals and IDEs** (Terminal, VS Code…) → click-only; use the Bash tool for commands
+- **All other apps** (Mail, Notes, Maps, Finder, any native desktop app) → full access
+
+**Before using:** call `request_access` with the list of applications you need. The user approves each explicitly.
+
+**When to use computer use:**
+- Native desktop apps with no dedicated MCP (e.g. Maps, Photos, System Settings, third-party apps)
+- Cross-app workflows that span multiple native applications
+- Anything that requires interacting with the screen as a human would
 
 ---
 
