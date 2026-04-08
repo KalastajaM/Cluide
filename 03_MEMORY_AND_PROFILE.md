@@ -6,11 +6,24 @@ A personal assistant is only as good as its memory. Without memory, every sessio
 
 ## Which System Should You Use?
 
-**Use auto-memory** (the default) for the vast majority of cases. It handles assistant-wide preferences, corrections, project states, and reference pointers — everything most people need.
+### Native Claude Memory vs. `.auto-memory/`
+
+Claude Code has a **built-in native memory system** that stores facts automatically in `~/.claude/projects/[project-hash]/memory/MEMORY.md`. This is always active — Claude writes to it when it learns something worth keeping, and reads from it at the start of each session. You do not need to set it up.
+
+The **`.auto-memory/` folder pattern** described in this guide is a richer, structured alternative that you manage deliberately. It gives you more control: domain-specific files, a curated index, profile files, and the hypothesis system. Use it when you want structured, project-specific memory that goes beyond simple facts.
+
+**Quick guide:**
+- **Native Claude memory** — good default; zero setup; handles corrections, preferences, general facts automatically
+- **`.auto-memory/`** — use when you want structured memory with multiple files, a curated index, and project-specific organisation
+- **Profile files** — use when a scheduled task agent needs deep structured knowledge (relationship maps, hypothesis tracking, project history)
+
+If you're just getting started: let native memory work by default. Add `.auto-memory/` when you want more structure. Add profile files only when a scheduled task clearly needs them.
+
+---
+
+**Use auto-memory** (the `.auto-memory/` folder) for the vast majority of deliberate memory cases. It handles assistant-wide preferences, corrections, project states, and reference pointers.
 
 **Use profile files** only when you have a scheduled task agent that requires deep, structured knowledge about a person: full relationship maps, historical project tracking, hypotheses about behaviour. This is a more advanced pattern, typically added after auto-memory is already in place.
-
-If you're just getting started: set up auto-memory. Add profile files only when a specific scheduled task clearly needs them.
 
 ---
 

@@ -24,10 +24,12 @@ Not everything in your Claude setup belongs in git. Use this as a guide:
 - `skills/*/SKILL.md` — skill definitions; treat them like code
 - `tasks/*/TASK.md` and `TASK_REFERENCE.md` — task procedures
 - `tasks/*/IMPROVEMENTS.md` — the learning log; this is the most valuable file to version
-- `tasks/*/LAST_RUN.md` — latest output; useful to compare run-to-run
-- `tasks/*/RUN_LOG.md` — append-only run history
+- `tasks/*/RUN_LOG.md` — append-only run history (the full log belongs in git)
 - Profile files (`PROFILE_*.md`, `.auto-memory/*.md`) — cross-session knowledge
 - Scripts (`scripts/*.py`) — reusable scripts called by tasks
+
+**Do not track (add to `.gitignore`):**
+- `tasks/*/LAST_RUN.md` — this is just the latest run's output, not history. The full history lives in `RUN_LOG.md`. Tracking `LAST_RUN.md` produces meaningless commits every run with no diff value — it is always replaced wholesale. Gitignore it; read `RUN_LOG.md` when you need history.
 
 **LLM wikis** (see [Guide 12](./12_LLM_WIKI.md)) — track the `wiki/` folder and `CLAUDE.md` schema. The `log.md` file inside a wiki is append-only, which produces a particularly clean git history: each commit adds exactly one entry, so `git log -- wiki/log.md` reads as a precise timeline of the wiki's evolution. `git diff HEAD~1 HEAD -- wiki/` shows exactly what a single ingest changed across all pages.
 
