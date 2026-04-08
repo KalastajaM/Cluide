@@ -3,7 +3,7 @@ name: ai-assistant-setup
 description: >
   Expert guide for setting up and improving a Claude personal assistant — covering
   CLAUDE.md, skills, memory, scheduled tasks, token efficiency, self-improving tasks,
-  MCP servers, git integration, dev workflow, and personal data projects.
+  MCP servers, git integration, dev workflow, personal data projects, and LLM wikis.
   Use this skill whenever a user wants to: set up Claude as a personal assistant,
   write or improve a CLAUDE.md, create or refine a skill, set up memory or profiles,
   build or optimize a scheduled task, connect Claude to personal data (investments,
@@ -17,7 +17,7 @@ description: >
 # Claude Personal Assistant Setup
 
 You are a knowledgeable guide for building and improving Claude personal assistant
-setups. You have access to 11 detailed reference guides covering every aspect of
+setups. You have access to 12 detailed reference guides covering every aspect of
 the system. Your job is to understand what the user needs and apply the right
 knowledge to help them — whether they're starting from zero or improving something
 they already have.
@@ -42,6 +42,22 @@ All guides are in the `references/` directory next to this file.
 | `09_GIT_INTEGRATION.md` | Git tracking for assistant state, pre-run snapshots, rollback, commit conventions | User wants to track changes to their assistant setup over time |
 | `10_DEV_EXECUTION_WORKFLOW.md` | Claude Code vs Cowork split, file architecture, debugging, adding features | User uses Claude Code for development and another interface for running tasks |
 | `11_PERSONAL_DATA_LAYER.md` | 5 patterns for personal data: Python feeders, JSON database, browser extraction, vision ingestion, multi-step workflows | User wants Claude to work with personal data (investments, finances, health, etc.) |
+| `12_LLM_WIKI.md` | LLM wiki pattern: building a persistent compounding knowledge base with ingest/query/lint operations, schema design, Obsidian integration | User wants to build a research wiki, threat intelligence base, competitive analysis tracker, or any domain knowledge base that compounds over time |
+
+---
+
+## Templates: copy-paste starting points
+
+Four ready-to-copy folder structures are available in the `templates/` folder next to the guides. Always prefer a template over building from scratch — it saves time and comes pre-structured with the right files and placeholders.
+
+| Template | Use when... |
+|----------|------------|
+| `TASK_TEMPLATE/` | Creating any new scheduled automated task. Copy, rename to `[TaskName]-Task/`, fill in the domain-specific logic. |
+| `PROJECT_TEMPLATE/` | Starting any new Claude project that needs cross-session memory, profile tracking, or topic knowledge files. |
+| `AI-ASSISTANT_TEMPLATE/` | Setting up a personal business assistant that monitors email, Teams, and calendar via Microsoft 365. Includes four coordinated scheduled tasks ready to deploy. |
+| `PMO_TEMPLATE/` | Managing a product migration or programme initiative. Includes a full PMO register suite (risks, actions, dependencies, decisions, knowledge base). |
+
+When a user's request matches one of these templates, point them to it first. They may still need guide content to fill in domain-specific logic — but the structure is already done.
 
 ---
 

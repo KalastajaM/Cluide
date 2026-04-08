@@ -1,6 +1,6 @@
 # Guide Improvement Log — Claude Teacher
 
-> Managed by the guide-improvement task. Read at the start of every run (Step 1). Updated at the end of every run (Step 7).
+> Managed by the guide-improvement task. Read at the start of every run (Step 1). Updated at the end of every run (Step 9).
 > Respond to proposals by annotating them [APPROVED], [REJECTED], or [MODIFY: ...] directly in this file.
 
 ---
@@ -9,8 +9,8 @@
 
 ```json
 {
-  "total_runs": 3,
-  "runs_since_last_refactor": 3,
+  "total_runs": 4,
+  "runs_since_last_refactor": 4,
   "refactor_threshold": 6,
   "last_refactor_date": null,
   "next_refactor_due_at_run": 6
@@ -27,6 +27,9 @@
 
 | Date | ID | File | What was changed | Why |
 |------|----|------|-----------------|-----|
+| 2026-04-08 | FIX-010 | `00_INDEX.md` + `skills/ai-assistant-setup/references/00_INDEX.md` | "All 11 guides" → "All 12 guides" | Guide 12 (12_LLM_WIKI.md) now bundled in skill references (PROP-004) |
+| 2026-04-08 | FIX-009 | `05_TASK_LEARNING_GUIDE.md`, `templates/TASK_TEMPLATE/LESSONS.md`, `templates/TASK_TEMPLATE/README.md` | Added LESSONS.md as optional companion file: new section in Guide 05 Part 6, placeholder file in TASK_TEMPLATE, README updated | PROP-003: preserves reasoning history separate from IMPROVEMENTS.md for complex long-running tasks |
+| 2026-04-08 | FIX-008 | `00_INDEX.md` + `skills/ai-assistant-setup/references/00_INDEX.md` | `claude-assistant-setup/` → `ai-assistant-setup/` in skill install instructions (both copies) | Wrong folder name — actual skill folder and .skill file are named `ai-assistant-setup` |
 | 2026-04-05 | FIX-007 | `guide-improvement/IMPROVEMENTS.md` | Closed PROP-001 and PROP-002; incremented run counters | Both proposals were applied in this run |
 | 2026-04-05 | FIX-006 | `04_TASK_EFFICIENCY_GUIDE.md` | Added "How Scheduled Tasks Are Triggered" section with hooks config example | Guides mentioned scheduled tasks but never explained how they are actually triggered |
 | 2026-04-05 | FIX-005 | `06_SELFIMPROVE_TEMPLATE.md` | Added "File" column to Applied Fixes and Archived Fixes tables | Resolved PROP-002: aligns template with Guide 05 and the actual IMPROVEMENTS.md format |
@@ -55,7 +58,7 @@
 []
 ```
 
-*(No proposals currently pending. PROP-001 and PROP-002 were applied as FIX-004 and FIX-005 on 2026-04-05.)*
+*(No proposals currently pending. PROP-003 and PROP-004 were applied on 2026-04-08.)*
 
 ---
 
@@ -73,4 +76,8 @@
 
 *(Unvalidated learnings and low-priority ideas. Each entry notes what evidence would promote it to a proposal.)*
 
-- **Skills-first setup path (2 observations):** Setup shows 11 skills (many are platform plugins) but no CLAUDE.md or auto-memory across two runs. May suggest the "recommended starting path" (01 → 02 → 03) is unnecessarily rigid, or that platform-level config replaces CLAUDE.md for some users. *Promote to proposal if:* a third observation confirms user-created skills active without CLAUDE.md/memory, or user reports the ordering advice was unhelpful. Note: most skills observed appear to be third-party platform plugins, which weakens this signal.
+- **Skills-first setup path (2 observations):** Setup shows skills active but no CLAUDE.md or auto-memory across two runs. Most appear to be third-party platform plugins. *Promote to proposal if:* a third observation confirms user-created skills active without CLAUDE.md/memory, or user reports the ordering advice was unhelpful.
+
+- **ISSUES_LOG.md pattern (1 observation, AI-Assistant):** A separate production issues log per task (connector errors, logic issues, missed items), distinct from IMPROVEMENTS.md Known Issues. Useful for connector-heavy tasks. *Promote to proposal if:* observed in a second independent project.
+
+- **Maintenance meta-task (1 observation, AI-Assistant):** A dedicated scheduled task for reviewing and proposing improvements to other tasks. Powerful for setups with 3+ tasks. *Promote to proposal if:* user mentions wanting this pattern, or observed in a second project with multi-task setup.

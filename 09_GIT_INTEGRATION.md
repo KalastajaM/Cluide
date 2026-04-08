@@ -29,6 +29,8 @@ Not everything in your Claude setup belongs in git. Use this as a guide:
 - Profile files (`PROFILE_*.md`, `.auto-memory/*.md`) — cross-session knowledge
 - Scripts (`scripts/*.py`) — reusable scripts called by tasks
 
+**LLM wikis** (see [Guide 12](./12_LLM_WIKI.md)) — track the `wiki/` folder and `CLAUDE.md` schema. The `log.md` file inside a wiki is append-only, which produces a particularly clean git history: each commit adds exactly one entry, so `git log -- wiki/log.md` reads as a precise timeline of the wiki's evolution. `git diff HEAD~1 HEAD -- wiki/` shows exactly what a single ingest changed across all pages.
+
 **Do not track:**
 - Credentials files (OAuth tokens, API keys, `.json` credential files) — these should never be committed
 - `.env` files
@@ -181,6 +183,42 @@ Ask Claude to follow this convention when it updates files:
 
 ---
 
+## Configuring Git for the First Time
+
+Before you can make your first commit, Git needs to know who you are. This identity is embedded in every commit and cannot be changed after the fact without rewriting history.
+
+**Set your identity:**
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "you@example.com"
+```
+
+The `--global` flag writes this to your user-level config (`~/.gitconfig`), so it applies to every repository on your machine. Use `--local` instead to override it for a specific repo.
+
+**Set your default editor** (VS Code is a good choice — see the VS Code section below):
+```bash
+git config --global core.editor "code --wait"
+```
+
+**Set the default branch name** to `main` (avoids the legacy `master` default):
+```bash
+git config --global init.defaultBranch main
+```
+
+**Verify your configuration:**
+```bash
+git config --list
+```
+
+This shows the merged view of all config levels. To check a specific value:
+```bash
+git config user.name
+```
+
+The three config scopes, in order of precedence (highest to lowest): `--local` (this repo only, stored in `.git/config`) → `--global` (your user account, stored in `~/.gitconfig`) → `--system` (all users on the machine, rarely needed).
+
+---
+
 ## Setting Up a New Repository
 
 If your Claude assistant files are not yet in git:
@@ -227,6 +265,54 @@ A mature git history for an assistant task looks like this:
 ```
 
 The alternating pre/post pattern means every run is bracketed. You can restore to any pre-run state in one command, and you can see exactly what changed in any run with a single diff.
+
+---
+
+## Using VS Code with Claude and Git
+
+VS Code has first-class Git support built in, making it a natural companion to Claude for managing your assistant files. You get a visual diff viewer, one-click staging and committing, and a terminal — all in one window.
+
+### Source Control Panel
+
+Click the branch icon in the left sidebar (or press `Ctrl+Shift+G` / `Cmd+Shift+G`) to open the Source Control panel. From here you can:
+
+- See all modified files at a glance
+- Stage individual files or hunks by clicking the `+` icon
+- Write a commit message and commit without leaving the editor
+- View inline diffs by clicking any changed file
+
+This is a good alternative to the CLI for day-to-day commits, especially when reviewing what Claude has changed before committing.
+
+### Setting VS Code as Your Git Editor
+
+When Git needs you to write a message interactively (e.g. during a rebase), it will open VS Code and wait:
+
+```bash
+git config --global core.editor "code --wait"
+```
+
+The `--wait` flag tells Git to block until you close the file tab, so Git knows when you're done.
+
+### Opening Your Project with the Workspace File
+
+The `Claude-Teacher.code-workspace` file in your folder opens the project with any saved VS Code settings (panel layout, recommended extensions, etc.) in one click. Use **File → Open Workspace from File** and select it, or from the terminal:
+
+```bash
+code Claude-Teacher.code-workspace
+```
+
+### Integrated Terminal
+
+Use the VS Code integrated terminal (`Ctrl+\`` / `Ctrl+\``) to run Claude Code and git commands side by side with your files. A typical workflow:
+
+1. Ask Claude to update a task or skill file
+2. Switch to Source Control to review the diff
+3. Stage and commit from the panel, or run `git add` / `git commit` in the terminal
+
+### Recommended Extensions
+
+- **GitLens** — adds inline blame, rich commit history, and line-by-line authorship directly in the editor. Particularly useful for understanding which run introduced a specific change.
+- **Git Graph** — visual branch and commit graph; helpful when you have many pre/post-run commits and want to navigate them quickly.
 
 ---
 
