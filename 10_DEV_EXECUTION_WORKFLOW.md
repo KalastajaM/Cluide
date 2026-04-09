@@ -10,6 +10,7 @@
 |------|------|-----------------|
 | **Development** | Claude Code | Edit TASK.md, SKILL.md, CLAUDE.md. Debug failing runs. Add new features. Review and apply IMPROVEMENTS.md proposals. Manage git. Run the guide-improvement task. |
 | **Execution** | Cowork (conversational Claude) | Run your daily tasks. Process emails. Draft messages. Use skills. Let tasks run and read the output. |
+| **Development (Cowork-only)** | Text editor + Cowork | Edit files in a text editor or via Cowork chat. Test in a new Cowork conversation. Debug by sharing files in Cowork. See the [Cowork-only section](#if-you-only-use-cowork-no-claude-code) below. |
 
 The key principle: **do not mix the roles in a single session.** When you open Cowork to check your emails, you are not also editing your email skill. When you open Claude Code to fix a bug, you are not also running your actual tasks.
 
@@ -90,6 +91,53 @@ See [Guide 09 — Git Integration](./09_GIT_INTEGRATION.md) for commit conventio
 
 **5. Switch to Cowork for the first live run.**
 The first real run of a new or changed skill is always in Cowork. Watch the output carefully. If it looks right, you are done. If something is off, go back to Claude Code to diagnose and fix.
+
+---
+
+## If You Only Use Cowork (No Claude Code)
+
+Claude Code is the recommended tool for development work — but it is optional. If you work entirely within Cowork, the same workflows are available, just with a different toolset.
+
+### Editing Files
+
+Your task and skill files are plain markdown text files. You can edit them in any text editor:
+- **Windows:** Notepad, Notepad++, or VS Code
+- **Mac:** TextEdit (in plain text mode), VS Code, or BBEdit
+
+Or — ask Claude in a fresh Cowork conversation to make the edit for you:
+
+> "Read my TASK.md at `[path to file]` and add a rule that when the output contains more than 5 action items, flag the top 3 as priorities. Show me the change before writing it."
+
+Claude will propose the edit and ask you to confirm before writing. This gives you the review step even without Claude Code's diff view.
+
+### Testing
+
+After editing, open a **new Cowork conversation** (not the one you used for editing) and run the skill or task. Mixing editing and testing in the same session creates confusion because Claude is holding both the "editing Claude" and "execution Claude" context at once.
+
+### Debugging
+
+When something breaks, open a new Cowork conversation and share the relevant files:
+
+> "Here is my LAST_RUN.md: [paste contents]. Here is my TASK.md: [paste contents]. The problem is [describe it]. What caused it and what should I change in TASK.md to fix it?"
+
+You can diagnose and fix entirely through Cowork this way. For the most effective debugging, follow the same order as the Claude Code workflow: read evidence → identify cause → fix → test.
+
+### Reviewing IMPROVEMENTS.md
+
+Open a new Cowork conversation and share the proposals:
+
+> "Here is my IMPROVEMENTS.md: [paste contents]. For each pending proposal, explain what it does and ask me whether to apply it, reject it, or modify it."
+
+Work through them one at a time. Claude will make the change in the TASK.md once you confirm.
+
+### What You Miss Without Claude Code
+
+Without Claude Code, you don't have:
+- **Plan Mode** — the built-in plan/approve/execute flow (you can replicate it by asking Claude to "describe what you'll change before making any edits")
+- **Git integration** — rollback, history, pre-run snapshots (recommended even for non-developers: see [Guide 09](./09_GIT_INTEGRATION.md))
+- **Subagents** — parallel exploration agents
+
+You can work effectively without these, but git in particular is worth setting up — it is the single best protection against "I broke something and don't know what".
 
 ---
 

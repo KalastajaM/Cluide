@@ -26,6 +26,7 @@ This folder contains a collection of best-practice guides for setting up Claude 
 | `10_DEV_EXECUTION_WORKFLOW.md` | Development execution workflow |
 | `11_PERSONAL_DATA_LAYER.md` | Personal data and profile layer |
 | `12_LLM_WIKI.md` | LLM wiki pattern |
+| `13_SECURITY.md` | Security best practices for Claude Code and Cowork |
 
 When the user asks a question or makes a request that a guide covers, read the relevant guide before responding.
 

@@ -86,6 +86,23 @@ The right question for each rule: "Does this apply to every single conversation,
 
 ---
 
+## Cross-Reference Consistency Rules (Project CLAUDE.md)
+
+When a project has multiple linked artifacts — risk registers, action trackers, dependency registers, decision logs — add explicit rules that tell Claude what to check whenever any one of them changes. Without this, Claude will update the register you mention and leave the others stale.
+
+Write the rule as a checklist tied to the ID type:
+
+```markdown
+**Cross-reference consistency:** Whenever an action, dependency, or risk is added or changed:
+- New Risk → check for a linked Dependency and an Action tracking mitigation; link both ways.
+- New Dependency → check whether it drives an existing Risk; link if so.
+- New Action → record its source (Risk/Dependency/Decision) and ensure the source references it back.
+```
+
+This pattern applies any time a project manages two or more linked registers. The PMO_TEMPLATE shows a full implementation. For a simple personal project with one tracker, skip this — it's only needed when orphaned IDs are a real failure mode.
+
+---
+
 ## What NOT to Put in CLAUDE.md
 
 - **Lists of capabilities** ("you can use Gmail, Calendar, etc.") — the assistant discovers tools from its environment
