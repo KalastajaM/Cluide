@@ -8,16 +8,22 @@ A personal assistant is only as good as its memory. Without memory, every sessio
 
 ### Native Claude Memory vs. `.auto-memory/`
 
-Claude Code has a **built-in native memory system** that stores facts automatically in `~/.claude/projects/[project-hash]/memory/MEMORY.md`. This is always active — Claude writes to it when it learns something worth keeping, and reads from it at the start of each session. You do not need to set it up.
+There are three memory layers available. Understanding when each applies prevents a common frustration: expecting memory to persist when the system you're relying on doesn't survive between sessions.
 
-The **`.auto-memory/` folder pattern** described in this guide is a richer, structured alternative that you manage deliberately. It gives you more control: domain-specific files, a curated index, profile files, and the hypothesis system. Use it when you want structured, project-specific memory that goes beyond simple facts.
+| Dimension | Native Claude Memory | `.auto-memory/` folder | Profile files |
+|---|---|---|---|
+| Setup required | None — always active | Create folder + MEMORY.md + one CLAUDE.md line | Create profile folder structure |
+| Where it lives | `~/.claude/projects/[hash]/memory/MEMORY.md` | Your project folder on disk | Your task folder on disk |
+| Survives context reset? | **No** — clears when session context resets | **Yes** — read from disk each session | **Yes** — read explicitly each run |
+| Works in scheduled tasks? | **Not reliably** | **Yes** — explicitly loaded | **Yes** — explicitly loaded |
+| Multiple files? | No — single file | Yes — one file per topic | Yes — one file per profile domain |
+| Best for | Chat assistant use, corrections in conversations | Cross-session facts, preferences, projects | Scheduled task agents needing deep context |
 
-**Quick guide:**
-- **Native Claude memory** — good default; zero setup; handles corrections, preferences, general facts automatically
-- **`.auto-memory/`** — use when you want structured memory with multiple files, a curated index, and project-specific organisation
-- **Profile files** — use when a scheduled task agent needs deep structured knowledge (relationship maps, hypothesis tracking, project history)
+**The critical rule for scheduled tasks: always use `.auto-memory/` or profile files, not native memory.** Native memory is not reliably available to autonomous task runs — it is designed for interactive sessions. A task that depends on native memory may behave correctly some runs and forget everything on others.
 
-If you're just getting started: let native memory work by default. Add `.auto-memory/` when you want more structure. Add profile files only when a scheduled task clearly needs them.
+**If you are just getting started:** let native memory work by default for your conversational use. Add `.auto-memory/` when you want structured, reliable memory. Add profile files only when a scheduled task clearly needs them — after auto-memory is already in place.
+
+The two systems can coexist: native memory for your interactive chat assistant, `.auto-memory/` for your tasks and projects. They do not conflict.
 
 ---
 
