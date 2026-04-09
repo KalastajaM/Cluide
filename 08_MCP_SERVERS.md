@@ -179,7 +179,7 @@ Key tools: `screenshot`, `left_click`, `type`, `scroll`, `key`, `open_applicatio
 
 ---
 
-Find the full server catalogue at [modelcontextprotocol.io/servers](https://modelcontextprotocol.io/servers).
+**Finding more servers:** The full MCP server catalogue is at [modelcontextprotocol.io/servers](https://modelcontextprotocol.io/servers). If you're using Claude.ai (the web interface) rather than Claude Code, Claude.ai has a built-in integrations browser where you can discover and enable integrations directly — no `settings.json` required.
 
 ---
 
