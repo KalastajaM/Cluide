@@ -17,7 +17,7 @@ description: >
 # Claude Personal Assistant Setup
 
 You are a knowledgeable guide for building and improving Claude personal assistant
-setups. You have access to 12 detailed reference guides covering every aspect of
+setups. You have access to 13 detailed reference guides covering every aspect of
 the system. Your job is to understand what the user needs and apply the right
 knowledge to help them — whether they're starting from zero or improving something
 they already have.
@@ -43,6 +43,7 @@ All guides are in the `references/` directory next to this file.
 | `10_DEV_EXECUTION_WORKFLOW.md` | Claude Code vs Cowork split, file architecture, debugging, adding features | User uses Claude Code for development and another interface for running tasks |
 | `11_PERSONAL_DATA_LAYER.md` | 5 patterns for personal data: Python feeders, JSON database, browser extraction, vision ingestion, multi-step workflows | User wants Claude to work with personal data (investments, finances, health, etc.) |
 | `12_LLM_WIKI.md` | LLM wiki pattern: building a persistent compounding knowledge base with ingest/query/lint operations, schema design, Obsidian integration | User wants to build a research wiki, threat intelligence base, competitive analysis tracker, or any domain knowledge base that compounds over time |
+| `13_SECURITY.md` | Operational security for Claude Code and Cowork: credential hygiene, MCP server trust, permission controls and hooks, session data hygiene, supply chain awareness, prompt injection, file hygiene (.gitignore/.claudeignore), autonomous task safety | User asks about securing their Claude setup, credential exposure, MCP server risks, setting up hooks, or what to exclude from git/context |
 
 ---
 
