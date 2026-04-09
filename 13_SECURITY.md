@@ -38,6 +38,33 @@ Credentials entered into or stored near Claude can leak in ways that aren't obvi
   grep -E "(PASSWORD|SECRET|API_KEY|TOKEN)\s*=" ~/.zsh_history ~/.bash_history 2>/dev/null
   ```
 
+### If You Think a Credential Was Exposed
+
+Act quickly. The order matters:
+
+1. **Revoke or rotate the credential immediately** — before doing anything else. Where to do this for common services:
+   - Google (Gmail/Calendar): [Google Account → Security → App passwords](https://myaccount.google.com/security)
+   - Microsoft (Outlook/Teams): [Azure AD app registrations](https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationsListBlade) or the service's API settings
+   - Jira/Confluence: Account Settings → API tokens
+   - GitHub: Settings → Developer settings → Personal access tokens
+   - Generic: find the "revoke token" or "reset API key" option in the service's security settings
+
+2. **Search your session transcripts** for where the credential appeared:
+   ```bash
+   grep -rl "FRAGMENT-OF-YOUR-CREDENTIAL" ~/.claude/sessions/
+   ```
+   Replace `FRAGMENT-OF-YOUR-CREDENTIAL` with the first 6–8 characters of the exposed value (enough to find it, not the whole secret).
+
+3. **Check git history** if the credential might have been committed:
+   ```bash
+   git log -S "FRAGMENT-OF-YOUR-CREDENTIAL" --all
+   ```
+   If found: revoke immediately (already done), then consider the repo compromised — do not just delete the commit.
+
+4. **Update to a keychain-based reference** so the replacement credential is never stored in a text file (see the `op read` pattern above).
+
+5. **Check MCP server logs** for activity under the leaked credential. If the credential had write or send access, look for actions you didn't take.
+
 ---
 
 ## 2. MCP Server Trust
@@ -82,7 +109,31 @@ A PreToolUse hook intercepts every Bash command Claude tries to run and can bloc
 - Credential exfiltration via network tools (`curl`/`wget` combined with secret-pattern arguments)
 - Dangerous flags (`--dangerously-skip-permissions`, force push)
 
-The `security-review` skill (Phase 2) installs and wires a PreToolUse hook for you.
+The `security-review` skill (Phase 2) installs and wires a PreToolUse hook for you. **You don't need to write one by hand** — use the skill instead.
+
+If you do want to understand the syntax, a PreToolUse hook is configured in `~/.claude/settings.json`:
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"$CLAUDE_TOOL_INPUT\" | python3 ~/.claude/hooks/precheck.py"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+- `matcher`: which tool to intercept (`"Bash"` catches all shell commands)
+- `command`: the script to run; receives the tool input as `$CLAUDE_TOOL_INPUT`
+- The script should exit with code `0` to allow the action, or non-zero to block it
 
 **Important limitation:** Hooks catch patterns, not intent. They are a speed-bump against accidents and simple prompt injections, not a security boundary. Good task design (narrow scope, explicit confirmation for consequential actions) is the primary defence.
 
@@ -225,6 +276,26 @@ Scheduled and autonomous tasks run without a human reviewing each step. This amp
 - [ ] Does it confirm before taking consequential actions (send, delete, post)?
 - [ ] Does it log what it did each run?
 - [ ] Is there a rollback path if it makes a mistake?
+
+---
+
+## Red Flags: Signs Something May Be Wrong
+
+These are warning signs that your setup may have been manipulated, compromised, or is behaving unexpectedly. If you notice any of these, run a security audit immediately.
+
+- [ ] Task output contains text, instructions, or links that are not in your `TASK.md`
+- [ ] An MCP action occurred that you didn't expect (an email was sent, a file was deleted, a calendar event was created)
+- [ ] `IMPROVEMENTS.md` contains a proposal to disable a safety rule, remove a confirmation step, or expand MCP access
+- [ ] Claude declines to show you a file it should normally be able to read
+- [ ] A credential prompt appeared unexpectedly during a task run
+- [ ] Task output includes instructions addressed to Claude that look like they came from external data (emails, files, calendar events)
+
+**What to do:**
+1. Stop the task from running again until you've investigated
+2. Run `/security-review` or ask: "Read 13_SECURITY.md and audit my setup for the issues it covers"
+3. Check `~/.claude/sessions/` for the affected session — look for unusual commands or outputs
+4. Run `git diff HEAD~1 HEAD` on your task files to see what changed recently (if using git)
+5. Check `LAST_RUN.md` for the run where the problem appeared
 
 ---
 
