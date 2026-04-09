@@ -134,6 +134,24 @@ Covers: Python scripts as data feeders, JSON as a personal database, browser Jav
 
 ---
 
+### [12 — LLM Wiki](./12_LLM_WIKI.md)
+*The LLM wiki pattern: building a persistent, compounding knowledge base.*
+
+Covers: the difference between RAG and a wiki, the three-layer architecture (sources, wiki, schema), the three operations (ingest, query, lint), index and log conventions, writing a schema, practical applications (threat intel, research, competitive analysis), tooling tips (Obsidian, Marp, Dataview, qmd), and git integration.
+
+**Use this when:** you want to build a domain knowledge base that compounds over time — where adding a new source enriches every related page, and answers are already synthesised before you ask the question.
+
+---
+
+### [13 — Security](./13_SECURITY.md)
+*Operational security for using Claude Code and Cowork safely.*
+
+Covers: credential hygiene (where secrets belong and where they must not go), MCP server trust evaluation, permission controls and PreToolUse execution guard hooks, session data hygiene (transcripts, shell snapshots), supply chain awareness when Claude installs packages, prompt injection risks in autonomous tasks, file hygiene (`.gitignore` and `.claudeignore` for sensitive materials and sharing), and autonomous task safety principles.
+
+**Use this when:** you're setting up a new Claude environment and want it secured from the start, auditing an existing setup, adding a new MCP server, or designing an autonomous task that handles sensitive data or takes consequential actions.
+
+---
+
 ## Templates: Copy-Paste Starting Points
 
 Four ready-to-copy folder structures are included in the `templates/` folder. Use them when you want to start a new project or task without building from scratch.
@@ -162,7 +180,7 @@ A project workspace for managing a product migration initiative. Includes a `CLA
 
 ## Skills Included in This Project
 
-Three installable skills are bundled with this project. Each skill is self-contained — install only the ones you need.
+Four installable skills are bundled with this project. Each skill is self-contained — install only the ones you need.
 
 ### Installing in Claude Code
 
@@ -189,7 +207,7 @@ Claude.ai reads the `name:` and `description:` frontmatter in `SKILL.md` to name
 
 ### ai-assistant-setup
 
-An interactive setup coach. All 12 guides are bundled into this skill. Instead of reading guides and acting on them manually, install this skill once and describe what you want — Claude reads the relevant guides and does the work.
+An interactive setup coach. All 13 guides are bundled into this skill. Instead of reading guides and acting on them manually, install this skill once and describe what you want — Claude reads the relevant guides and does the work.
 
 **Install:** Copy `ai-assistant-setup/` to `~/.claude/skills/` (Claude Code), or upload `ai-assistant-setup.skill` to Claude.ai Personal Skills.
 
@@ -244,6 +262,27 @@ Audits a Cowork task or project for token efficiency, run speed, and structural 
 > "Review my task and tell me what can be improved."
 
 > "This task is too long — help me split it."
+
+---
+
+### security-review
+
+A structured, phased security audit of the Claude Code environment and a target project. Covers credential exposure, MCP server risk, permission controls and execution guard hooks, session data hygiene, supply chain scanning, and malware detection. Read-only assessment phases run automatically; mutating phases (hook installation, tool installs) pause for approval before making any changes.
+
+**Install:** Copy `security-review/` to `~/.claude/skills/` (Claude Code).
+
+**Use when:**
+- Auditing a Claude Code setup for security issues
+- Setting up PreToolUse execution guard hooks for the first time
+- Adding a new MCP server and wanting a trust assessment
+- Scanning a project for accidentally committed secrets
+
+**Example prompts:**
+> "Review my Claude Code setup for security issues."
+
+> "Set up security hooks for my Claude environment."
+
+> "Audit this project for exposed credentials."
 
 ---
 
