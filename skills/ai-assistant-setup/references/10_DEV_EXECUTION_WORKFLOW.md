@@ -19,21 +19,32 @@ Keeping the roles separate prevents a class of errors where mid-session edits in
 
 ## Architecture: Files That Work in Both Tools
 
-The setup that works well for both tools has one structural rule: **the definition files and the state files live in the same place**, and both tools read from and write to that place.
+The setup that works well for both tools has two structural rules: **definition files and state files for a task live in the same place**, and **Claude's config folder is separate from your project folders**.
+
+`~/.claude/` is Claude's config folder — like `.vscode/` or `.git/`. Two locations inside it are for your content; everything else is internal:
 
 ```
-.claude/
-├── CLAUDE.md                    # Read by both — definitions only
-├── settings.json                # Tool-specific — not shared
+~/.claude/
+├── CLAUDE.md                    # Your instructions — read every session
+├── settings.json                # Internal — do not edit
 ├── skills/
 │   └── gmail-task-manager/
 │       └── SKILL.md             # Definition — edited in Claude Code, used in Cowork
-└── tasks/
-    └── email-digest/
-        ├── TASK.md              # Definition — edited in Claude Code
-        ├── IMPROVEMENTS.md      # State — written by Cowork, read and edited in Claude Code
-        ├── LAST_RUN.md          # State — written by Cowork, read in Claude Code
-        └── RUN_LOG.md           # State — written by Cowork
+├── projects/                    # Internal — do not edit
+└── sessions/                    # Internal — do not edit
+```
+
+Tasks, profiles, and knowledge live in a project folder of your choosing — not inside `~/.claude/`:
+
+```
+MyAssistant/                     # Any folder you choose
+├── email-digest/
+│   ├── TASK.md                  # Definition — edited in Claude Code
+│   ├── IMPROVEMENTS.md          # State — written by Cowork, read and edited in Claude Code
+│   ├── LAST_RUN.md              # State — written by Cowork, read in Claude Code
+│   └── RUN_LOG.md               # State — written by Cowork
+├── Profile/                     # Optional — cross-session context
+└── Knowledge/                   # Optional — domain knowledge
 
 .auto-memory/
 ├── MEMORY.md                    # State — read by Cowork, updated by Cowork

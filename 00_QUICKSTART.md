@@ -14,11 +14,17 @@ You need two things:
 
 **Where do the files live?**
 
-Claude reads files from a special folder on your computer:
+Claude has a config folder on your computer — similar to `.vscode/` or `.git/`:
 - Windows: `C:\Users\[your username]\.claude\`
 - Mac/Linux: `~/.claude/`
 
-If this folder doesn't exist yet, create it. Everything you build goes inside it.
+This folder may already exist if you have used Claude before. Two locations inside it are designed for your content:
+- **`~/.claude/CLAUDE.md`** — your always-loaded instruction file (Step 1)
+- **`~/.claude/skills/`** — your reusable skill definitions (Step 2)
+
+Everything else in `~/.claude/` (like `settings.json`, `sessions/`, `projects/`) is internal to Claude — do not edit or add files there.
+
+For larger setups — scheduled tasks, project knowledge, profile files — use a regular folder of your choosing (e.g. `Documents/AI-Assistant/`). The guides and templates cover this when you are ready.
 
 ---
 
@@ -26,7 +32,7 @@ If this folder doesn't exist yet, create it. Everything you build goes inside it
 
 `CLAUDE.md` is the instruction file Claude loads at the start of every session. It tells Claude who you are and how you want it to behave.
 
-**Create this file at:** `.claude/CLAUDE.md`
+**Create this file at:** `~/.claude/CLAUDE.md`
 
 Here is a starting template — replace the placeholders with your own details:
 
@@ -60,10 +66,10 @@ A skill is a reusable instruction set for a specific task. Once it exists, you t
 
 **First, create the folder:**
 ```
-.claude/skills/plan-my-day/
+~/.claude/skills/plan-my-day/
 ```
 
-**Then create the skill file at:** `.claude/skills/plan-my-day/SKILL.md`
+**Then create the skill file at:** `~/.claude/skills/plan-my-day/SKILL.md`
 
 ```markdown
 ---
@@ -131,49 +137,10 @@ Open a **new Cowork conversation** and try this:
 Claude should recognise the trigger phrases and apply your skill automatically. You will see the structured output format from your SKILL.md.
 
 **If it doesn't work:**
-- Check that the skill file is at exactly `.claude/skills/plan-my-day/SKILL.md`
+- Check that the skill file is at exactly `~/.claude/skills/plan-my-day/SKILL.md`
 - Make sure the file was saved as plain text (not `.md.txt` or a Word document)
 - Start a fresh Cowork conversation — skill changes only take effect in new sessions
 - See [Guide 14 — Troubleshooting](./14_TROUBLESHOOTING.md) for more help
-
----
-
-## Step 4 (Optional): Add a Scheduled Task
-
-A scheduled task runs automatically — without you asking — on a schedule you define. This is optional for your first setup; you can add it later.
-
-Here is the minimal structure for a weekly planning task. This example runs every Monday morning and asks you to review the week ahead:
-
-**Create the folder:**
-```
-.claude/tasks/weekly-planner/
-```
-
-**Create the task file at:** `.claude/tasks/weekly-planner/TASK.md`
-
-```markdown
-# Weekly Planner Task
-
-## Purpose
-Produce a Monday morning summary to start the week focused.
-Run this task every Monday before 9am.
-
-## Steps
-1. Check today's date and calculate the current week number
-2. Ask the user: "What are your top 3 priorities for this week?"
-3. Produce a weekly plan in the same format as the plan-my-day skill,
-   but structured by day (Mon–Fri) rather than time blocks
-
-## Output
-Write the weekly plan as a clear message the user can read and act on.
-Save a one-line summary to LAST_RUN.md with the date and top priority.
-
-## Run log
-- Read LAST_RUN.md at the start of each run to see when it last ran
-- Write LAST_RUN.md at the end of each run with the date and a one-line summary
-```
-
-**To schedule it:** Open Cowork, go to your scheduled tasks panel, and create a new task pointing at this file. Set it to run every Monday at your preferred time.
 
 ---
 
@@ -186,7 +153,8 @@ You now have the foundation. Here is the natural next step for each direction:
 | Make the assistant smarter about who you are | [Guide 03 — Memory & Profile](./03_MEMORY_AND_PROFILE.md) |
 | Build skills for email, calendar, and Teams | [Guide 08 — MCP Servers](./08_MCP_SERVERS.md) |
 | Create more skills (better descriptions, edge cases) | [Guide 02 — Skills](./02_SKILLS.md) |
-| Make the assistant learn from each task run | [Guide 05 — Task Self-Improvement](./05_TASK_LEARNING_GUIDE.md) |
+| Run something automatically on a schedule | [Guide 04 — Task Efficiency](./04_TASK_EFFICIENCY_GUIDE.md) + [Task Template](./templates/TASK_TEMPLATE/README.md) |
+| Make a scheduled task learn from each run | [Guide 05 — Task Self-Improvement](./05_TASK_LEARNING_GUIDE.md) |
 | See all best practices in one place | [Guide 07 — Best Practices](./07_BEST_PRACTICES.md) |
 
 ---
@@ -194,7 +162,7 @@ You now have the foundation. Here is the natural next step for each direction:
 ## Troubleshooting
 
 **"Claude isn't applying my CLAUDE.md"**
-Make sure the file is at `.claude/CLAUDE.md` (not inside a project subfolder). Start a fresh Cowork conversation — CLAUDE.md changes take effect in new sessions only.
+Make sure the file is at `~/.claude/CLAUDE.md` (not inside a project subfolder). Start a fresh Cowork conversation — CLAUDE.md changes take effect in new sessions only.
 
 **"The skill isn't triggering"**
 The description field in the skill frontmatter controls when it triggers. Make sure it includes the phrases you actually use. If you say "can you plan my day?" and the description only mentions "organise tasks", Claude may not match them. Edit the description to include your natural phrasing.
