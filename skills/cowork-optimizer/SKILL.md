@@ -8,7 +8,7 @@ description: >
 
 Analyze a Cowork task or project definition, identify optimization opportunities, present a prioritized plan, get user sign-off, then implement agreed changes.
 
-> This skill applies the patterns from [04_TASK_EFFICIENCY_GUIDE.md](../04_TASK_EFFICIENCY_GUIDE.md) and [05_TASK_LEARNING_GUIDE.md](../05_TASK_LEARNING_GUIDE.md). Read those guides if you want to understand the reasoning behind any recommendation.
+> This skill applies the patterns from [06_TASK_EFFICIENCY_GUIDE.md](../06_TASK_EFFICIENCY_GUIDE.md) and [07_TASK_LEARNING_GUIDE.md](../07_TASK_LEARNING_GUIDE.md). Read those guides if you want to understand the reasoning behind any recommendation.
 
 ## Rules
 
@@ -132,7 +132,7 @@ After implementation:
 ## Edge Cases
 
 - If the task file is empty or contains only a title: say "This task has no content to audit. Would you like me to help you write it from scratch instead?" and offer to run `tasks/setup-scheduled-task.md`.
-- If the task is under 50 lines and already follows Guide 04 patterns: say "This task is already well-optimized. No changes recommended." Do not invent marginal findings.
+- If the task is under 50 lines and already follows Guide 06 patterns: say "This task is already well-optimized. No changes recommended." Do not invent marginal findings.
 - If the user provides a Cowork project folder (not a single TASK.md): read all task files in the folder and audit each independently, presenting findings grouped by file.
 - If IMPROVEMENTS.md contains stale proposals (>10 pending, none applied): flag this as a finding — the improvement system itself needs maintenance.
 - If the task uses MCP tools that are not configured in the current environment: note this in findings but do not treat it as an optimization issue — it's a setup problem, not an efficiency problem.

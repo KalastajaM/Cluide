@@ -2,10 +2,10 @@
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
 > `Claude, run tasks/setup-self-improving-task.md` (then specify which task to upgrade)
-> **Source guides:** `05_TASK_LEARNING_GUIDE.md`, `06_SELFIMPROVE_TEMPLATE.md`
+> **Source guides:** `07_TASK_LEARNING_GUIDE.md`, `08_SELFIMPROVE_TEMPLATE.md`
 
 ## Purpose
-Add the self-improvement scaffolding from Guide 05 to an existing task: an `IMPROVEMENTS.md` file, a self-improvement step wired into the run procedure, and optionally a `LESSONS.md` for reasoning history. After setup, the task will track its own evolution and get measurably better with each run.
+Add the self-improvement scaffolding from Guide 07 to an existing task: an `IMPROVEMENTS.md` file, a self-improvement step wired into the run procedure, and optionally a `LESSONS.md` for reasoning history. After setup, the task will track its own evolution and get measurably better with each run.
 
 **Prerequisites:** The target task should already have a working `TASK.md`. Run `tasks/audit-task-efficiency.md` first if the task file is large — a lean task is easier to self-improve.
 

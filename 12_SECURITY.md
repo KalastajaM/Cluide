@@ -4,11 +4,11 @@
 
 > Operational security for using Claude Code and Cowork as tools. Covers credential hygiene, MCP server trust, permission controls, session data, supply chain risks, prompt injection, and file hygiene. Does not cover secure coding or application security practices.
 
-> **Companion guides:** [Guide 08](./08_MCP_SERVERS.md) covers MCP server setup — read it alongside this guide when configuring servers. [Guide 09](./09_GIT_INTEGRATION.md) covers `.gitignore` and `.claudeignore` in full.
+> **Companion guides:** [Guide 05](./05_MCP_SERVERS.md) covers MCP server setup — read it alongside this guide when configuring servers. [Guide 11](./11_GIT_INTEGRATION.md) covers `.gitignore` and `.claudeignore` in full.
 
 > **Giving this guide to Claude:**
-> "Read 13_SECURITY.md and audit my Claude setup for the issues it covers. Start with credential exposure."
-> "Read 13_SECURITY.md, then run /security-review on my setup."
+> "Read 12_SECURITY.md and audit my Claude setup for the issues it covers. Start with credential exposure."
+> "Read 12_SECURITY.md, then run /security-review on my setup."
 >
 > **Faster alternative:** `tasks/setup-security.md` runs the full audit and applies fixes end-to-end without reading the guide first.
 
@@ -261,7 +261,7 @@ When exporting or sharing a project setup:
 2. Use the `template-exporter` skill to strip identifiers from Claude artifacts (skills, tasks, system prompts)
 3. The `.gitignore` and `.claudeignore` files themselves are safe to share — they contain patterns, not data
 
-See [Guide 09](./09_GIT_INTEGRATION.md) for the full `.gitignore`/`.claudeignore` setup pattern including pre-run snapshot commits and the `.claudeignore` specification.
+See [Guide 11](./11_GIT_INTEGRATION.md) for the full `.gitignore`/`.claudeignore` setup pattern including pre-run snapshot commits and the `.claudeignore` specification.
 
 ---
 
@@ -296,7 +296,7 @@ These are warning signs that your setup may have been manipulated, compromised, 
 
 **What to do:**
 1. Stop the task from running again until you've investigated
-2. Run `/security-review` or ask: "Read 13_SECURITY.md and audit my setup for the issues it covers"
+2. Run `/security-review` or ask: "Read 12_SECURITY.md and audit my setup for the issues it covers"
 3. Check `~/.claude/sessions/` for the affected session — look for unusual commands or outputs
 4. Run `git diff HEAD~1 HEAD` on your task files to see what changed recently (if using git)
 5. Check `LAST_RUN.md` for the run where the problem appeared

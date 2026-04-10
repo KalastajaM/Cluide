@@ -147,7 +147,7 @@ Find the full server catalogue at [modelcontextprotocol.io/servers](https://mode
 
 ## Naming Tools in Skills
 
-When writing a skill (see [Guide 02](./02_SKILLS.md)), name the exact MCP tool in the workflow steps. Do not just say "check the calendar" — say `gcal_list_events`. This prevents Claude from improvising a different approach each session.
+When writing a skill (see [Guide 03](./03_SKILLS.md)), name the exact MCP tool in the workflow steps. Do not just say "check the calendar" — say `gcal_list_events`. This prevents Claude from improvising a different approach each session.
 
 **Weak (undertriggers consistent behaviour):**
 ```markdown
@@ -190,7 +190,7 @@ MCP server credentials (API keys, OAuth tokens) live in `settings.json` or in en
 > *"What MCP servers do I have configured? List the tools each one exposes and flag any that seem misconfigured."*
 
 **To set up a new server:**
-> *"Read 08_MCP_SERVERS.md and help me set up the filesystem MCP server so Claude can read my Documents folder."*
+> *"Read 05_MCP_SERVERS.md and help me set up the filesystem MCP server so Claude can read my Documents folder."*
 
 **To check what's needed for a skill:**
-> *"I want to build a skill that checks my Gmail for action items. Read 08_MCP_SERVERS.md and tell me what MCP server I need and what tools it uses."*
+> *"I want to build a skill that checks my Gmail for action items. Read 05_MCP_SERVERS.md and tell me what MCP server I need and what tools it uses."*

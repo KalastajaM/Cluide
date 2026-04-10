@@ -44,13 +44,13 @@ Not sure where to start? Use this table:
 | You want to... | Build | Guide |
 |---|---|---|
 | Claude always responds a certain way | CLAUDE.md | [01](./01_CLAUDE_MD.md) |
-| Do the same task when you ask for it | Skill | [02](./02_SKILLS.md) |
-| Run something automatically on a schedule | Scheduled Task | `tasks/setup-scheduled-task.md` → then [04](./04_TASK_EFFICIENCY_GUIDE.md) |
-| Claude remembers things across sessions | Memory | [03](./03_MEMORY_AND_PROFILE.md) |
-| A task that gets smarter over time | Task + IMPROVEMENTS.md | [05](./05_TASK_LEARNING_GUIDE.md) |
+| Do the same task when you ask for it | Skill | [03](./03_SKILLS.md) |
+| Run something automatically on a schedule | Scheduled Task | `tasks/setup-scheduled-task.md` → then [06](./06_TASK_EFFICIENCY_GUIDE.md) |
+| Claude remembers things across sessions | Memory | [04](./04_MEMORY_AND_PROFILE.md) |
+| A task that gets smarter over time | Task + IMPROVEMENTS.md | [07](./07_TASK_LEARNING_GUIDE.md) |
 | Answer a one-off question | Chat | — |
-| Coordinate multiple tasks that share data | Orchestrator | [16](./16_MULTI_TASK_ORCHESTRATION.md) |
-| Track and control task costs | Run metrics | [17](./17_COST_PERFORMANCE.md) |
+| Coordinate multiple tasks that share data | Orchestrator | [09](./09_MULTI_TASK_ORCHESTRATION.md) |
+| Track and control task costs | Run metrics | [10](./10_COST_PERFORMANCE.md) |
 
 ---
 
@@ -76,150 +76,7 @@ Covers: what to put in CLAUDE.md, how to structure it, what not to include, and 
 
 ---
 
-### [02 — Skills](./02_SKILLS.md)
-`[All users]` · `~15 min`
-
-*How to design skills for recurring tasks.*
-
-Covers: the anatomy of a SKILL.md file, writing descriptions that trigger reliably, structuring workflow steps, output formats, and edge cases. Includes real examples from a working setup.
-
-**Use this when:** there's a task you do repeatedly (checking email for actions, drafting messages in a second language, building a shopping list) and you want Claude to handle it consistently every time.
-
----
-
-### [03 — Memory & Profile](./03_MEMORY_AND_PROFILE.md)
-`[All users]` · `~15 min`
-
-*Three persistence layers: native memory, auto-memory, and profile files.*
-
-Covers: native Claude memory (built-in, zero setup) vs. the `.auto-memory/` folder system (structured, project-specific), profile files for complex recurring agents, what to store, how to keep files lean, and the hypothesis system.
-
-**Use this when:** you want Claude to remember things across sessions — your preferences, corrections, ongoing projects, and key contacts.
-
----
-
-### [04 — Task Efficiency](./04_TASK_EFFICIENCY_GUIDE.md)
-`[Scheduled tasks]` · `~15 min`
-
-*How to design and optimize scheduled tasks for minimal token consumption.*
-
-Covers: splitting instruction files, scripting fixed-format output, targeted file edits, two-pass triage for external data, hard size limits, run deduplication, and the two scheduling mechanisms (remote/scheduled triggers vs. SessionStart hooks).
-
-**Use this when:** you have a scheduled task running regularly and want to audit it for efficiency — or want to set one up correctly from the start.
-
----
-
-### [05 — Task Self-Improvement](./05_TASK_LEARNING_GUIDE.md)
-`[Scheduled tasks]` · `~20 min`
-
-*A framework for building tasks that get better over time.*
-
-Covers: what to learn and how to store it, detecting feedback signals, the apply-vs-propose decision, the hypothesis lifecycle, the refactoring system, and the improvements log.
-
-**Use this when:** you have a scheduled task up and running and want it to evolve — fixing its own mistakes, codifying patterns, and proposing improvements rather than repeating errors.
-
----
-
-### [06 — Self-Improvement Template](./06_SELFIMPROVE_TEMPLATE.md)
-`[Scheduled tasks]` · `~5 min`
-
-*How to install and use the IMPROVEMENTS.md template.*
-
-Explains the structure of the template, walks through installation (copy → fill in task name → wire into TASK.md), and documents how to respond to proposals. The template itself lives at [`templates/TASK_TEMPLATE/IMPROVEMENTS.md`](./templates/TASK_TEMPLATE/IMPROVEMENTS.md).
-
-**Use this when:** you're creating a new scheduled task and want the self-improvement system set up from run 1.
-
----
-
-### [07 — Best Practices](./07_BEST_PRACTICES.md)
-`[All users]` · `~10 min`
-
-*Lessons from real use — a shareable summary.*
-
-Covers: giving Claude good inputs, working effectively session-to-session, building a setup that compounds over time, and knowing when not to use Claude. Includes a 15-point short version for quick reference.
-
-**Use this when:** you want a quick overview of what actually matters, or you want something to share with someone just getting started.
-
----
-
-### [08 — MCP Servers](./08_MCP_SERVERS.md)
-`[All users]` · `~15 min`
-
-*How Claude connects to external tools — Gmail, Calendar, GitHub, and more.*
-
-Covers: what MCP servers are, global vs. project-level configuration, the most useful servers for personal assistants (including Claude in Chrome and Computer Use), how to reference tool names in skills, and credential security.
-
-**Use this when:** you're setting up a skill that uses external tools (email, calendar, files, browser, desktop) and need to understand where those tools come from — or when a skill isn't finding the tools it needs.
-
----
-
-### [09 — Git Integration](./09_GIT_INTEGRATION.md)
-`[Power user]` · `~20 min`
-
-*Version control for your assistant's state — pre-run snapshots, rollback, and history.*
-
-Covers: what to track in git, what belongs in `.gitignore` vs `.claudeignore`, automating file hygiene through `CLAUDE.md`, the pre-run commit pattern (snapshot before every task run), post-run commits, automating commits via hooks, useful git commands for assistant files, and meaningful commit message conventions.
-
-**Use this when:** you have a scheduled task running regularly and want the ability to roll back bad runs, see what changed between runs, or track how your assistant's knowledge and instructions have evolved over time.
-
----
-
-### [10 — Development and Execution Workflow](./10_DEV_EXECUTION_WORKFLOW.md)
-`[Power user]` · `~15 min`
-
-*Using Claude Code and Cowork as two distinct tools with two distinct roles — and how to work effectively with Cowork alone.*
-
-Covers: the development/execution split (Claude Code for building and maintaining, Cowork for running), file architecture that works cleanly in both tools, a Cowork-only workflow for users without Claude Code, Plan Mode for reviewing changes before executing, subagents for parallel exploration and planning, the workflow for adding or changing something, debugging broken runs, reviewing and applying self-improvement proposals, and a new-features checklist.
-
-**Use this when:** you want a clear workflow for how to build, maintain, and iterate on your setup — whether you use Claude Code or work entirely within Cowork.
-
----
-
-### [11 — Personal Data Layer](./11_PERSONAL_DATA_LAYER.md)
-`[Power user]` · `~20 min`
-
-*Five patterns for getting personal data into Claude's hands.*
-
-Covers: Python scripts as data feeders, JSON as a personal database, browser JavaScript extraction for apps with no API, Claude Vision for screenshot ingestion, and multi-step instruction files for complex workflows.
-
-**Use this when:** you want Claude to reason about personal data (investments, spending, bank transactions) but the data lives in apps that have no API, in raw files too large to paste in directly, or in formats Claude can't parse without help.
-
----
-
-### [12 — LLM Wiki](./12_LLM_WIKI.md)
-`[Power user]` · `~20 min`
-
-*The LLM wiki pattern: building a persistent, compounding knowledge base.*
-
-Covers: the difference between RAG and a wiki, the three-layer architecture (sources, wiki, schema), the three operations (ingest, query, lint), index and log conventions, writing a schema, practical applications (threat intel, research, competitive analysis), tooling tips (Obsidian, Marp, Dataview, qmd), and git integration.
-
-**Use this when:** you want to build a domain knowledge base that compounds over time — where adding a new source enriches every related page, and answers are already synthesised before you ask the question.
-
----
-
-### [13 — Security](./13_SECURITY.md)
-`[All users]` · `~15 min`
-
-*Operational security for using Claude Code and Cowork safely.*
-
-Covers: credential hygiene (where secrets belong and where they must not go), MCP server trust evaluation, permission controls and PreToolUse execution guard hooks, session data hygiene (transcripts, shell snapshots), supply chain awareness when Claude installs packages, prompt injection risks in autonomous tasks, file hygiene (`.gitignore` and `.claudeignore` for sensitive materials and sharing), and autonomous task safety principles.
-
-**Use this when:** you're setting up a new Claude environment and want it secured from the start, auditing an existing setup, adding a new MCP server, or designing an autonomous task that handles sensitive data or takes consequential actions.
-
----
-
-### [14 — Troubleshooting](./14_TROUBLESHOOTING.md)
-`[All users]` · `~10 min (reference)`
-
-*When things don't work — problem by problem.*
-
-Covers: skill not triggering, CLAUDE.md being ignored, memory not persisting, MCP tools failing, output format drifting, slow tasks, confusing improvement proposals, and recovering from broken changes.
-
-**Use this when:** something isn't working and you want a structured guide to diagnosing and fixing it.
-
----
-
-### [15 — Prompting Basics](./15_PROMPTING_BASICS.md)
+### [02 — Prompting Basics](./02_PROMPTING_BASICS.md)
 `[All users]` · `~15 min`
 
 *Writing instructions that produce consistent, high-quality output.*
@@ -230,7 +87,73 @@ Covers: the anatomy of a good instruction (context + task + constraints + output
 
 ---
 
-### [16 — Multi-Task Orchestration](./16_MULTI_TASK_ORCHESTRATION.md)
+### [03 — Skills](./03_SKILLS.md)
+`[All users]` · `~15 min`
+
+*How to design skills for recurring tasks.*
+
+Covers: the anatomy of a SKILL.md file, writing descriptions that trigger reliably, structuring workflow steps, output formats, and edge cases. Includes real examples from a working setup.
+
+**Use this when:** there's a task you do repeatedly (checking email for actions, drafting messages in a second language, building a shopping list) and you want Claude to handle it consistently every time.
+
+---
+
+### [04 — Memory & Profile](./04_MEMORY_AND_PROFILE.md)
+`[All users]` · `~15 min`
+
+*Three persistence layers: native memory, auto-memory, and profile files.*
+
+Covers: native Claude memory (built-in, zero setup) vs. the `.auto-memory/` folder system (structured, project-specific), profile files for complex recurring agents, what to store, how to keep files lean, and the hypothesis system.
+
+**Use this when:** you want Claude to remember things across sessions — your preferences, corrections, ongoing projects, and key contacts.
+
+---
+
+### [05 — MCP Servers](./05_MCP_SERVERS.md)
+`[All users]` · `~15 min`
+
+*How Claude connects to external tools — Gmail, Calendar, GitHub, and more.*
+
+Covers: what MCP servers are, global vs. project-level configuration, the most useful servers for personal assistants (including Claude in Chrome and Computer Use), how to reference tool names in skills, and credential security.
+
+**Use this when:** you're setting up a skill that uses external tools (email, calendar, files, browser, desktop) and need to understand where those tools come from — or when a skill isn't finding the tools it needs.
+
+---
+
+### [06 — Task Efficiency](./06_TASK_EFFICIENCY_GUIDE.md)
+`[Scheduled tasks]` · `~15 min`
+
+*How to design and optimize scheduled tasks for minimal token consumption.*
+
+Covers: splitting instruction files, scripting fixed-format output, targeted file edits, two-pass triage for external data, hard size limits, run deduplication, and the two scheduling mechanisms (remote/scheduled triggers vs. SessionStart hooks).
+
+**Use this when:** you have a scheduled task running regularly and want to audit it for efficiency — or want to set one up correctly from the start.
+
+---
+
+### [07 — Task Self-Improvement](./07_TASK_LEARNING_GUIDE.md)
+`[Scheduled tasks]` · `~20 min`
+
+*A framework for building tasks that get better over time.*
+
+Covers: what to learn and how to store it, detecting feedback signals, the apply-vs-propose decision, the hypothesis lifecycle, the refactoring system, and the improvements log.
+
+**Use this when:** you have a scheduled task up and running and want it to evolve — fixing its own mistakes, codifying patterns, and proposing improvements rather than repeating errors.
+
+---
+
+### [08 — Self-Improvement Template](./08_SELFIMPROVE_TEMPLATE.md)
+`[Scheduled tasks]` · `~5 min`
+
+*How to install and use the IMPROVEMENTS.md template.*
+
+Explains the structure of the template, walks through installation (copy → fill in task name → wire into TASK.md), and documents how to respond to proposals. The template itself lives at [`templates/TASK_TEMPLATE/IMPROVEMENTS.md`](./templates/TASK_TEMPLATE/IMPROVEMENTS.md).
+
+**Use this when:** you're creating a new scheduled task and want the self-improvement system set up from run 1.
+
+---
+
+### [09 — Multi-Task Orchestration](./09_MULTI_TASK_ORCHESTRATION.md)
 `[Power user]` · `~20 min`
 
 *Coordinating multiple tasks: dependencies, shared state, and data passing.*
@@ -241,7 +164,7 @@ Covers: sequential chains, parallel fan-out, dependency graphs, shared state con
 
 ---
 
-### [17 — Cost & Performance Monitoring](./17_COST_PERFORMANCE.md)
+### [10 — Cost & Performance Monitoring](./10_COST_PERFORMANCE.md)
 `[Scheduled tasks]` · `~15 min`
 
 *Tracking token usage, budgeting, and finding expensive operations.*
@@ -249,6 +172,83 @@ Covers: sequential chains, parallel fan-out, dependency graphs, shared state con
 Covers: per-run metrics, budget checks, identifying high-cost steps, the token heat map technique, alerting on cost spikes, and an optional dashboard script.
 
 **Use this when:** you have scheduled tasks running regularly and want visibility into what they cost — or when a task has become expensive and you need to find out why.
+
+---
+
+### [11 — Git Integration](./11_GIT_INTEGRATION.md)
+`[Power user]` · `~20 min`
+
+*Version control for your assistant's state — pre-run snapshots, rollback, and history.*
+
+Covers: what to track in git, what belongs in `.gitignore` vs `.claudeignore`, automating file hygiene through `CLAUDE.md`, the pre-run commit pattern (snapshot before every task run), post-run commits, automating commits via hooks, useful git commands for assistant files, and meaningful commit message conventions.
+
+**Use this when:** you have a scheduled task running regularly and want the ability to roll back bad runs, see what changed between runs, or track how your assistant's knowledge and instructions have evolved over time.
+
+---
+
+### [12 — Security](./12_SECURITY.md)
+`[All users]` · `~15 min`
+
+*Operational security for using Claude Code and Cowork safely.*
+
+Covers: credential hygiene (where secrets belong and where they must not go), MCP server trust evaluation, permission controls and PreToolUse execution guard hooks, session data hygiene (transcripts, shell snapshots), supply chain awareness when Claude installs packages, prompt injection risks in autonomous tasks, file hygiene (`.gitignore` and `.claudeignore` for sensitive materials and sharing), and autonomous task safety principles.
+
+**Use this when:** you're setting up a new Claude environment and want it secured from the start, auditing an existing setup, adding a new MCP server, or designing an autonomous task that handles sensitive data or takes consequential actions.
+
+---
+
+### [13 — Development and Execution Workflow](./13_DEV_EXECUTION_WORKFLOW.md)
+`[Power user]` · `~15 min`
+
+*Using Claude Code and Cowork as two distinct tools with two distinct roles — and how to work effectively with Cowork alone.*
+
+Covers: the development/execution split (Claude Code for building and maintaining, Cowork for running), file architecture that works cleanly in both tools, a Cowork-only workflow for users without Claude Code, Plan Mode for reviewing changes before executing, subagents for parallel exploration and planning, the workflow for adding or changing something, debugging broken runs, reviewing and applying self-improvement proposals, and a new-features checklist.
+
+**Use this when:** you want a clear workflow for how to build, maintain, and iterate on your setup — whether you use Claude Code or work entirely within Cowork.
+
+---
+
+### [14 — Personal Data Layer](./14_PERSONAL_DATA_LAYER.md)
+`[Power user]` · `~20 min`
+
+*Five patterns for getting personal data into Claude's hands.*
+
+Covers: Python scripts as data feeders, JSON as a personal database, browser JavaScript extraction for apps with no API, Claude Vision for screenshot ingestion, and multi-step instruction files for complex workflows.
+
+**Use this when:** you want Claude to reason about personal data (investments, spending, bank transactions) but the data lives in apps that have no API, in raw files too large to paste in directly, or in formats Claude can't parse without help.
+
+---
+
+### [15 — LLM Wiki](./15_LLM_WIKI.md)
+`[Power user]` · `~20 min`
+
+*The LLM wiki pattern: building a persistent, compounding knowledge base.*
+
+Covers: the difference between RAG and a wiki, the three-layer architecture (sources, wiki, schema), the three operations (ingest, query, lint), index and log conventions, writing a schema, practical applications (threat intel, research, competitive analysis), tooling tips (Obsidian, Marp, Dataview, qmd), and git integration.
+
+**Use this when:** you want to build a domain knowledge base that compounds over time — where adding a new source enriches every related page, and answers are already synthesised before you ask the question.
+
+---
+
+### [16 — Best Practices](./16_BEST_PRACTICES.md)
+`[All users]` · `~10 min`
+
+*Lessons from real use — a shareable summary.*
+
+Covers: giving Claude good inputs, working effectively session-to-session, building a setup that compounds over time, and knowing when not to use Claude. Includes a 15-point short version for quick reference.
+
+**Use this when:** you want a quick overview of what actually matters, or you want something to share with someone just getting started.
+
+---
+
+### [17 — Troubleshooting](./17_TROUBLESHOOTING.md)
+`[All users]` · `~10 min (reference)`
+
+*When things don't work — problem by problem.*
+
+Covers: skill not triggering, CLAUDE.md being ignored, memory not persisting, MCP tools failing, output format drifting, slow tasks, confusing improvement proposals, and recovering from broken changes.
+
+**Use this when:** something isn't working and you want a structured guide to diagnosing and fixing it.
 
 ---
 
@@ -262,7 +262,7 @@ A complete project folder with `CLAUDE.md`, `Profile/`, and `Knowledge/` pre-str
 **Use this when:** starting any new Claude project that needs cross-session memory, profile tracking, or topic knowledge files.
 
 ### [TASK_TEMPLATE/](./templates/TASK_TEMPLATE/README.md)
-A complete scheduled task folder with `TASK.md`, `IMPROVEMENTS.md`, `KNOWLEDGE_SUMMARY.md`, and `RUN_LOG.md` — all pre-structured and ready to fill in. Implements the patterns from Guide 04 (efficiency) and Guide 05 (self-improvement) out of the box.
+A complete scheduled task folder with `TASK.md`, `IMPROVEMENTS.md`, `KNOWLEDGE_SUMMARY.md`, and `RUN_LOG.md` — all pre-structured and ready to fill in. Implements the patterns from Guide 06 (efficiency) and Guide 07 (self-improvement) out of the box.
 
 **Use this when:** creating a new scheduled automated task. Copy the folder, rename it `[TaskName]-Task`, and fill in the domain-specific logic.
 
@@ -293,28 +293,28 @@ Tasks are designed to be portable: copy any task file to another project's `task
 
 | Task | What it does | Source guide |
 |------|-------------|-------------|
-| `tasks/onboard-project.md` | End-to-end project setup — orchestrates the tasks below in the right order; optionally starts from a template | 01, 03, 08, 09, 13 |
+| `tasks/onboard-project.md` | End-to-end project setup — orchestrates the tasks below in the right order; optionally starts from a template | 01, 04, 05, 11, 12 |
 | `tasks/setup-claude-md.md` | Interview → generate `CLAUDE.md` | 01 |
-| `tasks/setup-memory.md` | Create `.auto-memory/` with initial memory files | 03 |
-| `tasks/setup-mcp.md` | Audit and add MCP server connections | 08 |
-| `tasks/setup-security.md` | Credential scan, permission audit, install PreToolUse hook | 13 |
-| `tasks/setup-github.md` | Init git, create GitHub repo, set up ongoing sync | 09 |
-| `tasks/setup-ignore-hygiene.md` | Audit `.gitignore`/`.claudeignore`, install check hook | 09, 13 |
-| `tasks/setup-self-improving-task.md` | Add `IMPROVEMENTS.md` + self-improvement loop to any task | 05, 06 |
-| `tasks/setup-wiki.md` | Create LLM wiki structure for a topic | 12 |
-| `tasks/setup-bootstrap-folder.md` | Create `bootstrap/` stubs for gitignored runtime state files | 09 |
-| `tasks/setup-skill.md` | Interview → generate a `SKILL.md` with reliable triggering and full structure | 02 |
-| `tasks/setup-scheduled-task.md` | Scaffold a new scheduled task with efficiency + self-improvement built in | 04, 05, 06 |
-| `tasks/setup-data-layer.md` | Set up data patterns for personal data (Python feeder, JSON DB, browser extraction, vision) | 11 |
+| `tasks/setup-memory.md` | Create `.auto-memory/` with initial memory files | 04 |
+| `tasks/setup-mcp.md` | Audit and add MCP server connections | 05 |
+| `tasks/setup-security.md` | Credential scan, permission audit, install PreToolUse hook | 12 |
+| `tasks/setup-github.md` | Init git, create GitHub repo, set up ongoing sync | 11 |
+| `tasks/setup-ignore-hygiene.md` | Audit `.gitignore`/`.claudeignore`, install check hook | 11, 12 |
+| `tasks/setup-self-improving-task.md` | Add `IMPROVEMENTS.md` + self-improvement loop to any task | 07, 08 |
+| `tasks/setup-wiki.md` | Create LLM wiki structure for a topic | 15 |
+| `tasks/setup-bootstrap-folder.md` | Create `bootstrap/` stubs for gitignored runtime state files | 11 |
+| `tasks/setup-skill.md` | Interview → generate a `SKILL.md` with reliable triggering and full structure | 03 |
+| `tasks/setup-scheduled-task.md` | Scaffold a new scheduled task with efficiency + self-improvement built in | 06, 07, 08 |
+| `tasks/setup-data-layer.md` | Set up data patterns for personal data (Python feeder, JSON DB, browser extraction, vision) | 14 |
 
 ### Audit tasks (re-runnable)
 
 | Task | What it does | Source guide |
 |------|-------------|-------------|
-| `tasks/audit-claude-md.md` | Review `CLAUDE.md` — dead rules, missing sections, over-length | 01, 07 |
-| `tasks/audit-task-efficiency.md` | Token efficiency checklist for any task file | 04 |
-| `tasks/audit-memory.md` | Check memory files for staleness, duplicates, misplaced content | 03 |
-| `tasks/audit-skill.md` | Review a `SKILL.md` — trigger quality, workflow, output format, edge cases | 02, 15 |
+| `tasks/audit-claude-md.md` | Review `CLAUDE.md` — dead rules, missing sections, over-length | 01, 16 |
+| `tasks/audit-task-efficiency.md` | Token efficiency checklist for any task file | 06 |
+| `tasks/audit-memory.md` | Check memory files for staleness, duplicates, misplaced content | 04 |
+| `tasks/audit-skill.md` | Review a `SKILL.md` — trigger quality, workflow, output format, edge cases | 03, 02 |
 
 ### Maintenance (Cluide only)
 
@@ -452,12 +452,12 @@ If you're new to this, go in this order:
 
 1. **Start with [00_QUICKSTART.md](./00_QUICKSTART.md)** — get something working first.
 2. **Then 01** — refine your CLAUDE.md once you've seen how it behaves.
-3. **Then 02** — create your first real skill for whatever you do most often.
-4. **Then 03** — enable cross-session memory so the assistant learns over time.
-5. **Only then 04 + 05 + 06** — once you have scheduled tasks running, optimise and teach them to improve.
+3. **Then 02 + 03** — learn prompting basics, then create your first real skill.
+4. **Then 04 + 05** — enable memory and connect MCP tools.
+5. **Only then 06–10** — once you have scheduled tasks running, optimise and teach them to improve.
 
 **Quick reference while building:** Keep [CHEATSHEET.md](./CHEATSHEET.md) open as a one-page reference for file structures, skeletons, and common patterns.
-**If something breaks:** Go to [Guide 14 — Troubleshooting](./14_TROUBLESHOOTING.md).
+**If something breaks:** Go to [Guide 17 — Troubleshooting](./17_TROUBLESHOOTING.md).
 
 ---
 
@@ -465,8 +465,8 @@ If you're new to this, go in this order:
 
 Each guide is also written so Claude can read it and act on it without the skill installed:
 
-> "Read 02_SKILLS.md and then create a skill for drafting project status updates."
+> "Read 03_SKILLS.md and then create a skill for drafting project status updates."
 
 > "Read 01_CLAUDE_MD.md and help me write my own CLAUDE.md based on what you know about me."
 
-> "Read 04_TASK_EFFICIENCY_GUIDE.md and audit my existing email digest task for token efficiency."
+> "Read 06_TASK_EFFICIENCY_GUIDE.md and audit my existing email digest task for token efficiency."

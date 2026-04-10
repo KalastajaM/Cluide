@@ -5,10 +5,10 @@
 > A collection of lessons learned from real use. Not theory — things that actually make the difference.
 > These apply whether you're setting up your first skill or optimising a system you've been running for months.
 
-> **Companion guides:** [Guide 01](./01_CLAUDE_MD.md) covers CLAUDE.md — the foundation these practices build on. [Guide 04](./04_TASK_EFFICIENCY_GUIDE.md) covers task efficiency. [Guide 10](./10_DEV_EXECUTION_WORKFLOW.md) covers the development workflow.
+> **Companion guides:** [Guide 01](./01_CLAUDE_MD.md) covers CLAUDE.md — the foundation these practices build on. [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) covers task efficiency. [Guide 13](./13_DEV_EXECUTION_WORKFLOW.md) covers the development workflow.
 
 > **Giving this guide to Claude:**
-> "Read 07_BEST_PRACTICES.md and review how I'm currently working with you. Identify the top 3 practices I'm not following and suggest how to apply them."
+> "Read 16_BEST_PRACTICES.md and review how I'm currently working with you. Identify the top 3 practices I'm not following and suggest how to apply them."
 
 ---
 
@@ -65,7 +65,7 @@ CLAUDE.md, skills, and task files need to work when you've forgotten all the con
 Every correction you give Claude — and save to memory — is a correction you never have to make again. The first few weeks feel slow because you're building up the knowledge base. After that, the assistant improves noticeably with each session. Invest in saving corrections early.
 
 **Self-improving tasks are powerful — but also a rabbit hole.**
-Automated tasks that learn and adapt over time are one of the highest-value things you can build. They are also easy to over-engineer. Start simple, run it, see what breaks, improve incrementally. And optimise for token efficiency from the start (see Guide 04) — an unoptimised task that runs daily gets expensive fast. Fortunately, you can also ask the task to self-optimise.
+Automated tasks that learn and adapt over time are one of the highest-value things you can build. They are also easy to over-engineer. Start simple, run it, see what breaks, improve incrementally. And optimise for token efficiency from the start (see Guide 06) — an unoptimised task that runs daily gets expensive fast. Fortunately, you can also ask the task to self-optimise.
 
 **Markdown is your source of truth — formatted documents are outputs.**
 Keep knowledge, processes, and reference material in `.md` files. They're readable by both you and Claude, easy to update, and work well as long-term assets. When you need a presentation, Word document, or PDF, generate it from your markdown base on demand. Maintaining content in proprietary formats makes it harder for Claude to help you update or reason about it — and harder for you to maintain it yourself.

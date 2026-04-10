@@ -4,10 +4,10 @@
 
 > When you have multiple scheduled tasks that need to share data, run in a specific order, or produce a combined output, you need orchestration. This guide covers how to coordinate tasks without overengineering.
 
-> **Companion guides:** [Guide 04](./04_TASK_EFFICIENCY_GUIDE.md) for keeping orchestrated tasks efficient. [Guide 05](./05_TASK_LEARNING_GUIDE.md) for self-improvement across coordinated tasks. [Guide 17](./17_COST_PERFORMANCE.md) for monitoring costs when multiple tasks run daily.
+> **Companion guides:** [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) for keeping orchestrated tasks efficient. [Guide 07](./07_TASK_LEARNING_GUIDE.md) for self-improvement across coordinated tasks. [Guide 10](./10_COST_PERFORMANCE.md) for monitoring costs when multiple tasks run daily.
 
 > **Giving this guide to Claude:**
-> "Read 16_MULTI_TASK_ORCHESTRATION.md and help me coordinate my existing tasks at [paths]. They need to [share data / run in order / produce a combined output]."
+> "Read 09_MULTI_TASK_ORCHESTRATION.md and help me coordinate my existing tasks at [paths]. They need to [share data / run in order / produce a combined output]."
 
 ---
 
@@ -233,4 +233,4 @@ When setting up multi-task orchestration:
 - [ ] Add freshness checks to every task that reads shared data
 - [ ] Stagger schedules with 10+ minute gaps between writers
 - [ ] Add fallback handling for missing inputs in downstream tasks
-- [ ] Set up cost monitoring ([Guide 17](./17_COST_PERFORMANCE.md)) across all coordinated tasks
+- [ ] Set up cost monitoring ([Guide 10](./10_COST_PERFORMANCE.md)) across all coordinated tasks

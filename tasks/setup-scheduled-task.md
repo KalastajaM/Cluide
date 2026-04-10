@@ -2,7 +2,7 @@
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
 > `Claude, run tasks/setup-scheduled-task.md`
-> **Source guides:** `04_TASK_EFFICIENCY_GUIDE.md`, `05_TASK_LEARNING_GUIDE.md`, `06_SELFIMPROVE_TEMPLATE.md`
+> **Source guides:** `06_TASK_EFFICIENCY_GUIDE.md`, `07_TASK_LEARNING_GUIDE.md`, `08_SELFIMPROVE_TEMPLATE.md`
 
 ## Purpose
 Scaffold a new scheduled task from scratch with efficiency and self-improvement patterns built in from run 1: a lean `TASK.md`, a `TASK_REFERENCE.md` for detail content, a `RUN_LOG.md`, and an `IMPROVEMENTS.md`. The result is a task ready to run and improve from its first execution.

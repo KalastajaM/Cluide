@@ -233,10 +233,10 @@ The alternating pre/post pattern means every run is bracketed. You can restore t
 ## Giving This to Claude
 
 **To set up git integration for an existing task:**
-> "Read 09_GIT_INTEGRATION.md and add the pre-run and post-run commit steps to my task at [path/to/TASK.md]. Use the commit message format from the guide."
+> "Read 11_GIT_INTEGRATION.md and add the pre-run and post-run commit steps to my task at [path/to/TASK.md]. Use the commit message format from the guide."
 
 **To add the pre-session hook:**
-> "Read 09_GIT_INTEGRATION.md and add a SessionStart hook to my `.claude/settings.json` that commits any uncommitted changes before each session. My assistant files are at [path]."
+> "Read 11_GIT_INTEGRATION.md and add a SessionStart hook to my `.claude/settings.json` that commits any uncommitted changes before each session. My assistant files are at [path]."
 
 **To review what a recent run changed:**
 > "Run `git diff HEAD~1 HEAD -- [task-folder]/` and summarise what changed in the last run."

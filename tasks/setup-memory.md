@@ -2,7 +2,7 @@
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
 > `Claude, run tasks/setup-memory.md`
-> **Source guides:** `03_MEMORY_AND_PROFILE.md`, `11_PERSONAL_DATA_LAYER.md`
+> **Source guides:** `04_MEMORY_AND_PROFILE.md`, `14_PERSONAL_DATA_LAYER.md`
 
 ## Purpose
 Set up a persistent memory system so Claude remembers key facts, preferences, and projects across sessions. Creates the `.auto-memory/` folder structure and populates it with an initial set of memory files based on a user interview.

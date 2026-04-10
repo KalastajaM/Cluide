@@ -2,10 +2,10 @@
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
 > `Claude, run tasks/setup-skill.md`
-> **Source guide:** `02_SKILLS.md`
+> **Source guide:** `03_SKILLS.md`
 
 ## Purpose
-Create a well-structured skill by interviewing the user and generating a `SKILL.md` that triggers reliably, follows a consistent workflow, and handles edge cases. Follows the conventions in Guide 02.
+Create a well-structured skill by interviewing the user and generating a `SKILL.md` that triggers reliably, follows a consistent workflow, and handles edge cases. Follows the conventions in Guide 03.
 
 The most important part of any skill is the description — it controls whether the skill triggers at all.
 

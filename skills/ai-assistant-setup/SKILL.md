@@ -32,18 +32,18 @@ All guides are in the `references/` directory next to this file.
 | File | What it covers | Load when... |
 |------|---------------|-------------|
 | `01_CLAUDE_MD.md` | What to put in CLAUDE.md, structure, examples | User wants to write/improve their CLAUDE.md, or Claude keeps misbehaving session-to-session |
-| `02_SKILLS.md` | Anatomy of a skill, writing descriptions, workflow steps, output formats | User wants to create or improve a skill for a recurring task |
-| `03_MEMORY_AND_PROFILE.md` | Auto-memory system, profile files, what to store, hypothesis system | User wants Claude to remember things across sessions |
-| `04_TASK_EFFICIENCY_GUIDE.md` | Token efficiency, splitting instruction files, script-based output, hard size limits | User has a scheduled task and wants to make it cheaper or faster |
-| `05_TASK_LEARNING_GUIDE.md` | Self-improving tasks, learning from feedback, hypothesis lifecycle, improvements log | User wants a task that gets smarter over time |
-| `06_SELFIMPROVE_TEMPLATE.md` | Ready-to-use IMPROVEMENTS.md template | User is creating a new task and wants self-improvement from day one |
-| `07_BEST_PRACTICES.md` | Lessons from real use, what actually matters, 15-point summary | User wants an overview, or is just getting started |
-| `08_MCP_SERVERS.md` | MCP server setup, Gmail/Calendar/GitHub tools, referencing tools in skills | User wants Claude to connect to email, calendar, or other external tools |
-| `09_GIT_INTEGRATION.md` | Git tracking for assistant state, pre-run snapshots, rollback, commit conventions | User wants to track changes to their assistant setup over time |
-| `10_DEV_EXECUTION_WORKFLOW.md` | Claude Code vs Cowork split, file architecture, debugging, adding features | User uses Claude Code for development and another interface for running tasks |
-| `11_PERSONAL_DATA_LAYER.md` | 5 patterns for personal data: Python feeders, JSON database, browser extraction, vision ingestion, multi-step workflows | User wants Claude to work with personal data (investments, finances, health, etc.) |
-| `12_LLM_WIKI.md` | LLM wiki pattern: building a persistent compounding knowledge base with ingest/query/lint operations, schema design, Obsidian integration | User wants to build a research wiki, threat intelligence base, competitive analysis tracker, or any domain knowledge base that compounds over time |
-| `13_SECURITY.md` | Operational security for Claude Code and Cowork: credential hygiene, MCP server trust, permission controls and hooks, session data hygiene, supply chain awareness, prompt injection, file hygiene (.gitignore/.claudeignore), autonomous task safety | User asks about securing their Claude setup, credential exposure, MCP server risks, setting up hooks, or what to exclude from git/context |
+| `03_SKILLS.md` | Anatomy of a skill, writing descriptions, workflow steps, output formats | User wants to create or improve a skill for a recurring task |
+| `04_MEMORY_AND_PROFILE.md` | Auto-memory system, profile files, what to store, hypothesis system | User wants Claude to remember things across sessions |
+| `06_TASK_EFFICIENCY_GUIDE.md` | Token efficiency, splitting instruction files, script-based output, hard size limits | User has a scheduled task and wants to make it cheaper or faster |
+| `07_TASK_LEARNING_GUIDE.md` | Self-improving tasks, learning from feedback, hypothesis lifecycle, improvements log | User wants a task that gets smarter over time |
+| `08_SELFIMPROVE_TEMPLATE.md` | Ready-to-use IMPROVEMENTS.md template | User is creating a new task and wants self-improvement from day one |
+| `16_BEST_PRACTICES.md` | Lessons from real use, what actually matters, 15-point summary | User wants an overview, or is just getting started |
+| `05_MCP_SERVERS.md` | MCP server setup, Gmail/Calendar/GitHub tools, referencing tools in skills | User wants Claude to connect to email, calendar, or other external tools |
+| `11_GIT_INTEGRATION.md` | Git tracking for assistant state, pre-run snapshots, rollback, commit conventions | User wants to track changes to their assistant setup over time |
+| `13_DEV_EXECUTION_WORKFLOW.md` | Claude Code vs Cowork split, file architecture, debugging, adding features | User uses Claude Code for development and another interface for running tasks |
+| `14_PERSONAL_DATA_LAYER.md` | 5 patterns for personal data: Python feeders, JSON database, browser extraction, vision ingestion, multi-step workflows | User wants Claude to work with personal data (investments, finances, health, etc.) |
+| `15_LLM_WIKI.md` | LLM wiki pattern: building a persistent compounding knowledge base with ingest/query/lint operations, schema design, Obsidian integration | User wants to build a research wiki, threat intelligence base, competitive analysis tracker, or any domain knowledge base that compounds over time |
+| `12_SECURITY.md` | Operational security for Claude Code and Cowork: credential hygiene, MCP server trust, permission controls and hooks, session data hygiene, supply chain awareness, prompt injection, file hygiene (.gitignore/.claudeignore), autonomous task safety | User asks about securing their Claude setup, credential exposure, MCP server risks, setting up hooks, or what to exclude from git/context |
 
 ---
 
@@ -88,7 +88,7 @@ Follow the guide's instructions to help the user. Create real files, don't just 
 
 ## Setting up a new data project
 
-This is the most involved workflow. When a user wants Claude to work with their personal data, follow the process in `11_PERSONAL_DATA_LAYER.md`. The steps:
+This is the most involved workflow. When a user wants Claude to work with their personal data, follow the process in `14_PERSONAL_DATA_LAYER.md`. The steps:
 
 1. **Interview**: ask what the project is for, where data lives, what they want Claude to do
 2. **Recommend patterns**: based on answers, suggest which of the 5 patterns apply (with a one-line reason each). Confirm before building.
@@ -96,7 +96,7 @@ This is the most involved workflow. When a user wants Claude to work with their 
 4. **Git setup**: initialize git, optionally create GitHub repo (if `gh` CLI is available)
 5. **Next steps summary**: numbered, concrete, tailored to their project
 
-Pattern stubs and file templates are defined in `11_PERSONAL_DATA_LAYER.md`. Follow the design rules there precisely — especially: store facts not computed values, always include `last_updated`, never have Claude read raw data files directly.
+Pattern stubs and file templates are defined in `14_PERSONAL_DATA_LAYER.md`. Follow the design rules there precisely — especially: store facts not computed values, always include `last_updated`, never have Claude read raw data files directly.
 
 ---
 
@@ -112,10 +112,10 @@ When a user has an existing project or setup:
 
 Common improvements to look for:
 - CLAUDE.md is too long, too vague, or missing key constraints → Guide 01
-- A skill description doesn't trigger reliably → Guide 02
-- A scheduled task loads too much context → Guide 04
-- A data project reads raw JSON files directly instead of using feeder scripts → Guide 11
-- No git tracking for assistant state → Guide 09
+- A skill description doesn't trigger reliably → Guide 03
+- A scheduled task loads too much context → Guide 06
+- A data project reads raw JSON files directly instead of using feeder scripts → Guide 14
+- No git tracking for assistant state → Guide 11
 - No self-improvement system on a running task → Guides 05 + 06
 
 ---

@@ -44,7 +44,7 @@ Covers: what to put in CLAUDE.md, how to structure it, what not to include, and 
 
 ---
 
-### [02 — Skills](./02_SKILLS.md)
+### [02 — Skills](./03_SKILLS.md)
 *How to design skills for recurring tasks.*
 
 Covers: the anatomy of a SKILL.md file, writing descriptions that trigger reliably, structuring workflow steps, output formats, and edge cases. Includes real examples from a working setup.
@@ -53,7 +53,7 @@ Covers: the anatomy of a SKILL.md file, writing descriptions that trigger reliab
 
 ---
 
-### [03 — Memory & Profile](./03_MEMORY_AND_PROFILE.md)
+### [03 — Memory & Profile](./04_MEMORY_AND_PROFILE.md)
 *Two complementary persistence systems.*
 
 Covers: the auto-memory system (lightweight, always-on), profile files (structured, richly maintained for complex recurring agents), what to store, how to keep files lean, and the hypothesis system.
@@ -62,7 +62,7 @@ Covers: the auto-memory system (lightweight, always-on), profile files (structur
 
 ---
 
-### [04 — Task Efficiency](./04_TASK_EFFICIENCY_GUIDE.md)
+### [04 — Task Efficiency](./06_TASK_EFFICIENCY_GUIDE.md)
 *How to design and optimize scheduled tasks for minimal token consumption.*
 
 Covers: splitting instruction files, scripting fixed-format output, targeted file edits, two-pass triage for external data, hard size limits, and run deduplication.
@@ -71,7 +71,7 @@ Covers: splitting instruction files, scripting fixed-format output, targeted fil
 
 ---
 
-### [05 — Task Self-Improvement](./05_TASK_LEARNING_GUIDE.md)
+### [05 — Task Self-Improvement](./07_TASK_LEARNING_GUIDE.md)
 *A framework for building tasks that get better over time.*
 
 Covers: what to learn and how to store it, detecting feedback signals, the apply-vs-propose decision, the hypothesis lifecycle, the refactoring system, and the improvements log.
@@ -80,16 +80,16 @@ Covers: what to learn and how to store it, detecting feedback signals, the apply
 
 ---
 
-### [06 — Self-Improvement Template](./06_SELFIMPROVE_TEMPLATE.md)
+### [06 — Self-Improvement Template](./08_SELFIMPROVE_TEMPLATE.md)
 *A ready-to-use IMPROVEMENTS.md template.*
 
-A concrete template file that implements the system described in Guide 05. Drop it into any task folder and it's ready to use.
+A concrete template file that implements the system described in Guide 07. Drop it into any task folder and it's ready to use.
 
 **Use this when:** you're creating a new scheduled task and want the self-improvement system set up from run 1.
 
 ---
 
-### [07 — Best Practices](./07_BEST_PRACTICES.md)
+### [07 — Best Practices](./16_BEST_PRACTICES.md)
 *Lessons from real use — a shareable summary.*
 
 Covers: giving Claude good inputs, working effectively session-to-session, building a setup that compounds over time, and knowing when not to use Claude. Includes a 15-point short version for quick reference.
@@ -98,7 +98,7 @@ Covers: giving Claude good inputs, working effectively session-to-session, build
 
 ---
 
-### [08 — MCP Servers](./08_MCP_SERVERS.md)
+### [08 — MCP Servers](./05_MCP_SERVERS.md)
 *How Claude connects to external tools — Gmail, Calendar, GitHub, and more.*
 
 Covers: what MCP servers are, how to configure them in Claude Code, the most useful servers for personal assistants, how to reference tool names in skills, and credential security.
@@ -107,7 +107,7 @@ Covers: what MCP servers are, how to configure them in Claude Code, the most use
 
 ---
 
-### [09 — Git Integration](./09_GIT_INTEGRATION.md)
+### [09 — Git Integration](./11_GIT_INTEGRATION.md)
 *Version control for your assistant's state — pre-run snapshots, rollback, and history.*
 
 Covers: what to track in git, the pre-run commit pattern (snapshot before every task run), post-run commits, automating commits via hooks, useful git commands for assistant files, and meaningful commit message conventions.
@@ -116,7 +116,7 @@ Covers: what to track in git, the pre-run commit pattern (snapshot before every 
 
 ---
 
-### [10 — Development and Execution Workflow](./10_DEV_EXECUTION_WORKFLOW.md)
+### [10 — Development and Execution Workflow](./13_DEV_EXECUTION_WORKFLOW.md)
 *Using Claude Code and Cowork as two distinct tools with two distinct roles.*
 
 Covers: the development/execution split (Claude Code for building and maintaining, Cowork for running), file architecture that works cleanly in both tools, the workflow for adding or changing something, debugging broken runs, reviewing and applying self-improvement proposals, and a new-features checklist.
@@ -125,7 +125,7 @@ Covers: the development/execution split (Claude Code for building and maintainin
 
 ---
 
-### [11 — Personal Data Layer](./11_PERSONAL_DATA_LAYER.md)
+### [11 — Personal Data Layer](./14_PERSONAL_DATA_LAYER.md)
 *Five patterns for getting personal data into Claude's hands.*
 
 Covers: Python scripts as data feeders, JSON as a personal database, browser JavaScript extraction for apps with no API, Claude Vision for screenshot ingestion, and multi-step instruction files for complex workflows.
@@ -144,7 +144,7 @@ A complete project folder with `CLAUDE.md`, `Profile/`, and `Knowledge/` pre-str
 **Use this when:** starting any new Claude project that needs cross-session memory, profile tracking, or topic knowledge files.
 
 ### [TASK_TEMPLATE/](./templates/TASK_TEMPLATE/README.md)
-A complete scheduled task folder with `TASK.md`, `IMPROVEMENTS.md`, `KNOWLEDGE_SUMMARY.md`, and `RUN_LOG.md` — all pre-structured and ready to fill in. Implements the patterns from Guide 04 (efficiency) and Guide 05 (self-improvement) out of the box.
+A complete scheduled task folder with `TASK.md`, `IMPROVEMENTS.md`, `KNOWLEDGE_SUMMARY.md`, and `RUN_LOG.md` — all pre-structured and ready to fill in. Implements the patterns from Guide 06 (efficiency) and Guide 07 (self-improvement) out of the box.
 
 **Use this when:** creating a new scheduled automated task. Copy the folder, rename it `[TaskName]-Task`, and fill in the domain-specific logic.
 
@@ -274,8 +274,8 @@ If you're new to this, read and act on the guides in this order:
 
 Each guide is also written so Claude can read it and act on it without the skill installed:
 
-> "Read 02_SKILLS.md and then create a skill for drafting project status updates."
+> "Read 03_SKILLS.md and then create a skill for drafting project status updates."
 
 > "Read 01_CLAUDE_MD.md and help me write my own CLAUDE.md based on what you know about me."
 
-> "Read 04_TASK_EFFICIENCY_GUIDE.md and audit my existing email digest task for token efficiency."
+> "Read 06_TASK_EFFICIENCY_GUIDE.md and audit my existing email digest task for token efficiency."

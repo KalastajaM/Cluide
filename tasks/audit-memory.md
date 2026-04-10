@@ -2,7 +2,7 @@
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
 > `Claude, run tasks/audit-memory.md`
-> **Source guide:** `03_MEMORY_AND_PROFILE.md`
+> **Source guide:** `04_MEMORY_AND_PROFILE.md`
 
 ## Purpose
 Review the `.auto-memory/` system for stale entries, missing index pointers, duplicates, and entries that belong in `CLAUDE.md` instead. Keeps the memory system lean and current so it stays useful as sessions accumulate.

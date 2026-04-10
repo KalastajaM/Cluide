@@ -2,7 +2,7 @@
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
 > `Claude, run tasks/setup-security.md`
-> **Source guide:** `13_SECURITY.md`
+> **Source guide:** `12_SECURITY.md`
 
 ## Purpose
 Audit the Claude setup for common security issues: exposed credentials, risky permission settings, missing ignore rules for sensitive files, and prompt injection exposure. Optionally installs a PreToolUse hook that blocks dangerous shell commands.

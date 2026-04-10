@@ -2,7 +2,7 @@
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
 > `Claude, run tasks/audit-claude-md.md`
-> **Source guides:** `01_CLAUDE_MD.md`, `07_BEST_PRACTICES.md`
+> **Source guides:** `01_CLAUDE_MD.md`, `16_BEST_PRACTICES.md`
 
 ## Purpose
 Review an existing `CLAUDE.md` against best-practice criteria: every line should change behaviour, the file should be short, and it should cover identity, style, and critical rules — nothing else. Flags dead rules, missing sections, over-length, and common mistakes.

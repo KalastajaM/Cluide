@@ -13,22 +13,22 @@ Detect which guides have changed since each task was last reviewed, then check w
 | Task file | Source guides |
 |-----------|--------------|
 | `setup-claude-md.md` | `01_CLAUDE_MD.md` |
-| `setup-memory.md` | `03_MEMORY_AND_PROFILE.md`, `11_PERSONAL_DATA_LAYER.md` |
-| `setup-mcp.md` | `08_MCP_SERVERS.md` |
-| `setup-security.md` | `13_SECURITY.md` |
-| `setup-github.md` | `09_GIT_INTEGRATION.md` |
-| `setup-ignore-hygiene.md` | `09_GIT_INTEGRATION.md`, `13_SECURITY.md` |
-| `setup-self-improving-task.md` | `05_TASK_LEARNING_GUIDE.md`, `06_SELFIMPROVE_TEMPLATE.md` |
-| `setup-wiki.md` | `12_LLM_WIKI.md` |
-| `setup-bootstrap-folder.md` | `09_GIT_INTEGRATION.md` |
-| `audit-claude-md.md` | `01_CLAUDE_MD.md`, `07_BEST_PRACTICES.md` |
-| `audit-task-efficiency.md` | `04_TASK_EFFICIENCY_GUIDE.md` |
-| `audit-memory.md` | `03_MEMORY_AND_PROFILE.md` |
-| `setup-skill.md` | `02_SKILLS.md` |
-| `audit-skill.md` | `02_SKILLS.md`, `15_PROMPTING_BASICS.md` |
-| `setup-scheduled-task.md` | `04_TASK_EFFICIENCY_GUIDE.md`, `05_TASK_LEARNING_GUIDE.md`, `06_SELFIMPROVE_TEMPLATE.md` |
-| `onboard-project.md` | `01_CLAUDE_MD.md`, `03_MEMORY_AND_PROFILE.md`, `08_MCP_SERVERS.md`, `09_GIT_INTEGRATION.md`, `13_SECURITY.md` |
-| `setup-data-layer.md` | `11_PERSONAL_DATA_LAYER.md` |
+| `setup-memory.md` | `04_MEMORY_AND_PROFILE.md`, `14_PERSONAL_DATA_LAYER.md` |
+| `setup-mcp.md` | `05_MCP_SERVERS.md` |
+| `setup-security.md` | `12_SECURITY.md` |
+| `setup-github.md` | `11_GIT_INTEGRATION.md` |
+| `setup-ignore-hygiene.md` | `11_GIT_INTEGRATION.md`, `12_SECURITY.md` |
+| `setup-self-improving-task.md` | `07_TASK_LEARNING_GUIDE.md`, `08_SELFIMPROVE_TEMPLATE.md` |
+| `setup-wiki.md` | `15_LLM_WIKI.md` |
+| `setup-bootstrap-folder.md` | `11_GIT_INTEGRATION.md` |
+| `audit-claude-md.md` | `01_CLAUDE_MD.md`, `16_BEST_PRACTICES.md` |
+| `audit-task-efficiency.md` | `06_TASK_EFFICIENCY_GUIDE.md` |
+| `audit-memory.md` | `04_MEMORY_AND_PROFILE.md` |
+| `setup-skill.md` | `03_SKILLS.md` |
+| `audit-skill.md` | `03_SKILLS.md`, `02_PROMPTING_BASICS.md` |
+| `setup-scheduled-task.md` | `06_TASK_EFFICIENCY_GUIDE.md`, `07_TASK_LEARNING_GUIDE.md`, `08_SELFIMPROVE_TEMPLATE.md` |
+| `onboard-project.md` | `01_CLAUDE_MD.md`, `04_MEMORY_AND_PROFILE.md`, `05_MCP_SERVERS.md`, `11_GIT_INTEGRATION.md`, `12_SECURITY.md` |
+| `setup-data-layer.md` | `14_PERSONAL_DATA_LAYER.md` |
 
 ---
 

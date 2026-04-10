@@ -51,24 +51,24 @@ A well-configured Claude personal assistant has four layers:
 |---|-------|----------|-------|
 | — | [Quickstart](./00_QUICKSTART.md) | New users | Build a working setup in 20 minutes |
 | 01 | [CLAUDE.md](./01_CLAUDE_MD.md) | All | Writing effective always-loaded instructions |
-| 02 | [Skills](./02_SKILLS.md) | All | Designing skills for recurring tasks |
-| 03 | [Memory & Profile](./03_MEMORY_AND_PROFILE.md) | All | Persistence across sessions |
-| 04 | [Task Efficiency](./04_TASK_EFFICIENCY_GUIDE.md) | Scheduled tasks | Minimizing token use in automated tasks |
-| 05 | [Task Self-Improvement](./05_TASK_LEARNING_GUIDE.md) | Scheduled tasks | Tasks that learn and improve over time |
-| 06 | [Self-Improvement Template](./06_SELFIMPROVE_TEMPLATE.md) | Scheduled tasks | Installing the IMPROVEMENTS.md template |
-| 07 | [Best Practices](./07_BEST_PRACTICES.md) | All | Lessons from real use |
-| 08 | [MCP Servers](./08_MCP_SERVERS.md) | All | Connecting Claude to Gmail, Calendar, GitHub, etc. |
-| 09 | [Git Integration](./09_GIT_INTEGRATION.md) | Power users | Version control for your assistant's state |
-| 10 | [Dev & Execution Workflow](./10_DEV_EXECUTION_WORKFLOW.md) | Power users | Claude Code vs. Cowork — build vs. run |
-| 11 | [Personal Data Layer](./11_PERSONAL_DATA_LAYER.md) | Power users | Getting personal data into Claude's hands |
-| 12 | [LLM Wiki](./12_LLM_WIKI.md) | Power users | Building a compounding knowledge base |
-| 13 | [Security](./13_SECURITY.md) | All | Credential hygiene, MCP trust, safe automation |
-| 14 | [Troubleshooting](./14_TROUBLESHOOTING.md) | All | When things don't work |
-| 15 | [Prompting Basics](./15_PROMPTING_BASICS.md) | All | Writing instructions that produce consistent output |
-| 16 | [Multi-Task Orchestration](./16_MULTI_TASK_ORCHESTRATION.md) | Power users | Coordinating tasks with shared state and dependencies |
-| 17 | [Cost & Performance](./17_COST_PERFORMANCE.md) | Scheduled tasks | Tracking costs and finding expensive operations |
+| 02 | [Prompting Basics](./02_PROMPTING_BASICS.md) | All | Writing instructions that produce consistent output |
+| 03 | [Skills](./03_SKILLS.md) | All | Designing skills for recurring tasks |
+| 04 | [Memory & Profile](./04_MEMORY_AND_PROFILE.md) | All | Persistence across sessions |
+| 05 | [MCP Servers](./05_MCP_SERVERS.md) | All | Connecting Claude to Gmail, Calendar, GitHub, etc. |
+| 06 | [Task Efficiency](./06_TASK_EFFICIENCY_GUIDE.md) | Scheduled tasks | Minimizing token use in automated tasks |
+| 07 | [Task Self-Improvement](./07_TASK_LEARNING_GUIDE.md) | Scheduled tasks | Tasks that learn and improve over time |
+| 08 | [Self-Improvement Template](./08_SELFIMPROVE_TEMPLATE.md) | Scheduled tasks | Installing the IMPROVEMENTS.md template |
+| 09 | [Multi-Task Orchestration](./09_MULTI_TASK_ORCHESTRATION.md) | Power users | Coordinating tasks with shared state and dependencies |
+| 10 | [Cost & Performance](./10_COST_PERFORMANCE.md) | Scheduled tasks | Tracking costs and finding expensive operations |
+| 11 | [Git Integration](./11_GIT_INTEGRATION.md) | Power users | Version control for your assistant's state |
+| 12 | [Security](./12_SECURITY.md) | All | Credential hygiene, MCP trust, safe automation |
+| 13 | [Dev & Execution Workflow](./13_DEV_EXECUTION_WORKFLOW.md) | Power users | Claude Code vs. Cowork — build vs. run |
+| 14 | [Personal Data Layer](./14_PERSONAL_DATA_LAYER.md) | Power users | Getting personal data into Claude's hands |
+| 15 | [LLM Wiki](./15_LLM_WIKI.md) | Power users | Building a compounding knowledge base |
+| 16 | [Best Practices](./16_BEST_PRACTICES.md) | All | Lessons from real use |
+| 17 | [Troubleshooting](./17_TROUBLESHOOTING.md) | All | When things don't work |
 
-**Recommended order:** Quickstart → 01 → 02 → 03 → (04–06 once you have scheduled tasks running).
+**Recommended order:** Quickstart → 01 → 02 → 03 → 04 → 05 → (06–10 once you have scheduled tasks running).
 
 For detailed per-guide descriptions, reading times, and usage guidance, see [00_INDEX.md](./00_INDEX.md).
 
@@ -140,7 +140,7 @@ Four copy-paste starting points in `templates/`:
 /
 ├── 00_INDEX.md               # Full annotated guide index
 ├── 00_QUICKSTART.md          # Start here if you're new
-├── 01_CLAUDE_MD.md – 17_COST_PERFORMANCE.md
+├── 01_CLAUDE_MD.md – 17_TROUBLESHOOTING.md
 ├── CHEATSHEET.md             # One-page quick reference
 ├── tasks/                    # Setup and audit task files
 ├── skills/                   # Bundled installable skills
