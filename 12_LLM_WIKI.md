@@ -219,6 +219,86 @@ Some uses that fit naturally with this setup:
 
 ---
 
+## Querying Large Wikis (100+ Pages)
+
+The `index.md` approach works well up to roughly 100–150 pages. Beyond that, reading the full index every query becomes expensive and slow. Here's how to scale.
+
+### Tiered Index
+
+Add a `wiki/categories.md` file that groups pages by domain area:
+
+```markdown
+# Categories
+
+## Threat Actors (23 pages)
+See: entities/threat-actors section in index.md
+
+## Tools & Malware (18 pages)
+See: entities/tools section in index.md
+
+## TTPs (31 pages)
+See: entities/ttps section in index.md
+
+## Source Summaries (45 pages)
+See: sources/ section in index.md
+```
+
+Claude reads `categories.md` first (5–10 lines), identifies the relevant category, then reads only that slice of `index.md`. This cuts index-reading cost by 70–80% for focused queries.
+
+### Pagination
+
+When a query matches many pages, don't read them all. Read the top 5–10 most relevant pages (by recency or link count) and synthesise from those. If the answer feels incomplete, read the next batch. State this in the schema:
+
+```markdown
+## On query (large wiki)
+1. Read `wiki/categories.md` to identify relevant categories.
+2. Read the matching section of `wiki/index.md`.
+3. Select the 5–10 most relevant pages (prefer recently updated, highly linked).
+4. Synthesise an answer. If incomplete, read up to 5 more pages.
+5. Always cite which pages were consulted.
+```
+
+### When to Switch to qmd
+
+**Rule of thumb:** if you have 150+ entity pages or find yourself waiting noticeably for index-based queries, add qmd.
+
+**CLI usage** (Claude can shell out to this):
+```bash
+qmd search "lateral movement techniques" --top 10 --path wiki/
+```
+
+**MCP server config** (add to `settings.json`):
+```json
+"qmd": {
+  "command": "qmd",
+  "args": ["serve", "--path", "/path/to/wiki"]
+}
+```
+
+With the MCP server running, Claude can call `qmd_search` directly instead of reading the index. The hybrid BM25/vector search handles disambiguation and fuzzy matching that index scanning misses.
+
+### Structured Queries with Dataview
+
+For "list all X where Y" questions (e.g., "all threat actors targeting healthcare"), consider Dataview (Obsidian plugin) over having Claude read pages. If Claude adds YAML frontmatter to entity pages:
+
+```yaml
+---
+type: threat-actor
+sectors: [healthcare, finance]
+first_seen: 2025-03
+---
+```
+
+Then Dataview can answer structured queries instantly without Claude reading dozens of pages. Claude writes the Dataview query; Obsidian runs it.
+
+### Anti-patterns
+
+- **Reading all pages to answer a narrow question.** Always filter through index or categories first.
+- **Reading the full index when a category filter would suffice.** Use the tiered approach.
+- **Skipping citations.** At scale, knowing which 5 of 200 pages informed an answer matters more, not less.
+
+---
+
 ## Git Integration
 
 The wiki is just a folder of markdown files — version it with git and you get the full pre/post-run commit pattern from [Guide 09](./09_GIT_INTEGRATION.md) for free.
