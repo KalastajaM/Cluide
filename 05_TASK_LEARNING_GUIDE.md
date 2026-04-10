@@ -7,6 +7,8 @@
 
 > **Giving this guide to Claude:**
 > "Read 05_TASK_LEARNING_GUIDE.md and add the self-improvement system to my task at [path/to/TASK.md]. Include signal detection, the apply-vs-propose rules, and set up an IMPROVEMENTS.md file using the template in 06_SELFIMPROVE_TEMPLATE.md."
+>
+> **Faster alternative:** `tasks/setup-self-improving-task.md` adds the full self-improvement scaffolding to any existing task without reading the guide first.
 
 ---
 

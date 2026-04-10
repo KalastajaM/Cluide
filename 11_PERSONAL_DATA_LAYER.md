@@ -8,6 +8,8 @@
 
 > **Giving this guide to Claude:**
 > "Read 11_PERSONAL_DATA_LAYER.md and help me set up a data layer for [my investment tracker / personal finance workflow / etc.]. Ask me what data sources I have and recommend which patterns apply."
+>
+> **Faster alternative:** `tasks/setup-data-layer.md` interviews you about your data sources and sets up the right pattern(s) without reading the guide first.
 
 ---
 
