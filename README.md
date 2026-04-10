@@ -1,5 +1,7 @@
 # Cluide — The Claude Guide
 
+*Last reviewed: April 2026*
+
 > A complete framework for building, running, and improving a persistent AI assistant with Claude.
 > Includes architecture guides, runnable setup tasks, installable skills, and copy-paste templates.
 
@@ -65,6 +67,8 @@ A well-configured Claude personal assistant has four layers:
 | 15 | [Prompting Basics](./15_PROMPTING_BASICS.md) | All | Writing instructions that produce consistent output |
 
 **Recommended order:** Quickstart → 01 → 02 → 03 → (04–06 once you have scheduled tasks running).
+
+For detailed per-guide descriptions, reading times, and usage guidance, see [00_INDEX.md](./00_INDEX.md).
 
 ---
 

@@ -1,5 +1,7 @@
 # Quickstart: Your First Working Setup in 20 Minutes
 
+*Last reviewed: April 2026*
+
 > Build something real before reading anything else. This guide walks you through creating a working CLAUDE.md and your first skill — step by step, with the exact files you need. You do not need to read the other guides first.
 
 > **What you'll build:** A personal assistant that knows who you are, and a skill that helps you plan your day. No external tools required. Everything runs in a plain text editor and Cowork.

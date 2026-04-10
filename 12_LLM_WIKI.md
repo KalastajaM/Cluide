@@ -1,5 +1,7 @@
 # LLM Wiki: Building a Personal Knowledge Base
 
+*Last reviewed: April 2026*
+
 > Most people use LLMs for Q&A — ask a question, get an answer, lose the answer to chat history. The LLM wiki pattern is different: the LLM incrementally builds and maintains a persistent, structured knowledge base that gets richer with every source you add and every question you ask. Nothing is re-derived from scratch on every query. Knowledge compounds.
 
 > **Companion guides:** [Guide 09](./09_GIT_INTEGRATION.md) covers git — a wiki is just a folder of markdown files, and versioning it costs nothing. [Guide 11](./11_PERSONAL_DATA_LAYER.md) covers personal data — wikis and data layers are complementary, not alternatives. [Guide 03](./03_MEMORY_AND_PROFILE.md) covers `.auto-memory/` — which serves a different purpose (see below).
@@ -23,9 +25,21 @@ A useful mental model: Obsidian is the IDE; Claude is the programmer; the wiki i
 
 ---
 
-## How This Differs from `.auto-memory/`
+## Do You Need This Guide?
 
-This distinction matters because the two systems look similar but serve different purposes.
+| If you want to... | Use |
+|---|---|
+| Claude to remember your preferences, corrections, and working style | `.auto-memory/` → [Guide 03](./03_MEMORY_AND_PROFILE.md) |
+| Claude to remember facts about ongoing projects and contacts | `.auto-memory/` → [Guide 03](./03_MEMORY_AND_PROFILE.md) |
+| Build a knowledge base about a subject domain (threat intel, research, competitors) | **LLM Wiki — this guide** |
+| Have synthesised answers waiting before you ask the question | **LLM Wiki — this guide** |
+| Compound knowledge across many sources over weeks or months | **LLM Wiki — this guide** |
+
+If you're unsure: start with Guide 03. Come back here when you have a domain you want to research deeply over time.
+
+---
+
+## How This Differs from `.auto-memory/`
 
 `.auto-memory/` is about **you** — your working style, your preferences, your project context. It helps Claude collaborate with you more effectively across sessions.
 

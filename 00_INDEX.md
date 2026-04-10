@@ -1,5 +1,9 @@
 # Cluide — The Claude Guide
 
+*Last reviewed: April 2026*
+
+> **This is the in-depth guide reference** — detailed descriptions, reading times, and usage guidance for every guide. If you're browsing on GitHub, [README.md](./README.md) is the entry point.
+
 > A complete framework for building, running, and improving a persistent AI assistant with Claude.
 > Includes architecture guides, runnable setup tasks, installable skills, and copy-paste templates — covering the full lifecycle from initial setup to automation, self-improvement, and security.
 

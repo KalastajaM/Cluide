@@ -1,5 +1,7 @@
 # The Self-Improvement Template
 
+*Last reviewed: April 2026*
+
 > **Companion guides:** [Guide 05](./05_TASK_LEARNING_GUIDE.md) describes the full learning framework this template implements — read it first to understand why the template is structured the way it is. [Guide 04](./04_TASK_EFFICIENCY_GUIDE.md) covers token efficiency — keep always-loaded files compact.
 
 > **Giving this to Claude:**
