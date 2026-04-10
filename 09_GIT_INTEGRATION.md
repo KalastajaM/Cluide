@@ -536,5 +536,7 @@ This makes the task self-contained: it will run correctly on a fresh clone witho
 **To add the pre-session hook:**
 > "Read 09_GIT_INTEGRATION.md and add a SessionStart hook to my `.claude/settings.json` that commits any uncommitted changes before each session. My assistant files are at [path]."
 
+**Faster alternatives:** `tasks/setup-github.md` handles full GitHub setup including ongoing sync. `tasks/setup-ignore-hygiene.md` audits and fixes `.gitignore`/`.claudeignore`. `tasks/setup-bootstrap-folder.md` creates bootstrap stubs for gitignored runtime files.
+
 **To review what a recent run changed:**
 > "Run `git diff HEAD~1 HEAD -- [task-folder]/` and summarise what changed in the last run."

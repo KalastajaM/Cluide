@@ -6,6 +6,8 @@
 
 > **Giving this guide to Claude:**
 > "Read 12_LLM_WIKI.md and help me set up an LLM wiki for [topic]. Ask me what sources I have and what I want to be able to query."
+>
+> **Faster alternative:** `tasks/setup-wiki.md` interviews you and creates the full wiki structure and schema without reading the guide first.
 
 ---
 

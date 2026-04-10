@@ -250,6 +250,52 @@ A project workspace for managing a product migration initiative. Includes a `CLA
 
 ---
 
+## Tasks: One-Command Setup and Auditing
+
+Tasks are standalone instruction files you run by saying `Claude, run tasks/[task-name].md`. Each task handles a specific setup or audit job end-to-end — interviewing you, proposing changes, and applying them after approval.
+
+**Three ways to use the guides in this project:**
+1. **Read them yourself** and set things up manually
+2. **Give a guide to Claude** — `"Read 01_CLAUDE_MD.md and help me write my CLAUDE.md"`
+3. **Run a task** — faster, guided, no reading required
+
+Tasks are designed to be portable: copy any task file to another project's `tasks/` directory and run it there. Each task includes a `Source guide:` reference so you can trace it back here.
+
+### Setup tasks (one-time)
+
+| Task | What it does | Source guide |
+|------|-------------|-------------|
+| `tasks/onboard-project.md` | End-to-end project setup — orchestrates the tasks below in the right order; optionally starts from a template | 01, 03, 08, 09, 13 |
+| `tasks/setup-claude-md.md` | Interview → generate `CLAUDE.md` | 01 |
+| `tasks/setup-memory.md` | Create `.auto-memory/` with initial memory files | 03 |
+| `tasks/setup-mcp.md` | Audit and add MCP server connections | 08 |
+| `tasks/setup-security.md` | Credential scan, permission audit, install PreToolUse hook | 13 |
+| `tasks/setup-github.md` | Init git, create GitHub repo, set up ongoing sync | 09 |
+| `tasks/setup-ignore-hygiene.md` | Audit `.gitignore`/`.claudeignore`, install check hook | 09, 13 |
+| `tasks/setup-self-improving-task.md` | Add `IMPROVEMENTS.md` + self-improvement loop to any task | 05, 06 |
+| `tasks/setup-wiki.md` | Create LLM wiki structure for a topic | 12 |
+| `tasks/setup-bootstrap-folder.md` | Create `bootstrap/` stubs for gitignored runtime state files | 09 |
+| `tasks/setup-skill.md` | Interview → generate a `SKILL.md` with reliable triggering and full structure | 02 |
+| `tasks/setup-scheduled-task.md` | Scaffold a new scheduled task with efficiency + self-improvement built in | 04, 05, 06 |
+| `tasks/setup-data-layer.md` | Set up data patterns for personal data (Python feeder, JSON DB, browser extraction, vision) | 11 |
+
+### Audit tasks (re-runnable)
+
+| Task | What it does | Source guide |
+|------|-------------|-------------|
+| `tasks/audit-claude-md.md` | Review `CLAUDE.md` — dead rules, missing sections, over-length | 01, 07 |
+| `tasks/audit-task-efficiency.md` | Token efficiency checklist for any task file | 04 |
+| `tasks/audit-memory.md` | Check memory files for staleness, duplicates, misplaced content | 03 |
+| `tasks/audit-skill.md` | Review a `SKILL.md` — trigger quality, workflow, output format, edge cases | 02, 15 |
+
+### Maintenance (Claude Teacher only)
+
+| Task | What it does |
+|------|-------------|
+| `tasks/review-tasks.md` | Detect guide updates and flag tasks that need syncing — run after editing any guide |
+
+---
+
 ## Skills Included in This Project
 
 Four installable skills are bundled with this project. Each skill is self-contained — install only the ones you need.

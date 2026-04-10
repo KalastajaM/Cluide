@@ -230,5 +230,7 @@ MCP server credentials (API keys, OAuth tokens) live in `settings.json` or in en
 **To set up a new server:**
 > *"Read 08_MCP_SERVERS.md and help me set up the filesystem MCP server so Claude can read my Documents folder."*
 
+**Faster alternative:** `tasks/setup-mcp.md` audits your current setup and guides you through adding new servers end-to-end without reading the guide first.
+
 **To check what's needed for a skill:**
 > *"I want to build a skill that checks my Gmail for action items. Read 08_MCP_SERVERS.md and tell me what MCP server I need and what tools it uses."*

@@ -178,6 +178,8 @@ Below is a complete, working CLAUDE.md for a personal setup. It is intentionally
 
 Claude will walk you through identity, style, and rules — and produce a draft in the format above.
 
+**Faster alternative:** `tasks/setup-claude-md.md` does this end-to-end without reading the guide first. `tasks/audit-claude-md.md` reviews an existing CLAUDE.md against this guide's checklist.
+
 ---
 
 ## Second Example: Developer Setup
