@@ -6,7 +6,8 @@ description: >
   exposed credentials, set up security hooks, harden their Claude environment,
   scan a project for secrets, or anything like "check if my setup is secure",
   "audit my Claude config", "set up security hooks", "scan for credentials".
-  Accepts an optional project path argument to scope project-level checks.
+  Accepts an optional project path argument (e.g. `/security-review /path/to/project`)
+  to scope project-level checks; defaults to the current working directory if omitted.
 args:
   - name: project
     description: Absolute path to the project to audit (optional, defaults to current working directory)
@@ -110,16 +111,11 @@ Check for `bypassPermissionsMode` or stale permission entries.
 
 **1f. Project-specific checks (if `$PROJECT` is set)**
 ```bash
-# .env files not in .gitignore
 cd "$PROJECT"
 find . -name '.env*' -not -path './.git/*' | head -20
-
-# Hardcoded secret patterns in source
 grep -rn --include="*.js" --include="*.ts" --include="*.py" --include="*.sh" \
   -E "(API_KEY|SECRET|PASSWORD|TOKEN)\s*=\s*['\"][^'\"]{8,}" . \
   --exclude-dir=node_modules --exclude-dir=.git 2>/dev/null | head -20
-
-# .gitignore coverage
 cat .gitignore 2>/dev/null | grep -E "\.env|secret|credential" || echo ".gitignore: no secret patterns found"
 ```
 
@@ -151,49 +147,7 @@ exfiltration, dangerous flag usage, and recursive deletion of critical directori
 **Ask the user:** "Create `.claude/hooks/security-precheck.sh` and wire it into your
 Claude settings? (yes/no)"
 
-If approved, write exactly this file to `~/.claude/hooks/security-precheck.sh`:
-
-```bash
-#!/usr/bin/env bash
-# Claude Code PreToolUse security gate
-# Blocks dangerous Bash commands before execution
-# Input: JSON on stdin with .tool_input.command
-
-set -euo pipefail
-
-INPUT=$(cat)
-CMD=$(echo "$INPUT" | python3 -c "import json,sys; print(json.load(sys.stdin).get('tool_input',{}).get('command',''))" 2>/dev/null || echo "")
-
-block() {
-  echo "{\"decision\":\"block\",\"reason\":\"$1\"}"
-  exit 0
-}
-
-# 1. Dangerous flags
-echo "$CMD" | grep -qE -- '--dangerously-skip-permissions|--no-verify.*git|--force.*push' && \
-  block "Blocked: dangerous flag detected"
-
-# 2. Pipe-to-shell (supply chain attack vector)
-echo "$CMD" | grep -qE 'curl.+\|\s*(bash|sh|zsh)|wget.+\|\s*(bash|sh|zsh)' && \
-  block "Blocked: pipe-to-shell pattern (curl|wget piped to shell)"
-
-# 3. Sensitive directory deletion
-echo "$CMD" | grep -qE 'rm\s+-[a-z]*rf?\s+(/|~/|/Users/[^/]+/?$|~/?$|\$HOME/?$)' && \
-  block "Blocked: rm -rf on root or home directory"
-echo "$CMD" | grep -qP 'rm\s+-[a-z]*rf?\s+.*(/\.ssh|/\.gnupg|/\.claude)(\s|$)' 2>/dev/null && \
-  block "Blocked: rm -rf on sensitive dot-directory"
-
-# 4. World-writable permissions
-echo "$CMD" | grep -qE 'chmod\s+(777|a\+rwx|o\+w)' && \
-  block "Blocked: world-writable chmod"
-
-# 5. Credential exfiltration via network
-echo "$CMD" | grep -qiE '(curl|wget|nc|netcat).*(API_KEY|TOKEN|PASSWORD|SECRET|CREDENTIAL)' && \
-  block "Blocked: possible credential exfiltration via network tool"
-
-# Allow
-exit 0
-```
+If approved, copy `references/hook-security-precheck.sh` to `~/.claude/hooks/security-precheck.sh`.
 
 Then make it executable and wire it into `~/.claude/settings.json`:
 ```bash
@@ -232,10 +186,7 @@ scripts (postinstall). This phase adds scanning tools that check packages before
 
 If approved:
 ```bash
-# Socket CLI for npm
 npm install -g @socket/cli 2>/dev/null && echo "Socket CLI installed" || echo "Socket CLI install failed (npm not found?)"
-
-# pip-audit via pipx (isolated, no conflict with system Python)
 pipx install pip-audit 2>/dev/null && echo "pip-audit installed" || echo "pip-audit install failed (pipx not found?)"
 ```
 
@@ -254,9 +205,7 @@ fi
 Run an initial scan on `$PROJECT`:
 ```bash
 cd "$PROJECT"
-# npm
 [ -f package-lock.json ] && socket npm:report . 2>/dev/null | head -30
-# Python
 [ -f requirements.txt ] && pip-audit -r requirements.txt 2>/dev/null | head -30
 ```
 
@@ -276,26 +225,7 @@ brew install clamav 2>/dev/null && \
   freshclam && echo "ClamAV ready"
 ```
 
-Write `~/.claude/hooks/security-scan.sh`:
-```bash
-#!/usr/bin/env bash
-# Claude Code PostToolUse malware scan hook
-set -euo pipefail
-
-INPUT=$(cat)
-CMD=$(echo "$INPUT" | python3 -c "import json,sys; print(json.load(sys.stdin).get('tool_input',{}).get('command',''))" 2>/dev/null || echo "")
-
-# Only scan after download commands
-echo "$CMD" | grep -qE '(curl|wget|pip install|npm install|brew install)' || exit 0
-
-# Scan Downloads folder and /tmp
-command -v clamscan &>/dev/null || exit 0
-clamscan --quiet --recursive ~/Downloads /tmp 2>/dev/null && echo "[security-scan] Clean" || \
-  echo "[security-scan] WARNING: ClamAV found suspicious file"
-
-exit 0
-```
-
+Copy `references/hook-security-scan.sh` to `~/.claude/hooks/security-scan.sh`, then:
 ```bash
 chmod +x ~/.claude/hooks/security-scan.sh
 ```
@@ -337,35 +267,7 @@ Report findings. Do NOT auto-delete — let the user decide.
 
 Ask: "Create a session cleanup script that kills zombie processes and prunes old shell snapshots? (yes/no)"
 
-If approved, write `~/.claude/hooks/session-cleanup.sh`:
-```bash
-#!/usr/bin/env bash
-# Claude Code session cleanup
-# Kills zombie Claude processes (0% CPU, >2h) and prunes old shell snapshots
-
-# Kill zombie claude processes
-ps aux | awk '/claude/ && $3 == "0.0" {
-  cmd = "ps -o etime= -p " $2
-  cmd | getline etime
-  close(cmd)
-  split(etime, t, ":")
-  if (length(t) >= 3 || (length(t) == 2 && t[1]+0 >= 120)) {
-    print "Killing zombie Claude PID " $2 " (elapsed: " etime ")"
-    system("kill " $2)
-  }
-}'
-
-# Prune shell snapshots older than 7 days
-find ~/.claude/shell-snapshots/ -type f -mtime +7 -delete 2>/dev/null
-REMAINING=$(ls ~/.claude/shell-snapshots/ 2>/dev/null | wc -l | tr -d ' ')
-echo "[session-cleanup] Shell snapshots remaining: $REMAINING"
-
-# Session count
-SESSIONS=$(ls ~/.claude/sessions/ 2>/dev/null | wc -l | tr -d ' ')
-SIZE=$(du -sh ~/.claude/sessions/ 2>/dev/null | cut -f1)
-echo "[session-cleanup] Sessions: $SESSIONS, Storage: $SIZE"
-```
-
+If approved, copy `references/hook-session-cleanup.sh` to `~/.claude/hooks/session-cleanup.sh`, then:
 ```bash
 chmod +x ~/.claude/hooks/session-cleanup.sh
 ```
@@ -415,14 +317,6 @@ Generated: [date]
 | Shell snapshots | LOW | Auto-pruned at 7 days |
 | Session transcripts | MEDIUM | Manual review recommended |
 
-## File Inventory
-
-| File | Purpose |
-|------|---------|
-| ~/.claude/hooks/security-precheck.sh | PreToolUse execution guard |
-| ~/.claude/hooks/security-scan.sh | PostToolUse malware scan |
-| ~/.claude/hooks/session-cleanup.sh | Session and zombie cleanup |
-
 ## Maintenance Schedule
 
 | Task | Frequency | Method |
@@ -432,15 +326,17 @@ Generated: [date]
 | Transcript credential scan | Quarterly | Manual run of Phase 5a |
 | MCP server review | When adding new server | Run Phase 6 |
 | Full re-audit | Quarterly | Re-run /security-review |
-
-## Checklist: Adding a New MCP Server
-
-- [ ] Is the source known and trusted?
-- [ ] Is the version pinned?
-- [ ] Does it need secrets? → Store in keychain, not env block
-- [ ] Is transport stdio or HTTP? → HTTP requires auth review
-- [ ] Run Phase 6 MCP audit after adding
 ```
+
+---
+
+## Edge Cases
+
+- If `~/.claude/settings.json` does not exist: skip credential and hook checks in Phases 0–2 and note "No global settings file found — Claude Code may not be configured yet."
+- If `$PROJECT` is not a git repository: skip `.env` tracking check (0b) and `.gitignore` coverage (1f); note "Not a git repo — git-based checks skipped."
+- If the user declines all APPROVAL REQUIRED phases: produce the Phase 0 + Phase 1 read-only report and the Phase 7 governance doc. Do not treat declining as an error.
+- If a scanning tool (Socket CLI, ClamAV, pip-audit) fails to install: log the failure, skip that specific check, and continue with remaining phases. Do not abort the entire audit.
+- If `~/.claude/hooks/` already contains a `security-precheck.sh`: read it, compare to the reference version, and ask "An existing hook is already installed. Replace it with the updated version, keep the current one, or show a diff?"
 
 ---
 
@@ -448,10 +344,7 @@ Generated: [date]
 
 After all selected phases, run:
 ```bash
-# Confirm hooks exist and are executable
 ls -la ~/.claude/hooks/*.sh 2>/dev/null || echo "No hooks installed"
-
-# Confirm hooks are wired in settings
 python3 -c "
 import json
 d = json.load(open('/Users/' + __import__('os').getenv('USER') + '/.claude/settings.json'))

@@ -418,10 +418,10 @@ The `--wait` flag tells Git to block until you close the file tab, so Git knows 
 
 ### Opening Your Project with the Workspace File
 
-The `Claude-Teacher.code-workspace` file in your folder opens the project with any saved VS Code settings (panel layout, recommended extensions, etc.) in one click. Use **File → Open Workspace from File** and select it, or from the terminal:
+The `Cluide.code-workspace` file in your folder opens the project with any saved VS Code settings (panel layout, recommended extensions, etc.) in one click. Use **File → Open Workspace from File** and select it, or from the terminal:
 
 ```bash
-code Claude-Teacher.code-workspace
+code Cluide.code-workspace
 ```
 
 ### Integrated Terminal
