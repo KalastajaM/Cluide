@@ -2,7 +2,7 @@
 
 **Owner:** [PLACEHOLDER: Initiative Owner Name] | **Sponsor:** [PLACEHOLDER: Workstream Sponsor Name]
 **Last updated:** [PLACEHOLDER: YYYY-MM-DD] (rev 1 — initial template)
-**Purpose:** Central, maintained register of risks to the [PLACEHOLDER: Legacy Product Name] → [PLACEHOLDER: Cloud Platform Name] migration programme. For narrative context and supporting evidence behind each risk, see `Knowledge_Base.md`. For programme-level dependencies that underpin these risks, see `Dependency_Register.md` — risk entries reference dependency IDs (D-xx) where applicable.
+**Purpose:** Central, maintained register of risks to the [PLACEHOLDER: Initiative Name] programme. For narrative context and supporting evidence behind each risk, see `Knowledge_Base.md`. For programme-level dependencies that underpin these risks, see `Dependency_Register.md` — risk entries reference dependency IDs (D-xx) where applicable.
 
 ---
 
@@ -10,118 +10,98 @@
 
 | ID | Category | Risk | Likelihood | Impact | Status | Steerco |
 |---|---|---|---|---|---|---|
-| [R-01](#r-01) | Product | [PLACEHOLDER: Risk title — e.g. "Feature gap blocks enterprise migration"] | M | M | 🔴 Open | ⭐ Key |
-| [R-02](#r-02) | Product | [PLACEHOLDER: Risk title — e.g. "Non-migratable accounts — air-gap / compliance constraints"] | H | H | 🔴 Open | ⭐ Key |
-| [R-03](#r-03) | Commercial | [PLACEHOLDER: Risk title — e.g. "Specific segment churn not modelled"] | M | M | 🔴 Open | ⭐ Key |
-| [R-04](#r-04) | Commercial | [PLACEHOLDER: Risk title — e.g. "Partner resistance — self-interest in legacy revenue"] | M | M | 🔴 Open | ⭐ Key |
-| [R-05](#r-05) | Commercial | [PLACEHOLDER: Risk title — e.g. "Customer deferral — competing IT projects"] | H | M | 🟡 Monitoring | |
-| [R-06](#r-06) | Financial | [PLACEHOLDER: Risk title — e.g. "Price increase delay"] | L | H | 🟡 Monitoring | |
-| [R-07](#r-07) | Commercial | [PLACEHOLDER: Risk title — e.g. "Non-migratable base unquantified — GRR/NRR target set incorrectly"] | H | H | 🔴 Open | ⭐ Key |
-| [R-08](#r-08) | Operational | [PLACEHOLDER: Risk title — e.g. "Sales incentive misalignment — no reward for conversion"] | H | H | 🔴 Open | ⭐ Key |
-| [R-09](#r-09) | Operational | [PLACEHOLDER: Risk title — e.g. "Migration team capacity and geographic coverage gaps"] | H | H | 🔴 Open | ⭐ Key |
-| [R-10](#r-10) | Financial | [PLACEHOLDER: Risk title — e.g. "Financial model reliability — data quality / assumption uncertainty"] | H | M | 🔴 Open | ⭐ Key |
+| [R-01](#r-01) | Scope | [PLACEHOLDER: Risk title — e.g. "Scope creep — requirements expand beyond agreed boundaries"] | M | M | 🔴 Open | ⭐ Key |
+| [R-02](#r-02) | Resourcing | [PLACEHOLDER: Risk title — e.g. "Key resource unavailability — critical team members unavailable at peak"] | M | H | 🔴 Open | ⭐ Key |
+| [R-03](#r-03) | Governance | [PLACEHOLDER: Risk title — e.g. "Stakeholder misalignment — conflicting priorities across sponsoring teams"] | M | M | 🔴 Open | ⭐ Key |
+| [R-04](#r-04) | Delivery | [PLACEHOLDER: Risk title — e.g. "Third-party delivery risk — external vendor misses key milestone"] | M | H | 🔴 Open | ⭐ Key |
+| [R-05](#r-05) | Financial | [PLACEHOLDER: Risk title — e.g. "Budget overrun — costs exceed approved envelope"] | L | H | 🟡 Monitoring | |
+| [R-06](#r-06) | Schedule | [PLACEHOLDER: Risk title — e.g. "Timeline slippage — milestones slip due to unresolved dependencies"] | H | M | 🟡 Monitoring | |
+| [R-07](#r-07) | Data | [PLACEHOLDER: Risk title — e.g. "Data quality issues — source data insufficient for decision-making"] | H | M | 🔴 Open | ⭐ Key |
+| [R-08](#r-08) | Change | [PLACEHOLDER: Risk title — e.g. "Organisational change resistance — teams resist new ways of working"] | H | H | 🔴 Open | ⭐ Key |
+| [R-09](#r-09) | Compliance | [PLACEHOLDER: Risk title — e.g. "Regulatory / compliance blocker — approval processes delay delivery"] | M | H | 🔴 Open | ⭐ Key |
+| [R-10](#r-10) | Benefits | [PLACEHOLDER: Risk title — e.g. "Benefits not realised — delivered solution doesn't achieve target outcomes"] | M | H | 🔴 Open | ⭐ Key |
 
 ---
 
 ## Rating scale
 
 **Likelihood:** H = High (likely or already occurring) / M = Medium / L = Low
-**Impact:** H = High (material effect on GRR/NRR target or programme outcome) / M = Medium / L = Low
+**Impact:** H = High (material effect on programme outcomes or KPIs) / M = Medium / L = Low
 **Status:** 🔴 Open / 🟡 Monitoring / 🟢 Mitigated / ⚫ Closed
 
-**Update cadence:** Review at each programme milestone or when field intelligence changes a rating. Likelihood or impact moving to H must be escalated to [PLACEHOLDER: Initiative Owner Name] (Owner) and [PLACEHOLDER: Workstream Sponsor Name] (Sponsor).
+**Update cadence:** Review at each programme milestone or when new information changes a rating. Likelihood or impact moving to H must be escalated to [PLACEHOLDER: Initiative Owner Name] (Owner) and [PLACEHOLDER: Workstream Sponsor Name] (Sponsor).
 
 ---
 
-## Product Risks
+## Scope Risks
 
 ---
 
 ### R-01
 
-**Category:** Product | **Likelihood:** M | **Impact:** M | **Status:** 🔴 Open | **Owner:** [PLACEHOLDER: Risk Owner] | **Date added:** [PLACEHOLDER: YYYY-MM-DD] | **Key Risk:** ⭐ Yes
+**Category:** Scope | **Likelihood:** M | **Impact:** M | **Status:** 🔴 Open | **Owner:** [PLACEHOLDER: Risk Owner] | **Date added:** [PLACEHOLDER: YYYY-MM-DD] | **Key Risk:** ⭐ Yes
 
 **Description:**
-[PLACEHOLDER: Describe the product risk. Example: "Elements lacks enterprise-grade RBAC. Accounts with multi-site admin requirements cannot migrate until asset grouping and policy delegation features are delivered in 2027."]
+[PLACEHOLDER: Describe the scope creep risk. Example: "Requirements from stakeholders continue to expand beyond the agreed scope, adding unplanned work to the delivery team. Without a formal change control process, the programme risks schedule slippage and budget overrun."]
 
 **Mitigation / Response:**
-[PLACEHOLDER: Describe mitigation. Example: "Do not commit to migrating accounts with full RBAC requirements without disclosing the 2027 roadmap dependency. Qualify upfront whether the simpler SSO capability alone satisfies the customer's use case."]
+[PLACEHOLDER: Describe mitigation. Example: "Enforce formal change control for all scope additions. Require Sponsor approval for any change that affects timeline, budget, or team capacity. Log all scope requests in the Action Tracker and assess impact before accepting."]
 
-**Linked dependencies:** [PLACEHOLDER: List linked D-xx dependency IDs from Dependency_Register.md — e.g. "[D-01](Dependency_Register.md#d-01)"]
+**Linked dependencies:** [PLACEHOLDER: List linked D-xx dependency IDs — e.g. "None"]
+
+---
+
+## Resourcing Risks
 
 ---
 
 ### R-02
 
-**Category:** Product | **Likelihood:** H | **Impact:** H | **Status:** 🔴 Open | **Owner:** [PLACEHOLDER: Risk Owner] | **Date added:** [PLACEHOLDER: YYYY-MM-DD] | **Key Risk:** ⭐ Yes
+**Category:** Resourcing | **Likelihood:** M | **Impact:** H | **Status:** 🔴 Open | **Owner:** [PLACEHOLDER: Risk Owner] | **Date added:** [PLACEHOLDER: YYYY-MM-DD] | **Key Risk:** ⭐ Yes
 
 **Description:**
-[PLACEHOLDER: Describe the non-migratable accounts risk. Example: "Fully air-gapped environments cannot connect to the cloud platform regardless of configuration. The extent of semi-air-gapped environments that could use a connector solution is not yet quantified."]
+[PLACEHOLDER: Describe the resource unavailability risk. Example: "One or more critical team members may become unavailable during the peak delivery phase due to competing priorities, illness, or attrition. No formal cover arrangement is in place for key specialist roles."]
 
 **Mitigation / Response:**
-[PLACEHOLDER: Describe mitigation. Example: "Map air-gapped vs semi-air-gapped accounts. Communicate connector capabilities to affected segments. Adjust GRR/NRR denominator once non-migratable base is quantified."]
+[PLACEHOLDER: Describe mitigation. Example: "Identify cover arrangements for all critical roles before Phase 2 begins. Ensure knowledge is documented and not siloed. Escalate to Sponsor immediately if a key person becomes unavailable."]
 
-**Linked dependencies:** [PLACEHOLDER: e.g. "[D-02](Dependency_Register.md#d-02)"]
+**Linked dependencies:** [PLACEHOLDER: e.g. "[D-04](Dependency_Register.md#d-04)"]
 
 ---
 
-## Commercial Risks
+## Governance Risks
 
 ---
 
 ### R-03
 
-**Category:** Commercial | **Likelihood:** M | **Impact:** M | **Status:** 🔴 Open | **Owner:** [PLACEHOLDER: Risk Owner] | **Date added:** [PLACEHOLDER: YYYY-MM-DD] | **Key Risk:** ⭐ Yes
+**Category:** Governance | **Likelihood:** M | **Impact:** M | **Status:** 🔴 Open | **Owner:** [PLACEHOLDER: Risk Owner] | **Date added:** [PLACEHOLDER: YYYY-MM-DD] | **Key Risk:** ⭐ Yes
 
 **Description:**
-[PLACEHOLDER: Describe a segment-specific churn risk not captured in the financial model. Example: "EDU/GOV customers subject to tender cycles may churn at a materially higher rate than modelled. This segment's churn behaviour has not been stress-tested in the financial model."]
+[PLACEHOLDER: Describe the stakeholder misalignment risk. Example: "Sponsoring teams hold conflicting views on priorities, success criteria, or delivery approach. If not resolved, these conflicts may cause delays at gate reviews or undermine team direction."]
 
 **Mitigation / Response:**
-[PLACEHOLDER: Mitigation — e.g. "Add EDU/GOV uplifted churn scenario to financial model. Qualify accounts in this segment early."]
+[PLACEHOLDER: Mitigation — e.g. "Hold a structured alignment session with all sponsoring stakeholders before AG2. Document agreed positions in the Decision Tracker. Escalate unresolved conflicts to the Programme Board before they affect delivery."]
 
-**Linked dependencies:** [PLACEHOLDER: D-xx reference if applicable, or "None"]
+**Linked dependencies:** [PLACEHOLDER: D-xx reference or "None"]
+
+---
+
+## Delivery Risks
 
 ---
 
 ### R-04
 
-**Category:** Commercial | **Likelihood:** M | **Impact:** M | **Status:** 🔴 Open | **Owner:** [PLACEHOLDER: Risk Owner] | **Date added:** [PLACEHOLDER: YYYY-MM-DD]
+**Category:** Delivery | **Likelihood:** M | **Impact:** H | **Status:** 🔴 Open | **Owner:** [PLACEHOLDER: Risk Owner] | **Date added:** [PLACEHOLDER: YYYY-MM-DD] | **Key Risk:** ⭐ Yes
 
 **Description:**
-[PLACEHOLDER: Describe partner resistance risk. Example: "Some resellers sell on-prem hosting as a separate revenue stream and will resist migration to protect it. This affects a subset of high-touch partners."]
+[PLACEHOLDER: Describe the third-party delivery risk. Example: "A key external vendor is responsible for delivering a critical component on which Phase 2 depends. If the vendor misses their delivery date, the programme's overall timeline will slip with limited ability to recover."]
 
 **Mitigation / Response:**
-[PLACEHOLDER: Mitigation — e.g. "Win-win-win approach: lower total spend for customer, partner recovers revenue via cloud ARR and margin, company retains ARR at a better multiple."]
+[PLACEHOLDER: Mitigation — e.g. "Obtain a formal delivery schedule from the vendor. Agree on milestone checkpoints and escalation triggers. Identify a contingency option (e.g. alternative supplier or descoped approach) in case of delay."]
 
-**Linked dependencies:** [PLACEHOLDER: D-xx or "None"]
-
----
-
-### R-05
-
-**Category:** Commercial | **Likelihood:** H | **Impact:** M | **Status:** 🟡 Monitoring | **Owner:** [PLACEHOLDER: Risk Owner] | **Date added:** [PLACEHOLDER: YYYY-MM-DD]
-
-**Description:**
-[PLACEHOLDER: Describe customer deferral risk. Example: "Customers defer migration due to competing IT projects or budget cycles, causing slippage against conversion targets."]
-
-**Mitigation / Response:**
-[PLACEHOLDER: Mitigation — e.g. "Increase urgency through price increase lever; proactive engagement by migration team with accounts showing deferral signals."]
-
-**Linked dependencies:** [PLACEHOLDER: D-xx or "None"]
-
----
-
-### R-07
-
-**Category:** Commercial | **Likelihood:** H | **Impact:** H | **Status:** 🔴 Open | **Owner:** [PLACEHOLDER: Risk Owner] | **Date added:** [PLACEHOLDER: YYYY-MM-DD] | **Key Risk:** ⭐ Yes
-
-**Description:**
-[PLACEHOLDER: Describe the unquantified non-migratable base risk. Example: "Without estimating the non-migratable base (air-gapped, compliance-prohibited), GRR/NRR targets may be set against the wrong denominator, creating a false picture of programme performance."]
-
-**Mitigation / Response:**
-[PLACEHOLDER: Mitigation — e.g. "Complete account mapping exercise. Do not finalize GRR/NRR targets until this base is quantified."]
-
-**Linked dependencies:** [PLACEHOLDER: D-xx or "None"]
+**Linked dependencies:** [PLACEHOLDER: e.g. "[D-02](Dependency_Register.md#d-02)"]
 
 ---
 
@@ -129,63 +109,103 @@
 
 ---
 
-### R-06
+### R-05
 
 **Category:** Financial | **Likelihood:** L | **Impact:** H | **Status:** 🟡 Monitoring | **Owner:** [PLACEHOLDER: Risk Owner] | **Date added:** [PLACEHOLDER: YYYY-MM-DD]
 
 **Description:**
-[PLACEHOLDER: Describe price increase delay risk. Example: "If the planned price increase is delayed beyond the target date, the primary 'stick' lever is removed, reducing urgency for customers and partners to migrate."]
+[PLACEHOLDER: Describe the budget overrun risk. Example: "Unplanned scope additions, resource changes, or vendor cost increases may push total programme spend beyond the approved budget envelope. The current budget has limited contingency."]
 
 **Mitigation / Response:**
-[PLACEHOLDER: Mitigation — e.g. "Maintain price increase as confirmed commitment; escalate immediately if commercial leadership signals delay."]
+[PLACEHOLDER: Mitigation — e.g. "Track actual vs. planned spend monthly. Enforce change control to prevent unplanned scope additions. Escalate immediately if forecast exceeds budget by more than [N]%."]
 
-**Linked dependencies:** [PLACEHOLDER: e.g. "[D-05](Dependency_Register.md#d-05)"]
+**Linked dependencies:** [PLACEHOLDER: D-xx or "None"]
 
 ---
 
 ### R-10
 
-**Category:** Financial | **Likelihood:** H | **Impact:** M | **Status:** 🔴 Open | **Owner:** [PLACEHOLDER: Risk Owner] | **Date added:** [PLACEHOLDER: YYYY-MM-DD] | **Key Risk:** ⭐ Yes
+**Category:** Benefits | **Likelihood:** M | **Impact:** H | **Status:** 🔴 Open | **Owner:** [PLACEHOLDER: Risk Owner] | **Date added:** [PLACEHOLDER: YYYY-MM-DD] | **Key Risk:** ⭐ Yes
 
 **Description:**
-[PLACEHOLDER: Describe financial model reliability risk. Example: "Source data contains anomalies (credit notes, inactive accounts) that may distort ACV figures. Model assumptions have not been stress-tested against large-account concentration or segment-specific scenarios."]
+[PLACEHOLDER: Describe the benefits realisation risk. Example: "The delivered solution may not achieve the target outcomes if adoption is low, the benefits measurement framework is not in place, or baseline metrics were not captured before go-live."]
 
 **Mitigation / Response:**
-[PLACEHOLDER: Mitigation — e.g. "Clean data anomalies in source. Add customer concentration and segment stress-test scenarios to the model. Document all assumptions explicitly."]
+[PLACEHOLDER: Mitigation — e.g. "Define the benefits measurement framework before AG3. Capture baseline metrics during Phase 1. Plan a post-go-live review at an agreed interval to assess benefits realisation."]
 
 **Linked dependencies:** [PLACEHOLDER: D-xx or "None"]
 
 ---
 
-## Operational Risks
+## Schedule Risks
+
+---
+
+### R-06
+
+**Category:** Schedule | **Likelihood:** H | **Impact:** M | **Status:** 🟡 Monitoring | **Owner:** [PLACEHOLDER: Risk Owner] | **Date added:** [PLACEHOLDER: YYYY-MM-DD]
+
+**Description:**
+[PLACEHOLDER: Describe the timeline slippage risk. Example: "Multiple open dependencies (data access, vendor delivery, regulatory sign-off) each carry individual schedule risk. If two or more slip concurrently, the cumulative effect on the programme timeline could be material."]
+
+**Mitigation / Response:**
+[PLACEHOLDER: Mitigation — e.g. "Track all open dependencies weekly. Build buffer into the schedule at phase boundaries. Identify the critical path and monitor it explicitly."]
+
+**Linked dependencies:** [PLACEHOLDER: e.g. "[D-02](Dependency_Register.md#d-02), [D-03](Dependency_Register.md#d-03)"]
+
+---
+
+## Data Risks
+
+---
+
+### R-07
+
+**Category:** Data | **Likelihood:** H | **Impact:** M | **Status:** 🔴 Open | **Owner:** [PLACEHOLDER: Risk Owner] | **Date added:** [PLACEHOLDER: YYYY-MM-DD] | **Key Risk:** ⭐ Yes
+
+**Description:**
+[PLACEHOLDER: Describe the data quality risk. Example: "Source data from [system] contains known quality issues (missing values, duplicates, inconsistent coding). If not resolved before Phase 1 analysis begins, outputs may be unreliable and decisions built on them flawed."]
+
+**Mitigation / Response:**
+[PLACEHOLDER: Mitigation — e.g. "Agree data quality acceptance criteria with the Analytics team before the extract is delivered. Build a data cleansing step into Phase 1. Document all data assumptions and limitations explicitly in the financial model."]
+
+**Linked dependencies:** [PLACEHOLDER: e.g. "[D-06](Dependency_Register.md#d-06)"]
+
+---
+
+## Change & Adoption Risks
 
 ---
 
 ### R-08
 
-**Category:** Operational | **Likelihood:** H | **Impact:** H | **Status:** 🔴 Open | **Owner:** [PLACEHOLDER: Risk Owner] | **Date added:** [PLACEHOLDER: YYYY-MM-DD] | **Key Risk:** ⭐ Yes
+**Category:** Change | **Likelihood:** H | **Impact:** H | **Status:** 🔴 Open | **Owner:** [PLACEHOLDER: Risk Owner] | **Date added:** [PLACEHOLDER: YYYY-MM-DD] | **Key Risk:** ⭐ Yes
 
 **Description:**
-[PLACEHOLDER: Describe incentive misalignment risk. Example: "Sales compensation plans do not reward on-prem to cloud conversion. Local sales teams in non-migration-team-covered markets have no incentive to drive migrations."]
+[PLACEHOLDER: Describe the organisational change resistance risk. Example: "Teams affected by the programme may resist changes to ways of working, tools, or processes. Without active change management, adoption may be low and the intended benefits may not be realised post-go-live."]
 
 **Mitigation / Response:**
-[PLACEHOLDER: Mitigation — e.g. "Update sales incentive plan so that conversion counts as net new ARR. Extend migration team coverage or appoint local TSMs/SEs to drive conversions in uncovered markets."]
+[PLACEHOLDER: Mitigation — e.g. "Include a change management workstream from Phase 1. Identify change champions in affected teams. Run structured communications and training before go-live. Track adoption metrics post-launch."]
 
-**Linked dependencies:** [PLACEHOLDER: e.g. "[D-04](Dependency_Register.md#d-04)"]
+**Linked dependencies:** [PLACEHOLDER: D-xx or "None"]
+
+---
+
+## Compliance Risks
 
 ---
 
 ### R-09
 
-**Category:** Operational | **Likelihood:** H | **Impact:** H | **Status:** 🔴 Open | **Owner:** [PLACEHOLDER: Risk Owner] | **Date added:** [PLACEHOLDER: YYYY-MM-DD] | **Key Risk:** ⭐ Yes
+**Category:** Compliance | **Likelihood:** M | **Impact:** H | **Status:** 🔴 Open | **Owner:** [PLACEHOLDER: Risk Owner] | **Date added:** [PLACEHOLDER: YYYY-MM-DD] | **Key Risk:** ⭐ Yes
 
 **Description:**
-[PLACEHOLDER: Describe migration team capacity risk. Example: "The migration team is currently sized and structured for DACH and Japan only. Finland and other markets require local involvement. Without expanding coverage, the tech-touch volume cannot be handled at scale."]
+[PLACEHOLDER: Describe the regulatory / compliance risk. Example: "The solution requires regulatory or legal approval before go-live. The approval process timeline is uncertain and could delay the planned launch date if the submission is not prepared and submitted with sufficient lead time."]
 
 **Mitigation / Response:**
-[PLACEHOLDER: Mitigation — e.g. "Review operating model at AG3. Plan handoff of migration execution to local sales teams for tech-touch accounts."]
+[PLACEHOLDER: Mitigation — e.g. "Identify submission requirements early. Schedule submission to allow sufficient review time before the planned go-live. Maintain a contingency date in the project plan in case of delays."]
 
-**Linked dependencies:** [PLACEHOLDER: D-xx or "None"]
+**Linked dependencies:** [PLACEHOLDER: e.g. "[D-03](Dependency_Register.md#d-03)"]
 
 ---
 

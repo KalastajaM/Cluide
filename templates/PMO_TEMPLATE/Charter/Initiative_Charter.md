@@ -1,40 +1,32 @@
-# Initiative: [PLACEHOLDER: Initiative Name — e.g. "Legacy-to-Cloud Migration"]
+# Initiative: [PLACEHOLDER: Initiative Name — e.g. "Project Apex"]
 
 ## Context
 
 ### Where We Are
-- On-prem ACV is **[PLACEHOLDER: Starting ACV — e.g. "€10.1M"]** at the start of [PLACEHOLDER: Initiative Start Year — e.g. "2026"], expected to fall to **[PLACEHOLDER: Target ACV End-of-Year — e.g. "€6.1M"]** by end of year
-  - Budget assumes [PLACEHOLDER: Churn ACV — e.g. "€1.5M"] churn and [PLACEHOLDER: Migration Target ACV — e.g. "€2.4M"] conversion to [PLACEHOLDER: Cloud Platform Name — e.g. "Skyline Cloud"]
-- Gross margin ([PLACEHOLDER: Gross Margin % — e.g. "~85%"]) is healthy; Direct OpEx is [PLACEHOLDER: OpEx description — e.g. "small (minor R&D and some sales)"]
-- On-prem business is **non-core**; declining rapidly ([PLACEHOLDER: Annual Churn Rate — e.g. "~25%"] churn currently)
-- Generates good cash flow; can provide ARR upside by migrating customers to cloud
+- [PLACEHOLDER: Describe the current state. Example: "The organisation currently operates [process/system/capability] that is reaching the end of its useful life or is no longer fit for purpose."]
+- [PLACEHOLDER: Describe the key driver or problem. Example: "This creates [risk/cost/constraint] for the business, with an estimated impact of [PLACEHOLDER: impact description]."]
+- [PLACEHOLDER: Describe any time pressure or opportunity. Example: "A window of opportunity exists to address this now because [PLACEHOLDER: reason — e.g. 'a favourable market condition', 'a regulatory deadline', 'a planned system upgrade']."]
 
 ### Key Decisions Already Made
-- EOL announced **[PLACEHOLDER: EOL Date — Global — e.g. "30 Sep 2028"]** ([PLACEHOLDER: Region with different EOL — e.g. "Japan"]: [PLACEHOLDER: EOL Date — Region — e.g. "31 Dec 2027"]; pursuing more aggressive price-increase and migration approach)
-- Maintaining [PLACEHOLDER: Legacy Product Name — e.g. "Business Suite Pro"] blocks [PLACEHOLDER: Technical blocker description — e.g. "endpoint agent architecture changes"] in the [PLACEHOLDER: Cloud Platform Name] portfolio
-- [PLACEHOLDER: Migration Team Name — e.g. "Customer Migration Team"] set up in **[PLACEHOLDER: Migration Team Start Date — e.g. "August 2025"]** to do controlled migration directly with Resellers and Customers
-  - Migrations are technically fast (though manual)
-  - Customers need 3–6 months (governmental up to 9 months) for planning & execution
-- Price increase (stick) of **[PLACEHOLDER: Price Increase % Range — e.g. "50%–100%"]** planned for [PLACEHOLDER: Price Increase Date — e.g. "August 2026"]
+- [PLACEHOLDER: Decision 1 — e.g. "Programme scope formally approved at AG1 — [brief scope summary]"]
+- [PLACEHOLDER: Decision 2 — e.g. "Delivery approach confirmed: phased over [N] quarters"]
+- [PLACEHOLDER: Decision 3 — e.g. "Budget envelope of [PLACEHOLDER: amount] approved by Finance"]
+- [PLACEHOLDER: Decision 4 — e.g. "Delivery team established in [PLACEHOLDER: Month Year]"]
 
 ---
 
 ## Objectives
 
-- **Net Revenue Retention** (targets [PLACEHOLDER: GRR Target — e.g. "50%"] GRR / [PLACEHOLDER: NRR Target — e.g. "60%"] NRR – to be confirmed) leading prioritization of conversion and/or upsell efforts
-- Migrate [PLACEHOLDER: Legacy Product Name] on-prem business to cloud via **high-touch motion** through top [PLACEHOLDER: Top N Partners — e.g. "25"] partners
-  - [PLACEHOLDER: High-Touch Baseline Date — e.g. "Nov 2025"]: [PLACEHOLDER: High-Touch ACV — e.g. "€3.4M"] ACV; ~[PLACEHOLDER: High-Touch Customer Count — e.g. "660"] customers; avg [PLACEHOLDER: High-Touch Avg ACV — e.g. "€5K"] ACV
-- Migrate [PLACEHOLDER: Legacy Product Name] on-prem business to cloud via **tech-touch motion** through rest of the resellers
-  - [PLACEHOLDER: Tech-Touch Baseline Date — e.g. "Nov 2025"]: [PLACEHOLDER: Tech-Touch ACV — e.g. "€6.7M"] ACV; ~[PLACEHOLDER: Tech-Touch Customer Count — e.g. "6,000"] customers; avg [PLACEHOLDER: Tech-Touch Avg ACV — e.g. "€1K"] ACV
-- Reduce renewal churn; milk the remainder for as long as worth the opportunity cost
-  - Consider option for extending EOL if financially feasible
+- [PLACEHOLDER: Primary objective — e.g. "Deliver [capability / outcome] by [PLACEHOLDER: target date], within the approved budget and scope"]
+- [PLACEHOLDER: Secondary objective — e.g. "Achieve [KPI or benefit target — e.g. '20% reduction in processing time'] by end of [PLACEHOLDER: year]"]
+- [PLACEHOLDER: Third objective — e.g. "Ensure high adoption across [PLACEHOLDER: N] teams / sites / users by [PLACEHOLDER: date]"]
 
 ---
 
 ## Future State & Deliverables
 
-- No active [PLACEHOLDER: Legacy Product Name] customers by end of [PLACEHOLDER: Final EOL Year — e.g. "2028"]
-- Optimized & lean (minimal effort) support model for long tail support extensions (if chosen)
+- [PLACEHOLDER: Describe the target end state. Example: "All [N] teams operating on the new [process/system/capability] by end of [PLACEHOLDER: year]"]
+- [PLACEHOLDER: Describe key deliverables. Example: "Documented operating model, trained users, decommissioned legacy tooling, and a validated benefits report"]
 
 ---
 
@@ -53,37 +45,36 @@
 
 | Risk | Mitigant |
 |---|---|
-| [PLACEHOLDER: Risk 1 — e.g. "Delay to EOL — may create technical blockers in cloud portfolio"] | [PLACEHOLDER: Mitigant 1 — e.g. "Clarify dependencies and decision tree for EOL extension"] |
-| [PLACEHOLDER: Risk 2 — e.g. "Partner resistance — self-interest in legacy managed service revenue"] | [PLACEHOLDER: Mitigant 2 — e.g. "Win-win approach: lower total spend for customer; partner recovers via cloud margin"] |
-| [PLACEHOLDER: Risk 3 — e.g. "Non-migratable base unquantified — air-gapped / compliance-blocked customers"] | [PLACEHOLDER: Mitigant 3 — e.g. "Quantify as part of account mapping; adjust GRR/NRR denominator"] |
-| [PLACEHOLDER: Risk 4 — e.g. "Incentive misalignment — sales incentives do not reward on-prem conversion"] | [PLACEHOLDER: Mitigant 4 — e.g. "Update incentive plan; extend migration team coverage to key markets"] |
-| [PLACEHOLDER: Risk 5 — e.g. "Migration team capacity insufficient to meet volume targets"] | [PLACEHOLDER: Mitigant 5 — e.g. "Review operating model; build tech-touch self-serve motion"] |
-| [PLACEHOLDER: Risk 6 — e.g. "Product gaps blocking enterprise migration"] | [PLACEHOLDER: Mitigant 6 — e.g. "Raise as roadmap dependency; qualify accounts before committing timeline"] |
+| [PLACEHOLDER: Risk 1 — e.g. "Scope creep — requirements expand beyond agreed boundaries"] | [PLACEHOLDER: Mitigant 1 — e.g. "Enforce formal change control; require Sponsor approval for any scope change"] |
+| [PLACEHOLDER: Risk 2 — e.g. "Key resource unavailability at peak delivery phase"] | [PLACEHOLDER: Mitigant 2 — e.g. "Identify cover arrangements for all critical roles; document specialist knowledge"] |
+| [PLACEHOLDER: Risk 3 — e.g. "Stakeholder misalignment across sponsoring teams"] | [PLACEHOLDER: Mitigant 3 — e.g. "Run structured alignment session before AG2; document agreed positions in Decision Tracker"] |
+| [PLACEHOLDER: Risk 4 — e.g. "Third-party vendor misses critical delivery milestone"] | [PLACEHOLDER: Mitigant 4 — e.g. "Obtain formal delivery schedule; agree escalation triggers; identify contingency option"] |
+| [PLACEHOLDER: Risk 5 — e.g. "Low adoption post-go-live — benefits not realised"] | [PLACEHOLDER: Mitigant 5 — e.g. "Include change management workstream from Phase 1; track adoption metrics post-launch"] |
 
 ---
 
 ## High-Level Implementation Steps
 
-### Step 1 – Current State Assessment
-- Collect feedback from [PLACEHOLDER: Migration Team Name] & other stakeholders on current state and ongoing activities (what works, what not)
-  - Including: technical/commercial blockers, partner dependencies, and estimate of non-migratable base
-- Formalize a parallel [PLACEHOLDER: Legacy Product Name] & [PLACEHOLDER: Cloud Platform Name] usage policy — standard period, licensing mechanism, partner communication
-- Map non-migratable accounts; communicate cloud capability workarounds to affected segments
+### Step 1 – Discovery & Current State Assessment
+- [PLACEHOLDER: Describe key activities. Example: "Gather requirements and baseline metrics from key stakeholders"]
+- [PLACEHOLDER: Example: "Map current-state process / system / capability — identify gaps, pain points, and constraints"]
+- [PLACEHOLDER: Example: "Quantify the problem and validate the business case assumptions"]
 
-### Step 2 – Finalize Migration Pack
-- Plan the price increases (amount, upside, communication plan)
-- Include carrot and stick offers in migration deck; Translations to **[PLACEHOLDER: Required languages — e.g. "Finnish, Japanese, German, French"]**
-- Business case calculator showing the full comparison of On-Prem vs Cloud — tackles concerns on losing legacy service revenue
-- Productize training, webinars, and trial configurations as scalable self-serve motion
+### Step 2 – Business Case & Planning
+- [PLACEHOLDER: Example: "Develop and validate the full business case — costs, benefits, risks, and options"]
+- [PLACEHOLDER: Example: "Define the detailed delivery plan — milestones, dependencies, resourcing, and governance"]
+- [PLACEHOLDER: Example: "Obtain AG2 approval before proceeding to implementation"]
 
-### Step 3 – Redesign Organizational/Operational Plan
-- Define who will drive migrations technically and who will do the renewals per country (e.g. Inside renewal sales team)
-- Decide on the [PLACEHOLDER: Sales Incentive Program — e.g. "SIP"] structure to ensure incentives exist that drive the right behaviour by the needed teams/regions
-- Plan and decide on (potential) extended support to extend revenue stream and reduce churn
+### Step 3 – Implementation & Execution
+- [PLACEHOLDER: Example: "Build, test, and pilot the solution with an initial cohort or team"]
+- [PLACEHOLDER: Example: "Resolve issues from the pilot before full rollout"]
+- [PLACEHOLDER: Example: "Execute full rollout and manage change / communications across affected teams"]
 
-### Step 4 – Partner Action Plans
-- Build partner-specific action plans for the **top [PLACEHOLDER: Top N Partners] resellers**
-- Leverage the [PLACEHOLDER: Year] [PLACEHOLDER: Partner Program Name] change: on-prem ACV no longer counts toward partner KPIs — to be used actively as a structural conversion incentive in partner conversations
+### Step 4 – Benefits Realisation & Close
+- [PLACEHOLDER: Example: "Measure outcomes against baseline metrics and KPI targets"]
+- [PLACEHOLDER: Example: "Decommission or retire the replaced process / system / tooling"]
+- [PLACEHOLDER: Example: "Conduct a post-implementation review and document lessons learned"]
+- [PLACEHOLDER: Example: "Obtain AG5 sign-off on full benefits delivery"]
 
 ---
 
@@ -91,33 +82,35 @@
 
 | KPI | Target |
 |---|---|
-| Converted ACV% (by segment) | [PLACEHOLDER: Converted ACV % Target — e.g. "TBD (to be set at Business Case stage)"] |
-| # Customers remaining with [PLACEHOLDER: Legacy Product Name] (by segment) | [PLACEHOLDER: Remaining Customer Count Target — e.g. "TBD"] |
-| Cost of R&D for [PLACEHOLDER: Legacy Product Name] | [PLACEHOLDER: R&D Cost Target — e.g. "€0"] |
-| Cost of Support for [PLACEHOLDER: Legacy Product Name] | [PLACEHOLDER: Support Cost Target — e.g. "€0"] |
+| [PLACEHOLDER: KPI 1 — e.g. "% of milestones delivered on time"] | [PLACEHOLDER: Target — e.g. "≥ 90%"] |
+| [PLACEHOLDER: KPI 2 — e.g. "Budget variance (actual vs. approved)"] | [PLACEHOLDER: Target — e.g. "≤ 5% overrun"] |
+| [PLACEHOLDER: KPI 3 — e.g. "User adoption rate at 3 months post-go-live"] | [PLACEHOLDER: Target — e.g. "≥ 80%"] |
+| [PLACEHOLDER: KPI 4 — e.g. "Target benefit delivered (e.g. cost saving, time saving)"] | [PLACEHOLDER: Target — e.g. "TBD at Business Case stage"] |
 
 ---
 
 ## Financial Benefit & Costs
 
 ### Financial Benefit
-- Successful conversion of ACV at SaaS multiple ([PLACEHOLDER: SaaS Valuation Multiple — e.g. "3x"]) vs. on-prem ([PLACEHOLDER: On-Prem Multiple — e.g. "0.8x"]) represents a significant valuation uplift. Full business case to be developed at Business Case stage.
+- [PLACEHOLDER: Describe the expected financial or strategic benefit. Example: "Successful delivery is expected to yield [PLACEHOLDER: benefit — e.g. 'a reduction of £X in annual operating costs / an improvement of X% in throughput']. Full business case to be developed at AG2."]
 
 ### One-Time Costs
-- [PLACEHOLDER: One-time cost items — e.g. "Translations of migration materials and webinars"]
+- [PLACEHOLDER: One-time cost items — e.g. "External advisor fees; tooling / licensing setup; training development"]
 
 ### Running Costs
-- [PLACEHOLDER: Running cost items — e.g. "Cost of inside sales team; cost of maintaining legacy product until EOL"]
+- [PLACEHOLDER: Running cost items — e.g. "Ongoing licence fees; internal support team time; periodic review overhead"]
 
 ---
 
 ## Current Planning Calculations
 
-| Period | ACT [PLACEHOLDER: Year-2] | ACT [PLACEHOLDER: Year-1] | BUD [PLACEHOLDER: Current Year] | Mix [PLACEHOLDER: Year-1] | Mix [PLACEHOLDER: Current Year] |
-|---|---|---|---|---|---|
-| **[PLACEHOLDER: Legacy Product Name]** | [PLACEHOLDER: ACV Year-2] | [PLACEHOLDER: ACV Year-1] | [PLACEHOLDER: ACV Budget Year] | 100% | 100% |
-| Migration | – | [PLACEHOLDER: Migration Year-1] | [PLACEHOLDER: Migration Budget] | [PLACEHOLDER: Mig Mix Y-1] | [PLACEHOLDER: Mig Mix CY] |
-| Churn | – | [PLACEHOLDER: Churn Year-1] | [PLACEHOLDER: Churn Budget] | [PLACEHOLDER: Churn Mix Y-1] | [PLACEHOLDER: Churn Mix CY] |
+| Phase | Budget | Forecast | Actual | Notes |
+|---|---|---|---|---|
+| **Phase 1 – Discovery** | [PLACEHOLDER] | [PLACEHOLDER] | [PLACEHOLDER] | [PLACEHOLDER] |
+| **Phase 2 – Business Case & Planning** | [PLACEHOLDER] | [PLACEHOLDER] | [PLACEHOLDER] | [PLACEHOLDER] |
+| **Phase 3 – Implementation** | [PLACEHOLDER] | [PLACEHOLDER] | [PLACEHOLDER] | [PLACEHOLDER] |
+| **Phase 4 – Benefits Realisation** | [PLACEHOLDER] | [PLACEHOLDER] | [PLACEHOLDER] | [PLACEHOLDER] |
+| **Total** | [PLACEHOLDER] | [PLACEHOLDER] | [PLACEHOLDER] | |
 
 ---
 

@@ -1,7 +1,7 @@
 ---
-name: [PLACEHOLDER: initiative-slug — e.g. "legacy-to-cloud-guardrails"]
+name: [PLACEHOLDER: initiative-slug — e.g. "project-apex-guardrails"]
 description: >
-  Strategic PMO guardrails for the "[PLACEHOLDER: Initiative Name]" workstream under [PLACEHOLDER: Company Name]'s [PLACEHOLDER: Governance Framework — e.g. "stage-gate governance model"]. Use this skill ALWAYS before answering any question, drafting any plan, validating any action, or making any recommendation related to the [PLACEHOLDER: Legacy Product Name] to [PLACEHOLDER: Cloud Platform Name] migration project. Triggers include: migration planning, partner strategy, pricing decisions, churn analysis, EOL timelines, incentives, product gaps, resourcing, KPI tracking, ARR/ACV calculations, segment analysis, customer mapping, migration team activities, and any governance gate review. If the user asks anything about [PLACEHOLDER: Legacy Product Name], [PLACEHOLDER: Cloud Platform Name], on-prem conversion, or this initiative, this skill MUST be consulted first to validate alignment with the initiative charter.
+  Strategic PMO guardrails for the "[PLACEHOLDER: Initiative Name]" workstream under [PLACEHOLDER: Company Name]'s [PLACEHOLDER: Governance Framework — e.g. "stage-gate governance model"]. Use this skill ALWAYS before answering any question, drafting any plan, validating any action, or making any recommendation related to the [PLACEHOLDER: Initiative Name] project. Triggers include: scope decisions, delivery planning, resource allocation, financial modelling, stakeholder communications, dependency tracking, risk management, KPI reporting, gate review preparation, benefits assessment, and any governance gate review. If the user asks anything about [PLACEHOLDER: Initiative Name] priorities, approach, or constraints, this skill MUST be consulted first to validate alignment with the initiative charter.
 ---
 
 # [PLACEHOLDER: Initiative Name] – Initiative Guardrails & PMO Validation Skill
@@ -22,7 +22,7 @@ Refer to the **Team** section of the Initiative Charter for the current sponsor,
 |---|---|
 | Initiative Name | [PLACEHOLDER: Initiative Name] |
 | Governance Model | [PLACEHOLDER: Governance Framework — e.g. "Stage-Gate (AG1–AG5)"] |
-| Housing | [PLACEHOLDER: Project Management Platform — e.g. "Amplify / Jira"] |
+| Housing | [PLACEHOLDER: Project Management Platform — e.g. "Jira / SharePoint / Confluence"] |
 
 ---
 
@@ -48,9 +48,9 @@ Refer to the **Governance – Phase** section of the Initiative Charter for the 
 Refer to the **Objectives** and **Future State & Deliverables** sections of the Initiative Charter for the full objectives.
 
 **Guardrail**: Reject or flag any recommendation that:
-- Optimizes short-term cash at the expense of ARR conversion rates
-- Protects [PLACEHOLDER: Legacy Product Name] revenue in a way that delays or complicates migration
-- Treats churn as equivalent to conversion — churn does not count as migration success
+- Optimizes short-term convenience at the expense of the initiative's stated outcomes
+- Adds scope or complexity that is not aligned with the approved objectives
+- Treats activity (outputs) as equivalent to outcomes (benefits delivered) — completing tasks is not the same as achieving the programme's goals
 
 ---
 
@@ -58,29 +58,29 @@ Refer to the **Objectives** and **Future State & Deliverables** sections of the 
 
 Refer to the **Current Planning Calculations** and **Financial Benefit & Costs** sections of the Initiative Charter for baseline figures.
 
-**Guardrail**: Flag any scenario or plan that projects current-year migration materially below the conversion target without an explicit explanation of why the target should be revised. Flag plans that assume churn will cover the gap.
+**Guardrail**: Flag any scenario or plan that projects delivery materially below the target without an explicit explanation and Sponsor acknowledgement. Flag plans that assume additional budget without formal approval.
 
 ---
 
-## 5. Customer Segmentation
+## 5. Stakeholder Segmentation
 
-Refer to the **Objectives** section of the Initiative Charter for high-touch and tech-touch segment definitions, ACV, and customer counts.
+Refer to the **Objectives** section of the Initiative Charter for stakeholder and workstream definitions.
 
 **Guardrail**:
-- Do not apply high-touch resources to low-ACV tech-touch accounts without justification (ROI test required)
-- Do not apply tech-touch-only approaches to top [PLACEHOLDER: Top N Partners] partners — they require personalized engagement
-- Any segmentation change must be validated against the baselines in the Charter
+- Do not apply high-effort resources to low-priority workstreams without justification
+- Do not apply one-size-fits-all approaches where the Charter specifies differentiated treatment of stakeholder groups
+- Any segmentation change must be validated against the Charter
 
 ---
 
-## 6. EOL Timeline & Price Increase
+## 6. Key Milestones & Deadlines
 
-Refer to the **Key Decisions Already Made** section of the Initiative Charter for EOL dates and price increase parameters.
+Refer to the **High-Level Implementation Steps** and **Governance – Phase** sections of the Initiative Charter for approved milestones and timelines.
 
 **Guardrail**:
-- Do not recommend delaying the EOL date without a formal financial feasibility analysis and explicit acknowledgment that delay may create technical blockers in the [PLACEHOLDER: Cloud Platform Name] portfolio
-- [PLACEHOLDER: Region with different EOL]-specific plans must be more aggressive than global plans, not less
-- The price increase must be treated as a confirmed lever — do not deprioritize or defer it without flagging
+- Do not recommend deferring a key milestone without a formal impact assessment and Sponsor approval
+- Gate reviews must not be skipped or combined without explicit approval from the Programme Board
+- Any timeline change must be reflected in the Project Plan and communicated to the Sponsor
 
 ---
 
@@ -88,11 +88,12 @@ Refer to the **Key Decisions Already Made** section of the Initiative Charter fo
 
 These decisions are documented in the Initiative Charter under **Key Decisions Already Made** and must be treated as fixed constraints:
 
-- ✅ EOL announced to partners ([PLACEHOLDER: EOL Date — Global] globally; [PLACEHOLDER: EOL Date — Region] for [PLACEHOLDER: Region with different EOL])
-- ✅ [PLACEHOLDER: Migration Team Name] operational since [PLACEHOLDER: Migration Team Start Date]
-- ✅ Migrations are technically fast but manual; customers need 3–6 months planning (gov: up to 9 months)
-- ✅ Price increase of [PLACEHOLDER: Price Increase % Range] planned for [PLACEHOLDER: Price Increase Date]
-- ✅ On-prem ACV will **no longer count toward partner KPIs** in [PLACEHOLDER: Year] [PLACEHOLDER: Partner Program Name] — structural conversion incentive to be used actively
+[PLACEHOLDER: List confirmed decisions here once the charter is completed. Example:]
+- ✅ [PLACEHOLDER: Decision 1 — e.g. "Project scope approved at AG1"]
+- ✅ [PLACEHOLDER: Decision 2 — e.g. "Governance model confirmed as Stage-Gate (AG1–AG5)"]
+- ✅ [PLACEHOLDER: Decision 3 — e.g. "Delivery approach confirmed as phased"]
+- ✅ [PLACEHOLDER: Decision 4 — e.g. "Budget envelope approved"]
+- ✅ [PLACEHOLDER: Decision 5 — e.g. "Delivery team established"]
 
 **Guardrail**: Flag any recommendation that implies re-opening these decisions. If a recommendation requires changing one of these constraints, it must be explicitly escalated to the Workstream Sponsor and noted as a charter deviation.
 
@@ -112,15 +113,15 @@ Refer to the **KPIs** section of the Initiative Charter for targets.
 
 **Guardrail**:
 - Do not present status updates or analyses without referencing the initiative KPIs
-- GRR/NRR targets must not be finalized until the non-migratable customer base is quantified
+- KPI targets must not be revised without formal Sponsor approval and a note in the Decision Tracker
 
 ---
 
 ## 10. Implementation Workstreams
 
-Refer to the **High-Level Implementation Steps** section of the Initiative Charter for the four workstreams.
+Refer to the **High-Level Implementation Steps** section of the Initiative Charter for the approved workstreams.
 
-**Guardrail**: All actions must map to one of the four implementation steps in the Charter. Flag anything that falls outside them as potential scope creep.
+**Guardrail**: All actions must map to one of the implementation steps in the Charter. Flag anything that falls outside them as potential scope creep.
 
 ---
 
@@ -131,11 +132,11 @@ When this skill is active, apply the following checklist to every response:
 ### Before answering:
 - [ ] Does this action/recommendation align with the strategic objectives? *(Charter: Objectives)*
 - [ ] Is it financially consistent with the baseline and targets? *(Charter: Current Planning Calculations)*
-- [ ] Does it respect the segmentation model? *(Charter: Objectives – high-touch / tech-touch)*
-- [ ] Does it respect EOL dates and the price increase lever? *(Charter: Key Decisions Already Made)*
+- [ ] Does it respect the stakeholder segmentation model? *(Charter: Objectives)*
+- [ ] Does it respect confirmed milestones and deadlines? *(Charter: High-Level Implementation Steps)*
 - [ ] Does it treat confirmed decisions as fixed? *(Section 7 above)*
 - [ ] Does it address or acknowledge relevant risks? *(Charter: Risks & Mitigants)*
-- [ ] Does it map to one of the four implementation workstreams? *(Charter: High-Level Implementation Steps)*
+- [ ] Does it map to one of the implementation workstreams? *(Charter: High-Level Implementation Steps)*
 - [ ] Is it appropriate for the current governance gate stage? *(Charter: Governance – Phase)*
 
 ### Output format when issues are found:
@@ -155,16 +156,10 @@ When this skill is active, apply the following checklist to every response:
 
 <!-- Replace these with the terminology specific to your initiative -->
 
-- **ACV**: Annual Contract Value (on-prem subscription revenue)
-- **ARR**: Annual Recurring Revenue (cloud subscription revenue)
-- **[PLACEHOLDER: Legacy Product Abbreviation — e.g. "BS"]**: [PLACEHOLDER: Legacy Product Name] (on-prem product, going EOL)
-- **[PLACEHOLDER: Cloud Platform Abbreviation — e.g. "Elements"]**: [PLACEHOLDER: Cloud Platform Name] (cloud platform; migration target)
-- **[PLACEHOLDER: Migration Team Abbreviation — e.g. "ESS"]**: [PLACEHOLDER: Migration Team Name]
-- **[PLACEHOLDER: Sales Incentive Abbreviation — e.g. "SIP"]**: [PLACEHOLDER: Sales Incentive Program]
-- **[PLACEHOLDER: Partner Program Abbreviation — e.g. "GPP"]**: [PLACEHOLDER: Partner Program Name]
-- **GRR**: Gross Revenue Retention
-- **NRR**: Net Revenue Retention
-- **Top [PLACEHOLDER: Top N Partners]**: The [PLACEHOLDER: Top N Partners] highest-ACV reseller partners ([PLACEHOLDER: High-Touch ACV] ACV as of [PLACEHOLDER: High-Touch Baseline Date])
+- **[PLACEHOLDER: Abbreviation 1 — e.g. "PMO"]**: [PLACEHOLDER: Full term — e.g. "Programme Management Office"]
+- **[PLACEHOLDER: Abbreviation 2 — e.g. "AG"]**: [PLACEHOLDER: Full term — e.g. "Approval Gate (governance stage)"]
+- **[PLACEHOLDER: Abbreviation 3]**: [PLACEHOLDER: Full term]
+- **[PLACEHOLDER: Abbreviation 4]**: [PLACEHOLDER: Full term]
 - [PLACEHOLDER: Add further abbreviations relevant to your initiative]
 
 ---

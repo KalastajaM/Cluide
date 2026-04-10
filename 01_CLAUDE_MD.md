@@ -57,6 +57,23 @@ Tell the assistant exactly how to format and phrase responses. The default Claud
 
 **Why this matters:** Without these instructions, the assistant defaults to structured outputs with bullets and bold text for almost everything, including casual answers. Most people find this exhausting to read over time.
 
+### Writing Style: A Separate File
+
+Format preferences (prose vs. bullets, emoji use) belong in CLAUDE.md because they apply to every response. Language quality rules are different — they are longer, more nuanced, and benefit from independent maintenance. Put them in a dedicated file, e.g. `writing-style.md`, and load it with a read instruction in CLAUDE.md.
+
+A writing style file typically contains:
+- Banned words and phrases that produce generic AI-sounding output ("leverage", "delve into", "it's worth noting", "importantly")
+- Sentence structure preferences — e.g. short sentences, active voice, no padding phrases
+- Prose vs. list rules — when bullets are acceptable vs. when they fragment ideas that flow better as prose
+
+This keeps the writing style evolvable: you can add new patterns as you notice them without touching the core identity and rules file. The read instruction is one line in CLAUDE.md:
+
+```
+Read `writing-style.md` at the start of every session.
+```
+
+Keep the file under 60 lines. If it grows beyond that, you are likely cataloguing individual violations rather than capturing the underlying principle.
+
 ### 3. Critical Rules (the safety boundary)
 
 This is the most important section. Clearly state what the assistant must never do without explicit confirmation. For a personal assistant with access to email, calendar, and files, the rule is almost always:
@@ -87,6 +104,20 @@ The right question for each rule: "Does this apply to every single conversation,
 **Keep CLAUDE.md short.** Aim for under 30 lines. If it grows beyond that, you are likely adding task-specific instructions that belong elsewhere.
 
 ---
+
+## File Access Tiers
+
+Not all files in a project warrant the same access. Four tiers cover most cases:
+
+- **Auto-read:** files Claude loads at the start of every session — personal profile, writing style, active context. List these as explicit read instructions in CLAUDE.md.
+- **Reference-only:** folders Claude knows about but reads on demand — knowledge bases, output archives, templates. Name them in CLAUDE.md so Claude knows where to look, but don't auto-load them.
+- **Read-only:** files Claude can read but must not modify — master data, shared reference files, historical records. State this explicitly in CLAUDE.md: "The `masterdata/` folder is read-only — never edit files in it."
+- **Ignored:** files Claude should not read. Use `.claudeignore` for this in Claude Code. In Claude.ai or Cowork, or when the directory structure should be self-documenting, use a name prefix: `[IGNORE]` for folders to skip entirely, `[ARCHIVE]` for old versions stored for reference. The two approaches are complementary — `.claudeignore` handles patterns, name prefixes communicate intent visibly in the folder tree.
+
+The token cost of auto-reading compounds across every session. Keep the auto-read tier small. Everything else earns its place by being referenced in a task, not by being loaded by default.
+
+---
+
 
 ## Cross-Reference Consistency Rules (Project CLAUDE.md)
 

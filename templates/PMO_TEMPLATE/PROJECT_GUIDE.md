@@ -13,7 +13,7 @@
 | Track programme-level dependencies (internal & external) | `PMO/Dependency_Register.md` | ✅ Update when dependency status, target date, or priority changes |
 | Understand the financial model | `FinancialModel/Model_Summary.md` | ✅ Update when the Excel model changes |
 | Work with the financial model itself | `FinancialModel/[PLACEHOLDER: Financial Model Filename].xlsx` | ✅ Main financial model |
-| Get raw customer/ACV data | `Data/*.csv` (or equivalent) | ❌ Raw source data — do not modify |
+| Access raw source data | `Data/*.csv` (or equivalent) | ❌ Raw source data — do not modify |
 | View or build the project plan | `ProjectPlan/` | ✅ Work in progress |
 
 ---

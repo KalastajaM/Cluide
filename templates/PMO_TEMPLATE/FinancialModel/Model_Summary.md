@@ -19,10 +19,10 @@
 
 | Assumption | Value | Confidence | Notes |
 |-----------|-------|-----------|-------|
-| [e.g. Conversion rate — Segment A] | [X%] | [H/M/L] | [Source or basis] |
-| [e.g. Average revenue per converted account] | [€/$/X] | [H/M/L] | [Source or basis] |
-| [e.g. Churn rate post-migration] | [X%] | [H/M/L] | [Source or basis] |
-| [e.g. Timeline for full migration] | [DATE] | [H/M/L] | [Source or basis] |
+| [e.g. Headcount cost per phase] | [€/$/X] | [H/M/L] | [Source or basis] |
+| [e.g. Expected benefit — cost saving or revenue uplift] | [€/$/X] | [H/M/L] | [Source or basis] |
+| [e.g. Adoption rate at 3 months post-go-live] | [X%] | [H/M/L] | [Source or basis] |
+| [e.g. Timeline for full rollout] | [DATE] | [H/M/L] | [Source or basis] |
 
 ---
 
@@ -51,7 +51,7 @@
 
 *Things the model doesn't capture or assumptions that need validation.*
 
-- [e.g. "Churn rates are applied uniformly — no segment-level differentiation yet"]
+- [e.g. "Benefit realisation rates are applied uniformly — no segment-level differentiation yet"]
 - [e.g. "Does not model partner-driven vs. direct revenue separately"]
 - [e.g. "Q4 figures are projections based on H1 run rate"]
 

@@ -1,21 +1,20 @@
-# Cowork Project: [PLACEHOLDER: Initiative Name — e.g. "Legacy-to-Cloud Migration Initiative"]
+# Cowork Project: [PLACEHOLDER: Initiative Name — e.g. "Project Apex"]
 
 ## Purpose
 
-This project workspace supports a structured, Claude-assisted programme to migrate customers from a legacy on-premises product to a cloud platform. It provides Claude with the full context, rules, and registers needed to act as an embedded PMO assistant throughout the initiative lifecycle.
+This project workspace supports a structured, Claude-assisted programme to deliver [PLACEHOLDER: brief description of the initiative — e.g. "a new operational capability within the organisation"]. It provides Claude with the full context, rules, and registers needed to act as an embedded PMO assistant throughout the initiative lifecycle.
 
 ## Project overview
 
 | Field | Value |
 |---|---|
-| Initiative ID | [PLACEHOLDER: Initiative ID — e.g. "VCI-12"] |
+| Initiative ID | [PLACEHOLDER: Initiative ID — e.g. "PMO-07"] |
 | Initiative name | [PLACEHOLDER: Initiative Name] |
 | Owner | [PLACEHOLDER: Initiative Owner Name] |
 | Sponsor | [PLACEHOLDER: Workstream Sponsor Name] |
 | Governance model | [PLACEHOLDER: Governance Framework — e.g. "Stage-Gate (AG1–AG5)"] |
 | Current gate | [PLACEHOLDER: Current Gate — e.g. "AG1: Initiative Idea"] |
-| Legacy product | [PLACEHOLDER: Legacy Product Name] |
-| Cloud target | [PLACEHOLDER: Cloud Platform Name] |
+| Delivery approach | [PLACEHOLDER: Delivery Approach — e.g. "Phased delivery across 4 workstreams"] |
 
 ## Tasks in this project
 

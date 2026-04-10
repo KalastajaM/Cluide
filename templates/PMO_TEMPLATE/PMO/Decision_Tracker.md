@@ -21,14 +21,14 @@
 
 | ID | Title | Date | Decision Maker | Status | Category |
 |---|---|---|---|---|---|
-| [DEC-01](#dec-01) | [PLACEHOLDER: Decision title — e.g. "EOL Announced — Global"] | [PLACEHOLDER: Date or "Pre-programme"] | [PLACEHOLDER: Decision maker — e.g. "Group Leadership Team"] | ✅ Confirmed | Strategic |
-| [DEC-02](#dec-02) | [PLACEHOLDER: Decision title — e.g. "EOL Announced — Region with different timeline"] | [PLACEHOLDER: Date] | [PLACEHOLDER: Decision maker] | ✅ Confirmed | Strategic |
-| [DEC-03](#dec-03) | [PLACEHOLDER: Decision title — e.g. "No Legacy Support Post-EOL"] | [PLACEHOLDER: Date] | [PLACEHOLDER: Decision maker] | ✅ Confirmed | Strategic |
-| [DEC-04](#dec-04) | [PLACEHOLDER: Decision title — e.g. "On-Prem ACV Excluded from Partner KPIs"] | [PLACEHOLDER: Date] | [PLACEHOLDER: Decision maker] | ✅ Confirmed | Strategic |
-| [DEC-05](#dec-05) | [PLACEHOLDER: Decision title — e.g. "Migration Team Established"] | [PLACEHOLDER: Date] | [PLACEHOLDER: Decision maker] | ✅ Confirmed | Strategic |
-| [DEC-06](#dec-06) | [PLACEHOLDER: Decision title — e.g. "Price Increase Confirmed for Specific Date"] | [PLACEHOLDER: Date] | [PLACEHOLDER: Decision maker] | ✅ Confirmed | Commercial |
-| [DEC-07](#dec-07) | [PLACEHOLDER: Decision title — e.g. "Parallel Running Policy to be Documented"] | [PLACEHOLDER: Date] | [PLACEHOLDER: Decision maker] | 🔄 In Progress | Operational |
-| [DEC-08](#dec-08) | [PLACEHOLDER: Decision title — e.g. "SIP Updated — Conversion Counts as New ARR"] | [PLACEHOLDER: Date] | [PLACEHOLDER: Decision maker] | ⏳ Pending | Commercial |
+| [DEC-01](#dec-01) | [PLACEHOLDER: Decision title — e.g. "Project scope approved at AG1"] | [PLACEHOLDER: Date or "Pre-programme"] | [PLACEHOLDER: Decision maker — e.g. "Programme Board"] | ✅ Confirmed | Strategic |
+| [DEC-02](#dec-02) | [PLACEHOLDER: Decision title — e.g. "Governance model selected — Stage-Gate (AG1–AG5)"] | [PLACEHOLDER: Date] | [PLACEHOLDER: Decision maker] | ✅ Confirmed | Strategic |
+| [DEC-03](#dec-03) | [PLACEHOLDER: Decision title — e.g. "Delivery approach confirmed — phased over three quarters"] | [PLACEHOLDER: Date] | [PLACEHOLDER: Decision maker] | ✅ Confirmed | Strategic |
+| [DEC-04](#dec-04) | [PLACEHOLDER: Decision title — e.g. "Resource model agreed — internal team plus one external advisor"] | [PLACEHOLDER: Date] | [PLACEHOLDER: Decision maker] | ✅ Confirmed | Operational |
+| [DEC-05](#dec-05) | [PLACEHOLDER: Decision title — e.g. "Delivery team established"] | [PLACEHOLDER: Date] | [PLACEHOLDER: Decision maker] | ✅ Confirmed | Operational |
+| [DEC-06](#dec-06) | [PLACEHOLDER: Decision title — e.g. "Budget envelope confirmed at AG1"] | [PLACEHOLDER: Date] | [PLACEHOLDER: Decision maker] | ✅ Confirmed | Financial |
+| [DEC-07](#dec-07) | [PLACEHOLDER: Decision title — e.g. "Benefits measurement framework to be formalised"] | [PLACEHOLDER: Date] | [PLACEHOLDER: Decision maker] | 🔄 In Progress | Strategic |
+| [DEC-08](#dec-08) | [PLACEHOLDER: Decision title — e.g. "Post-go-live support model"] | [PLACEHOLDER: Date] | [PLACEHOLDER: Decision maker] | ⏳ Pending | Operational |
 
 ---
 
@@ -38,101 +38,65 @@
 
 ### DEC-01
 
-**Title:** [PLACEHOLDER: Decision title — e.g. "EOL Announced — Global"]
+**Title:** [PLACEHOLDER: Decision title — e.g. "Project scope approved at AG1"]
 **Date:** [PLACEHOLDER: Date or "Pre-programme"] | **Decision Maker:** [PLACEHOLDER: Decision maker] | **Status:** ✅ Confirmed | **Category:** Strategic
 
 **Decision:**
-[PLACEHOLDER: What was decided. Example: "End-of-Life for [Legacy Product Name] announced globally as [EOL Date — Global]. Partners and customers have been formally notified."]
+[PLACEHOLDER: What was decided. Example: "The scope of the initiative was formally approved at AG1. Scope includes [scope statement]. Out of scope: [out-of-scope items]."]
 
 **Rationale:**
-[PLACEHOLDER: Why this was decided. Example: "Maintaining the legacy product blocks endpoint architecture changes required in the cloud portfolio. EOL is a prerequisite for engineering simplification."]
+[PLACEHOLDER: Why this was decided. Example: "A clearly bounded scope was needed to enable accurate resourcing, budgeting, and milestone planning before proceeding to the Business Case stage."]
 
 **Impact:**
-[PLACEHOLDER: What this decision affects. Example: "All renewal contracts must not extend past EOL. Conversion motion urgency increases as EOL approaches."]
+[PLACEHOLDER: What this decision affects. Example: "All subsequent planning and financial modelling must stay within the agreed scope. Any scope changes require formal change control and re-approval at the relevant gate."]
 
 ---
 
 ### DEC-02
 
-**Title:** [PLACEHOLDER: Decision title — e.g. "EOL Announced — [Region]"]
+**Title:** [PLACEHOLDER: Decision title — e.g. "Governance model selected — Stage-Gate (AG1–AG5)"]
 **Date:** [PLACEHOLDER: Date] | **Decision Maker:** [PLACEHOLDER: Decision maker] | **Status:** ✅ Confirmed | **Category:** Strategic
 
 **Decision:**
-[PLACEHOLDER: What was decided. Example: "[Region]-specific EOL set at [EOL Date — Region], more aggressive than the global date. A more aggressive price-increase and migration approach applies in this region."]
+[PLACEHOLDER: What was decided. Example: "The programme will follow a five-gate stage-gate governance model (AG1–AG5), with formal approval required at each gate before proceeding to the next phase."]
 
 **Rationale:**
-[PLACEHOLDER: Rationale]
+[PLACEHOLDER: Rationale. Example: "Stage-gate governance provides structured checkpoints, clear accountability, and the ability to stop or redirect the initiative if the business case no longer holds."]
 
 **Impact:**
-[PLACEHOLDER: Impact]
+[PLACEHOLDER: Impact. Example: "All phases and deliverables must be planned and sequenced against the gate structure. Gate reviews must be scheduled and resourced in advance."]
 
 ---
 
 ### DEC-03
 
-**Title:** [PLACEHOLDER: Decision title — e.g. "No Legacy Support Post-EOL"]
+**Title:** [PLACEHOLDER: Decision title — e.g. "Delivery approach confirmed — phased over three quarters"]
 **Date:** [PLACEHOLDER: Date] | **Decision Maker:** [PLACEHOLDER: Decision maker] | **Status:** ✅ Confirmed | **Category:** Strategic
 
 **Decision:**
-[PLACEHOLDER: What was decided. Example: "The company will not offer any extended or legacy support product for [Legacy Product Name] after EOL. Customers must migrate or accept end of support."]
+[PLACEHOLDER: What was decided. Example: "The initiative will be delivered in three sequential phases over three quarters, with Phase 1 focused on discovery and planning, Phase 2 on build and test, and Phase 3 on rollout and benefits realisation."]
 
 **Rationale:**
-[PLACEHOLDER: Rationale — e.g. "Extended support would create ongoing cost, complexity, and a migration disincentive for customers and the sales team."]
+[PLACEHOLDER: Rationale. Example: "A phased approach allows early learnings to inform later phases and reduces the risk of large-scale rework."]
 
 **Impact:**
-[PLACEHOLDER: Impact — e.g. "Any customer requests for post-EOL support must be escalated. Existing renewal commitments beyond EOL must be reviewed."]
+[PLACEHOLDER: Impact. Example: "Resource requirements, timelines, and KPI targets must be mapped to phases. Phase gates must be agreed with the Sponsor before each phase begins."]
 
 ---
 
-### DEC-04
+### DEC-07
 
-**Title:** [PLACEHOLDER: Decision title — e.g. "On-Prem ACV Excluded from [Partner Program Name] KPIs"]
-**Date:** [PLACEHOLDER: Date] | **Decision Maker:** [PLACEHOLDER: Decision maker] | **Status:** ✅ Confirmed | **Category:** Strategic
+**Title:** [PLACEHOLDER: Decision title — e.g. "Benefits measurement framework to be formalised"]
+**Date:** [PLACEHOLDER: Date] | **Decision Maker:** [PLACEHOLDER: Decision maker] | **Status:** 🔄 In Progress | **Category:** Strategic
 
 **Decision:**
-[PLACEHOLDER: What was decided. Example: "On-prem ACV from [Legacy Product Name] will no longer count toward partner KPIs in the [Current Year] partner program. This removes partner incentives to retain legacy customers and creates a structural conversion nudge."]
+[PLACEHOLDER: What was decided in principle. Example: "A formal benefits measurement framework will be developed to define how the programme's target outcomes will be tracked, baseline-measured, and reported at each gate."]
 
 **Rationale:**
-[PLACEHOLDER: Rationale]
+[PLACEHOLDER: Rationale. Example: "Without a defined measurement framework, it is not possible to objectively assess whether the initiative has delivered its intended benefits at AG5."]
 
-**Impact:**
-[PLACEHOLDER: Impact — e.g. "Use this as an active conversion incentive in top partner conversations. Partners who relied on legacy ACV for tier qualification must be managed proactively."]
-
----
-
-### DEC-05
-
-**Title:** [PLACEHOLDER: Decision title — e.g. "[Migration Team Name] Established"]
-**Date:** [PLACEHOLDER: Date] | **Decision Maker:** [PLACEHOLDER: Decision maker] | **Status:** ✅ Confirmed | **Category:** Strategic
-
-**Decision:**
-[PLACEHOLDER: What was decided. Example: "A dedicated migration execution team was established to manage controlled migrations directly with resellers and customers. Initially scoped to [Region A] and [Region B]."]
-
-**Rationale:**
-[PLACEHOLDER: Rationale]
-
-**Impact:**
-[PLACEHOLDER: Impact — e.g. "Migrations in covered markets are managed; uncovered markets need local support or operating model changes to scale."]
-
----
-
-## Commercial Decisions
-
----
-
-### DEC-06
-
-**Title:** [PLACEHOLDER: Decision title — e.g. "Price Increase Confirmed for [Price Increase Date]"]
-**Date:** [PLACEHOLDER: Date] | **Decision Maker:** [PLACEHOLDER: Decision maker] | **Status:** ✅ Confirmed | **Category:** Commercial
-
-**Decision:**
-[PLACEHOLDER: What was decided. Example: "A [Price Increase % Range] price increase on all [Legacy Product Name] renewals is confirmed for [Price Increase Date]. This is the primary urgency-creation lever."]
-
-**Rationale:**
-[PLACEHOLDER: Rationale]
-
-**Impact:**
-[PLACEHOLDER: Impact — e.g. "Include prominently in all partner and customer migration communications. Do not deprioritize or defer without escalation."]
+**Status notes:**
+[PLACEHOLDER: Progress update — e.g. "Draft framework in progress; target approval before AG2."]
 
 ---
 
@@ -140,19 +104,55 @@
 
 ---
 
-### DEC-07
+### DEC-04
 
-**Title:** [PLACEHOLDER: Decision title — e.g. "Parallel Running Policy to be Formally Documented"]
-**Date:** [PLACEHOLDER: Date] | **Decision Maker:** [PLACEHOLDER: Decision maker] | **Status:** 🔄 In Progress | **Category:** Operational
+**Title:** [PLACEHOLDER: Decision title — e.g. "Resource model agreed — internal team plus one external advisor"]
+**Date:** [PLACEHOLDER: Date] | **Decision Maker:** [PLACEHOLDER: Decision maker] | **Status:** ✅ Confirmed | **Category:** Operational
 
 **Decision:**
-[PLACEHOLDER: What was decided in principle. Example: "A formal parallel running policy will be created to define the approved window (duration, licensing mechanism, and communication approach) during which customers may run both [Legacy Product Name] and [Cloud Platform Name] simultaneously."]
+[PLACEHOLDER: What was decided. Example: "The programme will be resourced with an internal core team of [N] FTEs supplemented by one external advisor for specialist support during the Implementation Plan and Execute phases."]
 
 **Rationale:**
-[PLACEHOLDER: Rationale — e.g. "An informal policy exists but is not documented, creating inconsistency. Formalization is required before the migration pack can be finalized."]
+[PLACEHOLDER: Rationale.]
 
-**Status notes:**
-[PLACEHOLDER: Progress update — e.g. "Draft in progress; target approval before [Date]."]
+**Impact:**
+[PLACEHOLDER: Impact. Example: "Resourcing commitments must be confirmed with line managers before AG2. External advisor scope and contract must be finalised before AG3."]
+
+---
+
+### DEC-05
+
+**Title:** [PLACEHOLDER: Decision title — e.g. "Delivery team established"]
+**Date:** [PLACEHOLDER: Date] | **Decision Maker:** [PLACEHOLDER: Decision maker] | **Status:** ✅ Confirmed | **Category:** Operational
+
+**Decision:**
+[PLACEHOLDER: What was decided. Example: "A dedicated cross-functional delivery team was established to manage programme execution. Team composition: [roles/names]."]
+
+**Rationale:**
+[PLACEHOLDER: Rationale.]
+
+**Impact:**
+[PLACEHOLDER: Impact. Example: "Team members' line managers have confirmed availability. RACI and ways of working to be agreed in the first team kickoff."]
+
+---
+
+## Financial Decisions
+
+---
+
+### DEC-06
+
+**Title:** [PLACEHOLDER: Decision title — e.g. "Budget envelope confirmed at AG1"]
+**Date:** [PLACEHOLDER: Date] | **Decision Maker:** [PLACEHOLDER: Decision maker] | **Status:** ✅ Confirmed | **Category:** Financial
+
+**Decision:**
+[PLACEHOLDER: What was decided. Example: "A budget envelope of [PLACEHOLDER: Amount] has been approved for the initiative, covering all phases through AG5. This is the primary financial constraint for all planning."]
+
+**Rationale:**
+[PLACEHOLDER: Rationale.]
+
+**Impact:**
+[PLACEHOLDER: Impact. Example: "All resource plans, procurement decisions, and cost estimates must remain within the approved envelope. Budget overruns must be escalated to the Sponsor immediately."]
 
 ---
 
@@ -162,17 +162,17 @@
 
 ### DEC-08
 
-**Title:** [PLACEHOLDER: Decision title — e.g. "[Sales Incentive Program] Update — Conversion Counts as New ARR"]
-**Date:** ⏳ Pending | **Decision Maker:** [PLACEHOLDER: Decision maker — e.g. "Commercial / HR leadership"] | **Status:** ⏳ Pending | **Category:** Commercial
+**Title:** [PLACEHOLDER: Decision title — e.g. "Post-go-live support model"]
+**Date:** ⏳ Pending | **Decision Maker:** [PLACEHOLDER: Decision maker — e.g. "Operations / IT leadership"] | **Status:** ⏳ Pending | **Category:** Operational
 
 **Decision required:**
-[PLACEHOLDER: What needs to be decided. Example: "Update the [Sales Incentive Program] so that [Legacy Product Name] to [Cloud Platform Name] conversion counts as net new ARR for commission purposes."]
+[PLACEHOLDER: What needs to be decided. Example: "Define who will own, operate, and support the solution after go-live — including handover responsibilities, SLAs, and ongoing resourcing."]
 
 **Why it matters:**
-[PLACEHOLDER: Stakes — e.g. "Without this change, local sales teams have no financial incentive to drive migrations in non-team-covered markets."]
+[PLACEHOLDER: Stakes — e.g. "Without a confirmed support model, go-live creates an operational risk: the solution may not have a clear owner post-handover."]
 
 **Owner / escalation path:**
-[PLACEHOLDER: Who needs to decide and how — e.g. "Sponsor to raise with Commercial leadership; target decision by [Date]."]
+[PLACEHOLDER: Who needs to decide and how — e.g. "Sponsor to raise with Operations leadership; target decision before AG4."]
 
 ---
 

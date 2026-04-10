@@ -20,39 +20,39 @@
 
 ## Section index
 
-1. [Migration Execution](#1-migration-execution)
-2. [Product Gaps & Technical Blockers](#2-product-gaps--technical-blockers)
-3. [Customer Segmentation & Account Mapping](#3-customer-segmentation--account-mapping)
-4. [Partner Dynamics](#4-partner-dynamics)
+1. [Delivery & Execution](#1-delivery--execution)
+2. [Risks & Blockers](#2-risks--blockers)
+3. [Stakeholder & Scope Analysis](#3-stakeholder--scope-analysis)
+4. [Third-Party & Vendor Dynamics](#4-third-party--vendor-dynamics)
 5. [Financial Model & Data](#5-financial-model--data)
-6. [Organisational & Incentives](#6-organisational--incentives)
+6. [Organisational & Resourcing](#6-organisational--resourcing)
 7. [Regulatory & Legal](#7-regulatory--legal)
 8. [Stakeholder Notes](#8-stakeholder-notes)
 9. [Working Assumptions](#9-working-assumptions)
 
 ---
 
-## 1. Migration Execution
+## 1. Delivery & Execution
 
-*[PLACEHOLDER: Add insights about how migrations are actually running — what's working, what's not, field feedback from the migration team, conversion velocity observations, etc.]*
-
----
-
-## 2. Product Gaps & Technical Blockers
-
-*[PLACEHOLDER: Add findings about product gaps blocking migration — feature readiness, R&D timelines, workarounds discovered in the field, customer feedback on specific technical issues. Cross-reference with `Dependency_Register.md` for formal dependency tracking.]*
+*[PLACEHOLDER: Add insights about how delivery is progressing — what's working, what's not, team feedback, velocity observations, blockers encountered and resolved, lessons learned from completed workstreams.]*
 
 ---
 
-## 3. Customer Segmentation & Account Mapping
+## 2. Risks & Blockers
 
-*[PLACEHOLDER: Add intelligence about the customer base — air-gapped account estimates, high-touch vs tech-touch segment refinements, governmental/regulated account characteristics, account concentration data, etc.]*
+*[PLACEHOLDER: Add findings about risks materialising or new blockers emerging — root causes, workarounds discovered, escalation outcomes, field feedback on specific technical or operational issues. Cross-reference with `Risk_Register.md` for formal risk tracking.]*
 
 ---
 
-## 4. Partner Dynamics
+## 3. Stakeholder & Scope Analysis
 
-*[PLACEHOLDER: Add field intelligence about partner behaviour — resistance patterns, which partners are cooperating, managed service revenue dependencies, partner tier implications of the programme, top partner account plan status, etc.]*
+*[PLACEHOLDER: Add intelligence about scope boundaries and stakeholder needs — refinements to the in-scope/out-of-scope definition, stakeholder expectations discovered during delivery, account or segment-level findings relevant to programme scope.]*
+
+---
+
+## 4. Third-Party & Vendor Dynamics
+
+*[PLACEHOLDER: Add field intelligence about third-party and vendor behaviour — delivery confidence, dependency risks observed, contractual constraints discovered, escalation history, relationship status with key suppliers or partners.]*
 
 ---
 
@@ -62,15 +62,15 @@
 
 ---
 
-## 6. Organisational & Incentives
+## 6. Organisational & Resourcing
 
-*[PLACEHOLDER: Add notes on operating model discussions, coverage gaps, incentive plan status, handoff planning from migration team to local teams, resourcing constraints, etc.]*
+*[PLACEHOLDER: Add notes on operating model discussions, resourcing constraints, coverage gaps, handoff planning, organisational change readiness, capability gaps that need to be addressed before go-live.]*
 
 ---
 
 ## 7. Regulatory & Legal
 
-*[PLACEHOLDER: Add notes on regulatory findings — which frameworks create cloud prohibitions, how many accounts are affected, legal opinions obtained, any emerging compliance risks, etc.]*
+*[PLACEHOLDER: Add notes on regulatory findings — which frameworks apply, compliance requirements affecting delivery approach, legal opinions obtained, any emerging compliance risks.]*
 
 ---
 
@@ -86,9 +86,9 @@
 
 | # | Assumption | Status | Date added | Date validated / revised |
 |---|---|---|---|---|
-| 1 | [PLACEHOLDER: e.g. "Customers require 3–6 months for migration planning and execution"] | Working | [PLACEHOLDER: Date] | — |
-| 2 | [PLACEHOLDER: e.g. "Gross margin for legacy product is approximately X%"] | Working | [PLACEHOLDER: Date] | — |
-| 3 | [PLACEHOLDER: e.g. "Non-migratable base is estimated at X% of total ACV"] | Unvalidated | [PLACEHOLDER: Date] | — |
+| 1 | [PLACEHOLDER: e.g. "Delivery team will be resourced to full headcount by the start of Phase 2"] | Working | [PLACEHOLDER: Date] | — |
+| 2 | [PLACEHOLDER: e.g. "Regulatory sign-off will be obtained within 4 weeks of submission"] | Working | [PLACEHOLDER: Date] | — |
+| 3 | [PLACEHOLDER: e.g. "Source data from System X is complete and clean enough to support Phase 1 analysis"] | Unvalidated | [PLACEHOLDER: Date] | — |
 
 ---
 

@@ -39,11 +39,11 @@
 | ID | Action | Owner | Due | Status | Category | Source |
 |---|---|---|---|---|---|---|
 | [ACT-PJ-01](#act-pj-01) | [PLACEHOLDER: Action title — e.g. "Review registers and provide feedback"] | [PLACEHOLDER: Owner — e.g. "Team"] | [PLACEHOLDER: Due date] | 🔄 In progress | Project | — |
-| [ACT-P-01](#act-p-01) | → [PLACEHOLDER: Product action — e.g. "Obtain feature roadmap deck from R&D"] | [PLACEHOLDER: Owner] | [PLACEHOLDER: Due date] | 🔴 Open | Product | Prod_Dep |
-| [ACT-C-01](#act-c-01) | [PLACEHOLDER: Commercial action — e.g. "Confirm price increase communication plan"] | [PLACEHOLDER: Owner] | [PLACEHOLDER: Due date] | 🔴 Open | Commercial | — |
-| [ACT-O-01](#act-o-01) | [PLACEHOLDER: Operational action — e.g. "Map minimum CRM data fields for tech-touch motion"] | [PLACEHOLDER: Owner] | [PLACEHOLDER: Due date] | ⏳ Blocked | Operational | — |
-| [ACT-F-01](#act-f-01) | [PLACEHOLDER: Financial action — e.g. "Run customer concentration stress-test"] | [PLACEHOLDER: Owner] | [PLACEHOLDER: Due date] | 💤 Snoozed | Financial | — |
-| [ACT-D-01](#act-d-01) | [PLACEHOLDER: Decision action — e.g. "Decide billing model for any extended support customers"] | [PLACEHOLDER: Owner] | [PLACEHOLDER: Due date] | 🔴 Open | Decision | — |
+| [ACT-P-01](#act-p-01) | → [PLACEHOLDER: Product action — e.g. "Obtain technical specification from engineering team"] | [PLACEHOLDER: Owner] | [PLACEHOLDER: Due date] | 🔴 Open | Product | — |
+| [ACT-C-01](#act-c-01) | [PLACEHOLDER: Commercial action — e.g. "Confirm vendor contract terms with procurement"] | [PLACEHOLDER: Owner] | [PLACEHOLDER: Due date] | 🔴 Open | Commercial | — |
+| [ACT-O-01](#act-o-01) | [PLACEHOLDER: Operational action — e.g. "Define handover checklist for go-live transition"] | [PLACEHOLDER: Owner] | [PLACEHOLDER: Due date] | ⏳ Blocked | Operational | — |
+| [ACT-F-01](#act-f-01) | [PLACEHOLDER: Financial action — e.g. "Run budget stress-test for Phase 2 resourcing scenarios"] | [PLACEHOLDER: Owner] | [PLACEHOLDER: Due date] | 💤 Snoozed | Financial | — |
+| [ACT-D-01](#act-d-01) | [PLACEHOLDER: Decision action — e.g. "Decide post-go-live support model and ownership"] | [PLACEHOLDER: Owner] | [PLACEHOLDER: Due date] | 🔴 Open | Decision | — |
 
 ---
 
@@ -66,10 +66,10 @@
 
 ### ACT-P-01
 
-**Action:** → [PLACEHOLDER: Full product action description — e.g. "Obtain staged roadmap deck for [feature] from R&D to support partner/customer conversations."]
-**Owner:** [PLACEHOLDER: Owner] | **Due:** [PLACEHOLDER: Due date] | **Status:** 🔴 Open | **Category:** Product | **Source:** Prod_Dep
+**Action:** → [PLACEHOLDER: Full product action description — e.g. "Obtain technical specification document from engineering team for the Phase 2 integration component."]
+**Owner:** [PLACEHOLDER: Owner] | **Due:** [PLACEHOLDER: Due date] | **Status:** 🔴 Open | **Category:** Product | **Source:** —
 
-> *→ ref: Full tracking in `PMO/Knowledge_Base.md` §Product Gaps.*
+> *→ ref: Full tracking in `PMO/Knowledge_Base.md` §Risks & Blockers.*
 
 [PLACEHOLDER: Additional context if needed.]
 
@@ -81,7 +81,7 @@
 
 ### ACT-C-01
 
-**Action:** [PLACEHOLDER: Full commercial action description — e.g. "Confirm price increase communication plan: timing, channels, messaging per segment."]
+**Action:** [PLACEHOLDER: Full commercial action description — e.g. "Confirm vendor contract terms with procurement: scope, SLAs, and payment schedule."]
 **Owner:** [PLACEHOLDER: Owner] | **Due:** [PLACEHOLDER: Due date] | **Status:** 🔴 Open | **Category:** Commercial | **Source:** —
 
 [PLACEHOLDER: Additional context if needed.]
@@ -94,10 +94,10 @@
 
 ### ACT-O-01
 
-**Action:** [PLACEHOLDER: Full operational action description — e.g. "Define minimum CRM data fields required to enable tech-touch / AI-assisted outreach motion."]
+**Action:** [PLACEHOLDER: Full operational action description — e.g. "Define handover checklist and acceptance criteria for go-live transition to the operations team."]
 **Owner:** [PLACEHOLDER: Owner] | **Due:** [PLACEHOLDER: Due date] | **Status:** ⏳ Blocked | **Category:** Operational | **Source:** —
 
-**Blocked because:** [PLACEHOLDER: Explain the blocker — e.g. "Waiting on data platform availability confirmation."]
+**Blocked because:** [PLACEHOLDER: Explain the blocker — e.g. "Waiting on operations team to confirm resourcing availability for the handover window."]
 
 [PLACEHOLDER: Additional context if needed.]
 
@@ -109,7 +109,7 @@
 
 ### ACT-F-01
 
-**Action:** [PLACEHOLDER: Full financial action description — e.g. "Run customer concentration stress-test: model impact if top 5–10 accounts churn in the same year."]
+**Action:** [PLACEHOLDER: Full financial action description — e.g. "Run Phase 2 resourcing stress-test: model budget impact of adding one additional FTE vs. extending the external advisor contract."]
 **Owner:** [PLACEHOLDER: Owner] | **Due:** [PLACEHOLDER: Due date or "TBD"] | **Status:** 💤 Snoozed | **Category:** Financial | **Source:** —
 
 [PLACEHOLDER: Additional context if needed.]
@@ -122,7 +122,7 @@
 
 ### ACT-D-01
 
-**Action:** [PLACEHOLDER: Full decision description — e.g. "Decide billing model for any customers requesting extended support beyond EOL."]
+**Action:** [PLACEHOLDER: Full decision description — e.g. "Decide post-go-live support model: who owns the solution, what SLAs apply, and how incidents are escalated."]
 **Owner:** [PLACEHOLDER: Owner] | **Due:** [PLACEHOLDER: Due date] | **Status:** 🔴 Open | **Category:** Decision | **Source:** —
 
 [PLACEHOLDER: Additional context, options under consideration, or escalation path if needed.]
