@@ -1,7 +1,7 @@
-# Personal Claude Setup — Guide Index
+# Cluide — The Claude Guide
 
-> A collection of best-practice guides for building a personal AI assistant with Claude.
-> Based on real-world experience. Each guide is standalone but they form a coherent system together.
+> A complete framework for building, running, and improving a persistent AI assistant with Claude.
+> Includes architecture guides, runnable setup tasks, installable skills, and copy-paste templates — covering the full lifecycle from initial setup to automation, self-improvement, and security.
 
 *Written for Claude Code with Claude Sonnet/Opus models (2025–2026). Core concepts apply to any Claude setup; tool names and hooks syntax may differ across versions.*
 
@@ -41,7 +41,7 @@ Not sure where to start? Use this table:
 |---|---|---|
 | Claude always responds a certain way | CLAUDE.md | [01](./01_CLAUDE_MD.md) |
 | Do the same task when you ask for it | Skill | [02](./02_SKILLS.md) |
-| Run something automatically on a schedule | Scheduled Task | [04](./04_TASK_EFFICIENCY_GUIDE.md) |
+| Run something automatically on a schedule | Scheduled Task | `tasks/setup-scheduled-task.md` → then [04](./04_TASK_EFFICIENCY_GUIDE.md) |
 | Claude remembers things across sessions | Memory | [03](./03_MEMORY_AND_PROFILE.md) |
 | A task that gets smarter over time | Task + IMPROVEMENTS.md | [05](./05_TASK_LEARNING_GUIDE.md) |
 | Answer a one-off question | Chat | — |
@@ -288,7 +288,7 @@ Tasks are designed to be portable: copy any task file to another project's `task
 | `tasks/audit-memory.md` | Check memory files for staleness, duplicates, misplaced content | 03 |
 | `tasks/audit-skill.md` | Review a `SKILL.md` — trigger quality, workflow, output format, edge cases | 02, 15 |
 
-### Maintenance (Claude Teacher only)
+### Maintenance (Cluide only)
 
 | Task | What it does |
 |------|-------------|

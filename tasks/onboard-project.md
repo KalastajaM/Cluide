@@ -1,6 +1,6 @@
 # Task: Onboard Project
 
-> **Claude Teacher task** — run this to set up a new project end-to-end:
+> **Cluide task** — run this to set up a new project end-to-end:
 > `Claude, run tasks/onboard-project.md`
 > **Source guides:** `01_CLAUDE_MD.md`, `03_MEMORY_AND_PROFILE.md`, `08_MCP_SERVERS.md`, `09_GIT_INTEGRATION.md`, `13_SECURITY.md`
 
