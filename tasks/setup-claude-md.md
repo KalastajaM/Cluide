@@ -75,6 +75,27 @@ Add a `## [Project Name]` section only if this is a project CLAUDE.md with proje
 
 Do not add sections for capabilities, tool lists, or things Claude will discover from its environment.
 
+**Real-world example** — a completed CLAUDE.md for a freelance UX designer:
+
+```markdown
+# About Emma
+- Freelance UX designer, based in Toronto, Canada
+- Timezone: America/Toronto (EST UTC-5)
+- Always respond in English
+- Uses Gmail (emma.designs@gmail.com) and Google Calendar
+
+# Communication Style
+- Default to bullet points, not prose
+- Keep responses concise — expand only if I ask
+- No emojis unless I use them first
+- Make a reasonable assumption and proceed — don't ask unless genuinely ambiguous
+
+# Critical Rules
+- NEVER send emails — always create a draft I can review
+- Always include a subject line suggestion when drafting emails
+- When I share a client brief, produce deliverable structure first, then ask before filling in content
+```
+
 ### Step 4 — Review with the user
 
 Show the draft and ask:

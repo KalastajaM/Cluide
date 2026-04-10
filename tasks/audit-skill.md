@@ -105,6 +105,40 @@ Passing:
 Overall: [N issues — critical/high/medium/low breakdown]
 ```
 
+**Real-world example** — what an audit finding looks like with specific, actionable detail:
+
+```
+Skill Audit: client-email-drafter
+──────────────────────────────────
+Size: 85 lines ✓ under 500
+
+Issues found (prioritised by impact):
+
+CRITICAL (skill may not trigger reliably):
+  ✗ Description: Only says "Draft client emails" — no trigger phrases listed.
+    Current: "Draft professional emails to clients."
+    Suggested: "Draft professional emails to clients. Trigger when the user says
+    'write an email to [client]', 'draft a reply to [name]', 'help me respond to
+    this email', or 'client email'. Also trigger when the user pastes an email
+    and asks to reply or follow up."
+
+HIGH (inconsistent output or broken steps):
+  ⚠ Check 2 (Workflow): Step 3 says "send the email" but uses no tool name.
+    Fix: Replace with "Call `gmail_create_draft` with the composed email.
+    NEVER call `gmail_send_email` — always draft, never send."
+
+MEDIUM (edge cases, memory):
+  ⚠ Check 5 (Edge cases): Only 1 edge case listed. Missing:
+    - If the client name is ambiguous (multiple contacts with similar names)
+    - If the user wants to reply to a thread vs. start a new email
+
+Passing:
+  ✓ Check 3 (Output format): Clear email template with subject, greeting, body, sign-off
+  ✓ Check 4 (Constraints): "NEVER send" rule present with positive counterpart
+
+Overall: 3 issues — 1 critical, 1 high, 1 medium
+```
+
 Ask:
 > "Would you like me to apply fixes? Options:
 > - (A) Rewrite the description (highest impact — do this first)

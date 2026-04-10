@@ -27,6 +27,10 @@ This folder contains a complete operational framework for building, running, and
 | `11_PERSONAL_DATA_LAYER.md` | Personal data and profile layer |
 | `12_LLM_WIKI.md` | LLM wiki pattern |
 | `13_SECURITY.md` | Security best practices for Claude Code and Cowork |
+| `14_TROUBLESHOOTING.md` | Diagnosing and fixing common problems |
+| `15_PROMPTING_BASICS.md` | Writing instructions that produce consistent output |
+| `16_MULTI_TASK_ORCHESTRATION.md` | Coordinating multiple tasks with shared state |
+| `17_COST_PERFORMANCE.md` | Tracking token usage, budgeting, and cost monitoring |
 
 When the user asks a question or makes a request that a guide covers, read the relevant guide before responding.
 

@@ -43,7 +43,7 @@ If the user chooses a template:
 
 **For PROJECT_TEMPLATE:**
 ```bash
-cp -r /path/to/Claude-Teacher/templates/PROJECT_TEMPLATE ./
+cp -r /path/to/Cluide/templates/PROJECT_TEMPLATE ./
 ```
 Tell the user: "Copy the template folder to your project root, then rename it and fill in the placeholders marked `[placeholder]` in each file. I'll help you do that now."
 
@@ -61,7 +61,7 @@ After completing the template setup, ask: "Would you also like me to run the sec
 
 **For PMO_TEMPLATE:**
 ```bash
-cp -r /path/to/Claude-Teacher/templates/PMO_TEMPLATE ./
+cp -r /path/to/Cluide/templates/PMO_TEMPLATE ./
 ```
 Read `templates/PMO_TEMPLATE/README.md` and walk the user through filling in the initiative-specific placeholders.
 

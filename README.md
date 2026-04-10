@@ -13,7 +13,7 @@
 
 Cluide is an operational framework for building AI assistants that persist, learn, and improve over time — not a collection of tips, but a complete system you can actually install and run. It covers the full lifecycle: initial setup, scheduled automation, self-improvement, security, and long-term maintenance.
 
-The deliverables are concrete: 15 interlocking guides that define the architecture, 19 runnable task files that do the setup work for you, 4 bundled skills, and 4 ready-to-use templates. The guides are documentation for the system; the tasks are its installation scripts.
+The deliverables are concrete: 17 interlocking guides that define the architecture, 19 runnable task files that do the setup work for you, 4 bundled skills, and 4 ready-to-use templates. The guides are documentation for the system; the tasks are its installation scripts.
 
 A well-configured Claude personal assistant has four layers:
 
@@ -65,6 +65,8 @@ A well-configured Claude personal assistant has four layers:
 | 13 | [Security](./13_SECURITY.md) | All | Credential hygiene, MCP trust, safe automation |
 | 14 | [Troubleshooting](./14_TROUBLESHOOTING.md) | All | When things don't work |
 | 15 | [Prompting Basics](./15_PROMPTING_BASICS.md) | All | Writing instructions that produce consistent output |
+| 16 | [Multi-Task Orchestration](./16_MULTI_TASK_ORCHESTRATION.md) | Power users | Coordinating tasks with shared state and dependencies |
+| 17 | [Cost & Performance](./17_COST_PERFORMANCE.md) | Scheduled tasks | Tracking costs and finding expensive operations |
 
 **Recommended order:** Quickstart → 01 → 02 → 03 → (04–06 once you have scheduled tasks running).
 
@@ -138,7 +140,7 @@ Four copy-paste starting points in `templates/`:
 /
 ├── 00_INDEX.md               # Full annotated guide index
 ├── 00_QUICKSTART.md          # Start here if you're new
-├── 01_CLAUDE_MD.md – 15_PROMPTING_BASICS.md
+├── 01_CLAUDE_MD.md – 17_COST_PERFORMANCE.md
 ├── CHEATSHEET.md             # One-page quick reference
 ├── tasks/                    # Setup and audit task files
 ├── skills/                   # Bundled installable skills

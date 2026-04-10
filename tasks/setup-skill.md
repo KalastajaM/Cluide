@@ -107,6 +107,66 @@ Always pair a prohibition with a positive: "NEVER send — always create a draft
 [- Item: format]
 ```
 
+**Real-world example** — a completed SKILL.md for a meeting notes skill:
+
+```markdown
+---
+name: meeting-notes
+description: >
+  Summarize meeting notes into a structured format with action items.
+  Trigger when the user says "summarize this meeting", "meeting notes",
+  "what were the action items", "write up the meeting", or pastes
+  raw meeting notes or a transcript. Also trigger when the user says
+  "clean up these notes" and the content looks like a meeting.
+---
+
+## Purpose
+Turn raw meeting notes or transcripts into a clean summary with decisions,
+action items, and follow-ups. Saves 10–15 minutes of post-meeting cleanup.
+
+## Core Responsibilities
+- Extract key decisions made
+- Identify action items with owners and deadlines
+- Summarize discussion points concisely
+- Flag unresolved questions
+
+## Workflow
+1. Read the provided notes or transcript
+2. Identify participants from the content
+3. Extract and organize into the output format below
+4. If any action item lacks an owner, ask: "Who owns [action]?"
+
+## Output Format
+```
+## Meeting: [topic or title]
+**Date:** [date] · **Participants:** [names]
+
+### Decisions
+- [Decision 1]
+- [Decision 2]
+
+### Action Items
+- [ ] [Action] — @[owner], due [date]
+- [ ] [Action] — @[owner], due [date]
+
+### Key Discussion Points
+- [Point 1: 1–2 sentences]
+- [Point 2: 1–2 sentences]
+
+### Open Questions
+- [Question needing follow-up]
+```
+
+## Constraints
+- NEVER invent decisions or actions not present in the source
+- If the notes are too vague to extract actions, say so rather than guessing
+
+## Edge Cases
+- If no clear action items exist: include "No action items identified" rather than omitting the section
+- If the input is a partial transcript (mid-conversation): note "Partial transcript — summary may be incomplete"
+- If participants aren't named: use "Participant 1", "Participant 2" and ask the user to fill in names
+```
+
 ### Step 4 — Review with the user
 
 Show the draft and ask:
