@@ -236,3 +236,5 @@ This is a strong description: it names the implicit trigger phrases, is specific
 
 **Giving this to Claude:**
 > "Read 02_SKILLS.md and create a skill for [what you want]. Follow all the best practices in the guide — strong description, workflow steps, output format example, and at least 3 edge cases."
+
+**Faster alternative:** `tasks/setup-skill.md` interviews you and generates a complete skill without reading the guide first. `tasks/audit-skill.md` reviews an existing skill against this guide's checklist.

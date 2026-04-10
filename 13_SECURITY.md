@@ -7,6 +7,8 @@
 > **Giving this guide to Claude:**
 > "Read 13_SECURITY.md and audit my Claude setup for the issues it covers. Start with credential exposure."
 > "Read 13_SECURITY.md, then run /security-review on my setup."
+>
+> **Faster alternative:** `tasks/setup-security.md` runs the full audit and applies fixes end-to-end without reading the guide first.
 
 ---
 

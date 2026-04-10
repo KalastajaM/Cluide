@@ -222,3 +222,5 @@ Here are the kinds of facts that belong in auto-memory, drawn from a working per
 
 **To set up profile files for a scheduled task:**
 > "Read 03_MEMORY_AND_PROFILE.md and create the profile file structure for my daily email digest task. The task already has a TASK.md — add the profile files it needs to track context across runs."
+
+**Faster alternative:** `tasks/setup-memory.md` interviews you and creates the full `.auto-memory/` structure without reading the guide first. `tasks/audit-memory.md` reviews an existing memory system for staleness and drift.

@@ -7,6 +7,8 @@
 
 > **Giving this guide to Claude:**
 > "Read 04_TASK_EFFICIENCY_GUIDE.md and audit my existing task at [path/to/TASK.md] for token efficiency. Apply the checklist and propose specific changes."
+>
+> **Faster alternative:** `tasks/audit-task-efficiency.md` runs this checklist end-to-end. `tasks/setup-scheduled-task.md` scaffolds a new task with efficiency patterns built in from the start.
 
 ---
 
