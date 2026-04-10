@@ -1,5 +1,7 @@
 # Git Integration: Versioning Your Assistant's State
 
+*Last reviewed: April 2026*
+
 > Putting your assistant's files under git version control gives you one thing that nothing else provides: the ability to roll back. When a task run updates the wrong thing, overwrites a profile section you wanted to keep, or produces outputs that break something downstream, git means you can undo it in seconds. This guide covers what to track, how to automate commits around task runs, and how to use git history to understand how your assistant has evolved.
 
 ---

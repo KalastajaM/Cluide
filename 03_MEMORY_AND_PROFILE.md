@@ -1,5 +1,7 @@
 # Best Practices: Memory and Profile Systems
 
+*Last reviewed: April 2026*
+
 A personal assistant is only as good as its memory. Without memory, every session starts from zero — you re-explain your situation, your preferences, who your contacts are. This document covers two complementary memory systems: the **auto-memory** system (lightweight, cross-session key-value facts) and the **profile file system** (structured, richly maintained knowledge about a person's life and projects).
 
 ---
@@ -24,6 +26,8 @@ There are three memory layers available. Understanding when each applies prevent
 **If you are just getting started:** let native memory work by default for your conversational use. Add `.auto-memory/` when you want structured, reliable memory. Add profile files only when a scheduled task clearly needs them — after auto-memory is already in place.
 
 The two systems can coexist: native memory for your interactive chat assistant, `.auto-memory/` for your tasks and projects. They do not conflict.
+
+**Note:** This guide covers memory *about you* — your preferences, projects, and working style. If you want to build a knowledge base *about a subject domain* (research, threat intelligence, competitive analysis), that's a different system: see [Guide 12 — LLM Wiki](./12_LLM_WIKI.md).
 
 ---
 

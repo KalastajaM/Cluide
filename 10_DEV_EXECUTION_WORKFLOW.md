@@ -1,5 +1,7 @@
 # Development and Execution: Using Claude Code and Cowork Together
 
+*Last reviewed: April 2026*
+
 > Two Claude tools, two distinct roles. Claude Code is where you build and maintain your assistant — editing task files, debugging problems, managing git. Cowork (or any conversational Claude interface) is where you run it — executing tasks, processing emails, doing the actual work. Keeping these roles separate is one of the most useful things you can do for the long-term health of your setup.
 
 ---

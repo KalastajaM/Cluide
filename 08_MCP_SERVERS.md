@@ -1,5 +1,7 @@
 # MCP Servers: Connecting Claude to Your Tools
 
+*Last reviewed: April 2026*
+
 > MCP (Model Context Protocol) is how Claude gets access to external tools — Gmail, Calendar, files, GitHub, and more. Without it, Claude can only read and write text. With it, Claude can actually do things on your behalf. This guide explains what MCP servers are, how to set them up, and how to use them in skills.
 
 ---

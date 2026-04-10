@@ -1,5 +1,7 @@
 # Connecting Claude to Your Personal Data
 
+*Last reviewed: April 2026*
+
 > Five patterns for getting personal data — investments, finances, transactions — into Claude tasks without exposing raw files, building fragile pipelines, or paying excessive token costs.
 
 > **Companion guides:** [Guide 04](./04_TASK_EFFICIENCY_GUIDE.md) covers token efficiency — Python data feeders (Pattern 1) are one of the highest-leverage efficiency moves you can make. [Guide 05](./05_TASK_LEARNING_GUIDE.md) covers self-improvement — once your data layer is stable, the task can start learning from it. [Guide 09](./09_GIT_INTEGRATION.md) covers git tracking — your JSON data files are prime candidates for pre-run snapshots.
@@ -10,6 +12,19 @@
 > "Read 11_PERSONAL_DATA_LAYER.md and help me set up a data layer for [my investment tracker / personal finance workflow / etc.]. Ask me what data sources I have and recommend which patterns apply."
 >
 > **Faster alternative:** `tasks/setup-data-layer.md` interviews you about your data sources and sets up the right pattern(s) without reading the guide first.
+
+---
+
+## Do You Need This Guide Yet?
+
+This is an advanced guide. The patterns here require writing Python scripts, running JavaScript in your browser, or setting up multi-step pipelines. If you're still in your first few weeks, you likely don't need this yet.
+
+**Come back here when:**
+- You want Claude to reason about data that lives in a web app with no API (banking, broker, expense tracker)
+- You have local files (CSV, JSON) that are too large or raw to paste into Claude directly
+- A task needs computed values (P&L, totals, averages) rather than raw records
+
+**If you just want Claude to remember things about you:** that's [Guide 03 — Memory](./03_MEMORY_AND_PROFILE.md), not this guide.
 
 ---
 

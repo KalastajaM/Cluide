@@ -1,5 +1,7 @@
 # Best Practices: Designing Skills for a Personal Assistant
 
+*Last reviewed: April 2026*
+
 A skill is a SKILL.md file (plus optional supporting files) that tells the assistant how to perform a specific, recurring type of task — producing formatted meeting notes, triaging support tickets, drafting client status updates, and so on. Good skills make the assistant dramatically more reliable at the things you do repeatedly. This document explains how to write them well.
 
 ---

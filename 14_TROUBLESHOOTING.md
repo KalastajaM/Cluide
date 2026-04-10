@@ -1,5 +1,7 @@
 # Troubleshooting Guide: When Things Don't Work
 
+*Last reviewed: April 2026*
+
 > Every other guide in this collection assumes things go right. This one is for when they don't. Each section is a symptom — find yours, follow the steps.
 
 > **Companion guides:** [Guide 04 — Task Efficiency](./04_TASK_EFFICIENCY_GUIDE.md) for slow tasks. [Guide 13 — Security](./13_SECURITY.md) for security concerns. [Guide 09 — Git Integration](./09_GIT_INTEGRATION.md) for rollback.
