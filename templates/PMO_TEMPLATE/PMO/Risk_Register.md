@@ -2,7 +2,7 @@
 
 **Owner:** [PLACEHOLDER: Initiative Owner Name] | **Sponsor:** [PLACEHOLDER: Workstream Sponsor Name]
 **Last updated:** [PLACEHOLDER: YYYY-MM-DD] (rev 1 — initial template)
-**Purpose:** Central, maintained register of risks to the [PLACEHOLDER: Legacy Product Name] → [PLACEHOLDER: Cloud Platform Name] migration programme. For narrative context and supporting evidence behind each risk, see `Knowledge_Base.md` and `Migrations/Product_Dependencies.md`. For programme-level dependencies that underpin these risks, see `Dependency_Register.md` — risk entries reference dependency IDs (D-xx) where applicable.
+**Purpose:** Central, maintained register of risks to the [PLACEHOLDER: Legacy Product Name] → [PLACEHOLDER: Cloud Platform Name] migration programme. For narrative context and supporting evidence behind each risk, see `Knowledge_Base.md`. For programme-level dependencies that underpin these risks, see `Dependency_Register.md` — risk entries reference dependency IDs (D-xx) where applicable.
 
 ---
 

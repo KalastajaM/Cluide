@@ -61,10 +61,10 @@ For each proposed block, state:
 
 Determine the Monday date of the coming week and save two files to `WeekPlan/`:
 
-1. **`YYYY-DD-MM_weekplan.md`** — clean markdown version of the full plan (open actions table, proposed blocks, notes).
-2. **`YYYY-DD-MM_weekplan.html`** — calendar-booking-friendly HTML version. Use a five-column layout (one column per day, Mon–Fri). For each day show: existing meetings as light grey blocks, and proposed work blocks as coloured cards (colour-coded by type: deep work = blue, quick actions = green, meeting prep = amber, conditional = dashed grey). Each proposed block card must show: start time, end time, duration, title, a brief description, and a **📅 Add to Outlook** button. The button uses a JavaScript Blob to generate and download a `.ics` file (iCalendar format) for that block when clicked. Use UTC times in the `.ics` (convert from local time by subtracting [YOUR_UTC_OFFSET_HOURS] hours). Include a SUMMARY, DTSTART, DTEND, DESCRIPTION, and UID in each VEVENT. Friday should be visually muted with a note that no blocks are scheduled unless a hard deadline forces one. Include a legend and an open actions table at the top.
+1. **`YYYY-MM-DD_weekplan.md`** — clean markdown version of the full plan (open actions table, proposed blocks, notes).
+2. **`YYYY-MM-DD_weekplan.html`** — calendar-booking-friendly HTML version. Use a five-column layout (one column per day, Mon–Fri). For each day show: existing meetings as light grey blocks, and proposed work blocks as coloured cards (colour-coded by type: deep work = blue, quick actions = green, meeting prep = amber, conditional = dashed grey). Each proposed block card must show: start time, end time, duration, title, a brief description, and a **📅 Add to Outlook** button. The button uses a JavaScript Blob to generate and download a `.ics` file (iCalendar format) for that block when clicked. Use UTC times in the `.ics` (convert from local time by subtracting [YOUR_UTC_OFFSET_HOURS] hours). Include a SUMMARY, DTSTART, DTEND, DESCRIPTION, and UID in each VEVENT. Friday should be visually muted with a note that no blocks are scheduled unless a hard deadline forces one. Include a legend and an open actions table at the top.
 
-Use `YYYY-DD-MM` = the date of the coming Monday.
+Use `YYYY-MM-DD` = the date of the coming Monday.
 
 ---
 
@@ -73,6 +73,31 @@ Use `YYYY-DD-MM` = the date of the coming Monday.
 Output the same proposed blocks as a clean list in the conversation. Be direct and practical — no filler. Close with links to the two saved files and a note that calendar creation is not automated.
 
 Do not send emails, Teams messages, or create calendar events autonomously.
+
+---
+
+## Step 6 — Self-Improvement
+
+Read `IMPROVEMENTS.md`. Apply any `[APPROVED]` proposals. Then:
+
+1. **Feedback signals:** Did the user edit or discard last week's plan? Extract the lesson. Did a proposed block type consistently get ignored? Recalibrate.
+2. **Refactor check:** If `runs_since_last_refactor` ≥ threshold, review TASK.md for dead rules or unclear steps.
+3. **Apply or propose:** Minor fixes (typo, wrong format) → apply directly. Structural changes → add to `IMPROVEMENTS.md` as a proposal.
+4. **Update IMPROVEMENTS.md:** Increment counters, add fixes/proposals.
+
+---
+
+## Step 7 — Append Run Log
+
+Append to `RUN_LOG.md`. Keep last 3 runs in full; compress older to 1-line summaries.
+
+```markdown
+### Run [N] — YYYY-MM-DD
+- **Open actions reviewed:** [N]
+- **Calendar events scanned:** [N]
+- **Blocks proposed:** [N]
+- **Improvements:** applied [N] / proposed [N]
+```
 
 ---
 

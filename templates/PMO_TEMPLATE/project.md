@@ -24,7 +24,7 @@ This project has no pre-configured Cowork tasks — it is a **context-loaded wor
 Suggested tasks to add to this project as your initiative matures:
 
 - **Weekly register review** — prompt Claude to review and update Risk, Action, and Dependency registers based on meeting notes or new information.
-- **Financial model update** — prompt Claude to update BusinessModel_Summary.md when the Excel model changes.
+- **Financial model update** — prompt Claude to update Model_Summary.md when the Excel model changes.
 - **Steerco pack prep** — prompt Claude to compile a Steerco/steering committee slide deck from current register status.
 - **Action tracker triage** — prompt Claude to review overdue or blocked actions and propose next steps.
 - **Knowledge base capture** — after key meetings, prompt Claude to extract and log new insights into Knowledge_Base.md.

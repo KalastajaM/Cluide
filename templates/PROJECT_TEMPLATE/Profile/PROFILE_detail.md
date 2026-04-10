@@ -45,7 +45,7 @@
 
 ## Hypotheses
 
-*Things believed to be true but not yet confirmed. See Guide 04 for the hypothesis lifecycle.*
+*Things believed to be true but not yet confirmed. Lifecycle: HYPOTHESIS → CONFIRMED (when user validates) or OUTDATED (no evidence 6+ months). User-validated entries get `[USER-CONFIRMED]` and are never overwritten.*
 
 ```
 [HYPOTHESIS MEDIUM] [Description of belief]

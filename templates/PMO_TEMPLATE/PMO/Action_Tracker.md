@@ -4,7 +4,7 @@
 **Last updated:** [PLACEHOLDER: YYYY-MM-DD] (rev 1 — initial template)
 **Purpose:** Central register of open actions that sit outside the formal project plan milestones — clarifications, investigations, analysis tasks, data work, and pending decisions needed to unblock or inform the programme.
 
-> **On duplication:** Actions already tracked in detail in `Migrations/Product_Dependencies.md` are listed here as reference entries (marked **→ ref**) with a pointer to the source rather than being duplicated. All other actions are fully described here.
+> **On duplication:** Actions already tracked in detail in the `Knowledge_Base.md` product dependencies section are listed here as reference entries (marked **→ ref**) with a pointer to the source rather than being duplicated. All other actions are fully described here.
 
 ---
 
@@ -69,7 +69,7 @@
 **Action:** → [PLACEHOLDER: Full product action description — e.g. "Obtain staged roadmap deck for [feature] from R&D to support partner/customer conversations."]
 **Owner:** [PLACEHOLDER: Owner] | **Due:** [PLACEHOLDER: Due date] | **Status:** 🔴 Open | **Category:** Product | **Source:** Prod_Dep
 
-> *→ ref: Full tracking in `Migrations/Product_Dependencies.md`.*
+> *→ ref: Full tracking in `PMO/Knowledge_Base.md` §Product Gaps.*
 
 [PLACEHOLDER: Additional context if needed.]
 

@@ -30,13 +30,12 @@ Read `PROJECT_GUIDE.md` in this folder. It maps every folder and file in the pro
 
 **Protected files:** Do not modify `Charter/Initiative_Charter.md` or `PMO/Guardrails.md` unless the user explicitly instructs you to.
 
-**Financial model:** Whenever the financial model Excel is updated, also update `Financial Model/BusinessModel_Summary.md`.
+**Financial model:** Whenever the financial model Excel is updated, also update `FinancialModel/Model_Summary.md`.
 
-**Migration dependencies:** Whenever new product dependencies, blockers, or migration-relevant information is discovered, update `Migrations/Product_Dependencies.md`.
 
 **Knowledge base:** Capture new insights, decisions, and findings in `PMO/Knowledge_Base.md`. This is the project's institutional memory — when in doubt about where to record something, put it here.
 
-**Project plan:** Whenever project scope, timeline, milestones, or delivery approach changes, update `Project Plan/Project_Plan_LATEST.md`.
+**Project plan:** Whenever project scope, timeline, milestones, or delivery approach changes, update `ProjectPlan/Project_Plan.md`.
 
 **Action tracker:** Whenever new actions, owners, or due dates are identified or resolved, update `PMO/Action_Tracker.md`.
 
@@ -57,8 +56,8 @@ Read `PROJECT_GUIDE.md` in this folder. It maps every folder and file in the pro
 | Look up or record project knowledge/insights | `PMO/Knowledge_Base.md` | ✅ Append new insights here |
 | View or update the programme risk register | `PMO/Risk_Register.md` | ✅ Update when risk status, likelihood, or impact changes |
 | Track programme-level dependencies | `PMO/Dependency_Register.md` | ✅ Update when dependency status, target date, or priority changes |
-| Understand the financial model | `Financial Model/BusinessModel_Summary.md` | ✅ Update when the Excel model changes |
-| Check product dependencies / migration blockers | `Migrations/Product_Dependencies.md` | ✅ Living doc — update when new dependencies discovered |
+| Understand the financial model | `FinancialModel/Model_Summary.md` | ✅ Update when the Excel model changes |
+
 | Track open clarification, investigation, and decision actions | `PMO/Action_Tracker.md` | ✅ Update when actions are opened, progressed, or closed |
 | Record or review programme decisions | `PMO/Decision_Tracker.md` | ✅ Update when decisions are made, revised, or superseded |
 

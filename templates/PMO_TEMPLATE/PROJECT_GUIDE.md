@@ -11,10 +11,10 @@
 | Track open clarification, investigation, and decision actions | `PMO/Action_Tracker.md` | ✅ Update when actions are opened, progressed, or closed |
 | Record or review programme decisions | `PMO/Decision_Tracker.md` | ✅ Update when decisions are made, revised, or superseded |
 | Track programme-level dependencies (internal & external) | `PMO/Dependency_Register.md` | ✅ Update when dependency status, target date, or priority changes |
-| Understand the financial model | `FinancialModel/BusinessModel_Summary.md` | ✅ Update when the Excel model changes |
+| Understand the financial model | `FinancialModel/Model_Summary.md` | ✅ Update when the Excel model changes |
 | Work with the financial model itself | `FinancialModel/[PLACEHOLDER: Financial Model Filename].xlsx` | ✅ Main financial model |
 | Get raw customer/ACV data | `Data/*.csv` (or equivalent) | ❌ Raw source data — do not modify |
-| View or build the project plan | `Project Plan/` | ✅ Work in progress |
+| View or build the project plan | `ProjectPlan/` | ✅ Work in progress |
 
 ---
 
@@ -35,7 +35,7 @@ Home for programme management artefacts: registers, the knowledge base, and guar
 
 ### `FinancialModel/`
 - **`[PLACEHOLDER: Financial Model Filename].xlsx`** — the official financial model. This is the primary source of truth for financial figures.
-- **`BusinessModel_Summary.md`** — a Claude-generated description of the model. **Must be updated** whenever the Excel model is updated.
+- **`Model_Summary.md`** — a Claude-generated description of the model. **Must be updated** whenever the Excel model is updated.
 
 ### `Data/` (or equivalent data folder)
 Raw data exports and a normalized file used as input for the financial model.
@@ -43,5 +43,5 @@ Raw data exports and a normalized file used as input for the financial model.
 - **Raw exports** — source data, do not modify.
 - **Normalized data file** — the processed version that feeds into the financial model. Update this when a new export is brought in.
 
-### `Project Plan/`
-Home for the project plan. Update `Project_Plan_LATEST.md` (or equivalent) whenever scope, timeline, or milestones change.
+### `ProjectPlan/`
+Home for the project plan. Update `Project_Plan.md` (or equivalent) whenever scope, timeline, or milestones change.

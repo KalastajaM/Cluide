@@ -40,7 +40,7 @@
 
 ## 2. Product Gaps & Technical Blockers
 
-*[PLACEHOLDER: Add findings about product gaps blocking migration — feature readiness, R&D timelines, workarounds discovered in the field, customer feedback on specific technical issues. Cross-reference with `Migrations/Product_Dependencies.md` for formal tracking.]*
+*[PLACEHOLDER: Add findings about product gaps blocking migration — feature readiness, R&D timelines, workarounds discovered in the field, customer feedback on specific technical issues. Cross-reference with `Dependency_Register.md` for formal dependency tracking.]*
 
 ---
 

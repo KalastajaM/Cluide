@@ -4,6 +4,8 @@ This template sets up a Claude-assisted project workspace for managing a **produ
 
 The template is structured as a Cowork project folder. When customized and dropped into a Cowork workspace, Claude will automatically load and apply all project rules and context.
 
+> **Companion guides:** [09 Multi-Task Orchestration](../../09_MULTI_TASK_ORCHESTRATION.md) · [11 Git Integration](../../11_GIT_INTEGRATION.md) · [12 Security](../../12_SECURITY.md)
+
 ---
 
 ## What you'll need
@@ -18,11 +20,16 @@ The template is structured as a Cowork project folder. When customized and dropp
 ## What's included
 
 ```
-template-vcp-migration-initiative/
+PMO_TEMPLATE/
 ├── CLAUDE.md                          ← Claude project instructions (rules + routing)
 ├── PROJECT_GUIDE.md                   ← Folder map: what every file is, what to update
 ├── Charter/
 │   └── Initiative_Charter.md          ← Initiative charter (scope, objectives, team, KPIs)
+├── FinancialModel/
+│   └── Model_Summary.md              ← Claude-readable summary of the financial model
+├── ProjectPlan/
+│   └── Project_Plan.md               ← Project plan (scope, milestones, timeline)
+├── Data/                              ← Raw data exports (do not modify)
 └── PMO/
     ├── Guardrails.md                  ← Claude skill: PMO validation guardrails
     ├── Knowledge_Base.md              ← Running knowledge base / institutional memory
@@ -83,12 +90,11 @@ Replace every `[PLACEHOLDER: ...]` value with your own content. The table below 
 4. Clear or reset the PMO registers (Risk, Action, Dependency, Decision) — the current entries are illustrative examples. Keep the schema and format.
 5. Add your own risks, actions, and dependencies as you work.
 6. Claude will read `CLAUDE.md` and `PROJECT_GUIDE.md` automatically and apply all project rules in every conversation.
+7. **(Optional) Install the Guardrails skill:** To have Claude automatically validate recommendations against the charter, copy `PMO/Guardrails.md` to `.claude/skills/pmo-guardrails/SKILL.md`.
 
 ---
 
 ## Notes
-
-- The `PMO/Guardrails.md` file is a Claude skill that validates recommendations against the charter. It can be installed as a standalone skill in `.claude/skills/` if you want it triggered automatically.
 - The `Knowledge_Base.md` is intentionally blank in the template — populate it as your project progresses.
 - The HTML versions of registers (`.html` files) are optional view-only renderings. You can generate them from the Markdown files, or omit them.
 - If your governance framework has fewer or more gate stages than the five (AG1–AG5) shown here, adjust all references throughout.

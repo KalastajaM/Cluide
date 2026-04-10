@@ -2,6 +2,31 @@
 
 A personal business assistant for Claude Cowork that monitors your email, Teams, and calendar, manages pending actions, maintains a live profile of your work context, and delivers a daily briefing. Four scheduled tasks work together: a daily morning briefing, a mid-day urgent scan, a Friday weekly planner, and a Monday maintenance run.
 
+> **Companion guides:** [06 Task Efficiency](../../06_TASK_EFFICIENCY_GUIDE.md) · [07 Task Learning](../../07_TASK_LEARNING_GUIDE.md) · [09 Multi-Task Orchestration](../../09_MULTI_TASK_ORCHESTRATION.md) · [12 Security](../../12_SECURITY.md)
+
+---
+
+## File Map & Lookup Patterns
+
+| File | What it contains |
+|------|-----------------|
+| `Profile/PROFILE_SUMMARY.md` | One-page digest: who you are, role, active priorities, key contacts. **Read first.** |
+| `Profile/PROFILE_identity.md` | Full people directory — internal stakeholders, external contacts, org context |
+| `Profile/PROFILE_clients.md` | Active clients, accounts, deals, engagement status |
+| `Profile/PROFILE_patterns.md` | Communication style, working patterns, decision-making preferences |
+| `Profile/PROFILE_hypotheses.md` | Confirmed and unconfirmed beliefs about the business context |
+| `Knowledge/INDEX.md` | Index of all project/topic knowledge files |
+| `Knowledge/[TOPIC].md` | Per-topic file: key facts, decisions log, current status, open questions |
+| `Actions/ACTIONS.md` | Latest daily briefing — current priorities, draft messages, meeting prep |
+| `Actions/PENDING_ACTIONS.md` | All open action items with context and drafts |
+
+Common lookups:
+- **"What decisions were made about X?"** → `Knowledge/INDEX.md` → relevant `Knowledge/[TOPIC].md`
+- **"Who is [person]?"** → `Profile/PROFILE_identity.md`
+- **"What are my open tasks?"** → `Actions/PENDING_ACTIONS.md`
+- **"What happened recently?"** → `Actions/ACTIONS.md`
+- **General context** → Always start with `Profile/PROFILE_SUMMARY.md`
+
 ---
 
 ## Prerequisites
@@ -12,23 +37,9 @@ A personal business assistant for Claude Cowork that monitors your email, Teams,
 
 ---
 
-## Step 0 — Copy bootstrap files (fresh clone only)
+## Step 0 — First-run note
 
-If you cloned this repository from GitHub, the gitignored runtime files don't exist yet. Copy the stubs from `bootstrap/` before running any task:
-
-```bash
-# State files
-cp bootstrap/pending_actions.json Assistant-Task/pending_actions.json
-cp bootstrap/RUN_LOG.md Assistant-Task/RUN_LOG.md
-
-# Profile files
-mkdir -p Profile
-cp bootstrap/PROFILE_SUMMARY.md Profile/PROFILE_SUMMARY.md
-cp bootstrap/PROFILE_projects.md Profile/PROFILE_projects.md
-cp bootstrap/PROFILE_patterns.md Profile/PROFILE_patterns.md
-```
-
-These stubs are empty placeholders — no content to fill in yet. The tasks will populate them on their first run. If the `bootstrap/` folder doesn't exist in your repo, skip this step — the tasks will create the files automatically on first run.
+The tasks create all runtime files (`pending_actions.json`, `RUN_LOG.md`, profile files, etc.) automatically on their first run. No manual file setup is needed beyond filling in placeholders.
 
 ---
 

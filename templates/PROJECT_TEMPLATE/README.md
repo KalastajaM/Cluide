@@ -80,6 +80,24 @@ See `TASK_TEMPLATE/README.md` for full task setup instructions.
 
 ---
 
+## File Map & Lookup Patterns
+
+| File | What it contains |
+|------|-----------------|
+| `Profile/PROFILE_SUMMARY.md` | Compact digest: who I am, active priorities, key contacts. **Read first for any task.** |
+| `Profile/PROFILE_detail.md` | Full detail: people, projects, patterns, history |
+| `Knowledge/INDEX.md` | Index of all topic knowledge files |
+| `Knowledge/[TOPIC].md` | Per-topic file: key facts, decisions, current status, open questions |
+
+Common lookups:
+- **"What's the status of [project]?"** → `Knowledge/INDEX.md` → relevant `Knowledge/[TOPIC].md`
+- **"Who is [person]?"** → `Profile/PROFILE_detail.md`
+- **General context** → Always start with `Profile/PROFILE_SUMMARY.md`
+
+> **Note:** For simple projects, Claude's built-in `.auto-memory/` system (see Guide 04) may be sufficient. Profile files are the richer option when you need structured, multi-file context.
+
+---
+
 ## How the Profile Grows Over Time
 
 **You seed it once; Claude maintains it from then on.**

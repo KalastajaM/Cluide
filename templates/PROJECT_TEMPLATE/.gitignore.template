@@ -1,0 +1,6 @@
+# Personal data — do not commit to version control
+Profile/
+Knowledge/
+
+# Runtime state
+*.json

@@ -1,0 +1,5 @@
+# Runtime state — do not commit to version control
+RUN_LOG.md
+KNOWLEDGE_SUMMARY.md
+LAST_RUN.*
+*.json

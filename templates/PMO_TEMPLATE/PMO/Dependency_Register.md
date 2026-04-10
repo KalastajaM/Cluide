@@ -2,7 +2,7 @@
 
 **Owner:** [PLACEHOLDER: Initiative Owner Name] | **Sponsor:** [PLACEHOLDER: Workstream Sponsor Name]
 **Last updated:** [PLACEHOLDER: YYYY-MM-DD] (rev 1 — initial template)
-**Purpose:** Programme-level register of internal and external dependencies — things the [PLACEHOLDER: Legacy Product Name] → [PLACEHOLDER: Cloud Platform Name] workstream relies on (from R&D, commercial, operational, partner, or external sources) to achieve its objectives. This is the single source of truth for dependency tracking. The Risk Register (`Risk_Register.md`) references dependency IDs (D-xx) where a missed dependency drives a risk. Product-level migration blockers and feature-level open actions are in `Migrations/Product_Dependencies.md`.
+**Purpose:** Programme-level register of internal and external dependencies — things the [PLACEHOLDER: Legacy Product Name] → [PLACEHOLDER: Cloud Platform Name] workstream relies on (from R&D, commercial, operational, partner, or external sources) to achieve its objectives. This is the single source of truth for dependency tracking. The Risk Register (`Risk_Register.md`) references dependency IDs (D-xx) where a missed dependency drives a risk. Product-level migration blockers and feature-level details are tracked in `Knowledge_Base.md`.
 
 ---
 
