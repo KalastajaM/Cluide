@@ -241,6 +241,8 @@ Profile files grow over time and become slow to read and hard to maintain. Apply
 
 A profile system that is kept lean stays fast and useful. A profile that becomes a 500-line dump of everything the assistant has ever learned is almost as bad as no profile at all.
 
+As a system-level target: keep all auto-read profile files combined under ~2,000 tokens (roughly 100–150 lines total across everything Claude loads at session start). When auto-read files are lightweight, Claude infers context without re-explanation and sessions start immediately useful. When they grow unchecked, the token cost compounds across every run and the most important context gets diluted by stale detail. If you are consistently hitting context limits early, the auto-read set is the first place to audit.
+
 ---
 
 ## Memory Across Multiple Task Agents
