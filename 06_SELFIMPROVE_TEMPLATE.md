@@ -13,6 +13,8 @@ Every task that learns over time needs an `IMPROVEMENTS.md` file — a structure
 
 The template lives at [`templates/TASK_TEMPLATE/IMPROVEMENTS.md`](../templates/TASK_TEMPLATE/IMPROVEMENTS.md). It is ready to copy into any task folder and use from run 1.
 
+> **Note:** Copying the template means your copy is frozen at the version you copied. If the template improves later (e.g., from guide updates), you will need to manually sync changes into existing task folders. Check the template periodically if you run `tasks/review-tasks.md`.
+
 ---
 
 ## What the Template Contains

@@ -1,10 +1,10 @@
 # Task: Review Tasks Against Guides
 
-> **Claude Teacher maintenance task** — run this whenever guides in this project are updated.
+> **Cluide maintenance task** — run this whenever guides in this project are updated.
 > `Claude, run tasks/review-tasks.md`
 
 ## Purpose
-Detect which guides have changed since each task was last reviewed, then check whether the affected tasks need updating to stay in sync. Keeps the tasks/ collection accurate as the Claude Teacher guides evolve.
+Detect which guides have changed since each task was last reviewed, then check whether the affected tasks need updating to stay in sync. Keeps the tasks/ collection accurate as the Cluide guides evolve.
 
 ---
 

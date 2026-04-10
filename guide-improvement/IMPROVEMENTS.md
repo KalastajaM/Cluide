@@ -1,4 +1,4 @@
-# Guide Improvement Log — Claude Teacher
+# Guide Improvement Log — Cluide
 
 > Managed by the guide-improvement task. Read at the start of every run (Step 1). Updated at the end of every run (Step 9).
 > Respond to proposals by annotating them [APPROVED], [REJECTED], or [MODIFY: ...] directly in this file.
