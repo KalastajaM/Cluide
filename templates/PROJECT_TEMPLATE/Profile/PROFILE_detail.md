@@ -45,7 +45,7 @@
 
 ## Hypotheses
 
-*Things believed to be true but not yet confirmed. See Guide 03 for the hypothesis lifecycle.*
+*Things believed to be true but not yet confirmed. See Guide 04 for the hypothesis lifecycle.*
 
 ```
 [HYPOTHESIS MEDIUM] [Description of belief]

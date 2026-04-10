@@ -2,7 +2,7 @@
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
 > `Claude, run tasks/setup-mcp.md`
-> **Source guide:** `08_MCP_SERVERS.md`
+> **Source guide:** `05_MCP_SERVERS.md`
 
 ## Purpose
 Audit the current MCP server configuration, identify what's connected and working, and guide setup of additional servers the user wants. MCP servers are what give Claude access to external tools — Gmail, Calendar, GitHub, filesystem, and more.

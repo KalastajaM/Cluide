@@ -122,7 +122,7 @@ Would confirm: Direct mention of rate change; new proposal sent with higher figu
 
 This lets the assistant surface the hypothesis as a proactive suggestion ("I've noticed a few signals you might be re-evaluating your rates — want me to pull together a market comparison?") rather than either ignoring the signal or stating it as fact.
 
-For the full hypothesis lifecycle — how hypotheses are promoted from LOW to CONFIRMED, when to surface them, and when to expire them — see [Guide 05, Part 4](./05_TASK_LEARNING_GUIDE.md#part-4-the-hypothesis-system).
+For the full hypothesis lifecycle — how hypotheses are promoted from LOW to CONFIRMED, when to surface them, and when to expire them — see [Guide 07, Part 4](./07_TASK_LEARNING_GUIDE.md#part-4-the-hypothesis-system).
 
 ---
 
@@ -199,7 +199,7 @@ Here are the kinds of facts that belong in auto-memory, drawn from a working per
 ## Giving This to Claude
 
 **To set up auto-memory from scratch:**
-> "Read 03_MEMORY_AND_PROFILE.md and start setting up my memory system. Ask me what you need to know about me, my projects, and my preferences — then save it in the right format."
+> "Read 04_MEMORY_AND_PROFILE.md and start setting up my memory system. Ask me what you need to know about me, my projects, and my preferences — then save it in the right format."
 
 **To set up profile files for a scheduled task:**
-> "Read 03_MEMORY_AND_PROFILE.md and create the profile file structure for my daily email digest task. The task already has a TASK.md — add the profile files it needs to track context across runs."
+> "Read 04_MEMORY_AND_PROFILE.md and create the profile file structure for my daily email digest task. The task already has a TASK.md — add the profile files it needs to track context across runs."

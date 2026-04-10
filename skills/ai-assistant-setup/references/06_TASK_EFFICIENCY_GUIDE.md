@@ -3,10 +3,10 @@
 > How to design and optimize Claude tasks for minimal token consumption.
 > Use as a one-time audit checklist when setting up a new task, or as a periodic optimization pass on an existing one.
 
-> **Companion guides:** This guide covers efficiency (keeping token use low). [Guide 05](./05_TASK_LEARNING_GUIDE.md) covers self-improvement (making the task smarter over time). [Guide 06](./06_SELFIMPROVE_TEMPLATE.md) is a ready-to-use template that implements Guide 05.
+> **Companion guides:** This guide covers efficiency (keeping token use low). [Guide 07](./07_TASK_LEARNING_GUIDE.md) covers self-improvement (making the task smarter over time). [Guide 08](./08_SELFIMPROVE_TEMPLATE.md) is a ready-to-use template that implements Guide 07.
 
 > **Giving this guide to Claude:**
-> "Read 04_TASK_EFFICIENCY_GUIDE.md and audit my existing task at [path/to/TASK.md] for token efficiency. Apply the checklist and propose specific changes."
+> "Read 06_TASK_EFFICIENCY_GUIDE.md and audit my existing task at [path/to/TASK.md] for token efficiency. Apply the checklist and propose specific changes."
 
 ---
 
@@ -242,7 +242,7 @@ This runs the daily digest task automatically when you open Claude — no manual
 
 For the full hooks reference, see the [Claude Code documentation on hooks](https://docs.anthropic.com/en/docs/claude-code/hooks).
 
-A common use of the `SessionStart` hook is to commit task state files before every run — creating a restore point if a run goes wrong. See [Guide 09 — Git Integration](./09_GIT_INTEGRATION.md).
+A common use of the `SessionStart` hook is to commit task state files before every run — creating a restore point if a run goes wrong. See [Guide 11 — Git Integration](./11_GIT_INTEGRATION.md).
 
 ---
 

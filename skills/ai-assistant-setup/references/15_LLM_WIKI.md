@@ -2,10 +2,10 @@
 
 > Most people use LLMs for Q&A — ask a question, get an answer, lose the answer to chat history. The LLM wiki pattern is different: the LLM incrementally builds and maintains a persistent, structured knowledge base that gets richer with every source you add and every question you ask. Nothing is re-derived from scratch on every query. Knowledge compounds.
 
-> **Companion guides:** [Guide 09](./09_GIT_INTEGRATION.md) covers git — a wiki is just a folder of markdown files, and versioning it costs nothing. [Guide 11](./11_PERSONAL_DATA_LAYER.md) covers personal data — wikis and data layers are complementary, not alternatives. [Guide 03](./03_MEMORY_AND_PROFILE.md) covers `.auto-memory/` — which serves a different purpose (see below).
+> **Companion guides:** [Guide 11](./11_GIT_INTEGRATION.md) covers git — a wiki is just a folder of markdown files, and versioning it costs nothing. [Guide 14](./14_PERSONAL_DATA_LAYER.md) covers personal data — wikis and data layers are complementary, not alternatives. [Guide 04](./04_MEMORY_AND_PROFILE.md) covers `.auto-memory/` — which serves a different purpose (see below).
 
 > **Giving this guide to Claude:**
-> "Read 12_LLM_WIKI.md and help me set up an LLM wiki for [topic]. Ask me what sources I have and what I want to be able to query."
+> "Read 15_LLM_WIKI.md and help me set up an LLM wiki for [topic]. Ask me what sources I have and what I want to be able to query."
 
 ---
 
@@ -76,7 +76,7 @@ You drop a new source into `sources/` and ask Claude to process it. A typical fl
 A single source might touch 10–15 wiki pages. You can stay closely involved — reading summaries, checking updates, guiding emphasis — or batch-ingest with less supervision. Document the workflow you prefer in `CLAUDE.md` so it's consistent across sessions.
 
 **Prompt to start an ingest:**
-> "Read 12_LLM_WIKI.md, then ingest `sources/[filename]` into the wiki. Follow the schema in CLAUDE.md. Talk me through the key takeaways before making any changes."
+> "Read 15_LLM_WIKI.md, then ingest `sources/[filename]` into the wiki. Follow the schema in CLAUDE.md. Talk me through the key takeaways before making any changes."
 
 ### Query
 
@@ -101,7 +101,7 @@ Periodically ask Claude to health-check the wiki. Look for:
 Claude is good at surfacing new questions to investigate and new sources to look for. This keeps the wiki healthy as it grows.
 
 **Prompt for a lint pass:**
-> "Read 12_LLM_WIKI.md and run a lint pass on the wiki. Check for contradictions, orphan pages, missing cross-references, and stale claims. Give me a prioritised list of issues and suggested fixes before making any changes."
+> "Read 15_LLM_WIKI.md and run a lint pass on the wiki. Check for contradictions, orphan pages, missing cross-references, and stale claims. Give me a prioritised list of issues and suggested fixes before making any changes."
 
 ---
 
@@ -205,7 +205,7 @@ Some uses that fit naturally with this setup:
 
 ## Git Integration
 
-The wiki is just a folder of markdown files — version it with git and you get the full pre/post-run commit pattern from [Guide 09](./09_GIT_INTEGRATION.md) for free.
+The wiki is just a folder of markdown files — version it with git and you get the full pre/post-run commit pattern from [Guide 11](./11_GIT_INTEGRATION.md) for free.
 
 `wiki/log.md` is append-only, which produces an unusually clean git history: each commit adds exactly one entry, so `git log` on that file reads like a timeline of the wiki's evolution. `git diff HEAD~1 HEAD -- wiki/` shows exactly what a single ingest changed across all pages — useful for reviewing Claude's work before pushing.
 
@@ -235,6 +235,6 @@ The git log on `wiki/log.md` shows the exact date of every ingest, every saved q
 
 Share this with Claude and say:
 
-> "Read 12_LLM_WIKI.md. I want to build a wiki about [topic]. My sources will be [describe what you have]. Help me set up the directory structure and write an initial CLAUDE.md schema. Ask me questions to understand the domain before writing anything."
+> "Read 15_LLM_WIKI.md. I want to build a wiki about [topic]. My sources will be [describe what you have]. Help me set up the directory structure and write an initial CLAUDE.md schema. Ask me questions to understand the domain before writing anything."
 
 Claude will ask about your domain, your sources, and what you want to be able to query — then build the scaffold to match.

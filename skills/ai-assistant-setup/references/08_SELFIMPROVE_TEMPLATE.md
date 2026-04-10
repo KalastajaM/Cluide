@@ -1,11 +1,9 @@
 # The Self-Improvement Template
 
-*Last reviewed: April 2026*
-
-> **Companion guides:** [Guide 05](./05_TASK_LEARNING_GUIDE.md) describes the full learning framework this template implements — read it first to understand why the template is structured the way it is. [Guide 04](./04_TASK_EFFICIENCY_GUIDE.md) covers token efficiency — keep always-loaded files compact.
+> **Companion guides:** [Guide 07](./07_TASK_LEARNING_GUIDE.md) describes the full learning framework this template implements — read it first to understand why the template is structured the way it is. [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) covers token efficiency — keep always-loaded files compact.
 
 > **Giving this to Claude:**
-> "Read 06_SELFIMPROVE_TEMPLATE.md and set up the self-improvement system for my task at [path/to/task-folder/]. Follow the installation steps in the guide."
+> "Read 08_SELFIMPROVE_TEMPLATE.md and set up the self-improvement system for my task at [path/to/task-folder/]. Follow the installation steps in the guide."
 
 ---
 
@@ -14,8 +12,6 @@
 Every task that learns over time needs an `IMPROVEMENTS.md` file — a structured log that tracks run history, applied fixes, pending proposals, known issues, and the self-improvement instructions the task follows at runtime.
 
 The template lives at [`templates/TASK_TEMPLATE/IMPROVEMENTS.md`](../templates/TASK_TEMPLATE/IMPROVEMENTS.md). It is ready to copy into any task folder and use from run 1.
-
-> **Note:** Copying the template means your copy is frozen at the version you copied. If the template improves later (e.g., from guide updates), you will need to manually sync changes into existing task folders. Check the template periodically if you run `tasks/review-tasks.md`.
 
 ---
 
@@ -95,8 +91,8 @@ The task picks up the annotation on the next run and acts on it.
 
 ---
 
-## How the Template Connects to Guide 05
+## How the Template Connects to Guide 07
 
-Guide 05 describes the full learning framework — what signals to detect, the hypothesis lifecycle, the refactoring system. The template operationalises it: the Self-Improvement Step instructions in section A–D are a condensed, ready-to-run version of the Guide 05 framework.
+Guide 07 describes the full learning framework — what signals to detect, the hypothesis lifecycle, the refactoring system. The template operationalises it: the Self-Improvement Step instructions in section A–D are a condensed, ready-to-run version of the Guide 07 framework.
 
-For most tasks, the template is sufficient. Read Guide 05 when you want to understand the reasoning behind the rules, or when you need to adapt the system for a more complex task.
+For most tasks, the template is sufficient. Read Guide 07 when you want to understand the reasoning behind the rules, or when you need to adapt the system for a more complex task.

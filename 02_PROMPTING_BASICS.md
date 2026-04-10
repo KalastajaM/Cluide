@@ -4,10 +4,10 @@
 
 > The quality of Claude's output is determined almost entirely by the quality of the instructions it receives. This guide is about writing better instructions — whether in CLAUDE.md, a skill, a task, or a chat message.
 
-> **Companion guides:** [Guide 01 — CLAUDE.md](./01_CLAUDE_MD.md) for applying these principles to your standing instructions. [Guide 02 — Skills](./02_SKILLS.md) for skill descriptions and trigger phrases.
+> **Companion guides:** [Guide 01 — CLAUDE.md](./01_CLAUDE_MD.md) for applying these principles to your standing instructions. [Guide 03 — Skills](./03_SKILLS.md) for skill descriptions and trigger phrases.
 
 > **Giving this guide to Claude:**
-> "Read 15_PROMPTING_BASICS.md and help me improve my [CLAUDE.md / SKILL.md / task instructions]. Read the file I want to improve and apply the principles from the guide."
+> "Read 02_PROMPTING_BASICS.md and help me improve my [CLAUDE.md / SKILL.md / task instructions]. Read the file I want to improve and apply the principles from the guide."
 
 ---
 
@@ -238,10 +238,10 @@ If you don't specify a format, Claude will pick one. The one it picks will be:
 ## Applying These Principles to Your Setup
 
 **To improve CLAUDE.md:**
-> "Read 15_PROMPTING_BASICS.md and then read my current CLAUDE.md. For each rule, tell me whether it's specific enough to change Claude's behaviour reliably. Rewrite any that are too vague."
+> "Read 02_PROMPTING_BASICS.md and then read my current CLAUDE.md. For each rule, tell me whether it's specific enough to change Claude's behaviour reliably. Rewrite any that are too vague."
 
 **To improve a skill description:**
-> "Read 15_PROMPTING_BASICS.md and then read my [skill-name] SKILL.md. Is the description strong enough to trigger reliably? Rewrite it using the guidance in the prompting guide."
+> "Read 02_PROMPTING_BASICS.md and then read my [skill-name] SKILL.md. Is the description strong enough to trigger reliably? Rewrite it using the guidance in the prompting guide."
 
 **To add an output format to a skill or task:**
 > "Read my [task name] TASK.md. The output format section is too vague. Look at the last 3 entries in LAST_RUN.md to see what the output actually looks like, then write a proper output format template to match it."

@@ -1,30 +1,13 @@
 # Connecting Claude to Your Personal Data
 
-*Last reviewed: April 2026*
-
 > Five patterns for getting personal data — investments, finances, transactions — into Claude tasks without exposing raw files, building fragile pipelines, or paying excessive token costs.
 
-> **Companion guides:** [Guide 04](./04_TASK_EFFICIENCY_GUIDE.md) covers token efficiency — Python data feeders (Pattern 1) are one of the highest-leverage efficiency moves you can make. [Guide 05](./05_TASK_LEARNING_GUIDE.md) covers self-improvement — once your data layer is stable, the task can start learning from it. [Guide 09](./09_GIT_INTEGRATION.md) covers git tracking — your JSON data files are prime candidates for pre-run snapshots.
+> **Companion guides:** [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) covers token efficiency — Python data feeders (Pattern 1) are one of the highest-leverage efficiency moves you can make. [Guide 07](./07_TASK_LEARNING_GUIDE.md) covers self-improvement — once your data layer is stable, the task can start learning from it. [Guide 11](./11_GIT_INTEGRATION.md) covers git tracking — your JSON data files are prime candidates for pre-run snapshots.
 
 > **Use this when:** you want Claude to reason about personal data (portfolio performance, spending patterns, bank transactions) but the data lives in apps that have no API, in raw files too large to paste in directly, or in formats Claude can't parse without help.
 
 > **Giving this guide to Claude:**
-> "Read 11_PERSONAL_DATA_LAYER.md and help me set up a data layer for [my investment tracker / personal finance workflow / etc.]. Ask me what data sources I have and recommend which patterns apply."
->
-> **Faster alternative:** `tasks/setup-data-layer.md` interviews you about your data sources and sets up the right pattern(s) without reading the guide first.
-
----
-
-## Do You Need This Guide Yet?
-
-This is an advanced guide. The patterns here require writing Python scripts, running JavaScript in your browser, or setting up multi-step pipelines. If you're still in your first few weeks, you likely don't need this yet.
-
-**Come back here when:**
-- You want Claude to reason about data that lives in a web app with no API (banking, broker, expense tracker)
-- You have local files (CSV, JSON) that are too large or raw to paste into Claude directly
-- A task needs computed values (P&L, totals, averages) rather than raw records
-
-**If you just want Claude to remember things about you:** that's [Guide 03 — Memory](./03_MEMORY_AND_PROFILE.md), not this guide.
+> "Read 14_PERSONAL_DATA_LAYER.md and help me set up a data layer for [my investment tracker / personal finance workflow / etc.]. Ask me what data sources I have and recommend which patterns apply."
 
 ---
 
@@ -92,7 +75,7 @@ Do not read investments.json directly.
 
 - Scripts own the data transformation; Claude owns the reasoning. Never mix the two.
 - Output should be human-readable and Claude-readable simultaneously. ASCII tables work for both.
-- Keep output under ~80 lines to stay token-efficient (see [Guide 04 §Core Principle](./04_TASK_EFFICIENCY_GUIDE.md)).
+- Keep output under ~80 lines to stay token-efficient (see [Guide 06 §Core Principle](./06_TASK_EFFICIENCY_GUIDE.md)).
 - Print a timestamp in the header so Claude knows how current the data is.
 - If the script fails, Claude should log the failure and stop. It should not attempt to read the raw file directly — that would bypass all the effort to keep context compact.
 
@@ -106,7 +89,7 @@ Do not read investments.json directly.
 
 - No setup, no running server, no schema migrations
 - Human-readable — you can spot errors with a text editor
-- Git-trackable — every change has history and is reversible (see [Guide 09](./09_GIT_INTEGRATION.md))
+- Git-trackable — every change has history and is reversible (see [Guide 11](./11_GIT_INTEGRATION.md))
 - Claude can read, update, and query it directly
 - Works as both the input to Pattern 1 scripts and the output of Pattern 3 and 4 extraction pipelines
 
@@ -386,7 +369,7 @@ To re-run from normalization (extraction already done): start at Step 3.
 - Number steps with leading zeros (01, 02) so they sort correctly in directory listings.
 - Distinguish manual from automated steps in the master file — this makes it clear where human action is required.
 
-Cross-reference: Step files follow the same principles as TASK.md in [Guide 04](./04_TASK_EFFICIENCY_GUIDE.md): load only what is needed, state outputs explicitly, keep each file under ~200 lines.
+Cross-reference: Step files follow the same principles as TASK.md in [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md): load only what is needed, state outputs explicitly, keep each file under ~200 lines.
 
 ---
 
@@ -466,4 +449,4 @@ reads:           GoodBudget's full page DOM
 ---
 
 > **Giving this guide to Claude:**
-> "Read 11_PERSONAL_DATA_LAYER.md and help me build a data layer for [describe your use case]. Ask me what data sources I have and which patterns apply."
+> "Read 14_PERSONAL_DATA_LAYER.md and help me build a data layer for [describe your use case]. Ask me what data sources I have and which patterns apply."

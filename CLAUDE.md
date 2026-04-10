@@ -15,22 +15,22 @@ This folder contains a complete operational framework for building, running, and
 | Guide | Topic |
 |---|---|
 | `01_CLAUDE_MD.md` | Writing effective CLAUDE.md files |
-| `02_SKILLS.md` | Designing skills |
-| `03_MEMORY_AND_PROFILE.md` | Memory and profile files |
-| `04_TASK_EFFICIENCY_GUIDE.md` | Making tasks run efficiently |
-| `05_TASK_LEARNING_GUIDE.md` | Tasks that learn and improve over time |
-| `06_SELFIMPROVE_TEMPLATE.md` | Self-improving task template |
-| `07_BEST_PRACTICES.md` | General best practices |
-| `08_MCP_SERVERS.md` | MCP server setup and usage |
-| `09_GIT_INTEGRATION.md` | Git integration, `.gitignore`, `.claudeignore` |
-| `10_DEV_EXECUTION_WORKFLOW.md` | Development execution workflow |
-| `11_PERSONAL_DATA_LAYER.md` | Personal data and profile layer |
-| `12_LLM_WIKI.md` | LLM wiki pattern |
-| `13_SECURITY.md` | Security best practices for Claude Code and Cowork |
-| `14_TROUBLESHOOTING.md` | Diagnosing and fixing common problems |
-| `15_PROMPTING_BASICS.md` | Writing instructions that produce consistent output |
-| `16_MULTI_TASK_ORCHESTRATION.md` | Coordinating multiple tasks with shared state |
-| `17_COST_PERFORMANCE.md` | Tracking token usage, budgeting, and cost monitoring |
+| `02_PROMPTING_BASICS.md` | Writing instructions that produce consistent output |
+| `03_SKILLS.md` | Designing skills |
+| `04_MEMORY_AND_PROFILE.md` | Memory and profile files |
+| `05_MCP_SERVERS.md` | MCP server setup and usage |
+| `06_TASK_EFFICIENCY_GUIDE.md` | Making tasks run efficiently |
+| `07_TASK_LEARNING_GUIDE.md` | Tasks that learn and improve over time |
+| `08_SELFIMPROVE_TEMPLATE.md` | Self-improving task template |
+| `09_MULTI_TASK_ORCHESTRATION.md` | Coordinating multiple tasks with shared state |
+| `10_COST_PERFORMANCE.md` | Tracking token usage, budgeting, and cost monitoring |
+| `11_GIT_INTEGRATION.md` | Git integration, `.gitignore`, `.claudeignore` |
+| `12_SECURITY.md` | Security best practices for Claude Code and Cowork |
+| `13_DEV_EXECUTION_WORKFLOW.md` | Development execution workflow |
+| `14_PERSONAL_DATA_LAYER.md` | Personal data and profile layer |
+| `15_LLM_WIKI.md` | LLM wiki pattern |
+| `16_BEST_PRACTICES.md` | General best practices |
+| `17_TROUBLESHOOTING.md` | Diagnosing and fixing common problems |
 
 When the user asks a question or makes a request that a guide covers, read the relevant guide before responding.
 

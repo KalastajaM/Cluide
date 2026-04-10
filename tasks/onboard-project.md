@@ -2,7 +2,7 @@
 
 > **Cluide task** — run this to set up a new project end-to-end:
 > `Claude, run tasks/onboard-project.md`
-> **Source guides:** `01_CLAUDE_MD.md`, `03_MEMORY_AND_PROFILE.md`, `08_MCP_SERVERS.md`, `09_GIT_INTEGRATION.md`, `13_SECURITY.md`
+> **Source guides:** `01_CLAUDE_MD.md`, `04_MEMORY_AND_PROFILE.md`, `05_MCP_SERVERS.md`, `11_GIT_INTEGRATION.md`, `12_SECURITY.md`
 
 ## Purpose
 Set up a new project for use with Claude end-to-end — in the right order, without having to know which individual setup tasks to run. Covers: CLAUDE.md, ignore hygiene, git/GitHub, security, and optionally memory and MCP. Can start from a project template if one fits.

@@ -4,10 +4,10 @@
 
 > Scheduled tasks run unattended. Without monitoring, costs creep silently — a task that used to cost $0.10 per run can drift to $0.50 after a few profile updates and nobody notices. This guide covers how to measure, budget, and control what your tasks cost.
 
-> **Companion guides:** [Guide 04](./04_TASK_EFFICIENCY_GUIDE.md) covers how to reduce costs once you've found the expensive parts. This guide covers how to find them.
+> **Companion guides:** [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) covers how to reduce costs once you've found the expensive parts. This guide covers how to find them.
 
 > **Giving this guide to Claude:**
-> "Read 17_COST_PERFORMANCE.md and add run metrics tracking to my task at [path/to/TASK.md]. Set up a budget check and alerting."
+> "Read 10_COST_PERFORMANCE.md and add run metrics tracking to my task at [path/to/TASK.md]. Set up a budget check and alerting."
 
 ---
 
@@ -61,7 +61,7 @@ You don't need a token counter. Use these rough conversions:
 | TASK.md (200 lines) | ~3,000 tokens |
 | PROFILE_SUMMARY.md (40 lines) | ~600 tokens |
 
-For a fuller estimation model, see [Guide 04, "Quick Estimation"](./04_TASK_EFFICIENCY_GUIDE.md).
+For a fuller estimation model, see [Guide 06, "Quick Estimation"](./06_TASK_EFFICIENCY_GUIDE.md).
 
 ---
 
@@ -132,7 +132,7 @@ append to IMPROVEMENTS.md:
 Investigate: did the input data grow, or did the task process more items than usual?"
 ```
 
-This surfaces problems in `IMPROVEMENTS.md` where the self-improvement cycle (see [Guide 05](./05_TASK_LEARNING_GUIDE.md)) will pick them up and propose a fix.
+This surfaces problems in `IMPROVEMENTS.md` where the self-improvement cycle (see [Guide 07](./07_TASK_LEARNING_GUIDE.md)) will pick them up and propose a fix.
 
 ---
 

@@ -5,10 +5,10 @@
 > How to design and optimize Claude tasks for minimal token consumption.
 > Use as a one-time audit checklist when setting up a new task, or as a periodic optimization pass on an existing one.
 
-> **Companion guides:** This guide covers efficiency (keeping token use low). [Guide 05](./05_TASK_LEARNING_GUIDE.md) covers self-improvement (making the task smarter over time). [Guide 06](./06_SELFIMPROVE_TEMPLATE.md) is a ready-to-use template that implements Guide 05.
+> **Companion guides:** This guide covers efficiency (keeping token use low). [Guide 07](./07_TASK_LEARNING_GUIDE.md) covers self-improvement (making the task smarter over time). [Guide 08](./08_SELFIMPROVE_TEMPLATE.md) is a ready-to-use template that implements Guide 07.
 
 > **Giving this guide to Claude:**
-> "Read 04_TASK_EFFICIENCY_GUIDE.md and audit my existing task at [path/to/TASK.md] for token efficiency. Apply the checklist and propose specific changes."
+> "Read 06_TASK_EFFICIENCY_GUIDE.md and audit my existing task at [path/to/TASK.md] for token efficiency. Apply the checklist and propose specific changes."
 >
 > **Faster alternative:** `tasks/audit-task-efficiency.md` runs this checklist end-to-end. `tasks/setup-scheduled-task.md` scaffolds a new task with efficiency patterns built in from the start.
 
@@ -260,7 +260,7 @@ Hooks are shell commands that fire automatically in response to Claude Code even
 **Hook practical notes:**
 - SessionStart fires once per session. Multiple sessions per day = multiple hook runs. Add deduplication (checklist item 7) if running full tasks via hooks.
 - The `matcher` field filters by context. Leave it empty (`""`) to fire on all sessions.
-- For git pre-session snapshots specifically, prefer the hook approach — it's simpler and the right fit. See [Guide 09 — Git Integration](./09_GIT_INTEGRATION.md).
+- For git pre-session snapshots specifically, prefer the hook approach — it's simpler and the right fit. See [Guide 11 — Git Integration](./11_GIT_INTEGRATION.md).
 
 For the full hooks reference: [Claude Code documentation on hooks](https://docs.anthropic.com/en/docs/claude-code/hooks).
 

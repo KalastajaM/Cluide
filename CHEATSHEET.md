@@ -12,13 +12,13 @@
 | You want to... | Build | Guide |
 |---|---|---|
 | Claude always responds a certain way | CLAUDE.md | [01](./01_CLAUDE_MD.md) |
-| Run the same task repeatedly when you ask | Skill | [02](./02_SKILLS.md) |
-| Run something automatically on a schedule | Scheduled Task | [04](./04_TASK_EFFICIENCY_GUIDE.md) |
-| Claude remembers things between sessions | Memory | [03](./03_MEMORY_AND_PROFILE.md) |
-| A task that learns and improves over time | Task + IMPROVEMENTS.md | [05](./05_TASK_LEARNING_GUIDE.md) |
+| Run the same task repeatedly when you ask | Skill | [03](./03_SKILLS.md) |
+| Run something automatically on a schedule | Scheduled Task | [06](./06_TASK_EFFICIENCY_GUIDE.md) |
+| Claude remembers things between sessions | Memory | [04](./04_MEMORY_AND_PROFILE.md) |
+| A task that learns and improves over time | Task + IMPROVEMENTS.md | [07](./07_TASK_LEARNING_GUIDE.md) |
 | Answer a one-off question | Chat | — |
-| Coordinate tasks that share data | Orchestrator | [16](./16_MULTI_TASK_ORCHESTRATION.md) |
-| Track and control task costs | Run metrics | [17](./17_COST_PERFORMANCE.md) |
+| Coordinate tasks that share data | Orchestrator | [09](./09_MULTI_TASK_ORCHESTRATION.md) |
+| Track and control task costs | Run metrics | [10](./10_COST_PERFORMANCE.md) |
 
 ---
 
@@ -96,7 +96,7 @@ description: >
 
 ## IMPROVEMENTS.md Skeleton
 
-**File location:** Inside your task folder · **Guide:** [06](./06_SELFIMPROVE_TEMPLATE.md)
+**File location:** Inside your task folder · **Guide:** [08](./08_SELFIMPROVE_TEMPLATE.md)
 
 ```markdown
 # Improvements Log — [Task Name]
@@ -180,7 +180,7 @@ description: >
 
 ## Run Metrics Block (append to RUN_LOG.md)
 
-**Guide:** [17](./17_COST_PERFORMANCE.md)
+**Guide:** [10](./10_COST_PERFORMANCE.md)
 
 ```markdown
 ## [2026-04-10] Run #47
@@ -197,7 +197,7 @@ Add as the final step in TASK.md. Archive entries after 30 runs.
 
 ## Shared State Convention (Multi-Task)
 
-**Guide:** [16](./16_MULTI_TASK_ORCHESTRATION.md)
+**Guide:** [09](./09_MULTI_TASK_ORCHESTRATION.md)
 
 ```
 shared/
@@ -216,13 +216,13 @@ shared/
 > "Read 01_CLAUDE_MD.md and help me write my CLAUDE.md. Ask me what you need to know."
 
 **Create a new skill:**
-> "Read 02_SKILLS.md and create a skill for [what you want]. Follow the guide's best practices."
+> "Read 03_SKILLS.md and create a skill for [what you want]. Follow the guide's best practices."
 
 **Audit a task for efficiency:**
-> "Read 04_TASK_EFFICIENCY_GUIDE.md and audit [task name] TASK.md for token efficiency."
+> "Read 06_TASK_EFFICIENCY_GUIDE.md and audit [task name] TASK.md for token efficiency."
 
 **Add self-improvement to a task:**
-> "Read 05_TASK_LEARNING_GUIDE.md and 06_SELFIMPROVE_TEMPLATE.md, then add the improvements system to my [task name] task."
+> "Read 07_TASK_LEARNING_GUIDE.md and 08_SELFIMPROVE_TEMPLATE.md, then add the improvements system to my [task name] task."
 
 **Review and apply improvement proposals:**
 > "Read my IMPROVEMENTS.md. For each pending proposal, explain it and ask me to approve, reject, or modify."

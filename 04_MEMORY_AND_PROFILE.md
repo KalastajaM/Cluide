@@ -27,7 +27,7 @@ There are three memory layers available. Understanding when each applies prevent
 
 The two systems can coexist: native memory for your interactive chat assistant, `.auto-memory/` for your tasks and projects. They do not conflict.
 
-**Note:** This guide covers memory *about you* — your preferences, projects, and working style. If you want to build a knowledge base *about a subject domain* (research, threat intelligence, competitive analysis), that's a different system: see [Guide 12 — LLM Wiki](./12_LLM_WIKI.md).
+**Note:** This guide covers memory *about you* — your preferences, projects, and working style. If you want to build a knowledge base *about a subject domain* (research, threat intelligence, competitive analysis), that's a different system: see [Guide 15 — LLM Wiki](./15_LLM_WIKI.md).
 
 ---
 
@@ -200,7 +200,7 @@ Would confirm: Direct mention of rate change; new proposal sent with higher figu
 
 This lets the assistant surface the hypothesis as a proactive suggestion ("I've noticed a few signals you might be re-evaluating your rates — want me to pull together a market comparison?") rather than either ignoring the signal or stating it as fact.
 
-For the full hypothesis lifecycle — how hypotheses are promoted from LOW to CONFIRMED, when to surface them, and when to expire them — see [Guide 05, Part 4](./05_TASK_LEARNING_GUIDE.md#part-4-the-hypothesis-system).
+For the full hypothesis lifecycle — how hypotheses are promoted from LOW to CONFIRMED, when to surface them, and when to expire them — see [Guide 07, Part 4](./07_TASK_LEARNING_GUIDE.md#part-4-the-hypothesis-system).
 
 ---
 
@@ -277,9 +277,9 @@ Here are the kinds of facts that belong in auto-memory, drawn from a working per
 ## Giving This to Claude
 
 **To set up auto-memory from scratch:**
-> "Read 03_MEMORY_AND_PROFILE.md and start setting up my memory system. Ask me what you need to know about me, my projects, and my preferences — then save it in the right format."
+> "Read 04_MEMORY_AND_PROFILE.md and start setting up my memory system. Ask me what you need to know about me, my projects, and my preferences — then save it in the right format."
 
 **To set up profile files for a scheduled task:**
-> "Read 03_MEMORY_AND_PROFILE.md and create the profile file structure for my daily email digest task. The task already has a TASK.md — add the profile files it needs to track context across runs."
+> "Read 04_MEMORY_AND_PROFILE.md and create the profile file structure for my daily email digest task. The task already has a TASK.md — add the profile files it needs to track context across runs."
 
 **Faster alternative:** `tasks/setup-memory.md` interviews you and creates the full `.auto-memory/` structure without reading the guide first. `tasks/audit-memory.md` reviews an existing memory system for staleness and drift.

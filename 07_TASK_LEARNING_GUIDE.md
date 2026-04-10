@@ -5,10 +5,10 @@
 > A framework for building tasks that get better over time.
 > Drop the relevant sections into any task's TASK.md or TASK_REFERENCE.md.
 
-> **Companion guides:** [Guide 04](./04_TASK_EFFICIENCY_GUIDE.md) covers token efficiency — set that up first. [Guide 06](./06_SELFIMPROVE_TEMPLATE.md) is a ready-to-use IMPROVEMENTS.md template that implements the system described here.
+> **Companion guides:** [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) covers token efficiency — set that up first. [Guide 08](./08_SELFIMPROVE_TEMPLATE.md) is a ready-to-use IMPROVEMENTS.md template that implements the system described here.
 
 > **Giving this guide to Claude:**
-> "Read 05_TASK_LEARNING_GUIDE.md and add the self-improvement system to my task at [path/to/TASK.md]. Include signal detection, the apply-vs-propose rules, and set up an IMPROVEMENTS.md file using the template in 06_SELFIMPROVE_TEMPLATE.md."
+> "Read 07_TASK_LEARNING_GUIDE.md and add the self-improvement system to my task at [path/to/TASK.md]. Include signal detection, the apply-vs-propose rules, and set up an IMPROVEMENTS.md file using the template in 08_SELFIMPROVE_TEMPLATE.md."
 >
 > **Faster alternative:** `tasks/setup-self-improving-task.md` adds the full self-improvement scaffolding to any existing task without reading the guide first.
 

@@ -4,7 +4,7 @@
 
 > Every other guide in this collection assumes things go right. This one is for when they don't. Each section is a symptom — find yours, follow the steps.
 
-> **Companion guides:** [Guide 04 — Task Efficiency](./04_TASK_EFFICIENCY_GUIDE.md) for slow tasks. [Guide 13 — Security](./13_SECURITY.md) for security concerns. [Guide 09 — Git Integration](./09_GIT_INTEGRATION.md) for rollback.
+> **Companion guides:** [Guide 06 — Task Efficiency](./06_TASK_EFFICIENCY_GUIDE.md) for slow tasks. [Guide 12 — Security](./12_SECURITY.md) for security concerns. [Guide 11 — Git Integration](./11_GIT_INTEGRATION.md) for rollback.
 
 > **Quick diagnostic prompt:**
 > "Read LAST_RUN.md and TASK.md for [task name]. The problem is [describe it]. What's causing it and what should I change?"
@@ -101,7 +101,7 @@ If you are relying on native memory for a scheduled task, this will fail — nat
 **1. You're relying on native memory for tasks**
 Native memory is designed for conversational use. Scheduled tasks should use the `.auto-memory/` folder system.
 
-*Fix:* Set up `.auto-memory/` as described in [Guide 03](./03_MEMORY_AND_PROFILE.md) and add this line to your `CLAUDE.md`:
+*Fix:* Set up `.auto-memory/` as described in [Guide 04](./04_MEMORY_AND_PROFILE.md) and add this line to your `CLAUDE.md`:
 ```markdown
 - Read `.auto-memory/MEMORY.md` at the start of every session.
 ```
@@ -137,7 +137,7 @@ If your SKILL.md says `use gmail_get_emails` but the actual tool is named `gmail
 **3. The credentials or token have expired**
 MCP servers that connect to external services (Gmail, Microsoft 365, Jira) use tokens that expire.
 
-*Fix:* Re-authenticate the MCP server. In most cases this means going back to the setup/install step for that server and re-connecting your account. See [Guide 08](./08_MCP_SERVERS.md) for server-specific notes.
+*Fix:* Re-authenticate the MCP server. In most cases this means going back to the setup/install step for that server and re-connecting your account. See [Guide 05](./05_MCP_SERVERS.md) for server-specific notes.
 
 **4. The server is configured but the wrong permission scope is set**
 A Gmail token set to read-only cannot send email. A calendar token set to read-only cannot create events.
@@ -193,8 +193,8 @@ If a task reads a profile file and that file was recently updated, new content m
 **1. A file it reads has grown too large**
 Tasks that accumulate run logs, profile data, or knowledge files without trimming will eventually slow down.
 
-*Fix:* Run the efficiency audit from [Guide 04](./04_TASK_EFFICIENCY_GUIDE.md):
-> "Read 04_TASK_EFFICIENCY_GUIDE.md and run the audit checklist on my [task name] task."
+*Fix:* Run the efficiency audit from [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md):
+> "Read 06_TASK_EFFICIENCY_GUIDE.md and run the audit checklist on my [task name] task."
 
 Also check:
 - Is `LAST_RUN.md` growing without limit? Add a rule: "Overwrite LAST_RUN.md on each run — do not append."
@@ -256,7 +256,7 @@ git checkout HEAD~1 -- tasks/[task-name]/TASK.md
 2. Ask Claude: "The [file name] I edited now causes [problem]. Here is the current file: [paste it]. What is the most likely cause and how do I fix it?"
 3. Make one change at a time, testing between each
 
-**Consider setting up git** — even for non-developers, it is the single best protection against "I broke something and I don't know what." [Guide 09](./09_GIT_INTEGRATION.md) walks through the setup.
+**Consider setting up git** — even for non-developers, it is the single best protection against "I broke something and I don't know what." [Guide 11](./11_GIT_INTEGRATION.md) walks through the setup.
 
 ---
 
@@ -283,7 +283,7 @@ Sometimes a task or setup has accumulated so many issues that repair takes longe
 > "Read LAST_RUN.md and TASK.md for [task name]. The problem is: [describe it]. What's causing it and what should I change?"
 
 **To audit a task that has slowed down:**
-> "Read 04_TASK_EFFICIENCY_GUIDE.md and run the audit checklist on my [task name] task. Tell me what to fix and in what order."
+> "Read 06_TASK_EFFICIENCY_GUIDE.md and run the audit checklist on my [task name] task. Tell me what to fix and in what order."
 
 **To review recent changes for the cause of a problem:**
 > "Read the current TASK.md and compare it to what you'd expect based on LAST_RUN.md. What inconsistencies do you see?"

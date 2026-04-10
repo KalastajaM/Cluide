@@ -33,7 +33,7 @@ Not everything in your Claude setup belongs in git. Use this as a guide:
 **Do not track (add to `.gitignore`):**
 - `tasks/*/LAST_RUN.md` — this is just the latest run's output, not history. The full history lives in `RUN_LOG.md`. Tracking `LAST_RUN.md` produces meaningless commits every run with no diff value — it is always replaced wholesale. Gitignore it; read `RUN_LOG.md` when you need history.
 
-**LLM wikis** (see [Guide 12](./12_LLM_WIKI.md)) — track the `wiki/` folder and `CLAUDE.md` schema. The `log.md` file inside a wiki is append-only, which produces a particularly clean git history: each commit adds exactly one entry, so `git log -- wiki/log.md` reads as a precise timeline of the wiki's evolution. `git diff HEAD~1 HEAD -- wiki/` shows exactly what a single ingest changed across all pages.
+**LLM wikis** (see [Guide 15](./15_LLM_WIKI.md)) — track the `wiki/` folder and `CLAUDE.md` schema. The `log.md` file inside a wiki is append-only, which produces a particularly clean git history: each commit adds exactly one entry, so `git log -- wiki/log.md` reads as a precise timeline of the wiki's evolution. `git diff HEAD~1 HEAD -- wiki/` shows exactly what a single ingest changed across all pages.
 
 **Do not track:**
 - Credentials files (OAuth tokens, API keys, `.json` credential files) — these should never be committed
@@ -171,7 +171,7 @@ run `git rm --cached <file>` to untrack it.
 With this in place, Claude will add new files to the appropriate ignore file at the time of creation — without needing to be reminded.
 
 **To add this rule to an existing `CLAUDE.md`:**
-> "Read 09_GIT_INTEGRATION.md and add the File Hygiene section to my CLAUDE.md at [path]."
+> "Read 11_GIT_INTEGRATION.md and add the File Hygiene section to my CLAUDE.md at [path]."
 
 ---
 
@@ -533,10 +533,10 @@ This makes the task self-contained: it will run correctly on a fresh clone witho
 ## Giving This to Claude
 
 **To set up git integration for an existing task:**
-> "Read 09_GIT_INTEGRATION.md and add the pre-run and post-run commit steps to my task at [path/to/TASK.md]. Use the commit message format from the guide."
+> "Read 11_GIT_INTEGRATION.md and add the pre-run and post-run commit steps to my task at [path/to/TASK.md]. Use the commit message format from the guide."
 
 **To add the pre-session hook:**
-> "Read 09_GIT_INTEGRATION.md and add a SessionStart hook to my `.claude/settings.json` that commits any uncommitted changes before each session. My assistant files are at [path]."
+> "Read 11_GIT_INTEGRATION.md and add a SessionStart hook to my `.claude/settings.json` that commits any uncommitted changes before each session. My assistant files are at [path]."
 
 **Faster alternatives:** `tasks/setup-github.md` handles full GitHub setup including ongoing sync. `tasks/setup-ignore-hygiene.md` audits and fixes `.gitignore`/`.claudeignore`. `tasks/setup-bootstrap-folder.md` creates bootstrap stubs for gitignored runtime files.
 

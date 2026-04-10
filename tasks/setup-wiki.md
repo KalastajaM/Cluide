@@ -2,7 +2,7 @@
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
 > `Claude, run tasks/setup-wiki.md`
-> **Source guide:** `12_LLM_WIKI.md`
+> **Source guide:** `15_LLM_WIKI.md`
 
 ## Purpose
 Create a persistent, Claude-maintained knowledge base (LLM wiki) for a topic. Unlike chat Q&A, the wiki compiles and cross-references knowledge permanently — each new source enriches the whole structure rather than disappearing into chat history.

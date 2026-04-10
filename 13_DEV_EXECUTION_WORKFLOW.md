@@ -58,7 +58,7 @@ If you use git, the typical flow is:
 2. Commit and merge to main
 3. Cowork runs from main (either via a pull step in the task, or via a shared folder that is already on main)
 
-The git approach adds a deployment step but gives you the rollback and history benefits described in [Guide 09](./09_GIT_INTEGRATION.md).
+The git approach adds a deployment step but gives you the rollback and history benefits described in [Guide 11](./11_GIT_INTEGRATION.md).
 
 ### What to avoid
 
@@ -79,7 +79,7 @@ All editing happens here. Claude Code has the file editing tools, git, and the a
 For a new skill: create the SKILL.md in the skills folder. For a task change: edit TASK.md or TASK_REFERENCE.md. For a behaviour change: edit CLAUDE.md.
 
 Use the guides as reference material directly in Claude Code:
-> "Read 02_SKILLS.md and create a new skill for [what you want]. Follow all the best practices in the guide."
+> "Read 03_SKILLS.md and create a new skill for [what you want]. Follow all the best practices in the guide."
 
 **3. Review before using it in Cowork.**
 In Claude Code, read the file you just created or edited. Ask Claude to check it:
@@ -89,7 +89,7 @@ For tasks, ask for a dry-run analysis:
 > "Read TASK.md and LAST_RUN.md. Walk me through what this task would do if it ran right now — without actually running it."
 
 **4. Commit to git** (if you are using git).
-See [Guide 09 — Git Integration](./09_GIT_INTEGRATION.md) for commit conventions.
+See [Guide 11 — Git Integration](./11_GIT_INTEGRATION.md) for commit conventions.
 
 **5. Switch to Cowork for the first live run.**
 The first real run of a new or changed skill is always in Cowork. Watch the output carefully. If it looks right, you are done. If something is off, go back to Claude Code to diagnose and fix.
@@ -136,7 +136,7 @@ Work through them one at a time. Claude will make the change in the TASK.md once
 
 Without Claude Code, you don't have:
 - **Plan Mode** — the built-in plan/approve/execute flow (you can replicate it by asking Claude to "describe what you'll change before making any edits")
-- **Git integration** — rollback, history, pre-run snapshots (recommended even for non-developers: see [Guide 09](./09_GIT_INTEGRATION.md))
+- **Git integration** — rollback, history, pre-run snapshots (recommended even for non-developers: see [Guide 11](./11_GIT_INTEGRATION.md))
 - **Subagents** — parallel exploration agents
 
 You can work effectively without these, but git in particular is worth setting up — it is the single best protection against "I broke something and don't know what".
@@ -201,7 +201,7 @@ If the bug ran for multiple sessions before you noticed — producing subtly wro
 
 ## Reviewing and Applying IMPROVEMENTS.md Proposals
 
-The self-improvement system (Guide 05) generates proposals in IMPROVEMENTS.md that wait for your input. This review loop is naturally a Claude Code task, not a Cowork task.
+The self-improvement system (Guide 07) generates proposals in IMPROVEMENTS.md that wait for your input. This review loop is naturally a Claude Code task, not a Cowork task.
 
 **The pattern:**
 
@@ -294,7 +294,7 @@ A sustainable rhythm for this two-tool workflow:
 **In Claude Code (as needed, on demand):**
 - Debug a broken run
 - Build a new skill or task
-- Audit a skill for the [Guide 04](./04_TASK_EFFICIENCY_GUIDE.md) efficiency checklist
+- Audit a skill for the [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) efficiency checklist
 
 ---
 
@@ -307,4 +307,4 @@ A sustainable rhythm for this two-tool workflow:
 > "Read guide-improvement/IMPROVEMENTS.md and my tasks/[task-name]/IMPROVEMENTS.md. For each pending proposal, summarise what it does and ask me to approve, reject, or modify."
 
 **To build a new skill ready for Cowork:**
-> "Read 02_SKILLS.md and 08_MCP_SERVERS.md. Create a new skill for [what you want]. Before finishing, run through the new features checklist in 10_DEV_EXECUTION_WORKFLOW.md and confirm each item."
+> "Read 03_SKILLS.md and 05_MCP_SERVERS.md. Create a new skill for [what you want]. Before finishing, run through the new features checklist in 13_DEV_EXECUTION_WORKFLOW.md and confirm each item."

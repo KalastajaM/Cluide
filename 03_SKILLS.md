@@ -1,5 +1,7 @@
 # Best Practices: Designing Skills for a Personal Assistant
 
+*Last reviewed: April 2026*
+
 A skill is a SKILL.md file (plus optional supporting files) that tells the assistant how to perform a specific, recurring type of task — producing formatted meeting notes, triaging support tickets, drafting client status updates, and so on. Good skills make the assistant dramatically more reliable at the things you do repeatedly. This document explains how to write them well.
 
 ---
@@ -25,9 +27,15 @@ For more complex skills, you can add:
 my-skill/
 ├── SKILL.md
 └── references/       (detailed docs the skill reads on demand)
-└── scripts/          (reusable Python/bash scripts)
+└── scripts/          (reusable Python/bash scripts called by the skill)
 └── assets/           (templates, icons, fonts)
 ```
+
+**`references/`** — detailed content the skill needs occasionally but not every activation (schemas, full format specs, domain guides). SKILL.md references these by name; Claude loads them only when needed. Keep SKILL.md itself under ~500 lines and offload the rest here.
+
+**`scripts/`** — Python or bash scripts the skill can execute with the Bash tool. Good for fixed-format artifact generation, data transformation, or any repeatable computation that doesn't need Claude to reason about it.
+
+**Context note:** Files in `references/` and `scripts/` are not loaded into Claude's context automatically — only SKILL.md is. If you want to prevent Claude from loading them even when exploring the project, add the patterns to `.claudeignore`. See [Guide 11 — Git Integration](./11_GIT_INTEGRATION.md) for `.claudeignore` setup.
 
 The SKILL.md file has two parts: a YAML frontmatter block, and the instruction body.
 
@@ -154,7 +162,7 @@ Without explicit memory instructions, the skill will re-learn the same things fr
 
 **Overlong SKILL.md:** The skill is slow to activate and hard to maintain. Fix: move reference material to a `references/` subfolder.
 
-**Omitting tool names:** The skill says "check the calendar" without naming `gcal_list_events`. The assistant may use a different approach each time. Fix: name the exact tools. Not sure what tools are available in your setup? See [Guide 08 — MCP Servers](./08_MCP_SERVERS.md) for how to discover them.
+**Omitting tool names:** The skill says "check the calendar" without naming `gcal_list_events`. The assistant may use a different approach each time. Fix: name the exact tools. Not sure what tools are available in your setup? See [Guide 05 — MCP Servers](./05_MCP_SERVERS.md) for how to discover them.
 
 ---
 
@@ -229,4 +237,6 @@ This is a strong description: it names the implicit trigger phrases, is specific
 - **SMS/WhatsApp has separate rules** — shorter, no openers, no formal variant unless asked. Named explicitly because the user texts in Finnish regularly.
 
 **Giving this to Claude:**
-> "Read 02_SKILLS.md and create a skill for [what you want]. Follow all the best practices in the guide — strong description, workflow steps, output format example, and at least 3 edge cases."
+> "Read 03_SKILLS.md and create a skill for [what you want]. Follow all the best practices in the guide — strong description, workflow steps, output format example, and at least 3 edge cases."
+
+**Faster alternative:** `tasks/setup-skill.md` interviews you and generates a complete skill without reading the guide first. `tasks/audit-skill.md` reviews an existing skill against this guide's checklist.

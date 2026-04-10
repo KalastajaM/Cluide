@@ -2,7 +2,7 @@
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
 > `Claude, run tasks/setup-ignore-hygiene.md`
-> **Source guides:** `09_GIT_INTEGRATION.md`, `13_SECURITY.md`
+> **Source guides:** `11_GIT_INTEGRATION.md`, `12_SECURITY.md`
 
 ## Purpose
 Audit the project for files that should be ignored by git and/or Claude, update `.gitignore` and `.claudeignore` accordingly, and optionally install a PostToolUse hook (or CLAUDE.md rule) that flags newly created files that should be ignored.

@@ -2,7 +2,7 @@
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
 > `Claude, run tasks/setup-data-layer.md`
-> **Source guide:** `11_PERSONAL_DATA_LAYER.md`
+> **Source guide:** `14_PERSONAL_DATA_LAYER.md`
 
 ## Purpose
 Help the user connect personal data — investments, finances, transactions, or any data living in local files or web apps — to Claude tasks in a token-efficient way. Recommends the right pattern(s) for the use case and sets up the initial structure.

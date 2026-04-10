@@ -1,7 +1,7 @@
 # Task Template — Setup Instructions
 
 > A ready-to-copy starter for self-learning, token-efficient Claude tasks.
-> Implements the patterns from Guide 04 (efficiency) and Guide 05 (self-improvement).
+> Implements the patterns from Guide 06 (efficiency) and Guide 07 (self-improvement).
 
 ---
 
@@ -16,7 +16,7 @@
 
 Two optional files can be added as the task matures:
 - `TASK_REFERENCE.md` — schemas, format templates, and edge-case rules — loaded on demand, not every run.
-- `LESSONS.md` — append-only reasoning history: why each fix was made, root causes, connector quirks. Useful when IMPROVEMENTS.md Applied Fixes is growing and the *why* behind changes is getting lost. See Guide 05 Part 6.
+- `LESSONS.md` — append-only reasoning history: why each fix was made, root causes, connector quirks. Useful when IMPROVEMENTS.md Applied Fixes is growing and the *why* behind changes is getting lost. See Guide 07 Part 6.
 
 ---
 
@@ -92,11 +92,11 @@ To have Claude set up a new task for you:
 
 To add self-improvement to an existing task:
 
-> "Read 05_TASK_LEARNING_GUIDE.md and add the self-improvement system to my task at [path/to/TASK.md]. Set up an IMPROVEMENTS.md using TASK_TEMPLATE/IMPROVEMENTS.md as the base."
+> "Read 07_TASK_LEARNING_GUIDE.md and add the self-improvement system to my task at [path/to/TASK.md]. Set up an IMPROVEMENTS.md using TASK_TEMPLATE/IMPROVEMENTS.md as the base."
 
 To audit an existing task for efficiency:
 
-> "Read 04_TASK_EFFICIENCY_GUIDE.md and audit my task at [path/to/TASK.md] for token efficiency. Apply the checklist and propose specific changes."
+> "Read 06_TASK_EFFICIENCY_GUIDE.md and audit my task at [path/to/TASK.md] for token efficiency. Apply the checklist and propose specific changes."
 
 ---
 
@@ -122,4 +122,4 @@ The self-improvement loop in Step 6 of TASK.md does the work. Each run, the task
 
 The result is a task that makes the same mistake at most twice: once to detect it, once to fix it.
 
-See [Guide 05](../05_TASK_LEARNING_GUIDE.md) for the full framework behind this system.
+See [Guide 07](../07_TASK_LEARNING_GUIDE.md) for the full framework behind this system.

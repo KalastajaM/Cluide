@@ -2,7 +2,7 @@
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
 > `Claude, run tasks/setup-github.md`
-> **Source guide:** `09_GIT_INTEGRATION.md`
+> **Source guide:** `11_GIT_INTEGRATION.md`
 
 ## Purpose
 Make a local project available on GitHub: initialize git if needed, create or connect a remote repository, make the first commit, and set up ongoing sync so future changes are committed automatically.

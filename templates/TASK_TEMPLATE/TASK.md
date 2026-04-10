@@ -3,7 +3,7 @@
 > **Template.** Replace all `[PLACEHOLDER]` text with your domain-specific content.
 > Delete this note and the How-To-Use section once configured.
 > See `README.md` in this folder for setup instructions.
-> Companion guides: [04 Efficiency](../04_TASK_EFFICIENCY_GUIDE.md) · [05 Learning](../05_TASK_LEARNING_GUIDE.md) · [06 IMPROVEMENTS Template](../06_SELFIMPROVE_TEMPLATE.md)
+> Companion guides: [04 Efficiency](../06_TASK_EFFICIENCY_GUIDE.md) · [05 Learning](../07_TASK_LEARNING_GUIDE.md) · [06 IMPROVEMENTS Template](../08_SELFIMPROVE_TEMPLATE.md)
 
 ---
 

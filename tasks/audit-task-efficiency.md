@@ -2,10 +2,10 @@
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
 > `Claude, run tasks/audit-task-efficiency.md` (then specify which task file to audit)
-> **Source guide:** `04_TASK_EFFICIENCY_GUIDE.md`
+> **Source guide:** `06_TASK_EFFICIENCY_GUIDE.md`
 
 ## Purpose
-Audit a task file against the token efficiency checklist from Guide 04. Goal: keep always-loaded files compact, delegate fixed-format generation to scripts, and reduce unnecessary reads. Returns a prioritised list of improvements and applies them after approval.
+Audit a task file against the token efficiency checklist from Guide 06. Goal: keep always-loaded files compact, delegate fixed-format generation to scripts, and reduce unnecessary reads. Returns a prioritised list of improvements and applies them after approval.
 
 ---
 

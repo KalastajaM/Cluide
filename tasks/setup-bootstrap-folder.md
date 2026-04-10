@@ -2,7 +2,7 @@
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
 > `Claude, run tasks/setup-bootstrap-folder.md`
-> **Source guide:** `09_GIT_INTEGRATION.md`
+> **Source guide:** `11_GIT_INTEGRATION.md`
 
 ## Purpose
 Create a `bootstrap/` folder containing empty, non-personal stub versions of all runtime state files that are gitignored. This ensures the project works on a fresh clone without manual setup — and optionally adds self-bootstrap logic to task files so they detect and create missing state automatically.

@@ -2,10 +2,10 @@
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
 > `Claude, run tasks/audit-skill.md`
-> **Source guides:** `02_SKILLS.md`, `15_PROMPTING_BASICS.md`
+> **Source guides:** `03_SKILLS.md`, `02_PROMPTING_BASICS.md`
 
 ## Purpose
-Review an existing skill against the Guide 02 quality checklist: reliable triggering, complete workflow, explicit output format, named tools, and edge case coverage. Returns a prioritised list of issues and applies fixes after approval.
+Review an existing skill against the Guide 03 quality checklist: reliable triggering, complete workflow, explicit output format, named tools, and edge case coverage. Returns a prioritised list of issues and applies fixes after approval.
 
 ---
 

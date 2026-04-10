@@ -136,7 +136,7 @@ Claude should recognise the trigger phrases and apply your skill automatically. 
 - Check that the skill file is at exactly `.claude/skills/plan-my-day/SKILL.md`
 - Make sure the file was saved as plain text (not `.md.txt` or a Word document)
 - Start a fresh Cowork conversation — skill changes only take effect in new sessions
-- See [Guide 14 — Troubleshooting](./14_TROUBLESHOOTING.md) for more help
+- See [Guide 17 — Troubleshooting](./17_TROUBLESHOOTING.md) for more help
 
 ---
 
@@ -185,11 +185,11 @@ You now have the foundation. Here is the natural next step for each direction:
 
 | If you want to... | Read next |
 |---|---|
-| Make the assistant smarter about who you are | [Guide 03 — Memory & Profile](./03_MEMORY_AND_PROFILE.md) |
-| Build skills for email, calendar, and Teams | [Guide 08 — MCP Servers](./08_MCP_SERVERS.md) |
-| Create more skills (better descriptions, edge cases) | [Guide 02 — Skills](./02_SKILLS.md) |
-| Make the assistant learn from each task run | [Guide 05 — Task Self-Improvement](./05_TASK_LEARNING_GUIDE.md) |
-| See all best practices in one place | [Guide 07 — Best Practices](./07_BEST_PRACTICES.md) |
+| Make the assistant smarter about who you are | [Guide 04 — Memory & Profile](./04_MEMORY_AND_PROFILE.md) |
+| Build skills for email, calendar, and Teams | [Guide 05 — MCP Servers](./05_MCP_SERVERS.md) |
+| Create more skills (better descriptions, edge cases) | [Guide 03 — Skills](./03_SKILLS.md) |
+| Make the assistant learn from each task run | [Guide 07 — Task Self-Improvement](./07_TASK_LEARNING_GUIDE.md) |
+| See all best practices in one place | [Guide 16 — Best Practices](./16_BEST_PRACTICES.md) |
 
 ---
 
@@ -205,7 +205,7 @@ The description field in the skill frontmatter controls when it triggers. Make s
 The output format section in SKILL.md should contain a code block showing exactly what the output should look like — including headers, bullet style, and field names. Vague descriptions like "produce a structured plan" are much weaker than a concrete template.
 
 **Something else isn't working?**
-See [Guide 14 — Troubleshooting](./14_TROUBLESHOOTING.md) for a full problem-by-problem guide.
+See [Guide 17 — Troubleshooting](./17_TROUBLESHOOTING.md) for a full problem-by-problem guide.
 
 ---
 

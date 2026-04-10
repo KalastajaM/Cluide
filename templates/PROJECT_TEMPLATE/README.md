@@ -1,7 +1,7 @@
 # Project Template — Setup Instructions
 
 > A ready-to-copy folder structure for a Claude project with persistent context, knowledge management, and optional scheduled tasks.
-> Based on the patterns in Guide 03 (Memory & Profile) and the TASK_TEMPLATE.
+> Based on the patterns in Guide 04 (Memory & Profile) and the TASK_TEMPLATE.
 
 ---
 
@@ -127,7 +127,7 @@ To set up a new project from scratch:
 
 To add a profile system to an existing project:
 
-> "Read `03_MEMORY_AND_PROFILE.md` and create profile files for my project at [path]. Start with `PROFILE_SUMMARY.md` — ask me what you need to seed it correctly."
+> "Read `04_MEMORY_AND_PROFILE.md` and create profile files for my project at [path]. Start with `PROFILE_SUMMARY.md` — ask me what you need to seed it correctly."
 
 To add a scheduled task to an existing project:
 
