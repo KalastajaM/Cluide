@@ -1,8 +1,8 @@
-# Claude Teacher — Project Instructions
+# Cluide — The Claude Guide: Project Instructions
 
 ## About This Project
 
-This folder contains a collection of best-practice guides for setting up Claude as a personal assistant. The guides are both human-readable and intended as direct input to Claude.
+This folder contains a complete operational framework for building, running, and improving a persistent AI assistant with Claude. It includes architecture guides, runnable setup and audit tasks, installable skills, and copy-paste templates — covering the full lifecycle from initial setup to scheduled automation, self-improvement, and security. The guides are both human-readable and intended as direct input to Claude.
 
 **When working in this project, apply the guides to your own behavior.** You have access to all of them as context. Use them:
 

@@ -1,7 +1,6 @@
-.DS_Store
+**/.DS_Store
 .claude/settings.local.json
 guide-improvement/LAST_RUN.md
 skills/*.skill
 SECURITY_AUDIT.md
 *_SECURITY_AUDIT.md
-.DS_Store

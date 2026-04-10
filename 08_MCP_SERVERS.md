@@ -220,6 +220,8 @@ MCP server credentials (API keys, OAuth tokens) live in `settings.json` or in en
 - **Use read-only tokens where possible.** A Gmail token with read-only access is safer than one with send permission, for any skill that doesn't need to send.
 - **Rotate tokens periodically.** A token in a config file is easy to forget. Set a reminder to rotate it every 6–12 months.
 
+For the full credential hygiene treatment — including exposure response procedures, rotation schedules, and what to do if a key leaks — see [Guide 13](./13_SECURITY.md).
+
 ---
 
 ## Giving This to Claude

@@ -1,6 +1,6 @@
 # Guide Improvement Review — TASK.md
 
-> Periodic review task for the "Claude Teacher" guide collection.
+> Periodic review task for the "Cluide — The Claude Guide" guide collection.
 > Scans live setup files and the guides themselves to find improvements.
 > Applies unambiguous fixes directly; validates new learnings before adding.
 
