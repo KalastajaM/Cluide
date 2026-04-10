@@ -1,0 +1,19 @@
+# Personal data — do not commit to version control
+Profile/
+Knowledge/
+Actions/
+WeekPlan/
+
+# Runtime state
+*.json
+*.html
+**/LAST_RUN.*
+**/RUN_LOG.md
+**/LESSONS.md
+
+# Credentials
+credentials.json
+token.json
+*.oauth
+.env
+.env.*

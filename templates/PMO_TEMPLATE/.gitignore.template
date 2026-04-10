@@ -1,0 +1,11 @@
+# Sensitive data — review before committing
+# Uncomment lines below if your registers contain commercially sensitive data
+# Data/
+# FinancialModel/
+
+# Credentials
+credentials.json
+token.json
+*.oauth
+.env
+.env.*
