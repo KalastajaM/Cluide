@@ -49,6 +49,8 @@ Not sure where to start? Use this table:
 | Claude remembers things across sessions | Memory | [03](./03_MEMORY_AND_PROFILE.md) |
 | A task that gets smarter over time | Task + IMPROVEMENTS.md | [05](./05_TASK_LEARNING_GUIDE.md) |
 | Answer a one-off question | Chat | — |
+| Coordinate multiple tasks that share data | Orchestrator | [16](./16_MULTI_TASK_ORCHESTRATION.md) |
+| Track and control task costs | Run metrics | [17](./17_COST_PERFORMANCE.md) |
 
 ---
 
@@ -225,6 +227,28 @@ Covers: skill not triggering, CLAUDE.md being ignored, memory not persisting, MC
 Covers: the anatomy of a good instruction (context + task + constraints + output format), why examples outperform descriptions, how to specify what NOT to do, writing skill trigger descriptions that actually work, debugging a bad prompt, and the most common mistakes with before/after fixes.
 
 **Use this when:** Claude's output isn't what you expected, you're writing a new skill or task instruction, or you want to improve the quality of your setup systematically.
+
+---
+
+### [16 — Multi-Task Orchestration](./16_MULTI_TASK_ORCHESTRATION.md)
+`[Power user]` · `~20 min`
+
+*Coordinating multiple tasks: dependencies, shared state, and data passing.*
+
+Covers: sequential chains, parallel fan-out, dependency graphs, shared state conventions, data handoff between tasks, scheduling orchestrated runs, and avoiding implicit coupling.
+
+**Use this when:** you have multiple scheduled tasks that need to share data, run in a specific order, or produce a combined output.
+
+---
+
+### [17 — Cost & Performance Monitoring](./17_COST_PERFORMANCE.md)
+`[Scheduled tasks]` · `~15 min`
+
+*Tracking token usage, budgeting, and finding expensive operations.*
+
+Covers: per-run metrics, budget checks, identifying high-cost steps, the token heat map technique, alerting on cost spikes, and an optional dashboard script.
+
+**Use this when:** you have scheduled tasks running regularly and want visibility into what they cost — or when a task has become expensive and you need to find out why.
 
 ---
 

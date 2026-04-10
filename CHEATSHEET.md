@@ -17,6 +17,8 @@
 | Claude remembers things between sessions | Memory | [03](./03_MEMORY_AND_PROFILE.md) |
 | A task that learns and improves over time | Task + IMPROVEMENTS.md | [05](./05_TASK_LEARNING_GUIDE.md) |
 | Answer a one-off question | Chat | — |
+| Coordinate tasks that share data | Orchestrator | [16](./16_MULTI_TASK_ORCHESTRATION.md) |
+| Track and control task costs | Run metrics | [17](./17_COST_PERFORMANCE.md) |
 
 ---
 
@@ -173,6 +175,38 @@ description: >
 | Confluence page | `getConfluencePage`, `createConfluencePage` |
 
 **Important:** Use the exact tool name in your SKILL.md workflow steps. If you write "check the calendar" without naming the tool, Claude may not know which integration to use.
+
+---
+
+## Run Metrics Block (append to RUN_LOG.md)
+
+**Guide:** [17](./17_COST_PERFORMANCE.md)
+
+```markdown
+## [2026-04-10] Run #47
+
+**Duration:** ~3 min
+**Tokens (est.):** ~8K input, ~2K output
+**API calls:** 12 (gmail_search: 1, gmail_read: 8, gcal_list: 1, write_file: 2)
+**Notes:** Normal run. 8 emails processed, 2 action items found.
+```
+
+Add as the final step in TASK.md. Archive entries after 30 runs.
+
+---
+
+## Shared State Convention (Multi-Task)
+
+**Guide:** [16](./16_MULTI_TASK_ORCHESTRATION.md)
+
+```
+shared/
+├── SCHEMA.md                         ← documents data contracts
+├── email_digest_2026-04-10.json      ← written by email task
+└── calendar_2026-04-10.json          ← written by calendar task
+```
+
+**Rules:** each task owns its own files · always check freshness before reading · stagger schedules by 10+ minutes · keep shared files under 100 lines.
 
 ---
 

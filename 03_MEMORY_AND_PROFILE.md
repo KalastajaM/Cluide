@@ -130,6 +130,61 @@ The profile file system divides a person's profile across several files by topic
 
 ---
 
+## Decision Tree: Update vs. Create
+
+When a new fact arrives, follow this flow:
+
+```
+New fact arrives
+  ├─ Does a memory file for this topic already exist?
+  │   ├─ YES → Is the new fact a refinement or a contradiction?
+  │   │   ├─ REFINEMENT → Edit the existing file (targeted edit, not rewrite)
+  │   │   └─ CONTRADICTION → See "Contradiction Resolution" below
+  │   └─ NO → Create a new file, add a one-line pointer to MEMORY.md
+  │
+  └─ Maintenance checks (apply periodically):
+      ├─ Two files cover overlapping topics? → Merge into one, remove the redundant file
+      ├─ One file exceeds ~40 lines of distinct subtopics? → Split by subtopic
+      └─ Entry not updated in 3+ months? → Verify it's still accurate or archive it
+```
+
+**When to merge:** if you notice two memory files that both cover the same person, project, or preference — combine them into the more descriptive one and delete the other. Update the MEMORY.md index.
+
+**When to split:** if a single file has grown to cover multiple unrelated subtopics (e.g., a "user-work" file that now covers both the user's role and three separate projects), split into focused files. Each file should have a clear, single topic.
+
+---
+
+## Contradiction Resolution
+
+Facts sometimes conflict — the user moved cities, changed roles, or corrected an earlier assumption. Follow these rules in order:
+
+1. **`[USER]`-tagged entries always win.** If the existing entry is marked `[USER]` or `[USER-CONFIRMED]`, it was explicitly provided by the user. Never overwrite it based on inference alone — ask the user first.
+
+2. **More recent wins, unless the older entry is user-confirmed.** If both entries are inferred (no `[USER]` tag), the more recent observation takes precedence. Update the file and add an `[updated: YYYY-MM]` tag.
+
+3. **When uncertain, keep both and flag.** If you cannot determine which fact is correct — for example, two plausible but conflicting inferences — do not silently pick one. Add both with a `[CONFLICTING]` tag and surface the conflict to the user at the next opportunity.
+
+**Example — user moved cities:**
+
+The memory file says `Lives in Amsterdam (timezone: Europe/Amsterdam) [updated: 2025-06]`. A new email signature shows a Helsinki address.
+
+- The existing entry has no `[USER]` tag → it's inferred, not user-confirmed
+- The new signal is more recent → update the file:
+
+```markdown
+Lives in Helsinki (timezone: Europe/Helsinki) [updated: 2026-04]
+Previously: Amsterdam (until ~2025)
+```
+
+**Example — ambiguous conflict:**
+
+Memory says "Prefers formal tone in Finnish emails." A recent email draft from the user uses casual Finnish. This could mean the preference changed, or it could be context-specific.
+
+- Add: `[CONFLICTING] Recent email used casual Finnish — confirm if tone preference has changed`
+- Surface to the user next session: "I noticed you used casual Finnish in a recent draft — should I update your preference, or was that specific to that message?"
+
+---
+
 ## The Hypothesis System
 
 Some signals are meaningful but not yet confirmed. Rather than either ignoring them or committing to a fact that may be wrong, use a hypothesis layer.

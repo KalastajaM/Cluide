@@ -226,6 +226,76 @@ For the full credential hygiene treatment — including exposure response proced
 
 ---
 
+## Troubleshooting by Server
+
+When an MCP tool fails, the cause is usually one of a handful of known issues per server. Check the table below before deeper investigation.
+
+| Server | Symptom | Likely cause | Fix |
+|---|---|---|---|
+| **Gmail** | `gmail_search_messages` returns empty | Query syntax wrong or date format mismatch | Use Gmail search syntax: `after:2026/04/01`, not ISO dates. Test the query in Gmail's web search bar first. |
+| **Gmail** | Authentication error / 401 | OAuth token expired | Re-authenticate: remove and re-add the server in settings, or re-run the OAuth flow. Tokens typically expire after 7 days of inactivity. |
+| **Gmail** | 429 / rate limit error | Too many API calls in a short window | Gmail API allows ~250 quota units/second. Reduce fetch windows, use narrower search queries, or add a 2-second pause between batch reads. |
+| **Calendar** | Event creation returns success but event doesn't appear | Wrong calendar ID or insufficient permissions | Check the calendar ID with `list_calendars` first. Ensure the token has write scope, not just read. |
+| **GitHub** | 403 Forbidden on a private repo | Token scope too narrow | Generate a new token with `repo` scope (not just `public_repo`). |
+| **GitHub** | 403 on issue/PR creation | Token has read-only permissions | Regenerate with `repo` + `write` permissions. |
+| **Filesystem** | "Path not in allowed list" error | Requested path not included in server args | Add the directory to the `args` array in `settings.json`. The server only allows access to explicitly listed paths. |
+| **Claude in Chrome** | Tools unavailable or timing out | Extension disconnected or Chrome not running | Check that Chrome is open and the Claude extension is active. Restart the extension if needed. |
+| **Slack** | Empty channel history | Bot not added to the channel | Invite the bot to the channel with `/invite @your-bot-name` in Slack. |
+| **Computer use** | Click/type blocked | App is in a restricted tier (read-only or click-only) | Browsers are read-only, terminals are click-only. Use Claude in Chrome for browser interaction, Bash tool for terminal commands. |
+
+---
+
+## Rate Limits and Backoff
+
+Most MCP servers proxy external APIs that enforce rate limits. Hitting a limit mid-task silently degrades results — a search returns nothing, a batch of reads stops halfway. Know the limits for your most-used servers:
+
+| Server | Limit | Practical impact |
+|---|---|---|
+| Gmail API | ~250 quota units/second; daily quota varies by account type | Reading 50 emails in rapid succession can hit the per-second limit. Batch in groups of 10 with short pauses. |
+| GitHub API | 5,000 requests/hour (authenticated) | Rarely hit in normal use. Watch out when scanning many repos or issues in a loop. |
+| Google Calendar | ~500 requests/100 seconds | Fine for personal use. Can be hit by tasks that poll calendars in a tight loop. |
+| Slack | Varies by method; typically 1–20 requests/minute for posting | Read operations are more generous. Writing (posting messages) is throttled aggressively. |
+
+**Pattern for skills that use MCP tools:**
+
+Add this to any skill step that calls an external MCP tool:
+
+```markdown
+If the tool call fails with a rate limit or timeout error:
+  1. Wait 5 seconds and retry once.
+  2. If it still fails, log the error and skip this step gracefully.
+  3. Do not retry more than once — repeated retries waste tokens and rarely succeed.
+```
+
+**Reducing API pressure:**
+- Use search filters to narrow results before fetching (e.g., `after:2026/04/01 label:inbox` instead of fetching all mail)
+- Fetch only the fields you need (subjects and dates, not full message bodies) when scanning
+- Batch related queries into a single broader search rather than many narrow ones
+
+---
+
+## Error Handling Patterns
+
+When an MCP tool fails, there are three valid responses. Choose based on the failure type:
+
+**Retry** — for transient errors (timeouts, rate limits, temporary network issues). Retry once after a short pause. If the retry also fails, fall through to skip or abort.
+
+**Skip gracefully** — for non-critical data that is nice to have but not essential. Log what was skipped and continue. Example: a daily briefing skill that can't fetch calendar events should still deliver the email summary rather than failing entirely.
+
+**Abort with log entry** — for errors that make the rest of the task meaningless. Authentication failures, missing permissions, or a critical data source returning nothing. Log the error clearly and stop.
+
+**Template instruction block** — paste this into any skill that calls MCP tools:
+
+```markdown
+## Error handling
+- Transient errors (timeout, 429, 5xx): retry once after 5 seconds. If still failing, skip and note in output.
+- Auth errors (401, 403): stop immediately. Log: "[tool name] auth failed — check token in settings.json."
+- Empty results when data is expected: note in output ("Calendar returned no events for this period — verify calendar ID"). Continue with available data.
+- Do not retry more than once. Do not silently swallow errors — always surface what happened.
+```
+
+---
+
 ## Giving This to Claude
 
 **To audit your current MCP setup:**
