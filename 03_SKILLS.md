@@ -180,7 +180,7 @@ When in doubt: if the user asks for it ad hoc and it needs consistent, detailed 
 
 ## Real-World Examples
 
-Three working skills from a personal setup. Each illustrates a different pattern.
+Four working skills from a personal setup. Each illustrates a different pattern.
 
 ---
 
@@ -235,6 +235,23 @@ This is a strong description: it names the implicit trigger phrases, is specific
 - **Always two versions** — unless tone is already specified. This is baked in as a default, not something the user has to ask for each time.
 - **Format is shown as an example** — the formal/casual pair, subject lines, and "key differences" note are all illustrated with a concrete worked example.
 - **SMS/WhatsApp has separate rules** — shorter, no openers, no formal variant unless asked. Named explicitly because the user texts in Finnish regularly.
+
+---
+
+### backlog — A skill where files replace memory
+
+**What it does:** Manages a project backlog across sessions using two files: `BACKLOG.md` (living idea list) and `DECISIONS.md` (architectural decision log). Runs standard sessions (`/backlog`) and grooming sessions (`/backlog groom`), handles initialization automatically, and guards against re-litigating closed decisions.
+
+**Where to use it:** Any project where you want to track ideas, improvements, and architecture decisions across Claude sessions — regardless of language or domain. Drop `BACKLOG.md` and `DECISIONS.md` in the project root and the skill works immediately.
+
+**Key design choices:**
+- **Files are the persistence layer, not Claude memory** — `DECISIONS.md` plays the role that memory would in other skills. The skill explicitly states that Claude memory should not be used, so state never ends up in two places.
+- **Two session modes with different scopes** — the standard session runs a focused orient → prioritize → pick → write loop; the grooming session inserts a full architecture review. Separating them prevents grooming overhead from slowing down everyday sessions.
+- **Conflicts and dependencies block selection** — items with unresolved `Conflicts-with` or unsatisfied `Dependencies` cannot be picked. This is enforced as a rule, not a suggestion.
+- **Constraint is explicit** — "Claude writes the files but does not commit." The user commits. Stating this prevents Claude from attempting git operations.
+- **Orient output format is shown** — a concrete table + flagged-items block, so the summary looks identical every session.
+
+**The backlog skill is a good model for any skill where the data outlives the conversation** — the pattern of "two files, one for state and one for decisions" can be adapted to support tickets, product specs, hiring pipelines, or any domain where you need both a working list and an immutable audit trail.
 
 **Giving this to Claude:**
 > "Read 03_SKILLS.md and create a skill for [what you want]. Follow all the best practices in the guide — strong description, workflow steps, output format example, and at least 3 edge cases."
