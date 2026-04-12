@@ -20,6 +20,7 @@
 | Coordinate tasks that share data | Orchestrator | [09](./09_MULTI_TASK_ORCHESTRATION.md) |
 | Track and control task costs | Run metrics | [10](./10_COST_PERFORMANCE.md) |
 | Build everything from scratch, step by step | Full walkthrough | [18](./18_END_TO_END_WALKTHROUGH.md) |
+| Make task or skill output look good | Guide 19 | [19](./19_OUTPUT_FORMATTING.md) |
 
 ---
 
@@ -233,6 +234,9 @@ shared/
 
 **Debug something broken:**
 > "Read LAST_RUN.md and TASK.md for [task name]. The last run had [problem]. What caused it and what should I change?"
+
+**Format task output as a styled HTML report:**
+> "Read 19_OUTPUT_FORMATTING.md and generate a self-contained HTML report for the output of my [task name]. Use the skeleton from the guide as the base layout."
 
 ---
 
