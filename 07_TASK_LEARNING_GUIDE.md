@@ -3,9 +3,9 @@
 *Last reviewed: April 2026*
 
 > A framework for building tasks that get better over time.
-> Drop the relevant sections into any task's TASK.md or TASK_REFERENCE.md.
+> Integrate the relevant sections into any task's TASK.md or TASK_REFERENCE.md.
 
-> **Companion guides:** [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) covers token efficiency — set that up first. [Guide 08](./08_SELFIMPROVE_TEMPLATE.md) is a ready-to-use IMPROVEMENTS.md template that implements the system described here.
+> **Companion guides:** [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) covers token efficiency -- set that up first. [Guide 08](./08_SELFIMPROVE_TEMPLATE.md) is a ready-to-use IMPROVEMENTS.md template that implements the system described here.
 
 > **Giving this guide to Claude:**
 > "Read 07_TASK_LEARNING_GUIDE.md and add the self-improvement system to my task at [path/to/TASK.md]. Include signal detection, the apply-vs-propose rules, and set up an IMPROVEMENTS.md file using the template in 08_SELFIMPROVE_TEMPLATE.md."
@@ -16,9 +16,9 @@
 
 ## Why This Matters
 
-A task that runs 50 times and makes the same mistakes as run 1 is just an expensive script. A well-designed task should become measurably more accurate, efficient, and contextually aware with each run — automatically, without requiring manual tuning.
+A task that runs 50 times and makes the same mistakes as run 1 is an expensive script. A well-designed task becomes measurably more accurate, efficient, and contextually aware with each run -- without manual tuning.
 
-This guide covers the mechanics: what to track, when to act, when to ask, and how to avoid the failure modes that cause tasks to regress or stagnate.
+This guide covers the mechanics: what to track, when to act, when to ask, and how to avoid failure modes that cause regression or stagnation.
 
 ---
 
@@ -26,16 +26,16 @@ This guide covers the mechanics: what to track, when to act, when to ask, and ho
 
 ### Four categories of task knowledge
 
-**1. Facts** — confirmed information. User has validated it, or evidence is unambiguous.
+**1. Facts** -- confirmed information. User has validated it, or evidence is unambiguous.
 > Store in: profile/knowledge files. Mark `[confirmed: YYYY-MM]` or `[USER-CONFIRMED]`.
 
-**2. Hypotheses** — uncertain information being tracked. Some evidence, not yet confirmed.
+**2. Hypotheses** -- uncertain information being tracked. Some evidence, not yet confirmed.
 > Store in: a dedicated hypotheses file or section. Mark confidence level. Confirm or revise over time.
 
-**3. Patterns** — recurring observations. Not confirmed, but consistent enough to act on tentatively.
+**3. Patterns** -- recurring observations. Not confirmed, but consistent enough to act on tentatively.
 > Store in: profile/patterns files. Note observation count and source. Promote to fact when confirmed.
 
-**4. Operational state** — what has been done, what is pending, what has failed.
+**4. Operational state** -- what has been done, what is pending, what has failed.
 > Store in: run log, pending actions, improvements log. Never conflate with knowledge.
 
 ### File structure for learning
@@ -50,13 +50,13 @@ IMPROVEMENTS.md        ← Run counter, applied fixes, proposals, known issues.
 RUN_LOG.md             ← Append-only record of each execution.
 ```
 
-**KNOWLEDGE_SUMMARY.md** is the key file. It must be ruthlessly compact — if it grows, every future run pays the cost. Enforce a hard line cap and trim aggressively. The detail files are cheap because they're only read when needed.
+**KNOWLEDGE_SUMMARY.md** is the critical file. It must stay compact -- if it grows, every future run pays the token cost. Enforce its line cap and trim aggressively. Detail files are cheap because they are only read when needed.
 
 ---
 
 ## Part 2: Detecting Learning Signals
 
-The task must actively scan for signals each run — not just execute its primary function.
+The task must actively scan for signals each run -- not just execute its primary function.
 
 ### User feedback signals (highest quality)
 
@@ -74,8 +74,8 @@ The task must actively scan for signals each run — not just execute its primar
 | Signal | What it looks like | What to learn |
 |--------|--------------------|---------------|
 | Implicit confirmation | User acts on a suggestion without comment | The suggestion was correct; reinforce the pattern. |
-| Ignored suggestion | Suggestion generated every run, never acted on | Either priority too low, or the suggestion is irrelevant — investigate after 3 runs. |
-| Consistent pattern | Same sender / same type / same outcome across runs | Codify as a rule, don't keep rediscovering it. |
+| Ignored suggestion | Suggestion generated every run, never acted on | Either priority too low, or the suggestion is irrelevant -- investigate after 3 runs. |
+| Consistent pattern | Same sender / same type / same outcome across runs | Codify as a rule; do not keep rediscovering it. |
 
 ### Operational signals (lower quality, but catches bugs)
 
@@ -103,13 +103,13 @@ Scan for feedback signals:
 
 ## Part 3: The Apply vs. Propose Decision
 
-This is the most important judgment the task has to make. Applying a change the user doesn't want erodes trust. Proposing everything creates noise and slows improvement.
+This is the most important judgment a task makes. Applying a change the user did not want erodes trust. Proposing everything creates noise and slows improvement.
 
 ### Apply directly (no confirmation needed)
 
 Apply when ALL of the following are true:
 - The change is clearly correct with HIGH confidence (unambiguous evidence, or explicit user instruction)
-- The change is low-risk (reversible, limited scope, doesn't affect core behavior)
+- The change is low-risk (reversible, limited scope, does not affect core behavior)
 - The scope is narrow (single field, single sentence, single file)
 - The change is purely additive (adding a missing entry, correcting a typo, resolving a known error)
 
@@ -133,17 +133,17 @@ Propose when ANY of the following are true:
 - Adding a new step to the run procedure
 - Changing how items are prioritized or classified
 - Adding a new profile section or data structure
-- Any change where you're not 100% sure the user would agree
+- Any change where you are not 100% sure the user would agree
 
 ### The two-run rule for proposals
 
-If a proposal has been sitting in IMPROVEMENTS.md for 2+ runs with no response (not approved, not rejected, not modified), treat it as "not a priority" and archive it. Don't leave proposals accumulating indefinitely — they become noise.
+If a proposal has been in IMPROVEMENTS.md for 2+ runs with no response (not approved, not rejected, not modified), treat it as "not a priority" and archive it. Do not let proposals accumulate indefinitely -- they become noise.
 
 ---
 
 ## Part 4: The Hypothesis System
 
-Use hypotheses for information you're reasonably confident about but haven't confirmed. They prevent the task from either ignoring uncertain-but-useful knowledge, or treating guesses as facts.
+Use hypotheses for information that is reasonably confident but unconfirmed. They prevent the task from either ignoring uncertain-but-useful knowledge or treating guesses as facts.
 
 ### Format
 
@@ -173,16 +173,16 @@ Unobserved → [HYPOTHESIS LOW] → [HYPOTHESIS MEDIUM] → [HYPOTHESIS HIGH] �
 
 Surface a MEDIUM-confidence hypothesis in the task output when:
 - Confirming it would change how you handle a current situation
-- It's been MEDIUM for 3+ runs without movement
+- It has been MEDIUM for 3+ runs without movement
 - You have an opportunity to ask naturally (e.g., related question already in the output)
 
-Don't spam hypotheses. One or two per run maximum.
+Do not spam hypotheses. One or two per run maximum.
 
 ---
 
 ## Part 5: The Refactoring System
 
-Small improvements happen every run. Structural improvements — rethinking how the task is organized — should happen on a schedule or when triggered by specific conditions.
+Small improvements happen every run. Structural improvements -- rethinking how the task is organized -- should happen on a schedule or when triggered by specific conditions.
 
 ### Refactor triggers
 
@@ -197,12 +197,12 @@ Small improvements happen every run. Structural improvements — rethinking how 
 
 ### What a refactor does
 
-A refactor is **structural cleanup, not content change**. It should make the system cleaner — not change what gets surfaced or how the user is served (unless fixing a known problem).
+A refactor is **structural cleanup, not content change**. It should make the system cleaner -- not change what gets surfaced or how the user is served (unless fixing a known problem).
 
-1. Review all knowledge files — remove stale, duplicate, or contradictory entries.
-2. Review instruction file — remove steps that are never followed or are now outdated.
-3. Review pending/open state — identify orphaned or obsolete items.
-4. Review improvements log — close resolved issues, archive old applied fixes.
+1. Review all knowledge files -- remove stale, duplicate, or contradictory entries.
+2. Review instruction file -- remove steps that are never followed or are now outdated.
+3. Review pending/open state -- identify orphaned or obsolete items.
+4. Review improvements log -- close resolved issues, archive old applied fixes.
 5. Reset the run counter.
 6. Summarize what was found and changed.
 
@@ -210,7 +210,7 @@ A refactor is **structural cleanup, not content change**. It should make the sys
 
 ## Part 6: The Improvements Log
 
-Every task should have an IMPROVEMENTS.md (or equivalent) that tracks the task's own evolution. This is read every run.
+Every task should have an IMPROVEMENTS.md (or equivalent) that tracks the task's own evolution. This is read every run. The template below is a simplified reference -- the full production template lives at [`templates/TASK_TEMPLATE/IMPROVEMENTS.md`](./templates/TASK_TEMPLATE/IMPROVEMENTS.md), and [Guide 08](./08_SELFIMPROVE_TEMPLATE.md) explains how to install it.
 
 ### Template
 
@@ -258,9 +258,9 @@ Every task should have an IMPROVEMENTS.md (or equivalent) that tracks the task's
 
 ### ID conventions
 
-- `FIX-NNN` — applied change (auto-applied, no confirmation needed)
-- `PROP-NNN` — pending proposal (awaiting user input)
-- `ISS-NNN` — known issue being tracked
+- `FIX-NNN` -- applied change (auto-applied, no confirmation needed)
+- `PROP-NNN` -- pending proposal (awaiting user input)
+- `ISS-NNN` -- known issue being tracked
 
 ### Proposal JSON format
 
@@ -280,10 +280,10 @@ Every task should have an IMPROVEMENTS.md (or equivalent) that tracks the task's
 
 For tasks with connector dependencies, complex resolution logic, or long operational history, a separate `LESSONS.md` can complement IMPROVEMENTS.md.
 
-**The distinction:** IMPROVEMENTS.md tracks *current state* — what proposals are pending, what fixes have been applied. LESSONS.md preserves *reasoning history* — the mistake, the root cause, what the fix was and why that approach was chosen. This matters when a task has run 30+ times: you can see why a connector query was redesigned without trying to reconstruct the context from a table row.
+**The distinction:** IMPROVEMENTS.md tracks *current state* -- what proposals are pending, what fixes have been applied. LESSONS.md preserves *reasoning history* -- the mistake, the root cause, what the fix was and why that approach was chosen. This matters when a task has run 30+ times: you can see why a connector query was redesigned without trying to reconstruct the context from a table row.
 
 **How it works:**
-- Append-only — never edit existing entries, only prepend new ones.
+- Append-only -- never edit existing entries, only prepend new ones.
 - When applying an approved proposal, log the reasoning here before making the change.
 - When fixing a connector bug or logic error, note the root cause and what signal revealed it.
 
@@ -307,46 +307,46 @@ For tasks with connector dependencies, complex resolution logic, or long operati
 
 ### Recency beats volume
 
-A pattern observed once last week is more valuable than a pattern observed 20 times last year. Knowledge files should reflect current state, not historical accumulation. Actively revise — don't just append.
+A pattern observed once last week is more valuable than one observed 20 times last year. Knowledge files should reflect current state, not historical accumulation. Revise actively -- do not just append.
 
 ### Corrections are the strongest signal
 
-When the user explicitly corrects something, that correction is worth more than 10 indirect observations. Extract the lesson explicitly: not just "X was wrong" but "when Y, the correct behavior is Z."
+When the user explicitly corrects something, that correction outweighs 10 indirect observations. Extract the lesson explicitly: not just "X was wrong" but "when Y, the correct behavior is Z."
 
 ### Codify recurring observations
 
-If you notice the same thing in 3+ consecutive runs and haven't codified it as a rule, do it now. Don't keep rediscovering the same pattern.
+If the same observation appears in 3+ consecutive runs without being codified as a rule, codify it now. Do not keep rediscovering the same pattern.
 
-### Don't regress
+### Do not regress
 
-Before applying a fix, verify it doesn't break something that was already working correctly. "New and improved" should never be "new and broken."
+Before applying a fix, verify it does not break something already working. "New and improved" should never mean "new and broken."
 
 ### Distinguish types of knowledge
 
-Treat confirmed facts, hypotheses, and patterns differently. A hypothesis being stated as fact, or a pattern being applied as a rule before it's confirmed, leads to confident wrong behavior — worse than uncertain correct behavior.
+Treat confirmed facts, hypotheses, and patterns differently. A hypothesis stated as fact, or a pattern applied as a rule before confirmation, leads to confident wrong behavior -- worse than uncertain correct behavior.
 
 ### The profile is not a log
 
-Knowledge files should reflect the current best understanding of the subject. They are not a changelog. Old entries should be updated, not appended to. The run log is where history lives.
+Knowledge files should reflect the current best understanding of the subject, not serve as a changelog. Update old entries rather than appending. The run log is where history lives.
 
 ### Compactness compounds
 
-A file that is 50 lines longer than it needs to be costs tokens on every future run. Over 50 runs, that's 2,500 extra lines of input. Trim aggressively. Archive ruthlessly. The value of old information decays quickly.
+A file 50 lines longer than necessary costs tokens on every future run. Over 50 runs, that is 2,500 extra lines of input. Trim aggressively. Archive ruthlessly. The value of old information decays fast.
 
 ---
 
 ## Part 8: Anti-Patterns
 
-**Hypothesis fossilization** — hypotheses that sit at MEDIUM confidence for months without movement. Either surface them for confirmation or downgrade them. Don't let them accumulate.
+**Hypothesis fossilization** -- hypotheses that sit at MEDIUM confidence for months without movement. Either surface them for confirmation or downgrade them. Do not let them accumulate.
 
-**Proposal graveyard** — many pending proposals, none being acted on. More than 3–4 pending proposals signals a backlog problem. Archive old ones; make new ones more concrete or smaller-scoped.
+**Proposal graveyard** -- many pending proposals, none acted on. More than 3-4 pending proposals signals a backlog problem. Archive old ones; make new ones more concrete or smaller-scoped.
 
-**Append-only knowledge** — adding to profile/knowledge files without ever revising existing entries. Results in contradictory information and stale data living alongside current data. Always prefer revision over appending.
+**Append-only knowledge** -- adding to knowledge files without revising existing entries. Results in contradictions and stale data alongside current data. Always prefer revision over appending.
 
-**Over-applying** — auto-applying changes that should have been proposals because they seemed "obviously right." Erodes user trust when they find unexpected changes. When in doubt, propose.
+**Over-applying** -- auto-applying changes that should have been proposals because they seemed "obviously right." Erodes trust when the user finds unexpected changes. When in doubt, propose.
 
-**Under-applying** — routing clearly correct, low-risk, single-field fixes through the proposal system. Slows improvement and creates noise. Apply typos, wrong dates, and confirmed-by-user facts directly.
+**Under-applying** -- routing clearly correct, low-risk, single-field fixes through the proposal system. Slows improvement and creates noise. Apply typos, wrong dates, and user-confirmed facts directly.
 
-**Learning without acting** — noting the same pattern in the improvements backlog run after run without ever proposing or applying a change. A pattern noted 5 times is overdue for a proposal.
+**Learning without acting** -- noting the same pattern in the backlog run after run without proposing or applying a change. A pattern noted 5 times is overdue for a proposal.
 
-**Noisy output** — surfacing too many hypotheses, suggestions, and questions in a single run. One or two per category is enough. More than that and the user stops reading.
+**Noisy output** -- surfacing too many hypotheses, suggestions, and questions in a single run. One or two per category is enough. More than that and the user stops reading.

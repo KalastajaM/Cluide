@@ -14,7 +14,14 @@ From Claude's perspective, MCP tools work just like any built-in capability — 
 
 ## How MCP Servers Connect to Claude Code
 
-MCP servers are configured in Claude Code's settings file at `~/.claude/settings.json`. Each server has a name, a launch command, and optionally environment variables for credentials.
+MCP servers are configured in a settings file. Claude Code supports two scopes:
+
+- **Global** (`~/.claude/settings.json`) — available in every project
+- **Project-level** (`.claude/settings.json` inside a project folder) — available only in that project
+
+Use project-level config when a server is only relevant to one project. Use global config for servers you use everywhere.
+
+Each server has a name, a launch command, and optionally environment variables for credentials.
 
 **Minimal example:**
 
@@ -137,11 +144,30 @@ Persistent key-value store Claude can read and write across sessions — an alte
 
 ### Claude in Chrome
 
-The Claude browser extension (available from the Chrome Web Store) lets Claude read the content of the current webpage in any Claude.ai session. This is not an MCP server — it runs in the browser — but it fills a similar gap: getting live web content into Claude without a separate API or scraping script. Useful for research tasks, reading paywalled articles, or extracting data from web apps that have no API.
+The Claude in Chrome MCP server (`mcp__Claude_in_Chrome__*`) gives Claude full control of your browser — navigating pages, clicking, filling forms, taking screenshots, reading page content, and extracting data. Installed via the Claude browser extension (Chrome Web Store).
+
+Key tools: `navigate`, `read_page`, `get_page_text`, `find`, `form_input`, `javascript_tool`, `screenshot`
+
+Use when the target is a web app with no dedicated MCP and no API, or when you need to interact with a page (click, fill, navigate). Browsers are read-only in computer use — use Claude in Chrome for browser interaction.
 
 ---
 
-Find the full server catalogue at [modelcontextprotocol.io/servers](https://modelcontextprotocol.io/servers).
+### Computer Use
+
+The computer use MCP (`mcp__computer-use__*`) gives Claude direct control of your desktop — screenshots, mouse, keyboard, scrolling, opening applications. Works across all native apps.
+
+Key tools: `screenshot`, `left_click`, `type`, `scroll`, `key`, `open_application`, `request_access`
+
+**Access tiers by app category:**
+- **Browsers** → read-only (use Claude in Chrome for interaction)
+- **Terminals and IDEs** → click-only (use Bash tool for commands)
+- **All other apps** → full access
+
+Call `request_access` before using — the user approves each app explicitly. Use for native desktop apps with no dedicated MCP or cross-app workflows.
+
+---
+
+**Finding more servers:** The full MCP server catalogue is at [modelcontextprotocol.io/servers](https://modelcontextprotocol.io/servers). Claude.ai (the web interface) also has a built-in integrations browser.
 
 ---
 
@@ -149,7 +175,7 @@ Find the full server catalogue at [modelcontextprotocol.io/servers](https://mode
 
 When writing a skill (see [Guide 03](./03_SKILLS.md)), name the exact MCP tool in the workflow steps. Do not just say "check the calendar" — say `gcal_list_events`. This prevents Claude from improvising a different approach each session.
 
-**Weak (undertriggers consistent behaviour):**
+**Weak (inconsistent behaviour):**
 ```markdown
 Step 2: Check the calendar for conflicts.
 ```
@@ -166,11 +192,11 @@ Also state clearly what to do when a tool is unavailable or returns an error —
 
 ## Checking What Tools You Have
 
-Not sure which MCP tools are available in your setup? Ask Claude directly:
+Ask Claude directly:
 
 > *"What MCP tools do you have access to? List them by server."*
 
-Claude will enumerate the connected servers and their tools. This is useful when writing new skills — you can confirm the exact tool name before writing it into a workflow step.
+Claude enumerates connected servers and their tools. Use this when writing skills — confirm the exact tool name before writing it into a workflow step.
 
 ---
 
@@ -180,7 +206,61 @@ MCP server credentials (API keys, OAuth tokens) live in `settings.json` or in en
 
 - **Never put credentials in CLAUDE.md, skill files, or memory files** — those may be read back in session output. Credentials belong only in `settings.json` under the `env` block, or in a `.env` file loaded by the server.
 - **Use read-only tokens where possible.** A Gmail token with read-only access is safer than one with send permission, for any skill that doesn't need to send.
-- **Rotate tokens periodically.** A token in a config file is easy to forget. Set a reminder to rotate it every 6–12 months.
+- **Rotate tokens periodically.** Set a reminder to rotate every 6-12 months.
+
+For the full credential hygiene treatment — including exposure response procedures and rotation schedules — see [Guide 12](./12_SECURITY.md).
+
+---
+
+## Troubleshooting by Server
+
+When an MCP tool fails, start with this general checklist, then check the per-server notes.
+
+**General diagnostic:**
+1. Ask Claude: *"What MCP tools do you have available?"* If a server's tools are missing, it never started.
+2. Validate `settings.json` syntax: `cat ~/.claude/settings.json | python3 -m json.tool`
+3. Run the server's command manually in a terminal to see the real error.
+4. Check Node version (`node --version`) — most servers require Node 18+.
+5. Restart Claude Code after config or dependency changes.
+
+**Common per-server issues:**
+
+| Server | Common problem | Fix |
+|---|---|---|
+| Gmail / Google Workspace | Token expired (401) | Re-authenticate via OAuth. Tokens expire after ~7 days of inactivity. Run `gmail_get_profile` to test auth. |
+| Gmail | Empty search results | Use Gmail query syntax (`after:2026/04/01`), not ISO dates. Test in Gmail's web search first. |
+| Google Calendar | Events missing | Specify timezone explicitly. Check calendar ID via `list_calendars`. |
+| Microsoft 365 | 401 on any call | M365 tokens expire after 60–90 min. Restart server process if auto-refresh fails. |
+| Atlassian | "Site not found" / 404 | Site URL must be `https://yourcompany.atlassian.net` — no trailing slash. |
+| Filesystem | "Path not in allowed list" | Add the directory to the `args` array in `settings.json`. |
+| Claude in Chrome | Tools unavailable | Open Chrome, click extension icon to reconnect, restart Claude Code. |
+| Computer Use | Click/type blocked | Check tier restrictions — browsers are read-only, terminals are click-only. |
+
+**Cross-server misconfigurations:**
+
+| Mistake | Fix |
+|---|---|
+| Tool name in skill doesn't match actual tool | Ask *"What MCP tools do you have?"* and copy the exact name. |
+| Wrong `env` variable name | Check the server's README — `GITHUB_TOKEN` vs `GITHUB_PERSONAL_ACCESS_TOKEN` matters. |
+| Credentials in `CLAUDE.md` instead of `settings.json` | Move to `settings.json` `env` block or `.env` file. |
+
+---
+
+## Rate Limits and Error Handling
+
+Most MCP servers proxy APIs with rate limits. Add this to any skill step that calls an external MCP tool:
+
+```markdown
+If the tool call fails with a rate limit or timeout error:
+  1. Wait 5 seconds and retry once.
+  2. If it still fails, log the error and skip this step gracefully.
+  3. Do not retry more than once.
+```
+
+**Error response strategy:**
+- **Transient errors** (timeout, 429, 5xx): retry once after 5 seconds, then skip.
+- **Auth errors** (401, 403): stop immediately, log which tool failed.
+- **Empty results when data expected**: note in output, continue with available data.
 
 ---
 

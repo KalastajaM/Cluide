@@ -21,6 +21,18 @@ A useful mental model: Obsidian is the IDE; Claude is the programmer; the wiki i
 
 ---
 
+## Do You Need This Guide?
+
+| If you want to... | Use |
+|---|---|
+| Claude to remember your preferences, corrections, and working style | `.auto-memory/` -> [Guide 04](./04_MEMORY_AND_PROFILE.md) |
+| Build a knowledge base about a subject domain (threat intel, research, competitors) | **LLM Wiki -- this guide** |
+| Compound knowledge across many sources over weeks or months | **LLM Wiki -- this guide** |
+
+If unsure: start with Guide 04. Come back here when you have a domain to research deeply over time.
+
+---
+
 ## How This Differs from `.auto-memory/`
 
 This distinction matters because the two systems look similar but serve different purposes.
@@ -200,6 +212,34 @@ Some uses that fit naturally with this setup:
 **Dataview** (Obsidian plugin) runs queries over page frontmatter. If Claude adds YAML frontmatter to pages (tags, dates, source counts), Dataview can generate dynamic tables and dashboards.
 
 **Search at scale**: at small scale the `index.md` approach is sufficient. As the wiki grows into hundreds of pages, consider [qmd](https://github.com/tobi/qmd) — a local search engine for markdown with hybrid BM25/vector search that has both a CLI (Claude can shell out to it) and an MCP server.
+
+---
+
+## Querying Large Wikis (100+ Pages)
+
+The `index.md` approach works up to roughly 100-150 pages. Beyond that, add a tiered index:
+
+- Create `wiki/categories.md` grouping pages by domain area (5-10 lines)
+- Claude reads `categories.md` first, identifies relevant categories, then reads only that slice of `index.md` — cutting index cost by 70-80%
+- For queries matching many pages, read the top 5-10 most relevant and synthesise; fetch more only if incomplete
+
+**When to switch to qmd:** at 150+ entity pages, add [qmd](https://github.com/tobi/qmd) — local markdown search with hybrid BM25/vector search, available as both CLI and MCP server.
+
+---
+
+## Anti-Patterns
+
+**Using the wiki as a dump of raw sources.** The wiki layer is for synthesis, not storage. If Claude copies source text verbatim without summarising or integrating, you have a mirror of `sources/` with extra steps.
+
+**One massive file instead of topic pages.** A single `wiki/everything.md` defeats the purpose — Claude can't selectively read relevant pages. Split by entity, concept, or source.
+
+**Skipping the schema.** Without a `CLAUDE.md` defining page types and workflows, Claude improvises and pages drift in structure across sessions.
+
+**Ingesting without deduplication.** Adding the same source twice creates contradictions. Check `wiki/log.md` and `wiki/index.md` before ingesting.
+
+**Treating the wiki as append-only.** Wikis need pruning. Run lint regularly and let Claude consolidate stale pages.
+
+**Confusing wiki with auto-memory.** `.auto-memory/` stores facts about you; a wiki stores domain knowledge. Mixing the two weakens both.
 
 ---
 

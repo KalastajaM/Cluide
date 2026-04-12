@@ -26,6 +26,53 @@ You don't need exact numbers. Rough estimates are enough to spot trends and catc
 
 ---
 
+## What Things Actually Cost
+
+Claude pricing (as of early 2026) uses per-token rates that differ by model tier. Rough reference:
+
+| Model | Input (per 1M tokens) | Output (per 1M tokens) |
+|---|---|---|
+| **Sonnet** | ~$3 | ~$15 |
+| **Opus** | ~$15 | ~$75 |
+
+These are API list prices. Batch API pricing is typically 50% cheaper (see "Batch vs. Interactive" below). Caching drops input costs further when the same context is reused across calls.
+
+**Typical task costs per run (Sonnet):**
+
+| Task type | Input tokens | Output tokens | Estimated cost |
+|---|---|---|---|
+| Email digest (triage 20 emails, write summary) | ~12K | ~3K | ~$0.08 |
+| Weekly planner (read calendar + profile, write plan) | ~8K | ~2K | ~$0.05 |
+| Data ingestion (parse 5 pages, update wiki) | ~20K | ~5K | ~$0.14 |
+| Full morning briefing (email + calendar + profile + output) | ~25K | ~6K | ~$0.17 |
+| Complex research task (multi-step, 50K context) | ~50K | ~10K | ~$0.30 |
+
+At one run per day, the morning briefing costs roughly $5/month on Sonnet. The same task on Opus would cost roughly $25/month — five times more for the same token volume.
+
+---
+
+## Model Tier Selection: Sonnet vs. Opus
+
+Not every task needs the most capable model. Choose based on what the task actually does:
+
+**Use Sonnet for:**
+- Structured extraction (parsing emails, reading calendar events)
+- Template-driven output (briefings, digests, status updates)
+- Triage and classification tasks
+- Any task where the instructions are clear and the output format is fixed
+
+**Use Opus for:**
+- Tasks requiring nuanced judgment (prioritizing ambiguous items, drafting sensitive replies)
+- Complex multi-step reasoning with large context
+- Tasks where output quality directly affects decisions
+- Self-improvement proposal generation (the review step in Guide 07)
+
+**The hybrid approach:** Run the data-gathering steps on Sonnet and the synthesis/judgment step on Opus. A morning briefing that fetches and triages on Sonnet, then drafts the narrative on Opus, can cut costs by 40–60% compared to running everything on Opus while keeping output quality high.
+
+In practice, most scheduled tasks work well on Sonnet. Reserve Opus for the tasks where you've noticed Sonnet's output isn't good enough.
+
+---
+
 ## The Run Metrics Pattern
 
 At the end of every task run, append a metrics block to `RUN_LOG.md`:
@@ -75,6 +122,8 @@ Monthly budget = (average cost per run) × (runs per month) × 1.5
 
 The 1.5x multiplier gives headroom for occasional expensive runs (more emails than usual, larger API responses).
 
+**Example:** A daily email digest averaging $0.08/run on Sonnet: $0.08 x 30 x 1.5 = **$3.60/month budget**. If actual spend crosses $3.60, something changed.
+
 **Adding a budget check to your task:**
 
 Add this as Step 0 (before the main procedure) in `TASK.md`:
@@ -116,6 +165,76 @@ Step 8: Log metrics                            ~100 tokens
 ```
 
 Step 4 is 40% of the total. That's where optimisation effort should go.
+
+---
+
+## Optimization Case Studies
+
+### Case 1: Email digest — triage before fetch
+
+**Before:** Read all 25 email bodies, then summarize. ~12,500 input tokens from email alone.
+
+**After:** Fetch subjects and senders only (~500 tokens). Triage to 6 actionable emails. Fetch those 6 bodies (~2,400 tokens). Total email tokens: ~2,900.
+
+**Saving:** ~77% reduction in email-related tokens. Per-run cost dropped from ~$0.12 to ~$0.05 on Sonnet.
+
+### Case 2: Weekly planner — stop re-reading static context
+
+**Before:** Task read PROFILE_SUMMARY.md (600 tokens), KNOWLEDGE_SUMMARY.md (1,200 tokens), and full TASK.md (3,000 tokens) every run. These files change rarely.
+
+**After:** Split TASK.md into a slim procedure file (800 tokens) and a reference file read only when the procedure says to. Profile summary trimmed to essentials (300 tokens). Knowledge summary accessed by section.
+
+**Saving:** Fixed overhead dropped from ~4,800 to ~1,100 tokens per run. Over 52 weekly runs: ~192K tokens saved/year, roughly $0.60/year on Sonnet. Small per-run, but it compounds and keeps the task fast.
+
+### Case 3: Data ingestion — batch similar operations
+
+**Before:** Five separate MCP calls to read five pages, each returning full page metadata. ~20K input tokens.
+
+**After:** Single batch query returning only content fields for all five pages. ~8K input tokens. Added a deduplication check to skip pages unchanged since last run — typical run now processes 2–3 pages.
+
+**Saving:** Average run dropped from ~$0.14 to ~$0.06.
+
+---
+
+## Cost Trajectory Patterns
+
+After 10+ runs, your RUN_LOG.md reveals one of three patterns:
+
+**Stable (healthy).** Token counts stay within a narrow band (say 8K–12K). Small spikes correlate with more input data (more emails on Monday). No action needed.
+
+**Step increase (something changed).** Tokens jump from ~10K to ~18K and stay there. Common causes: a profile file grew, a new step was added to TASK.md, or an MCP response format changed. Check what changed around the date of the step.
+
+**Gradual upward drift (accumulation).** Tokens creep up 5–10% per week. Common causes: a knowledge file grows without pruning, run log isn't being archived, or the task is appending to a file it also reads. This is the dangerous pattern — each run is only slightly more expensive, so no single run triggers the 2x alert. Add a secondary check: compare the current average against the average from 20 runs ago, not just 5.
+
+**How to add the drift check:**
+
+```markdown
+After logging metrics: if RUN_LOG.md has 20+ entries, compare the average
+of the last 5 runs to the average of runs 16–20. If the recent average
+exceeds the older average by more than 50%, flag in IMPROVEMENTS.md:
+"Gradual cost drift detected — token usage up [X]% over 15 runs."
+```
+
+---
+
+## Batch vs. Interactive Cost Profiles
+
+Claude's Batch API processes requests asynchronously (results within 24 hours) at roughly half the per-token cost. This matters for tasks that don't need immediate results.
+
+**Good candidates for batch:**
+- Weekly reports and planners (not time-sensitive)
+- Bulk data ingestion or wiki updates
+- Periodic audits and reviews
+- Any task scheduled to run overnight
+
+**Keep interactive:**
+- Morning briefings needed before a specific time
+- Urgent email scans
+- Anything triggered by a real-time event
+
+If a task runs daily at 3 AM and you read the output at 8 AM, batch processing saves ~50% with no practical impact on your workflow.
+
+Note: Cowork scheduled tasks currently run interactively. Batch API applies when you're calling Claude programmatically via the API. If you use the API for some tasks, the cost difference is worth structuring around.
 
 ---
 
@@ -179,5 +298,7 @@ When setting up cost monitoring for a task:
 - [ ] Add a Step 0 budget check that reads the last 5 log entries
 - [ ] Annotate each task step with its rough token cost (token heat map)
 - [ ] Add the 2x alerting rule to the metrics step
+- [ ] Add the gradual drift check (compare against 20 runs ago)
 - [ ] Set a monthly budget based on the first 3–5 runs
+- [ ] Choose the right model tier for each task (Sonnet vs. Opus)
 - [ ] Archive old `RUN_LOG.md` entries after 30 runs

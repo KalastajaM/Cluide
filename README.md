@@ -13,7 +13,7 @@
 
 Cluide is an operational framework for building AI assistants that persist, learn, and improve over time — not a collection of tips, but a complete system you can actually install and run. It covers the full lifecycle: initial setup, scheduled automation, self-improvement, security, and long-term maintenance.
 
-The deliverables are concrete: 17 interlocking guides that define the architecture, 19 runnable task files that do the setup work for you, 4 bundled skills, and 4 ready-to-use templates. The guides are documentation for the system; the tasks are its installation scripts.
+The deliverables are concrete: 18 interlocking guides that define the architecture, 19 runnable task files that do the setup work for you, 4 bundled skills, and 4 ready-to-use templates. The guides are documentation for the system; the tasks are its installation scripts.
 
 A well-configured Claude personal assistant has four layers:
 
@@ -67,8 +67,9 @@ A well-configured Claude personal assistant has four layers:
 | 15 | [LLM Wiki](./15_LLM_WIKI.md) | Power users | Building a compounding knowledge base |
 | 16 | [Best Practices](./16_BEST_PRACTICES.md) | All | Lessons from real use |
 | 17 | [Troubleshooting](./17_TROUBLESHOOTING.md) | All | When things don't work |
+| 18 | [End-to-End Walkthrough](./18_END_TO_END_WALKTHROUGH.md) | All | From zero to running assistant — the full journey |
 
-**Recommended order:** Quickstart → 01 → 02 → 03 → 04 → 05 → (06–10 once you have scheduled tasks running).
+**Recommended order:** Quickstart → 01 → 02 → 03 → 04 → 05 → (06–10 once you have scheduled tasks running). Or follow [Guide 18](./18_END_TO_END_WALKTHROUGH.md) for a guided path through all stages.
 
 For detailed per-guide descriptions, reading times, and usage guidance, see [00_INDEX.md](./00_INDEX.md).
 
@@ -107,7 +108,7 @@ Tasks are standalone instruction files for setup and auditing. Run them by sayin
 
 ## Skills Included
 
-Four installable skills are bundled in `skills/`. Install only the ones you need.
+Five installable skills are bundled in `skills/`. Install only the ones you need.
 
 **Claude Code:** copy the skill folder to `~/.claude/skills/`
 **Claude.ai:** upload the `.skill` file from `skills/` via **Settings → Skills → Upload skill**
@@ -118,6 +119,7 @@ Four installable skills are bundled in `skills/`. Install only the ones you need
 | `template-exporter` | Turns any Claude setup into a clean, shareable template |
 | `cowork-optimizer` | Audits a Cowork task for token efficiency and structural quality |
 | `security-review` | Structured security audit of a Claude Code environment and project |
+| `backlog` | Portable backlog manager — prioritised work items, grooming, decision logging |
 
 ---
 
@@ -140,7 +142,7 @@ Four copy-paste starting points in `templates/`:
 /
 ├── 00_INDEX.md               # Full annotated guide index
 ├── 00_QUICKSTART.md          # Start here if you're new
-├── 01_CLAUDE_MD.md – 17_TROUBLESHOOTING.md
+├── 01_CLAUDE_MD.md – 18_END_TO_END_WALKTHROUGH.md
 ├── CHEATSHEET.md             # One-page quick reference
 ├── tasks/                    # Setup and audit task files
 ├── skills/                   # Bundled installable skills

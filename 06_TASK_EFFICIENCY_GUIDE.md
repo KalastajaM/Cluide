@@ -16,7 +16,7 @@
 
 ## Core Principle
 
-Every token Claude reads or writes costs usage. The goal is to ensure Claude only loads what it needs for the current run, and only generates what it can't delegate to a script.
+Every token Claude reads or writes costs usage. The goal: Claude only loads what it needs for the current run and only generates what it cannot delegate to a script.
 
 The four main levers:
 1. **Reduce what Claude reads** — smaller instruction files, partial file reads
@@ -30,7 +30,7 @@ The four main levers:
 
 ### 1. Split the instruction file (TASK.md)
 
-The task instruction file is loaded on every run. Keep it to **~200 lines / ~3K tokens** of core procedure. Everything else moves to a `TASK_REFERENCE.md` that Claude reads only when it specifically needs it.
+The task instruction file is loaded on every run. Keep it to **~200 lines / ~3K tokens** of core procedure. Move everything else to a `TASK_REFERENCE.md` that Claude reads only when needed.
 
 **Extract to TASK_REFERENCE.md:**
 - JSON schemas and data formats
@@ -54,9 +54,7 @@ The task instruction file is loaded on every run. Keep it to **~200 lines / ~3K 
 
 ### 2. Script fixed-format artifact generation
 
-If the task generates a structured output file (HTML report, PDF, formatted document) from a structured input (markdown, JSON), Claude should not compose it from scratch every run.
-
-**Write a script once. Claude runs it.**
+If the task generates a structured output file (HTML report, PDF, formatted document) from structured input (markdown, JSON), Claude should not compose it from scratch every run. Write a script once; Claude runs it.
 
 Ask: *does the output format change between runs, or just the data?*
 - Format is fixed, data varies → write a script
@@ -75,13 +73,13 @@ output: rendered artifact file + optional archive copy
 usage:  python3 render.py [project_folder]
 ```
 
-Claude's step becomes: run the script, show the output link. On failure, fall back to composing directly and log the error.
+Claude's step becomes: run the script, report the output path. On failure, fall back to composing directly and log the error.
 
 ---
 
 ### 3. Apply targeted edit policy for file updates
 
-If Claude updates a file that it reads every run, it should use partial reads and targeted edits rather than full read + full write.
+When Claude updates a file it reads every run, it should use partial reads and targeted edits rather than full read + full write.
 
 **Policy:**
 - Use `Grep` to find the relevant section
@@ -110,7 +108,7 @@ Step N: Regenerate VIEW_FILE.md
 
 ### 5. Add two-pass triage for external data fetching
 
-When fetching external data (emails, API responses, documents), many items will be noise. Use a cheap first pass to classify, and only fetch full content for items that pass.
+When fetching external data (emails, API responses, documents), many items are noise. Use a cheap first pass to classify, then fetch full content only for items that pass.
 
 **Gmail pattern:**
 - `gmail_search_messages` returns snippets — use those for triage
@@ -129,7 +127,7 @@ Pass 2: fetch full content only for items flagged in Pass 1
 
 ### 6. Enforce hard size limits on always-loaded files
 
-Any file that is loaded every run must have a hard size cap. Without it, these files drift upward over time and compound the token cost of every future run.
+Any file loaded every run must have a hard size cap. Without one, these files grow over time and compound the token cost of every future run.
 
 **Apply to:** summary files, state files, any "read every run" file.
 
@@ -147,13 +145,13 @@ Trim strategy: compress older entries, remove superseded items, archive resolved
 | Pending actions summary | proportional to open item count; archive resolved promptly |
 
 **Design choice — full history vs. latest only:**
-Tasks can keep either an append-only `RUN_LOG.md` (full history) or a `LAST_RUN.md` (only the most recent run). Full history is better for detecting patterns across runs ("this issue has appeared 3 times"). Latest-only saves tokens. If your task runs daily, use `RUN_LOG.md` with the 3-entry rolling window above. If it runs very frequently or you only need to debug the last run, `LAST_RUN.md` is sufficient.
+Tasks can keep either an append-only `RUN_LOG.md` (full history) or a `LAST_RUN.md` (most recent run only). Full history is better for detecting cross-run patterns ("this issue has appeared 3 times"). Latest-only saves tokens. If your task runs daily, use `RUN_LOG.md` with the 3-entry rolling window above. If it runs frequently or you only need to debug the last run, `LAST_RUN.md` is sufficient.
 
 ---
 
 ### 7. Add run deduplication
 
-If the task can be triggered multiple times per day, add duplicate detection to avoid redundant full runs.
+If the task can run multiple times per day, add duplicate detection to avoid redundant full runs.
 
 ```
 Step 0: Record run start timestamp
@@ -214,14 +212,14 @@ Two mechanisms exist. Choose based on how autonomous the task needs to be.
 
 ---
 
-### Option A: Remote / Scheduled Triggers (recommended for production tasks)
+### Option A: Scheduled Tasks via the `schedule` Skill (recommended for production tasks)
 
-The `schedule` skill and `RemoteTrigger` system let you create task agents that run on a cron schedule **independently of any open Claude session** — no session needed, no manual trigger. This is the proper approach for daily digests, automated monitoring tasks, and anything that should run reliably on a fixed schedule.
+The `schedule` skill lets you create task agents that run on a cron schedule **independently of any open Claude session** — no session needed, no manual trigger. This is the proper approach for daily digests, automated monitoring tasks, and anything that should run reliably on a fixed schedule.
 
 **To set up a scheduled task:**
 > "Use the `schedule` skill to create a scheduled task that runs my daily digest every morning at 8am."
 
-Claude will configure the trigger, set the schedule, and manage execution. You can list, update, or stop triggers without opening a session.
+Claude will configure the task, set the schedule, and manage execution. You can list, update, or stop scheduled tasks without opening a session.
 
 This approach avoids the main problem with SessionStart hooks: tasks running multiple times if you open several sessions in a day.
 
@@ -229,7 +227,7 @@ This approach avoids the main problem with SessionStart hooks: tasks running mul
 
 ### Option B: SessionStart Hooks (simpler, for session-triggered automation)
 
-Hooks are shell commands that fire automatically in response to Claude Code events. Configured in `~/.claude/settings.json` (global) or `.claude/settings.json` (project-level).
+Hooks are shell commands that fire automatically in response to Claude Code events. Configure them in `~/.claude/settings.json` (global) or `.claude/settings.json` (project-level).
 
 **SessionStart** fires every time a new Claude Code session opens — useful for lightweight pre-session setup (git snapshots, loading context) rather than full task execution.
 
@@ -260,7 +258,7 @@ Hooks are shell commands that fire automatically in response to Claude Code even
 **Hook practical notes:**
 - SessionStart fires once per session. Multiple sessions per day = multiple hook runs. Add deduplication (checklist item 7) if running full tasks via hooks.
 - The `matcher` field filters by context. Leave it empty (`""`) to fire on all sessions.
-- For git pre-session snapshots specifically, prefer the hook approach — it's simpler and the right fit. See [Guide 11 — Git Integration](./11_GIT_INTEGRATION.md).
+- For git pre-session snapshots, the hook approach is the right fit. See [Guide 11 — Git Integration](./11_GIT_INTEGRATION.md).
 
 For the full hooks reference: [Claude Code documentation on hooks](https://docs.anthropic.com/en/docs/claude-code/hooks).
 

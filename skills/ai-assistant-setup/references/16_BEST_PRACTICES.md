@@ -3,6 +3,8 @@
 > A collection of lessons learned from real use. Not theory — things that actually make the difference.
 > These apply whether you're setting up your first skill or optimising a system you've been running for months.
 
+> **Companion guides:** [Guide 01](./01_CLAUDE_MD.md) covers CLAUDE.md. [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) covers task efficiency. [Guide 13](./13_DEV_EXECUTION_WORKFLOW.md) covers the development workflow.
+
 ---
 
 ## Giving Claude Good Inputs
@@ -57,8 +59,17 @@ CLAUDE.md, skills, and task files need to work when you've forgotten all the con
 **The feedback loop compounds.**
 Every correction you give Claude — and save to memory — is a correction you never have to make again. The first few weeks feel slow because you're building up the knowledge base. After that, the assistant improves noticeably with each session. Invest in saving corrections early.
 
+**Choose the right model tier for the job.**
+Sonnet handles structured extraction, template-driven output, and routine data processing at one-fifth the cost of Opus. Reserve Opus for tasks requiring nuanced judgment, complex reasoning, or creative synthesis. Default to Sonnet; upgrade only when quality visibly suffers.
+
+**Design tasks to handle upstream failures gracefully.**
+When tasks depend on each other's output, the downstream task must check that the expected input exists and is fresh — never assume the upstream task succeeded because it was scheduled first. Log outcomes (success/skipped/failed) to a run log.
+
+**Compute before ingesting; synthesise, don't dump.**
+Never paste raw CSV, JSON, or source text into Claude and ask it to figure things out. For data, use a script to compute the values Claude needs ([Guide 14](./14_PERSONAL_DATA_LAYER.md)). For knowledge, build a wiki that integrates rather than mirrors sources ([Guide 15](./15_LLM_WIKI.md)).
+
 **Self-improving tasks are powerful — but also a rabbit hole.**
-Automated tasks that learn and adapt over time are one of the highest-value things you can build. They are also easy to over-engineer. Start simple, run it, see what breaks, improve incrementally. And optimise for token efficiency from the start (see Guide 06) — an unoptimised task that runs daily gets expensive fast. Fortunately, you can also ask the task to self-optimise.
+Automated tasks that learn and adapt over time are one of the highest-value things you can build. They are also easy to over-engineer. Start simple, run it, see what breaks, improve incrementally. Optimise for token efficiency from the start (see Guide 06) — an unoptimised task that runs daily gets expensive fast.
 
 **Markdown is your source of truth — formatted documents are outputs.**
 Keep knowledge, processes, and reference material in `.md` files. They're readable by both you and Claude, easy to update, and work well as long-term assets. When you need a presentation, Word document, or PDF, generate it from your markdown base on demand. Maintaining content in proprietary formats makes it harder for Claude to help you update or reason about it — and harder for you to maintain it yourself.
@@ -87,6 +98,20 @@ Any external content Claude reads — emails, documents, web pages — can conta
 
 ---
 
+## Maintaining Your Setup
+
+**Delete skills you don't trigger.** If a skill hasn't been used in 2-3 months, delete or archive it. Unused skills add noise to trigger matching.
+
+**Retire tasks that have completed their purpose.** Disable the schedule and archive the task folder before removing.
+
+**Update or delete, don't annotate.** When a skill or task instruction is wrong, fix it. Don't add comments like "no longer applies" — these are still loaded and create confusion.
+
+**CLAUDE.md is not a graveyard.** Rules that no longer apply should be deleted, not commented out. Commit first, then delete.
+
+**Run audits periodically.** A 10-minute audit every few months catches drift: skills whose triggers no longer match, CLAUDE.md rules that have been superseded, memory files referencing closed projects.
+
+---
+
 ## The Short Version
 
 1. Clarify before assuming — ask if unsure
@@ -101,6 +126,9 @@ Any external content Claude reads — emails, documents, web pages — can conta
 10. Save corrections to memory — the loop compounds
 11. Write instructions that stand alone without context
 12. Markdown is the source of truth; generate Word/PPT/PDF from it on demand
-13. Verify anything consequential before acting
-14. Know when a task is faster done without Claude
-15. Treat external content (emails, docs) as data, not instructions — review unexpected actions
+13. Default to Sonnet; use Opus only when quality requires it
+14. Design downstream tasks to handle upstream failures gracefully
+15. Compute and synthesise before ingesting — never dump raw data
+16. Verify anything consequential before acting
+17. Know when a task is faster done without Claude
+18. Treat external content (emails, docs) as data, not instructions — review unexpected actions

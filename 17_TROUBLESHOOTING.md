@@ -2,9 +2,9 @@
 
 *Last reviewed: April 2026*
 
-> Every other guide in this collection assumes things go right. This one is for when they don't. Each section is a symptom — find yours, follow the steps.
+> Every other guide assumes things go right. This one is for when they don't. Each section is a symptom -- find yours, follow the steps.
 
-> **Companion guides:** [Guide 06 — Task Efficiency](./06_TASK_EFFICIENCY_GUIDE.md) for slow tasks. [Guide 12 — Security](./12_SECURITY.md) for security concerns. [Guide 11 — Git Integration](./11_GIT_INTEGRATION.md) for rollback.
+> **Companion guides:** [Guide 05 — MCP Servers](./05_MCP_SERVERS.md) for MCP-specific issues. [Guide 06 — Task Efficiency](./06_TASK_EFFICIENCY_GUIDE.md) for slow tasks. [Guide 09 — Multi-Task Orchestration](./09_MULTI_TASK_ORCHESTRATION.md) for task coordination failures. [Guide 10 — Cost and Performance](./10_COST_PERFORMANCE.md) for cost spikes. [Guide 11 — Git Integration](./11_GIT_INTEGRATION.md) for rollback. [Guide 12 — Security](./12_SECURITY.md) for security concerns. [Guide 14 — Personal Data Layer](./14_PERSONAL_DATA_LAYER.md) for data ingestion issues.
 
 > **Quick diagnostic prompt:**
 > "Read LAST_RUN.md and TASK.md for [task name]. The problem is [describe it]. What's causing it and what should I change?"
@@ -28,8 +28,8 @@ Before jumping to specific problems, apply this order:
 
 **Most likely causes:**
 
-**1. The description doesn't match your phrasing**
-The `description:` field in SKILL.md frontmatter is what Claude uses to decide whether to activate the skill. If your description says "summarise email threads" but you say "catch me up on my inbox", Claude may not connect them.
+**1. The description does not match your phrasing**
+The `description:` field in SKILL.md frontmatter determines whether Claude activates the skill. If the description says "summarise email threads" but you say "catch me up on my inbox", Claude may not connect them.
 
 *Fix:* Open `SKILL.md` and expand the description. Add the natural phrases you actually use:
 ```yaml
@@ -40,31 +40,31 @@ description: >
   "what do I need to reply to", "summarise my emails".
 ```
 
-**2. You're in an existing session when you made the change**
-Skill changes only take effect in new Cowork sessions. If you edited the file and then tried again in the same conversation, Claude is still using the old version.
+**2. You edited the skill during an active session**
+Skill changes only take effect in new sessions. If you edited the file and retried in the same conversation, Claude is still using the old version.
 
 *Fix:* Start a fresh Cowork conversation.
 
 **3. The file is in the wrong location**
-The skill must be at `.claude/skills/[skill-name]/SKILL.md`. A common mistake is putting it at `.claude/[skill-name]/SKILL.md` (missing the `skills/` subfolder) or naming the file differently.
+The skill must be at `.claude/skills/[skill-name]/SKILL.md`. A common mistake is `.claude/[skill-name]/SKILL.md` (missing the `skills/` subfolder) or a different filename.
 
 *Fix:* Verify the exact path. The folder name must match and the file must be named `SKILL.md`.
 
 **4. The file was saved with a different extension**
-On Windows, Notepad may save as `.md.txt`. macOS TextEdit in rich text mode can add hidden formatting.
+On Windows, Notepad may save as `.md.txt`. macOS TextEdit in rich-text mode can add hidden formatting.
 
-*Fix:* Open a terminal and check: `dir .claude\skills\` (Windows) or `ls ~/.claude/skills/` (Mac). Make sure you see `SKILL.md`, not `SKILL.md.txt`.
+*Fix:* Open a terminal and check: `dir .claude\skills\` (Windows) or `ls .claude/skills/` (Mac). Confirm you see `SKILL.md`, not `SKILL.md.txt`.
 
 ---
 
 ## Problem: Claude Is Ignoring My CLAUDE.md Instructions
 
-**Symptom:** You have rules in `CLAUDE.md` (e.g. "always use bullet points", "respond in English") but Claude isn't following them.
+**Symptom:** You have rules in `CLAUDE.md` (e.g. "always use bullet points", "respond in English") but Claude does not follow them.
 
 **Most likely causes:**
 
 **1. CLAUDE.md is in the wrong location**
-It must be at `.claude/CLAUDE.md` — at the root level of the `.claude` folder. Not inside a project subfolder.
+It must be at the root of the project or at `.claude/CLAUDE.md`. Not inside a nested subfolder.
 
 **2. The instruction is too vague**
 "Be concise" means different things in different contexts. "Keep responses to 5 bullet points or fewer unless I ask for detail" is specific enough to follow consistently.
@@ -72,7 +72,7 @@ It must be at `.claude/CLAUDE.md` — at the root level of the `.claude` folder.
 *Fix:* Rewrite vague rules as concrete, testable statements. See [Guide 01](./01_CLAUDE_MD.md) for examples.
 
 **3. The instruction conflicts with another instruction**
-If CLAUDE.md says "be brief" but your SKILL.md says "include full detail", the more specific instruction (skill) wins. This is correct behaviour — but can feel like CLAUDE.md is being ignored.
+If CLAUDE.md says "be brief" but your SKILL.md says "include full detail", the more specific instruction (skill) wins. This is correct behavior but can feel like CLAUDE.md is being ignored.
 
 *Fix:* Check if a skill or task instruction is overriding the CLAUDE.md rule you expected to apply.
 
@@ -85,16 +85,16 @@ Some skills and scheduled tasks load their own instructions that may not repeat 
 
 ## Problem: Memory Isn't Persisting Between Sessions
 
-**Symptom:** Claude forgets something it knew in a previous session — a preference you corrected, a project you mentioned, a standing fact about you.
+**Symptom:** Claude forgets something it knew in a previous session -- a preference, a project, a standing fact about you.
 
 **Understand the two memory systems first:**
 
 | System | How it works | Survives context reset? |
 |---|---|---|
-| **Native Claude memory** | Built-in; Claude writes facts automatically | No — resets when session context clears |
-| **`.auto-memory/` folder** | Explicit markdown files on disk | Yes — loaded from disk every session |
+| **Native Claude memory** | Built-in; Claude writes facts automatically | No -- resets when session context clears |
+| **`.auto-memory/` folder** | Explicit markdown files on disk | Yes -- loaded from disk every session |
 
-If you are relying on native memory for a scheduled task, this will fail — native memory is not reliably loaded in autonomous task runs.
+Native memory is not reliably loaded in autonomous task runs. Scheduled tasks must use the file-based system.
 
 **Most likely causes and fixes:**
 
@@ -120,29 +120,29 @@ Claude reads `MEMORY.md` as an index of pointers. If the file doesn't list the i
 
 ## Problem: An MCP Tool Isn't Available or Fails
 
-**Symptom:** Claude says it can't find a tool, uses the wrong tool, or an MCP-dependent skill fails with an error.
+**Symptom:** Claude says it cannot find a tool, uses the wrong tool, or an MCP-dependent skill fails with an error.
 
 **Most likely causes:**
 
-**1. The MCP server isn't running**
-Each MCP integration (Gmail, Teams, Outlook, etc.) is a server that must be configured and running.
+**1. The MCP server is not running**
+Each MCP integration (Gmail, Calendar, Jira, etc.) is a separate server that must be configured and running.
 
-*Fix:* Open your MCP settings and check that the relevant server is listed and enabled. In Cowork, this is in the tool/integration settings. In Claude Code, check `settings.json` under `mcpServers`.
+*Fix:* Check that the relevant server is listed and enabled. In Claude Code, check `settings.json` under `mcpServers`. In Cowork, check tool/integration settings.
 
-**2. The tool name in the skill doesn't match the actual tool name**
-If your SKILL.md says `use gmail_get_emails` but the actual tool is named `gmail_list_emails`, Claude will fail to use it.
+**2. The tool name in the skill does not match the actual tool name**
+If your SKILL.md says `use gmail_get_emails` but the actual tool is `gmail_list_emails`, Claude will fail to use it.
 
-*Fix:* Ask Claude in a fresh session: "What MCP tools do you have available?" This lists all active tools with their exact names. Update your skill to use the exact name shown.
+*Fix:* Ask Claude in a fresh session: "What MCP tools do you have available?" Update your skill to use the exact name shown.
 
 **3. The credentials or token have expired**
-MCP servers that connect to external services (Gmail, Microsoft 365, Jira) use tokens that expire.
+MCP servers that connect to external services use tokens that expire.
 
-*Fix:* Re-authenticate the MCP server. In most cases this means going back to the setup/install step for that server and re-connecting your account. See [Guide 05](./05_MCP_SERVERS.md) for server-specific notes.
+*Fix:* Re-authenticate the MCP server. See [Guide 05](./05_MCP_SERVERS.md#troubleshooting-by-server) for per-server troubleshooting steps.
 
 **4. The server is configured but the wrong permission scope is set**
 A Gmail token set to read-only cannot send email. A calendar token set to read-only cannot create events.
 
-*Fix:* Check the scope of the token used by the server. Re-authorise with the correct scope if needed.
+*Fix:* Check the scope of the token used by the server. Re-authorize with the correct scope if needed.
 
 ---
 
@@ -152,14 +152,14 @@ A Gmail token set to read-only cannot send email. A calendar token set to read-o
 
 **Most likely causes:**
 
-**1. An IMPROVEMENTS.md proposal was applied that changed the format**
-If the self-improvement system is active, it may have applied a change that altered the output.
+**1. A self-improvement proposal changed the format**
+If the self-improvement system is active, an applied proposal may have altered the output.
 
 *Fix:* Open `IMPROVEMENTS.md` and look at the "Applied Changes" section. If a recent change altered the format undesirably, tell Claude to revert it:
 > "The change applied as PROP-005 produced output I don't like. Revert that change in TASK.md."
 
-**2. The output format section in TASK.md is too vague**
-If your output format says "produce a clean summary" without showing the exact structure, Claude's interpretation will drift over time.
+**2. The output format in TASK.md is too vague**
+If the output format says "produce a clean summary" without showing the exact structure, Claude's interpretation will drift over time.
 
 *Fix:* Replace the description with a concrete code block template:
 ```markdown
@@ -186,12 +186,12 @@ If a task reads a profile file and that file was recently updated, new content m
 
 ## Problem: My Task Is Running Very Slowly
 
-**Symptom:** The task takes much longer to complete than it used to, or seems to stall.
+**Symptom:** The task takes much longer than it used to, or stalls mid-run.
 
 **Most likely causes:**
 
 **1. A file it reads has grown too large**
-Tasks that accumulate run logs, profile data, or knowledge files without trimming will eventually slow down.
+Tasks that accumulate run logs, profile data, or knowledge files without trimming slow down over time.
 
 *Fix:* Run the efficiency audit from [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md):
 > "Read 06_TASK_EFFICIENCY_GUIDE.md and run the audit checklist on my [task name] task."
@@ -207,15 +207,15 @@ If TASK.md has instructions like "Read all files in the tasks folder", it is loa
 *Fix:* Rewrite instructions to read only specific named files.
 
 **3. Too many MCP calls in sequence**
-Each MCP call (read an email, check a calendar event) takes time. If the task reads 50 emails one by one instead of fetching in bulk, it will be slow.
+Each MCP call takes time. Fetching 50 emails one by one instead of in bulk will be slow.
 
-*Fix:* Consolidate MCP calls. For example, "Fetch the 20 most recent emails in one call, then filter locally" is faster than "Fetch email, check, fetch next email, check..."
+*Fix:* Consolidate MCP calls. "Fetch the 20 most recent emails in one call, then filter locally" is faster than fetching and checking one at a time.
 
 ---
 
 ## Problem: I Don't Understand an IMPROVEMENTS.md Proposal
 
-**Symptom:** The task has generated a proposal in IMPROVEMENTS.md but you're not sure what it means, whether it's safe to apply, or what it will change.
+**Symptom:** The task generated a proposal in IMPROVEMENTS.md and you are not sure what it means, whether it is safe, or what it will change.
 
 **What to do:**
 
@@ -256,7 +256,99 @@ git checkout HEAD~1 -- tasks/[task-name]/TASK.md
 2. Ask Claude: "The [file name] I edited now causes [problem]. Here is the current file: [paste it]. What is the most likely cause and how do I fix it?"
 3. Make one change at a time, testing between each
 
-**Consider setting up git** — even for non-developers, it is the single best protection against "I broke something and I don't know what." [Guide 11](./11_GIT_INTEGRATION.md) walks through the setup.
+**Consider setting up git** -- even for non-developers, it is the single best protection against "I broke something and I don't know what." [Guide 11](./11_GIT_INTEGRATION.md) walks through the setup.
+
+---
+
+## Problem: A Task Run Was Unexpectedly Expensive
+
+**Symptom:** A task that typically costs $0.10-$0.20 per run suddenly costs $0.50+ or more, or your monthly spend has jumped without obvious cause.
+
+**Most likely causes:**
+
+**1. A file the task reads has grown silently**
+Profile files, wiki pages, and accumulated run logs grow over time. Each extra kilobyte is more input tokens billed every run.
+
+*Fix:* Check the sizes of all files listed in TASK.md's read instructions. Trim, archive, or summarize anything that has grown beyond what the task actually needs. See [Guide 10](./10_COST_PERFORMANCE.md) for cost estimation tables and budgeting patterns.
+
+**2. The self-improvement system added a new file read**
+An applied IMPROVEMENTS.md proposal may have added "also read [file]" to the task, increasing input tokens.
+
+*Fix:* Review recently applied proposals. Revert any that added file reads without clear justification.
+
+**3. You switched from Sonnet to Opus without adjusting scope**
+Opus costs roughly 5x more per token than Sonnet. A task designed for Sonnet's pricing may become expensive on Opus.
+
+*Fix:* Either switch back to Sonnet for routine tasks, or reduce the task's input scope to compensate. Use the cost tables in [Guide 10](./10_COST_PERFORMANCE.md) to estimate the difference.
+
+---
+
+## Problem: MCP Server-Specific Failures
+
+**Symptom:** A particular MCP integration (Gmail, Calendar, Jira, etc.) fails consistently while others work fine. Errors may include timeouts, authentication failures, or malformed responses.
+
+**Most likely causes:**
+
+**1. Token or session expiry for that specific service**
+Each MCP server authenticates independently. One can expire while others remain valid.
+
+*Fix:* Re-authenticate the failing server only. See the per-server troubleshooting notes in [Guide 05](./05_MCP_SERVERS.md#troubleshooting-by-server) for service-specific steps.
+
+**2. Rate limiting by the upstream API**
+Services like Gmail and Microsoft Graph have per-minute and per-day rate limits. A task that fetches too many items in a burst can hit these.
+
+*Fix:* Reduce the number of items fetched per run, add delays between calls, or switch to batch-fetch patterns. See the error handling patterns in [Guide 05](./05_MCP_SERVERS.md#error-handling-patterns).
+
+**3. The server process crashed and did not restart**
+MCP servers run as separate processes. A crash may leave the tool unavailable without a visible error until the next call.
+
+*Fix:* Restart the MCP server process. In Claude Code, check `settings.json` under `mcpServers` to confirm the server is still listed, then restart the session.
+
+---
+
+## Problem: Multi-Task Orchestration Breaks Silently
+
+**Symptom:** A downstream task produces wrong, empty, or stale output because an upstream task it depends on failed or ran late.
+
+**Most likely causes:**
+
+**1. Missing freshness check on shared files**
+If the downstream task reads a shared file without checking its timestamp, it may consume stale data from a previous day without warning.
+
+*Fix:* Add a freshness check: compare the file's date or `updated_at` field to today. Treat stale data the same as missing data. See [Guide 09](./09_MULTI_TASK_ORCHESTRATION.md#failure-handling) for the three failure modes to handle.
+
+**2. Upstream task ran but wrote partial or malformed output**
+The upstream task may have hit an error mid-run and written an incomplete file.
+
+*Fix:* Add schema validation in the downstream task before consuming the input. Check that required fields exist and contain expected types. Log what was wrong and fall back gracefully.
+
+**3. Timing overlap between tasks**
+If the upstream task runs at 07:00 and the downstream task also starts at 07:00 (or too soon after), the upstream output may not be ready yet.
+
+*Fix:* Space task schedules with enough buffer. A 10-15 minute gap between dependent tasks is usually sufficient.
+
+---
+
+## Problem: Data Ingestion Script Fails
+
+**Symptom:** A script that imports data into your personal data layer (bank transactions, health data, expense records) fails or produces incomplete output.
+
+**Most likely causes:**
+
+**1. Source format changed**
+Banks, apps, and services periodically change their export formats — column names shift, date formats change, new fields appear.
+
+*Fix:* Compare the current export against the schema your ingestion script expects. Update the parsing logic to match the new format. See [Guide 14](./14_PERSONAL_DATA_LAYER.md) for ingestion patterns.
+
+**2. The raw file is too large for a single pass**
+A full year of transactions or a large CSV can exceed what Claude processes efficiently in one call.
+
+*Fix:* Split the input into chunks (e.g., one month at a time) or pre-filter to only new records before passing to Claude.
+
+**3. Vision ingestion failed on a screenshot**
+Screenshots from mobile apps may be low resolution, cropped, or have overlapping UI elements that confuse extraction.
+
+*Fix:* Retake the screenshot with higher resolution and ensure all relevant data is visible without scrolling. If extraction remains unreliable, switch to a text-based export if the source app offers one.
 
 ---
 
@@ -280,13 +372,19 @@ Sometimes a task or setup has accumulated so many issues that repair takes longe
 ## Giving This to Claude
 
 **To diagnose a specific problem:**
-> "Read LAST_RUN.md and TASK.md for [task name]. The problem is: [describe it]. What's causing it and what should I change?"
+> "Read LAST_RUN.md and TASK.md for [task name]. The problem is: [describe it]. What is causing it and what should I change?"
 
 **To audit a task that has slowed down:**
 > "Read 06_TASK_EFFICIENCY_GUIDE.md and run the audit checklist on my [task name] task. Tell me what to fix and in what order."
 
+**To investigate a cost spike:**
+> "Read 10_COST_PERFORMANCE.md and analyze the token usage of my [task name] task. Which files or steps are consuming the most tokens and how do I reduce them?"
+
+**To debug orchestration failures:**
+> "Read 09_MULTI_TASK_ORCHESTRATION.md and check the shared output files for my [task chain]. Are any files missing, stale, or malformed?"
+
 **To review recent changes for the cause of a problem:**
-> "Read the current TASK.md and compare it to what you'd expect based on LAST_RUN.md. What inconsistencies do you see?"
+> "Read the current TASK.md and compare it to what you would expect based on LAST_RUN.md. What inconsistencies do you see?"
 
 **To explain an improvement proposal:**
 > "Read my IMPROVEMENTS.md and explain each pending proposal in plain language. For each one, tell me what it would change, why it was suggested, and whether you recommend applying it."

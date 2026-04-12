@@ -11,7 +11,7 @@
 
 Every task that learns over time needs an `IMPROVEMENTS.md` file — a structured log that tracks run history, applied fixes, pending proposals, known issues, and the self-improvement instructions the task follows at runtime.
 
-The template lives at [`templates/TASK_TEMPLATE/IMPROVEMENTS.md`](../templates/TASK_TEMPLATE/IMPROVEMENTS.md). It is ready to copy into any task folder and use from run 1.
+The template lives at [`templates/TASK_TEMPLATE/IMPROVEMENTS.md`](../../../templates/TASK_TEMPLATE/IMPROVEMENTS.md). It is ready to copy into any task folder and use from run 1.
 
 ---
 

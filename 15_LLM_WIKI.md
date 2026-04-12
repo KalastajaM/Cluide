@@ -2,7 +2,7 @@
 
 *Last reviewed: April 2026*
 
-> Most people use LLMs for Q&A — ask a question, get an answer, lose the answer to chat history. The LLM wiki pattern is different: the LLM incrementally builds and maintains a persistent, structured knowledge base that gets richer with every source you add and every question you ask. Nothing is re-derived from scratch on every query. Knowledge compounds.
+> Most people use LLMs for Q&A — ask a question, get an answer, lose it to chat history. The LLM wiki pattern is different: the LLM incrementally builds and maintains a persistent, structured knowledge base that gets richer with every source you add and every question you ask. Nothing is re-derived from scratch. Knowledge compounds.
 
 > **Companion guides:** [Guide 11](./11_GIT_INTEGRATION.md) covers git — a wiki is just a folder of markdown files, and versioning it costs nothing. [Guide 14](./14_PERSONAL_DATA_LAYER.md) covers personal data — wikis and data layers are complementary, not alternatives. [Guide 04](./04_MEMORY_AND_PROFILE.md) covers `.auto-memory/` — which serves a different purpose (see below).
 
@@ -15,11 +15,11 @@
 
 ## The Core Idea
 
-Standard RAG (NotebookLM, ChatGPT file uploads, most document Q&A tools) retrieves relevant chunks at query time and generates an answer. The LLM rediscovers knowledge from scratch on every question. Ask something that requires synthesising five documents and the LLM has to find and piece together the fragments every time. Nothing is built up.
+Standard RAG (NotebookLM, ChatGPT file uploads, most document Q&A tools) retrieves relevant chunks at query time and generates an answer from scratch. Ask something that requires synthesising five documents and the LLM has to find and piece together the fragments every time. Nothing accumulates.
 
-The wiki pattern inverts this. When you add a new source, the LLM reads it, extracts the key information, and integrates it into an existing collection of markdown pages — updating entity pages, revising summaries, flagging contradictions, strengthening the synthesis. The knowledge is compiled once and kept current. By the time you ask a question, the cross-references are already there. The contradictions have already been noted. The synthesis already reflects everything you've read.
+The wiki pattern inverts this. When you add a new source, the LLM reads it, extracts key information, and integrates it into existing markdown pages — updating entities, revising summaries, flagging contradictions, strengthening the synthesis. Knowledge is compiled once and kept current. By the time you ask a question, the cross-references are already there. The contradictions have already been noted. The synthesis already reflects everything you've read.
 
-The wiki is a **persistent, compounding artifact**. You never (or rarely) write it yourself — Claude writes and maintains all of it. Your job is sourcing, exploration, and asking the right questions. Claude does the summarising, cross-referencing, filing, and bookkeeping.
+The wiki is a **persistent, compounding artifact**. You rarely write it yourself — Claude writes and maintains all of it. Your job is sourcing, exploration, and asking the right questions. Claude does the summarising, cross-referencing, filing, and bookkeeping.
 
 A useful mental model: Obsidian is the IDE; Claude is the programmer; the wiki is the codebase.
 
@@ -324,6 +324,22 @@ wiki/
 ```
 
 The git log on `wiki/log.md` shows the exact date of every ingest, every saved query, every lint pass. You can `git diff` any two points in time and see how the synthesis evolved.
+
+---
+
+## Anti-Patterns
+
+**Using the wiki as a dump of raw sources.** The wiki layer is for synthesis, not storage. If Claude copies source text verbatim into wiki pages without summarising, cross-referencing, or integrating, you have a mirror of `sources/` with extra steps. The value comes from the transformation — distill, connect, and compress.
+
+**One massive file instead of topic pages.** A single `wiki/everything.md` defeats the purpose. Claude can't selectively read relevant pages on query; every question loads the entire wiki into context. Split by entity, concept, or source — many small pages with links between them.
+
+**Skipping the schema.** Without a `CLAUDE.md` defining page types, naming conventions, and workflows, Claude improvises. Pages drift in structure across sessions: some have frontmatter, some don't; naming varies; the ingest workflow changes. The schema is cheap to write and prevents entropy.
+
+**Ingesting without deduplication.** Adding the same source twice (or two versions of the same report) creates contradictions and bloat. Before ingesting, check `wiki/log.md` and `wiki/index.md` for the source. If it's already there, update rather than re-ingest. Add a dedup check to your schema's ingest workflow.
+
+**Treating the wiki as append-only.** Wikis need pruning. Sources get superseded, entities merge, early summaries become stale as better sources arrive. The lint operation exists for this reason — run it regularly and let Claude remove or consolidate pages that no longer earn their keep.
+
+**Confusing wiki with auto-memory.** `.auto-memory/` stores facts about you — preferences, corrections, project context. It updates implicitly during normal conversation and shapes how Claude collaborates with you. A wiki stores domain knowledge — it updates explicitly through ingest/query/lint operations and compounds research about a subject. Mixing the two (putting research into memory, or preferences into wiki pages) weakens both.
 
 ---
 

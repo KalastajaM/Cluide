@@ -2,7 +2,7 @@
 
 *Last reviewed: April 2026*
 
-> When you have multiple scheduled tasks that need to share data, run in a specific order, or produce a combined output, you need orchestration. This guide covers how to coordinate tasks without overengineering.
+> When multiple scheduled tasks share data, run in a specific order, or produce a combined output, you need orchestration. This guide covers how to coordinate tasks without overengineering.
 
 > **Companion guides:** [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) for keeping orchestrated tasks efficient. [Guide 07](./07_TASK_LEARNING_GUIDE.md) for self-improvement across coordinated tasks. [Guide 10](./10_COST_PERFORMANCE.md) for monitoring costs when multiple tasks run daily.
 
@@ -24,7 +24,7 @@ Most setups don't need orchestration. Use this decision table:
 | Task C can only run after both Task A and Task B have finished | **Dependency graph** — this guide |
 | A single complex task that does too many things | Split into a skill with phases, not separate tasks |
 
-**Rule of thumb:** if your tasks don't read each other's output and don't need to run in a specific order, you don't need this guide. Go back to running them independently.
+**Rule of thumb:** if your tasks don't read each other's output and don't need to run in a specific order, you don't need this guide. Run them independently.
 
 ---
 
@@ -54,7 +54,7 @@ Task A runs first and writes output. Task B runs second and reads that output.
 
 3. Schedule Task A to run before Task B with enough gap (e.g., Task A at 07:00, Task B at 07:30).
 
-**Key rule:** Task B must handle the case where Task A hasn't run yet. Never assume the upstream task succeeded — check for the file and its freshness.
+**Key rule:** Task B must handle the case where Task A hasn't run yet. Never assume the upstream task succeeded. Check for the file and its freshness.
 
 ### Pattern 2: Shared State
 
@@ -95,7 +95,7 @@ Multiple tasks read and write a shared state file. Each task updates its section
 
 Task C depends on both Task A and Task B completing first.
 
-**Use an orchestrator task** rather than complex scheduling. The orchestrator is a lightweight task whose only job is checking prerequisites and dispatching:
+**Use an orchestrator task** rather than complex scheduling. The orchestrator is a lightweight task that checks prerequisites and dispatches work:
 
 ```markdown
 # ORCHESTRATOR.md
@@ -117,7 +117,7 @@ Step 2: Both inputs are ready. Proceed with briefing generation.
 Step 3: Log completion to RUN_LOG.md with metrics.
 ```
 
-**Timing:** schedule the upstream tasks early enough that they finish before the orchestrator runs. Give buffer — if email digest takes ~5 minutes and calendar check takes ~2 minutes, schedule them at 07:00 and the orchestrator at 07:15 (not 07:07).
+**Timing:** schedule upstream tasks early enough that they finish before the orchestrator runs. Leave buffer. If email digest takes ~5 minutes and calendar check takes ~2 minutes, schedule them at 07:00 and the orchestrator at 07:15 (not 07:07).
 
 ---
 
@@ -125,7 +125,7 @@ Step 3: Log completion to RUN_LOG.md with metrics.
 
 ### File-Based Handoff
 
-The simplest and most reliable pattern. Task A writes a file; Task B reads it.
+The simplest and most reliable method. Task A writes a file; Task B reads it.
 
 **Naming convention:** `shared/[task-name]_[date].json` (or `.md`). Include the date so stale data is obvious.
 
@@ -144,7 +144,7 @@ Fields:
 - flagged_senders: array of strings — senders marked as important
 ```
 
-This prevents silent breakage when one task changes its output format. If Task A changes the schema, update `SCHEMA.md` and check that all consumers still work.
+This prevents silent breakage when one task changes its output format. When Task A's schema changes, update `SCHEMA.md` and verify all consumers still work.
 
 ### What Belongs in Shared State vs. Per-Task State
 
@@ -163,11 +163,11 @@ Keep shared state minimal. If only one task reads a piece of data, it belongs in
 
 ### Avoiding Collisions
 
-If two tasks try to write to `STATE.json` at the same time, one write can overwrite the other. Prevent this:
+If two tasks write to `STATE.json` at the same time, one write can overwrite the other. Prevent this:
 
 - **Stagger schedules** with at least 10-minute gaps between tasks that write to the same file
 - **Use separate output files** per task (the `shared/[task-name]_[date].json` pattern) instead of a single shared file when possible
-- **Use the orchestrator pattern** for anything more complex than two tasks — it serialises execution naturally
+- **Use the orchestrator pattern** for anything more complex than two tasks -- it serializes execution naturally
 
 ### Timing Template
 
@@ -180,6 +180,22 @@ A typical morning workflow:
 | 07:15 | Orchestrator / Briefing | `output/briefing_2026-04-10.md` |
 
 Schedule conservatively. A task that usually takes 3 minutes might take 10 on a busy day.
+
+---
+
+## Failure Handling
+
+Orchestrated tasks need explicit failure strategies. When an upstream task fails or produces bad output, downstream tasks must not silently break.
+
+**Three failure modes to handle:**
+
+1. **Missing output.** The upstream task did not run or did not write its output file. Downstream tasks should check for file existence and freshness (see Pattern 1 above), then either skip that input gracefully or stop with a clear log message.
+
+2. **Partial or malformed output.** The upstream task ran but wrote incomplete or invalid data. Validate the schema before consuming: check that required fields exist and contain expected types. Log what was wrong and fall back.
+
+3. **Stale output.** The file exists but is from a previous day. Freshness checks (comparing `updated_at` or the filename date against today) catch this. Treat stale data the same as missing data.
+
+**Logging failures.** Every orchestrated task should log its outcome (success, skipped, or failed with reason) to `RUN_LOG.md`. When the orchestrator detects a failure, include which upstream task was the cause so debugging is straightforward.
 
 ---
 
@@ -211,15 +227,15 @@ in the briefing and continue with calendar data only.
 
 ## Anti-Patterns
 
-**Implicit ordering.** Tasks that depend on running in a specific order but don't check for it. If Task B assumes Task A has run because "it's scheduled first," it will break when Task A fails or runs late. Always check for the expected input.
+**Implicit ordering.** Tasks that depend on running in a specific order but don't check for it. If Task B assumes Task A has run because "it's scheduled first," it breaks when Task A fails or runs late. Always check for the expected input.
 
 **Shared files without size limits.** A `STATE.json` that grows unbounded because tasks append but never trim. Set a max size and archive old data.
 
-**Circular dependencies.** Task A reads Task B's output and Task B reads Task A's output. This creates an ordering paradox. If you find yourself here, redesign: extract the shared data into a separate state file that both tasks read from but neither exclusively owns.
+**Circular dependencies.** Task A reads Task B's output and Task B reads Task A's output. This creates an ordering paradox. Redesign: extract the shared data into a separate state file that both tasks read from but neither exclusively owns.
 
 **Over-orchestrating.** Two independent tasks that happen to run at the same time don't need an orchestrator. Only add coordination when tasks genuinely depend on each other's output.
 
-**Giant shared state.** Putting everything in one STATE.json. If it exceeds 100 lines, you're probably conflating shared state with per-task state. Split.
+**Giant shared state.** Putting everything in one `STATE.json`. If it exceeds 100 lines, you are probably conflating shared state with per-task state. Split.
 
 ---
 
@@ -232,5 +248,6 @@ When setting up multi-task orchestration:
 - [ ] Create `shared/` directory with `SCHEMA.md` documenting data contracts
 - [ ] Add freshness checks to every task that reads shared data
 - [ ] Stagger schedules with 10+ minute gaps between writers
-- [ ] Add fallback handling for missing inputs in downstream tasks
+- [ ] Add fallback handling for missing, malformed, and stale inputs in downstream tasks
+- [ ] Log task outcomes (success/skipped/failed) to `RUN_LOG.md`
 - [ ] Set up cost monitoring ([Guide 10](./10_COST_PERFORMANCE.md)) across all coordinated tasks

@@ -11,11 +11,11 @@
 
 ## What This Template Is
 
-Every task that learns over time needs an `IMPROVEMENTS.md` file — a structured log that tracks run history, applied fixes, pending proposals, known issues, and the self-improvement instructions the task follows at runtime.
+Every task that learns over time needs an `IMPROVEMENTS.md` file — a structured log that tracks run history, applied fixes, pending proposals, and known issues.
 
-The template lives at [`templates/TASK_TEMPLATE/IMPROVEMENTS.md`](../templates/TASK_TEMPLATE/IMPROVEMENTS.md). It is ready to copy into any task folder and use from run 1.
+The template lives at [`templates/TASK_TEMPLATE/IMPROVEMENTS.md`](./templates/TASK_TEMPLATE/IMPROVEMENTS.md). It is ready to copy into any task folder and use from run 1.
 
-> **Note:** Copying the template means your copy is frozen at the version you copied. If the template improves later (e.g., from guide updates), you will need to manually sync changes into existing task folders. Check the template periodically if you run `tasks/review-tasks.md`.
+> **Note:** Your copy is frozen at the version you copied. If the source template improves later, you will need to manually sync changes into existing task folders. Run `tasks/review-tasks.md` periodically to detect drift.
 
 ---
 
@@ -32,7 +32,7 @@ The template has two parts:
 - **Known Issues** — active bugs or limitations being tracked
 - **Improvement Ideas Backlog** — low-priority observations not yet ready to propose
 
-**2. The Self-Improvement Step reference** — instructions the task reads at runtime:
+**2. The Self-Improvement Step reference** — a note pointing to `TASK.md` where the canonical self-improvement instructions live. The template does not duplicate these instructions; instead, `TASK.md` contains the four runtime steps:
 - **A. Feedback Signal Detection** — what signals to look for each run (user corrections, ignored suggestions, operational failures)
 - **B. Refactor Trigger Check** — when to run a full structural cleanup
 - **C. Auto-apply vs. Propose** — the decision rule for when to act vs. when to ask
@@ -67,9 +67,11 @@ Act on any proposals marked [APPROVED], [REJECTED], or [MODIFY: ...]. Note fixab
 
 **As the final step before the run log:**
 ```markdown
-Run the Self-Improvement step: follow sections A–D in `IMPROVEMENTS.md`
+Run the Self-Improvement step: follow sections A–D below
 (Feedback Signal Detection → Refactor Trigger Check → Auto-apply vs. Propose → Update IMPROVEMENTS.md).
 ```
+
+The sections A-D should be written directly in `TASK.md` -- see the `TASK_TEMPLATE/TASK.md` for the canonical version. `IMPROVEMENTS.md` stores state only; the instructions live in the task file.
 
 ### Step 4: Adjust the refactor threshold
 
@@ -79,13 +81,13 @@ In the Counters block, set `refactor_threshold` based on how often the task runs
 
 ### Step 5: Delete the placeholder rows
 
-Remove the `*(example)*` row from Noise Filters and the `PROP-001` placeholder from Pending Proposals before the first run.
+Remove the `*(example)*` row from Noise Filters and the JSON schema example from Pending Proposals before the first run. Replace the JSON block with an empty array (`[]`) or delete it entirely -- the task will populate it when it creates its first proposal.
 
 ---
 
 ## Responding to Proposals
 
-When the task generates a proposal, it appears in the Pending Proposals section. Respond by annotating directly in `IMPROVEMENTS.md` or in the task's output file:
+When the task generates a proposal, it appears in Pending Proposals. Respond by annotating directly in `IMPROVEMENTS.md` or in the task's output file:
 
 - `[APPROVED]` — apply the change as described
 - `[REJECTED]` — do not apply; archive the proposal
@@ -97,6 +99,6 @@ The task picks up the annotation on the next run and acts on it.
 
 ## How the Template Connects to Guide 07
 
-Guide 07 describes the full learning framework — what signals to detect, the hypothesis lifecycle, the refactoring system. The template operationalises it: the Self-Improvement Step instructions in section A–D are a condensed, ready-to-run version of the Guide 07 framework.
+Guide 07 describes the full learning framework -- what signals to detect, the hypothesis lifecycle, the refactoring system. The template operationalises it: the state sections in `IMPROVEMENTS.md` track what Guide 07 prescribes, and the self-improvement steps in `TASK.md` (sections A-D) are a condensed, ready-to-run version of the Guide 07 framework.
 
 For most tasks, the template is sufficient. Read Guide 07 when you want to understand the reasoning behind the rules, or when you need to adapt the system for a more complex task.

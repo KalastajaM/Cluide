@@ -158,7 +158,7 @@ Explains the structure of the template, walks through installation (copy → fil
 
 *Coordinating multiple tasks: dependencies, shared state, and data passing.*
 
-Covers: sequential chains, parallel fan-out, dependency graphs, shared state conventions, data handoff between tasks, scheduling orchestrated runs, and avoiding implicit coupling.
+Covers: sequential chains, shared state, dependency graphs, data handoff between tasks, scheduling orchestrated runs, and avoiding implicit coupling.
 
 **Use this when:** you have multiple scheduled tasks that need to share data, run in a specific order, or produce a combined output.
 
@@ -252,9 +252,36 @@ Covers: skill not triggering, CLAUDE.md being ignored, memory not persisting, MC
 
 ---
 
+### [18 — End-to-End Walkthrough](./18_END_TO_END_WALKTHROUGH.md)
+`[All users]` · `~20 min`
+
+*Build a complete personal assistant from scratch, seeing how each guide contributes to the whole.*
+
+Covers: six stages from writing your first CLAUDE.md through to orchestrating multiple tasks and building knowledge bases. Each stage shows what to build, which guides to read, the exact prompt to use, and what to check before moving on. Goes deeper than the Quickstart — shows the full two-week journey.
+
+**Use this when:** you have finished the Quickstart and want a structured path through the rest of the system, or you want to understand how all the guides fit together in practice.
+
+---
+
 ## Templates: Copy-Paste Starting Points
 
 Four ready-to-copy folder structures are included in the `templates/` folder. Use them when you want to start a new project or task without building from scratch.
+
+### Choosing a Template
+
+**"I want to..."**
+- ...give Claude persistent memory for a project → **PROJECT_TEMPLATE**
+- ...run a single automated task on a schedule → **TASK_TEMPLATE**
+- ...have a personal assistant that monitors email/calendar daily → **AI-ASSISTANT_TEMPLATE**
+- ...manage a programme with risks, actions, and financials → **PMO_TEMPLATE**
+
+| Attribute | PROJECT | TASK | AI-ASSISTANT | PMO |
+|---|---|---|---|---|
+| **Complexity** | Low | Low | High | Medium |
+| **Setup time** | ~5 min | ~10 min | ~30 min | ~15 min |
+| **Scheduled tasks** | None | 1 (self-improving) | 4 (coordinated) | None |
+| **External dependencies** | None | None | M365 (Graph API) | None |
+| **Best for** | Any project needing cross-session memory | Single recurring automated task | Turn-key personal business assistant | Programme/portfolio management workspace |
 
 ### [PROJECT_TEMPLATE/](./templates/PROJECT_TEMPLATE/README.md)
 A complete project folder with `CLAUDE.md`, `Profile/`, and `Knowledge/` pre-structured and filled with placeholder text. Copy it, rename it, fill in the placeholders, and you have a working persistent assistant context from run 1.
@@ -326,7 +353,7 @@ Tasks are designed to be portable: copy any task file to another project's `task
 
 ## Skills Included in This Project
 
-Four installable skills are bundled with this project. Each skill is self-contained — install only the ones you need.
+Five installable skills are bundled with this project. Each skill is self-contained — install only the ones you need.
 
 ### Installing in Claude Code
 
@@ -429,6 +456,26 @@ A structured, phased security audit of the Claude Code environment and a target 
 > "Set up security hooks for my Claude environment."
 
 > "Audit this project for exposed credentials."
+
+---
+
+### backlog
+
+A portable backlog manager for any project. Maintains a `BACKLOG.md` file of prioritised work items and a `DECISIONS.md` log of choices made during grooming. Supports two session modes: standard (quick orient, pick next item) and grooming (review the full backlog, re-prioritise, resolve conflicts).
+
+**Install:** Copy `backlog/` to `~/.claude/skills/` (Claude Code), or upload `backlog.skill` to Claude.ai Personal Skills.
+
+**Use when:**
+- You want a lightweight backlog without a separate tool (Linear, Jira)
+- You need to decide what to work on next in a project
+- You want to groom and re-prioritise a set of work items
+
+**Example prompts:**
+> "What should we work on next?"
+
+> "Add 'implement caching layer' to the backlog."
+
+> "Let's groom the backlog."
 
 ---
 

@@ -122,4 +122,4 @@ The self-improvement loop in Step 6 of TASK.md does the work. Each run, the task
 
 The result is a task that makes the same mistake at most twice: once to detect it, once to fix it.
 
-See [Guide 07](../07_TASK_LEARNING_GUIDE.md) for the full framework behind this system.
+See [Guide 07](../../07_TASK_LEARNING_GUIDE.md) for the full framework behind this system.

@@ -38,8 +38,8 @@ The setup that works well for both tools has one structural rule: **the definiti
         ├── LAST_RUN.md          # State — written by Cowork, read in Claude Code
         └── RUN_LOG.md           # State — written by Cowork
 
-.auto-memory/
-├── MEMORY.md                    # State — read by Cowork, updated by Cowork
+memory/
+├── MEMORY.md                    # State — read and updated each session
 └── *.md                         # State — individual memory files
 ```
 
@@ -64,7 +64,7 @@ The git approach adds a deployment step but gives you the rollback and history b
 
 **Hardcoded paths.** If TASK.md says `Read /Users/username/tasks/email-digest/LAST_RUN.md`, it will break if the folder moves or if another user tries to use your setup. Use relative paths from the task folder wherever possible.
 
-**Settings.json in shared files.** Each tool has its own `settings.json` (Claude Code's is at `~/.claude/settings.json`; Cowork has its own). Do not try to share this file — it contains tool-specific configuration. Keep them separate.
+**Settings.json in shared files.** Each tool has its own `settings.json` (Claude Code's user-level settings live at `~/.claude/settings.json`; project-level at `.claude/settings.json`; Cowork has its own). Do not try to share these across tools — they contain tool-specific configuration.
 
 ---
 
@@ -135,9 +135,9 @@ Work through them one at a time. Claude will make the change in the TASK.md once
 ### What You Miss Without Claude Code
 
 Without Claude Code, you don't have:
-- **Plan Mode** — the built-in plan/approve/execute flow (you can replicate it by asking Claude to "describe what you'll change before making any edits")
+- **Plan mode** — the plan/approve/execute flow (you can replicate it by asking Claude to "describe what you'll change before making any edits")
 - **Git integration** — rollback, history, pre-run snapshots (recommended even for non-developers: see [Guide 11](./11_GIT_INTEGRATION.md))
-- **Subagents** — parallel exploration agents
+- **Subagents** — parallel exploration and analysis agents
 
 You can work effectively without these, but git in particular is worth setting up — it is the single best protection against "I broke something and don't know what".
 
@@ -219,13 +219,13 @@ This keeps the review thoughtful (Claude Code has the full file context and your
 
 ## Plan Mode: Review Before Executing
 
-For any change that is structural, multi-file, or hard to undo — use **Plan Mode** before Claude starts editing. Plan Mode separates the "figure out what to do" step from the "do it" step.
+For any change that is structural, multi-file, or hard to undo — ask Claude to plan before editing. This separates the "figure out what to do" step from the "do it" step.
 
 **How it works:**
-1. Claude enters Plan Mode (via `EnterPlanMode` or the `/plan` command)
-2. Claude reads relevant files and writes a plan to a plan file — no edits made
-3. You review the plan and approve, reject, or amend it
-4. Claude exits Plan Mode and executes only what was approved
+1. Ask Claude to plan only — no edits yet (use Shift+Tab to toggle plan mode, or state it in your prompt)
+2. Claude reads relevant files and describes the proposed changes
+3. You review and approve, reject, or amend the plan
+4. Claude executes only what was approved
 
 **When to use Plan Mode:**
 - Adding a new feature to a task or skill (multi-step, multiple files)
@@ -238,28 +238,23 @@ For any change that is structural, multi-file, or hard to undo — use **Plan Mo
 - Changes you'd be happy to just undo if they're wrong
 
 **Prompt to activate:**
-> "Enter plan mode. Read [file] and plan how to [change]. Don't make any edits yet — I'll review first."
+> "Plan how to [change] in [file]. Don't make any edits yet — I'll review first."
 
 ---
 
 ## Subagents: Parallel Work in Claude Code
 
-Claude Code can spawn **subagents** — specialized parallel Claude instances that work on focused subtasks and report back. This is one of the most powerful efficiency tools available for complex multi-step work.
-
-**Available subagent types:**
-- **Explore** — reads and searches files without making edits. Use for codebase exploration, finding patterns, answering questions about a setup
-- **Plan** — designs implementation approaches, proposes architectures, considers trade-offs
-- **General-purpose** — full tool access; handles research, multi-step tasks, and anything requiring broad capability
+Claude Code can spawn **subagents** — parallel Claude instances that work on focused subtasks and report back. Subagents are dispatched via the Agent tool and can read, search, and reason about files independently.
 
 **When to use subagents:**
-- You need to explore multiple files or areas in parallel (launch multiple Explore agents simultaneously)
-- You want a plan designed before you execute it
+- You need to explore multiple files or areas in parallel
 - A task has multiple independent subtasks that can run concurrently
+- You want research or analysis done without blocking the main session
 
 **Example:**
-> "Launch two Explore subagents in parallel: one to read all TASK.md files and summarise their run procedures, another to read all SKILL.md files and summarise their triggers."
+> "Launch two subagents in parallel: one to read all TASK.md files and summarise their run procedures, another to read all SKILL.md files and summarise their triggers."
 
-**Important:** Explore and Plan subagents are read-only — they cannot edit files. Use them for understanding and planning; use the main session (or a general-purpose agent) for execution.
+**Important:** Subagents are best used for read-heavy exploration and analysis. For file edits, use the main session to keep changes coordinated and reviewable.
 
 ---
 
@@ -287,7 +282,7 @@ A sustainable rhythm for this two-tool workflow:
 **In Claude Code (weekly or after problems):**
 - Review LAST_RUN.md for the previous week's runs
 - Review IMPROVEMENTS.md for pending proposals and apply/reject them
-- Make any needed edits to TASK.md, SKILL.md, or CLAUDE.md
+- Make any needed edits to TASK.md, SKILL.md, CLAUDE.md, or hooks in settings.json
 - Commit changes
 - Run the guide-improvement task if guides need updating
 

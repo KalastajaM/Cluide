@@ -172,7 +172,7 @@ Without explicit memory instructions, the skill will re-learn the same things fr
 |------|-------|
 | Universal preferences (language, tone, safety rules) | CLAUDE.md |
 | Recurring user-triggered actions (meeting notes, status updates, document drafts) | Skill |
-| Automated scheduled workflows (daily digest, contract expiry checks) | Task file (TASK.md) — see guides 04 and 05 |
+| Automated scheduled workflows (daily digest, contract expiry checks) | Task file (TASK.md) — see [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) and [Guide 07](./07_TASK_LEARNING_GUIDE.md) |
 
 When in doubt: if the user asks for it ad hoc and it needs consistent, detailed behaviour → skill. If it runs on a schedule without the user asking → task file.
 

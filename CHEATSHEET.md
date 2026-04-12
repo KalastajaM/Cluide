@@ -19,6 +19,7 @@
 | Answer a one-off question | Chat | — |
 | Coordinate tasks that share data | Orchestrator | [09](./09_MULTI_TASK_ORCHESTRATION.md) |
 | Track and control task costs | Run metrics | [10](./10_COST_PERFORMANCE.md) |
+| Build everything from scratch, step by step | Full walkthrough | [18](./18_END_TO_END_WALKTHROUGH.md) |
 
 ---
 

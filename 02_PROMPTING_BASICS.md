@@ -43,7 +43,7 @@ Show a template or example of the expected output. This single addition more tha
 
 ## Show an Example, Not a Description
 
-Descriptions of what you want are weaker than examples of what you want. Claude learns from the shape of a real output far faster than from abstract instruction.
+Descriptions of what you want are weaker than examples of what you want. Claude matches the shape of a real output far more reliably than an abstract instruction.
 
 **Instead of:**
 > "Produce a concise action-oriented email summary."
@@ -74,7 +74,7 @@ When Claude sees the exact structure, headers, and field names you expect, it pr
 
 ## Specify What NOT to Do
 
-Negative constraints are just as useful as positive ones. If you've corrected Claude on the same thing three times, it belongs in your instructions as a "not" rule.
+Negative constraints are as useful as positive ones. If you've corrected Claude on the same thing three times, it belongs in your instructions as a "not" rule.
 
 **Common negatives worth including:**
 
@@ -128,9 +128,9 @@ Use Level 3 for anything that runs repeatedly — skills, tasks, any instruction
 
 ## Writing Skill Descriptions: Triggers, Not Titles
 
-The `description:` field in a SKILL.md file is not a title. It is a **trigger pattern** — the set of phrases and situations that tell Claude "activate this skill now."
+The `description:` field in a SKILL.md file is not a title. It is a **trigger pattern** — the phrases and situations that tell Claude "activate this skill now."
 
-Most skill descriptions that fail are too short and too formal.
+Most skill descriptions fail because they are too short and too formal.
 
 **Weak description (too short, too formal):**
 ```yaml
@@ -214,7 +214,7 @@ CLAUDE.md should contain only rules that apply to **every interaction**. Workflo
 
 ### Mistake 3: Describing Intent, Not Behaviour
 
-Instructions that describe what you want Claude to achieve (rather than what to do) produce inconsistent results because Claude has to infer the behaviour.
+Instructions that describe what you want Claude to achieve — rather than what to do — produce inconsistent results because Claude has to infer the behaviour.
 
 | Describes intent | Describes behaviour |
 |---|---|
@@ -226,12 +226,12 @@ Instructions that describe what you want Claude to achieve (rather than what to 
 
 ### Mistake 4: Forgetting the Output Format
 
-If you don't specify a format, Claude will pick one. The one it picks will be:
+If you don't specify a format, Claude picks one. It will be:
 - Different each run
 - Not quite what you expected
 - Hard to use downstream (e.g. in another task or a template)
 
-**Always add an output format section** to skills and tasks. For chat, describe the format in your request.
+**Always add an output format section** to skills and tasks. For one-off chat requests, describe the format inline.
 
 ---
 

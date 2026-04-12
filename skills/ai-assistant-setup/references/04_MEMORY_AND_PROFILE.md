@@ -6,11 +6,28 @@ A personal assistant is only as good as its memory. Without memory, every sessio
 
 ## Which System Should You Use?
 
-**Use auto-memory** (the default) for the vast majority of cases. It handles assistant-wide preferences, corrections, project states, and reference pointers — everything most people need.
+### Native Claude Memory vs. `.auto-memory/`
+
+Three memory layers are available:
+
+| Dimension | Native Claude Memory | `.auto-memory/` folder | Profile files |
+|---|---|---|---|
+| Setup required | None — always active | Create folder + MEMORY.md + CLAUDE.md line | Create profile folder structure |
+| Where it lives | `~/.claude/projects/[hash]/memory/MEMORY.md` | Your project folder on disk | Your task folder on disk |
+| Works in scheduled tasks? | **Not reliably** | **Yes** — explicitly loaded | **Yes** — explicitly loaded |
+| Best for | Chat assistant use, corrections | Cross-session facts, preferences, projects | Scheduled task agents needing deep context |
+
+**Critical rule for scheduled tasks: always use `.auto-memory/` or profile files, not native memory.** Native memory is designed for interactive sessions and is not reliably available to autonomous task runs.
+
+**If just getting started:** let native memory handle conversational use. Add `.auto-memory/` when you want structured, reliable memory. Add profile files only when a scheduled task needs them.
+
+**Note:** This guide covers memory *about you*. For a knowledge base *about a subject domain*, see [Guide 15 — LLM Wiki](./15_LLM_WIKI.md).
+
+---
+
+**Use auto-memory** (the `.auto-memory/` folder) for the vast majority of deliberate memory cases. It handles assistant-wide preferences, corrections, project states, and reference pointers.
 
 **Use profile files** only when you have a scheduled task agent that requires deep, structured knowledge about a person: full relationship maps, historical project tracking, hypotheses about behaviour. This is a more advanced pattern, typically added after auto-memory is already in place.
-
-If you're just getting started: set up auto-memory. Add profile files only when a specific scheduled task clearly needs them.
 
 ---
 
@@ -161,7 +178,9 @@ Profile files grow over time and become slow to read and hard to maintain. Apply
 - Compress old session logs and history entries to single-line summaries
 - Remove hypotheses that have been confirmed (move the fact to the appropriate detail file) or refuted (delete them)
 
-A profile system that is kept lean stays fast and useful. A profile that becomes a 500-line dump of everything the assistant has ever learned is almost as bad as no profile at all.
+A lean profile stays fast and useful. A 500-line dump of everything the assistant has ever learned is almost as bad as no profile at all.
+
+**System-level target:** keep all auto-read files combined under ~2,000 tokens (~100-150 lines total across everything Claude loads at session start). When they grow unchecked, token cost compounds across every run and important context gets diluted.
 
 ---
 

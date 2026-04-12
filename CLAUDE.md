@@ -31,6 +31,7 @@ This folder contains a complete operational framework for building, running, and
 | `15_LLM_WIKI.md` | LLM wiki pattern |
 | `16_BEST_PRACTICES.md` | General best practices |
 | `17_TROUBLESHOOTING.md` | Diagnosing and fixing common problems |
+| `18_END_TO_END_WALKTHROUGH.md` | End-to-end walkthrough from zero to running assistant |
 
 When the user asks a question or makes a request that a guide covers, read the relevant guide before responding.
 

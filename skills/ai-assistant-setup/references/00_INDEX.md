@@ -138,22 +138,22 @@ Covers: Python scripts as data feeders, JSON as a personal database, browser Jav
 
 Four ready-to-copy folder structures are included in the `templates/` folder. Use them when you want to start a new project or task without building from scratch.
 
-### [PROJECT_TEMPLATE/](./templates/PROJECT_TEMPLATE/README.md)
+### [PROJECT_TEMPLATE/](../../../templates/PROJECT_TEMPLATE/README.md)
 A complete project folder with `CLAUDE.md`, `Profile/`, and `Knowledge/` pre-structured and filled with placeholder text. Copy it, rename it, fill in the placeholders, and you have a working persistent assistant context from run 1.
 
 **Use this when:** starting any new Claude project that needs cross-session memory, profile tracking, or topic knowledge files.
 
-### [TASK_TEMPLATE/](./templates/TASK_TEMPLATE/README.md)
+### [TASK_TEMPLATE/](../../../templates/TASK_TEMPLATE/README.md)
 A complete scheduled task folder with `TASK.md`, `IMPROVEMENTS.md`, `KNOWLEDGE_SUMMARY.md`, and `RUN_LOG.md` — all pre-structured and ready to fill in. Implements the patterns from Guide 06 (efficiency) and Guide 07 (self-improvement) out of the box.
 
 **Use this when:** creating a new scheduled automated task. Copy the folder, rename it `[TaskName]-Task`, and fill in the domain-specific logic.
 
-### [AI-ASSISTANT_TEMPLATE/](./templates/AI-ASSISTANT_TEMPLATE/SETUP.md)
+### [AI-ASSISTANT_TEMPLATE/](../../../templates/AI-ASSISTANT_TEMPLATE/SETUP.md)
 A complete personal business assistant setup. Monitors your email, Teams, and calendar via Microsoft 365, maintains a live profile of your work context, and delivers a daily briefing. Four coordinated scheduled tasks are included out of the box: daily morning briefing, mid-day urgent scan, Friday weekly planner, and Monday maintenance. Includes a pre-structured `CLAUDE.md`, `Profile/`, `Knowledge/`, and `Actions/` system.
 
 **Use this when:** you want a turn-key personal assistant that monitors your inbox and calendar and delivers daily briefings — with all the task scaffolding already built.
 
-### [PMO_TEMPLATE/](./templates/PMO_TEMPLATE/README.md)
+### [PMO_TEMPLATE/](../../../templates/PMO_TEMPLATE/README.md)
 A project workspace for managing a product migration initiative. Includes a `CLAUDE.md` with routing rules, a project guide, an initiative charter, and a full PMO register suite: risk register, action tracker, dependency register, decision tracker, and a running knowledge base.
 
 **Use this when:** managing a structured programme or migration initiative where you want Claude to maintain registers, capture decisions, and track actions across sessions.

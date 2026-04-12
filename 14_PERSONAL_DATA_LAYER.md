@@ -30,7 +30,7 @@ This is an advanced guide. The patterns here require writing Python scripts, run
 
 ## The Core Problem
 
-Claude is good at reasoning over data but not at raw data ingestion. A 500-row transactions JSON file costs thousands of tokens and gives Claude more noise than signal. A screenshot of your bank app is unreadable without a vision model in the pipeline. A live web app has no way to hand data to Claude at all.
+Claude reasons well over data but handles raw ingestion poorly. A 500-row transactions file costs thousands of tokens and gives more noise than signal. A bank app screenshot is unreadable without a vision model. A live web app has no way to hand data to Claude at all.
 
 The solution is a thin data layer that transforms raw personal data into compact, Claude-readable context:
 
@@ -312,7 +312,7 @@ For SDK setup and API key configuration, see the `claude-api` skill.
 - Batch all screenshots from the same time period into one script run to minimize API calls.
 - Add `screenshots/` to `.gitignore` — they are large and may contain sensitive financial data.
 
-**On accuracy:** Claude Vision is generally reliable for structured data in clean bank app screenshots, but errors happen with unusual formatting or low-contrast images. Spot-check a sample of extracted transactions against the originals before merging into your data store.
+**On accuracy:** Vision is reliable for structured data in clean screenshots, but errors happen with unusual formatting or low-contrast images. Spot-check a sample against the originals before merging into your data store.
 
 ---
 
@@ -439,17 +439,27 @@ reads:           GoodBudget's full page DOM
 
 ## Anti-Patterns
 
-**Loading raw data files directly into Claude.** A 500-row transactions JSON file costs thousands of tokens and gives Claude more noise than signal. Use a Python script (Pattern 1) to extract the 50 tokens Claude actually needs.
+**Pasting raw CSV or JSON into prompts.** A 500-row bank export costs thousands of tokens and gives Claude noise, not signal. Use a Python script (Pattern 1) to compute the 50 tokens Claude actually needs.
 
-**Computing values in Claude instead of in scripts.** Asking Claude to compute P&L from raw prices every run wastes tokens and introduces inconsistency — Claude may round differently or interpret fields differently across runs. If the computation is deterministic, write it in Python once.
+**Feeding data without a schema.** If Claude has to guess what columns mean — is "amount" gross or net? is the date DD/MM or MM/DD? — it will guess wrong silently. Always define the schema explicitly in your extraction prompt or script header.
 
-**Storing computed values in your JSON database.** P&L, averages, and category totals belong in script output, not in your data files. When inputs change, stored computed values drift silently. Store raw facts; compute on demand.
+**Computing values in Claude instead of in scripts.** Asking Claude to compute P&L from raw prices every run wastes tokens and introduces inconsistency. Deterministic computations belong in Python, run once.
 
-**Extraction scripts without timestamps.** Any data file without a `last_updated` or `extracted_at` field will eventually cause confusion about whether the data is from today or three weeks ago. Always include it.
+**Storing computed values in your JSON database.** P&L, averages, and category totals belong in script output, not data files. When inputs change, stored computed values drift silently. Store raw facts; compute on demand.
 
-**One giant task file for a multi-step workflow.** A 400-line TASK.md that covers four distinct phases is hard to read, hard to run partially, and expensive to load every run. Split it using Pattern 5.
+**Storing PII in memory files or CLAUDE.md.** Bank account numbers, national ID numbers, and full addresses do not belong in files that persist across sessions or get committed to git. Keep sensitive identifiers in local data files listed in `.gitignore`.
 
-**Automating everything at once.** Start with the manual version of browser extraction (Pattern 3) — paste the script, copy the result. Only automate if the manual step is genuinely painful. Premature automation adds fragility without adding value.
+**Hardcoding absolute paths.** `~/Documents/Finance/data.json` breaks the moment you move machines or share the project. Use paths relative to the project root, or resolve them in scripts via `Path(__file__).parent`.
+
+**Running data scripts without validating output.** A vision extraction script that returns malformed JSON will silently corrupt your data store. Add a validation step — check that required fields exist and types are correct — before writing to disk.
+
+**Using Vision when text or API alternatives exist.** Vision extraction is slower, costlier, and less reliable than CSV export or API calls. Only use Pattern 4 when no text-based alternative exists.
+
+**Extraction scripts without timestamps.** Any data file without `last_updated` or `extracted_at` will eventually cause confusion about freshness. Always include a date in the output.
+
+**One giant task file for a multi-step workflow.** A 400-line TASK.md covering four phases is hard to read, hard to run partially, and expensive to load. Split it using Pattern 5.
+
+**Automating everything at once.** Start with the manual version of browser extraction (Pattern 3). Only automate when the manual step is genuinely painful. Premature automation adds fragility without adding value.
 
 ---
 

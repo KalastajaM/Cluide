@@ -2,7 +2,7 @@
 
 *Last reviewed: April 2026*
 
-A personal assistant is only as good as its memory. Without memory, every session starts from zero — you re-explain your situation, your preferences, who your contacts are. This document covers two complementary memory systems: the **auto-memory** system (lightweight, cross-session key-value facts) and the **profile file system** (structured, richly maintained knowledge about a person's life and projects).
+Without memory, every session starts from zero — you re-explain your situation, preferences, and contacts. This guide covers two complementary memory systems: **auto-memory** (lightweight, cross-session facts in `.auto-memory/`) and **profile files** (structured, richly maintained knowledge for scheduled task agents).
 
 ---
 
@@ -10,22 +10,22 @@ A personal assistant is only as good as its memory. Without memory, every sessio
 
 ### Native Claude Memory vs. `.auto-memory/`
 
-There are three memory layers available. Understanding when each applies prevents a common frustration: expecting memory to persist when the system you're relying on doesn't survive between sessions.
+Three memory layers are available. Understanding when each applies prevents a common frustration: expecting memory to persist when the system you're relying on doesn't support your use case.
 
 | Dimension | Native Claude Memory | `.auto-memory/` folder | Profile files |
 |---|---|---|---|
 | Setup required | None — always active | Create folder + MEMORY.md + one CLAUDE.md line | Create profile folder structure |
 | Where it lives | `~/.claude/projects/[hash]/memory/MEMORY.md` | Your project folder on disk | Your task folder on disk |
-| Survives context reset? | **No** — clears when session context resets | **Yes** — read from disk each session | **Yes** — read explicitly each run |
+| Survives context reset? | **Yes** — persists across sessions, but not guaranteed available in all contexts | **Yes** — read from disk each session | **Yes** — read explicitly each run |
 | Works in scheduled tasks? | **Not reliably** | **Yes** — explicitly loaded | **Yes** — explicitly loaded |
 | Multiple files? | No — single file | Yes — one file per topic | Yes — one file per profile domain |
 | Best for | Chat assistant use, corrections in conversations | Cross-session facts, preferences, projects | Scheduled task agents needing deep context |
 
-**The critical rule for scheduled tasks: always use `.auto-memory/` or profile files, not native memory.** Native memory is not reliably available to autonomous task runs — it is designed for interactive sessions. A task that depends on native memory may behave correctly some runs and forget everything on others.
+**Critical rule for scheduled tasks: always use `.auto-memory/` or profile files, not native memory.** Native memory is designed for interactive sessions and is not reliably available to autonomous task runs. A task that depends on native memory may work some runs and forget everything on others.
 
-**If you are just getting started:** let native memory work by default for your conversational use. Add `.auto-memory/` when you want structured, reliable memory. Add profile files only when a scheduled task clearly needs them — after auto-memory is already in place.
+**If you are just getting started:** let native memory handle your conversational use. Add `.auto-memory/` when you want structured, reliable memory. Add profile files only when a scheduled task needs them — after auto-memory is already in place.
 
-The two systems can coexist: native memory for your interactive chat assistant, `.auto-memory/` for your tasks and projects. They do not conflict.
+The systems coexist without conflict: native memory for interactive chat, `.auto-memory/` for tasks and projects.
 
 **Note:** This guide covers memory *about you* — your preferences, projects, and working style. If you want to build a knowledge base *about a subject domain* (research, threat intelligence, competitive analysis), that's a different system: see [Guide 15 — LLM Wiki](./15_LLM_WIKI.md).
 
@@ -39,21 +39,21 @@ The two systems can coexist: native memory for your interactive chat assistant, 
 
 ## Two Kinds of Memory
 
-**Auto-memory** is the simpler system. It stores discrete facts about the user, their preferences, and their projects in small markdown files with a shared index (`MEMORY.md`). It is general-purpose and designed for facts that would change how the assistant behaves in any future conversation.
+**Auto-memory** stores discrete facts about the user, their preferences, and their projects in small markdown files with a shared index (`MEMORY.md`). General-purpose, designed for facts that change how the assistant behaves in any future conversation.
 
-**Profile files** are richer, domain-specific documents that a task agent reads at the start of each run. They capture not just facts but relationships, project states, hypotheses, and history. They are best suited to a recurring agent that needs deep contextual awareness — for example, a daily email analysis task.
+**Profile files** are richer, domain-specific documents a task agent reads at the start of each run. They capture relationships, project states, hypotheses, and history. Best suited to recurring agents needing deep contextual awareness — for example, a daily email analysis task.
 
-Use auto-memory for assistant-wide preferences and quick facts. Use profile files for anything that requires narrative depth, tracking over time, or structured relationships.
+Use auto-memory for assistant-wide preferences and quick facts. Use profile files for narrative depth, tracking over time, or structured relationships.
 
 ---
 
 ## Auto-Memory: What to Save
 
-Save things that would change how the assistant responds in a future conversation if it knew them. The four types:
+Save things that would change how the assistant responds in a future conversation. Four types:
 
 **User memories** — who the person is: role, context, relevant skills, life situation. Example: "Sam is a freelance UX designer, works remotely across multiple time zones, prefers async communication. Has two main long-term clients and takes on smaller projects in between."
 
-**Feedback memories** — corrections and confirmed preferences. This is the most important type. Every time you correct the assistant on something, that correction should be saved so it does not need to be made again. Include why: "Always suggest a subject line when drafting emails. Why: user finds writing subject lines more friction than the email body itself."
+**Feedback memories** — corrections and confirmed preferences. The most important type. Every correction should be saved so it never needs to be repeated. Include why: "Always suggest a subject line when drafting emails. Why: user finds writing subject lines more friction than the email body itself."
 
 **Project memories** — ongoing work the assistant should be aware of: "Website redesign proposal for Hartwell Co. — draft sent 2026-02-14, awaiting feedback. Follow up if no response by 2026-03-01." Convert relative dates to absolute when saving — "next Thursday" means nothing in a future session.
 
@@ -99,7 +99,7 @@ To ensure Claude loads your memory index at the start of each session, add this 
 
 ## Profile Files: Structure and Purpose
 
-The profile file system divides a person's profile across several files by topic. The key insight is that you almost never need everything at once — you need a compact summary every time, and the full detail files only when you are updating them.
+The profile system divides a person's profile across files by topic. The key insight: you almost never need everything at once — you need a compact summary every time, and the full detail files only when updating them.
 
 **PROFILE_SUMMARY.md** — the only file read every single run. Keep it under 40–50 lines (roughly 600 tokens). It should answer: who is this person, what are their active projects right now, who are the key contacts, and what are the open action items? If it grows beyond this limit, trim or move content to the detail files.
 
@@ -117,11 +117,11 @@ The profile file system divides a person's profile across several files by topic
 
 ## Profile Update Discipline
 
-**Use targeted edits, not full rewrites.** When a new fact arrives, use search + edit to update the specific line or section. Only do a full rewrite when making structural changes. This is faster, less error-prone, and avoids accidentally overwriting still-valid data.
+**Use targeted edits, not full rewrites.** When a new fact arrives, update the specific line or section. Only do a full rewrite for structural changes. Targeted edits are faster, less error-prone, and avoid accidentally overwriting still-valid data.
 
 **Timestamp your updates.** Every significant profile edit should include `[updated: YYYY-MM]` so you can see at a glance how fresh the data is. Entries not updated in 3+ months should be flagged as potentially stale.
 
-**Distinguish evidence from confirmed fact.** The assistant will infer things from email patterns and browsing that may not be correct. Use a consistent notation to mark what is confirmed vs. inferred:
+**Distinguish evidence from confirmed fact.** The assistant will infer things from email patterns and context that may not be correct. Use consistent notation to mark confirmed vs. inferred:
 - `[USER]` or `[USER-CONFIRMED]` — manually entered or confirmed by the user; never overwrite
 - No tag — inferred by the assistant; may need verification
 - `[updated: YYYY-MM]` — recently confirmed accurate
@@ -156,7 +156,7 @@ New fact arrives
 
 ## Contradiction Resolution
 
-Facts sometimes conflict — the user moved cities, changed roles, or corrected an earlier assumption. Follow these rules in order:
+Facts sometimes conflict — the user moved cities, changed roles, or corrected an earlier assumption. Resolution rules, in order:
 
 1. **`[USER]`-tagged entries always win.** If the existing entry is marked `[USER]` or `[USER-CONFIRMED]`, it was explicitly provided by the user. Never overwrite it based on inference alone — ask the user first.
 
@@ -187,9 +187,9 @@ Memory says "Prefers formal tone in Finnish emails." A recent email draft from t
 
 ## The Hypothesis System
 
-Some signals are meaningful but not yet confirmed. Rather than either ignoring them or committing to a fact that may be wrong, use a hypothesis layer.
+Some signals are meaningful but not yet confirmed. Rather than ignoring them or committing to a possibly wrong fact, use a hypothesis layer.
 
-A hypothesis captures: what the assistant believes, why it believes it, and what evidence would confirm or refute it. Example:
+A hypothesis captures: what the assistant believes, why, and what evidence would confirm or refute it. Example:
 
 ```
 H-001: User may be considering raising their day rate
@@ -198,7 +198,7 @@ Confidence: LOW
 Would confirm: Direct mention of rate change; new proposal sent with higher figure
 ```
 
-This lets the assistant surface the hypothesis as a proactive suggestion ("I've noticed a few signals you might be re-evaluating your rates — want me to pull together a market comparison?") rather than either ignoring the signal or stating it as fact.
+This lets the assistant surface the hypothesis as a proactive suggestion ("I've noticed a few signals you might be re-evaluating your rates -- want me to pull together a market comparison?") rather than ignoring the signal or stating it as fact.
 
 For the full hypothesis lifecycle — how hypotheses are promoted from LOW to CONFIRMED, when to surface them, and when to expire them — see [Guide 07, Part 4](./07_TASK_LEARNING_GUIDE.md#part-4-the-hypothesis-system).
 
@@ -206,7 +206,7 @@ For the full hypothesis lifecycle — how hypotheses are promoted from LOW to CO
 
 ## The PROFILE_SUMMARY.md Hard Limit
 
-The summary file is read into every automated run. Every extra line has a cost in context. Enforce a strict size limit (40–50 lines) and trim before every write. The priority order for what to include:
+The summary file is read into every automated run. Every extra line costs context. Enforce a strict size limit (40-50 lines) and trim before every write. Priority order:
 
 1. Who the person is (2–3 lines)
 2. Active projects with current status (most important)
@@ -220,7 +220,7 @@ Everything else belongs in the detail files.
 
 ## Sensitive Information
 
-Not everything should be stored in a profile. As a rule, store the minimum needed to be useful. Specifically:
+Store the minimum needed to be useful:
 
 - Health information: store at the category level ("ongoing condition, actively managed") not the clinical detail
 - Financial specifics: store the project ("reviewing accountant options for next tax year") not account numbers or exact figures
@@ -232,35 +232,35 @@ The test: would you be comfortable if this profile file were accidentally shared
 
 ## Keeping Profile Files Lean
 
-Profile files grow over time and become slow to read and hard to maintain. Apply these rules:
+Profile files grow over time. Apply these rules:
 
 - Split any file that exceeds ~150 lines of genuinely useful content
 - Archive completed projects rather than leaving them in the active section
 - Compress old session logs and history entries to single-line summaries
 - Remove hypotheses that have been confirmed (move the fact to the appropriate detail file) or refuted (delete them)
 
-A profile system that is kept lean stays fast and useful. A profile that becomes a 500-line dump of everything the assistant has ever learned is almost as bad as no profile at all.
+A lean profile stays fast and useful. A 500-line dump of everything the assistant has ever learned is almost as bad as no profile at all.
 
-As a system-level target: keep all auto-read profile files combined under ~2,000 tokens (roughly 100–150 lines total across everything Claude loads at session start). When auto-read files are lightweight, Claude infers context without re-explanation and sessions start immediately useful. When they grow unchecked, the token cost compounds across every run and the most important context gets diluted by stale detail. If you are consistently hitting context limits early, the auto-read set is the first place to audit.
+**System-level target:** keep all auto-read files combined under ~2,000 tokens (~100-150 lines total across everything Claude loads at session start). Lightweight auto-read files mean Claude infers context without re-explanation and sessions start immediately useful. When they grow unchecked, token cost compounds across every run and important context gets diluted by stale detail. If you consistently hit context limits early, audit the auto-read set first.
 
 ---
 
 ## Memory Across Multiple Task Agents
 
-If you run more than one scheduled task agent (e.g., a daily email digest agent and a client pipeline tracker), they can share the same profile files. The convention that makes this work:
+Multiple scheduled task agents (e.g., a daily email digest and a client pipeline tracker) can share the same profile files. The convention that makes this work:
 
 - All agents read `PROFILE_SUMMARY.md` every run
 - All agents update the relevant detail file when they discover new information
 - No agent overwrites `[USER]`-annotated entries
 - Each agent has its own session/run log so their histories don't collide
 
-The shared profile becomes the connective tissue between agents — the user does not have to explain an ongoing client situation to the email agent and separately to the pipeline tracker. Both of them know.
+The shared profile becomes connective tissue between agents — the user does not have to explain an ongoing client situation to both the email agent and the pipeline tracker. Both already know.
 
 ---
 
 ## Real-World Auto-Memory Examples
 
-Here are the kinds of facts that belong in auto-memory, drawn from a working personal assistant setup. Each would be saved as a small markdown file with a pointer in `MEMORY.md`.
+Facts that belong in auto-memory, drawn from a working setup. Each is saved as a small markdown file with a pointer in `MEMORY.md`.
 
 **User memory:**
 > User is Dutch, lives in Helsinki (timezone: Europe/Helsinki). Prefers English responses always, even when sending content in Finnish. Uses Gmail and Google Calendar as primary tools.

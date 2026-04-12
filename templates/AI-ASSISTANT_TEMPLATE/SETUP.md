@@ -65,6 +65,18 @@ Then open each `*/TASK.md` file and replace the same placeholders. A full list o
 - `[YOUR_TIMEZONE_ABBR]` — short timezone label shown in outputs (e.g. `EET`, `CET`, `EST`)
 - `[YOUR_UTC_OFFSET]` — UTC offset for display and time conversion notes (e.g. `UTC+2`, `UTC-5`)
 
+**Common timezone values** (abbreviation and offset change with daylight saving):
+
+| Region | `[YOUR_TIMEZONE]` | `[YOUR_TIMEZONE_ABBR]` | `[YOUR_UTC_OFFSET]` |
+|--------|-------------------|----------------------|---------------------|
+| Finland | `Europe/Helsinki` | `EET` / `EEST` | `UTC+2` / `UTC+3` |
+| UK | `Europe/London` | `GMT` / `BST` | `UTC+0` / `UTC+1` |
+| Central Europe | `Europe/Berlin` | `CET` / `CEST` | `UTC+1` / `UTC+2` |
+| US Eastern | `America/New_York` | `EST` / `EDT` | `UTC-5` / `UTC-4` |
+| US Pacific | `America/Los_Angeles` | `PST` / `PDT` | `UTC-8` / `UTC-7` |
+
+Use the first value (winter) as your default. The task uses the IANA timezone in `TZ=` commands, so it handles DST automatically — the abbreviation and offset are for display only.
+
 **Assistant-Task/TASK.md additionally:**
 - `[YOUR_COMPANY_KEYWORD]` — a single word used as the email search query (e.g. your company name or domain prefix). Avoid `*` — it causes a syntax error on O365 search.
 - `[YOUR_ATLASSIAN_DOMAIN]` — your Atlassian cloud ID (e.g. `yourcompany.atlassian.net`). Remove the Atlassian section entirely if you don't use Jira.
