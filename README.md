@@ -68,6 +68,8 @@ A well-configured Claude personal assistant has four layers:
 | 16 | [Best Practices](./16_BEST_PRACTICES.md) | All | Lessons from real use |
 | 17 | [Troubleshooting](./17_TROUBLESHOOTING.md) | All | When things don't work |
 | 18 | [End-to-End Walkthrough](./18_END_TO_END_WALKTHROUGH.md) | All | From zero to running assistant — the full journey |
+| 19 | [Output Formatting](./19_OUTPUT_FORMATTING.md) | All | Markdown & HTML output patterns |
+| 20 | [Interactive Prompting](./20_INTERACTIVE_PROMPTING.md) | Intermediate | File references, plan mode, question dialogs, context hygiene |
 
 **Recommended order:** Quickstart → 01 → 02 → 03 → 04 → 05 → (06–10 once you have scheduled tasks running). Or follow [Guide 18](./18_END_TO_END_WALKTHROUGH.md) for a guided path through all stages.
 

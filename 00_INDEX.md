@@ -275,6 +275,17 @@ Covers: where Markdown renders (and where it doesn't), how to prompt Claude for 
 
 ---
 
+### [20 — Interactive Prompting: Claude Code Features & Patterns](./20_INTERACTIVE_PROMPTING.md)
+`[Intermediate]` · `~12 min`
+
+*Using Claude Code's interactive features effectively — file references, question dialogs, plan mode, and keeping the context window clean.*
+
+Covers: `@filepath` references in messages and CLAUDE.md, AskUserQuestion input types (single/multi-select, description and preview fields), plan mode as a workflow pattern, in-session prompting patterns (interview pattern, explore→plan→implement→verify, pointing to existing code, verification criteria), CLAUDE.md structural tips (`@` imports, length discipline, emphasis markers), and context hygiene (`/clear`, subagents for research).
+
+**Use this when:** you want to work more effectively with Claude inside a session — not just write better instructions, but use the right interactive patterns and tools so Claude does less guessing and more of what you actually meant.
+
+---
+
 ## Templates: Copy-Paste Starting Points
 
 Four ready-to-copy folder structures are included in the `templates/` folder. Use them when you want to start a new project or task without building from scratch.
