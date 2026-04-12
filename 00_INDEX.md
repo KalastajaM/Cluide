@@ -276,7 +276,7 @@ Covers: where Markdown renders (and where it doesn't), how to prompt Claude for 
 ---
 
 ### [20 — Interactive Prompting: Claude Code Features & Patterns](./20_INTERACTIVE_PROMPTING.md)
-`[Intermediate]` · `~12 min`
+`[All users]` · `~12 min`
 
 *Using Claude Code's interactive features effectively — file references, question dialogs, plan mode, and keeping the context window clean.*
 
@@ -522,9 +522,10 @@ If you're new to this, go in this order:
 
 1. **Start with [00_QUICKSTART.md](./00_QUICKSTART.md)** — get something working first.
 2. **Then 01** — refine your CLAUDE.md once you've seen how it behaves.
-3. **Then 02 + 03** — learn prompting basics, then create your first real skill.
-4. **Then 04 + 05** — enable memory and connect MCP tools.
-5. **Only then 06–10** — once you have scheduled tasks running, optimise and teach them to improve.
+3. **Then 02 + 20** — learn prompting basics and Claude Code's interactive features (`@` references, plan mode, context hygiene). These apply from your very first skill onwards.
+4. **Then 03** — create your first real skill.
+5. **Then 04 + 05** — enable memory and connect MCP tools.
+6. **Only then 06–10** — once you have scheduled tasks running, optimise and teach them to improve.
 
 **Quick reference while building:** Keep [CHEATSHEET.md](./CHEATSHEET.md) open as a one-page reference for file structures, skeletons, and common patterns.
 **If something breaks:** Go to [Guide 17 — Troubleshooting](./17_TROUBLESHOOTING.md).

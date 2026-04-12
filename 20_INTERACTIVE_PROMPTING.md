@@ -4,7 +4,7 @@
 
 > Claude Code has interactive features that go beyond writing instructions well. This guide covers the tools and patterns that shape *how you work with Claude in a session* — file references, plan mode, question dialogs, and keeping the context window clean.
 
-> **Companion guides:** [Guide 02](./02_PROMPTING_BASICS.md) covers instruction quality — context, task, constraints, and output format. [Guide 01](./01_CLAUDE_MD.md) covers what goes in CLAUDE.md. This guide covers what to do *during* a session.
+> **Companion guides:** [Guide 02](./02_PROMPTING_BASICS.md) covers instruction quality — context, task, constraints, and output format. [Guide 13](./13_DEV_EXECUTION_WORKFLOW.md) covers Claude Code vs. Cowork — when to use each. This guide covers what to do *during* a Claude Code session.
 
 > **Giving this guide to Claude:**
 > "Read 20_INTERACTIVE_PROMPTING.md and apply the patterns here to help me set up / improve / debug [my workflow / this task / this skill]."
