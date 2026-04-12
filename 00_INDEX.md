@@ -50,6 +50,7 @@ Not sure where to start? Use this table:
 | A task that gets smarter over time | Task + IMPROVEMENTS.md | [07](./07_TASK_LEARNING_GUIDE.md) |
 | Answer a one-off question | Chat | — |
 | Coordinate multiple tasks that share data | Orchestrator | [09](./09_MULTI_TASK_ORCHESTRATION.md) |
+| Make task or skill output look good | Guide 19 | [19](./19_OUTPUT_FORMATTING.md) |
 | Track and control task costs | Run metrics | [10](./10_COST_PERFORMANCE.md) |
 
 ---
@@ -260,6 +261,17 @@ Covers: skill not triggering, CLAUDE.md being ignored, memory not persisting, MC
 Covers: six stages from writing your first CLAUDE.md through to orchestrating multiple tasks and building knowledge bases. Each stage shows what to build, which guides to read, the exact prompt to use, and what to check before moving on. Goes deeper than the Quickstart — shows the full two-week journey.
 
 **Use this when:** you have finished the Quickstart and want a structured path through the rest of the system, or you want to understand how all the guides fit together in practice.
+
+---
+
+### [19 — Output Formatting: Markdown & HTML](./19_OUTPUT_FORMATTING.md)
+`[All users]` · `~10 min`
+
+*Make generated output look good — Markdown tips for chat and GitHub, HTML patterns for polished standalone reports.*
+
+Covers: where Markdown renders (and where it doesn't), how to prompt Claude for specific formatting elements, a reusable HTML skeleton with embedded CSS, CSS design hints (cards, status badges, typography), and a prompt snippet for generating styled HTML reports.
+
+**Use this when:** a task or skill produces output that people need to read — and you want it to look clean rather than like a wall of text.
 
 ---
 
