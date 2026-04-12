@@ -136,6 +136,8 @@ body {
 ```
 `max-width: 720px` keeps lines readable. `-apple-system` gives native fonts on Mac/iOS with a clean Windows fallback. `line-height: 1.6` prevents the wall-of-text feel.
 
+> **Note:** In the skeleton below, `max-width` and `margin: 0 auto` are applied to a `.container` wrapper div rather than directly to `body`. This lets the `background` on `body` fill the full viewport width. Use the skeleton's structure when you want a coloured page background.
+
 **CSS variables for theming**
 ```css
 :root {
@@ -167,7 +169,7 @@ Cards create visual separation between sections without heavy borders or colour 
     display: inline-block;
     padding: 2px 10px;
     border-radius: 12px;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 600;
 }
 .badge-green  { background: #dcfce7; color: #166534; }
@@ -252,7 +254,7 @@ Adjust the bullet points to match your specific report structure.
 <body>
 <div class="container">
     <h1>Report Title</h1>
-    <p class="meta">Generated 2026-04-12</p>
+    <p class="meta">Generated {{DATE}}</p> <!-- Replace with actual generated date -->
 
     <div class="card">
         <h2>Summary</h2>
@@ -309,4 +311,4 @@ Copy this skeleton into a task's `TASK_REFERENCE.md` or a skill's reference sect
 
 **Composing the HTML layout fresh every run.** If the report structure doesn't change between runs — only the data does — store the skeleton in `TASK_REFERENCE.md` and have Claude fill in values, not redesign the page. See [Guide 06 §Script fixed-format artifact generation](./06_TASK_EFFICIENCY_GUIDE.md).
 
-**Mixing Markdown and raw HTML without a reason.** It works in some renderers and breaks in others. Stick to one format per output file.
+**Mixing Markdown and raw HTML without a reason.** GitHub's Markdown renderer, for example, strips block-level HTML (like `<div>` or `<table>`) placed inside Markdown lists or blockquotes — the HTML appears as raw text instead of rendering. Stick to one format per output file.
