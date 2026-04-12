@@ -85,7 +85,7 @@ Read `PROJECT_GUIDE.md` in this folder. It maps every folder and file in the pro
 - <<<PLACEHOLDER: Describe any time pressure or opportunity. Example: "A window of opportunity exists to address this now because a planned system upgrade in Q3 provides a natural integration point.">>>
 
 ### Key Decisions Already Made
-- <<<PLACEHOLDER: Decision 1 — e.g. "Programme scope formally approved at AG1">>>
+- <<<PLACEHOLDER: Decision 1 — e.g. "Programme scope formally approved at Gate 1">>>
 - <<<PLACEHOLDER: Decision 2 — e.g. "Delivery approach confirmed: phased over three quarters">>>
 - <<<PLACEHOLDER: Decision 3 — e.g. "Budget envelope approved by Finance">>>
 - <<<PLACEHOLDER: Decision 4 — e.g. "Delivery team established in [Month Year]">>>
@@ -124,7 +124,7 @@ Read `PROJECT_GUIDE.md` in this folder. It maps every folder and file in the pro
 |---|---|
 | <<<PLACEHOLDER: Risk 1 — e.g. "Scope creep — requirements expand beyond agreed boundaries">>> | <<<PLACEHOLDER: Mitigant 1 — e.g. "Enforce formal change control; Sponsor approval required for any scope change">>> |
 | <<<PLACEHOLDER: Risk 2 — e.g. "Key resource unavailability at peak delivery phase">>> | <<<PLACEHOLDER: Mitigant 2 — e.g. "Identify cover arrangements; document specialist knowledge">>> |
-| <<<PLACEHOLDER: Risk 3 — e.g. "Stakeholder misalignment across sponsoring teams">>> | <<<PLACEHOLDER: Mitigant 3 — e.g. "Structured alignment session before AG2; document agreed positions">>> |
+| <<<PLACEHOLDER: Risk 3 — e.g. "Stakeholder misalignment across sponsoring teams">>> | <<<PLACEHOLDER: Mitigant 3 — e.g. "Structured alignment session before Gate 2; document agreed positions">>> |
 | <<<PLACEHOLDER: Risk 4 — e.g. "Third-party vendor misses critical delivery milestone">>> | <<<PLACEHOLDER: Mitigant 4 — e.g. "Obtain formal delivery schedule; agree escalation triggers">>> |
 
 ---
@@ -139,7 +139,7 @@ Read `PROJECT_GUIDE.md` in this folder. It maps every folder and file in the pro
 ### Step 2 – Business Case & Planning
 - <<<PLACEHOLDER: Key activity — e.g. "Develop and validate the full business case">>>
 - <<<PLACEHOLDER: Key activity — e.g. "Define the detailed delivery plan — milestones, dependencies, resourcing">>>
-- <<<PLACEHOLDER: Key activity — e.g. "Obtain AG2 approval before proceeding to implementation">>>
+- <<<PLACEHOLDER: Key activity — e.g. "Obtain Gate 2 approval before proceeding to implementation">>>
 
 ### Step 3 – Implementation & Execution
 - <<<PLACEHOLDER: Key activity — e.g. "Build, test, and pilot the solution with an initial team">>>
@@ -149,7 +149,7 @@ Read `PROJECT_GUIDE.md` in this folder. It maps every folder and file in the pro
 ### Step 4 – Benefits Realisation & Close
 - <<<PLACEHOLDER: Key activity — e.g. "Measure outcomes against baseline metrics and KPI targets">>>
 - <<<PLACEHOLDER: Key activity — e.g. "Conduct a post-implementation review and document lessons learned">>>
-- <<<PLACEHOLDER: Key activity — e.g. "Obtain AG5 sign-off on full benefits delivery">>>
+- <<<PLACEHOLDER: Key activity — e.g. "Obtain Gate 5 sign-off on full benefits delivery">>>
 
 ---
 
@@ -167,7 +167,7 @@ Read `PROJECT_GUIDE.md` in this folder. It maps every folder and file in the pro
 ## Financial Benefit & Costs
 
 ### Financial Benefit
-- <<<PLACEHOLDER: Describe expected benefit. Example: "Successful delivery is expected to yield [benefit — e.g. a reduction of £X in annual operating costs]. Full business case to be developed at AG2.">>>
+- <<<PLACEHOLDER: Describe expected benefit. Example: "Successful delivery is expected to yield [benefit — e.g. a reduction of £X in annual operating costs]. Full business case to be developed at Gate 2.">>>
 
 ### One-Time Costs
 - <<<PLACEHOLDER: One-time cost items — e.g. "External advisor fees; tooling setup; training development">>>
@@ -183,11 +183,11 @@ Read `PROJECT_GUIDE.md` in this folder. It maps every folder and file in the pro
 
 | Gate | Phase | Status |
 |---|---|---|
-| AG1 | Initiative Idea | <<<PLACEHOLDER: AG1 Status — e.g. "✅ In Progress">>> |
-| AG2 | Business Case | <<<PLACEHOLDER: AG2 Status — e.g. "⬜ Pending">>> |
-| AG3 | Implementation Plan | <<<PLACEHOLDER: AG3 Status>>> |
-| AG4 | Execute | <<<PLACEHOLDER: AG4 Status>>> |
-| AG5 | Full Benefits | <<<PLACEHOLDER: AG5 Status>>> |
+| Gate 1 | Initiative Idea | <<<PLACEHOLDER: Gate 1 Status — e.g. "✅ In Progress">>> |
+| Gate 2 | Business Case | <<<PLACEHOLDER: Gate 2 Status — e.g. "⬜ Pending">>> |
+| Gate 3 | Implementation Plan | <<<PLACEHOLDER: Gate 3 Status>>> |
+| Gate 4 | Execute | <<<PLACEHOLDER: Gate 4 Status>>> |
+| Gate 5 | Full Benefits | <<<PLACEHOLDER: Gate 5 Status>>> |
 
 ---FILE END---
 

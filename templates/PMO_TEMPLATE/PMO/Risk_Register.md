@@ -81,7 +81,7 @@
 [PLACEHOLDER: Describe the stakeholder misalignment risk. Example: "Sponsoring teams hold conflicting views on priorities, success criteria, or delivery approach. If not resolved, these conflicts may cause delays at gate reviews or undermine team direction."]
 
 **Mitigation / Response:**
-[PLACEHOLDER: Mitigation — e.g. "Hold a structured alignment session with all sponsoring stakeholders before AG2. Document agreed positions in the Decision Tracker. Escalate unresolved conflicts to the Programme Board before they affect delivery."]
+[PLACEHOLDER: Mitigation — e.g. "Hold a structured alignment session with all sponsoring stakeholders before Gate 2. Document agreed positions in the Decision Tracker. Escalate unresolved conflicts to the Programme Board before they affect delivery."]
 
 **Linked dependencies:** [PLACEHOLDER: D-xx reference or "None"]
 
@@ -131,7 +131,7 @@
 [PLACEHOLDER: Describe the benefits realisation risk. Example: "The delivered solution may not achieve the target outcomes if adoption is low, the benefits measurement framework is not in place, or baseline metrics were not captured before go-live."]
 
 **Mitigation / Response:**
-[PLACEHOLDER: Mitigation — e.g. "Define the benefits measurement framework before AG3. Capture baseline metrics during Phase 1. Plan a post-go-live review at an agreed interval to assess benefits realisation."]
+[PLACEHOLDER: Mitigation — e.g. "Define the benefits measurement framework before Gate 3. Capture baseline metrics during Phase 1. Plan a post-go-live review at an agreed interval to assess benefits realisation."]
 
 **Linked dependencies:** [PLACEHOLDER: D-xx or "None"]
 

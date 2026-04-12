@@ -14,7 +14,7 @@
 | [D-02](#d-02) | [PLACEHOLDER: Dependency — e.g. "Third-party vendor delivery of integration component"] | External | H | 🔴 Open | [PLACEHOLDER: Target date] | ⭐ Key |
 | [D-03](#d-03) | [PLACEHOLDER: Dependency — e.g. "Regulatory / legal sign-off"] | External | H | 🟡 Monitoring | [PLACEHOLDER: Target date] | ⭐ Key |
 | [D-04](#d-04) | [PLACEHOLDER: Dependency — e.g. "Resourcing approval from HR / Finance"] | Internal | H | 🔴 Open | [PLACEHOLDER: Target date] | ⭐ Key |
-| [D-05](#d-05) | [PLACEHOLDER: Dependency — e.g. "Steering group decision at AG2"] | Internal | H | 🟡 Monitoring | [PLACEHOLDER: AG2 date] | ⭐ Key |
+| [D-05](#d-05) | [PLACEHOLDER: Dependency — e.g. "Steering group decision at Gate 2"] | Internal | H | 🟡 Monitoring | [PLACEHOLDER: Gate 2 date] | ⭐ Key |
 | [D-06](#d-06) | [PLACEHOLDER: Dependency — e.g. "Data availability from source systems"] | Internal | H | 🔴 Open | [PLACEHOLDER: Target date] | ⭐ Key |
 | [D-07](#d-07) | [PLACEHOLDER: Dependency — e.g. "Formal policy documentation from PMO / Legal"] | Internal | M | 🔴 Open | [PLACEHOLDER: Target date] | |
 | [D-08](#d-08) | [PLACEHOLDER: Dependency — e.g. "External partner / supplier contract execution"] | External | M | 🔴 Open | [PLACEHOLDER: Target date] | |
@@ -88,7 +88,7 @@
 [PLACEHOLDER: Full description. Example: "Formal headcount approval from HR and Finance is required to confirm the resource model for Phase 2. Without this, team members cannot be formally allocated and the phase cannot be planned with confidence."]
 
 **Action / next step:**
-[PLACEHOLDER: Next step — e.g. "Sponsor to submit headcount request. Finance sign-off required before AG2."]
+[PLACEHOLDER: Next step — e.g. "Sponsor to submit headcount request. Finance sign-off required before Gate 2."]
 
 **Linked risks:** [PLACEHOLDER: R-xx — e.g. "R-02"]
 
@@ -96,13 +96,13 @@
 
 ### D-05
 
-**Type:** Internal | **Category:** Governance – [PLACEHOLDER: e.g. "AG2 steering group approval"] | **Priority:** H | **Status:** 🟡 Monitoring | **Depends on:** [PLACEHOLDER: Team — e.g. "Programme Board / Steering Group"] | **Target date:** [PLACEHOLDER: AG2 date] | **Date added:** [PLACEHOLDER: YYYY-MM-DD] | **Key Dependency:** ⭐ Yes
+**Type:** Internal | **Category:** Governance – [PLACEHOLDER: e.g. "Gate 2 steering group approval"] | **Priority:** H | **Status:** 🟡 Monitoring | **Depends on:** [PLACEHOLDER: Team — e.g. "Programme Board / Steering Group"] | **Target date:** [PLACEHOLDER: Gate 2 date] | **Date added:** [PLACEHOLDER: YYYY-MM-DD] | **Key Dependency:** ⭐ Yes
 
 **Description:**
-[PLACEHOLDER: Full description. Example: "AG2 approval from the steering group is required before the Implementation Plan phase can begin. The Business Case document must be completed and submitted at least [N] days in advance of the AG2 review meeting."]
+[PLACEHOLDER: Full description. Example: "Gate 2 approval from the steering group is required before the Implementation Plan phase can begin. The Business Case document must be completed and submitted at least [N] days in advance of the Gate 2 review meeting."]
 
 **Action / next step:**
-[PLACEHOLDER: Next step — e.g. "Confirm AG2 review date. Confirm Business Case submission deadline. Track Business Case completion against submission deadline."]
+[PLACEHOLDER: Next step — e.g. "Confirm Gate 2 review date. Confirm Business Case submission deadline. Track Business Case completion against submission deadline."]
 
 **Linked risks:** [PLACEHOLDER: R-xx or "None"]
 

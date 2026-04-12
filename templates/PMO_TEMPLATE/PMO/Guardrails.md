@@ -21,7 +21,7 @@ Refer to the **Team** section of the Initiative Charter for the current sponsor,
 | Field | Value |
 |---|---|
 | Initiative Name | [PLACEHOLDER: Initiative Name] |
-| Governance Model | [PLACEHOLDER: Governance Framework — e.g. "Stage-Gate (AG1–AG5)"] |
+| Governance Model | [PLACEHOLDER: Governance Framework — e.g. "Stage-Gate (Gate 1–Gate 5)"] |
 | Housing | [PLACEHOLDER: Project Management Platform — e.g. "Jira / SharePoint / Confluence"] |
 
 ---
@@ -32,12 +32,12 @@ Refer to the **Governance – Phase** section of the Initiative Charter for the 
 
 | Gate | Stage | Condition |
 |---|---|---|
-| AG1 | Initiative Idea → Business Case | Approval required to proceed |
-| AG2 | Business Case → Implementation Plan | Approval required to proceed |
-| AG3 | Implementation Plan → Execute | Approval required to proceed |
-| AG4 | Execute → Full Benefits | Approval required to proceed |
-| AG5 | Final milestone | Completed after Full Benefits |
-| — | Cancelled / On Hold | Allowed post-AG1 |
+| Gate 1 | Initiative Idea → Business Case | Approval required to proceed |
+| Gate 2 | Business Case → Implementation Plan | Approval required to proceed |
+| Gate 3 | Implementation Plan → Execute | Approval required to proceed |
+| Gate 4 | Execute → Full Benefits | Approval required to proceed |
+| Gate 5 | Final milestone | Completed after Full Benefits |
+| — | Cancelled / On Hold | Allowed post-Gate 1 |
 
 **Guardrail**: Do not recommend actions that belong to a later gate stage without confirming the current approved gate. Flag any scope that seems to jump ahead.
 
@@ -89,8 +89,8 @@ Refer to the **High-Level Implementation Steps** and **Governance – Phase** se
 These decisions are documented in the Initiative Charter under **Key Decisions Already Made** and must be treated as fixed constraints:
 
 [PLACEHOLDER: List confirmed decisions here once the charter is completed. Example:]
-- ✅ [PLACEHOLDER: Decision 1 — e.g. "Project scope approved at AG1"]
-- ✅ [PLACEHOLDER: Decision 2 — e.g. "Governance model confirmed as Stage-Gate (AG1–AG5)"]
+- ✅ [PLACEHOLDER: Decision 1 — e.g. "Project scope approved at Gate 1"]
+- ✅ [PLACEHOLDER: Decision 2 — e.g. "Governance model confirmed as Stage-Gate (Gate 1–Gate 5)"]
 - ✅ [PLACEHOLDER: Decision 3 — e.g. "Delivery approach confirmed as phased"]
 - ✅ [PLACEHOLDER: Decision 4 — e.g. "Budget envelope approved"]
 - ✅ [PLACEHOLDER: Decision 5 — e.g. "Delivery team established"]

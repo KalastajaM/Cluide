@@ -21,12 +21,12 @@
 
 | ID | Title | Date | Decision Maker | Status | Category |
 |---|---|---|---|---|---|
-| [DEC-01](#dec-01) | [PLACEHOLDER: Decision title — e.g. "Project scope approved at AG1"] | [PLACEHOLDER: Date or "Pre-programme"] | [PLACEHOLDER: Decision maker — e.g. "Programme Board"] | ✅ Confirmed | Strategic |
-| [DEC-02](#dec-02) | [PLACEHOLDER: Decision title — e.g. "Governance model selected — Stage-Gate (AG1–AG5)"] | [PLACEHOLDER: Date] | [PLACEHOLDER: Decision maker] | ✅ Confirmed | Strategic |
+| [DEC-01](#dec-01) | [PLACEHOLDER: Decision title — e.g. "Project scope approved at Gate 1"] | [PLACEHOLDER: Date or "Pre-programme"] | [PLACEHOLDER: Decision maker — e.g. "Programme Board"] | ✅ Confirmed | Strategic |
+| [DEC-02](#dec-02) | [PLACEHOLDER: Decision title — e.g. "Governance model selected — Stage-Gate (Gate 1–Gate 5)"] | [PLACEHOLDER: Date] | [PLACEHOLDER: Decision maker] | ✅ Confirmed | Strategic |
 | [DEC-03](#dec-03) | [PLACEHOLDER: Decision title — e.g. "Delivery approach confirmed — phased over three quarters"] | [PLACEHOLDER: Date] | [PLACEHOLDER: Decision maker] | ✅ Confirmed | Strategic |
 | [DEC-04](#dec-04) | [PLACEHOLDER: Decision title — e.g. "Resource model agreed — internal team plus one external advisor"] | [PLACEHOLDER: Date] | [PLACEHOLDER: Decision maker] | ✅ Confirmed | Operational |
 | [DEC-05](#dec-05) | [PLACEHOLDER: Decision title — e.g. "Delivery team established"] | [PLACEHOLDER: Date] | [PLACEHOLDER: Decision maker] | ✅ Confirmed | Operational |
-| [DEC-06](#dec-06) | [PLACEHOLDER: Decision title — e.g. "Budget envelope confirmed at AG1"] | [PLACEHOLDER: Date] | [PLACEHOLDER: Decision maker] | ✅ Confirmed | Financial |
+| [DEC-06](#dec-06) | [PLACEHOLDER: Decision title — e.g. "Budget envelope confirmed at Gate 1"] | [PLACEHOLDER: Date] | [PLACEHOLDER: Decision maker] | ✅ Confirmed | Financial |
 | [DEC-07](#dec-07) | [PLACEHOLDER: Decision title — e.g. "Benefits measurement framework to be formalised"] | [PLACEHOLDER: Date] | [PLACEHOLDER: Decision maker] | 🔄 In Progress | Strategic |
 | [DEC-08](#dec-08) | [PLACEHOLDER: Decision title — e.g. "Post-go-live support model"] | [PLACEHOLDER: Date] | [PLACEHOLDER: Decision maker] | ⏳ Pending | Operational |
 
@@ -38,11 +38,11 @@
 
 ### DEC-01
 
-**Title:** [PLACEHOLDER: Decision title — e.g. "Project scope approved at AG1"]
+**Title:** [PLACEHOLDER: Decision title — e.g. "Project scope approved at Gate 1"]
 **Date:** [PLACEHOLDER: Date or "Pre-programme"] | **Decision Maker:** [PLACEHOLDER: Decision maker] | **Status:** ✅ Confirmed | **Category:** Strategic
 
 **Decision:**
-[PLACEHOLDER: What was decided. Example: "The scope of the initiative was formally approved at AG1. Scope includes [scope statement]. Out of scope: [out-of-scope items]."]
+[PLACEHOLDER: What was decided. Example: "The scope of the initiative was formally approved at Gate 1. Scope includes [scope statement]. Out of scope: [out-of-scope items]."]
 
 **Rationale:**
 [PLACEHOLDER: Why this was decided. Example: "A clearly bounded scope was needed to enable accurate resourcing, budgeting, and milestone planning before proceeding to the Business Case stage."]
@@ -54,11 +54,11 @@
 
 ### DEC-02
 
-**Title:** [PLACEHOLDER: Decision title — e.g. "Governance model selected — Stage-Gate (AG1–AG5)"]
+**Title:** [PLACEHOLDER: Decision title — e.g. "Governance model selected — Stage-Gate (Gate 1–Gate 5)"]
 **Date:** [PLACEHOLDER: Date] | **Decision Maker:** [PLACEHOLDER: Decision maker] | **Status:** ✅ Confirmed | **Category:** Strategic
 
 **Decision:**
-[PLACEHOLDER: What was decided. Example: "The programme will follow a five-gate stage-gate governance model (AG1–AG5), with formal approval required at each gate before proceeding to the next phase."]
+[PLACEHOLDER: What was decided. Example: "The programme will follow a five-gate stage-gate governance model (Gate 1–Gate 5), with formal approval required at each gate before proceeding to the next phase."]
 
 **Rationale:**
 [PLACEHOLDER: Rationale. Example: "Stage-gate governance provides structured checkpoints, clear accountability, and the ability to stop or redirect the initiative if the business case no longer holds."]
@@ -93,10 +93,10 @@
 [PLACEHOLDER: What was decided in principle. Example: "A formal benefits measurement framework will be developed to define how the programme's target outcomes will be tracked, baseline-measured, and reported at each gate."]
 
 **Rationale:**
-[PLACEHOLDER: Rationale. Example: "Without a defined measurement framework, it is not possible to objectively assess whether the initiative has delivered its intended benefits at AG5."]
+[PLACEHOLDER: Rationale. Example: "Without a defined measurement framework, it is not possible to objectively assess whether the initiative has delivered its intended benefits at Gate 5."]
 
 **Status notes:**
-[PLACEHOLDER: Progress update — e.g. "Draft framework in progress; target approval before AG2."]
+[PLACEHOLDER: Progress update — e.g. "Draft framework in progress; target approval before Gate 2."]
 
 ---
 
@@ -116,7 +116,7 @@
 [PLACEHOLDER: Rationale.]
 
 **Impact:**
-[PLACEHOLDER: Impact. Example: "Resourcing commitments must be confirmed with line managers before AG2. External advisor scope and contract must be finalised before AG3."]
+[PLACEHOLDER: Impact. Example: "Resourcing commitments must be confirmed with line managers before Gate 2. External advisor scope and contract must be finalised before Gate 3."]
 
 ---
 
@@ -142,11 +142,11 @@
 
 ### DEC-06
 
-**Title:** [PLACEHOLDER: Decision title — e.g. "Budget envelope confirmed at AG1"]
+**Title:** [PLACEHOLDER: Decision title — e.g. "Budget envelope confirmed at Gate 1"]
 **Date:** [PLACEHOLDER: Date] | **Decision Maker:** [PLACEHOLDER: Decision maker] | **Status:** ✅ Confirmed | **Category:** Financial
 
 **Decision:**
-[PLACEHOLDER: What was decided. Example: "A budget envelope of [PLACEHOLDER: Amount] has been approved for the initiative, covering all phases through AG5. This is the primary financial constraint for all planning."]
+[PLACEHOLDER: What was decided. Example: "A budget envelope of [PLACEHOLDER: Amount] has been approved for the initiative, covering all phases through Gate 5. This is the primary financial constraint for all planning."]
 
 **Rationale:**
 [PLACEHOLDER: Rationale.]
@@ -172,7 +172,7 @@
 [PLACEHOLDER: Stakes — e.g. "Without a confirmed support model, go-live creates an operational risk: the solution may not have a clear owner post-handover."]
 
 **Owner / escalation path:**
-[PLACEHOLDER: Who needs to decide and how — e.g. "Sponsor to raise with Operations leadership; target decision before AG4."]
+[PLACEHOLDER: Who needs to decide and how — e.g. "Sponsor to raise with Operations leadership; target decision before Gate 4."]
 
 ---
 

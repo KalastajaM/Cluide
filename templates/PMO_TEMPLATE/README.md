@@ -70,4 +70,4 @@ Replace every `[PLACEHOLDER: ...]` value with your own content. The table below 
 ## Notes
 - The `Knowledge_Base.md` is intentionally blank in the template — populate it as your project progresses.
 - The HTML versions of registers (`.html` files) are optional view-only renderings. You can generate them from the Markdown files, or omit them.
-- If your governance framework has fewer or more gate stages than the five (AG1–AG5) shown here, adjust all references throughout.
+- If your governance framework has fewer or more gate stages than the five (Gate 1–Gate 5) shown here, adjust all references throughout.

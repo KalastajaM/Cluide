@@ -12,8 +12,8 @@ This project workspace supports a structured, Claude-assisted programme to deliv
 | Initiative name | [PLACEHOLDER: Initiative Name] |
 | Owner | [PLACEHOLDER: Initiative Owner Name] |
 | Sponsor | [PLACEHOLDER: Workstream Sponsor Name] |
-| Governance model | [PLACEHOLDER: Governance Framework — e.g. "Stage-Gate (AG1–AG5)"] |
-| Current gate | [PLACEHOLDER: Current Gate — e.g. "AG1: Initiative Idea"] |
+| Governance model | [PLACEHOLDER: Governance Framework — e.g. "Stage-Gate (Gate 1–Gate 5)"] |
+| Current gate | [PLACEHOLDER: Current Gate — e.g. "Gate 1: Initiative Idea"] |
 | Delivery approach | [PLACEHOLDER: Delivery Approach — e.g. "Phased delivery across 4 workstreams"] |
 
 ## Tasks in this project
