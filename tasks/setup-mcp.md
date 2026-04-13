@@ -11,6 +11,8 @@ Audit the current MCP server configuration, identify what's connected and workin
 
 ## Instructions
 
+> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+
 ### Step 1 — Audit current state
 
 Check what MCP servers are currently configured:

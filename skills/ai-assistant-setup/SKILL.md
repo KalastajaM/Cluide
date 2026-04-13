@@ -64,6 +64,8 @@ When a user's request matches one of these templates, point them to it first. Th
 
 ## How to handle requests
 
+> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+
 ### Step 1: Understand the request
 
 Identify what the user is trying to do. Most requests fall into one of these categories:

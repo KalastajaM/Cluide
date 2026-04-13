@@ -11,6 +11,8 @@ Turns an existing Claude setup (chat system prompt, Cowork task, Cowork project,
 
 ## Step 1: Determine the Template Type
 
+> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+
 Identify which type to export. Use context first; ask only if ambiguous.
 
 | Type | Signals |
@@ -20,7 +22,10 @@ Identify which type to export. Use context first; ask only if ambiguous.
 | **Cowork project** | User shares a project config, folder structure, or multi-task Cowork setup |
 | **Skill** | User shares a SKILL.md or skill folder |
 
-If multiple types apply, ask the user to confirm or export one per type.
+If ambiguous, use `AskUserQuestion` with buttons:
+> Buttons: `Chat system prompt` / `Cowork task` / `Cowork project` / `Skill`
+
+If multiple types apply, ask the user to confirm or export one per type using `AskUserQuestion`.
 
 ---
 
@@ -46,7 +51,7 @@ Preserve the **structure, logic, and intent** of the original. Do not simplify o
 |-----------|--------|
 | Source already partially sanitized | Note which placeholders were pre-existing; preserve them as-is |
 | Source is already a template | Export as-is; flag to user that sanitization may be minimal |
-| Source is very large (>400 lines) | Offer to split into a multi-file template; proceed if user agrees |
+| Source is very large (>400 lines) | Use `AskUserQuestion`: `Split into multi-file template` / `Export as single file` |
 
 ---
 

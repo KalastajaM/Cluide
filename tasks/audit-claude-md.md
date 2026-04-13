@@ -11,6 +11,8 @@ Review an existing `CLAUDE.md` against best-practice criteria: every line should
 
 ## Instructions
 
+> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+
 ### Step 1 — Locate and read the file
 
 ```bash

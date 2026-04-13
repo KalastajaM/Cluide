@@ -91,7 +91,7 @@ What the skill is fundamentally responsible for. Keep this short — it orients 
 The procedural heart of the skill. Use numbered steps for sequential actions, use a table for decision logic. Be concrete:
 
 - Name the tools to call (`gmail_create_draft`, `gcal_create_event`, etc.)
-- Specify what to ask the user at each stage
+- Specify what to ask the user at each stage — for bounded-choice questions (tone, format, approve/reject), use `AskUserQuestion` with buttons (see [Guide 02](./02_PROMPTING_BASICS.md))
 - Say what to do when a step fails
 
 ### 3. Output Format
@@ -116,7 +116,7 @@ How should this skill's output be written? Formal or casual? Emoji use? Language
 A few "what if" clauses that resolve common ambiguities. Examples:
 - "If the email is in a foreign language, read it and present the task summary in the user's preferred language"
 - "If there are 15+ unread emails, focus on the 10 most urgent"
-- "If the user doesn't specify a tone, offer two variants: formal and friendly"
+- "If the user doesn't specify a tone, use `AskUserQuestion`: `Formal` / `Casual` / `Match original`"
 
 ### 7. Example Interaction
 

@@ -12,6 +12,8 @@ Analyze a Cowork task or project definition, identify optimization opportunities
 
 ## Rules
 
+> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+
 - Always use this skill before making any edits to a Cowork task or project — even if the user just says "take a look at my task."
 - Do not silently apply changes beyond what was agreed in Phase 3.
 - Flag tradeoffs explicitly — do not silently optimize toward one axis (speed vs. thoroughness).
@@ -28,10 +30,8 @@ Otherwise, attempt to locate the task autonomously before asking the user:
 find /sessions -maxdepth 6 -name "TASK.md" 2>/dev/null
 ```
 
-If one or more TASK.md files are found, present the list and ask which task to audit. If none are found, ask the user to share the task. They can provide:
-- The task instructions pasted directly
-- A path to the task file (`.task` or `.md`)
-- A Cowork project folder path
+If one or more TASK.md files are found, present the list and use `AskUserQuestion` with buttons (one per found task + "Paste content here") to ask which to audit. If none are found, use `AskUserQuestion` with buttons to ask how the user wants to provide it:
+> Buttons: `Paste task instructions` / `Provide file path` / `Provide project folder path`
 
 If files are referenced inside the instructions (e.g., skill files, reference docs, templates), read those too — optimization depends on understanding the full dependency chain.
  
@@ -95,7 +95,8 @@ Then a prioritized list of findings, highest ROI first. For each:
  
 **Scope note:** Self-improvement infrastructure (IMPROVEMENTS.md, RUN_LOG.md, KNOWLEDGE_SUMMARY.md) is valuable but represents a meaningful addition, not just a cleanup. Present it as an optional enhancement, not a required fix, unless the task already has partial scaffolding.
  
-End with: "Which of these would you like me to implement? You can say 'all of them', pick specific numbers, or tell me to skip any."
+End with a `AskUserQuestion` with buttons: `All of them` / `Let me pick` / `None — findings only`
+(If "Let me pick": follow up with numbered buttons for each finding.)
  
 ---
  

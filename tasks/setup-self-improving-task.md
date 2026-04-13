@@ -13,6 +13,8 @@ Add the self-improvement scaffolding from Guide 07 to an existing task: an `IMPR
 
 ## Instructions
 
+> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+
 ### Step 1 — Identify the task
 
 Ask: "Which task should I add self-improvement to? Provide the path to the task folder (e.g. `tasks/email-digest/`)."
@@ -27,9 +29,11 @@ If `IMPROVEMENTS.md` already exists: read it, tell the user what's already in pl
 
 ### Step 2 — Ask a few questions
 
-> 1. How often does this task run? (daily / weekly / on demand)
+> 1. How often does this task run?
+>    Use `AskUserQuestion` with buttons: `Daily` / `Weekly` / `On demand`
 > 2. Does the task manage knowledge or profile files that accumulate over time? If so, which files?
 > 3. Should I also create a `LESSONS.md` for reasoning history? (Recommended for tasks with external connectors or complex logic that runs 30+ times.)
+>    Use `AskUserQuestion` with buttons: `Yes` / `No`
 
 Based on the run frequency, set the refactor threshold:
 - Daily runs → 25

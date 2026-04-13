@@ -13,6 +13,8 @@ Target: index under 30 entries, each memory file under ~10 lines, no entries old
 
 ## Instructions
 
+> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+
 ### Step 1 — Check current state
 
 ```bash

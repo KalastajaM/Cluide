@@ -126,6 +126,28 @@ Use Level 3 for anything that runs repeatedly — skills, tasks, any instruction
 
 ---
 
+## Asking Clarifying Questions
+
+When a clarifying question has a **bounded set of options**, use the `AskUserQuestion` tool with buttons. Fall back to plain text only when the question is genuinely open-ended.
+
+| Question type | Approach |
+|---|---|
+| Bounded: tone, format, priority, approve/reject, yes/no | `AskUserQuestion` with buttons |
+| Open-ended: situation description, name, intent, freeform input | Plain text |
+
+**Examples — use buttons:**
+- Tone: `Formal` / `Casual` / `Match original`
+- Scope: `This file only` / `Whole project`
+- Action: `Approve` / `Revise` / `Skip`
+- Self-improvement: `Yes` / `No`
+
+**Examples — use plain text:**
+- "What should this skill be responsible for?"
+- "Describe the situation you need help with."
+- "What's the target audience for this document?"
+
+---
+
 ## Writing Skill Descriptions: Triggers, Not Titles
 
 The `description:` field in a SKILL.md file is not a title. It is a **trigger pattern** — the phrases and situations that tell Claude "activate this skill now."

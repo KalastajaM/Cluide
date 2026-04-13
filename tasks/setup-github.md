@@ -15,6 +15,8 @@ This task is designed to be portable and run on any project. Do not assume any s
 
 ## Instructions
 
+> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+
 Execute the following steps in order. Stop and ask the user before making any changes.
 
 ### Step 1 — Check current state
@@ -160,17 +162,15 @@ If the push fails because the remote has commits (e.g. it was initialized with a
 
 ### Step 8 — Set up ongoing sync
 
-Ask the user:
+Use `AskUserQuestion` with buttons to ask about ongoing sync:
 
-> "Would you like me to set up ongoing sync so future changes are committed automatically?
+> "Would you like me to set up ongoing sync so future changes are committed automatically?"
+> Buttons: `SessionStart hook` / `CLAUDE.md rule` / `Both` / `Skip`
 >
-> **Option A — SessionStart hook**: auto-commits any uncommitted changes at the start of every Claude session. Modifies `.claude/settings.json`.
->
-> **Option B — CLAUDE.md rule**: adds a standing instruction telling Claude to commit after completing any task that modifies files. Works without hook infrastructure.
->
-> **Option C — Both**: hook for automatic safety snapshots + CLAUDE.md rule for meaningful post-task commits.
->
-> **Option D — Skip**: commit manually when you choose."
+> - **SessionStart hook** — auto-commits uncommitted changes at the start of every Claude session. Modifies `.claude/settings.json`.
+> - **CLAUDE.md rule** — adds a standing instruction to commit after completing any task that modifies files. Works without hook infrastructure.
+> - **Both** — hook for automatic safety snapshots + CLAUDE.md rule for meaningful post-task commits.
+> - **Skip** — commit manually when you choose.
 
 Proceed based on the user's choice:
 

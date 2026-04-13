@@ -13,6 +13,8 @@ The core idea: Claude should read *computed summaries*, not raw data files. A Py
 
 ## Instructions
 
+> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+
 ### Step 1 — Understand the use case
 
 Ask:
@@ -36,7 +38,9 @@ Based on answers, recommend one or more patterns from the table below and explai
 | 4 — Vision ingestion | Data only accessible as screenshots or scanned documents |
 | 5 — Multi-step instruction file | Workflow with 3+ distinct phases (collect → process → analyse) |
 
-Say: "Based on what you described, I recommend [Pattern N] because [reason]. Would you like to set that up?"
+After recommending a pattern, use `AskUserQuestion` with buttons:
+> "Based on what you described, I recommend Pattern [N]. Shall I set that up?"
+> Buttons: `Yes, set it up` / `Show me all patterns` / `I'll choose a different one`
 
 ### Step 2 — Set up Pattern 1: Python script feeder
 

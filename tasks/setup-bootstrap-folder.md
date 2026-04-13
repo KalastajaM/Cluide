@@ -13,6 +13,8 @@ Create a `bootstrap/` folder containing empty, non-personal stub versions of all
 
 ## Instructions
 
+> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+
 ### Step 1 — Scan for gitignored runtime state files
 
 ```bash
@@ -30,8 +32,10 @@ Also look for common state file patterns even if not currently ignored:
 - `PROFILE_*.md`, `KNOWLEDGE_*.md`, `HYPOTHESES.md`
 - `.auto-memory/*.md`
 
-List candidates and ask the user:
-> "I found these files that look like runtime state. Which ones need a bootstrap stub? (These are files a fresh clone needs to exist before the first task run.)"
+List candidates and use `AskUserQuestion` with buttons for each file (or as a group):
+> "I found these files that look like runtime state. Which ones need a bootstrap stub?"
+> Buttons: `All of them` / `Let me choose` / `None`
+> (If "Let me choose": ask about each file individually with `Yes` / `Skip` buttons.)
 
 Skip:
 - Files that are committed and already tracked (they clone automatically)

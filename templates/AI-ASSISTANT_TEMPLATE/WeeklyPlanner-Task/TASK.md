@@ -19,6 +19,8 @@ Read both of these files:
 - `Actions/PENDING_ACTIONS.md` — all open action items with priority, deadline, and context
 - `Actions/ACTIONS.md` — latest daily briefing and any flagged priorities
 
+> If `PENDING_ACTIONS.md` exceeds ~100 lines, read only the open-items section above the first horizontal rule rather than the full file.
+
 ---
 
 ## Step 2 — Check the calendar
@@ -62,7 +64,9 @@ For each proposed block, state:
 Determine the Monday date of the coming week and save two files to `WeekPlan/`:
 
 1. **`YYYY-MM-DD_weekplan.md`** — clean markdown version of the full plan (open actions table, proposed blocks, notes).
-2. **`YYYY-MM-DD_weekplan.html`** — calendar-booking-friendly HTML version. Use a five-column layout (one column per day, Mon–Fri). For each day show: existing meetings as light grey blocks, and proposed work blocks as coloured cards (colour-coded by type: deep work = blue, quick actions = green, meeting prep = amber, conditional = dashed grey). Each proposed block card must show: start time, end time, duration, title, a brief description, and a **📅 Add to Outlook** button. The button uses a JavaScript Blob to generate and download a `.ics` file (iCalendar format) for that block when clicked. Use UTC times in the `.ics` (convert from local time by subtracting [YOUR_UTC_OFFSET_HOURS] hours). Include a SUMMARY, DTSTART, DTEND, DESCRIPTION, and UID in each VEVENT. Friday should be visually muted with a note that no blocks are scheduled unless a hard deadline forces one. Include a legend and an open actions table at the top.
+2. **`YYYY-MM-DD_weekplan.html`** — generate the HTML as specified in `TASK_REFERENCE.md § HTML Week Plan Format`.
+
+> **Script candidate:** a `generate_weekplan.py` script should eventually replace Claude composing this HTML from scratch — Claude would run the script and pass in the data.
 
 Use `YYYY-MM-DD` = the date of the coming Monday.
 
@@ -78,7 +82,7 @@ Do not send emails, Teams messages, or create calendar events autonomously.
 
 ## Step 6 — Self-Improvement
 
-Read `IMPROVEMENTS.md`. Apply any `[APPROVED]` proposals. Then:
+Read `IMPROVEMENTS.md`. Archive Applied Fixes to `IMPROVEMENTS_ARCHIVE.md` when > 10 entries. Apply any `[APPROVED]` proposals. Then:
 
 1. **Feedback signals:** Did the user edit or discard last week's plan? Extract the lesson. Did a proposed block type consistently get ignored? Recalibrate.
 2. **Refactor check:** If `runs_since_last_refactor` ≥ threshold, review TASK.md for dead rules or unclear steps.

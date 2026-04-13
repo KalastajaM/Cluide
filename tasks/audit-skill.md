@@ -11,6 +11,8 @@ Review an existing skill against the Guide 03 quality checklist: reliable trigge
 
 ## Instructions
 
+> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+
 ### Step 1 — Identify the skill to audit
 
 Ask: "Which skill should I audit? Provide the skill name or path (e.g. `client-status-update` or `~/.claude/skills/client-status-update/SKILL.md`)."

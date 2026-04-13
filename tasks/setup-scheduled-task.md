@@ -13,6 +13,8 @@ Scaffold a new scheduled task from scratch with efficiency and self-improvement 
 
 ## Instructions
 
+> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+
 ### Step 1 — Interview the user
 
 Ask the following. Collect all answers before writing anything.
@@ -29,7 +31,9 @@ Ask the following. Collect all answers before writing anything.
 
 **Self-improvement:**
 > 7. Should it learn and improve over time? (Recommended for tasks that run regularly — adds `IMPROVEMENTS.md` and a self-improvement step.)
+>    Use `AskUserQuestion` with buttons: `Yes` / `No`
 > 8. If yes: how often does it run? (This sets the refactor threshold — daily → 25, weekly → 10.)
+>    Use `AskUserQuestion` with buttons: `Daily` / `Weekly` / `On demand`
 
 After collecting answers: "Thanks — I'll scaffold the task now."
 

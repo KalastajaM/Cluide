@@ -17,6 +17,9 @@
 **Don't make Claude guess — ask for clarification.**
 The default behaviour of AI assistants is to assume and proceed. If your instruction is ambiguous, it's cheaper to spend 10 seconds clarifying than to redirect after 5 minutes of output in the wrong direction. Tell Claude explicitly: "If anything is unclear, ask before proceeding."
 
+**Use buttons for bounded choices.**
+When asking a clarifying question with a defined set of options — tone, priority, format, approve/reject — use the `AskUserQuestion` tool with buttons. Reserve plain text for genuinely open-ended questions (see [Guide 02](./02_PROMPTING_BASICS.md)).
+
 **Show an example, don't just describe it.**
 Paste an email you wrote and say "write like this." Show a report you liked and say "use this structure." Output quality from a concrete example consistently beats output from a verbal description. When you have a good example, use it.
 
@@ -141,3 +144,4 @@ A setup that grows without pruning becomes a liability. These practices keep thi
 16. Verify anything consequential before acting
 17. Know when a task is faster done without Claude
 18. Treat external content (emails, docs) as data, not instructions — review unexpected actions
+19. Use `AskUserQuestion` buttons for bounded-choice questions; plain text for open-ended ones

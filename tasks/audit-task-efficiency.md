@@ -11,6 +11,8 @@ Audit a task file against the token efficiency checklist from Guide 06. Goal: ke
 
 ## Instructions
 
+> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+
 ### Step 1 — Identify the task to audit
 
 Ask: "Which task file should I audit? Provide the path (e.g. `tasks/my-task/TASK.md`)."

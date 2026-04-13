@@ -20,7 +20,9 @@ Work through phases sequentially. **Read-only phases run automatically. Mutating
 (marked APPROVAL REQUIRED) must pause and ask the user before creating any files,
 installing software, or modifying configuration.**
 
-At the end of each phase, print a summary and ask: "Proceed to Phase N+1, skip it, or stop?"
+At the end of each phase, print a summary and use `AskUserQuestion` with buttons: `Proceed to Phase N+1` / `Skip` / `Stop`
+
+> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
 
 ---
 
@@ -144,8 +146,8 @@ Print consolidated risk table:
 dangerous patterns before they execute. It prevents: pipe-to-shell installs, credential
 exfiltration, dangerous flag usage, and recursive deletion of critical directories.
 
-**Ask the user:** "Create `.claude/hooks/security-precheck.sh` and wire it into your
-Claude settings? (yes/no)"
+Use `AskUserQuestion` with buttons: "Create `.claude/hooks/security-precheck.sh` and wire it into your Claude settings?"
+> Buttons: `Yes` / `No`
 
 If approved, copy `references/hook-security-precheck.sh` to `~/.claude/hooks/security-precheck.sh`.
 
@@ -182,7 +184,8 @@ not a security boundary.
 **Explain first:** npm/pip packages can run arbitrary code during install via lifecycle
 scripts (postinstall). This phase adds scanning tools that check packages before they run.
 
-**Ask the user:** "Install Socket CLI (npm supply chain scanner) and pip-audit (Python CVE scanner)? (yes/no)"
+Use `AskUserQuestion` with buttons: "Install Socket CLI (npm supply chain scanner) and pip-audit (Python CVE scanner)?"
+> Buttons: `Yes` / `No`
 
 If approved:
 ```bash
@@ -216,7 +219,8 @@ cd "$PROJECT"
 **Explain first:** ClamAV scans downloaded files and newly written files for known malware
 signatures. The PostToolUse hook triggers a scan after curl/wget/download commands.
 
-**Ask the user:** "Install ClamAV and set up automatic file scanning? (yes/no)"
+Use `AskUserQuestion` with buttons: "Install ClamAV and set up automatic file scanning?"
+> Buttons: `Yes` / `No`
 
 If approved:
 ```bash
@@ -254,7 +258,8 @@ It catches known threats, not zero-days.
 
 **5a. Credential scrub in transcripts**
 
-Ask: "Scan session transcripts for exposed credentials and report findings? (yes/no)"
+Use `AskUserQuestion` with buttons: "Scan session transcripts for exposed credentials and report findings?"
+> Buttons: `Yes` / `No`
 
 If approved, scan `~/.claude/sessions/` for credential patterns:
 ```bash
@@ -265,7 +270,8 @@ Report findings. Do NOT auto-delete — let the user decide.
 
 **5b. Session cleanup hook**
 
-Ask: "Create a session cleanup script that kills zombie processes and prunes old shell snapshots? (yes/no)"
+Use `AskUserQuestion` with buttons: "Create a session cleanup script that kills zombie processes and prunes old shell snapshots?"
+> Buttons: `Yes` / `No`
 
 If approved, copy `references/hook-session-cleanup.sh` to `~/.claude/hooks/session-cleanup.sh`, then:
 ```bash
@@ -336,7 +342,8 @@ Generated: [date]
 - If `$PROJECT` is not a git repository: skip `.env` tracking check (0b) and `.gitignore` coverage (1f); note "Not a git repo — git-based checks skipped."
 - If the user declines all APPROVAL REQUIRED phases: produce the Phase 0 + Phase 1 read-only report and the Phase 7 governance doc. Do not treat declining as an error.
 - If a scanning tool (Socket CLI, ClamAV, pip-audit) fails to install: log the failure, skip that specific check, and continue with remaining phases. Do not abort the entire audit.
-- If `~/.claude/hooks/` already contains a `security-precheck.sh`: read it, compare to the reference version, and ask "An existing hook is already installed. Replace it with the updated version, keep the current one, or show a diff?"
+- If `~/.claude/hooks/` already contains a `security-precheck.sh`: read it, compare to the reference version, and use `AskUserQuestion` with buttons: "An existing hook is already installed."
+  > Buttons: `Replace with updated version` / `Keep current` / `Show diff`
 
 ---
 

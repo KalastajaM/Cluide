@@ -13,6 +13,8 @@ This is the recommended memory system for deliberate, cross-session memory. It s
 
 ## Instructions
 
+> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+
 ### Step 1 — Check current state
 
 ```bash

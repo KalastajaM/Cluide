@@ -13,6 +13,8 @@ This task is designed to be portable and run on any project. Do not assume any f
 
 ## Instructions
 
+> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+
 Execute the following steps in order. Stop and ask the user before making any changes.
 
 ### Step 1 — Scan the project
@@ -87,15 +89,14 @@ Only proceed with `git rm --cached` if the user explicitly says yes.
 
 ### Step 5 — Ongoing enforcement (choose one option)
 
-Ask the user:
+Use `AskUserQuestion` with buttons to ask about ongoing enforcement:
 
-> "Would you also like ongoing enforcement — so future files that should be ignored get flagged automatically?
+> "Would you also like ongoing enforcement — so future files that should be ignored get flagged automatically?"
+> Buttons: `PostToolUse hook` / `CLAUDE.md rule` / `Skip`
 >
-> **Option A — PostToolUse hook** (recommended): installs a shell script and updates `.claude/settings.json`. Requires `.claude/` directory in the project.
->
-> **Option B — CLAUDE.md rule**: adds a standing instruction to `CLAUDE.md` (or creates one) telling Claude to flag ignore-worthy files whenever it creates or edits them. Works without any hook infrastructure.
->
-> **Option C — Skip**: rely on manual re-runs of this task."
+> - **PostToolUse hook** (recommended) — installs a shell script and updates `.claude/settings.json`. Requires `.claude/` directory in the project.
+> - **CLAUDE.md rule** — adds a standing instruction telling Claude to flag ignore-worthy files whenever it creates or edits them. Works without any hook infrastructure.
+> - **Skip** — rely on manual re-runs of this task.
 
 Proceed based on the user's choice:
 

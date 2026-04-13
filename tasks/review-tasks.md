@@ -34,6 +34,8 @@ Detect which guides have changed since each task was last reviewed, then check w
 
 ## Instructions
 
+> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+
 ### Step 1 — Find recently changed guides
 
 ```bash

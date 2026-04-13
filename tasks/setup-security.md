@@ -13,6 +13,8 @@ This task runs read-only checks first and asks before making any changes.
 
 ## Instructions
 
+> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+
 ### Step 1 — Credential scan
 
 **Check settings.json files for plaintext credentials:**
@@ -104,12 +106,16 @@ Prompt injection exposure:
   [✓ / ℹ] [clean / potential read+act exposure]
 ```
 
-Ask: "Would you like me to apply fixes? I can:
-- (A) Install a PreToolUse hook that blocks dangerous shell commands
-- (B) Add credential patterns to `.gitignore`
-- (C) Add a prompt injection guard to `CLAUDE.md`
-- (D) All of the above
-- (E) Skip — just show me the findings"
+Use `AskUserQuestion` with buttons to ask what to fix:
+
+> "Would you like me to apply fixes?"
+> Buttons: `PreToolUse hook` / `Fix .gitignore` / `Add CLAUDE.md guard` / `All of the above` / `Skip`
+>
+> - **PreToolUse hook** — blocks dangerous shell commands
+> - **Fix .gitignore** — adds credential patterns
+> - **Add CLAUDE.md guard** — adds a prompt injection guard
+> - **All of the above** — applies all three fixes
+> - **Skip** — just review the findings
 
 ### Step 6 — Apply fixes (based on user choice)
 

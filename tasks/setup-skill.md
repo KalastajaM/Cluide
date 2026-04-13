@@ -13,6 +13,8 @@ The most important part of any skill is the description — it controls whether 
 
 ## Instructions
 
+> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+
 ### Step 1 — Interview the user
 
 Ask the following questions. Collect all answers before writing anything.

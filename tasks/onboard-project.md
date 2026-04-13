@@ -13,6 +13,8 @@ This task orchestrates the other setup tasks rather than duplicating their logic
 
 ## Instructions
 
+> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+
 ### Step 1 — Understand the project
 
 Ask:
@@ -22,18 +24,17 @@ Ask:
 > 4. Will this project use any external tools — email, calendar, GitHub, databases?
 > 5. Will it contain sensitive data, credentials, or personal information?
 
-Then ask:
-> "Would you like to start from one of the available project templates, or set up from scratch?
+Then use `AskUserQuestion` with buttons to ask which starting point the user prefers:
+
+> "Would you like to start from one of the available project templates, or set up from scratch?"
 >
-> **Available templates:**
+> Buttons: `PROJECT_TEMPLATE` / `AI-ASSISTANT_TEMPLATE` / `PMO_TEMPLATE` / `Start from scratch`
 >
-> - **PROJECT_TEMPLATE** — a general-purpose project with `CLAUDE.md`, `Profile/`, and `Knowledge/` pre-structured. Good starting point for any persistent assistant context: document management, research, ongoing projects.
->
-> - **AI-ASSISTANT_TEMPLATE** — a complete personal business assistant. Monitors email, Teams, and calendar via Microsoft 365; maintains a live work context profile; delivers daily briefings. Includes four coordinated scheduled tasks out of the box. Good for: setting up a daily work assistant.
->
-> - **PMO_TEMPLATE** — a project workspace for managing a programme or migration initiative. Includes a full PMO register suite: risk register, action tracker, dependency register, decision tracker, and knowledge base. Good for: structured project management with linked registers.
->
-> - **Start from scratch** — run individual setup tasks tailored to this project. More flexible; takes a few extra minutes."
+> **Template descriptions:**
+> - **PROJECT_TEMPLATE** — general-purpose project with `CLAUDE.md`, `Profile/`, and `Knowledge/` pre-structured. Good for: document management, research, ongoing projects.
+> - **AI-ASSISTANT_TEMPLATE** — complete personal business assistant with Microsoft 365 integration (email, Teams, calendar) and four coordinated scheduled tasks. Good for: setting up a daily work assistant.
+> - **PMO_TEMPLATE** — project workspace with a full PMO register suite: risk register, action tracker, dependency register, decision tracker, knowledge base. Good for: structured project management.
+> - **Start from scratch** — run individual setup tasks tailored to this project. More flexible; takes a few extra minutes.
 
 Based on the answers, recommend a template if one clearly fits, or recommend scratch if none does. Don't force a template.
 
