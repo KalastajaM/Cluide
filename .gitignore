@@ -11,3 +11,4 @@ token.json
 *.oauth
 .env
 .env.*
+/docs
