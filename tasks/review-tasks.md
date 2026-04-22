@@ -29,6 +29,7 @@ Detect which guides have changed since each task was last reviewed, then check w
 | `setup-scheduled-task.md` | `06_TASK_EFFICIENCY_GUIDE.md`, `07_TASK_LEARNING_GUIDE.md`, `08_SELFIMPROVE_TEMPLATE.md` |
 | `onboard-project.md` | `01_CLAUDE_MD.md`, `04_MEMORY_AND_PROFILE.md`, `05_MCP_SERVERS.md`, `11_GIT_INTEGRATION.md`, `12_SECURITY.md` |
 | `setup-data-layer.md` | `14_PERSONAL_DATA_LAYER.md` |
+| `setup-policies.md` | `21_COMPANY_POLICIES.md`, `03_SKILLS.md`, `05_MCP_SERVERS.md` |
 
 ---
 
