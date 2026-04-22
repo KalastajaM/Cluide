@@ -8,7 +8,7 @@ description: >
 
 Analyze a Cowork task or project definition, identify optimization opportunities, present a prioritized plan, get user sign-off, then implement agreed changes.
 
-> This skill applies the patterns from [06_TASK_EFFICIENCY_GUIDE.md](../../06_TASK_EFFICIENCY_GUIDE.md) and [07_TASK_LEARNING_GUIDE.md](../../07_TASK_LEARNING_GUIDE.md). Read those guides if you want to understand the reasoning behind any recommendation.
+> This skill applies the patterns from [references/06_TASK_EFFICIENCY_GUIDE.md](references/06_TASK_EFFICIENCY_GUIDE.md) and [references/07_TASK_LEARNING_GUIDE.md](references/07_TASK_LEARNING_GUIDE.md). Read those guides if you want to understand the reasoning behind any recommendation.
 
 ## Rules
 

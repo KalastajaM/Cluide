@@ -32,6 +32,7 @@ Claude pricing (as of early 2026) uses per-token rates that differ by model tier
 
 | Model | Input (per 1M tokens) | Output (per 1M tokens) |
 |---|---|---|
+| **Haiku** | ~$1 | ~$5 |
 | **Sonnet** | ~$3 | ~$15 |
 | **Opus** | ~$15 | ~$75 |
 
@@ -51,9 +52,14 @@ At one run per day, the morning briefing costs roughly $5/month on Sonnet. The s
 
 ---
 
-## Model Tier Selection: Sonnet vs. Opus
+## Model Tier Selection: Haiku, Sonnet, Opus
 
 Not every task needs the most capable model. Choose based on what the task actually does:
+
+**Use Haiku for:**
+- Vision and OCR — reading screenshots, extracting text from images, parsing receipts (see [Guide 14](./14_PERSONAL_DATA_LAYER.md) for concrete patterns)
+- High-volume, low-judgment work — bulk classification, tagging, dedup
+- Lightweight extraction where the schema is tight and the model doesn't need to reason
 
 **Use Sonnet for:**
 - Structured extraction (parsing emails, reading calendar events)
@@ -67,9 +73,9 @@ Not every task needs the most capable model. Choose based on what the task actua
 - Tasks where output quality directly affects decisions
 - Self-improvement proposal generation (the review step in Guide 07)
 
-**The hybrid approach:** Run the data-gathering steps on Sonnet and the synthesis/judgment step on Opus. A morning briefing that fetches and triages on Sonnet, then drafts the narrative on Opus, can cut costs by 40–60% compared to running everything on Opus while keeping output quality high.
+**The hybrid approach:** Split a task across tiers. A morning briefing that extracts screenshots on Haiku, triages emails on Sonnet, and drafts the narrative on Opus costs a fraction of running everything on Opus while keeping output quality high at the point that matters.
 
-In practice, most scheduled tasks work well on Sonnet. Reserve Opus for the tasks where you've noticed Sonnet's output isn't good enough.
+In practice, most scheduled tasks work well on Sonnet. Drop to Haiku for vision or cheap bulk work; reserve Opus for the tasks where you've noticed Sonnet's output isn't good enough.
 
 ---
 

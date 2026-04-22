@@ -48,6 +48,10 @@ All guides are in the `references/` directory next to this file.
 | `15_LLM_WIKI.md` | LLM wiki pattern: building a persistent compounding knowledge base with ingest/query/lint operations, schema design, Obsidian integration | User wants to build a research wiki, threat intelligence base, competitive analysis tracker, or any domain knowledge base that compounds over time |
 | `12_SECURITY.md` | Operational security for Claude Code and Cowork: credential hygiene, MCP server trust, permission controls and hooks, session data hygiene, supply chain awareness, prompt injection, file hygiene (.gitignore/.claudeignore), autonomous task safety | User asks about securing their Claude setup, credential exposure, MCP server risks, setting up hooks, or what to exclude from git/context |
 | `17_TROUBLESHOOTING.md` | Diagnosing and fixing common problems: skill not firing, memory not sticking, task running slow, unexpected outputs | User reports something isn't working and you need a diagnostic starting point |
+| `09_MULTI_TASK_ORCHESTRATION.md` | Coordinating multiple scheduled tasks with shared state, dependencies, handoffs | User has (or wants) several tasks that need to talk to each other, or is seeing conflicts between overlapping tasks |
+| `18_END_TO_END_WALKTHROUGH.md` | Full guided path from empty folder to running assistant — layer ordering and handoffs between guides | User wants a single narrative route through the whole system rather than jumping between guides |
+| `19_OUTPUT_FORMATTING.md` | Markdown and HTML output patterns — headings, tables, code blocks, email-safe HTML | User is deciding how task output should be formatted, or a task's output renders poorly in its destination |
+| `21_COMPANY_POLICIES.md` | Embedding existing company policies as tiered guardrails (T1 block / T2 alert / T3 soft guidance) without shipping policy content in the repo | User wants Claude to enforce AI use policy, data classification, code of conduct, or similar — at organisational level |
 
 ---
 
