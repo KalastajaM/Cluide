@@ -11,10 +11,11 @@
 | Track open clarification, investigation, and decision actions | `PMO/Action_Tracker.md` | ✅ Update when actions are opened, progressed, or closed |
 | Record or review programme decisions | `PMO/Decision_Tracker.md` | ✅ Update when decisions are made, revised, or superseded |
 | Track programme-level dependencies (internal & external) | `PMO/Dependency_Register.md` | ✅ Update when dependency status, target date, or priority changes |
-| Understand the financial model | `FinancialModel/Model_Summary.md` | ✅ Update when the Excel model changes |
-| Work with the financial model itself | `FinancialModel/[PLACEHOLDER: Financial Model Filename].xlsx` | ✅ Main financial model |
+| Understand the financial model | `Financial Model/Model_Summary.md` | ✅ Update when the Excel model changes |
+| Work with the financial model itself | `Financial Model/[PLACEHOLDER: Financial Model Filename].xlsx` | ✅ Main financial model |
 | Access raw source data | `Data/*.csv` (or equivalent) | ❌ Raw source data — do not modify |
-| View or build the project plan | `ProjectPlan/` | ✅ Work in progress |
+| View or build the project plan | `Project Plan/` | ✅ Work in progress |
+| Run the cross-reference audit on the registers | `Updater-Task/Task.md` | Follow the task instructions |
 
 ---
 
@@ -33,7 +34,7 @@ Home for programme management artefacts: registers, the knowledge base, and guar
 - **`PMO/Action_Tracker.md`** — Open clarification, investigation, and decision actions.
 - **`PMO/Decision_Tracker.md`** — Programme decision register. Update whenever a decision is made, revised, or superseded.
 
-### `FinancialModel/`
+### `Financial Model/`
 - **`[PLACEHOLDER: Financial Model Filename].xlsx`** — the official financial model. This is the primary source of truth for financial figures.
 - **`Model_Summary.md`** — a Claude-generated description of the model. **Must be updated** whenever the Excel model is updated.
 
@@ -43,5 +44,13 @@ Raw data exports and a normalized file used as input for the financial model.
 - **Raw exports** — source data, do not modify.
 - **Normalized data file** — the processed version that feeds into the financial model. Update this when a new export is brought in.
 
-### `ProjectPlan/`
+### `Project Plan/`
 Home for the project plan. Update `Project_Plan.md` (or equivalent) whenever scope, timeline, or milestones change.
+
+> **Optional convention — `_LATEST` suffix:** When the plan starts going through versioned iterations, rename the active copy to `Project_Plan_LATEST.md` and move older revisions into a `[ARCHIVE] …/` subfolder. Do not adopt this until versioning actually kicks in — the unsuffixed name is fine while there's only one.
+
+### `Updater-Task/`
+Home for the cross-reference audit task. Run it periodically (or after a heavy editing session) to catch orphaned IDs, missing back-links, and ID-format drift across the four registers and the knowledge base. See `Updater-Task/Task.md` for the step-by-step procedure.
+
+### `[ARCHIVE]` folders
+Any folder whose name starts with `[ARCHIVE]` (e.g. `[ARCHIVE] Background/`, `[ARCHIVE] Previous Plans/`) is a read-only backup. **Never read from or write to them** — they contain outdated material and will confuse future work.

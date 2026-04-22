@@ -1,7 +1,7 @@
 # Sensitive data — review before committing
 # Uncomment lines below if your registers contain commercially sensitive data
 # Data/
-# FinancialModel/
+# Financial Model/
 
 # Credentials
 credentials.json

@@ -25,18 +25,20 @@ PMO_TEMPLATE/
 ├── PROJECT_GUIDE.md                   ← Folder map: what every file is, what to update
 ├── Charter/
 │   └── Initiative_Charter.md          ← Initiative charter (scope, objectives, team, KPIs)
-├── FinancialModel/
+├── Financial Model/
 │   └── Model_Summary.md              ← Claude-readable summary of the financial model
-├── ProjectPlan/
+├── Project Plan/
 │   └── Project_Plan.md               ← Project plan (scope, milestones, timeline)
 ├── Data/                              ← Raw data exports (do not modify)
-└── PMO/
-    ├── Guardrails.md                  ← Claude skill: PMO validation guardrails
-    ├── Knowledge_Base.md              ← Running knowledge base / institutional memory
-    ├── Risk_Register.md               ← Risk register (rated + linked to dependencies)
-    ├── Action_Tracker.md              ← Open action items (non-milestone tasks)
-    ├── Dependency_Register.md         ← Internal + external programme dependencies
-    └── Decision_Tracker.md            ← All programme decisions, with rationale
+├── PMO/
+│   ├── Guardrails.md                  ← Claude skill: PMO validation guardrails
+│   ├── Knowledge_Base.md              ← Running knowledge base / institutional memory
+│   ├── Risk_Register.md               ← Risk register (rated + linked to dependencies)
+│   ├── Action_Tracker.md              ← Open action items (non-milestone tasks)
+│   ├── Dependency_Register.md         ← Internal + external programme dependencies
+│   └── Decision_Tracker.md            ← All programme decisions, with rationale
+└── Updater-Task/
+    └── Task.md                        ← Runnable cross-reference audit across the registers
 ```
 
 ---
@@ -64,6 +66,15 @@ Replace every `[PLACEHOLDER: ...]` value with your own content. The table below 
 5. Add your own risks, actions, and dependencies as you work.
 6. Claude will read `CLAUDE.md` and `PROJECT_GUIDE.md` automatically and apply all project rules in every conversation.
 7. **(Optional) Install the Guardrails skill:** To have Claude automatically validate recommendations against the charter, copy `PMO/Guardrails.md` to `.claude/skills/pmo-guardrails/SKILL.md`.
+8. **(Optional) Run the Updater-Task periodically:** After a heavy editing session — or on a cadence (e.g. weekly) — open `Updater-Task/Task.md` in Claude and follow its steps. It audits cross-references across the four registers + KB, fixes what it can, and appends a change-log entry.
+
+---
+
+## Conventions
+
+- **`[ARCHIVE]` folders** — any folder whose name starts with `[ARCHIVE]` (e.g. `[ARCHIVE] Previous Plans/`) is a read-only backup. Claude is instructed never to read from or write to them (see `CLAUDE.md`). Use this prefix when you retire old material but want to keep it on disk.
+- **`_LATEST` filename suffix (optional)** — when a file starts going through versioned iterations (common for the project plan), rename the active copy to `<name>_LATEST.md` and move older revisions into an `[ARCHIVE]` subfolder. Don't adopt this until versioning actually starts — the unsuffixed name shipped with the template is fine while there's only one.
+- **Register ID format** — `R-##` (risks), `D-##` (dependencies), `ACT-<Cat>-##` (actions, where `Cat` is one of P/C/F/O/D/PJ), `DEC-##` (decisions), `KB §#` (knowledge-base sections). Don't mix in legacy prefixes — the Updater-Task will flag them.
 
 ---
 
