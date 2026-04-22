@@ -200,7 +200,7 @@ Write `scripts/extract_[name].py`:
 extract_[name].py — vision-based data extraction
 Sends screenshots to the Claude API and extracts structured JSON.
 Requires: ANTHROPIC_API_KEY environment variable
-Cost: ~$0.01 per screenshot
+Cost: ~$0.001 per screenshot (Haiku tier — cheapest Claude model; plenty for structured OCR)
 """
 import anthropic
 import base64
@@ -220,7 +220,7 @@ def extract(image_path: Path) -> list[dict]:
     with open(image_path, "rb") as f:
         image_data = base64.b64encode(f.read()).decode()
     response = client.messages.create(
-        model="claude-opus-4-6",
+        model="claude-haiku-4-5-20251001",
         max_tokens=1024,
         messages=[{"role": "user", "content": [
             {"type": "image", "source": {"type": "base64", "media_type": "image/png", "data": image_data}},

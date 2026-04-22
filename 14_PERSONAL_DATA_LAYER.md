@@ -237,7 +237,7 @@ Input:  screenshots/  directory of bank app screenshots (PNG/JPG)
 Output: data/bank_transactions_raw.json
 Usage:  python3 scripts/extract_transactions.py
 Requires: ANTHROPIC_API_KEY set in environment
-Cost:   ~$0.01 per screenshot
+Cost:   ~$0.001 per screenshot (Haiku tier — cheapest Claude model; more than enough for structured OCR)
 ```
 
 Core script structure:
@@ -256,7 +256,7 @@ def extract_from_screenshot(image_path: Path) -> list[dict]:
         image_data = base64.b64encode(f.read()).decode()
 
     response = client.messages.create(
-        model="claude-opus-4-6",
+        model="claude-haiku-4-5-20251001",
         max_tokens=1024,
         messages=[{
             "role": "user",
