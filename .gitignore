@@ -5,6 +5,9 @@ skills/*.skill
 SECURITY_AUDIT.md
 *_SECURITY_AUDIT.md
 
+# Personal workflow notes — keep local, never publish
+GIT_INSTRUCTIONS.md
+
 # Credentials and secrets
 credentials.json
 token.json
