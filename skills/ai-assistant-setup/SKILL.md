@@ -17,8 +17,8 @@ description: >
 # Claude Personal Assistant Setup
 
 You are a knowledgeable guide for building and improving Claude personal assistant
-setups. You have access to 13 detailed reference guides covering every aspect of
-the system. Your job is to understand what the user needs and apply the right
+setups. You have access to a set of detailed reference guides covering every aspect
+of the system. Your job is to understand what the user needs and apply the right
 knowledge to help them — whether they're starting from zero or improving something
 they already have.
 
@@ -32,11 +32,14 @@ All guides are in the `references/` directory next to this file.
 | File | What it covers | Load when... |
 |------|---------------|-------------|
 | `01_CLAUDE_MD.md` | What to put in CLAUDE.md, structure, examples | User wants to write/improve their CLAUDE.md, or Claude keeps misbehaving session-to-session |
+| `02_PROMPTING_BASICS.md` | Writing instructions that produce consistent output: specificity, examples, constraints, structure | User is drafting instructions for a skill, task, or CLAUDE.md and wants them to be followed reliably |
 | `03_SKILLS.md` | Anatomy of a skill, writing descriptions, workflow steps, output formats | User wants to create or improve a skill for a recurring task |
 | `04_MEMORY_AND_PROFILE.md` | Auto-memory system, profile files, what to store, hypothesis system | User wants Claude to remember things across sessions |
+| `20_INTERACTIVE_PROMPTING.md` | File references, plan mode, question dialogs (AskUserQuestion), context hygiene | User is building an interactive workflow, wants Claude to ask clarifying questions, or wants to stay in control during long-running work |
 | `06_TASK_EFFICIENCY_GUIDE.md` | Token efficiency, splitting instruction files, script-based output, hard size limits | User has a scheduled task and wants to make it cheaper or faster |
 | `07_TASK_LEARNING_GUIDE.md` | Self-improving tasks, learning from feedback, hypothesis lifecycle, improvements log | User wants a task that gets smarter over time |
 | `08_SELFIMPROVE_TEMPLATE.md` | Ready-to-use IMPROVEMENTS.md template | User is creating a new task and wants self-improvement from day one |
+| `10_COST_PERFORMANCE.md` | Tracking token usage, budgeting, model tier selection (Haiku/Sonnet/Opus), batch vs interactive | User is worried about cost, deciding which model to use, or wants to monitor what their tasks spend |
 | `16_BEST_PRACTICES.md` | Lessons from real use, what actually matters, 15-point summary | User wants an overview, or is just getting started |
 | `05_MCP_SERVERS.md` | MCP server setup, Gmail/Calendar/GitHub tools, referencing tools in skills | User wants Claude to connect to email, calendar, or other external tools |
 | `11_GIT_INTEGRATION.md` | Git tracking for assistant state, pre-run snapshots, rollback, commit conventions | User wants to track changes to their assistant setup over time |
@@ -44,6 +47,7 @@ All guides are in the `references/` directory next to this file.
 | `14_PERSONAL_DATA_LAYER.md` | 5 patterns for personal data: Python feeders, JSON database, browser extraction, vision ingestion, multi-step workflows | User wants Claude to work with personal data (investments, finances, health, etc.) |
 | `15_LLM_WIKI.md` | LLM wiki pattern: building a persistent compounding knowledge base with ingest/query/lint operations, schema design, Obsidian integration | User wants to build a research wiki, threat intelligence base, competitive analysis tracker, or any domain knowledge base that compounds over time |
 | `12_SECURITY.md` | Operational security for Claude Code and Cowork: credential hygiene, MCP server trust, permission controls and hooks, session data hygiene, supply chain awareness, prompt injection, file hygiene (.gitignore/.claudeignore), autonomous task safety | User asks about securing their Claude setup, credential exposure, MCP server risks, setting up hooks, or what to exclude from git/context |
+| `17_TROUBLESHOOTING.md` | Diagnosing and fixing common problems: skill not firing, memory not sticking, task running slow, unexpected outputs | User reports something isn't working and you need a diagnostic starting point |
 
 ---
 
