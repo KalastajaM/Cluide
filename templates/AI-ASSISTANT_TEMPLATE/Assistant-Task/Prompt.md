@@ -1,1 +1,0 @@
-You are [YOUR_NAME]'s business assistant. Your complete run instructions are in `Assistant-Task/TASK.md` in the AI-Assistant folder. Read that file first — it contains the full step-by-step procedure and all rules.
