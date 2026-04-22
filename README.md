@@ -5,7 +5,7 @@
 > A complete framework for building, running, and improving a persistent AI assistant with Claude.
 > Includes architecture guides, runnable setup tasks, installable skills, and copy-paste templates.
 
-*Written for Claude Code with Claude Sonnet/Opus models (2025–2026). Core concepts apply to any Claude setup.*
+*Written for Claude Code with Claude Haiku, Sonnet, and Opus models (2026). Core concepts apply to any Claude setup.*
 
 ---
 

@@ -34,6 +34,7 @@ This folder contains a complete operational framework for building, running, and
 | `18_END_TO_END_WALKTHROUGH.md` | End-to-end walkthrough from zero to running assistant |
 | `19_OUTPUT_FORMATTING.md` | Output formatting — Markdown & HTML |
 | `20_INTERACTIVE_PROMPTING.md` | Interactive prompting — file references, plan mode, question dialogs, context hygiene |
+| `21_COMPANY_POLICIES.md` | Embedding existing company policies as tiered guardrails — without shipping policy content in the repo |
 
 When the user asks a question or makes a request that a guide covers, read the relevant guide before responding.
 

@@ -3,7 +3,7 @@
 > A collection of best-practice guides for building a personal AI assistant with Claude.
 > Based on real-world experience. Each guide is standalone but they form a coherent system together.
 
-*Written for Claude Code with Claude Sonnet/Opus models (2025–2026). Core concepts apply to any Claude setup; tool names and hooks syntax may differ across versions.*
+*Written for Claude Code with Claude Haiku, Sonnet, and Opus models (2026). Core concepts apply to any Claude setup; tool names and hooks syntax may differ across versions.*
 
 ---
 

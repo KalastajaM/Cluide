@@ -7,7 +7,7 @@
 > A complete framework for building, running, and improving a persistent AI assistant with Claude.
 > Includes architecture guides, runnable setup tasks, installable skills, and copy-paste templates — covering the full lifecycle from initial setup to automation, self-improvement, and security.
 
-*Written for Claude Code with Claude Sonnet/Opus models (2025–2026). Core concepts apply to any Claude setup; tool names and hooks syntax may differ across versions.*
+*Written for Claude Code with Claude Haiku, Sonnet, and Opus models (2026). Core concepts apply to any Claude setup; tool names and hooks syntax may differ across versions.*
 
 ---
 
@@ -286,6 +286,17 @@ Covers: `@filepath` references in messages and CLAUDE.md, AskUserQuestion input 
 
 ---
 
+### [21 — Company Policies: Embedding Existing Policies as Guardrails](./21_COMPANY_POLICIES.md)
+`[All users]` · `~12 min`
+
+*Make Claude honour your organisation's AI use policy, Code of Conduct, data classification, and similar — without copying the policy content into Cluide.*
+
+Covers: the separation principle (generic Cluide vs. private policy content vs. the skill/CLAUDE.md bridge), two storage patterns (central user-level folder and external systems via MCP), a tiered enforcement model (T1 hard block, T2 required check, T3 soft guidance), worked examples for each tier, file hygiene so policies never leak into the repo, verification prompts, and maintenance.
+
+**Use this when:** your company has policies that Claude should respect across projects — and you want them enforced automatically, at the right strictness per policy, without retyping the policy text into CLAUDE.md or skills.
+
+---
+
 ## Templates: Copy-Paste Starting Points
 
 Four ready-to-copy folder structures are included in the `templates/` folder. Use them when you want to start a new project or task without building from scratch.
@@ -356,6 +367,7 @@ Tasks are designed to be portable: copy any task file to another project's `task
 | `tasks/setup-skill.md` | Interview → generate a `SKILL.md` with reliable triggering and full structure | 03 |
 | `tasks/setup-scheduled-task.md` | Scaffold a new scheduled task with efficiency + self-improvement built in | 06, 07, 08 |
 | `tasks/setup-data-layer.md` | Set up data patterns for personal data (Python feeder, JSON DB, browser extraction, vision) | 14 |
+| `tasks/setup-policies.md` | Interview → wire company policies into `policies-validator` skill + `CLAUDE.md` with tiered enforcement | 21, 03, 05 |
 
 ### Audit tasks (re-runnable)
 
@@ -376,7 +388,7 @@ Tasks are designed to be portable: copy any task file to another project's `task
 
 ## Skills Included in This Project
 
-Five installable skills are bundled with this project. Each skill is self-contained — install only the ones you need.
+Six installable skills are bundled with this project. Each skill is self-contained — install only the ones you need.
 
 ### Installing in Claude Code
 
@@ -499,6 +511,26 @@ A portable backlog manager for any project. Maintains a `BACKLOG.md` file of pri
 > "Add 'implement caching layer' to the backlog."
 
 > "Let's groom the backlog."
+
+---
+
+### policies-validator
+
+Enforcement layer for company policies — AI use policy, Code of Conduct, data classification, Claude guidelines, and similar. Keeps policy *content* outside Cluide (stored centrally or fetched via MCP) and applies tiered enforcement: T1 hard block, T2 required check with `✅ POLICY ALIGNED` / `⚠️ POLICY ALERT` output, T3 soft guidance. Ships as a placeholder-filled template; `tasks/setup-policies.md` fills it in.
+
+**Install:** Copy `policies-validator/` to `~/.claude/skills/` (Claude Code). Run `tasks/setup-policies.md` to populate the Policy Registry and wire the `CLAUDE.md` reference.
+
+**Use when:**
+- Your organisation has existing policies that Claude should respect across projects
+- You want different strictness for different policies (block vs. surface vs. nudge)
+- You want policy content to live in SharePoint / Confluence / a local folder — not in the repo
+
+**Example prompts (once configured):**
+> "Draft an email to our customer about the outage." (T2 policies flagged after draft)
+
+> "Summarise this internal document I'm pasting." (T1 classification policy halts if data is flagged Confidential)
+
+> "Write a blog post about the new release." (T3 style guide shapes the output silently)
 
 ---
 
