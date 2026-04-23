@@ -297,6 +297,17 @@ Covers: the separation principle (generic Cluide vs. private policy content vs. 
 
 ---
 
+### [22 — Personal Helper Apps](./22_HELPER_APPS.md)
+`[Power user]` · `~10 min`
+
+*Collaboration patterns for the small locally-run tool you build for yourself with Claude's help — budget tracker, reading log, data dashboard, CLI wrapper. Not a product; one user, local data, vibe-coded feature-by-feature.*
+
+Covers: when the helper-app shape applies (and when it doesn't), four CLAUDE.md patterns (domain invariant, helper index, verification gates, convention normalisations) that prevent cross-session drift and false-done, tight permission whitelisting, the plan-as-checklist iteration loop, early hardening rules that are cheap on day 1 and painful to retrofit, anti-patterns, and the signals that tell you the app has outgrown this guide.
+
+**Use this when:** you are using Claude to build a small tool for your own use and want the collaboration to stay coherent across dozens of short sessions — without the app rotting into a tangle of duplicated helpers, silently broken invariants, and stale CLAUDE.md rules.
+
+---
+
 ## Templates: Copy-Paste Starting Points
 
 Four ready-to-copy folder structures are included in the `templates/` folder. Use them when you want to start a new project or task without building from scratch.

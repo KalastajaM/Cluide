@@ -13,7 +13,7 @@
 
 Cluide is an operational framework for building AI assistants that persist, learn, and improve over time — not a collection of tips, but a complete system you can actually install and run. It covers the full lifecycle: initial setup, scheduled automation, self-improvement, security, and long-term maintenance.
 
-The deliverables are concrete: 21 interlocking guides that define the architecture, 19 runnable task files that do the setup work for you, 6 bundled skills, and 4 ready-to-use templates. The guides are documentation for the system; the tasks are its installation scripts.
+The deliverables are concrete: 22 interlocking guides that define the architecture, 19 runnable task files that do the setup work for you, 6 bundled skills, and 4 ready-to-use templates. The guides are documentation for the system; the tasks are its installation scripts.
 
 A well-configured Claude personal assistant has four layers:
 
@@ -71,6 +71,7 @@ A well-configured Claude personal assistant has four layers:
 | 19 | [Output Formatting](./19_OUTPUT_FORMATTING.md) | All | Markdown & HTML output patterns |
 | 20 | [Interactive Prompting](./20_INTERACTIVE_PROMPTING.md) | All | File references, plan mode, question dialogs, context hygiene |
 | 21 | [Company Policies](./21_COMPANY_POLICIES.md) | Power users | Embedding company policies as tiered guardrails without shipping policy content in the repo |
+| 22 | [Personal Helper Apps](./22_HELPER_APPS.md) | Power users | Collaboration patterns for small locally-run tools you vibe-code for yourself — invariants, helper index, verification gates |
 
 **Recommended order:** Quickstart → 01 → 02 → **20** → 03 → 04 → 05 → (06–10 once you have scheduled tasks running). Or follow [Guide 18](./18_END_TO_END_WALKTHROUGH.md) for a guided path through all stages.
 
@@ -146,7 +147,7 @@ Four copy-paste starting points in `templates/`:
 /
 ├── 00_INDEX.md               # Full annotated guide index
 ├── 00_QUICKSTART.md          # Start here if you're new
-├── 01_CLAUDE_MD.md – 21_COMPANY_POLICIES.md
+├── 01_CLAUDE_MD.md – 22_HELPER_APPS.md
 ├── CHEATSHEET.md             # One-page quick reference
 ├── tasks/                    # Setup and audit task files
 ├── skills/                   # Bundled installable skills
