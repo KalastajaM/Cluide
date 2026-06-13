@@ -1,6 +1,6 @@
 # Claude Task Efficiency Guide
 
-*Last reviewed: April 2026*
+*Last reviewed: June 2026*
 
 > How to design and optimize Claude tasks for minimal token consumption.
 > Use as a one-time audit checklist when setting up a new task, or as a periodic optimization pass on an existing one.
@@ -250,9 +250,12 @@ Hooks are shell commands that fire automatically in response to Claude Code even
 ```
 
 **Other hook events:**
-- **PreToolUse** — fires before a tool runs. Useful for validation or logging.
+- **PreToolUse** — fires before a tool runs. Useful for validation or logging. Unlike CLAUDE.md instructions (guidance Claude can overlook), a PreToolUse hook is an enforcement layer — it can hard-block a tool call.
 - **PostToolUse** — fires after a tool completes. Useful for follow-up actions (e.g., after a file write, trigger a view regeneration).
+- **UserPromptSubmit** — fires when a prompt is submitted, before Claude processes it. Useful for injecting context or validating input.
 - **Stop** — fires when Claude ends a response.
+- **SessionEnd** — fires when a session closes. Useful for cleanup or end-of-session logging.
+- **PreCompact** — fires before context compaction. Useful for saving state that would otherwise be summarized away.
 - **Notification** — fires when Claude sends a notification.
 
 **Hook practical notes:**
@@ -260,7 +263,7 @@ Hooks are shell commands that fire automatically in response to Claude Code even
 - The `matcher` field filters by context. Leave it empty (`""`) to fire on all sessions.
 - For git pre-session snapshots, the hook approach is the right fit. See [Guide 11 — Git Integration](./11_GIT_INTEGRATION.md).
 
-For the full hooks reference: [Claude Code documentation on hooks](https://docs.anthropic.com/en/docs/claude-code/hooks).
+For the full hooks reference: [Claude Code documentation on hooks](https://code.claude.com/docs/en/hooks).
 
 ---
 

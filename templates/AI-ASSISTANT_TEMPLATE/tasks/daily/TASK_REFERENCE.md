@@ -41,6 +41,142 @@ AI-Assistant/
 
 ---
 
+## §Connector-Quirks
+
+O365 connector syntax notes (confirmed against the live connectors; update with a date when they change):
+
+- **Email search:** `query: "*"` → syntax error. Use `"[YOUR_COMPANY_KEYWORD]"` for inbox, `"[YOUR_NAME_LOWERCASE]"` as fallback. Sent items: add `sender: "[YOUR_EMAIL]"` — **never** `folderName: "Sent Items"` (NOT_FOUND on this account).
+- **Flagged email:** `query: "isflagged:true"` (KQL, confirmed 2026-03-20). Full flag metadata via `read_resource` on the individual message.
+- **Calendar:** `query: "*"` works (confirmed Run 9); keyword queries may miss events. **Do NOT pass `limit`** — the connector coerces the integer to a string and fails ("Expected number, received string"); omit it and the API default applies.
+- **Teams (`chat_message_search`):** filter by participant (`recipient:`) + `afterDateTime`; **do NOT pass `limit`** (same coercion bug). See §Teams-Search.
+
+---
+
+## §Triage-Gate
+
+Step 3B Pass 1 — decide whether to call `read_resource` (full body) from the search snippet alone.
+
+**Call `read_resource` if any of:**
+- Sender is unknown or not yet in the profile
+- Snippet contains action words: reply, deadline, confirm, urgent, invoice, meeting, escalat-, decision, approve, contract
+- Email relates to an active PA (sender or subject match)
+- Sender is a tracked contact in `PROFILE_identity.md`
+- Snippet is cut off and context is ambiguous
+
+**Skip `read_resource` if all of:**
+- Sender matches the Digest Senders table in IMPROVEMENTS.md
+- Snippet is clearly promotional with no action keywords
+- Automated system notification with no PA match (CI/CD, standup bots, calendar boilerplate)
+- Thread is an exact duplicate of one already processed this run
+
+---
+
+## §Extraction-Categories
+
+Step 3B Pass 2 (and Step 3C Teams) — what to extract from full bodies:
+
+- **Profile signals:** people & relationships, deals & projects, communication patterns, decisions & priorities, commitments in both directions, recurring patterns.
+- **Decisions (explicit — all runs):** what was decided, by whom, when, which topic. Flag contradictions with prior direction in ❓. Material only.
+- **Actionable items:** emails awaiting reply, deadlines, follow-ups, invoices, commitments made in either direction, meeting prep needed.
+- **Skip:** marketing/newsletters (unless [USER] engages), spam, automated system notifications (unless revealing), mailing lists where [USER] doesn't participate, calendar invite boilerplate.
+- **Keep even if automated:** invoices/payments, contract notifications, subscription changes, CRM/ticketing on active deals.
+
+---
+
+## §Teams-Search
+
+**Why filter by participant, not content (fixed 2026-03-25 — root cause of all prior 0-result runs):** `query: "[YOUR_NAME_LOWERCASE]"` searches message *content* for that word, which is almost never present in bodies. Filter by participant instead.
+
+Two passes (**never pass `limit`** — see §Connector-Quirks):
+1. `chat_message_search`: `query: "[YOUR_COMPANY_KEYWORD]"`, `recipient: "[YOUR_EMAIL]"`, `afterDateTime: LAST_RUN_UTC` — returns messages in chats where [USER] participates.
+2. If pass 1 returns 0 **and today is not Saturday or Sunday:** fallback with `query: "[YOUR_COMPANY_KEYWORD]"` and a recent contact name as `recipient` (e.g. `[EXAMPLE_COLLEAGUE_EMAIL]`) to catch chats not indexed by [USER]'s address. Log both passes in RUN_LOG. Skip on weekends — 0 is expected.
+
+**Zero-result email proxy for PA resolution (2026-03-25):** if both passes return 0 AND open PAs have `resolution_check.type = "teams_search"`, run a targeted `outlook_email_search` (inbox + sent) using each such PA's `resolution_check.query` as a proxy — Teams decisions frequently surface in email notifications, follow-up threads, or sent items. Carry any proxy evidence into Step 5A. Note all proxy searches in RUN_LOG.
+
+**Permanent filters:** skip `[EXAMPLE_TEAMS_CHANNEL_TO_SKIP]` entirely; skip bot/CI-CD/standup channels and non-business banter (personal chat, jokes, social).
+
+---
+
+## §Calendar-Rules
+
+**Timezone rule (apply to every event individually — errors have occurred three times; never mix approaches within a run):**
+- `isOrganizer: true` ([USER] organized) → connector timestamp IS the local time. Display as-is; do NOT add offset.
+- `isOrganizer: false` (someone else organized) → connector timestamp is true UTC. Add the current offset ([YOUR_UTC_OFFSET] [YOUR_TIMEZONE_ABBR] Oct–Mar / [YOUR_UTC_OFFSET] [YOUR_TIMEZONE_ABBR] Mar–Oct) to get local time; confirm the current offset from `RUN_TIME_HEL`'s timezone string first.
+- Exception: `isOrganizer: true` AND `recurrence ≠ null` AND a large cross-team meeting → treat as true UTC and flag "connector time — verify local time".
+- Never compare raw UTC against `RUN_DATE_HEL` (`T22:00:00Z` = midnight [YOUR_TIMEZONE_ABBR] = start of the next calendar day).
+
+**Solo block:** any event where organizer = [USER] with no other participants — a personal work reservation; [USER] can freely attend other meetings during it.
+
+**Conflict detection (PROP-0002):** sort events by start time and scan for overlapping pairs where **both** are non-solo and at least one has named external attendees or known colleagues. For each real overlap: log both event names, the overlap duration, and all named attendees; flag ⚠️ in a **Scheduling Conflicts** sub-section at the top of `📅 Meeting Prep`. Ambiguous connector time → "possible overlap — verify [YOUR_TIMEZONE_ABBR] times". No conflicts → "none detected". An overlap where one event is a solo block is not a conflict — note simply that the meeting falls inside a personal work block.
+
+---
+
+## §Flagged-Sync
+
+Step 3E full sync logic. `outlook_email_search` `query: "isflagged:true"`, `limit: 50` returns the current flagged `messageId`s. Process all results, plus check tracked PAs for removals:
+
+1. **New flag** (messageId NOT in any existing PA's `outlook_message_id`): call `read_resource` for `flag.dueDateTime`. Dedup against existing PAs by subject/sender/context. Match → merge (add `outlook_message_id` + `outlook_flag_due`; update deadline if the flag date is earlier). No match → new PA with `"source": "outlook-flag"`.
+2. **Tracked flag still present** (messageId IS in current results): call `read_resource` for `flag.dueDateTime`. Changed vs the PA's `outlook_flag_due` → update deadline; unchanged → no write.
+3. **Tracked flag absent** (existing PA's `outlook_message_id` NOT in current results) → EXPIRED or RESOLVED. No `read_resource` — absence is sufficient.
+
+**Cost rule (PROP-0003, 2026-03-24):** skip `read_resource` for (a) removed/completed flags (case 3 — absence is sufficient); (b) tracked flags where `outlook_flag_due` is > 30 days from today AND `last_reviewed` is within 7 days (far-future stable flags — carry the stored `outlook_flag_due` forward unchanged). All other present flags — new or tracked — require `read_resource` to catch due-date changes. Note (b) skips in RUN_LOG.
+
+---
+
+## §Resolution-Checks
+
+Step 5A throttling and backoff for PAs with a `resolution_check`.
+
+**Throttle — check `next_resolution_check` first:**
+- Set and > today → **skip this PA** (note "PA-NNNN resolution check deferred to YYYY-MM-DD" in RUN_LOG); do not run the search.
+- Exception: `deadline` within 3 days of today → always run regardless.
+- Exception: `hard_deadline` set and today ≥ it → escalate the PA to URGENT immediately regardless of any deferral; never skip.
+- Null or ≤ today → run the search normally.
+
+**After a failed check** (search ran, no resolution found), set `next_resolution_check` by PA age: created ≤ 7 days ago → tomorrow; 8–21 days ago → today + 3 days; > 21 days ago → today + 5 days.
+
+**After a successful resolution:** clear `next_resolution_check` (set null), mark RESOLVED.
+
+Run the specified search — matching message → RESOLVED; `portal` type → cannot auto-check, leave pending.
+
+**Teams 0-result email fallback (2026-03-25):** if the Teams search returned 0 this run AND the PA has `resolution_check.type = "teams_search"`, also run `outlook_email_search` (inbox + sent) using the PA's query as a proxy. Proxy resolves it → RESOLVED with note `[resolved via email proxy — Teams search returned 0]`. No proxy evidence → leave PENDING, note "Teams search 0; email proxy also negative" in ACTIONS.md ❓ section.
+
+---
+
+## §Run-Quality
+
+Step 9 detail.
+
+**9A Efficiency scan — flag in 🔧 if any are true:**
+- A connector was called and returned 0 results it could never plausibly return (query too narrow or redundant)
+- The same resource was read more than once without new information being needed
+- `read_resource` was called on a flag that turned out to be a tracked, unchanged PA (case 3 in §Flagged-Sync)
+- A step ran in full but produced no output and no update (candidate for fast-path extension)
+- Total tool calls this run exceeded 30 (flag as high — log the count in RUN_LOG)
+
+**9B Issue-log entry** (append to `ISSUES_LOG.md`):
+```
+## YYYY-MM-DD Run Issue (Run #N)
+- Type: connector-error | logic-issue | missed-item | efficiency | other
+- Description: <what happened>
+- Steps involved: <e.g., Step 3C, Step 5A>
+- Status: open
+```
+
+**9E Signal types** (append to `SIGNAL_LOG.md` as `YYYY-MM-DD HH:MM | TYPE | description`):
+- `QUERY_ZERO` — a connector returned 0 results unexpectedly
+- `MISSED_ACTION` — an actionable item was missed in a prior run
+- `FALSE_URGENT` — an URGENT item turned out not to be
+- `PA_STALE` — any PA flagged stale this run
+- `PROFILE_SIZE` — a profile file near or over its line limit
+- `PROFILE_REPEAT` — same profile section updated 3+ consecutive runs
+- `RENDER_FAIL` — a Python script returned non-zero or error output
+- `RESOLUTION_FAIL` — same `resolution_check` returned 0 five+ consecutive runs
+- `PA_OVERLOAD` — open PA count > 15
+- `OTHER` — anything else requiring maintenance attention
+
+---
+
 ## §PA-Schema
 
 Full JSON schema for pending action entries in `pending_actions.json`:
@@ -310,6 +446,6 @@ Checklist used by the cowork-optimizer skill during periodic structural reviews 
 3. **Step efficiency** — steps producing no value?
 4. **Output quality** — sections empty 5+ consecutive runs?
 5. **File hygiene** — RUN_LOG growing large (target: last 30 runs full, older summarised).
-6. **TASK.md length** — target under 400 lines.
+6. **TASK.md length** — target under 250 lines (extract detail into this reference file).
 7. **Credit efficiency audit** — review tool-call counts over last 10 runs. Identify most expensive step. Is the fast-path triggering at an appropriate rate?
 8. **Cross-task signals** — check MAINTENANCE_REPORT.md Task Health section for improvement candidates.

@@ -1,6 +1,6 @@
 # Cluide — The Claude Guide
 
-*Last reviewed: April 2026*
+*Last reviewed: June 2026*
 
 > A complete framework for building, running, and improving a persistent AI assistant with Claude.
 > Includes architecture guides, runnable setup tasks, installable skills, and copy-paste templates.
@@ -117,7 +117,7 @@ Tasks are standalone instruction files for setup and auditing. Run them by sayin
 
 ## Skills Included
 
-Six installable skills are bundled in `skills/`. Install only the ones you need.
+Seven installable skills are bundled in `skills/`. Install only the ones you need.
 
 **Claude Code:** copy the skill folder to `~/.claude/skills/`
 **Claude.ai:** zip the skill folder with a `.skill` extension (e.g. `cd skills && zip -r backlog.skill backlog/` — or ask Claude to bundle it), then upload via **Settings → Skills → Upload skill**
