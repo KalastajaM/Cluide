@@ -1,6 +1,6 @@
 # Cluide — The Claude Guide
 
-*Last reviewed: April 2026*
+*Last reviewed: June 2026*
 
 > A complete framework for building, running, and improving a persistent AI assistant with Claude.
 > Includes architecture guides, runnable setup tasks, installable skills, and copy-paste templates.
