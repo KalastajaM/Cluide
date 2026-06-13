@@ -117,7 +117,7 @@ Tasks are standalone instruction files for setup and auditing. Run them by sayin
 
 ## Skills Included
 
-Six installable skills are bundled in `skills/`. Install only the ones you need.
+Seven installable skills are bundled in `skills/`. Install only the ones you need.
 
 **Claude Code:** copy the skill folder to `~/.claude/skills/`
 **Claude.ai:** zip the skill folder with a `.skill` extension (e.g. `cd skills && zip -r backlog.skill backlog/` — or ask Claude to bundle it), then upload via **Settings → Skills → Upload skill**

@@ -92,29 +92,11 @@ If missing, tell the user: "Node.js is required. Install it from nodejs.org, the
 ```
 Ask the user which directories Claude should have access to.
 
-**GitHub:**
-```json
-"github": {
-  "command": "npx",
-  "args": ["-y", "@modelcontextprotocol/server-github"],
-  "env": {
-    "GITHUB_PERSONAL_ACCESS_TOKEN": "ghp_your_token_here"
-  }
-}
-```
-Ask the user to provide their GitHub personal access token. Remind them: use a token with only the scopes needed (read-only if the use case allows).
+**GitHub** — use GitHub's official server, not the archived `@modelcontextprotocol/server-github` npm package:
+- **Remote (recommended)** — Claude Code: `claude mcp add --transport http github https://api.githubcopilot.com/mcp/` (OAuth handled on connect — no token to paste). Cowork: add the same URL as a custom connector (Settings → Connectors).
+- **Local / GitHub Enterprise** — run GitHub's official `github/github-mcp-server` binary and pass a fine-grained token via its `env`; grant only the scopes needed (read-only if the use case allows).
 
-**Slack:**
-```json
-"slack": {
-  "command": "npx",
-  "args": ["-y", "@modelcontextprotocol/server-slack"],
-  "env": {
-    "SLACK_BOT_TOKEN": "xoxb-...",
-    "SLACK_TEAM_ID": "T..."
-  }
-}
-```
+**Slack** — prefer the built-in **Slack connector** (Settings → Connectors in Cowork / Claude): OAuth handled in-app, no JSON. The old `@modelcontextprotocol/server-slack` npm package is archived; if you need a local server, pick a maintained one from the MCP Registry (see Step 5).
 
 **Google Workspace / Microsoft 365 / Atlassian:**
 These require OAuth setup through the vendor's developer portal. Tell the user:

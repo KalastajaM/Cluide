@@ -93,19 +93,19 @@ For each issue, note:
 
 ### Step 4 — Structural drift checks (run every time, regardless of git history)
 
-#### 4a. Bundled guide copies in `skills/ai-assistant-setup/references/`
+#### 4a. Bundled guide copies in `skills/*/references/`
 
-The `ai-assistant-setup` skill bundles copies of the root guides. They drift silently when a root guide is edited. For each file in `skills/ai-assistant-setup/references/`:
+Several skills bundle copies of the root guides (`ai-assistant-setup`, `cowork-optimizer`, `policies-validator`, …). They drift silently when a root guide is edited. For every `skills/*/references/*.md` file that has a matching root guide:
 
 1. Compare line counts against the root counterpart:
    ```bash
-   for f in skills/ai-assistant-setup/references/*.md; do
+   for f in skills/*/references/*.md; do
      base=$(basename "$f"); root="./$base"
-     [ -f "$root" ] && echo "$base: ref=$(wc -l < "$f") root=$(wc -l < "$root")"
+     [ -f "$root" ] && echo "$f: ref=$(wc -l < "$f") root=$(wc -l < "$root")"
    done
    ```
-2. For any file whose line counts differ by more than ~5%, spot-check 2–3 section headers — confirm the copy is older, not just reformatted.
-3. Flag drifted copies: "`references/[file]` is out of sync with the root guide — re-copy it."
+2. For any file whose line counts differ by more than ~5%, spot-check 2–3 section headers — confirm the copy is older, not just reformatted. (Reference files with no matching root guide — e.g. `audit-dimensions.md`, `output-formats.md` — are skill-specific; skip them.)
+3. Flag drifted copies: "`[file]` is out of sync with the root guide — re-copy it."
 
 Also flag reference files with no root counterpart (stale, predates a renumbering) and root guides missing from `references/` that the skill claims to bundle.
 
