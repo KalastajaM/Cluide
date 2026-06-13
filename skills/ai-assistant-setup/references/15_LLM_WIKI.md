@@ -1,21 +1,25 @@
 # LLM Wiki: Building a Personal Knowledge Base
 
-> Most people use LLMs for Q&A — ask a question, get an answer, lose the answer to chat history. The LLM wiki pattern is different: the LLM incrementally builds and maintains a persistent, structured knowledge base that gets richer with every source you add and every question you ask. Nothing is re-derived from scratch on every query. Knowledge compounds.
+*Last reviewed: April 2026*
+
+> Most people use LLMs for Q&A — ask a question, get an answer, lose it to chat history. The LLM wiki pattern is different: the LLM incrementally builds and maintains a persistent, structured knowledge base that gets richer with every source you add and every question you ask. Nothing is re-derived from scratch. Knowledge compounds.
 
 > **Companion guides:** [Guide 11](./11_GIT_INTEGRATION.md) covers git — a wiki is just a folder of markdown files, and versioning it costs nothing. [Guide 14](./14_PERSONAL_DATA_LAYER.md) covers personal data — wikis and data layers are complementary, not alternatives. [Guide 04](./04_MEMORY_AND_PROFILE.md) covers `.auto-memory/` — which serves a different purpose (see below).
 
 > **Giving this guide to Claude:**
 > "Read 15_LLM_WIKI.md and help me set up an LLM wiki for [topic]. Ask me what sources I have and what I want to be able to query."
+>
+> **Faster alternative:** `tasks/setup-wiki.md` interviews you and creates the full wiki structure and schema without reading the guide first.
 
 ---
 
 ## The Core Idea
 
-Standard RAG (NotebookLM, ChatGPT file uploads, most document Q&A tools) retrieves relevant chunks at query time and generates an answer. The LLM rediscovers knowledge from scratch on every question. Ask something that requires synthesising five documents and the LLM has to find and piece together the fragments every time. Nothing is built up.
+Standard RAG (NotebookLM, ChatGPT file uploads, most document Q&A tools) retrieves relevant chunks at query time and generates an answer from scratch. Ask something that requires synthesising five documents and the LLM has to find and piece together the fragments every time. Nothing accumulates.
 
-The wiki pattern inverts this. When you add a new source, the LLM reads it, extracts the key information, and integrates it into an existing collection of markdown pages — updating entity pages, revising summaries, flagging contradictions, strengthening the synthesis. The knowledge is compiled once and kept current. By the time you ask a question, the cross-references are already there. The contradictions have already been noted. The synthesis already reflects everything you've read.
+The wiki pattern inverts this. When you add a new source, the LLM reads it, extracts key information, and integrates it into existing markdown pages — updating entities, revising summaries, flagging contradictions, strengthening the synthesis. Knowledge is compiled once and kept current. By the time you ask a question, the cross-references are already there. The contradictions have already been noted. The synthesis already reflects everything you've read.
 
-The wiki is a **persistent, compounding artifact**. You never (or rarely) write it yourself — Claude writes and maintains all of it. Your job is sourcing, exploration, and asking the right questions. Claude does the summarising, cross-referencing, filing, and bookkeeping.
+The wiki is a **persistent, compounding artifact**. You rarely write it yourself — Claude writes and maintains all of it. Your job is sourcing, exploration, and asking the right questions. Claude does the summarising, cross-referencing, filing, and bookkeeping.
 
 A useful mental model: Obsidian is the IDE; Claude is the programmer; the wiki is the codebase.
 
@@ -25,17 +29,17 @@ A useful mental model: Obsidian is the IDE; Claude is the programmer; the wiki i
 
 | If you want to... | Use |
 |---|---|
-| Claude to remember your preferences, corrections, and working style | `.auto-memory/` -> [Guide 04](./04_MEMORY_AND_PROFILE.md) |
-| Build a knowledge base about a subject domain (threat intel, research, competitors) | **LLM Wiki -- this guide** |
-| Compound knowledge across many sources over weeks or months | **LLM Wiki -- this guide** |
+| Claude to remember your preferences, corrections, and working style | `.auto-memory/` → [Guide 04](./04_MEMORY_AND_PROFILE.md) |
+| Claude to remember facts about ongoing projects and contacts | `.auto-memory/` → [Guide 04](./04_MEMORY_AND_PROFILE.md) |
+| Build a knowledge base about a subject domain (threat intel, research, competitors) | **LLM Wiki — this guide** |
+| Have synthesised answers waiting before you ask the question | **LLM Wiki — this guide** |
+| Compound knowledge across many sources over weeks or months | **LLM Wiki — this guide** |
 
-If unsure: start with Guide 04. Come back here when you have a domain to research deeply over time.
+If you're unsure: start with Guide 04. Come back here when you have a domain you want to research deeply over time.
 
 ---
 
 ## How This Differs from `.auto-memory/`
-
-This distinction matters because the two systems look similar but serve different purposes.
 
 `.auto-memory/` is about **you** — your working style, your preferences, your project context. It helps Claude collaborate with you more effectively across sessions.
 
@@ -217,29 +221,81 @@ Some uses that fit naturally with this setup:
 
 ## Querying Large Wikis (100+ Pages)
 
-The `index.md` approach works up to roughly 100-150 pages. Beyond that, add a tiered index:
+The `index.md` approach works well up to roughly 100–150 pages. Beyond that, reading the full index every query becomes expensive and slow. Here's how to scale.
 
-- Create `wiki/categories.md` grouping pages by domain area (5-10 lines)
-- Claude reads `categories.md` first, identifies relevant categories, then reads only that slice of `index.md` — cutting index cost by 70-80%
-- For queries matching many pages, read the top 5-10 most relevant and synthesise; fetch more only if incomplete
+### Tiered Index
 
-**When to switch to qmd:** at 150+ entity pages, add [qmd](https://github.com/tobi/qmd) — local markdown search with hybrid BM25/vector search, available as both CLI and MCP server.
+Add a `wiki/categories.md` file that groups pages by domain area:
 
+```markdown
+# Categories
+
+## Threat Actors (23 pages)
+See: entities/threat-actors section in index.md
+
+## Tools & Malware (18 pages)
+See: entities/tools section in index.md
+
+## TTPs (31 pages)
+See: entities/ttps section in index.md
+
+## Source Summaries (45 pages)
+See: sources/ section in index.md
+```
+
+Claude reads `categories.md` first (5–10 lines), identifies the relevant category, then reads only that slice of `index.md`. This cuts index-reading cost by 70–80% for focused queries.
+
+### Pagination
+
+When a query matches many pages, don't read them all. Read the top 5–10 most relevant pages (by recency or link count) and synthesise from those. If the answer feels incomplete, read the next batch. State this in the schema:
+
+```markdown
+## On query (large wiki)
+1. Read `wiki/categories.md` to identify relevant categories.
+2. Read the matching section of `wiki/index.md`.
+3. Select the 5–10 most relevant pages (prefer recently updated, highly linked).
+4. Synthesise an answer. If incomplete, read up to 5 more pages.
+5. Always cite which pages were consulted.
+```
+
+### When to Switch to qmd
+
+**Rule of thumb:** if you have 150+ entity pages or find yourself waiting noticeably for index-based queries, add qmd.
+
+**CLI usage** (Claude can shell out to this):
+```bash
+qmd search "lateral movement techniques" --top 10 --path wiki/
+```
+
+**MCP server config** (add to `settings.json`):
+```json
+"qmd": {
+  "command": "qmd",
+  "args": ["serve", "--path", "/path/to/wiki"]
+}
+```
+
+With the MCP server running, Claude can call `qmd_search` directly instead of reading the index. The hybrid BM25/vector search handles disambiguation and fuzzy matching that index scanning misses.
+
+### Structured Queries with Dataview
+
+For "list all X where Y" questions (e.g., "all threat actors targeting healthcare"), consider Dataview (Obsidian plugin) over having Claude read pages. If Claude adds YAML frontmatter to entity pages:
+
+```yaml
 ---
+type: threat-actor
+sectors: [healthcare, finance]
+first_seen: 2025-03
+---
+```
 
-## Anti-Patterns
+Then Dataview can answer structured queries instantly without Claude reading dozens of pages. Claude writes the Dataview query; Obsidian runs it.
 
-**Using the wiki as a dump of raw sources.** The wiki layer is for synthesis, not storage. If Claude copies source text verbatim without summarising or integrating, you have a mirror of `sources/` with extra steps.
+### Anti-patterns
 
-**One massive file instead of topic pages.** A single `wiki/everything.md` defeats the purpose — Claude can't selectively read relevant pages. Split by entity, concept, or source.
-
-**Skipping the schema.** Without a `CLAUDE.md` defining page types and workflows, Claude improvises and pages drift in structure across sessions.
-
-**Ingesting without deduplication.** Adding the same source twice creates contradictions. Check `wiki/log.md` and `wiki/index.md` before ingesting.
-
-**Treating the wiki as append-only.** Wikis need pruning. Run lint regularly and let Claude consolidate stale pages.
-
-**Confusing wiki with auto-memory.** `.auto-memory/` stores facts about you; a wiki stores domain knowledge. Mixing the two weakens both.
+- **Reading all pages to answer a narrow question.** Always filter through index or categories first.
+- **Reading the full index when a category filter would suffice.** Use the tiered approach.
+- **Skipping citations.** At scale, knowing which 5 of 200 pages informed an answer matters more, not less.
 
 ---
 
@@ -268,6 +324,22 @@ wiki/
 ```
 
 The git log on `wiki/log.md` shows the exact date of every ingest, every saved query, every lint pass. You can `git diff` any two points in time and see how the synthesis evolved.
+
+---
+
+## Anti-Patterns
+
+**Using the wiki as a dump of raw sources.** The wiki layer is for synthesis, not storage. If Claude copies source text verbatim into wiki pages without summarising, cross-referencing, or integrating, you have a mirror of `sources/` with extra steps. The value comes from the transformation — distill, connect, and compress.
+
+**One massive file instead of topic pages.** A single `wiki/everything.md` defeats the purpose. Claude can't selectively read relevant pages on query; every question loads the entire wiki into context. Split by entity, concept, or source — many small pages with links between them.
+
+**Skipping the schema.** Without a `CLAUDE.md` defining page types, naming conventions, and workflows, Claude improvises. Pages drift in structure across sessions: some have frontmatter, some don't; naming varies; the ingest workflow changes. The schema is cheap to write and prevents entropy.
+
+**Ingesting without deduplication.** Adding the same source twice (or two versions of the same report) creates contradictions and bloat. Before ingesting, check `wiki/log.md` and `wiki/index.md` for the source. If it's already there, update rather than re-ingest. Add a dedup check to your schema's ingest workflow.
+
+**Treating the wiki as append-only.** Wikis need pruning. Sources get superseded, entities merge, early summaries become stale as better sources arrive. The lint operation exists for this reason — run it regularly and let Claude remove or consolidate pages that no longer earn their keep.
+
+**Confusing wiki with auto-memory.** `.auto-memory/` stores facts about you — preferences, corrections, project context. It updates implicitly during normal conversation and shapes how Claude collaborates with you. A wiki stores domain knowledge — it updates explicitly through ingest/query/lint operations and compounds research about a subject. Mixing the two (putting research into memory, or preferences into wiki pages) weakens both.
 
 ---
 

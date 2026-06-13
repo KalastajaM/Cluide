@@ -13,7 +13,7 @@
 |---|---|---|
 | Claude always responds a certain way | CLAUDE.md | [01](./01_CLAUDE_MD.md) |
 | Run the same task repeatedly when you ask | Skill | [03](./03_SKILLS.md) |
-| Run something automatically on a schedule | Scheduled Task | [06](./06_TASK_EFFICIENCY_GUIDE.md) |
+| Run something automatically on a schedule | Scheduled Task | [18 Stage 4](./18_END_TO_END_WALKTHROUGH.md) + `tasks/setup-scheduled-task.md` |
 | Claude remembers things between sessions | Memory | [04](./04_MEMORY_AND_PROFILE.md) |
 | A task that learns and improves over time | Task + IMPROVEMENTS.md | [07](./07_TASK_LEARNING_GUIDE.md) |
 | Answer a one-off question | Chat | — |

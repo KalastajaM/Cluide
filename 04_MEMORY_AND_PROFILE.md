@@ -1,6 +1,6 @@
 # Best Practices: Memory and Profile Systems
 
-*Last reviewed: April 2026*
+*Last reviewed: June 2026*
 
 Without memory, every session starts from zero — you re-explain your situation, preferences, and contacts. This guide covers two complementary memory systems: **auto-memory** (lightweight, cross-session facts in `.auto-memory/`) and **profile files** (structured, richly maintained knowledge for scheduled task agents).
 
@@ -18,7 +18,7 @@ Three memory layers are available. Understanding when each applies prevents a co
 | Where it lives | `~/.claude/projects/[hash]/memory/MEMORY.md` | Your project folder on disk | Your task folder on disk |
 | Survives context reset? | **Yes** — persists across sessions, but not guaranteed available in all contexts | **Yes** — read from disk each session | **Yes** — read explicitly each run |
 | Works in scheduled tasks? | **Not reliably** | **Yes** — explicitly loaded | **Yes** — explicitly loaded |
-| Multiple files? | No — single file | Yes — one file per topic | Yes — one file per profile domain |
+| Multiple files? | Yes — MEMORY.md index + topic files (only the first 200 lines / 25KB of MEMORY.md auto-load) | Yes — one file per topic | Yes — one file per profile domain |
 | Best for | Chat assistant use, corrections in conversations | Cross-session facts, preferences, projects | Scheduled task agents needing deep context |
 
 **Critical rule for scheduled tasks: always use `.auto-memory/` or profile files, not native memory.** Native memory is designed for interactive sessions and is not reliably available to autonomous task runs. A task that depends on native memory may work some runs and forget everything on others.
@@ -26,6 +26,15 @@ Three memory layers are available. Understanding when each applies prevents a co
 **If you are just getting started:** let native memory handle your conversational use. Add `.auto-memory/` when you want structured, reliable memory. Add profile files only when a scheduled task needs them — after auto-memory is already in place.
 
 The systems coexist without conflict: native memory for interactive chat, `.auto-memory/` for tasks and projects.
+
+### Native Memory as of June 2026
+
+Native memory has grown up. Claude Code now auto-summarizes and indexes conversations and recalls relevant memories autonomously — its structure (a `MEMORY.md` index plus topic files) now mirrors the pattern this guide describes. Two things to know:
+
+- **Only the first 200 lines / 25KB of the native MEMORY.md auto-load** into a session. This externally validates the rule this guide already enforces: keep the index compact, push detail into topic files. Inspect what native memory holds with the `/memory` command.
+- **You can redirect native memory into your project.** The `autoMemoryEnabled` and `autoMemoryDirectory` settings let you point native memory at a folder inside your project, where it's on disk, git-trackable, and readable by scheduled tasks. For interactive use this can replace part of the custom `.auto-memory/` machinery below — treat it as an alternative, not a replacement: the explicit `.auto-memory/` pattern remains the reliable choice for scheduled tasks, and the save/update discipline in this guide applies to both.
+
+**Naming collision warning:** Cluide's `.auto-memory/` folder convention predates and is distinct from Claude Code's native "auto memory" feature. When this guide says "auto-memory" it means the explicit folder pattern below; the native feature is always called "native memory" here.
 
 **Note:** This guide covers memory *about you* — your preferences, projects, and working style. If you want to build a knowledge base *about a subject domain* (research, threat intelligence, competitive analysis), that's a different system: see [Guide 15 — LLM Wiki](./15_LLM_WIKI.md).
 

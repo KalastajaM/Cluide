@@ -7,7 +7,7 @@
 > A complete framework for building, running, and improving a persistent AI assistant with Claude.
 > Includes architecture guides, runnable setup tasks, installable skills, and copy-paste templates — covering the full lifecycle from initial setup to automation, self-improvement, and security.
 
-*Written for Claude Code with Claude Haiku, Sonnet, and Opus models (2026). Core concepts apply to any Claude setup; tool names and hooks syntax may differ across versions.*
+*Written for Claude Code and Cowork with current Claude models (Haiku, Sonnet, Opus, Fable); the core concepts are model-agnostic. Tool names and hooks syntax may differ across versions.*
 
 ---
 
@@ -126,7 +126,7 @@ Covers: what MCP servers are, global vs. project-level configuration, the most u
 
 *How to design and optimize scheduled tasks for minimal token consumption.*
 
-Covers: splitting instruction files, scripting fixed-format output, targeted file edits, two-pass triage for external data, hard size limits, run deduplication, and the two scheduling mechanisms (remote/scheduled triggers vs. SessionStart hooks).
+Covers: splitting instruction files, scripting fixed-format output, targeted file edits, two-pass triage for external data, hard size limits, run deduplication, and the two scheduling mechanisms (scheduled tasks — Cowork's scheduled-tasks feature / the `schedule` skill — vs. SessionStart hooks).
 
 **Use this when:** you have a scheduled task running regularly and want to audit it for efficiency — or want to set one up correctly from the start.
 
@@ -377,6 +377,7 @@ Tasks are designed to be portable: copy any task file to another project's `task
 | `tasks/setup-bootstrap-folder.md` | Create `bootstrap/` stubs for gitignored runtime state files | 11 |
 | `tasks/setup-skill.md` | Interview → generate a `SKILL.md` with reliable triggering and full structure | 03 |
 | `tasks/setup-scheduled-task.md` | Scaffold a new scheduled task with efficiency + self-improvement built in | 06, 07, 08 |
+| `tasks/setup-orchestration.md` | Wire multi-task coordination — shared state, run order, handoff files | 09 |
 | `tasks/setup-data-layer.md` | Set up data patterns for personal data (Python feeder, JSON DB, browser extraction, vision) | 14 |
 | `tasks/setup-policies.md` | Interview → wire company policies into `policies-validator` skill + `CLAUDE.md` with tiered enforcement | 21, 03, 05 |
 
@@ -386,6 +387,7 @@ Tasks are designed to be portable: copy any task file to another project's `task
 |------|-------------|-------------|
 | `tasks/audit-claude-md.md` | Review `CLAUDE.md` — dead rules, missing sections, over-length | 01, 16 |
 | `tasks/audit-task-efficiency.md` | Token efficiency checklist for any task file | 06 |
+| `tasks/audit-cost.md` | Audit a task's token economics — file budgets, model tier, run metrics | 10 |
 | `tasks/audit-memory.md` | Check memory files for staleness, duplicates, misplaced content | 04 |
 | `tasks/audit-skill.md` | Review a `SKILL.md` — trigger quality, workflow, output format, edge cases | 03, 02 |
 
@@ -393,7 +395,7 @@ Tasks are designed to be portable: copy any task file to another project's `task
 
 | Task | What it does |
 |------|-------------|
-| `tasks/review-tasks.md` | Detect guide updates and flag tasks that need syncing — run after editing any guide |
+| `tasks/review-tasks.md` | Detect guide updates and flag tasks that need syncing; also checks bundled reference copies and the IMPROVEMENTS template for drift — run after editing any guide |
 
 ---
 
@@ -410,15 +412,19 @@ mkdir -p ~/.claude/skills
 cp -r /path/to/skill-folder ~/.claude/skills/
 ```
 
-Claude Code will detect and activate the skill immediately — no restart needed.
+In Claude Code, `/reload-skills` (or a SessionStart hook with `reloadSkills: true`) picks up skill changes without a restart; in Cowork — and for newly created skill folders — start a fresh session.
 
 ### Installing in Claude.ai (Personal Skills)
 
 Claude.ai has a built-in Personal Skills feature that accepts skill uploads directly.
 
-Pre-packaged `.skill` files are included in `./skills/` — no zipping required.
+The repo ships skill *folders*, not bundles. To create an uploadable bundle, zip the skill folder and give it a `.skill` extension (or ask Claude: "bundle `skills/[name]/` as `[name].skill`"):
 
-Go to **claude.ai → Skills → Upload skill** and drag in the `.skill` file for the skill you want.
+```bash
+cd skills && zip -r [name].skill [name]/
+```
+
+Go to **claude.ai → Skills → Upload skill** and drag in the `.skill` file you created.
 
 Claude.ai reads the `name:` and `description:` frontmatter in `SKILL.md` to name the skill and trigger it automatically — the same way Claude Code does.
 
@@ -428,7 +434,7 @@ Claude.ai reads the `name:` and `description:` frontmatter in `SKILL.md` to name
 
 An interactive setup coach. All guides are bundled into this skill. Instead of reading guides and acting on them manually, install this skill once and describe what you want — Claude reads the relevant guides and does the work.
 
-**Install:** Copy `ai-assistant-setup/` to `~/.claude/skills/` (Claude Code), or upload `ai-assistant-setup.skill` to Claude.ai Personal Skills.
+**Install:** Copy `ai-assistant-setup/` to `~/.claude/skills/` (Claude Code), or zip the folder as `ai-assistant-setup.skill` and upload it to Claude.ai Personal Skills.
 
 **Use when:**
 - Setting up Claude as a personal assistant from scratch
@@ -448,7 +454,7 @@ An interactive setup coach. All guides are bundled into this skill. Instead of r
 
 Turns any existing Claude setup — a chat system prompt, Cowork task, Cowork project, or skill — into a clean, shareable template. Strips personal and business identifiers, adds placeholder annotations, and produces a dual-audience output: a human-readable README and a Claude setup prompt.
 
-**Install:** Copy `template-exporter/` to `~/.claude/skills/` (Claude Code), or upload `template-exporter.skill` to Claude.ai Personal Skills.
+**Install:** Copy `template-exporter/` to `~/.claude/skills/` (Claude Code), or zip the folder as `template-exporter.skill` and upload it to Claude.ai Personal Skills.
 
 **Use when:**
 - You want to share a setup you've built (with someone else, or across projects)
@@ -468,7 +474,7 @@ Turns any existing Claude setup — a chat system prompt, Cowork task, Cowork pr
 
 Audits a Cowork task or project for token efficiency, run speed, and structural quality. Identifies concrete improvements across 9 dimensions, presents a prioritized plan, and implements agreed changes.
 
-**Install:** Copy `cowork-optimizer/` to `~/.claude/skills/` (Claude Code), or upload `cowork-optimizer.skill` to Claude.ai Personal Skills.
+**Install:** Copy `cowork-optimizer/` to `~/.claude/skills/` (Claude Code), or zip the folder as `cowork-optimizer.skill` and upload it to Claude.ai Personal Skills.
 
 **Use when:**
 - A scheduled task is slow or expensive to run
@@ -509,7 +515,7 @@ A structured, phased security audit of the Claude Code environment and a target 
 
 A portable backlog manager for any project. Maintains a `BACKLOG.md` file of prioritised work items and a `DECISIONS.md` log of choices made during grooming. Supports two session modes: standard (quick orient, pick next item) and grooming (review the full backlog, re-prioritise, resolve conflicts).
 
-**Install:** Copy `backlog/` to `~/.claude/skills/` (Claude Code), or upload `backlog.skill` to Claude.ai Personal Skills.
+**Install:** Copy `backlog/` to `~/.claude/skills/` (Claude Code), or zip the folder as `backlog.skill` and upload it to Claude.ai Personal Skills.
 
 **Use when:**
 - You want a lightweight backlog without a separate tool (Linear, Jira)
@@ -542,6 +548,24 @@ Enforcement layer for company policies — AI use policy, Code of Conduct, data 
 > "Summarise this internal document I'm pasting." (T1 classification policy halts if data is flagged Confidential)
 
 > "Write a blog post about the new release." (T3 style guide shapes the output silently)
+
+### html-report
+
+Generates polished, self-contained HTML reports, briefings, and dashboards from task or skill output. Bundles the HTML/CSS skeleton from Guide 19 — embedded styles, card layout, status badges, no external dependencies — so reports look consistent without redesigning the layout each time.
+
+**Install:** Copy `html-report/` to `~/.claude/skills/` (Claude Code), or zip the folder as `html-report.skill` and upload it to Claude.ai Personal Skills.
+
+**Use when:**
+- A task's output should be a styled report someone opens in a browser
+- You want status colours, summary metrics, or card layout instead of plain text
+- You're converting an existing Markdown briefing into something shareable
+
+**Example prompts:**
+> "Turn this run summary into an HTML report."
+
+> "Generate a styled dashboard from RUN_LOG.md."
+
+> "Make my daily briefing look good in a browser."
 
 ---
 

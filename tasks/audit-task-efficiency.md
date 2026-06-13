@@ -68,7 +68,7 @@ Pattern: fetching full email bodies when a subject-line scan would determine rel
 
 For every file the task reads on every run, check size:
 - TASK.md / core instruction file: target ≤ 250 lines
-- KNOWLEDGE_SUMMARY.md or equivalent: target ≤ 50 lines
+- KNOWLEDGE_SUMMARY.md or equivalent: target ≤ 40 lines
 - IMPROVEMENTS.md: target ≤ 150 lines (archive Applied Fixes when > 10 entries)
 
 Flag any over-limit file.

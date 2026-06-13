@@ -1,5 +1,7 @@
 # Best Practices: Designing Skills for a Personal Assistant
 
+*Last reviewed: June 2026*
+
 A skill is a SKILL.md file (plus optional supporting files) that tells the assistant how to perform a specific, recurring type of task — producing formatted meeting notes, triaging support tickets, drafting client status updates, and so on. Good skills make the assistant dramatically more reliable at the things you do repeatedly. This document explains how to write them well.
 
 ---
@@ -25,9 +27,15 @@ For more complex skills, you can add:
 my-skill/
 ├── SKILL.md
 └── references/       (detailed docs the skill reads on demand)
-└── scripts/          (reusable Python/bash scripts)
+└── scripts/          (reusable Python/bash scripts called by the skill)
 └── assets/           (templates, icons, fonts)
 ```
+
+**`references/`** — detailed content the skill needs occasionally but not every activation (schemas, full format specs, domain guides). SKILL.md references these by name; Claude loads them only when needed. Keep SKILL.md itself under ~500 lines and offload the rest here.
+
+**`scripts/`** — Python or bash scripts the skill can execute with the Bash tool. Good for fixed-format artifact generation, data transformation, or any repeatable computation that doesn't need Claude to reason about it.
+
+**Context note:** Files in `references/` and `scripts/` are not loaded into Claude's context automatically — only SKILL.md is. If you want to prevent Claude from loading them even when exploring the project, add the patterns to `.claudeignore`. See [Guide 11 — Git Integration](./11_GIT_INTEGRATION.md) for `.claudeignore` setup.
 
 The SKILL.md file has two parts: a YAML frontmatter block, and the instruction body.
 
@@ -68,6 +76,10 @@ description: >
 
 The second version lists the implicit triggers ("shoot the client a note") and tells the assistant what to do proactively (confirm tone). This prevents a common failure mode where the assistant processes the request itself rather than consulting the skill.
 
+**Optional frontmatter fields.** Beyond `name` and `description`, the frontmatter supports additional fields. The most useful is `disallowed-tools` — a list of tools the skill may not use (e.g., a read-only reporting skill that should never call `Write` or `Bash`). This turns a "the skill shouldn't do X" instruction into an enforced restriction, which matters for the security posture covered in [Guide 12](./12_SECURITY.md).
+
+**Editing skills without restarting:** Claude Code rescans skills with the `/reload-skills` command (or automatically via a SessionStart hook with `reloadSkills: true`) — you don't need to restart the session after editing a SKILL.md.
+
 ---
 
 ## The Skill Body
@@ -83,7 +95,7 @@ What the skill is fundamentally responsible for. Keep this short — it orients 
 The procedural heart of the skill. Use numbered steps for sequential actions, use a table for decision logic. Be concrete:
 
 - Name the tools to call (`gmail_create_draft`, `gcal_create_event`, etc.)
-- Specify what to ask the user at each stage
+- Specify what to ask the user at each stage — for bounded-choice questions (tone, format, approve/reject), use `AskUserQuestion` with buttons (see [Guide 02](./02_PROMPTING_BASICS.md))
 - Say what to do when a step fails
 
 ### 3. Output Format
@@ -108,7 +120,7 @@ How should this skill's output be written? Formal or casual? Emoji use? Language
 A few "what if" clauses that resolve common ambiguities. Examples:
 - "If the email is in a foreign language, read it and present the task summary in the user's preferred language"
 - "If there are 15+ unread emails, focus on the 10 most urgent"
-- "If the user doesn't specify a tone, offer two variants: formal and friendly"
+- "If the user doesn't specify a tone, use `AskUserQuestion`: `Formal` / `Casual` / `Match original`"
 
 ### 7. Example Interaction
 
@@ -117,6 +129,8 @@ One concrete example showing a realistic input and the ideal output. This is the
 ---
 
 ## Progressive Disclosure: Keeping Skills Lean
+
+**Progressive disclosure is the core skill-design principle** — Anthropic names it as such in their Agent Skills engineering post ([anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)): the description is always in context, SKILL.md loads on activation, and reference files load only when a step needs them. Each layer costs tokens only when it earns them.
 
 Aim for under 500 lines in SKILL.md. If you need more:
 
@@ -164,7 +178,7 @@ Without explicit memory instructions, the skill will re-learn the same things fr
 |------|-------|
 | Universal preferences (language, tone, safety rules) | CLAUDE.md |
 | Recurring user-triggered actions (meeting notes, status updates, document drafts) | Skill |
-| Automated scheduled workflows (daily digest, contract expiry checks) | Task file (TASK.md) — see guides 04 and 05 |
+| Automated scheduled workflows (daily digest, contract expiry checks) | Task file (TASK.md) — see [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) and [Guide 07](./07_TASK_LEARNING_GUIDE.md) |
 
 When in doubt: if the user asks for it ad hoc and it needs consistent, detailed behaviour → skill. If it runs on a schedule without the user asking → task file.
 
@@ -172,7 +186,7 @@ When in doubt: if the user asks for it ad hoc and it needs consistent, detailed 
 
 ## Real-World Examples
 
-Three working skills from a personal setup. Each illustrates a different pattern.
+Four working skills from a personal setup. Each illustrates a different pattern.
 
 ---
 
@@ -228,5 +242,24 @@ This is a strong description: it names the implicit trigger phrases, is specific
 - **Format is shown as an example** — the formal/casual pair, subject lines, and "key differences" note are all illustrated with a concrete worked example.
 - **SMS/WhatsApp has separate rules** — shorter, no openers, no formal variant unless asked. Named explicitly because the user texts in Finnish regularly.
 
+---
+
+### backlog — A skill where files replace memory
+
+**What it does:** Manages a project backlog across sessions using two files: `BACKLOG.md` (living idea list) and `DECISIONS.md` (architectural decision log). Runs standard sessions (`/backlog`) and grooming sessions (`/backlog groom`), handles initialization automatically, and guards against re-litigating closed decisions.
+
+**Where to use it:** Any project where you want to track ideas, improvements, and architecture decisions across Claude sessions — regardless of language or domain. Drop `BACKLOG.md` and `DECISIONS.md` in the project root and the skill works immediately.
+
+**Key design choices:**
+- **Files are the persistence layer, not Claude memory** — `DECISIONS.md` plays the role that memory would in other skills. The skill explicitly states that Claude memory should not be used, so state never ends up in two places.
+- **Two session modes with different scopes** — the standard session runs a focused orient → prioritize → pick → write loop; the grooming session inserts a full architecture review. Separating them prevents grooming overhead from slowing down everyday sessions.
+- **Conflicts and dependencies block selection** — items with unresolved `Conflicts-with` or unsatisfied `Dependencies` cannot be picked. This is enforced as a rule, not a suggestion.
+- **Constraint is explicit** — "Claude writes the files but does not commit." The user commits. Stating this prevents Claude from attempting git operations.
+- **Orient output format is shown** — a concrete table + flagged-items block, so the summary looks identical every session.
+
+**The backlog skill is a good model for any skill where the data outlives the conversation** — the pattern of "two files, one for state and one for decisions" can be adapted to support tickets, product specs, hiring pipelines, or any domain where you need both a working list and an immutable audit trail.
+
 **Giving this to Claude:**
 > "Read 03_SKILLS.md and create a skill for [what you want]. Follow all the best practices in the guide — strong description, workflow steps, output format example, and at least 3 edge cases."
+
+**Faster alternative:** `tasks/setup-skill.md` interviews you and generates a complete skill without reading the guide first. `tasks/audit-skill.md` reviews an existing skill against this guide's checklist.

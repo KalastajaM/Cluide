@@ -57,7 +57,7 @@ All guides are in the `references/` directory next to this file.
 
 ## Templates: copy-paste starting points
 
-Four ready-to-copy folder structures are available in the `templates/` folder next to the guides. Always prefer a template over building from scratch — it saves time and comes pre-structured with the right files and placeholders.
+Four ready-to-copy folder structures are available in the `templates/` folder of the Cluide project (the repo this skill ships with). They are **not bundled inside this skill** — if you're running with access to the Cluide folder, copy from `templates/` there; otherwise recreate the structure from the relevant guide (each template's file layout is described in Guides 07/08 for tasks, 14 for data projects). Always prefer a template over building from scratch — it saves time and comes pre-structured with the right files and placeholders.
 
 | Template | Use when... |
 |----------|------------|
@@ -88,7 +88,7 @@ For "improve" and "fix" requests: ask the user to share the relevant files so yo
 
 ### Step 2: Load the relevant guide(s)
 
-Read only what you need. For a focused request (e.g., "create a skill for X"), one guide is usually enough. For a broad request (e.g., "set up everything from scratch"), read guides in order: 01 → 02 → 03, pausing to help the user complete each layer before moving to the next.
+Read only what you need. For a focused request (e.g., "create a skill for X"), one guide is usually enough. For a broad request (e.g., "set up everything from scratch"), read guides in order: 01 → 03 → 04 (CLAUDE.md → skills → memory), pausing to help the user complete each layer before moving to the next.
 
 ### Step 3: Act
 
@@ -126,7 +126,7 @@ Common improvements to look for:
 - A scheduled task loads too much context → Guide 06
 - A data project reads raw JSON files directly instead of using feeder scripts → Guide 14
 - No git tracking for assistant state → Guide 11
-- No self-improvement system on a running task → Guides 05 + 06
+- No self-improvement system on a running task → Guides 07 + 08
 
 ---
 

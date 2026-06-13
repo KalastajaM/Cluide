@@ -38,7 +38,8 @@ Claude opens the file, sees the exact structure, and makes a targeted edit.
 
 - Chat messages
 - CLAUDE.md (e.g. `@docs/style-guide.md` to import shared rules)
-- Skill descriptions and task instructions
+
+`@` imports are documented for these two contexts. Inside SKILL.md files and task instructions, refer to files by plain path instead (e.g. "read `references/schema.md`") — `@` imports are not documented to work there.
 
 ---
 

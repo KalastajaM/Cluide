@@ -1,6 +1,6 @@
 # Connecting Claude to Your Personal Data
 
-*Last reviewed: April 2026*
+*Last reviewed: June 2026*
 
 > Five patterns for getting personal data — investments, finances, transactions — into Claude tasks without exposing raw files, building fragile pipelines, or paying excessive token costs.
 
@@ -256,6 +256,9 @@ def extract_from_screenshot(image_path: Path) -> list[dict]:
         image_data = base64.b64encode(f.read()).decode()
 
     response = client.messages.create(
+        # Haiku is the right tier for bulk vision extraction — ~5x cheaper
+        # than Opus and accurate on clean screenshots. Re-check the current
+        # model id when reusing this script.
         model="claude-haiku-4-5-20251001",
         max_tokens=1024,
         messages=[{
@@ -302,12 +305,12 @@ Path("data/bank_transactions_raw.json").write_text(
 print(f"Extracted {len(all_transactions)} transactions from {len(screenshots)} screenshots.")
 ```
 
-For SDK setup and API key configuration, see the `claude-api` skill.
+For SDK setup and API key configuration, see Anthropic's SDK quickstart at [platform.claude.com](https://platform.claude.com) (docs at docs.claude.com).
 
 **Design rules:**
 
 - The prompt must be precise about the output schema. Ask for exactly the fields you need; vague prompts produce inconsistent JSON structures.
-- Include "Return a JSON array only, no other text" — otherwise Claude may wrap the result in a prose explanation.
+- Better than prompt discipline: use the API's **structured outputs** feature — pass a JSON schema with the request and the response is guaranteed to parse against it. This eliminates the malformed-JSON failure mode entirely (the one the anti-patterns section below warns about). The prompt-only fallback is "Return a JSON array only, no other text" — otherwise Claude may wrap the result in a prose explanation.
 - Name the output file `_raw` and run a separate normalization/validation step before merging into your main data store.
 - Batch all screenshots from the same time period into one script run to minimize API calls.
 - Add `screenshots/` to `.gitignore` — they are large and may contain sensitive financial data.

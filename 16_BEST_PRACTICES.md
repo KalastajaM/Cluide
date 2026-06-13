@@ -1,6 +1,6 @@
 # Personal AI Assistant — Best Practices
 
-*Last reviewed: April 2026*
+*Last reviewed: June 2026*
 
 > A collection of lessons learned from real use. Not theory — things that actually make the difference.
 > These apply whether you're setting up your first skill or optimising a system you've been running for months.
@@ -68,7 +68,7 @@ CLAUDE.md, skills, and task files need to work when you've forgotten all the con
 Every correction you give Claude — and save to memory — is a correction you never have to make again. The first few weeks feel slow because you're building up the knowledge base. After that, the assistant improves noticeably with each session. Invest in saving corrections early.
 
 **Choose the right model tier for the job.**
-Sonnet handles structured extraction, template-driven output, and routine data processing at one-fifth the cost of Opus. Reserve Opus for tasks requiring nuanced judgment, complex reasoning, or creative synthesis. Default to Sonnet; upgrade only when quality visibly suffers. See [Guide 10](./10_COST_PERFORMANCE.md) for the full decision framework.
+Sonnet handles structured extraction, template-driven output, and routine data processing at roughly 60% of the cost of Opus (Opus is ~1.7x Sonnet at June 2026 prices — a much smaller premium than it once was, but it still compounds across daily runs). Use Haiku for feeder tasks — triage, classification, bulk extraction; default to Sonnet; reserve Opus for judgment-heavy review; and Fable 5 for the hardest long-horizon synthesis. Upgrade a tier only when quality visibly suffers. See [Guide 10](./10_COST_PERFORMANCE.md) for the full decision framework.
 
 **Design tasks to handle upstream failures gracefully.**
 When tasks depend on each other's output, the downstream task must check that the expected input exists and is fresh — never assume the upstream task succeeded because it was scheduled first. Log outcomes (success/skipped/failed) to a run log so debugging is straightforward. See [Guide 09](./09_MULTI_TASK_ORCHESTRATION.md).

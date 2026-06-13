@@ -135,7 +135,7 @@ Claude should recognise the trigger phrases and apply your skill automatically. 
 **If it doesn't work:**
 - Check that the skill file is at exactly `.claude/skills/plan-my-day/SKILL.md`
 - Make sure the file was saved as plain text (not `.md.txt` or a Word document)
-- Start a fresh Cowork conversation — skill changes only take effect in new sessions
+- Reload skills: in Claude Code, `/reload-skills` (or a SessionStart hook with `reloadSkills: true`) picks up skill changes without a restart; in Cowork — and for newly created skill folders — start a fresh session
 - See [Guide 17 — Troubleshooting](./17_TROUBLESHOOTING.md) for more help
 
 ---
@@ -175,7 +175,7 @@ Save a one-line summary to LAST_RUN.md with the date and top priority.
 - Write LAST_RUN.md at the end of each run with the date and a one-line summary
 ```
 
-**To schedule it:** Open Cowork, go to your scheduled tasks panel, and create a new task pointing at this file. Set it to run every Monday at your preferred time.
+**To schedule it:** Create a scheduled task pointing at this file — use Cowork's scheduled-tasks feature (or ask Claude: "use the `schedule` skill to run this every Monday morning"). Set it to run every Monday at your preferred time. The alternative mechanism, SessionStart hooks, runs things when you open a session rather than on a clock — see [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md).
 
 ---
 

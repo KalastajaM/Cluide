@@ -1,6 +1,6 @@
 # Development and Execution: Using Claude Code and Cowork Together
 
-*Last reviewed: April 2026*
+*Last reviewed: June 2026*
 
 > Two Claude tools, two distinct roles. Claude Code is where you build and maintain your assistant — editing task files, debugging problems, managing git. Cowork (or any conversational Claude interface) is where you run it — executing tasks, processing emails, doing the actual work. Keeping these roles separate is one of the most useful things you can do for the long-term health of your setup.
 
@@ -40,7 +40,7 @@ The setup that works well for both tools has one structural rule: **the definiti
         ├── LAST_RUN.md          # State — written by Cowork, read in Claude Code
         └── RUN_LOG.md           # State — written by Cowork
 
-memory/
+.auto-memory/
 ├── MEMORY.md                    # State — read and updated each session
 └── *.md                         # State — individual memory files
 ```

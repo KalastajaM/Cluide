@@ -1,6 +1,10 @@
 # Development and Execution: Using Claude Code and Cowork Together
 
+*Last reviewed: June 2026*
+
 > Two Claude tools, two distinct roles. Claude Code is where you build and maintain your assistant — editing task files, debugging problems, managing git. Cowork (or any conversational Claude interface) is where you run it — executing tasks, processing emails, doing the actual work. Keeping these roles separate is one of the most useful things you can do for the long-term health of your setup.
+
+> **See also:** [Guide 20 — Interactive Prompting](./20_INTERACTIVE_PROMPTING.md) for Claude Code session features: `@` file references, plan mode, AskUserQuestion input types, and context hygiene.
 
 ---
 
@@ -10,6 +14,7 @@
 |------|------|-----------------|
 | **Development** | Claude Code | Edit TASK.md, SKILL.md, CLAUDE.md. Debug failing runs. Add new features. Review and apply IMPROVEMENTS.md proposals. Manage git. Run the guide-improvement task. |
 | **Execution** | Cowork (conversational Claude) | Run your daily tasks. Process emails. Draft messages. Use skills. Let tasks run and read the output. |
+| **Development (Cowork-only)** | Text editor + Cowork | Edit files in a text editor or via Cowork chat. Test in a new Cowork conversation. Debug by sharing files in Cowork. See the [Cowork-only section](#if-you-only-use-cowork-no-claude-code) below. |
 
 The key principle: **do not mix the roles in a single session.** When you open Cowork to check your emails, you are not also editing your email skill. When you open Claude Code to fix a bug, you are not also running your actual tasks.
 
@@ -36,7 +41,7 @@ The setup that works well for both tools has one structural rule: **the definiti
         └── RUN_LOG.md           # State — written by Cowork
 
 .auto-memory/
-├── MEMORY.md                    # State — read by Cowork, updated by Cowork
+├── MEMORY.md                    # State — read and updated each session
 └── *.md                         # State — individual memory files
 ```
 
@@ -61,7 +66,7 @@ The git approach adds a deployment step but gives you the rollback and history b
 
 **Hardcoded paths.** If TASK.md says `Read /Users/username/tasks/email-digest/LAST_RUN.md`, it will break if the folder moves or if another user tries to use your setup. Use relative paths from the task folder wherever possible.
 
-**Settings.json in shared files.** Each tool has its own `settings.json` (Claude Code's is at `~/.claude/settings.json`; Cowork has its own). Do not try to share this file — it contains tool-specific configuration. Keep them separate.
+**Settings.json in shared files.** Each tool has its own `settings.json` (Claude Code's user-level settings live at `~/.claude/settings.json`; project-level at `.claude/settings.json`; Cowork has its own). Do not try to share these across tools — they contain tool-specific configuration.
 
 ---
 
@@ -90,6 +95,53 @@ See [Guide 11 — Git Integration](./11_GIT_INTEGRATION.md) for commit conventio
 
 **5. Switch to Cowork for the first live run.**
 The first real run of a new or changed skill is always in Cowork. Watch the output carefully. If it looks right, you are done. If something is off, go back to Claude Code to diagnose and fix.
+
+---
+
+## If You Only Use Cowork (No Claude Code)
+
+Claude Code is the recommended tool for development work — but it is optional. If you work entirely within Cowork, the same workflows are available, just with a different toolset.
+
+### Editing Files
+
+Your task and skill files are plain markdown text files. You can edit them in any text editor:
+- **Windows:** Notepad, Notepad++, or VS Code
+- **Mac:** TextEdit (in plain text mode), VS Code, or BBEdit
+
+Or — ask Claude in a fresh Cowork conversation to make the edit for you:
+
+> "Read my TASK.md at `[path to file]` and add a rule that when the output contains more than 5 action items, flag the top 3 as priorities. Show me the change before writing it."
+
+Claude will propose the edit and ask you to confirm before writing. This gives you the review step even without Claude Code's diff view.
+
+### Testing
+
+After editing, open a **new Cowork conversation** (not the one you used for editing) and run the skill or task. Mixing editing and testing in the same session creates confusion because Claude is holding both the "editing Claude" and "execution Claude" context at once.
+
+### Debugging
+
+When something breaks, open a new Cowork conversation and share the relevant files:
+
+> "Here is my LAST_RUN.md: [paste contents]. Here is my TASK.md: [paste contents]. The problem is [describe it]. What caused it and what should I change in TASK.md to fix it?"
+
+You can diagnose and fix entirely through Cowork this way. For the most effective debugging, follow the same order as the Claude Code workflow: read evidence → identify cause → fix → test.
+
+### Reviewing IMPROVEMENTS.md
+
+Open a new Cowork conversation and share the proposals:
+
+> "Here is my IMPROVEMENTS.md: [paste contents]. For each pending proposal, explain what it does and ask me whether to apply it, reject it, or modify it."
+
+Work through them one at a time. Claude will make the change in the TASK.md once you confirm.
+
+### What You Miss Without Claude Code
+
+Without Claude Code, you don't have:
+- **Plan mode** — the plan/approve/execute flow (you can replicate it by asking Claude to "describe what you'll change before making any edits")
+- **Git integration** — rollback, history, pre-run snapshots (recommended even for non-developers: see [Guide 11](./11_GIT_INTEGRATION.md))
+- **Subagents** — parallel exploration and analysis agents
+
+You can work effectively without these, but git in particular is worth setting up — it is the single best protection against "I broke something and don't know what".
 
 ---
 
@@ -167,6 +219,47 @@ This keeps the review thoughtful (Claude Code has the full file context and your
 
 ---
 
+## Plan Mode: Review Before Executing
+
+For any change that is structural, multi-file, or hard to undo — ask Claude to plan before editing. This separates the "figure out what to do" step from the "do it" step.
+
+**How it works:**
+1. Ask Claude to plan only — no edits yet (use Shift+Tab to toggle plan mode, or state it in your prompt)
+2. Claude reads relevant files and describes the proposed changes
+3. You review and approve, reject, or amend the plan
+4. Claude executes only what was approved
+
+**When to use Plan Mode:**
+- Adding a new feature to a task or skill (multi-step, multiple files)
+- Restructuring a TASK.md or SKILL.md
+- Making changes whose impact is non-obvious
+- Any time you want to review before Claude acts, not after
+
+**When to skip it:**
+- Single-line fixes, typo corrections, adding one entry to a table
+- Changes you'd be happy to just undo if they're wrong
+
+**Prompt to activate:**
+> "Plan how to [change] in [file]. Don't make any edits yet — I'll review first."
+
+---
+
+## Subagents: Parallel Work in Claude Code
+
+Claude Code can spawn **subagents** — parallel Claude instances that work on focused subtasks and report back. Subagents are dispatched via the Agent tool and can read, search, and reason about files independently.
+
+**When to use subagents:**
+- You need to explore multiple files or areas in parallel
+- A task has multiple independent subtasks that can run concurrently
+- You want research or analysis done without blocking the main session
+
+**Example:**
+> "Launch two subagents in parallel: one to read all TASK.md files and summarise their run procedures, another to read all SKILL.md files and summarise their triggers."
+
+**Important:** Subagents are best used for read-heavy exploration and analysis. For file edits, use the main session to keep changes coordinated and reviewable.
+
+---
+
 ## New Features: Development Checklist
 
 When building something new — a skill, a task, a profile update — use this checklist in Claude Code before taking it live in Cowork:
@@ -191,7 +284,7 @@ A sustainable rhythm for this two-tool workflow:
 **In Claude Code (weekly or after problems):**
 - Review LAST_RUN.md for the previous week's runs
 - Review IMPROVEMENTS.md for pending proposals and apply/reject them
-- Make any needed edits to TASK.md, SKILL.md, or CLAUDE.md
+- Make any needed edits to TASK.md, SKILL.md, CLAUDE.md, or hooks in settings.json
 - Commit changes
 - Run the guide-improvement task if guides need updating
 

@@ -46,14 +46,14 @@ Report findings without showing actual credential values — show only which fil
 Read `.claude/settings.json` and `~/.claude/settings.json`:
 
 Check for:
-- `bypassPermissionsMode: true` — flag this; it disables all permission prompts
+- `permissions.defaultMode: "bypassPermissions"` — flag this; it disables all permission prompts
 - `allowedTools` entries with broad scope (e.g. allowing all Bash commands without restriction)
 - Existing hooks — are they configured correctly?
 
 Report:
 ```
 Permission settings:
-  bypassPermissionsMode: [true/false/not set]
+  permissions.defaultMode: [value or "not set"]
   allowedTools: [list or "not configured"]
   Existing hooks: [list or "none"]
 ```
@@ -95,7 +95,7 @@ Credentials:
   [✓ / ⚠] git history: [clean / possible matches found]
 
 Permissions:
-  [✓ / ⚠] bypassPermissionsMode: [not set / ENABLED — recommend disabling]
+  [✓ / ⚠] defaultMode: [default / bypassPermissions — recommend changing]
   [ℹ] Existing hooks: [list]
 
 File hygiene:
@@ -121,38 +121,53 @@ Use `AskUserQuestion` with buttons to ask what to fix:
 
 #### Fix A — Install PreToolUse hook
 
-Write `.claude/hooks/precheck.py`:
+This installs the same canonical hook the `security-review` skill uses. If `skills/security-review/references/hook-security-precheck.sh` is available in this project, copy it to `.claude/hooks/security-precheck.sh`. Otherwise write `.claude/hooks/security-precheck.sh` with exactly this content:
 
-```python
-#!/usr/bin/env python3
-"""PreToolUse hook — blocks dangerous shell patterns."""
-import json, sys, re
+```bash
+#!/usr/bin/env bash
+# Claude Code PreToolUse security gate
+# Blocks dangerous Bash commands before execution
+# Input: JSON on stdin with .tool_input.command
+# Output: reason on stderr + exit 2 to block; exit 0 to allow
+# (Exit 2 is the only blocking exit code — other non-zero exits do NOT block.)
 
-data = json.load(sys.stdin)
-cmd = data.get("tool_input", {}).get("command", "")
+set -euo pipefail
 
-BLOCKED = [
-    (r"curl\s+.*\|\s*(bash|sh|python|ruby|perl)", "pipe-to-shell via curl"),
-    (r"wget\s+.*\|\s*(bash|sh|python|ruby|perl)", "pipe-to-shell via wget"),
-    (r"rm\s+-rf\s+[~/]", "rm -rf targeting home or root"),
-    (r"rm\s+-rf\s+\.(ssh|gnupg|claude|config)", "rm -rf targeting dotfiles"),
-    (r"chmod\s+777", "world-writable chmod"),
-    (r"--dangerously-skip-permissions", "bypass permissions flag"),
-    (r"git\s+push\s+.*--force\s+.*main|master", "force push to main/master"),
-]
+INPUT=$(cat)
+CMD=$(echo "$INPUT" | python3 -c "import json,sys; print(json.load(sys.stdin).get('tool_input',{}).get('command',''))" 2>/dev/null || echo "")
 
-for pattern, label in BLOCKED:
-    if re.search(pattern, cmd, re.IGNORECASE):
-        print(json.dumps({
-            "continue": False,
-            "stopReason": f"Blocked: {label}. Review the command and confirm manually if intended."
-        }))
-        sys.exit(0)
+block() {
+  echo "$1" >&2
+  exit 2
+}
 
-sys.exit(0)
+# 1. Dangerous flags
+echo "$CMD" | grep -qE -- '--dangerously-skip-permissions|--no-verify.*git|--force.*push' && \
+  block "Blocked: dangerous flag detected"
+
+# 2. Pipe-to-shell (supply chain attack vector)
+echo "$CMD" | grep -qE 'curl.+\|\s*(bash|sh|zsh)|wget.+\|\s*(bash|sh|zsh)' && \
+  block "Blocked: pipe-to-shell pattern (curl|wget piped to shell)"
+
+# 3. Sensitive directory deletion
+echo "$CMD" | grep -qE 'rm\s+-[a-z]*rf?\s+(/|~/|/Users/[^/]+/?$|~/?$|\$HOME/?$)' && \
+  block "Blocked: rm -rf on root or home directory"
+echo "$CMD" | grep -qP 'rm\s+-[a-z]*rf?\s+.*(/\.ssh|/\.gnupg|/\.claude)(\s|$)' 2>/dev/null && \
+  block "Blocked: rm -rf on sensitive dot-directory"
+
+# 4. World-writable permissions
+echo "$CMD" | grep -qE 'chmod\s+(777|a\+rwx|o\+w)' && \
+  block "Blocked: world-writable chmod"
+
+# 5. Credential exfiltration via network
+echo "$CMD" | grep -qiE '(curl|wget|nc|netcat).*(API_KEY|TOKEN|PASSWORD|SECRET|CREDENTIAL)' && \
+  block "Blocked: possible credential exfiltration via network tool"
+
+# Allow
+exit 0
 ```
 
-Make it executable: `chmod +x .claude/hooks/precheck.py`
+Make it executable: `chmod +x .claude/hooks/security-precheck.sh`
 
 Merge into `.claude/settings.json` under `hooks.PreToolUse`:
 ```json
@@ -164,7 +179,7 @@ Merge into `.claude/settings.json` under `hooks.PreToolUse`:
         "hooks": [
           {
             "type": "command",
-            "command": "python3 .claude/hooks/precheck.py"
+            "command": ".claude/hooks/security-precheck.sh"
           }
         ]
       }
@@ -172,6 +187,8 @@ Merge into `.claude/settings.json` under `hooks.PreToolUse`:
   }
 }
 ```
+
+How it works: the hook receives the tool call as JSON on stdin; exit 0 allows the command, exit 2 blocks it and feeds stderr back to Claude as the reason.
 
 #### Fix B — Add credential patterns to .gitignore
 

@@ -90,11 +90,17 @@ otherwise create with empty structure: [structure].
 
 ## Final Step — Self-improvement and run log
 
-Run the Self-Improvement step: follow sections A–D in `IMPROVEMENTS.md`
-(Feedback Signal Detection → Refactor Trigger Check → Auto-apply vs. Propose → Update IMPROVEMENTS.md).
-
-Append to `RUN_LOG.md`:
+Run the Self-Improvement section below (A–D), then append to `RUN_LOG.md`:
 | [run number] | [YYYY-MM-DD] | [one-line summary of what happened this run] |
+
+---
+
+## Self-Improvement (A–D)
+
+[The A–D instructions live here in TASK.md — IMPROVEMENTS.md stores state only (Guide 08).
+Copy this section from the canonical version in `templates/TASK_TEMPLATE/TASK.md` Step 6 if available;
+otherwise use the condensed A–D block in `tasks/setup-self-improving-task.md` Step 4.
+A: Feedback Signal Detection → B: Refactor Trigger Check → C: Auto-apply vs. Propose → D: Update IMPROVEMENTS.md]
 ```
 
 Put workflow details, schemas, output format templates, and error handling procedures in `TASK_REFERENCE.md` — reference them from TASK.md with `See TASK_REFERENCE.md § [Section]`.
@@ -127,14 +133,15 @@ identified during the interview. Leave empty with placeholder sections if nothin
 
 #### `tasks/[name]/IMPROVEMENTS.md` (if self-improvement was requested)
 
-Use the full template from `setup-self-improving-task.md`, with:
-- `total_runs: 0`
-- `runs_since_last_refactor: 0`
-- `refactor_threshold: [25 for daily / 10 for weekly / 15 for on-demand]`
+Copy `templates/TASK_TEMPLATE/IMPROVEMENTS.md` **verbatim**. If that file is not available (this task was copied to another project), use the inline copy in `tasks/setup-self-improving-task.md` Step 3 — it is a verbatim copy of the same template. Then customise:
+- `total_runs: 0`, `runs_since_last_refactor: 0`
+- `refactor_threshold` and `next_refactor_due_at_run`: 25 for daily / 10 for weekly / 15 for on-demand
 - Task name filled in
-- All placeholder rows removed
+- All placeholder rows removed (Noise Filters example row; Pending Proposals JSON example → `[]`)
 
-If self-improvement was not requested, skip this file and omit the Step 0 and Final Step from TASK.md.
+IMPROVEMENTS.md stores **state only** — do not write the A–D instructions into it. Those belong in the generated TASK.md (see the Self-Improvement section in the skeleton above).
+
+If self-improvement was not requested, skip this file and omit the Step 0, Final Step, and Self-Improvement section from TASK.md.
 
 ### Step 4 — Efficiency check on the draft
 

@@ -1,6 +1,6 @@
 # Security Guide: Using Claude Code and Cowork Safely
 
-*Last reviewed: April 2026*
+*Last reviewed: June 2026*
 
 > Operational security for using Claude Code and Cowork as tools. Covers credential hygiene, MCP server trust, permission controls, session data, supply chain risks, prompt injection, and file hygiene. Does not cover secure coding or application security practices.
 
@@ -25,18 +25,20 @@ Credentials stored near Claude leak through multiple paths.
 - Task files (`TASK.md`, `IMPROVEMENTS.md`) — read every run, sometimes logged
 
 **Where they belong:**
-- `settings.json` env block — only Claude Code reads this, it stays local
-- Better: reference a system keychain so the secret never touches a text file:
+- For the Anthropic API key: `apiKeyHelper` in `settings.json` — a script that prints the key, so it can come from a keychain instead of a text file:
   ```json
-  "env": {
-    "MY_API_KEY": "$(op read 'op://vault/service/api-key')"
-  }
+  "apiKeyHelper": "op read 'op://vault/anthropic/api-key'"
+  ```
+- For other secrets: export them from your shell profile before launching Claude Code, so the secret never touches a config file:
+  ```bash
+  export MY_API_KEY="$(op read 'op://vault/service/api-key')"
   ```
   `op read` (1Password CLI) and `security find-generic-password` (macOS Keychain) both work for this pattern.
+- The `settings.json` `env` block does **not** support command substitution — values are plain strings, so `"$(op read ...)"` becomes the literal value, not the secret. And note that `env` values are injected into every Bash command Claude runs, so anything placed there is visible to all executed commands. Use it for non-secret configuration only.
 
 **Rotation and hygiene:**
 - Rotate MCP tokens every 6–12 months — tokens in config files are easy to forget
-- Do not paste API keys or passwords into Claude conversations — session transcripts persist in `~/.claude/sessions/` and contain everything you typed
+- Do not paste API keys or passwords into Claude conversations — session transcripts persist in `~/.claude/projects/` (one `.jsonl` file per session, grouped by project) and contain everything you typed
 - Check shell history periodically for accidentally typed credentials:
   ```bash
   grep -E "(PASSWORD|SECRET|API_KEY|TOKEN)\s*=" ~/.zsh_history ~/.bash_history 2>/dev/null
@@ -55,7 +57,7 @@ Act quickly. The order matters:
 
 2. **Search your session transcripts** for where the credential appeared:
    ```bash
-   grep -rl "FRAGMENT-OF-YOUR-CREDENTIAL" ~/.claude/sessions/
+   grep -rl "FRAGMENT-OF-YOUR-CREDENTIAL" ~/.claude/projects/
    ```
    Replace `FRAGMENT-OF-YOUR-CREDENTIAL` with the first 6–8 characters of the exposed value (enough to find it, not the whole secret).
 
@@ -109,12 +111,14 @@ Mitigations:
 
 Claude Code offers several controls over what Claude can do without your approval.
 
-**Permission modes:**
-- **Plan mode** — Claude proposes changes, you approve before anything is written or executed. Use for reviewing changes to important files.
-- **Read-only** — Claude can read but cannot write or run commands. Good for exploration and analysis tasks.
-- **Full** — Claude acts without per-action confirmation. Appropriate only for trusted, well-tested tasks.
+**Permission modes** (cycle through them with Shift+Tab in Claude Code):
+- **default** — Claude asks before edits and commands not covered by your allow rules.
+- **acceptEdits** — file edits are auto-approved; commands still prompt.
+- **plan** — Claude proposes a plan; nothing is written or executed until you approve. Use for reviewing changes to important files.
+- **dontAsk** — actions proceed without prompting, except where deny rules apply.
+- **bypassPermissions** — all permission checks are skipped. Appropriate only for trusted, well-tested tasks in isolated environments.
 
-Do not leave `bypassPermissionsMode` enabled permanently — it disables all permission prompts.
+Do not live in `bypassPermissions` — it disables every permission prompt. (Note: `bypassPermissionsMode` is not a settings key; the related setting is `disableBypassPermissionsMode`, which prevents the mode from being used at all.) Cowork is separate: it has its own per-folder and per-app permission prompts and is not governed by these CLI modes.
 
 **PreToolUse hooks — execution guards:**
 
@@ -138,7 +142,7 @@ If you do want to understand the syntax, a PreToolUse hook is configured in `~/.
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"$CLAUDE_TOOL_INPUT\" | python3 ~/.claude/hooks/precheck.py"
+            "command": "~/.claude/hooks/security-precheck.sh"
           }
         ]
       }
@@ -148,8 +152,26 @@ If you do want to understand the syntax, a PreToolUse hook is configured in `~/.
 ```
 
 - `matcher`: which tool to intercept (`"Bash"` catches all shell commands)
-- `command`: the script to run; receives the tool input as `$CLAUDE_TOOL_INPUT`
-- The script should exit with code `0` to allow the action, or non-zero to block it
+- `command`: the script to run. The hook receives the tool call as **JSON on stdin** (fields include `tool_name` and `tool_input`) — not as environment variables. Extract the shell command with e.g. `jq -r '.tool_input.command // empty'`.
+- Exit code semantics: **`0` allows** the action; **`2` blocks** it, with stderr fed back to Claude as the reason. Any *other* non-zero exit is non-blocking — the tool call proceeds — so a hook that merely crashes protects nothing.
+- Finer-grained control: instead of exit codes, a hook can print JSON to stdout with a `permissionDecision` of `allow`, `deny`, or `ask` (plus a `permissionDecisionReason`).
+
+The canonical implementation lives at `skills/security-review/references/hook-security-precheck.sh`. Its core pattern:
+
+```bash
+INPUT=$(cat)   # JSON arrives on stdin
+CMD=$(echo "$INPUT" | python3 -c "import json,sys; print(json.load(sys.stdin).get('tool_input',{}).get('command',''))")
+
+block() {
+  echo "$1" >&2
+  exit 2
+}
+
+echo "$CMD" | grep -qE 'curl.+\|\s*(bash|sh|zsh)|wget.+\|\s*(bash|sh|zsh)' && \
+  block "Blocked: pipe-to-shell pattern (curl|wget piped to shell)"
+# ... further pattern checks ...
+exit 0
+```
 
 **Important limitation:** Hooks catch patterns, not intent. They are a speed-bump against accidents and simple prompt injections, not a security boundary. Good task design (narrow scope, explicit confirmation for consequential actions) is the primary defense.
 
@@ -160,7 +182,7 @@ If you do want to understand the syntax, a PreToolUse hook is configured in `~/.
 Claude sessions accumulate data on disk.
 
 **What persists locally:**
-- `~/.claude/sessions/` — full conversation history as `.jsonl` files, including everything you pasted in and everything Claude output. Treat this directory as sensitive.
+- `~/.claude/projects/<project-slug>/<session-id>.jsonl` — full conversation transcripts, including everything you pasted in and everything Claude output. Treat the whole `~/.claude/projects/` directory as sensitive.
 - `~/.claude/shell-snapshots/` — shell state snapshots that can accumulate to hundreds of files and gigabytes over time
 
 **Rules:**
@@ -172,7 +194,7 @@ Claude sessions accumulate data on disk.
 - Scan session transcripts for accidentally included credentials quarterly:
   ```bash
   grep -rl --include="*.jsonl" -E "(PASSWORD|SECRET|API_KEY|TOKEN)\s*[:=]\s*\S{8,}" \
-    ~/.claude/sessions/ 2>/dev/null
+    ~/.claude/projects/ 2>/dev/null
   ```
   The `security-review` skill (Phase 5) runs this scan and reports findings without auto-deleting.
 
@@ -249,23 +271,41 @@ git ls-files | grep -iE '\.env|secret|credential|key|token'
 ```
 This is also what the `security-review` skill runs in Phase 0b.
 
-### .claudeignore — control what Claude loads as context
+### .claudeignore — context hygiene, not a security control
 
-Claude loads files in the project directory as context. Use `.claudeignore` to exclude files that are large, sensitive, or simply not needed:
+Claude loads files in the project directory as context. Use `.claudeignore` to exclude files that are large or simply not needed:
 
 ```
 # Compiled skill bundles
 skills/*.skill
 
-# Raw data files with personal information
-data/raw/
-exports/
-
 # Large generated outputs
 output/
 ```
 
-Sensitive data files (financial exports, health records, contact lists) belong in `.claudeignore` if they are in the project directory at all — Claude should access them only when explicitly asked, not auto-load them as context.
+**Important:** `.claudeignore` is *advisory only*. Neither Cowork nor Claude Code technically enforces it — Claude reads it as a standing instruction and generally complies, but nothing blocks access, and an injected instruction or a misstep can override it. Do not rely on it to protect sensitive files.
+
+**The enforced mechanisms:**
+
+- **Cowork** — folder selection. Claude can only reach the folders connected to the session. Keep sensitive data (financial exports, health records, contact lists) *outside* the folders you connect, in a separate folder you connect only when explicitly working with that data.
+- **Claude Code** — `permissions.deny` rules in `.claude/settings.json` block file access at the tool layer:
+
+```json
+{
+  "permissions": {
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./data/raw/**)",
+      "Read(~/.aws/**)"
+    ]
+  }
+}
+```
+
+A PreToolUse hook is the programmable alternative when deny rules aren't expressive enough.
+
+Use both layers: `.claudeignore` for token savings, deny rules / folder scoping for actual protection.
 
 ### Sharing and bootstrapping
 
@@ -287,6 +327,8 @@ Scheduled and autonomous tasks run without a human reviewing each step. This amp
 - **Read → draft → confirm** — prefer tasks that produce output for human review over tasks that act directly. A task that emails you a summary is safer than one that sends emails on your behalf.
 - **Scope actions tightly** — if a task only needs to read calendar and write to one file, give it only those capabilities
 - **Audit task output** — review what the task actually did after early runs before trusting it fully
+
+**Computer use:** Cowork's computer-use capability lets Claude control desktop applications directly — clicking, typing, and reading whatever the app shows. There is no sandbox between Claude and the apps it controls, so granting an application is comparable to granting Bash access to everything that application can do. Scope approvals narrowly — grant only the apps a task actually needs, only for as long as it needs them — and never grant financial apps (banking, trading, payments) to autonomous tasks.
 
 **Review checklist before deploying a new autonomous task:**
 - [ ] Does it have only the MCP servers it needs?
@@ -310,7 +352,7 @@ Warning signs that your setup may have been manipulated or is behaving unexpecte
 **What to do:**
 1. Stop the task from running again until you've investigated
 2. Run `/security-review` or ask: "Read 12_SECURITY.md and audit my setup for the issues it covers"
-3. Check `~/.claude/sessions/` for the affected session — look for unusual commands or outputs
+3. Check the affected session transcript under `~/.claude/projects/` — look for unusual commands or outputs
 4. Run `git diff HEAD~1 HEAD` on your task files to see what changed recently (if using git)
 5. Check `LAST_RUN.md` for the run where the problem appeared
 

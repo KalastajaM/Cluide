@@ -19,7 +19,7 @@ find ~/.claude/shell-snapshots/ -type f -mtime +7 -delete 2>/dev/null
 REMAINING=$(ls ~/.claude/shell-snapshots/ 2>/dev/null | wc -l | tr -d ' ')
 echo "[session-cleanup] Shell snapshots remaining: $REMAINING"
 
-# Session count
-SESSIONS=$(ls ~/.claude/sessions/ 2>/dev/null | wc -l | tr -d ' ')
-SIZE=$(du -sh ~/.claude/sessions/ 2>/dev/null | cut -f1)
-echo "[session-cleanup] Sessions: $SESSIONS, Storage: $SIZE"
+# Session transcript count (transcripts live under ~/.claude/projects/<project-slug>/)
+SESSIONS=$(find ~/.claude/projects/ -name '*.jsonl' 2>/dev/null | wc -l | tr -d ' ')
+SIZE=$(du -sh ~/.claude/projects/ 2>/dev/null | cut -f1)
+echo "[session-cleanup] Session transcripts: $SESSIONS, Storage: $SIZE"

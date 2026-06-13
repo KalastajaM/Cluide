@@ -1,5 +1,7 @@
 # Connecting Claude to Your Personal Data
 
+*Last reviewed: June 2026*
+
 > Five patterns for getting personal data — investments, finances, transactions — into Claude tasks without exposing raw files, building fragile pipelines, or paying excessive token costs.
 
 > **Companion guides:** [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) covers token efficiency — Python data feeders (Pattern 1) are one of the highest-leverage efficiency moves you can make. [Guide 07](./07_TASK_LEARNING_GUIDE.md) covers self-improvement — once your data layer is stable, the task can start learning from it. [Guide 11](./11_GIT_INTEGRATION.md) covers git tracking — your JSON data files are prime candidates for pre-run snapshots.
@@ -8,23 +10,27 @@
 
 > **Giving this guide to Claude:**
 > "Read 14_PERSONAL_DATA_LAYER.md and help me set up a data layer for [my investment tracker / personal finance workflow / etc.]. Ask me what data sources I have and recommend which patterns apply."
+>
+> **Faster alternative:** `tasks/setup-data-layer.md` interviews you about your data sources and sets up the right pattern(s) without reading the guide first.
 
 ---
 
 ## Do You Need This Guide Yet?
 
-This is an advanced guide requiring Python scripts, browser JavaScript, or multi-step pipelines. Come back here when:
-- You want Claude to reason about data in a web app with no API
-- You have local files too large or raw to paste into Claude directly
+This is an advanced guide. The patterns here require writing Python scripts, running JavaScript in your browser, or setting up multi-step pipelines. If you're still in your first few weeks, you likely don't need this yet.
+
+**Come back here when:**
+- You want Claude to reason about data that lives in a web app with no API (banking, broker, expense tracker)
+- You have local files (CSV, JSON) that are too large or raw to paste into Claude directly
 - A task needs computed values (P&L, totals, averages) rather than raw records
 
-If you just want Claude to remember things about you, that's [Guide 04 — Memory](./04_MEMORY_AND_PROFILE.md).
+**If you just want Claude to remember things about you:** that's [Guide 04 — Memory](./04_MEMORY_AND_PROFILE.md), not this guide.
 
 ---
 
 ## The Core Problem
 
-Claude is good at reasoning over data but not at raw data ingestion. A 500-row transactions JSON file costs thousands of tokens and gives Claude more noise than signal. A screenshot of your bank app is unreadable without a vision model in the pipeline. A live web app has no way to hand data to Claude at all.
+Claude reasons well over data but handles raw ingestion poorly. A 500-row transactions file costs thousands of tokens and gives more noise than signal. A bank app screenshot is unreadable without a vision model. A live web app has no way to hand data to Claude at all.
 
 The solution is a thin data layer that transforms raw personal data into compact, Claude-readable context:
 
@@ -250,6 +256,9 @@ def extract_from_screenshot(image_path: Path) -> list[dict]:
         image_data = base64.b64encode(f.read()).decode()
 
     response = client.messages.create(
+        # Haiku is the right tier for bulk vision extraction — ~5x cheaper
+        # than Opus and accurate on clean screenshots. Re-check the current
+        # model id when reusing this script.
         model="claude-haiku-4-5-20251001",
         max_tokens=1024,
         messages=[{
@@ -296,17 +305,17 @@ Path("data/bank_transactions_raw.json").write_text(
 print(f"Extracted {len(all_transactions)} transactions from {len(screenshots)} screenshots.")
 ```
 
-For SDK setup and API key configuration, see the `claude-api` skill.
+For SDK setup and API key configuration, see Anthropic's SDK quickstart at [platform.claude.com](https://platform.claude.com) (docs at docs.claude.com).
 
 **Design rules:**
 
 - The prompt must be precise about the output schema. Ask for exactly the fields you need; vague prompts produce inconsistent JSON structures.
-- Include "Return a JSON array only, no other text" — otherwise Claude may wrap the result in a prose explanation.
+- Better than prompt discipline: use the API's **structured outputs** feature — pass a JSON schema with the request and the response is guaranteed to parse against it. This eliminates the malformed-JSON failure mode entirely (the one the anti-patterns section below warns about). The prompt-only fallback is "Return a JSON array only, no other text" — otherwise Claude may wrap the result in a prose explanation.
 - Name the output file `_raw` and run a separate normalization/validation step before merging into your main data store.
 - Batch all screenshots from the same time period into one script run to minimize API calls.
 - Add `screenshots/` to `.gitignore` — they are large and may contain sensitive financial data.
 
-**On accuracy:** Claude Vision is generally reliable for structured data in clean bank app screenshots, but errors happen with unusual formatting or low-contrast images. Spot-check a sample of extracted transactions against the originals before merging into your data store.
+**On accuracy:** Vision is reliable for structured data in clean screenshots, but errors happen with unusual formatting or low-contrast images. Spot-check a sample against the originals before merging into your data store.
 
 ---
 
@@ -443,7 +452,7 @@ reads:           GoodBudget's full page DOM
 
 **Storing PII in memory files or CLAUDE.md.** Bank account numbers, national ID numbers, and full addresses do not belong in files that persist across sessions or get committed to git. Keep sensitive identifiers in local data files listed in `.gitignore`.
 
-**Hardcoding absolute paths.** `~/Documents/Finance/data.json` breaks when you move machines or share the project. Use paths relative to the project root, or resolve them in scripts via `Path(__file__).parent`.
+**Hardcoding absolute paths.** `~/Documents/Finance/data.json` breaks the moment you move machines or share the project. Use paths relative to the project root, or resolve them in scripts via `Path(__file__).parent`.
 
 **Running data scripts without validating output.** A vision extraction script that returns malformed JSON will silently corrupt your data store. Add a validation step — check that required fields exist and types are correct — before writing to disk.
 

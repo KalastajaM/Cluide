@@ -1,6 +1,6 @@
 # Prompting Basics: Writing Instructions That Work
 
-*Last reviewed: April 2026*
+*Last reviewed: June 2026*
 
 > The quality of Claude's output is determined almost entirely by the quality of the instructions it receives. This guide is about writing better instructions — whether in CLAUDE.md, a skill, a task, or a chat message.
 
@@ -38,6 +38,16 @@ Show a template or example of the expected output. This single addition more tha
 
 > Weak: *"Produce a structured summary."*
 > Strong: Show an exact template (see the section below).
+
+---
+
+## Context Engineering
+
+Anthropic's current framing for all of this is **context engineering**: treat Claude's attention as a finite budget, and curate the smallest set of high-signal tokens that gets the job done. Every token in the context — instructions, files, history — competes for that attention; low-signal content doesn't just cost money, it dilutes the instructions that matter.
+
+This guide's advice is context engineering in practice: precise tasks instead of vague ones (fewer tokens, higher signal), templates instead of descriptions (one example outperforms paragraphs of explanation), and putting rules where they're needed (Mistake 2 below — a bloated CLAUDE.md is an attention-budget failure, not just a style problem).
+
+Full treatment: [anthropic.com/engineering/effective-context-engineering-for-ai-agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents).
 
 ---
 

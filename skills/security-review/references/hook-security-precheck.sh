@@ -2,6 +2,8 @@
 # Claude Code PreToolUse security gate
 # Blocks dangerous Bash commands before execution
 # Input: JSON on stdin with .tool_input.command
+# Output: reason on stderr + exit 2 to block; exit 0 to allow
+# (Exit 2 is the only blocking exit code — other non-zero exits do NOT block.)
 
 set -euo pipefail
 
@@ -9,8 +11,8 @@ INPUT=$(cat)
 CMD=$(echo "$INPUT" | python3 -c "import json,sys; print(json.load(sys.stdin).get('tool_input',{}).get('command',''))" 2>/dev/null || echo "")
 
 block() {
-  echo "{\"decision\":\"block\",\"reason\":\"$1\"}"
-  exit 0
+  echo "$1" >&2
+  exit 2
 }
 
 # 1. Dangerous flags

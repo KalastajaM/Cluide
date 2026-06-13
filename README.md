@@ -5,7 +5,7 @@
 > A complete framework for building, running, and improving a persistent AI assistant with Claude.
 > Includes architecture guides, runnable setup tasks, installable skills, and copy-paste templates.
 
-*Written for Claude Code with Claude Haiku, Sonnet, and Opus models (2026). Core concepts apply to any Claude setup.*
+*Written for Claude Code and Cowork with current Claude models (Haiku, Sonnet, Opus, Fable); the core concepts are model-agnostic.*
 
 ---
 
@@ -13,7 +13,7 @@
 
 Cluide is an operational framework for building AI assistants that persist, learn, and improve over time — not a collection of tips, but a complete system you can actually install and run. It covers the full lifecycle: initial setup, scheduled automation, self-improvement, security, and long-term maintenance.
 
-The deliverables are concrete: 22 interlocking guides that define the architecture, 19 runnable task files that do the setup work for you, 6 bundled skills, and 4 ready-to-use templates. The guides are documentation for the system; the tasks are its installation scripts.
+The deliverables are concrete: a set of interlocking guides that define the architecture, a library of runnable task files that do the setup work for you, a set of installable skills, and four ready-to-use templates. The guides are documentation for the system; the tasks are its installation scripts.
 
 A well-configured Claude personal assistant has four layers:
 
@@ -96,8 +96,11 @@ Tasks are standalone instruction files for setup and auditing. Run them by sayin
 | `tasks/setup-security.md` | Credential scan, permission audit, install guard hooks |
 | `tasks/setup-github.md` | Init git, create GitHub repo, set up ongoing sync |
 | `tasks/setup-self-improving-task.md` | Add `IMPROVEMENTS.md` + self-improvement loop to any task |
+| `tasks/setup-orchestration.md` | Wire multi-task coordination — shared state, run order, handoff files |
 | `tasks/setup-wiki.md` | Create an LLM wiki structure for a topic |
 | `tasks/setup-data-layer.md` | Set up data patterns (Python feeder, JSON DB, browser extraction) |
+| `tasks/setup-ignore-hygiene.md` | Audit `.gitignore`/`.claudeignore`, install check hook |
+| `tasks/setup-bootstrap-folder.md` | Create `bootstrap/` stubs for gitignored runtime state files |
 
 ### Audit tasks
 
@@ -105,8 +108,10 @@ Tasks are standalone instruction files for setup and auditing. Run them by sayin
 |------|-------------|
 | `tasks/audit-claude-md.md` | Review `CLAUDE.md` — dead rules, missing sections, over-length |
 | `tasks/audit-task-efficiency.md` | Token efficiency checklist for any task file |
+| `tasks/audit-cost.md` | Audit a task's token economics — file budgets, model tier, run metrics |
 | `tasks/audit-memory.md` | Check memory files for staleness and duplicates |
 | `tasks/audit-skill.md` | Review a `SKILL.md` — triggering, workflow, output format |
+| `tasks/review-tasks.md` | Cluide maintenance — detect guide changes and flag tasks, skill bundles, and templates that drifted |
 
 ---
 
@@ -115,7 +120,7 @@ Tasks are standalone instruction files for setup and auditing. Run them by sayin
 Six installable skills are bundled in `skills/`. Install only the ones you need.
 
 **Claude Code:** copy the skill folder to `~/.claude/skills/`
-**Claude.ai:** upload the `.skill` file from `skills/` via **Settings → Skills → Upload skill**
+**Claude.ai:** zip the skill folder with a `.skill` extension (e.g. `cd skills && zip -r backlog.skill backlog/` — or ask Claude to bundle it), then upload via **Settings → Skills → Upload skill**
 
 | Skill | What it does |
 |-------|-------------|
@@ -125,6 +130,7 @@ Six installable skills are bundled in `skills/`. Install only the ones you need.
 | `security-review` | Structured security audit of a Claude Code environment and project |
 | `backlog` | Portable backlog manager — prioritised work items, grooming, decision logging |
 | `policies-validator` | Tiered company-policy guardrail (T1 block / T2 alert / T3 soft guidance) — ships as a template; fill the Policy Registry before use |
+| `html-report` | Generates polished, self-contained HTML reports from task output (Guide 19 skeleton bundled) |
 
 ---
 

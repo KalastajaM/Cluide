@@ -33,7 +33,7 @@ Use `git ls-files -o --exclude-standard` to list untracked files and `git ls-fil
 - IDE/editor directories: `.vscode/`, `.idea/`, `*.code-workspace`
 - Personal/private data directories (Profile/, personal data folders)
 
-**Should go in `.claudeignore`** (keep out of Claude context, but may still be in git):
+**Should go in `.claudeignore`** (keep out of Claude context, but may still be in git — note this is an advisory convention, not enforced; for files that must not be accessed, use `permissions.deny` or Cowork folder scoping per Guide 12 §7):
 - `.git/` directory
 - Large generated archives or history directories (e.g. `Actions/History/`, `*.archive/`)
 - Compiled or bundled skill files
@@ -68,9 +68,11 @@ After the user approves (in full or partially):
 
 **`.claudeignore` header template** (use when creating from scratch):
 ```
-# .claudeignore — files excluded from Claude's context window
-# These files remain on disk and in git (if tracked), but Claude will not load them.
-# Reference: https://docs.anthropic.com/en/docs/claude-code/claudeignore
+# .claudeignore — files Claude should not load as context (advisory convention).
+# These files remain on disk and in git (if tracked). Claude reads this file as a
+# standing instruction; it is NOT technically enforced. For files that must not be
+# accessed, use permissions.deny in .claude/settings.json (Claude Code) or keep
+# them outside the connected folder (Cowork).
 
 ```
 

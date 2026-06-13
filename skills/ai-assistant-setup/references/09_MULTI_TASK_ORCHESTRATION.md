@@ -1,6 +1,6 @@
 # Multi-Task Orchestration
 
-*Last reviewed: April 2026*
+*Last reviewed: June 2026*
 
 > When multiple scheduled tasks share data, run in a specific order, or produce a combined output, you need orchestration. This guide covers how to coordinate tasks without overengineering.
 
@@ -236,6 +236,18 @@ in the briefing and continue with calendar data only.
 **Over-orchestrating.** Two independent tasks that happen to run at the same time don't need an orchestrator. Only add coordination when tasks genuinely depend on each other's output.
 
 **Giant shared state.** Putting everything in one `STATE.json`. If it exceeds 100 lines, you are probably conflating shared state with per-task state. Split.
+
+---
+
+## Newer Orchestration Surfaces (Research Preview)
+
+As of June 2026, Claude Code ships a materially more powerful orchestration layer than the file-based patterns above. All of it is optional, and some of it is research-preview — the file-based patterns in this guide remain the stable, debuggable foundation.
+
+- **Dynamic workflows** (research preview) — triggered with the keyword `ultracode`, these orchestrate tens to hundreds of background agents on a single goal; inspect runs with `/workflows`.
+- **Background sessions** — `claude --bg` starts a session that runs detached; `/goal` sets a standing objective for it. `claude agents` shows all running agent sessions.
+- **Nested subagents** — subagents can now spawn their own subagents up to 5 levels deep, enabling fan-out patterns (one coordinator, many workers) without external scripting.
+
+When to care: if a sequential chain or dependency graph from this guide starts feeling like a workaround — many parallel workers, long-running goals — these surfaces are the native answer. Until then, files in `shared/` with freshness checks are easier to reason about, version, and debug.
 
 ---
 

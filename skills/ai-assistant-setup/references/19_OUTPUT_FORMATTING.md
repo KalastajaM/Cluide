@@ -1,6 +1,6 @@
 # Guide 19: Output Formatting — Markdown & HTML
 
-*Last reviewed: April 2026*
+*Last reviewed: June 2026*
 
 > How to make generated output look good — whether Claude is producing a Markdown summary or a full HTML report.
 > Covers Markdown basics with Claude-specific tips, and a practical HTML layout pattern for polished, self-contained reports.
@@ -296,6 +296,8 @@ Adjust the bullet points to match your specific report structure.
 ```
 
 Copy this skeleton into a task's `TASK_REFERENCE.md` or a skill's reference section as the output template. Claude can then populate the data fields without redesigning the layout each run.
+
+**Alternative for connector-backed dashboards: Cowork live artifacts.** Where this guide recommends regenerating an HTML report each run, Cowork's live artifacts offer a different model — the artifact re-executes its data-fetching code when you reopen it, so the dashboard refreshes itself instead of going stale. For a report whose data comes from connectors (calendar, email, project tools), a live artifact removes the need for a scheduled regeneration run entirely. The static-HTML pattern remains the right choice for file-based data, archival snapshots, and anything that must be readable outside Cowork.
 
 ---
 

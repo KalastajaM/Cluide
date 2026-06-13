@@ -4,6 +4,7 @@
 skills/*.skill
 SECURITY_AUDIT.md
 *_SECURITY_AUDIT.md
+REVIEW_*.md
 
 # Personal workflow notes — keep local, never publish
 GIT_INSTRUCTIONS.md
@@ -14,4 +15,6 @@ token.json
 *.oauth
 .env
 .env.*
+
+# Local planning docs (not for publication)
 /docs

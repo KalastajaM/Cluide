@@ -1,6 +1,6 @@
 # Cost and Performance Monitoring
 
-*Last reviewed: April 2026*
+*Last reviewed: June 2026*
 
 > Scheduled tasks run unattended. Without monitoring, costs creep silently — a task that used to cost $0.10 per run can drift to $0.50 after a few profile updates and nobody notices. This guide covers how to measure, budget, and control what your tasks cost.
 
@@ -28,15 +28,16 @@ You don't need exact numbers. Rough estimates are enough to spot trends and catc
 
 ## What Things Actually Cost
 
-Claude pricing (as of early 2026) uses per-token rates that differ by model tier. Rough reference:
+Claude pricing (as of June 2026) uses per-token rates that differ by model tier. Rough reference:
 
 | Model | Input (per 1M tokens) | Output (per 1M tokens) |
 |---|---|---|
-| **Haiku** | ~$1 | ~$5 |
-| **Sonnet** | ~$3 | ~$15 |
-| **Opus** | ~$15 | ~$75 |
+| **Haiku 4.5** | ~$1 | ~$5 |
+| **Sonnet 4.6** | ~$3 | ~$15 |
+| **Opus 4.8** | ~$5 | ~$25 |
+| **Fable 5** | ~$10 | ~$50 |
 
-These are API list prices. Batch API pricing is typically 50% cheaper (see "Batch vs. Interactive" below). Caching drops input costs further when the same context is reused across calls.
+These are API list prices. Batch API pricing is typically 50% cheaper (see "Batch vs. Interactive" below). Prompt caching drops input costs further when the same context is reused across calls (see "Prompt Caching" below).
 
 **Typical task costs per run (Sonnet):**
 
@@ -48,23 +49,23 @@ These are API list prices. Batch API pricing is typically 50% cheaper (see "Batc
 | Full morning briefing (email + calendar + profile + output) | ~25K | ~6K | ~$0.17 |
 | Complex research task (multi-step, 50K context) | ~50K | ~10K | ~$0.30 |
 
-At one run per day, the morning briefing costs roughly $5/month on Sonnet. The same task on Opus would cost roughly $25/month — five times more for the same token volume.
+At one run per day, the morning briefing costs roughly $5/month on Sonnet (~$0.17/run × 30). The same token volume costs roughly $8/month on Opus (~$0.28/run — about 1.7x Sonnet), $16.50/month on Fable 5 (~$0.55/run — about 3.3x), and $1.65/month on Haiku (~$0.06/run — about a third of Sonnet). The Opus premium is far smaller than it used to be, but the tiers still compound across many tasks and many runs.
 
 ---
 
-## Model Tier Selection: Haiku, Sonnet, Opus
+## Model Tier Selection
 
-Not every task needs the most capable model. Choose based on what the task actually does:
+Not every task needs the most capable model. Four tiers, four jobs:
 
 **Use Haiku for:**
 - Vision and OCR — reading screenshots, extracting text from images, parsing receipts (see [Guide 14](./14_PERSONAL_DATA_LAYER.md) for concrete patterns)
-- High-volume, low-judgment work — bulk classification, tagging, dedup
-- Lightweight extraction where the schema is tight and the model doesn't need to reason
+- Triage and classification (which emails need action, which pages changed)
+- Bulk extraction (parsing structured data from emails, screenshots, API responses)
+- Any high-volume step where the output is a label, a field, or a short structured record
 
-**Use Sonnet for:**
-- Structured extraction (parsing emails, reading calendar events)
+**Use Sonnet (the default) for:**
 - Template-driven output (briefings, digests, status updates)
-- Triage and classification tasks
+- Structured extraction that needs some interpretation
 - Any task where the instructions are clear and the output format is fixed
 
 **Use Opus for:**
@@ -73,9 +74,24 @@ Not every task needs the most capable model. Choose based on what the task actua
 - Tasks where output quality directly affects decisions
 - Self-improvement proposal generation (the review step in Guide 07)
 
-**The hybrid approach:** Split a task across tiers. A morning briefing that extracts screenshots on Haiku, triages emails on Sonnet, and drafts the narrative on Opus costs a fraction of running everything on Opus while keeping output quality high at the point that matters.
+**Use Fable for:**
+- The hardest long-horizon synthesis: multi-source research reports, large refactors, planning across an entire project's state
+- Tasks where you'd otherwise split the work to fit context — Fable's 1M default context can hold it whole
+- Its advantage over Opus grows with task length; for short tasks the gap is small and the 2x price rarely pays off
 
-In practice, most scheduled tasks work well on Sonnet. Drop to Haiku for vision or cheap bulk work; reserve Opus for the tasks where you've noticed Sonnet's output isn't good enough.
+**The hybrid approach:** Run the data-gathering and triage steps on Haiku or Sonnet and the synthesis/judgment step on Opus. A morning briefing that fetches and triages on Haiku, then drafts the narrative on Opus, costs far less than running everything on Opus while keeping output quality high.
+
+In practice, most scheduled tasks work well on Sonnet. Drop feeder steps to Haiku once the procedure is stable, and reserve Opus or Fable for the tasks where you've noticed Sonnet's output isn't good enough.
+
+---
+
+## Prompt Caching
+
+Cached input tokens cost roughly 90% less than fresh ones. When the same prefix (system prompt, TASK.md, PROFILE_SUMMARY.md) is sent repeatedly within the cache window, only the first read pays full price — so the naive per-run math in this guide overstates the cost of always-loaded files for anything that runs back-to-back or makes many calls in one session.
+
+The catch for scheduled tasks: the cache expires between runs spaced hours apart. A daily 7 AM task pays full price for its always-loaded files every run — caching helps *within* a run (a multi-step task re-sending the same context across calls) but not *across* daily runs. So the advice stands: trim always-loaded files anyway. A lean TASK.md is cheap on every run; a bloated one is only cheap when the cache happens to be warm.
+
+When you want to see where money actually goes, `/usage` now itemizes cost by skill, subagent, plugin, and per-MCP-server — far more precise than the estimates in this guide. Use it to confirm which component of a task is the expensive one before optimizing.
 
 ---
 
@@ -141,6 +157,20 @@ to IMPROVEMENTS.md: "Token usage trending up — review what changed."
 ```
 
 This catches gradual drift before it becomes expensive. It costs almost nothing — reading 5 short log entries adds ~100 tokens to the run.
+
+---
+
+## Non-Interactive Usage Credits
+
+As of June 15, 2026, non-interactive usage — Agent SDK calls, `claude -p`, scheduled and automated runs, GitHub Actions — draws from a **separate monthly usage-credit pool**: $20 on Pro, $100 on Max 5x, $200 on Max 20x. (What was called "extra usage" is now "usage credits" — check your balance with `/usage-credits`.)
+
+This matters more for this project than any pricing change, because everything in these guides runs on schedules. Practical implications:
+
+- **Budget scheduled tasks against the credit pool, not your interactive limits.** A Pro plan's $20/month covers roughly four daily-briefing-sized tasks at Sonnet prices (~$5/month each) — and far more if feeder steps run on Haiku.
+- **The per-run cost estimates in this guide are what each run deducts from that pool.** The budgeting formula above now has a hard ceiling: the sum of all your tasks' monthly budgets should stay under your plan's credit allowance, with headroom.
+- **Model tier choice has direct monthly consequences.** Moving one daily task from Opus to Sonnet frees ~$3/month of credits; from Sonnet to Haiku, another ~$3.
+
+Source: support.claude.com/en/articles/12429409.
 
 ---
 
@@ -305,6 +335,6 @@ When setting up cost monitoring for a task:
 - [ ] Annotate each task step with its rough token cost (token heat map)
 - [ ] Add the 2x alerting rule to the metrics step
 - [ ] Add the gradual drift check (compare against 20 runs ago)
-- [ ] Set a monthly budget based on the first 3–5 runs
-- [ ] Choose the right model tier for each task (Sonnet vs. Opus)
+- [ ] Set a monthly budget based on the first 3–5 runs — and check the sum of all task budgets against your plan's usage-credit pool
+- [ ] Choose the right model tier for each task (Haiku / Sonnet / Opus / Fable)
 - [ ] Archive old `RUN_LOG.md` entries after 30 runs

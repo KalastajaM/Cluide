@@ -8,9 +8,6 @@ description: >
   "audit my Claude config", "set up security hooks", "scan for credentials".
   Accepts an optional project path argument (e.g. `/security-review /path/to/project`)
   to scope project-level checks; defaults to the current working directory if omitted.
-args:
-  - name: project
-    description: Absolute path to the project to audit (optional, defaults to current working directory)
 ---
 
 # Claude Code Security Review
@@ -29,7 +26,7 @@ At the end of each phase, print a summary and use `AskUserQuestion` with buttons
 ## Setup
 
 Determine the target project path:
-- If the user provided a `project` argument, use that path
+- If the user provided a path argument (e.g. `/security-review /path/to/project`), use that path
 - Otherwise, use the current working directory
 
 Store this as `$PROJECT` for use throughout.
@@ -41,18 +38,29 @@ Store this as `$PROJECT` for use throughout.
 Run these three checks immediately — they catch the highest-risk issues first.
 Do not wait for Phase 1.
 
-**0a. Plaintext credentials in `~/.claude/settings.json`**
+**0a. Plaintext credentials in MCP configs**
+MCP servers live in `~/.claude.json` and `.mcp.json` (Claude Code) or `claude_desktop_config.json` (Cowork/Desktop) — not `settings.json`. Scan all that exist:
 ```bash
 python3 -c "
-import json, sys, re
-try:
-    d = json.load(open('/Users/' + __import__('os').getenv('USER') + '/.claude/settings.json'))
+import json, os
+home = os.path.expanduser('~')
+configs = [
+    home + '/.claude.json',
+    os.environ.get('PROJECT', '.') + '/.mcp.json',
+    home + '/Library/Application Support/Claude/claude_desktop_config.json',
+]
+def scan(d, src):
     for name, srv in d.get('mcpServers', {}).items():
-        env = srv.get('env', {})
-        for k, v in env.items():
+        for k in srv.get('env', {}):
             if any(kw in k.upper() for kw in ['PASSWORD','SECRET','TOKEN','KEY','CREDENTIAL']):
-                print(f'  HIGH: MCP server [{name}] has plaintext {k} in settings.json')
-except: pass
+                print(f'  HIGH: MCP server [{name}] has plaintext {k} in {src}')
+for path in configs:
+    try:
+        d = json.load(open(path))
+        scan(d, os.path.basename(path))
+        for proj in d.get('projects', {}).values():   # ~/.claude.json nests per-project servers
+            scan(proj, os.path.basename(path))
+    except Exception: pass
 "
 ```
 
@@ -71,7 +79,7 @@ Print findings as a table:
 ```
 | Location              | Finding                              | Risk   |
 |-----------------------|--------------------------------------|--------|
-| settings.json         | Plaintext PASSWORD for [server name] | HIGH   |
+| ~/.claude.json        | Plaintext PASSWORD for [server name] | HIGH   |
 ```
 
 If no issues found, say "Phase 0: No immediate flags found."
@@ -94,7 +102,7 @@ ps aux | grep -i "claude" | grep -v grep
 Flag any process with 0% CPU running >2h as a zombie.
 
 **1c. MCP server inventory**
-Read `~/.claude/settings.json` and any `$PROJECT/.mcp.json`. For each server, note:
+Read `~/.claude.json`, any `$PROJECT/.mcp.json`, and (if present) `~/Library/Application Support/Claude/claude_desktop_config.json`. For each server, note:
 - Transport type (stdio vs HTTP)
 - Whether env block contains secrets (flag if so)
 - Whether version is pinned
@@ -109,7 +117,7 @@ Note which of PreToolUse / PostToolUse hooks are missing.
 ```bash
 cat ~/.claude/settings.local.json 2>/dev/null || echo "No settings.local.json"
 ```
-Check for `bypassPermissionsMode` or stale permission entries.
+Check for `permissions.defaultMode` set to `"bypassPermissions"`, or stale permission entries.
 
 **1f. Project-specific checks (if `$PROJECT` is set)**
 ```bash
@@ -132,7 +140,7 @@ Print consolidated risk table:
 ```
 | Area                  | Finding                                    | Risk   |
 |-----------------------|--------------------------------------------|--------|
-| settings.json         | Plaintext PASSWORD ([server-name] MCP)     | HIGH   |
+| ~/.claude.json        | Plaintext PASSWORD ([server-name] MCP)     | HIGH   |
 | PreToolUse hook       | Not configured — no execution guard        | MEDIUM |
 | Shell snapshots       | 47 snapshots, 230MB                        | LOW    |
 | MCP transport         | stdio only — no network exposure           | LOW    |
@@ -173,6 +181,9 @@ Add to `~/.claude/settings.json` under `hooks`:
 }
 ```
 
+How it works: the hook receives the tool call as JSON on stdin (`.tool_input.command`);
+exit 0 allows the command, exit 2 blocks it and feeds stderr back to Claude as the reason.
+
 **Limitation:** This hook catches patterns, not intent. A determined attacker with shell
 access can bypass it. It's a speed-bump against accidents and simple prompt injections,
 not a security boundary.
@@ -189,7 +200,7 @@ Use `AskUserQuestion` with buttons: "Install Socket CLI (npm supply chain scanne
 
 If approved:
 ```bash
-npm install -g @socket/cli 2>/dev/null && echo "Socket CLI installed" || echo "Socket CLI install failed (npm not found?)"
+npm install -g socket 2>/dev/null && echo "Socket CLI installed" || echo "Socket CLI install failed (npm not found?)"
 pipx install pip-audit 2>/dev/null && echo "pip-audit installed" || echo "pip-audit install failed (pipx not found?)"
 ```
 
@@ -261,10 +272,10 @@ It catches known threats, not zero-days.
 Use `AskUserQuestion` with buttons: "Scan session transcripts for exposed credentials and report findings?"
 > Buttons: `Yes` / `No`
 
-If approved, scan `~/.claude/sessions/` for credential patterns:
+If approved, scan the session transcripts under `~/.claude/projects/` (one `.jsonl` file per session, grouped by project) for credential patterns:
 ```bash
 grep -rl --include="*.jsonl" -E "(PASSWORD|SECRET|API_KEY|TOKEN)\s*[:=]\s*\S{8,}" \
-  ~/.claude/sessions/ 2>/dev/null | head -10
+  ~/.claude/projects/ 2>/dev/null | head -10
 ```
 Report findings. Do NOT auto-delete — let the user decide.
 
@@ -282,7 +293,7 @@ chmod +x ~/.claude/hooks/session-cleanup.sh
 
 ## Phase 6: MCP Server Audit (read-only)
 
-For each MCP server in `~/.claude/settings.json` and `$PROJECT/.mcp.json`, assess and report:
+For each MCP server in `~/.claude.json`, `$PROJECT/.mcp.json`, and (if present) `claude_desktop_config.json`, assess and report:
 
 | Field | What to check |
 |---|---|
@@ -299,8 +310,10 @@ Print a per-server risk card:
 - Source: local file (/Users/.../dist/index.js)
 - Version pinning: not applicable (local build)
 - Secrets in env: YES — [SERVER]_PASSWORD in plaintext → HIGH RISK
-- Recommendation: Move credential to system keychain or password manager CLI; reference via
-  $(op read "op://vault/[server-name]/password") in the env block
+- Recommendation: Move credential to system keychain or password manager CLI, and launch the
+  server via a wrapper script that exports it, e.g.
+  `MY_TOKEN="$(op read 'op://vault/[server-name]/password')" exec npx ...`
+  (Note: `$(...)` inside the JSON env block is NOT expanded — the literal text becomes the value.)
 ```
 
 ---
@@ -317,7 +330,7 @@ Generated: [date]
 
 | Area | Risk | Notes |
 |------|------|-------|
-| MCP server credentials | HIGH | Plaintext secrets in settings.json |
+| MCP server credentials | HIGH | Plaintext secrets in MCP config files |
 | PreToolUse hook | [ACTIVE/MISSING] | Execution guard status |
 | PostToolUse scan | [ACTIVE/MISSING] | Malware scan status |
 | Shell snapshots | LOW | Auto-pruned at 7 days |
@@ -338,7 +351,7 @@ Generated: [date]
 
 ## Edge Cases
 
-- If `~/.claude/settings.json` does not exist: skip credential and hook checks in Phases 0–2 and note "No global settings file found — Claude Code may not be configured yet."
+- If `~/.claude/settings.json` does not exist: skip the hook checks and note "No global settings file found — Claude Code may not be configured yet." (Credential checks in 0a use the MCP config files, not settings.json.)
 - If `$PROJECT` is not a git repository: skip `.env` tracking check (0b) and `.gitignore` coverage (1f); note "Not a git repo — git-based checks skipped."
 - If the user declines all APPROVAL REQUIRED phases: produce the Phase 0 + Phase 1 read-only report and the Phase 7 governance doc. Do not treat declining as an error.
 - If a scanning tool (Socket CLI, ClamAV, pip-audit) fails to install: log the failure, skip that specific check, and continue with remaining phases. Do not abort the entire audit.

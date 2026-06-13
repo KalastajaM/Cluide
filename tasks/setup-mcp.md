@@ -15,25 +15,27 @@ Audit the current MCP server configuration, identify what's connected and workin
 
 ### Step 1 — Audit current state
 
-Check what MCP servers are currently configured:
+First determine the environment — Cowork or Claude Code — since MCP servers are configured differently in each (note: `settings.json` holds permissions/hooks/env in Claude Code, never `mcpServers`).
+
+**In Claude Code:**
 
 ```bash
-# Global settings
-cat ~/.claude/settings.json 2>/dev/null | python3 -m json.tool | grep -A5 '"mcpServers"' || echo "no global settings"
+# Registered servers across all scopes (local: ~/.claude.json, project: .mcp.json, user)
+claude mcp list
 
-# Project-level settings
-cat .claude/settings.json 2>/dev/null | python3 -m json.tool | grep -A5 '"mcpServers"' || echo "no project settings"
+# Project-scoped servers, if any
+cat .mcp.json 2>/dev/null | python3 -m json.tool || echo "no project .mcp.json"
 ```
 
-Also ask Claude to list its currently available tools:
+**In Cowork:** remote connectors are managed in Settings → Connectors; local servers live in `claude_desktop_config.json` (macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`). Check the local config if accessible, and otherwise rely on the tool listing below.
+
+In both environments, also list currently available tools:
 > "What MCP tools do you currently have access to? List them by server."
 
 Report findings in a brief summary:
 ```
-Currently configured MCP servers:
-  Global: [list or "none"]
-  Project: [list or "none"]
-
+Environment: [Cowork | Claude Code]
+Currently configured MCP servers: [list by scope/source, or "none"]
 Active tools: [list by server, or "none detected"]
 ```
 
@@ -60,8 +62,10 @@ Present the most common MCP servers and ask which the user wants to set up:
 > - Computer Use — native desktop app control
 
 For each server the user wants, also ask:
-- **Global or project-level?** Global = available in every project. Project = only here.
+- **Scope?** Claude Code: user scope = every project, project scope = `.mcp.json` here (shareable via git), local scope = this project, private. Cowork: local servers in `claude_desktop_config.json` apply to all sessions; remote connectors are account-level.
 - **Credentials needed?** (API key, OAuth token, directory path)
+
+**In Cowork:** for Gmail/Calendar/Drive, Microsoft 365, Atlassian, and Slack, prefer the built-in connectors (Settings → Connectors) — OAuth is handled in-app and no JSON editing is needed. Only fall back to manual config for servers without a connector.
 
 ### Step 3 — Set up each server
 
@@ -73,11 +77,11 @@ node --version && npx --version || echo "Node.js not installed — required for 
 ```
 If missing, tell the user: "Node.js is required. Install it from nodejs.org, then re-run this task."
 
-**b) Determine the target settings.json** — global (`~/.claude/settings.json`) or project (`.claude/settings.json`).
+**b) Determine the target config** — Claude Code: prefer `claude mcp add` (with `--scope project` to write `.mcp.json`, or `--scope user` for everywhere); Cowork local servers: `claude_desktop_config.json`.
 
-**c) Read the target settings.json** if it exists, or start with `{}`.
+**c) If editing a JSON file directly** (Cowork local config, or project `.mcp.json`), read it first, or start with `{}`.
 
-**d) Add the server entry** under `mcpServers`. Use the templates below. Pin versions where possible (replace `@latest` with a specific version after confirming).
+**d) Add the server entry** under `mcpServers` (or pass the equivalent to `claude mcp add`). Use the templates below. Pin versions where possible (replace `@latest` with a specific version after confirming).
 
 **Filesystem:**
 ```json
@@ -117,26 +121,23 @@ These require OAuth setup through the vendor's developer portal. Tell the user:
 > "Google/Microsoft/Atlassian MCP servers require OAuth credentials from the vendor's developer console. I can walk you through the steps — which would you like to start with?"
 Guide the relevant setup steps based on their choice.
 
-**e) Write the updated settings.json** — merge the new server entry without overwriting existing entries.
+**e) Write the updated config** — merge the new server entry without overwriting existing entries (not needed when using `claude mcp add`).
 
-**Security reminder** — after adding any credential to settings.json, say:
-> "Credentials are now in `settings.json`. Make sure this file is in `.gitignore` if the project is on GitHub, or use a keychain reference instead of a plain-text token."
+**Security reminder** — after adding any credential to a config file, say:
+> "Credentials are now in `[config file]`. If this file lives in a git repo (e.g. `.mcp.json`), make sure it's in `.gitignore`, or keep tokens out of it and export them from your shell profile instead."
 
 ### Step 4 — Verify
 
 After adding each server:
-```bash
-# Restart will be needed — remind the user
-echo "Restart Claude Code to pick up the new server configuration."
-```
+Remind the user: restart the Claude Code session (or the desktop app, for Cowork) to pick up the new server configuration.
 
 Tell the user:
-> "After restarting Claude Code, ask: 'What MCP tools do you have access to?' to confirm the new server is connected."
+> "After restarting, ask: 'What MCP tools do you have access to?' to confirm the new server is connected."
 
 ### Step 5 — Confirm
 
 Tell the user:
-- Which servers were added and where (global vs. project)
+- Which servers were added and where (scope / config file)
 - Which tools each server exposes
 - Any servers that were skipped and why
-- "To add more servers later, re-run this task or edit the relevant `settings.json` directly."
+- "To add more servers later, re-run this task, use `claude mcp add` (Claude Code), or Settings → Connectors / Developer (Cowork)."

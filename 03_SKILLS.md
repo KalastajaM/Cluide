@@ -1,6 +1,6 @@
 # Best Practices: Designing Skills for a Personal Assistant
 
-*Last reviewed: April 2026*
+*Last reviewed: June 2026*
 
 A skill is a SKILL.md file (plus optional supporting files) that tells the assistant how to perform a specific, recurring type of task — producing formatted meeting notes, triaging support tickets, drafting client status updates, and so on. Good skills make the assistant dramatically more reliable at the things you do repeatedly. This document explains how to write them well.
 
@@ -76,6 +76,10 @@ description: >
 
 The second version lists the implicit triggers ("shoot the client a note") and tells the assistant what to do proactively (confirm tone). This prevents a common failure mode where the assistant processes the request itself rather than consulting the skill.
 
+**Optional frontmatter fields.** Beyond `name` and `description`, the frontmatter supports additional fields. The most useful is `disallowed-tools` — a list of tools the skill may not use (e.g., a read-only reporting skill that should never call `Write` or `Bash`). This turns a "the skill shouldn't do X" instruction into an enforced restriction, which matters for the security posture covered in [Guide 12](./12_SECURITY.md).
+
+**Editing skills without restarting:** Claude Code rescans skills with the `/reload-skills` command (or automatically via a SessionStart hook with `reloadSkills: true`) — you don't need to restart the session after editing a SKILL.md.
+
 ---
 
 ## The Skill Body
@@ -125,6 +129,8 @@ One concrete example showing a realistic input and the ideal output. This is the
 ---
 
 ## Progressive Disclosure: Keeping Skills Lean
+
+**Progressive disclosure is the core skill-design principle** — Anthropic names it as such in their Agent Skills engineering post ([anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)): the description is always in context, SKILL.md loads on activation, and reference files load only when a step needs them. Each layer costs tokens only when it earns them.
 
 Aim for under 500 lines in SKILL.md. If you need more:
 

@@ -1,6 +1,6 @@
 # Git Integration: Versioning Your Assistant's State
 
-*Last reviewed: April 2026*
+*Last reviewed: June 2026*
 
 > Git gives your assistant files one thing nothing else provides: rollback. When a run overwrites something it shouldn't, you undo it in seconds. This guide covers what to track, how to automate commits around task runs, and how to use git history to understand evolution.
 
@@ -45,9 +45,11 @@ See the next section for a complete breakdown of what belongs in `.gitignore` vs
 Two separate ignore files serve different purposes:
 
 - **`.gitignore`** — files git will not track or commit
-- **`.claudeignore`** — files Claude will not load as context (but git may still track them)
+- **`.claudeignore`** — files Claude should not load as context (but git may still track them)
 
 They are independent: a file can be in one, both, or neither.
+
+> **Enforcement caveat:** `.gitignore` is enforced by git. `.claudeignore` is **not enforced by either product** — it is a convention: Claude reads it as a standing instruction and generally complies, but nothing technically blocks access. Use it for context hygiene (keeping bulky files out of context), not as a security boundary. The enforced mechanisms are: in **Cowork**, folder selection — Claude can only reach the folders you connect to a session; in **Claude Code**, `permissions.deny` rules in `.claude/settings.json` (e.g. `"deny": ["Read(./.env)"]`) or a PreToolUse hook. See [Guide 12 §7](./12_SECURITY.md) for the security side.
 
 ### What belongs in `.gitignore`
 
@@ -56,9 +58,11 @@ They are independent: a file can be in one, both, or neither.
 | Credentials & secrets | `credentials.json`, `token.json`, `.env`, `*.oauth` | Never commit secrets |
 | Personal data | files with full paths, company names, usernames | Not shareable across machines/users |
 | Local config | `.claude/settings.local.json` | Machine-specific permission allowlists |
-| Run output & logs | `LAST_RUN.md`, `RUN_LOG.md`, `output/` | Auto-generated; git history of these is noise |
+| Run output & logs | `LAST_RUN.md`, `output/` | Replaced wholesale or regenerated; git history of these is noise |
 | Compiled/bundled output | `skills/*.skill` | Generated from source in `skills/*/SKILL.md` |
 | OS noise | `.DS_Store`, `*.swp` | Never intentional |
+
+Note that `RUN_LOG.md` is deliberately *not* in this table: it is append-only, so its diffs are clean single-entry additions — track it (see "What to Track" above). Only the wholesale-replaced `LAST_RUN.md` stays ignored.
 
 **Starter `.gitignore`:**
 ```
@@ -73,7 +77,6 @@ token.json
 
 # Run output
 **/LAST_RUN.md
-**/RUN_LOG.md
 
 # Compiled skill bundles
 skills/*.skill
@@ -86,7 +89,7 @@ __pycache__/
 
 ### What belongs in `.claudeignore`
 
-Claude loads files as context when reading a project. Excluding large or redundant files keeps context lean.
+Claude loads files as context when reading a project. Excluding large or redundant files keeps context lean. (Remember: this is advisory — list things here to save tokens, not to protect secrets.)
 
 | Category | Examples | Why |
 |---|---|---|
@@ -190,7 +193,7 @@ To snapshot automatically at session start, add a `SessionStart` hook in `.claud
         "hooks": [
           {
             "type": "command",
-            "command": "cd /path/to/your/assistant && git add -A && git commit -m 'pre-session snapshot $(date +%Y-%m-%d %H:%M)' 2>/dev/null || true"
+            "command": "cd /path/to/your/assistant && git add -A && git commit -m \"pre-session snapshot $(date '+%Y-%m-%d %H:%M')\" 2>/dev/null || true"
           }
         ]
       }
@@ -378,7 +381,7 @@ Commit empty, non-personal stub versions of each required file under `bootstrap/
 bootstrap/
 ├── SETUP.md                   ← copy instructions for a fresh clone
 ├── pending_actions.json       ← empty action state
-├── RUN_LOG.md                 ← headers-only run log
+├── LAST_RUN.md                ← headers-only last-run stub
 ├── PROFILE_SUMMARY.md         ← placeholder profile stub
 ├── PROFILE_projects.md        ← placeholder projects stub
 └── PROFILE_patterns.md        ← placeholder patterns stub
@@ -392,17 +395,17 @@ bootstrap/
 
 ### Negation rules for globally-ignored filenames
 
-If the gitignored pattern is a bare filename (e.g. `RUN_LOG.md`), git also ignores the copy in `bootstrap/`. Fix with negation rules:
+If the gitignored pattern matches a bare filename anywhere (e.g. `**/LAST_RUN.md`), git also ignores the copy in `bootstrap/`. Fix with negation rules:
 
 ```
 # Bootstrap stubs are explicitly included despite global ignore rules
 !bootstrap/pending_actions.json
-!bootstrap/RUN_LOG.md
+!bootstrap/LAST_RUN.md
 ```
 
 Negation rules must come after the pattern they override. After adding them, verify with:
 ```bash
-git check-ignore -v bootstrap/pending_actions.json
+git check-ignore -v bootstrap/LAST_RUN.md
 # should show the !bootstrap/ negation rule, not the global pattern
 ```
 
@@ -413,7 +416,7 @@ Commit a `bootstrap/SETUP.md` with the exact shell commands needed. Anyone (or C
 ```bash
 # State files
 cp bootstrap/pending_actions.json Assistant-Task/pending_actions.json
-cp bootstrap/RUN_LOG.md Assistant-Task/RUN_LOG.md
+cp bootstrap/LAST_RUN.md Assistant-Task/LAST_RUN.md
 
 # Profile files
 mkdir -p Profile
@@ -434,7 +437,7 @@ Tasks can detect and handle missing state files themselves. Add a first-run chec
 **First-run check:** Before reading any state file, verify it exists:
 - If `pending_actions.json` does not exist → copy from `bootstrap/pending_actions.json`.
   If bootstrap copy also missing → create with empty structure: `{"open":[],"resolved_today":[]}`
-- If `RUN_LOG.md` does not exist → copy from `bootstrap/RUN_LOG.md`.
+- If `LAST_RUN.md` does not exist → copy from `bootstrap/LAST_RUN.md`.
   If bootstrap copy also missing → create with header only.
 - Note "Bootstrap: first run — state files initialized" in the run log entry for this run.
 ```
