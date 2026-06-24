@@ -4,15 +4,13 @@
 SYSTEM_STATUS.md
 
 # Generated output directories (contain personal data — do not commit)
+# (Actions/ also covers Actions/WeekPlans/)
 Actions/
 Profile/
 Knowledge/
-WeekPlan/
 
 # Timestamp files
 **/LAST_RUN.txt
-**/LAST_URGENT_SCAN.txt
-**/LAST_MAINTENANCE.txt
 
 # Run / scan / maintenance logs
 **/RUN_LOG.md

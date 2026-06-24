@@ -43,10 +43,11 @@ cp bootstrap/weekly-maint/LAST_RUN.txt    tasks/weekly-maint/LAST_RUN.txt
 cp bootstrap/weekly-plan/RUN_LOG.md       tasks/weekly-plan/RUN_LOG.md
 cp bootstrap/weekly-plan/IMPROVEMENTS.md  tasks/weekly-plan/IMPROVEMENTS.md
 cp bootstrap/weekly-plan/ISSUES_LOG.md    tasks/weekly-plan/ISSUES_LOG.md
+cp bootstrap/weekly-plan/LAST_RUN.txt     tasks/weekly-plan/LAST_RUN.txt
 
 cp bootstrap/SYSTEM_STATUS.md             SYSTEM_STATUS.md
 
-mkdir -p Knowledge
+mkdir -p Knowledge Actions
 cp bootstrap/knowledge/INDEX.md           Knowledge/INDEX.md
 # Copy bootstrap/knowledge/TOPIC_TEMPLATE.md to Knowledge/<TOPIC>.md for each topic you need.
 ```

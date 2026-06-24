@@ -94,6 +94,7 @@ Tasks are standalone instruction files for setup and auditing. Run them by sayin
 | `tasks/setup-memory.md` | Create `.auto-memory/` with initial memory files |
 | `tasks/setup-mcp.md` | Audit and add MCP server connections |
 | `tasks/setup-security.md` | Credential scan, permission audit, install guard hooks |
+| `tasks/setup-policies.md` | Wire company policies into the `policies-validator` skill + `CLAUDE.md` with tiered enforcement (T1 block / T2 alert / T3 guidance) |
 | `tasks/setup-github.md` | Init git, create GitHub repo, set up ongoing sync |
 | `tasks/setup-self-improving-task.md` | Add `IMPROVEMENTS.md` + self-improvement loop to any task |
 | `tasks/setup-orchestration.md` | Wire multi-task coordination — shared state, run order, handoff files |
@@ -102,7 +103,7 @@ Tasks are standalone instruction files for setup and auditing. Run them by sayin
 | `tasks/setup-ignore-hygiene.md` | Audit `.gitignore`/`.claudeignore`, install check hook |
 | `tasks/setup-bootstrap-folder.md` | Create `bootstrap/` stubs for gitignored runtime state files |
 
-### Audit tasks
+### Audit & maintenance tasks
 
 | Task | What it does |
 |------|-------------|
@@ -112,6 +113,7 @@ Tasks are standalone instruction files for setup and auditing. Run them by sayin
 | `tasks/audit-memory.md` | Check memory files for staleness and duplicates |
 | `tasks/audit-skill.md` | Review a `SKILL.md` — triggering, workflow, output format |
 | `tasks/review-tasks.md` | Cluide maintenance — detect guide changes and flag tasks, skill bundles, and templates that drifted |
+| `tasks/harvest-from-projects.md` | Cluide maintenance — the inverse of `review-tasks.md`: harvest proven patterns from your live projects back into the guides, tasks, templates, and skills |
 
 ---
 

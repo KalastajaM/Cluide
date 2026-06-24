@@ -396,6 +396,7 @@ Tasks are designed to be portable: copy any task file to another project's `task
 | Task | What it does |
 |------|-------------|
 | `tasks/review-tasks.md` | Detect guide updates and flag tasks that need syncing; also checks bundled reference copies and the IMPROVEMENTS template for drift — run after editing any guide |
+| `tasks/harvest-from-projects.md` | The inverse of `review-tasks.md` — scan your live Claude projects and propose folding their proven, generalized patterns back into the guides, tasks, templates, and skills |
 
 ---
 

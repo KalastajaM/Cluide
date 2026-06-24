@@ -6,6 +6,11 @@
 ## Purpose
 Detect which guides have changed since each task was last reviewed, then check whether the affected tasks need updating to stay in sync. Also runs structural drift checks: the bundled guide copies in `skills/ai-assistant-setup/references/` against the root guides, and the canonical IMPROVEMENTS template against its one marked inline copy. Keeps the tasks/ collection accurate as the Cluide guides evolve.
 
+> **Complementary task:** this keeps the framework in sync when a *guide* changes. Its inverse,
+> `tasks/harvest-from-projects.md`, goes the other way — it harvests proven patterns from your *live
+> projects* back into the guides, tasks, templates, and skills. Run them together as a quarterly
+> health check.
+
 ---
 
 ## Task → Guide mapping
