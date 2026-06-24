@@ -1,7 +1,5 @@
 # Claude Assistant — Quick Reference Cheat Sheet
 
-*Last reviewed: April 2026*
-
 > One-page reference for the most common patterns. Keep this open while building.
 > For the full explanation behind any section, see the linked guide.
 

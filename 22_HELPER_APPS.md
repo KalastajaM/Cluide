@@ -1,7 +1,5 @@
 # Personal Helper Apps Guide: Collaborating with Claude on Small Tools You Build for Yourself
 
-*Last reviewed: April 2026*
-
 > Most of Cluide is about co-work — how Claude drafts your emails, runs your briefings, files your actions. This guide is about an adjacent use-case: the small locally-run tool you build *for yourself* with Claude's help. A budget tracker, a reading log, a data dashboard, a CLI wrapper around an API. Not a product. Not a team deliverable. One user, local data, evolves feature-by-feature over many short sessions.
 
 > **Companion guides:** [Guide 01](./01_CLAUDE_MD.md) covers CLAUDE.md structure — this guide adds four patterns that are specific to helper apps. [Guide 05](./05_MCP_SERVERS.md) covers MCP servers, including Claude Preview and Claude in Chrome which this guide leans on for verification. [Guide 12](./12_SECURITY.md) covers permission hygiene. [Guide 13](./13_DEV_EXECUTION_WORKFLOW.md) covers the build-vs-run split. [Guide 20](./20_INTERACTIVE_PROMPTING.md) covers plan mode, which underpins the iteration loop described here.

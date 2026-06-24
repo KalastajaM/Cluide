@@ -1,7 +1,5 @@
 # Claude Task Efficiency Guide
 
-*Last reviewed: June 2026*
-
 > How to design and optimize Claude tasks for minimal token consumption.
 > Use as a one-time audit checklist when setting up a new task, or as a periodic optimization pass on an existing one.
 

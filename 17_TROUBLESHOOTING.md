@@ -1,7 +1,5 @@
 # Troubleshooting Guide: When Things Don't Work
 
-*Last reviewed: June 2026*
-
 > Every other guide assumes things go right. This one is for when they don't. Each section is a symptom -- find yours, follow the steps.
 
 > **Companion guides:** [Guide 05 — MCP Servers](./05_MCP_SERVERS.md) for MCP-specific issues. [Guide 06 — Task Efficiency](./06_TASK_EFFICIENCY_GUIDE.md) for slow tasks. [Guide 09 — Multi-Task Orchestration](./09_MULTI_TASK_ORCHESTRATION.md) for task coordination failures. [Guide 10 — Cost and Performance](./10_COST_PERFORMANCE.md) for cost spikes. [Guide 11 — Git Integration](./11_GIT_INTEGRATION.md) for rollback. [Guide 12 — Security](./12_SECURITY.md) for security concerns. [Guide 14 — Personal Data Layer](./14_PERSONAL_DATA_LAYER.md) for data ingestion issues.

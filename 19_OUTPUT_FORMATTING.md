@@ -1,7 +1,5 @@
 # Guide 19: Output Formatting — Markdown & HTML
 
-*Last reviewed: June 2026*
-
 > How to make generated output look good — whether Claude is producing a Markdown summary or a full HTML report.
 > Covers Markdown basics with Claude-specific tips, and a practical HTML layout pattern for polished, self-contained reports.
 

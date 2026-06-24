@@ -1,7 +1,5 @@
 # Best Practices: Writing CLAUDE.md for a Personal Assistant
 
-*Last reviewed: April 2026*
-
 CLAUDE.md is the always-loaded instruction file that shapes every interaction. It is the difference between an assistant that constantly needs re-explaining and one that just gets it. This guide covers what to put in it, how to structure it, and what to avoid.
 
 ---

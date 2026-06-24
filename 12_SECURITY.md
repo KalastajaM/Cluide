@@ -1,7 +1,5 @@
 # Security Guide: Using Claude Code and Cowork Safely
 
-*Last reviewed: June 2026*
-
 > Operational security for using Claude Code and Cowork as tools. Covers credential hygiene, MCP server trust, permission controls, session data, supply chain risks, prompt injection, and file hygiene. Does not cover secure coding or application security practices.
 
 > **Companion guides:** [Guide 05](./05_MCP_SERVERS.md) covers MCP server setup — read it alongside this guide when configuring servers. [Guide 11](./11_GIT_INTEGRATION.md) covers `.gitignore` and `.claudeignore` in full.

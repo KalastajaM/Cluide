@@ -1,7 +1,5 @@
 # Personal AI Assistant — Best Practices
 
-*Last reviewed: June 2026*
-
 > A collection of lessons learned from real use. Not theory — things that actually make the difference.
 > These apply whether you're setting up your first skill or optimising a system you've been running for months.
 

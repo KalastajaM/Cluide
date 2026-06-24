@@ -1,7 +1,5 @@
 # Guide 20: Interactive Prompting — Claude Code Features & Patterns
 
-*Last reviewed: April 2026*
-
 > Claude Code has interactive features that go beyond writing instructions well. This guide covers the tools and patterns that shape *how you work with Claude in a session* — file references, plan mode, question dialogs, and keeping the context window clean.
 
 > **Companion guides:** [Guide 02](./02_PROMPTING_BASICS.md) covers instruction quality — context, task, constraints, and output format. [Guide 13](./13_DEV_EXECUTION_WORKFLOW.md) covers Claude Code vs. Cowork — when to use each. This guide covers what to do *during* a Claude Code session.

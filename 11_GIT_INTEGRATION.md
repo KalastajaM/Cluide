@@ -1,7 +1,5 @@
 # Git Integration: Versioning Your Assistant's State
 
-*Last reviewed: June 2026*
-
 > Git gives your assistant files one thing nothing else provides: rollback. When a run overwrites something it shouldn't, you undo it in seconds. This guide covers what to track, how to automate commits around task runs, and how to use git history to understand evolution.
 
 ---

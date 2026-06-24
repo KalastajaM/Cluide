@@ -1,7 +1,5 @@
 # Best Practices: Memory and Profile Systems
 
-*Last reviewed: June 2026*
-
 Without memory, every session starts from zero — you re-explain your situation, preferences, and contacts. This guide covers two complementary memory systems: **auto-memory** (lightweight, cross-session facts in `.auto-memory/`) and **profile files** (structured, richly maintained knowledge for scheduled task agents).
 
 ---

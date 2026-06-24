@@ -1,7 +1,5 @@
 # 18 — End-to-End Walkthrough: From Zero to Running Assistant
 
-*Last reviewed: April 2026*
-
 > Build a complete personal assistant from scratch, seeing how each guide contributes to the whole.
 
 This walkthrough takes you from nothing to a fully operational system with skills, memory, scheduled tasks, and security — over roughly two weeks. Each stage builds on the previous one. Unlike the [Quickstart](./00_QUICKSTART.md), which gives you a working setup in 20 minutes, this guide shows the full journey and explains why each piece matters.

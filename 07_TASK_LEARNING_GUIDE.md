@@ -1,7 +1,5 @@
 # Claude Task Self-Improvement & Continuous Learning Guide
 
-*Last reviewed: April 2026*
-
 > A framework for building tasks that get better over time.
 > Integrate the relevant sections into any task's TASK.md or TASK_REFERENCE.md.
 

@@ -1,7 +1,5 @@
 # Company Policies Guide: Embedding Existing Policies as Guardrails
 
-*Last reviewed: April 2026*
-
 > How to make Claude honour your organisation's existing policies — AI use policy, Code of Conduct, data classification, and similar — without copying the policy content into Cluide. Policies stay where they already live; Cluide holds only the pointers and the enforcement logic.
 
 > **Companion guides:** [Guide 03](./03_SKILLS.md) covers skill design — the `policies-validator` skill follows its conventions. [Guide 05](./05_MCP_SERVERS.md) covers MCP server setup, needed when policies live in SharePoint or Confluence. [Guide 12](./12_SECURITY.md) covers operational security; this guide covers *policy* enforcement.
