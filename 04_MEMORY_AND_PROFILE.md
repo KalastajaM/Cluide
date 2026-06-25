@@ -137,6 +137,21 @@ The profile system divides a person's profile across files by topic. The key ins
 
 ---
 
+## The Periodic Knowledge Sweep
+
+Day-to-day memory captures what surfaces run-to-run (see [Guide 07](./07_TASK_LEARNING_GUIDE.md) for the incremental, signal-driven version). Occasionally it is worth a deliberate *bulk* pass over a whole historical corpus — an email or chat archive, a folder of documents, past performance reviews — to mine the latent facts before they are lost. This is the right motion when you are first building a profile, or before a major transition (a job change, a move, taking over a new responsibility) where years of undocumented context suddenly matters.
+
+The sweep is a four-step motion, distinct from incremental learning:
+
+1. **Sweep** — read across the corpus and dump raw findings into one dated file: `Knowledge-Sweep-YYYY-MM.md`. Capture liberally; don't filter yet.
+2. **Validate** — check each finding against what's already known. Dedupe, resolve contradictions, flag anything uncertain for the user to confirm.
+3. **Merge** — fold the confirmed findings into the master profile / knowledge files using the targeted-edit discipline above. Tag confirmed items `[USER-CONFIRMED]`, leave inferences untagged.
+4. **Archive** — move the raw sweep file to an archive once merged. It has done its job; keep it for provenance but don't re-read it every session (that would defeat the lean-summary principle below).
+
+Run it at intervals or before transitions — not every session. The sweep is the bulk-import counterpart to the steady trickle of incremental updates: one mines history, the other keeps up with the present.
+
+---
+
 ## Decision Tree: Update vs. Create
 
 When a new fact arrives, follow this flow:
@@ -292,3 +307,6 @@ Facts that belong in auto-memory, drawn from a working setup. Each is saved as a
 > "Read 04_MEMORY_AND_PROFILE.md and create the profile file structure for my daily email digest task. The task already has a TASK.md — add the profile files it needs to track context across runs."
 
 **Faster alternative:** `tasks/setup-memory.md` interviews you and creates the full `.auto-memory/` structure without reading the guide first. `tasks/audit-memory.md` reviews an existing memory system for staleness and drift.
+
+<!-- harvested: 2026-06-24 from estate-investigation + job-search projects -->
+

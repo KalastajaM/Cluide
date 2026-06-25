@@ -182,6 +182,36 @@ When in doubt: if the user asks for it ad hoc and it needs consistent, detailed 
 
 ---
 
+## Packaging a Project as a Plugin
+
+A single skill lives in one `SKILL.md`. When a *whole project setup* proves itself — its scaffolding, its slash commands, and the skills that maintain it — you can package the entire thing as an installable plugin, so a fresh copy is one install away. This is the natural endpoint of Guide 16's "build for reuse and sharing": the unit you share is no longer one action, it is a project-in-a-box.
+
+A project plugin bundles four things:
+
+```
+my-project.plugin/
+  .claude-plugin/
+    plugin.json        ← manifest: name, version, description, keywords
+  templates/           ← the empty project scaffold, copied into a new folder
+    CLAUDE.md
+    <trackers, profile, dashboard, starting folders…>
+  commands/            ← slash commands (setup, rebuild-dashboard, …)
+  skills/
+    <skill-name>/
+      SKILL.md         ← the skill that operates the project day-to-day
+      references/
+```
+
+- **`templates/`** holds the empty project structure — the CLAUDE.md, the trackers, the starting folders — that a `setup` command copies into place.
+- **`commands/`** are the runnable entry points: one to scaffold a new project from the templates, one to regenerate a derived view (e.g. a dashboard) from the trackers.
+- **`skills/`** are the maintenance workflows that keep the project consistent across sessions.
+
+Everything operates on local files inside the scaffolded project — no remote dependencies — so an installed plugin and the project it creates stay self-contained.
+
+Reach for this only when the unit of reuse is an entire project. For a single recurring action, a plain skill (above) is still the right unit; a plugin is the wrapper you add once that one skill has grown a scaffold, its own commands, and a structure worth reproducing.
+
+---
+
 ## Real-World Examples
 
 Four working skills from a personal setup. Each illustrates a different pattern.
@@ -261,3 +291,6 @@ This is a strong description: it names the implicit trigger phrases, is specific
 > "Read 03_SKILLS.md and create a skill for [what you want]. Follow all the best practices in the guide — strong description, workflow steps, output format example, and at least 3 edge cases."
 
 **Faster alternative:** `tasks/setup-skill.md` interviews you and generates a complete skill without reading the guide first. `tasks/audit-skill.md` reviews an existing skill against this guide's checklist.
+
+<!-- harvested: 2026-06-24 from estate-investigation + job-search projects -->
+

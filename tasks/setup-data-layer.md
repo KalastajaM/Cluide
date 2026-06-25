@@ -242,6 +242,8 @@ print(f"Extracted {len(all_items)} items from {len(screenshots)} screenshots.")
 
 Fill in the schema description and field names based on what the user described. Tell the user: "Update `SCHEMA_DESCRIPTION` to match exactly what fields you need — precise prompts produce consistent JSON."
 
+**Add a reconciliation step before trusting the extraction.** Schema validation proves each row is well-formed; it does not prove the set is complete — extraction can drop, duplicate, or misread rows and still produce valid JSON. Ask the user: "Does the source state a total you can check against — a closing balance, a record count, monthly subtotals?" If yes, add a step that recomputes that total from the extracted rows and compares (e.g. ∑ extracted rows per month == the stated month-end balance), and treats the extraction as done only when it matches. If the source has no built-in total, suggest deriving one a second way (a second pass, or a hand-counted sample) and comparing. See the reconciliation guidance in [Guide 14](../14_PERSONAL_DATA_LAYER.md).
+
 ### Step 6 — Set up Pattern 5: Multi-step instruction file
 
 *Use when: the workflow has 3+ distinct phases that need different inputs, tools, or can be re-run independently.*
@@ -299,3 +301,6 @@ Tell the user:
 - What still needs manual work (filling in selectors, implementing the computation function, taking the first screenshots)
 - Any files added to `.gitignore` or `.claudeignore`
 - "Once the scripts are working, add a step to the relevant task that runs the script and uses its output — never the raw file directly."
+
+<!-- harvested: 2026-06-24 from estate-investigation + job-search projects -->
+

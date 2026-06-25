@@ -308,6 +308,7 @@ For SDK setup and API key configuration, see Anthropic's SDK quickstart at [plat
 **Design rules:**
 
 - The prompt must be precise about the output schema. Ask for exactly the fields you need; vague prompts produce inconsistent JSON structures.
+- **Reconcile against a control total, not just the schema.** If the source states a balance, a record count, or a subtotal, check that your extracted rows reproduce it before merging. This catches dropped, duplicated, or misread rows that field-level validation cannot — schema validation proves each row is well-formed, reconciliation proves the *set* is complete.
 - Better than prompt discipline: use the API's **structured outputs** feature — pass a JSON schema with the request and the response is guaranteed to parse against it. This eliminates the malformed-JSON failure mode entirely (the one the anti-patterns section below warns about). The prompt-only fallback is "Return a JSON array only, no other text" — otherwise Claude may wrap the result in a prose explanation.
 - Name the output file `_raw` and run a separate normalization/validation step before merging into your main data store.
 - Batch all screenshots from the same time period into one script run to minimize API calls.
@@ -454,6 +455,8 @@ reads:           GoodBudget's full page DOM
 
 **Running data scripts without validating output.** A vision extraction script that returns malformed JSON will silently corrupt your data store. Add a validation step — check that required fields exist and types are correct — before writing to disk.
 
+**Trusting extraction that passes schema validation but not a control total.** Schema validation confirms each row is well-formed; it does not confirm the set is *complete*. A vision or PDF extraction can drop, duplicate, or misread rows and still produce valid JSON. Before trusting extracted data, reconcile it against an independent control total the source already provides — a statement's stated closing balance, a printed record count, monthly subtotals — and treat the extraction as done only when it matches (e.g. ∑ extracted rows per month == the stated month-end balance). Where the source has no built-in total, derive one a second way (a second extraction pass, or a hand-counted sample) and compare.
+
 **Using Vision when text or API alternatives exist.** Vision extraction is slower, costlier, and less reliable than CSV export or API calls. Only use Pattern 4 when no text-based alternative exists.
 
 **Extraction scripts without timestamps.** Any data file without `last_updated` or `extracted_at` will eventually cause confusion about freshness. Always include a date in the output.
@@ -478,3 +481,6 @@ reads:           GoodBudget's full page DOM
 
 > **Giving this guide to Claude:**
 > "Read 14_PERSONAL_DATA_LAYER.md and help me build a data layer for [describe your use case]. Ask me what data sources I have and which patterns apply."
+
+<!-- harvested: 2026-06-24 from estate-investigation + job-search projects -->
+

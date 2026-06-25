@@ -227,6 +227,25 @@ Together with the pre-run commit, this gives a clean before/after pair for every
 
 ---
 
+## Binary and In-Place-Mutated Files: Snapshot, Don't Diff
+
+The pre-run commit above is the right safety net for text files — you can read the diff and restore a clean version. For *binary* working files that a script mutates in place — `.xlsx`, `.sqlite`, generated archives — git history is mostly noise (you can't read the diff), and a bad run can corrupt the file before the next commit ever runs. For these, take an explicit snapshot *before* the mutating step:
+
+```
+financial/
+  ledger.xlsx
+  backup/
+    ledger_pre-alloc-review_2026-06-14_2202.xlsx   ← copy taken before the run
+```
+
+- Copy the file to a `backup/` folder under a `<name>_pre-<operation>_<timestamp>` name *before* running the script that mutates the original.
+- Treat `backup/` as a rollback source only — never an input. Mark it read-only or `[IGNORE]` so Claude never reads a stale snapshot back as live data (see the file-access tiers in [Guide 01](./01_CLAUDE_MD.md)).
+- Keep a rolling window — prune old snapshots so the folder doesn't grow unbounded.
+
+This complements git rather than replacing it: commit the *script* and its text inputs/outputs to git; snapshot the *binary* file it rewrites to `backup/`.
+
+---
+
 ## Useful Git Commands for Assistant Files
 
 **See what changed in the last run:**
@@ -465,3 +484,6 @@ This makes the task self-contained on a fresh clone. The bootstrap files are the
 
 **To review what a recent run changed:**
 > "Run `git diff HEAD~1 HEAD -- [task-folder]/` and summarise what changed in the last run."
+
+<!-- harvested: 2026-06-24 from estate-investigation + job-search projects -->
+
