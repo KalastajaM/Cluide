@@ -388,6 +388,7 @@ Tasks are designed to be portable: copy any task file to another project's `task
 | `tasks/audit-cost.md` | Audit a task's token economics — file budgets, model tier, run metrics | 10 |
 | `tasks/audit-memory.md` | Check memory files for staleness, duplicates, misplaced content | 04 |
 | `tasks/audit-skill.md` | Review a `SKILL.md` — trigger quality, workflow, output format, edge cases | 03, 02 |
+| `tasks/analyze-project.md` | Whole-project sweep of *another* Claude project (local or GitHub) against the full guide set → writes a `CLUIDE_IMPROVEMENT_PLAN.md` into it; read-only, plan-only (criteria in `analyze-project-reference.md`) | All (01–22) |
 
 ### Maintenance (Cluide only)
 
@@ -400,7 +401,7 @@ Tasks are designed to be portable: copy any task file to another project's `task
 
 ## Skills Included in This Project
 
-Six installable skills are bundled with this project. Each skill is self-contained — install only the ones you need.
+Eight installable skills are bundled with this project. Each skill is self-contained — install only the ones you need.
 
 ### Installing in Claude Code
 
@@ -486,6 +487,26 @@ Audits a Cowork task or project for token efficiency, run speed, and structural 
 > "Review my task and tell me what can be improved."
 
 > "This task is too long — help me split it."
+
+---
+
+### project-analyzer
+
+Analyzes another Claude project — Claude Code or Cowork, from a local folder or a GitHub repo — against the full Cluide guide set and writes a single reviewable improvement plan (`CLUIDE_IMPROVEMENT_PLAN.md`) into that project. Read-only on the target except for that one file; it produces a reviewed plan and stops, naming the `setup-*`/`audit-*` tasks that implement each fix. A thin trigger for `tasks/analyze-project.md` (single source of truth — no bundled guide copies). Where `cowork-optimizer` deep-optimizes one Cowork task, this scores a whole project across every dimension.
+
+**Install:** Copy `project-analyzer/` to `~/.claude/skills/` (Claude Code). Run it from a Cluide checkout — the analysis criteria reference the root guides.
+
+**Use when:**
+- You want a whole-project health check of a Claude setup other than the one in front of you
+- You're inheriting or reviewing someone else's Claude project and want a prioritized improvement plan
+- You want a single document that maps each gap to the exact Cluide task that fixes it
+
+**Example prompts:**
+> "Analyze my other Claude project against Cluide."
+
+> "Review this repo's Claude setup and give me an improvement plan."
+
+> "Score my assistant project against the guides — what should I fix first?"
 
 ---
 

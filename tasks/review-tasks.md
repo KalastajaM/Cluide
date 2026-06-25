@@ -37,6 +37,7 @@ Detect which guides have changed since each task was last reviewed, then check w
 | `onboard-project.md` | `01_CLAUDE_MD.md`, `04_MEMORY_AND_PROFILE.md`, `05_MCP_SERVERS.md`, `11_GIT_INTEGRATION.md`, `12_SECURITY.md` |
 | `setup-data-layer.md` | `14_PERSONAL_DATA_LAYER.md` |
 | `setup-policies.md` | `21_COMPANY_POLICIES.md`, `03_SKILLS.md`, `05_MCP_SERVERS.md` |
+| `analyze-project.md` (+ `analyze-project-reference.md`) | All guides (`01`–`22`) — its dimension criteria summarise the full set; review after any guide change |
 
 ---
 

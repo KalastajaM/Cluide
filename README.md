@@ -112,6 +112,7 @@ Tasks are standalone instruction files for setup and auditing. Run them by sayin
 | `tasks/audit-cost.md` | Audit a task's token economics — file budgets, model tier, run metrics |
 | `tasks/audit-memory.md` | Check memory files for staleness and duplicates |
 | `tasks/audit-skill.md` | Review a `SKILL.md` — triggering, workflow, output format |
+| `tasks/analyze-project.md` | Analyze *another* Claude project (local or GitHub) against the full guide set → write a `CLUIDE_IMPROVEMENT_PLAN.md` into it (read-only, plan-only) |
 | `tasks/review-tasks.md` | Cluide maintenance — detect guide changes and flag tasks, skill bundles, and templates that drifted |
 | `tasks/harvest-from-projects.md` | Cluide maintenance — the inverse of `review-tasks.md`: harvest proven patterns from your live projects back into the guides, tasks, templates, and skills |
 
@@ -119,7 +120,7 @@ Tasks are standalone instruction files for setup and auditing. Run them by sayin
 
 ## Skills Included
 
-Seven installable skills are bundled in `skills/`. Install only the ones you need.
+Eight installable skills are bundled in `skills/`. Install only the ones you need.
 
 **Claude Code:** copy the skill folder to `~/.claude/skills/`
 **Claude.ai:** zip the skill folder with a `.skill` extension (e.g. `cd skills && zip -r backlog.skill backlog/` — or ask Claude to bundle it), then upload via **Settings → Skills → Upload skill**
@@ -129,6 +130,7 @@ Seven installable skills are bundled in `skills/`. Install only the ones you nee
 | `ai-assistant-setup` | Interactive setup coach — all guides bundled. Describe what you want and Claude does the work. |
 | `template-exporter` | Turns any Claude setup into a clean, shareable template |
 | `cowork-optimizer` | Audits a Cowork task for token efficiency and structural quality |
+| `project-analyzer` | Analyzes another Claude project against the full guide set and writes an improvement plan into it (thin trigger for `tasks/analyze-project.md`) |
 | `security-review` | Structured security audit of a Claude Code environment and project |
 | `backlog` | Portable backlog manager — prioritised work items, grooming, decision logging |
 | `policies-validator` | Tiered company-policy guardrail (T1 block / T2 alert / T3 soft guidance) — ships as a template; fill the Policy Registry before use |
