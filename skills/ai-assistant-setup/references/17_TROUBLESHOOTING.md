@@ -378,6 +378,25 @@ Screenshots from mobile apps may be low resolution, cropped, or have overlapping
 
 ---
 
+## Problem: Claude Keeps Re-Proposing an Approach You Already Ruled Out
+
+**Symptom:** Every few sessions, Claude suggests the same "obvious" data source, API, or approach that you already investigated and found unusable. Each time it burns tokens (and your patience) re-discovering the same wall.
+
+**Cause:** The dead end lives only in your memory, not in the project. A fresh session sees the ideal-looking source and has no way to know it was already tried.
+
+**Fix: document the dead end where the workaround lives.** Add a short "Why not X?" section to the workflow or instruction file that uses the workaround, stating:
+
+- What was tried (the source, endpoint, or approach)
+- The exact symptom (e.g., "the server is live but returns an empty layer list to anonymous requests, so the data can't be pulled programmatically")
+- The workaround now in use
+- What would need to change to make it worth revisiting
+
+Undocumented dead ends get re-investigated every few sessions; documented ones cost three lines to read. This is the data-source counterpart of logging connector quirks — record the wall once, at the point where the next session will look.
+
+<!-- harvested: 2026-07-11 from a personal foraging-prediction data project -->
+
+---
+
 ## When to Start Fresh
 
 Sometimes a task or setup has accumulated so many issues that repair takes longer than starting over. Consider starting fresh when:

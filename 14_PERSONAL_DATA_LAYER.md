@@ -94,6 +94,8 @@ Do not read investments.json directly.
 - Print a timestamp in the header so Claude knows how current the data is.
 - If the script fails, Claude should log the failure and stop. It should not attempt to read the raw file directly — that would bypass all the effort to keep context compact.
 
+**Feeders that call external APIs should degrade, not die.** A feeder that pulls from live sources (price APIs, open-data services) needs three things beyond the local-file version: a `--cache` flag that reuses the last pull, so re-runs while iterating are fast and free; per-source `--no-X` flags plus automatic fallback when a key or service is unavailable, so one dead source doesn't kill the whole run; and — critically — a line in the printed output naming any source that was skipped or substituted. That last line is what lets Claude reason with correct confidence: a degraded run must never be indistinguishable from a complete one.
+
 ---
 
 ## 2. JSON as Your Personal Database
@@ -108,7 +110,7 @@ Do not read investments.json directly.
 - Claude can read, update, and query it directly
 - Works as both the input to Pattern 1 scripts and the output of Pattern 3 and 4 extraction pipelines
 
-**5 design rules:**
+**7 design rules:**
 
 1. **Flat structures over nested ones.** A list of transaction objects with flat fields is easier to query than nested account → month → transaction hierarchies. Claude reads linearly; deep nesting makes it harder to reason over.
 
@@ -119,6 +121,12 @@ Do not read investments.json directly.
 4. **Store what happened, not what was computed.** Raw purchase price, quantity, and date belong in the data store. P&L does not — that is computed at query time by the script. Storing computed values creates drift when inputs change.
 
 5. **Include a `last_updated` field at the root.** Claude and you both need to know how fresh the data is.
+
+6. **Make ingestion idempotent.** Every ingestion script keys records on the identity of the source (filename, transaction ID, message ID) and skips anything already present, so re-running after a partial failure is safe by construction. Have the script show what it found and confirm before writing — a preview costs nothing; a duplicate-riddled database costs an afternoon.
+
+7. **Separate observed from derived.** Data you logged and data a script generated (predictions, scores, candidate rankings) never share a file. Pair the file split with a critical rule in the project CLAUDE.md: derived records are hypotheses and are never presented as confirmed — the distinction stays explicit in every answer. Rule 4 keeps computed values out of the store to prevent drift; this rule keeps generated records from masquerading as ground truth.
+
+<!-- harvested: 2026-07-11 from a personal foraging-prediction data project -->
 
 **Recommended file layout:**
 
@@ -224,6 +232,8 @@ Steps:
 ---
 
 ## 4. Claude Vision for Data Ingestion
+
+**Check metadata before reaching for vision.** Image files often already carry what you need in their metadata: photos store GPS coordinates and capture time in EXIF, readable with `pillow`/`piexif` — deterministic, free, and with zero hallucination risk. Vision is for reading image *content*; metadata is for reading image *context*. A pipeline that ingests geotagged photos into a location database may need no vision call at all.
 
 **When to use this:** Data is only accessible as images — bank app screenshots, statements you photographed, scanned PDFs. Manual transcription would be tedious and error-prone. You want structured JSON out.
 

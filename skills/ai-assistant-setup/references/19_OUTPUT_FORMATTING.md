@@ -176,6 +176,11 @@ Cards create visual separation between sections without heavy borders or colour 
 ```
 Use these for at-a-glance status on rows, cards, or metrics.
 
+**Geographic data: single-file maps + a machine-readable side output**
+Location data follows the same self-contained pattern as any HTML report: one file, Leaflet loaded from a CDN `<script>` tag, the data inlined as GeoJSON, a small legend div. It opens in any browser with no build step. Emit the GeoJSON as a separate file too — a standard interchange format lets the same data open in external map tools (national map portals, Google Earth) without regenerating anything. The HTML is for reading; the side file is for reuse.
+
+<!-- harvested: 2026-07-11 from a personal foraging-prediction data project -->
+
 ### Prompting Claude for HTML Output
 
 A reusable prompt snippet to paste into a task or skill:

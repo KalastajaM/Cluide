@@ -91,6 +91,10 @@ Write this section as a hard rule, not a preference. Use "NEVER" intentionally �
 
 The third point shows a useful pattern: pair each constraint with a positive counterpart. "Never send autonomously" + "produce a polished draft ready to send" gives the assistant something concrete to do rather than just a prohibition.
 
+For data projects, add an epistemic rule alongside the action rules: if the project holds both records you observed and records a script derived (predictions, scores, candidates), state that derived records are hypotheses and must never be presented as confirmed facts — and that the distinction stays explicit in every answer. See [Guide 14 §2, rule 7](./14_PERSONAL_DATA_LAYER.md).
+
+<!-- harvested: 2026-07-11 from a personal foraging-prediction data project -->
+
 ---
 
 ## Layering: CLAUDE.md vs. Task-Level Instructions
