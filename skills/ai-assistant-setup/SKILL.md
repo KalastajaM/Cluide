@@ -52,6 +52,8 @@ All guides are in the `references/` directory next to this file.
 | `18_END_TO_END_WALKTHROUGH.md` | Full guided path from empty folder to running assistant — layer ordering and handoffs between guides | User wants a single narrative route through the whole system rather than jumping between guides |
 | `19_OUTPUT_FORMATTING.md` | Markdown and HTML output patterns — headings, tables, code blocks, email-safe HTML | User is deciding how task output should be formatted, or a task's output renders poorly in its destination |
 | `21_COMPANY_POLICIES.md` | Embedding existing company policies as tiered guardrails (T1 block / T2 alert / T3 soft guidance) without shipping policy content in the repo | User wants Claude to enforce AI use policy, data classification, code of conduct, or similar — at organisational level |
+| `22_HELPER_APPS.md` | Collaboration patterns for small locally-run tools you build for yourself: domain invariants, helper index, verification gates, tight permissions | User is using Claude to vibe-code a small personal tool and wants it to stay coherent across many short sessions |
+| `23_MULTI_PROJECT_SETUPS.md` | Designing and maintaining several linked projects: when and how to split, handling overlap, single-owner data ownership, cross-project linking, and changing one without breaking others | User has more than one project and the same facts or knowledge live in several of them |
 
 ---
 
