@@ -1,6 +1,6 @@
 # Cluide — The Claude Guide
 
-> **This is the in-depth guide reference** — detailed descriptions, reading times, and usage guidance for every guide. If you're browsing on GitHub, [README.md](./README.md) is the entry point.
+> **This is the in-depth guide reference** — detailed descriptions, reading times, and usage guidance for every guide.
 
 > A complete framework for building, running, and improving a persistent AI assistant with Claude.
 > Includes architecture guides, runnable setup tasks, installable skills, and copy-paste templates — covering the full lifecycle from initial setup to automation, self-improvement, and security.
@@ -146,7 +146,7 @@ Covers: what to learn and how to store it, detecting feedback signals, the apply
 
 *How to install and use the IMPROVEMENTS.md template.*
 
-Explains the structure of the template, walks through installation (copy → fill in task name → wire into TASK.md), and documents how to respond to proposals. The template itself lives at [`templates/TASK_TEMPLATE/IMPROVEMENTS.md`](./templates/TASK_TEMPLATE/IMPROVEMENTS.md).
+Explains the structure of the template, walks through installation (copy → fill in task name → wire into TASK.md), and documents how to respond to proposals. The template itself lives at `templates/TASK_TEMPLATE/IMPROVEMENTS.md` in the Cluide repo (not bundled in this skill).
 
 **Use this when:** you're creating a new scheduled task and want the self-improvement system set up from run 1.
 
@@ -306,9 +306,20 @@ Covers: when the helper-app shape applies (and when it doesn't), four CLAUDE.md 
 
 ---
 
+### [23 — Multi-Project Setups](./23_MULTI_PROJECT_SETUPS.md)
+`[Power user]` · `~10 min`
+
+*How to design and maintain several linked projects so shared facts stay consistent and each project stays focused. The cross-project extension of Guide 09, which handles shared state across multiple tasks inside one assistant.*
+
+Covers: when to split one project into linked projects (and when not to), how to split cleanly as a move-and-rewire, what to do when two independent projects grow an overlap, the single-owner principle and an ownership registry, cross-project linking conventions, drift reconciliation, and how to change a project without breaking the ones that depend on it.
+
+**Use this when:** the same facts, files, or knowledge live in more than one of your projects, and you want them to stay consistent instead of drifting apart.
+
+---
+
 ## Templates: Copy-Paste Starting Points
 
-Four ready-to-copy folder structures are included in the `templates/` folder. Use them when you want to start a new project or task without building from scratch.
+Four ready-to-copy folder structures live in the `templates/` folder of the Cluide repo. They are not bundled inside this skill; if you have the Cluide repo, copy them from there. Use them when you want to start a new project or task without building from scratch.
 
 ### Choosing a Template
 
@@ -326,22 +337,22 @@ Four ready-to-copy folder structures are included in the `templates/` folder. Us
 | **External dependencies** | None | None | M365 (Graph API) | None |
 | **Best for** | Any project needing cross-session memory | Single recurring automated task | Turn-key personal business assistant | Programme/portfolio management workspace |
 
-### [PROJECT_TEMPLATE/](./templates/PROJECT_TEMPLATE/README.md)
+### PROJECT_TEMPLATE/
 A complete project folder with `CLAUDE.md`, `Profile/`, and `Knowledge/` pre-structured and filled with placeholder text. Copy it, rename it, fill in the placeholders, and you have a working persistent assistant context from run 1.
 
 **Use this when:** starting any new Claude project that needs cross-session memory, profile tracking, or topic knowledge files.
 
-### [TASK_TEMPLATE/](./templates/TASK_TEMPLATE/README.md)
+### TASK_TEMPLATE/
 A complete scheduled task folder with `TASK.md`, `IMPROVEMENTS.md`, `KNOWLEDGE_SUMMARY.md`, and `RUN_LOG.md` — all pre-structured and ready to fill in. Implements the patterns from Guide 06 (efficiency) and Guide 07 (self-improvement) out of the box.
 
 **Use this when:** creating a new scheduled automated task. Copy the folder, rename it `[TaskName]-Task`, and fill in the domain-specific logic.
 
-### [AI-ASSISTANT_TEMPLATE/](./templates/AI-ASSISTANT_TEMPLATE/SETUP.md)
+### AI-ASSISTANT_TEMPLATE/
 A complete personal business assistant setup. Monitors your email, Teams, and calendar via Microsoft 365, maintains a live profile of your work context, and delivers a daily briefing. Four coordinated scheduled tasks are included out of the box: daily morning briefing, mid-day urgent scan, Friday weekly planner, and Monday maintenance. Includes a pre-structured `CLAUDE.md`, `Profile/`, `Knowledge/`, and `Actions/` system.
 
 **Use this when:** you want a turn-key personal assistant that monitors your inbox and calendar and delivers daily briefings — with all the task scaffolding already built.
 
-### [PMO_TEMPLATE/](./templates/PMO_TEMPLATE/README.md)
+### PMO_TEMPLATE/
 A project workspace for managing a product migration initiative. Includes a `CLAUDE.md` with routing rules, a project guide, an initiative charter, and a full PMO register suite: risk register, action tracker, dependency register, decision tracker, and a running knowledge base.
 
 **Use this when:** managing a structured programme or migration initiative where you want Claude to maintain registers, capture decisions, and track actions across sessions.
@@ -593,7 +604,7 @@ If you're new to this, go in this order:
 5. **Then 04 + 05** — enable memory and connect MCP tools.
 6. **Only then 06–10** — once you have scheduled tasks running, optimise and teach them to improve.
 
-**Quick reference while building:** Keep [CHEATSHEET.md](./CHEATSHEET.md) open as a one-page reference for file structures, skeletons, and common patterns.
+**Quick reference while building:** Keep `CHEATSHEET.md` (in the Cluide repo) open as a one-page reference for file structures, skeletons, and common patterns.
 **If something breaks:** Go to [Guide 17 — Troubleshooting](./17_TROUBLESHOOTING.md).
 
 ---

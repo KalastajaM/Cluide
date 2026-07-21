@@ -306,6 +306,17 @@ Covers: when the helper-app shape applies (and when it doesn't), four CLAUDE.md 
 
 ---
 
+### [23 — Multi-Project Setups](./23_MULTI_PROJECT_SETUPS.md)
+`[Power user]` · `~10 min`
+
+*How to design and maintain several linked projects so shared facts stay consistent and each project stays focused. The cross-project extension of Guide 09, which handles shared state across multiple tasks inside one assistant.*
+
+Covers: when to split one project into linked projects (and when not to), how to split cleanly as a move-and-rewire, what to do when two independent projects grow an overlap, the single-owner principle and an ownership registry, cross-project linking conventions, drift reconciliation, and how to change a project without breaking the ones that depend on it.
+
+**Use this when:** the same facts, files, or knowledge live in more than one of your projects, and you want them to stay consistent instead of drifting apart.
+
+---
+
 ## Templates: Copy-Paste Starting Points
 
 Four ready-to-copy folder structures are included in the `templates/` folder. Use them when you want to start a new project or task without building from scratch.
@@ -388,7 +399,7 @@ Tasks are designed to be portable: copy any task file to another project's `task
 | `tasks/audit-cost.md` | Audit a task's token economics — file budgets, model tier, run metrics | 10 |
 | `tasks/audit-memory.md` | Check memory files for staleness, duplicates, misplaced content | 04 |
 | `tasks/audit-skill.md` | Review a `SKILL.md` — trigger quality, workflow, output format, edge cases | 03, 02 |
-| `tasks/analyze-project.md` | Whole-project sweep of *another* Claude project (local or GitHub) against the full guide set → writes a `CLUIDE_IMPROVEMENT_PLAN.md` into it; read-only, plan-only (criteria in `analyze-project-reference.md`) | All (01–22) |
+| `tasks/analyze-project.md` | Whole-project sweep of *another* Claude project (local or GitHub) against the full guide set → writes a `CLUIDE_IMPROVEMENT_PLAN.md` into it; read-only, plan-only (criteria in `analyze-project-reference.md`) | All (01–23) |
 
 ### Maintenance (Cluide only)
 
