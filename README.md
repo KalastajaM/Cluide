@@ -1,6 +1,6 @@
 # Cluide — The Claude Guide
 
-*Guides last reviewed: June 2026 — the guides are maintained and reviewed as a set, so individual guides no longer carry their own "last reviewed" dates. This line is the single source of truth.*
+*Guides last reviewed: July 2026 — the guides are maintained and reviewed as a set, so individual guides no longer carry their own "last reviewed" dates. This line is the single source of truth.*
 
 > A complete framework for building, running, and improving a persistent AI assistant with Claude.
 > Includes architecture guides, runnable setup tasks, installable skills, and copy-paste templates.
