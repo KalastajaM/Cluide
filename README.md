@@ -73,6 +73,7 @@ A well-configured Claude personal assistant has four layers:
 | 21 | [Company Policies](./21_COMPANY_POLICIES.md) | Power users | Embedding company policies as tiered guardrails without shipping policy content in the repo |
 | 22 | [Personal Helper Apps](./22_HELPER_APPS.md) | Power users | Collaboration patterns for small locally-run tools you vibe-code for yourself — invariants, helper index, verification gates |
 | 23 | [Multi-Project Setups](./23_MULTI_PROJECT_SETUPS.md) | Power users | Keeping several linked projects consistent: when and how to split, handling overlap, single-owner data, and changing one without breaking the others |
+| 24 | [Project Folder Structure](./24_PROJECT_FOLDER_STRUCTURE.md) | Power users | Standard single-project folder layout and how to keep it clean as it grows; standard formats for recurring files; safely reorganizing a project without breaking it |
 
 **Recommended order:** Quickstart → 01 → 02 → **20** → 03 → 04 → 05 → (06–10 once you have scheduled tasks running). Or follow [Guide 18](./18_END_TO_END_WALKTHROUGH.md) for a guided path through all stages.
 
@@ -158,7 +159,7 @@ Four copy-paste starting points in `templates/`:
 /
 ├── 00_INDEX.md               # Full annotated guide index
 ├── 00_QUICKSTART.md          # Start here if you're new
-├── 01_CLAUDE_MD.md – 23_MULTI_PROJECT_SETUPS.md
+├── 01_CLAUDE_MD.md – 24_PROJECT_FOLDER_STRUCTURE.md
 ├── CHEATSHEET.md             # One-page quick reference
 ├── tasks/                    # Setup and audit task files
 ├── skills/                   # Bundled installable skills

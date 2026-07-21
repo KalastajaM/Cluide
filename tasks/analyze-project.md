@@ -2,7 +2,7 @@
 
 > **Cluide task** — run this from a Cluide checkout to analyze *another* Claude project end-to-end:
 > `Claude, run tasks/analyze-project.md`
-> **Source guides:** the full Cluide set (01–23). Per-dimension criteria and the output template live
+> **Source guides:** the full Cluide set (01–24). Per-dimension criteria and the output template live
 > in `tasks/analyze-project-reference.md` (read on demand).
 
 ## Purpose
