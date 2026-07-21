@@ -317,6 +317,17 @@ Covers: when to split one project into linked projects (and when not to), how to
 
 ---
 
+### [24 — Project Folder Structure](./24_PROJECT_FOLDER_STRUCTURE.md)
+`[Power user]` · `~10 min`
+
+*How to lay out one project's folders so Claude always finds things, and keep the layout from rotting as the project grows. Also covers standard formats for recurring files. The single-project counterpart to Guide 23.*
+
+Covers: the standard five-home layout (instructions, source of truth, generated outputs, scratch, archive), one folder per tracked entity indexed by a central tracker, documenting the layout as a file map, growth hygiene (outputs out of the root, archive don't delete, `_LATEST`/`[ARCHIVE]` naming, splitting oversized files), standard formats for recurring file kinds, and when structure should become linked projects (Guide 23).
+
+**Use this when:** a project is getting messy as it grows, or you want a predictable structure new projects can start from.
+
+---
+
 ## Templates: Copy-Paste Starting Points
 
 Four ready-to-copy folder structures are included in the `templates/` folder. Use them when you want to start a new project or task without building from scratch.
@@ -368,7 +379,7 @@ Tasks are standalone instruction files you run by saying `Claude, run tasks/[tas
 2. **Give a guide to Claude** — `"Read 01_CLAUDE_MD.md and help me write my CLAUDE.md"`
 3. **Run a task** — faster, guided, no reading required
 
-Tasks are designed to be portable: copy any task file to another project's `tasks/` directory and run it there. Each task includes a `Source guide:` reference so you can trace it back here.
+Tasks are designed to be portable: copy any task file to another project's `tasks/` directory and run it there. Each task includes a `Source guide:` reference so you can trace it back here. Every task follows the standard format documented in [`tasks/README.md`](./tasks/README.md).
 
 ### Setup tasks (one-time)
 
@@ -399,7 +410,8 @@ Tasks are designed to be portable: copy any task file to another project's `task
 | `tasks/audit-cost.md` | Audit a task's token economics — file budgets, model tier, run metrics | 10 |
 | `tasks/audit-memory.md` | Check memory files for staleness, duplicates, misplaced content | 04 |
 | `tasks/audit-skill.md` | Review a `SKILL.md` — trigger quality, workflow, output format, edge cases | 03, 02 |
-| `tasks/analyze-project.md` | Whole-project sweep of *another* Claude project (local or GitHub) against the full guide set → writes a `CLUIDE_IMPROVEMENT_PLAN.md` into it; read-only, plan-only (criteria in `analyze-project-reference.md`) | All (01–23) |
+| `tasks/analyze-project.md` | Whole-project sweep of *another* Claude project (local or GitHub) against the full guide set → writes a `CLUIDE_IMPROVEMENT_PLAN.md` into it; read-only, plan-only (criteria in `analyze-project-reference.md`) | All (01–24) |
+| `tasks/reorganize-project.md` | Safely restructure a project's folders: move files and rewire every reference without breaking it; takes a restore point first | 24 |
 
 ### Maintenance (Cluide only)
 

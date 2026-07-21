@@ -317,6 +317,17 @@ Covers: when to split one project into linked projects (and when not to), how to
 
 ---
 
+### [24 — Project Folder Structure](./24_PROJECT_FOLDER_STRUCTURE.md)
+`[Power user]` · `~10 min`
+
+*How to lay out one project's folders so Claude always finds things, and keep the layout from rotting as the project grows. Also covers standard formats for recurring files. The single-project counterpart to Guide 23.*
+
+Covers: the standard five-home layout (instructions, source of truth, generated outputs, scratch, archive), one folder per tracked entity indexed by a central tracker, documenting the layout as a file map, growth hygiene (outputs out of the root, archive don't delete, `_LATEST`/`[ARCHIVE]` naming, splitting oversized files), standard formats for recurring file kinds, and when structure should become linked projects (Guide 23).
+
+**Use this when:** a project is getting messy as it grows, or you want a predictable structure new projects can start from.
+
+---
+
 ## Templates: Copy-Paste Starting Points
 
 Four ready-to-copy folder structures live in the `templates/` folder of the Cluide repo. They are not bundled inside this skill; if you have the Cluide repo, copy them from there. Use them when you want to start a new project or task without building from scratch.
