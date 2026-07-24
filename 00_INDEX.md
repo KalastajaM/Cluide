@@ -328,6 +328,17 @@ Covers: the standard five-home layout (instructions, source of truth, generated 
 
 ---
 
+### [25 — Project Instruction Layers](./25_PROJECT_INSTRUCTION_LAYERS.md)
+`[Power user]` · `~8 min`
+
+*A Cowork project speaks to Claude through three channels: the description field, the project instructions field (both in the app, invisible to git and audits), and CLAUDE.md in the folder. What belongs in which layer, and how to keep the app-side fields from drifting unseen.*
+
+Covers: the three layers and the visibility asymmetry between them, writing the description field (injected as the project's identity every session), what the instructions field should carry (bootstrap to CLAUDE.md, mount verification, restated hard rules), three working patterns (bootstrap guard, pointer + hard rules, behavior/reference split), chat projects where the field is the whole contract, and the mirror-block convention that makes the app-side fields auditable.
+
+**Use this when:** setting up a new project's app-side fields, deciding whether a rule belongs in the instructions field or CLAUDE.md, or auditing projects whose descriptions and instructions may have drifted from what the folder says.
+
+---
+
 ## Templates: Copy-Paste Starting Points
 
 Four ready-to-copy folder structures are included in the `templates/` folder. Use them when you want to start a new project or task without building from scratch.
@@ -410,7 +421,7 @@ Tasks are designed to be portable: copy any task file to another project's `task
 | `tasks/audit-cost.md` | Audit a task's token economics — file budgets, model tier, run metrics | 10 |
 | `tasks/audit-memory.md` | Check memory files for staleness, duplicates, misplaced content | 04 |
 | `tasks/audit-skill.md` | Review a `SKILL.md` — trigger quality, workflow, output format, edge cases | 03, 02 |
-| `tasks/analyze-project.md` | Whole-project sweep of *another* Claude project (local or GitHub) against the full guide set → writes a `CLUIDE_IMPROVEMENT_PLAN.md` into it; read-only, plan-only (criteria in `analyze-project-reference.md`) | All (01–24) |
+| `tasks/analyze-project.md` | Whole-project sweep of *another* Claude project (local or GitHub) against the full guide set → writes a `CLUIDE_IMPROVEMENT_PLAN.md` into it; read-only, plan-only (criteria in `analyze-project-reference.md`) | All (01–25) |
 | `tasks/reorganize-project.md` | Safely restructure a project's folders: move files and rewire every reference without breaking it; takes a restore point first | 24 |
 
 ### Maintenance (Cluide only)

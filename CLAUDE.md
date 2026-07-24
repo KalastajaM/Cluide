@@ -38,6 +38,7 @@ This folder contains a complete operational framework for building, running, and
 | `22_HELPER_APPS.md` | Collaboration patterns for small locally-run tools you vibe-code for yourself — invariants, helper index, verification gates |
 | `23_MULTI_PROJECT_SETUPS.md` | When and how to split work across projects; converging overlaps, single-owner data, cross-project links |
 | `24_PROJECT_FOLDER_STRUCTURE.md` | Project folder layout — homes for definitions, state, and outputs; growth hygiene |
+| `25_PROJECT_INSTRUCTION_LAYERS.md` | Project description and instructions fields vs. CLAUDE.md — what belongs in which layer, drift control |
 
 When the user asks a question or makes a request that a guide covers, read the relevant guide before responding.
 
