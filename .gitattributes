@@ -4,3 +4,10 @@
 # repository isn't classified as a Python project.
 skills/** linguist-documentation
 templates/** linguist-documentation
+
+# With every script excluded, nothing qualifies for the language bar at all:
+# Markdown is a prose type and Linguist skips prose and data by default. An
+# empty bar is not neutral — it keeps the repository out of the language filter
+# on topic pages and out of language:markdown search results. Mark the guides
+# detectable so it reports as Markdown, which is what it actually is.
+*.md linguist-detectable=true
