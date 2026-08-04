@@ -1,0 +1,43 @@
+name: Question
+description: Something in the guides is unclear, or you are stuck applying them.
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before filing: [`00_QUICKSTART.md`](https://github.com/KalastajaM/Cluide/blob/main/00_QUICKSTART.md) covers getting started and [`17_TROUBLESHOOTING.md`](https://github.com/KalastajaM/Cluide/blob/main/17_TROUBLESHOOTING.md) covers the common failure modes — skills not triggering, tasks not running, memory not persisting, connector errors.
+
+        A question that turns out to be a gap in the guides is a good outcome, not a waste. Say which guide you read and where it stopped helping, and the answer usually becomes an edit.
+
+  - type: textarea
+    id: question
+    attributes:
+      label: What you are trying to do
+      description: The goal, not just the step you are stuck on. The right answer is often a different approach.
+    validations:
+      required: true
+
+  - type: input
+    id: read
+    attributes:
+      label: What you read
+      description: Which guide or task, and where it stopped answering the question.
+      placeholder: "03_SKILLS.md, the description section"
+    validations:
+      required: false
+
+  - type: textarea
+    id: tried
+    attributes:
+      label: What you tried and what happened
+      description: Include the actual behaviour rather than a summary of it, if there is one.
+    validations:
+      required: false
+
+  - type: textarea
+    id: setup
+    attributes:
+      label: Your setup
+      description: Claude Code or Cowork, model, and any connectors involved.
+    validations:
+      required: false

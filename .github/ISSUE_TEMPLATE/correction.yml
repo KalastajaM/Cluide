@@ -1,0 +1,53 @@
+name: Correction
+description: Something in a guide, task, skill, or template is wrong, stale, or broken.
+labels: ["correction"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Corrections are the most useful thing you can file here. Stale tool behaviour, model names, prices, broken cross-references, and task steps that no longer work all belong in this template.
+
+        If the problem is that instructions here could cause data loss or leak credentials, close this and use [private security reporting](https://github.com/KalastajaM/Cluide/security/advisories/new) instead.
+
+  - type: input
+    id: location
+    attributes:
+      label: Where
+      description: File and line, or file and section heading.
+      placeholder: "05_MCP_SERVERS.md:248, or tasks/setup-memory.md, step 4"
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What it says now, and what is wrong with it
+      description: Quote the text if it is short. Be specific about why it is wrong rather than that it feels off.
+    validations:
+      required: true
+
+  - type: textarea
+    id: correct
+    attributes:
+      label: What it should say
+      description: If you know the correct behaviour, describe it. How you know matters — a doc link, or "I tried it and got X" are both fine.
+    validations:
+      required: false
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Where you hit this
+      description: Only if relevant. Claude Code or Cowork, model, connector or MCP server involved, and roughly when.
+      placeholder: "Cowork, Opus, Google Drive connector, August 2026"
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: mirrors
+    attributes:
+      label: Bundled copies
+      description: The numbered guides are duplicated under `skills/*/references/` so the skills work standalone.
+      options:
+        - label: I checked whether this text also appears in a bundled copy under `skills/*/references/`
+          required: false

@@ -1,0 +1,51 @@
+name: Pattern from real use
+description: You run a Claude setup and have something that works which Cluide does not teach.
+labels: ["pattern"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Cluide is built from patterns that survived production, not from ideas that sound good. That is the whole bar: it prefers one pattern proven across two independent setups to five plausible suggestions.
+
+        Evidence is what makes this template useful. If you have run something for a week, say so — that is still worth filing, it just gets held as a hypothesis rather than written into a guide.
+
+  - type: textarea
+    id: pattern
+    attributes:
+      label: The pattern
+      description: What you do, concretely enough that someone could copy it.
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem it solves
+      description: What was going wrong before. A pattern with no failure behind it is usually a preference.
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: How long you have run it, roughly how many runs, what it replaced, and what it cost you. Name the downsides — a pattern presented as free is harder to trust.
+    validations:
+      required: true
+
+  - type: input
+    id: home
+    attributes:
+      label: Where it would live
+      description: Which existing guide, task, or template this belongs in, if you have a view. A new guide is a structural change — say so and we will scope it before anyone writes.
+      placeholder: "07_TASK_LEARNING_GUIDE.md, or templates/TASK_TEMPLATE/"
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Your setup
+      description: Claude Code or Cowork, which connectors, how much of it is scheduled versus interactive. Helps judge how far the pattern generalises.
+    validations:
+      required: false

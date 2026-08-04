@@ -1,0 +1,14 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Start here if you are new
+    url: https://github.com/KalastajaM/Cluide/blob/main/00_QUICKSTART.md
+    about: Build a working CLAUDE.md and your first skill in about 20 minutes.
+  - name: Something is not working in your own setup
+    url: https://github.com/KalastajaM/Cluide/blob/main/17_TROUBLESHOOTING.md
+    about: Guide 17 covers the common failure modes — skills not triggering, tasks not running, memory not persisting, connector errors.
+  - name: Report a security or safety issue privately
+    url: https://github.com/KalastajaM/Cluide/security/advisories/new
+    about: Instructions that could cause data loss, prompt-injection vectors, leaked credentials, or over-broad permissions. Do not open a public issue for these.
+  - name: Questions about Claude, Claude Code, or Cowork themselves
+    url: https://support.claude.com
+    about: Cluide is an independent guide set. Issues with Anthropic's products belong with Anthropic.
