@@ -1,0 +1,25 @@
+**/.DS_Store
+.claude/settings.local.json
+**/LAST_RUN.md
+skills/*.skill
+
+# Development working area — anything not part of the published distribution.
+# New scratch files, review notes, planning docs and local tool configs go here.
+development/
+
+# Safety net: dev artifacts that may still be written to the project root
+_to_delete/
+SECURITY_AUDIT.md
+*_SECURITY_AUDIT.md
+REVIEW_*.md
+GIT_INSTRUCTIONS.md
+
+# Credentials and secrets
+credentials.json
+token.json
+*.oauth
+.env
+.env.*
+
+# Point-in-time review artifacts — keep local, same rule as REVIEW_*.md
+GUIDE_REVIEW_FEEDBACK.md

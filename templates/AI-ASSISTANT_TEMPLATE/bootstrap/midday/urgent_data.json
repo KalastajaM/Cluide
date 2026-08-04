@@ -1,0 +1,11 @@
+{
+  "scan_time_hel":  "[placeholder]",
+  "last_scan_utc":  "[placeholder]",
+  "scan_start_utc": "[placeholder]",
+  "emails_scanned": 0,
+  "teams_scanned":  0,
+  "flags_note":     "[placeholder]",
+  "urgent_items":   [],
+  "new_flags":      [],
+  "notable_non_urgent": []
+}

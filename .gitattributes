@@ -1,0 +1,6 @@
+# Cluide is a documentation framework. The scripts under skills/ and
+# templates/ are bundled reference material and copy-paste starters, not the
+# project's codebase — exclude them from GitHub's language statistics so the
+# repository isn't classified as a Python project.
+skills/** linguist-documentation
+templates/** linguist-documentation

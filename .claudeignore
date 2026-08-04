@@ -1,0 +1,38 @@
+# .claudeignore
+# Version Control
+.git/
+
+# Environment & Dependencies
+.venv/
+env/
+node_modules/
+__pycache__/
+*.pyc
+
+# IDE & Logs
+.vscode/
+.DS_Store
+*.log
+CLAUDE_LOG.md.bak
+
+# Duplicate guide copies bundled into the skills.
+# These are byte-identical to the root guides — enforced by tasks/review-tasks.md
+# step 4a — so loading both doubles the context cost and makes every grep return
+# each hit twice. Always edit the ROOT guide; the bundled copy is a build artifact.
+# Only the numbered guide copies are excluded: skill-specific reference files
+# (audit-dimensions.md, output-formats.md, report-skeleton.html, the hook scripts)
+# are unique content and stay loadable.
+# review-tasks.md compares these with shell commands, which .claudeignore does not
+# affect, so the drift check still works.
+skills/ai-assistant-setup/references/[0-9][0-9]_*.md
+skills/cowork-optimizer/references/[0-9][0-9]_*.md
+skills/policies-validator/references/[0-9][0-9]_*.md
+
+# Development working area — review notes, planning docs, editor configs, scratch
+# output, and the _to_delete/ staging area (which can hold a full duplicate tree of
+# the repo). Gitignored as a whole, but that does not stop it loading as context.
+development/
+
+# Safety net for dev artifacts written to the project root
+_to_delete/
+REVIEW_*.md
