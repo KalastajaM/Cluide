@@ -30,4 +30,4 @@ Only `main` is supported. Tags mark content events rather than maintained releas
 
 ## If you find personal data
 
-This repository has been scrubbed of the maintainer's personal and employer-specific material, and its examples are meant to be invented rather than real. If you find something that looks like a real person, address, account, internal codename, or credential that survived, report it privately through the Security tab rather than opening an issue — a public report is the thing that turns a stale artefact into an actual exposure.
+This repository has been scrubbed of the maintainer's personal and/or employer-specific material, and its examples are meant to be invented rather than real. If you find something that looks like a real person, address, account, internal codename, or credential that survived, report it privately through the Security tab rather than opening an issue — a public report is the thing that turns a stale artefact into an actual exposure.
