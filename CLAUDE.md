@@ -49,6 +49,8 @@ When the user asks a question or makes a request that a guide covers, read the r
 
 **Everything that is not part of the distribution goes in `development/`.** The repo root holds only what a reader of the published guide would open: the numbered guides, `00_INDEX.md`, `README.md`, `CHEATSHEET.md`, `CLAUDE.md`, `LICENSE`, and the `skills/`, `tasks/` and `templates/` folders. Review feedback, dated review passes, planning notes, scratch output, editor and tool configs, and the `_to_delete/` staging area all live under `development/`, which is gitignored as a whole — so a new working file needs no new ignore rule, it just needs the right home. Before creating a file at the root, ask whether it ships; if not, create it in `development/` instead. See `development/README.md`.
 
+*Optional paragraph — delete it if you are not developing Cluide itself.* `development/` is gitignored as a whole, so a fresh clone does not contain it and the `development/README.md` reference above will not resolve. Create the folder when you start making changes to Cluide, or remove the paragraph if you cloned this to use the guides rather than to change them. Nothing else in this file depends on it.
+
 When creating new files, check whether they belong in `.gitignore` or `.claudeignore`:
 - **Add to `.gitignore`**: run logs, output files, auto-generated bundles, any file containing personal data (paths, names, company names)
 - **Add to `.claudeignore`**: large generated files that don't need to be loaded as context (compiled skill bundles, output archives, etc.)
