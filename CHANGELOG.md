@@ -8,6 +8,15 @@ The **consumed surface** — dimension numbers in `tasks/analyze-project-referen
 
 ### Fixed
 
+- **The `security-review` session cleanup script no longer kills MCP servers.** Its "kill zombie
+  Claude processes" step matched every MCP server the desktop app spawns, and read instantaneous
+  `%cpu` as a liveness signal — an idle stdio MCP server sits at 0.0% CPU as its *healthy* state.
+  A deployed copy SIGTERM'd an entire MCP fleet three times a day. The kill step is removed rather
+  than repaired: no `ps`-based signal separates idle-healthy from stuck, and the failure mode is
+  worse than the problem. The transcript scrub is removed too — it required storing a credential
+  pattern, in plaintext, in order to remove that credential. Phase 5b now installs a maintenance
+  script, records that it is not wired to a hook event despite the `hook-` filename, requires any
+  schedule to be written beside the install step, and adds a drift check against the reference.
 - **Merge-gate check 3 no longer fails on clean `main`.** It asserted byte-identity for every guide
   and index across the root and the bundled skill mirror, without the `00_INDEX.md` exception that
   `CONTRIBUTING.md`, the pull request template and `review-tasks.md` all carry. Every guide-adding
