@@ -115,7 +115,7 @@ Several skills bundle copies of the root guides (`ai-assistant-setup`, `cowork-o
    done
    ```
    (Reference files with no matching root guide — `audit-dimensions.md`, `output-formats.md` — are skill-specific; the `[ -f ]` test skips them.)
-2. **One deliberate exception:** `skills/ai-assistant-setup/references/00_INDEX.md` is a *variant*, not a copy — links to `templates/`, `tasks/` and `skills/` are stripped because those assets do not ship inside the skill package. It must therefore differ. The stripping covers `templates/`, `tasks/` and `skills/` links **and** the root-level `README.md` and `CHEATSHEET.md`, none of which ship inside the skill package. Confirm the diff is confined to that link-stripping and nothing else; a content change that reached the root index but not this copy is real drift wearing the exception as cover.
+2. **One deliberate exception:** `skills/ai-assistant-setup/references/00_INDEX.md` is a *variant*, not a copy — links to `templates/`, `tasks/` and `skills/` are stripped because those assets do not ship inside the skill package. It must therefore differ. Confirm the diff is confined to that link-stripping and nothing else; a content change that reached the root index but not this copy is real drift wearing the exception as cover.
 3. Flag every other drifted copy: "`[file]` is out of sync with the root guide — re-copy it." Re-copying is the fix; never patch a bundled copy by hand, or the next diff passes while the two say different things.
 
 This is why `.claudeignore` excludes the numbered copies: they are build artifacts of the skill, and the shell commands here read them regardless.

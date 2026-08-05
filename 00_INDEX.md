@@ -363,7 +363,7 @@ Covers: the three ways context goes wrong (too little, too much, wrong kind), wh
 
 ## Templates: Copy-Paste Starting Points
 
-The ready-to-copy folder structures in the `templates/` folder. Use them when you want to start a new project or task without building from scratch.
+Four ready-to-copy folder structures are included in the `templates/` folder. Use them when you want to start a new project or task without building from scratch.
 
 ### Choosing a Template
 
@@ -460,7 +460,7 @@ Tasks are designed to be portable: copy any task file to another project's `task
 
 ## Skills Included in This Project
 
-The skills bundled with this project are listed below. Each is self-contained — install only the ones you need.
+Eight installable skills are bundled with this project. Each skill is self-contained — install only the ones you need.
 
 ### Installing in Claude Code
 
