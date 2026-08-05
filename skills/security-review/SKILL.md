@@ -281,14 +281,43 @@ grep -rl --include="*.jsonl" -E "(PASSWORD|SECRET|API_KEY|TOKEN)\s*[:=]\s*\S{8,}
 ```
 Report findings. Do NOT auto-delete — let the user decide.
 
-**5b. Session cleanup hook**
+Report matches only, and never persist one. A script that stores a credential pattern in order to scrub it is storing the credential, in plaintext, in a file that gets read, synced and backed up.
 
-Use `AskUserQuestion` with buttons: "Create a session cleanup script that kills zombie processes and prunes old shell snapshots?"
+**5b. Session cleanup script**
+
+Use `AskUserQuestion` with buttons: "Install a maintenance script that prunes shell snapshots older than 7 days and reports transcript storage?"
 > Buttons: `Yes` / `No`
 
-If approved, copy `references/hook-session-cleanup.sh` to `~/.claude/hooks/session-cleanup.sh`, then:
+If approved:
 ```bash
+mkdir -p ~/.claude/hooks
+cp references/hook-session-cleanup.sh ~/.claude/hooks/session-cleanup.sh
 chmod +x ~/.claude/hooks/session-cleanup.sh
+```
+
+**Never add process-killing to this script.** Read the header comment in
+`references/hook-session-cleanup.sh` first: any pattern broad enough to match the Claude
+app also matches every MCP server the app spawns, and an idle stdio MCP server sits at
+0.0% CPU as its healthy state, so `%cpu` is not a liveness signal. An earlier version of
+this script SIGTERM'd a user's entire MCP fleet on every scheduled run for weeks.
+
+Despite the `hook-` filename this is **not** wired to a hook event — it is a standalone job
+that does nothing until something runs it. If the user wants it scheduled, ask first, then
+record the label and interval here so the installed copy and this reference cannot silently
+diverge:
+
+```bash
+# macOS example — label com.user.claude-session-cleanup, daily at 09:00
+launchctl bootout gui/$UID/com.user.claude-session-cleanup 2>/dev/null || true
+launchctl bootstrap gui/$UID ~/Library/LaunchAgents/com.user.claude-session-cleanup.plist
+```
+
+Every time this phase runs, check the installed copy against the reference and report drift
+before offering to overwrite:
+```bash
+diff ~/.claude/hooks/session-cleanup.sh references/hook-session-cleanup.sh \
+  && echo "session-cleanup: in sync" \
+  || echo "session-cleanup: DRIFT — installed copy differs from this reference"
 ```
 
 ---
