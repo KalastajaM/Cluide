@@ -6,7 +6,30 @@ The **consumed surface** — dimension numbers in `tasks/analyze-project-referen
 
 ## [Unreleased]
 
-*Nothing yet.*
+### Fixed
+
+- **Merge-gate check 3 no longer fails on clean `main`.** It asserted byte-identity for every guide
+  and index across the root and the bundled skill mirror, without the `00_INDEX.md` exception that
+  `CONTRIBUTING.md`, the pull request template and `review-tasks.md` all carry. Every guide-adding
+  branch failed it.
+- **The root-contents rule in `CLAUDE.md`** omitted `CHANGELOG.md` and `.github/`, so read literally
+  it sent the changelog to `development/`.
+- **Five derived counts removed** from `README.md`, `00_INDEX.md` and `ai-assistant-setup`, against
+  the repo's own rule against writing them down.
+- **`ai-assistant-setup` pointed at guide 08** for task layout, sending installed users to a stub.
+- **The `00_INDEX.md` link-stripping exception was applied incompletely** — three links to unbundled
+  root assets survived in the skill copy. `review-tasks.md` now records the exception's real scope.
+- **`template-exporter` gained the edge cases** `audit-skill.md` requires.
+
+### Changed
+
+- **`tasks/README.md`** now accepts `## Hard rules` in place of `Output` + `Constraints`, and carves
+  out `audit-*` tasks. The old rule was met by four of twenty-seven task files.
+- **Merge-gate check 5 is marked maintainer-only.** It points at a private companion project that no
+  clone has; the project is no longer named.
+
+The consumed surface did not grow: no guide number, `tasks/` filename or dimension number was added,
+renumbered or reused.
 
 ## [1.0.0] — 2026-08-04
 

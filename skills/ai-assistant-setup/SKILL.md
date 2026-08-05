@@ -62,7 +62,7 @@ All guides are in the `references/` directory next to this file.
 
 ## Templates: copy-paste starting points
 
-Four ready-to-copy folder structures are available in the `templates/` folder of the Cluide project (the repo this skill ships with). They are **not bundled inside this skill** — if you're running with access to the Cluide folder, copy from `templates/` there; otherwise recreate the structure from the relevant guide (each template's file layout is described in Guides 07/08 for tasks, 14 for data projects). Always prefer a template over building from scratch — it saves time and comes pre-structured with the right files and placeholders.
+Ready-to-copy folder structures are available in the `templates/` folder of the Cluide project (the repo this skill ships with). They are **not bundled inside this skill** — if you're running with access to the Cluide folder, copy from `templates/` there; otherwise recreate the structure from the relevant guide (each template's file layout is described in Guide 07, Part 9, for tasks, and Guide 14 for data projects). Always prefer a template over building from scratch — it saves time and comes pre-structured with the right files and placeholders.
 
 | Template | Use when... |
 |----------|------------|
