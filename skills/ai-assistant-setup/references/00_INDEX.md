@@ -1,6 +1,6 @@
 # Cluide — The Claude Guide
 
-> **This is the in-depth guide reference** — detailed descriptions, reading times, and usage guidance for every guide. If you're browsing on GitHub, [README.md](./README.md) is the entry point.
+> **This is the in-depth guide reference** — detailed descriptions, reading times, and usage guidance for every guide. If you're browsing on GitHub, `README.md` in the Cluide repo is the entry point (not bundled inside this skill).
 
 > A complete framework for building, running, and improving a persistent AI assistant with Claude.
 > Includes architecture guides, runnable setup tasks, installable skills, and copy-paste templates — covering the full lifecycle from initial setup to automation, self-improvement, and security.
@@ -64,7 +64,7 @@ The guide numbers are stable addresses, not a reading order — new guides get t
 | **Operations & safety** | [12](./12_SECURITY.md) → [11](./11_GIT_INTEGRATION.md) → [13](./13_DEV_EXECUTION_WORKFLOW.md) → [17](./17_TROUBLESHOOTING.md) | Securing and maintaining your setup |
 | **Data & knowledge** | [14](./14_PERSONAL_DATA_LAYER.md) → [15](./15_LLM_WIKI.md) | Getting personal data and knowledge bases into Claude |
 | **Projects & context** | [24](./24_PROJECT_FOLDER_STRUCTURE.md) → [25](./25_PROJECT_INSTRUCTION_LAYERS.md) → [23](./23_MULTI_PROJECT_SETUPS.md) → [21](./21_COMPANY_POLICIES.md) → [22](./22_HELPER_APPS.md) → [26](./26_CONTEXT_SCOPING.md) | Power users structuring larger setups |
-| **Reference — read anytime** | [16](./16_BEST_PRACTICES.md) · [17](./17_TROUBLESHOOTING.md) · [18](./18_END_TO_END_WALKTHROUGH.md) · [19](./19_OUTPUT_FORMATTING.md) · [CHEATSHEET](./CHEATSHEET.md) | Digest, walkthrough, formatting, quick lookup |
+| **Reference — read anytime** | [16](./16_BEST_PRACTICES.md) · [17](./17_TROUBLESHOOTING.md) · [18](./18_END_TO_END_WALKTHROUGH.md) · [19](./19_OUTPUT_FORMATTING.md) · CHEATSHEET (in the Cluide repo) | Digest, walkthrough, formatting, quick lookup |
 
 ---
 
@@ -363,7 +363,7 @@ Covers: the three ways context goes wrong (too little, too much, wrong kind), wh
 
 ## Templates: Copy-Paste Starting Points
 
-Four ready-to-copy folder structures live in the `templates/` folder of the Cluide repo. They are **not bundled inside this skill** — copy them from a Cluide checkout, or recreate the structure from the relevant guide. Use them when you want to start a new project or task without building from scratch.
+The ready-to-copy folder structures live in the `templates/` folder of the Cluide repo. They are **not bundled inside this skill** — copy them from a Cluide checkout, or recreate the structure from the relevant guide. Use them when you want to start a new project or task without building from scratch.
 
 ### Choosing a Template
 
@@ -460,7 +460,7 @@ Tasks are designed to be portable: copy any task file to another project's `task
 
 ## Skills Included in This Project
 
-Eight installable skills are bundled with this project. Each skill is self-contained — install only the ones you need.
+The skills bundled with this project are listed below. Each is self-contained — install only the ones you need.
 
 ### Installing in Claude Code
 
@@ -675,7 +675,7 @@ If you're new to this, go in this order:
 5. **Then 04 + 05** — enable memory and connect MCP tools.
 6. **Only then 06–10** — once you have scheduled tasks running, optimise and teach them to improve.
 
-**Quick reference while building:** Keep [CHEATSHEET.md](./CHEATSHEET.md) open as a one-page reference for file structures, skeletons, and common patterns.
+**Quick reference while building:** Keep `CHEATSHEET.md` from the Cluide repo open as a one-page reference for file structures, skeletons, and common patterns.
 **If something breaks:** Go to [Guide 17 — Troubleshooting](./17_TROUBLESHOOTING.md).
 
 ---
