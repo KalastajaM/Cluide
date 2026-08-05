@@ -13,7 +13,7 @@
 
 Cluide is an operational framework for building AI assistants that persist, learn, and improve over time — not a collection of tips, but a complete system you can actually install and run. It covers the full lifecycle: initial setup, scheduled automation, self-improvement, security, and long-term maintenance.
 
-The deliverables are concrete: a set of interlocking guides that define the architecture, a library of runnable task files that do the setup work for you, a set of installable skills, and four ready-to-use templates. The guides are documentation for the system; the tasks are its installation scripts.
+The deliverables are concrete: a set of interlocking guides that define the architecture, a library of runnable task files that do the setup work for you, a set of installable skills, and the ready-to-use templates in `templates/`. The guides are documentation for the system; the tasks are its installation scripts.
 
 A well-configured Claude personal assistant has four layers:
 
@@ -134,7 +134,7 @@ Tasks are standalone instruction files for setup and auditing. Run them by sayin
 
 ## Skills Included
 
-Eight installable skills are bundled in `skills/`. Install only the ones you need.
+The installable skills bundled in `skills/` are listed below. Install only the ones you need.
 
 **Claude Code:** copy the skill folder to `~/.claude/skills/`
 **Claude.ai:** zip the skill folder (e.g. `cd skills && zip -r backlog.zip backlog/` — or ask Claude to bundle it), then upload the `.zip` via **Settings → Skills → Upload skill**
@@ -154,7 +154,7 @@ Eight installable skills are bundled in `skills/`. Install only the ones you nee
 
 ## Templates
 
-Four copy-paste starting points in `templates/`:
+The copy-paste starting points in `templates/`:
 
 | Template | What it is |
 |----------|-----------|
