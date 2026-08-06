@@ -4,6 +4,27 @@ Cluide is versioned by content event, not on a calendar: a tag marks guides bein
 
 The **consumed surface** — dimension numbers in `tasks/analyze-project-reference.md`, filenames in `tasks/`, and guide numbers — is append-only. Entries below note explicitly when it grows.
 
+## [Unreleased]
+
+### Added
+
+- **Guide 27 — Independent Judgment.** A guide on getting a judgment Claude reached on its own,
+  rather than your own view reflected back. It separates the two mechanisms that cause it —
+  anchoring (you state a view, the answer lands near it) and agreement pressure (you ask Claude to
+  grade your proposal, so it grades rather than solves) — and covers what actually leaks, asking for
+  the artefact instead of a verdict on yours, the commit-then-reveal protocol, blinded
+  reconciliation in a fresh session, and false independence: two instances of the same model
+  agreeing is correlated error, not corroboration.
+  Guide 26 already owned blind review passes, so the boundary is stated in both companion blocks —
+  26 covers context leaking from the *environment*, 27 covers your own view leaking from *you*.
+  Pointers added from guides 02, 13 and 20, each of which cited 26 without a route to this material.
+- **The consumed surface grew.** Guide number `27` is new. Dimension 13 in
+  `tasks/analyze-project-reference.md` widened to `guides 20, 26, 27` and was renamed to
+  "Interactive prompting, context scoping & independent judgment". Nothing was renumbered, removed,
+  or reused.
+
+---
+
 ## [1.0.1] — 2026-08-05
 
 ### Fixed
