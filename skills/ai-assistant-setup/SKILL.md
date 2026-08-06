@@ -120,11 +120,19 @@ Pattern stubs and file templates are defined in `14_PERSONAL_DATA_LAYER.md`. Fol
 
 When a user has an existing project or setup:
 
-1. Ask them to share the relevant files (CLAUDE.md, task files, skill files, data files)
+1. Ask them to share the relevant files (CLAUDE.md, task files, skill files, data files). Ask what the
+   setup is for and where it hurts — not what they think is wrong with it. Their diagnosis anchors yours
 2. Read what they have
-3. Identify gaps against the relevant guides — missing patterns, inefficiencies, anti-patterns
-4. Propose specific improvements with clear reasoning
-5. Implement the changes after confirmation
+3. Assess against the relevant guides, both directions: what is already sound and should survive editing,
+   and what is missing or working against them
+4. Write the findings down before discussing them. Per finding: the file and line, what is wrong, severity
+   (blocker / material / minor), confidence, and what evidence would make you drop it. A finding with no
+   answer to that last one is an opinion — leave it out rather than padding the list
+5. Say plainly if the setup is in good shape. "Nothing here needs changing" is a valid result
+6. Implement the changes after confirmation
+
+Load `27_INDEPENDENT_JUDGMENT.md` for any request framed as a review, a second opinion, or a check on
+something the user has already formed a view about.
 
 Common improvements to look for:
 - CLAUDE.md is too long, too vague, or missing key constraints → Guide 01

@@ -19,6 +19,8 @@
 | Track and control task costs | Run metrics | [10](./10_COST_PERFORMANCE.md) |
 | Build everything from scratch, step by step | Full walkthrough | [18](./18_END_TO_END_WALKTHROUGH.md) |
 | Make task or skill output look good | Guide 19 | [19](./19_OUTPUT_FORMATTING.md) |
+| Control what a session is allowed to see | Context scoping | [26](./26_CONTEXT_SCOPING.md) |
+| Get a second opinion you can actually rely on | Review protocol | [27](./27_INDEPENDENT_JUDGMENT.md) + `review-protocol` skill |
 
 ---
 
@@ -228,6 +230,9 @@ shared/
 
 **Review and apply improvement proposals:**
 > "Read my IMPROVEMENTS.md. For each pending proposal, explain it and ask me to approve, reject, or modify."
+
+**Get an independent read on something you already have a view about:**
+> "Read 27_INDEPENDENT_JUDGMENT.md. Review [file] and write the findings to a file before I say anything — location, what is wrong, severity, confidence, and what evidence would make you drop each one. Say what it does well too. I'll give you my own read afterwards."
 
 **Use Plan Mode before making changes:**
 > "Enter plan mode. Read [file] and plan how to [change]. Don't make any edits yet."

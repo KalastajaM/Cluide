@@ -56,7 +56,9 @@ Detect which guides have changed since each task was last reviewed, then check w
 git log --since="90 days ago" --name-only --pretty=format:"%ad %s" --date=short -- '*.md' | grep -E "^[0-9]|^[0-9][0-9]_" | sort -u
 ```
 
-Also ask the user: "Are there any specific guides you just updated that I should focus on?"
+Also ask the user: "Have you edited any guide since the last commit?" A working-tree edit is invisible to
+`git log`, so the fact is worth asking for. Ask for the fact and not for a focus: a guide named as the one
+to look at gets the scrutiny and the others get skimmed (`27_INDEPENDENT_JUDGMENT.md`).
 
 Report:
 ```

@@ -96,7 +96,7 @@ To add self-improvement to an existing task:
 
 To audit an existing task for efficiency:
 
-> "Read 06_TASK_EFFICIENCY_GUIDE.md and audit my task at [path/to/TASK.md] for token efficiency. Apply the checklist and propose specific changes."
+> "Read 06_TASK_EFFICIENCY_GUIDE.md and audit my task at [path/to/TASK.md] for token efficiency. Apply the checklist. If the task is already efficient, say so and stop; otherwise propose specific changes."
 
 ---
 

@@ -268,10 +268,10 @@ If you don't specify a format, Claude picks one. It will be:
 ## Applying These Principles to Your Setup
 
 **To improve CLAUDE.md:**
-> "Read 02_PROMPTING_BASICS.md and then read my current CLAUDE.md. For each rule, tell me whether it's specific enough to change Claude's behaviour reliably. Rewrite any that are too vague."
+> "Read 02_PROMPTING_BASICS.md and then read my current CLAUDE.md. Here is the behaviour I keep having to correct: [what you keep re-explaining]. Write the rules that would fix it, then tell me which of my existing rules they replace and which of mine are already doing their job."
 
 **To improve a skill description:**
-> "Read 02_PROMPTING_BASICS.md and then read my [skill-name] SKILL.md. Is the description strong enough to trigger reliably? Rewrite it using the guidance in the prompting guide."
+> "Read 02_PROMPTING_BASICS.md and then read my [skill-name] SKILL.md. Here is when I want this skill to fire, in my own words: [situations]. Write the description that triggers on those, then compare it to mine and say what mine misses."
 
 **To add an output format to a skill or task:**
 > "Read my [task name] TASK.md. The output format section is too vague. Look at the last 3 entries in LAST_RUN.md to see what the output actually looks like, then write a proper output format template to match it."

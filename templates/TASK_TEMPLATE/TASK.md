@@ -163,16 +163,19 @@ Operational signals:
 
 When a full refactor runs:
 1. Review all tracked files for stale, duplicate, or contradictory content — consolidate.
-2. Review TASK.md for steps that are unclear, never followed, or outdated.
+2. Review TASK.md for steps that are unclear, never followed, or outdated. Removing one is a proposal, never a direct apply — the session judging the step is the one it constrains.
 3. Review open items — close or merge where possible.
 4. Reset `runs_since_last_refactor` to 0. Summarize findings in the run log.
 
 ### C. Apply or Propose
 
 **Apply directly** (no confirmation needed) when ALL are true:
-- Change is clearly correct and low-risk
+- Change is **mechanically checkable** — it corrects a confirmed error, or writes down something the run
+  already does. "It seemed clearly correct" is not a criterion: the session proposing the change is the
+  one that would have to notice it was wrong
+- Change is low-risk
 - Scope is a single field, sentence, or entry in a single file
-- Change is purely additive or corrects a confirmed error
+- Change is purely additive or corrects a confirmed error — never a removal or a rewrite
 
 **Propose in IMPROVEMENTS.md** when ANY is true:
 - Change affects behavior in a non-obvious way

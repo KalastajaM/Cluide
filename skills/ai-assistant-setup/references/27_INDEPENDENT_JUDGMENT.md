@@ -182,7 +182,7 @@ view, do not ask what it is. Review it, then ask.
 
 Each of these names an action, and the third is the load-bearing one: it makes Claude decline the leak rather than relying on you never offering it. Note the honest limit — these are requests, not boundaries, the same limitation Guide 26 names for deny-lists. They raise the floor; they do not guarantee the behaviour. The protocol steps above (a written commitment, a fresh session, anonymised lists) are what actually enforce anything, because they change what Claude *can* see rather than what it is asked to ignore.
 
-Put the review protocol in a skill rather than in CLAUDE.md. It applies to one workflow, not every interaction, and a skill can carry the whole prompt including the finding schema.
+Put the review protocol in a skill rather than in CLAUDE.md. It applies to one workflow, not every interaction, and a skill can carry the whole prompt including the finding schema. Cluide ships one: `skills/review-protocol/`, which carries the prompt above, the finding schema, and the blinded reconciliation step.
 
 ---
 

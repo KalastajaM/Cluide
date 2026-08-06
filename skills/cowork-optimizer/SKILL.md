@@ -77,6 +77,13 @@ Otherwise, produce a structured audit report in the conversation. Format:
 
 **Summary** — one sentence characterizing the main issues and rough token cost estimate if calculable.
 
+**What already works** — one or two lines naming the parts of the task that are efficient or well
+structured and should survive the edit. Without this the report can only be read as a list of
+deficiencies, including for a task that is largely fine.
+
+For each finding that is a judgement rather than a measurement, carry a confidence and name what evidence
+would make you drop it. A finding with no answer to that is an opinion — leave it out.
+
 Then a prioritized list of findings, highest ROI first. For each:
 - **Finding title** (e.g., "Unconditional large file load in step 3")
 - What the problem is

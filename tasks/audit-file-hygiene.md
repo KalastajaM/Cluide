@@ -88,6 +88,16 @@ Default every row to **archive** (move to `_archive/` inside the target). Reserv
 
 State the totals: how many files, how much disk, how much context the ignored-but-loaded findings would free.
 
+Then state what you checked and found legitimate — the folders that look like clutter and are not, the
+duplicates that turned out to differ, the large files that earn their size. A project with a clean tree
+should read as clean rather than as an empty table.
+
+**Finding discipline.** For anything that rests on judgement rather than on a file being present or
+absent, carry a **confidence** (high / medium / low) and a **would-drop-it-if** line naming the evidence
+that would make you withdraw the finding. A finding with no answer to that question is an opinion — leave
+it out rather than padding the report with it. When the user pushes back, check the finding against its
+would-drop-it-if line instead of trading verdicts (`27_INDEPENDENT_JUDGMENT.md`).
+
 Then **stop and wait.**
 
 ### Step 4 — Apply

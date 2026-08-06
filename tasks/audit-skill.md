@@ -110,6 +110,12 @@ Passing:
 Overall: [N issues — critical/high/medium/low breakdown]
 ```
 
+**Finding discipline.** For anything that rests on judgement rather than on a file being present or
+absent, carry a **confidence** (high / medium / low) and a **would-drop-it-if** line naming the evidence
+that would make you withdraw the finding. A finding with no answer to that question is an opinion — leave
+it out rather than padding the report with it. When the user pushes back, check the finding against its
+would-drop-it-if line instead of trading verdicts (`27_INDEPENDENT_JUDGMENT.md`).
+
 **Real-world example** — what an audit finding looks like with specific, actionable detail:
 
 ```
