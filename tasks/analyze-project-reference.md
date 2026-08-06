@@ -86,9 +86,9 @@ or audit task rather than re-deriving it here.
 - **Healthy:** user-facing output has a specified, consistent format; standalone reports use the self-contained HTML skeleton.
 - **Checks:** tasks/skills producing wall-of-text output? A briefing/dashboard that would benefit from the `html-report` skill?
 
-### 13. Interactive prompting & context scoping — guides 20, 26 → guidance only
-- **Healthy:** tasks/skills use `AskUserQuestion` for fixed-option choices, `@` references, and plan-mode-style review where it helps; the project is explicit about what a session needs loaded for a given kind of work, and review passes that should be blind are run in a session that has not already seen the material (Guide 26).
-- **Checks:** fixed-option decisions asked as free text? No statement anywhere of what a session should have mounted or read for a given workflow? A one-shot prompt designed and executed in the same session that produced it, where a clean run was the point? Note as LOW-priority guidance — no dedicated fix task.
+### 13. Interactive prompting, context scoping & independent judgment — guides 20, 26, 27 → guidance only
+- **Healthy:** tasks/skills use `AskUserQuestion` for fixed-option choices, `@` references, and plan-mode-style review where it helps; the project is explicit about what a session needs loaded for a given kind of work, and review passes that should be blind are run in a session that has not already seen the material (Guide 26). Where the project has a review or second-opinion workflow, it has Claude commit findings in writing before the operator states their own view, and does not read agreement between two same-prompt runs as confirmation (Guide 27).
+- **Checks:** fixed-option decisions asked as free text? No statement anywhere of what a session should have mounted or read for a given workflow? A one-shot prompt designed and executed in the same session that produced it, where a clean run was the point? A review skill or task that invites the operator's own view up front, or a second-opinion step that reruns one prompt and treats the matching answer as corroboration (Guide 27)? Note as LOW-priority guidance — no dedicated fix task.
 
 ### 14. Company policies — guide 21 → `setup-policies` / `policies-validator` skill
 - **Healthy (only if the org has policies):** tiered enforcement (T1 block / T2 alert / T3 guidance) wired via the validator skill, policy content kept out of the repo.

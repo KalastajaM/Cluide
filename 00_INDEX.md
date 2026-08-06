@@ -59,11 +59,11 @@ The guide numbers are stable addresses, not a reading order — new guides get t
 
 | Track | Read in this order | For |
 |---|---|---|
-| **Foundation** | [Quickstart](./00_QUICKSTART.md) → [01](./01_CLAUDE_MD.md) → [02](./02_PROMPTING_BASICS.md) → [20](./20_INTERACTIVE_PROMPTING.md) → [03](./03_SKILLS.md) → [04](./04_MEMORY_AND_PROFILE.md) → [05](./05_MCP_SERVERS.md) | Everyone — start here |
+| **Foundation** | [Quickstart](./00_QUICKSTART.md) → [01](./01_CLAUDE_MD.md) → [02](./02_PROMPTING_BASICS.md) → [20](./20_INTERACTIVE_PROMPTING.md) → [27](./27_INDEPENDENT_JUDGMENT.md) → [03](./03_SKILLS.md) → [04](./04_MEMORY_AND_PROFILE.md) → [05](./05_MCP_SERVERS.md) | Everyone — start here |
 | **Scheduled tasks** | [06](./06_TASK_EFFICIENCY_GUIDE.md) → [07](./07_TASK_LEARNING_GUIDE.md) (incl. Part 9: the template) → [09](./09_MULTI_TASK_ORCHESTRATION.md) → [10](./10_COST_PERFORMANCE.md) | Once you automate anything |
 | **Operations & safety** | [12](./12_SECURITY.md) → [11](./11_GIT_INTEGRATION.md) → [13](./13_DEV_EXECUTION_WORKFLOW.md) → [17](./17_TROUBLESHOOTING.md) | Securing and maintaining your setup |
 | **Data & knowledge** | [14](./14_PERSONAL_DATA_LAYER.md) → [15](./15_LLM_WIKI.md) | Getting personal data and knowledge bases into Claude |
-| **Projects & context** | [24](./24_PROJECT_FOLDER_STRUCTURE.md) → [25](./25_PROJECT_INSTRUCTION_LAYERS.md) → [23](./23_MULTI_PROJECT_SETUPS.md) → [21](./21_COMPANY_POLICIES.md) → [22](./22_HELPER_APPS.md) → [26](./26_CONTEXT_SCOPING.md) | Power users structuring larger setups |
+| **Projects & context** | [24](./24_PROJECT_FOLDER_STRUCTURE.md) → [25](./25_PROJECT_INSTRUCTION_LAYERS.md) → [23](./23_MULTI_PROJECT_SETUPS.md) → [21](./21_COMPANY_POLICIES.md) → [22](./22_HELPER_APPS.md) → [26](./26_CONTEXT_SCOPING.md) → [27](./27_INDEPENDENT_JUDGMENT.md) | Power users structuring larger setups |
 | **Reference — read anytime** | [16](./16_BEST_PRACTICES.md) · [17](./17_TROUBLESHOOTING.md) · [18](./18_END_TO_END_WALKTHROUGH.md) · [19](./19_OUTPUT_FORMATTING.md) · [CHEATSHEET](./CHEATSHEET.md) | Digest, walkthrough, formatting, quick lookup |
 
 ---
@@ -361,6 +361,17 @@ Covers: the three ways context goes wrong (too little, too much, wrong kind), wh
 
 ---
 
+### [27 — Independent Judgment](./27_INDEPENDENT_JUDGMENT.md)
+`[All users]` · `~10 min`
+
+*Claude is disposed to agree with you, and you leak your own view constantly without meaning to. How to get a judgment Claude reached on its own — and how much independence the usual protocols actually buy, which is less than it feels like.*
+
+Covers: the two mechanisms (anchoring and agreement pressure) and why "would this work?" triggers both at once, a leak table separating context that calibrates severity from context that biases the finding, existence priming (a reviewer told that problems exist will produce problems), asking for the artefact rather than a verdict on yours, the commit-then-reveal protocol with a reusable review prompt, blinded reconciliation (fresh session, two lists labelled A and B), false independence — two Claude instances agreeing is correlated error rather than corroboration — with the independence levers ranked by what they actually buy, the second subagent leak channel (a brief written after you spoke carries your framing), and standing CLAUDE.md rules that name a behaviour instead of a disposition.
+
+**Use this when:** you have already formed a view and want a real second opinion, you suspect Claude is agreeing with you rather than assessing, or you are setting up a review workflow you intend to trust.
+
+---
+
 ## Templates: Copy-Paste Starting Points
 
 The ready-to-copy folder structures in the `templates/` folder. Use them when you want to start a new project or task without building from scratch.
@@ -445,7 +456,7 @@ Tasks are designed to be portable: copy any task file to another project's `task
 | `tasks/audit-memory.md` | Check memory for staleness, duplicates, misplaced content — across all three layers (native, `.auto-memory/`, profile files) | 04 |
 | `tasks/audit-skill.md` | Review a `SKILL.md` — trigger quality, workflow, output format, edge cases, `allowed-tools` enforcement | 03, 02 |
 | `tasks/audit-file-hygiene.md` | Sweep actual clutter: OS junk, lock/temp files, duplicate families, superseded outputs, and trees that are gitignored but still loading as context | 11, 24 |
-| `tasks/analyze-project.md` | Whole-project sweep of *another* Claude project (local or GitHub) against the full guide set → writes a `CLUIDE_IMPROVEMENT_PLAN.md` into it; read-only, plan-only (criteria in `analyze-project-reference.md`) | All (01–26) |
+| `tasks/analyze-project.md` | Whole-project sweep of *another* Claude project (local or GitHub) against the full guide set → writes a `CLUIDE_IMPROVEMENT_PLAN.md` into it; read-only, plan-only (criteria in `analyze-project-reference.md`) | All (01–27) |
 | `tasks/reorganize-project.md` | Safely restructure a project's folders: move files and rewire every reference without breaking it; takes a restore point first | 24 |
 | `tasks/relocate-project.md` | Move a project (or a whole projects root) somewhere else — sweeps the project, scheduled-task, and app-config layers, and refuses streaming sync folders | 11, 24 |
 

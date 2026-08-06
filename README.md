@@ -82,6 +82,7 @@ Cluide is AI-assisted work — openly and deliberately. The patterns, lessons, a
 | 24 | [Project Folder Structure](./24_PROJECT_FOLDER_STRUCTURE.md) | Power users | Standard single-project folder layout and how to keep it clean as it grows; standard formats for recurring files; safely reorganizing a project without breaking it |
 | 25 | [Project Instruction Layers](./25_PROJECT_INSTRUCTION_LAYERS.md) | Power users | What belongs in a project's app-side description and instructions fields vs. CLAUDE.md, and how to keep the app-side fields from drifting unseen |
 | 26 | [Context Scoping and Prompt Construction](./26_CONTEXT_SCOPING.md) | Power users | Deciding what a session should and should not see; blind vs. in-context review passes; designing a one-shot prompt in one session and running it clean in another |
+| 27 | [Independent Judgment](./27_INDEPENDENT_JUDGMENT.md) | All users | Getting a judgment Claude reached on its own: anchoring and agreement pressure, commit-then-reveal, blinded reconciliation, and why two Claude runs agreeing is not corroboration |
 
 **Recommended order:** Quickstart → 01 → 02 → **20** → 03 → 04 → 05 → (06–10 once you have scheduled tasks running). The guide numbers are stable addresses, not a reading order — see the [Reading Tracks in 00_INDEX.md](./00_INDEX.md#reading-tracks) for per-goal paths, or follow [Guide 18](./18_END_TO_END_WALKTHROUGH.md) for a guided path through all stages.
 
@@ -171,7 +172,7 @@ The copy-paste starting points in `templates/`:
 /
 ├── 00_INDEX.md               # Full annotated guide index
 ├── 00_QUICKSTART.md          # Start here if you're new
-├── 01_CLAUDE_MD.md – 26_CONTEXT_SCOPING.md
+├── 01_CLAUDE_MD.md – 27_INDEPENDENT_JUDGMENT.md
 ├── CHEATSHEET.md             # One-page quick reference
 ├── tasks/                    # Setup and audit task files
 ├── skills/                   # Bundled installable skills

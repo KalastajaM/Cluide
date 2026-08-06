@@ -258,7 +258,7 @@ Claude Code can spawn **subagents** — parallel Claude instances that work on f
 
 **Important:** Subagents are best used for read-heavy exploration and analysis. For file edits, use the main session to keep changes coordinated and reviewable.
 
-**Subagents are not isolated by default.** A subagent inherits CLAUDE.md, project instructions, and read access to the whole folder. If you are using one for a deliberately uninformed review rather than for parallelism, it needs an explicit deny-list — see [Guide 26](./26_CONTEXT_SCOPING.md).
+**Subagents are not isolated by default.** A subagent inherits CLAUDE.md, project instructions, and read access to the whole folder. If you are using one for a deliberately uninformed review rather than for parallelism, it needs an explicit deny-list — see [Guide 26](./26_CONTEXT_SCOPING.md). A deny-list only governs what the subagent may read; if you briefed it after stating your own view, your framing is already inside the brief ([Guide 27](./27_INDEPENDENT_JUDGMENT.md)).
 
 ---
 
