@@ -2,7 +2,7 @@
 
 > Every prompt makes a decision about what Claude is allowed to see. Most of the time that decision is made by accident — whatever happened to be in the session, whatever files the folder contains. This guide is about making it deliberately: when withholding context produces a *better* judgment, not just a cheaper one, and how to build a prompt in one session that you run in another.
 
-> **Companion guides:** [Guide 02](./02_PROMPTING_BASICS.md) covers instruction quality — context, task, constraints, output format. This guide covers the layer above it: which session gets which context. [Guide 20](./20_INTERACTIVE_PROMPTING.md) covers the session mechanics (`/clear`, `@` references, plan mode). [Guide 13](./13_DEV_EXECUTION_WORKFLOW.md) covers subagents as a parallel-work tool. [Guide 04](./04_MEMORY_AND_PROFILE.md) covers memory, which is context that loads whether you want it or not.
+> **Companion guides:** [Guide 02](./02_PROMPTING_BASICS.md) covers instruction quality — context, task, constraints, output format. This guide covers the layer above it: which session gets which context. [Guide 27](./27_INDEPENDENT_JUDGMENT.md) is the closest neighbour and the boundary matters: this guide is about context leaking from the *environment*, that one is about your own view leaking from *you* — it owns anchoring, commit-then-reveal, blinded reconciliation, and why two Claude instances agreeing is not corroboration. [Guide 20](./20_INTERACTIVE_PROMPTING.md) covers the session mechanics (`/clear`, `@` references, plan mode). [Guide 13](./13_DEV_EXECUTION_WORKFLOW.md) covers subagents as a parallel-work tool. [Guide 04](./04_MEMORY_AND_PROFILE.md) covers memory, which is context that loads whether you want it or not.
 
 > **Giving this guide to Claude:**
 > "Read 26_CONTEXT_SCOPING.md. I need to review [deliverable] before it goes to [audience] / build a one-shot prompt for [high-stakes task]. Help me scope what the reviewing session should and should not see."
@@ -40,7 +40,7 @@ Three levers, and they are not interchangeable. Each hides something different a
 
 ### The subagent trap
 
-A subagent is **not blind by default.** It inherits CLAUDE.md and project instructions, and it can read every file in the folder. "Delegate this to a subagent for fresh eyes" gets you nothing on its own — you have handed the same context to a different instance.
+A subagent is **not blind by default.** It inherits CLAUDE.md and project instructions, and it can read every file in the folder. "Delegate this to a subagent for fresh eyes" gets you nothing on its own — you have handed the same context to a different instance. There is a second leak channel on the human side: a brief written *after* you have stated your own view carries that view into the subagent, which then arrives uninformed about the project and perfectly informed about your opinion. [Guide 27](./27_INDEPENDENT_JUDGMENT.md) covers it.
 
 Blindness has to be constructed. The brief needs an explicit deny-list naming what is off limits:
 
@@ -98,7 +98,7 @@ The main session, with everything: project files, memory, source material, prior
 
 ### Pass 3 — Reconcile
 
-The main session does the merge — it is the only one holding both reports, and its job here is arbitration, not review. Inputs: the blind report and the in-context findings. Findings are matched by *location in the artefact*, not by number, because the two passes number independently.
+The main session does the merge — it is the only one holding both reports, and its job here is arbitration, not review. One caveat belongs to [Guide 27](./27_INDEPENDENT_JUDGMENT.md): if this session has already heard what *you* think of the artefact, it knows which findings are yours and will defer to them, so run the merge in a fresh session with the two reports anonymised. Inputs: the blind report and the in-context findings. Findings are matched by *location in the artefact*, not by number, because the two passes number independently.
 
 The rule that makes it work: where the blind pass flagged something the context explains, **keep the finding** and mark it `Explained by context`, stating the explanation. Do not delete it. The external reader is blind too, so a finding that only your project file dissolves is still a real weakness in the artefact.
 

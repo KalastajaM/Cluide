@@ -57,6 +57,7 @@ All guides are in the `references/` directory next to this file.
 | `24_PROJECT_FOLDER_STRUCTURE.md` | Standard single-project folder layout, growth hygiene, standard formats for recurring files, and safely reorganizing a project without breaking it | User's project is getting messy as it grows, or they want a predictable structure to start new projects from |
 | `25_PROJECT_INSTRUCTION_LAYERS.md` | What belongs in a project's app-side description and instructions fields vs. CLAUDE.md — bootstrap guard, pointer + hard rules, mirror block for drift control | User is setting up a Cowork project's description or instructions field, asking where a rule should live, or their app-side fields have drifted from the folder |
 | `26_CONTEXT_SCOPING.md` | Deciding what a session should and should not see — blind vs. in-context review passes, the subagent deny-list, and the two-stage design-then-run prompt workflow | User is reviewing a deliverable that will leave their context, wants “fresh eyes” on something, or is building a high-stakes one-shot prompt |
+| `27_INDEPENDENT_JUDGMENT.md` | Getting a judgment Claude reached independently — anchoring and agreement pressure, commit-then-reveal, blinded reconciliation, and why two same-prompt runs agreeing proves nothing | User has already formed a view and wants a real second opinion, suspects Claude is agreeing rather than assessing, or is setting up a review workflow they intend to trust |
 
 ---
 

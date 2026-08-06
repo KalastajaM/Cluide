@@ -41,7 +41,7 @@ Detect which guides have changed since each task was last reviewed, then check w
 | `relocate-project.md` | `11_GIT_INTEGRATION.md`, `24_PROJECT_FOLDER_STRUCTURE.md` |
 | `audit-file-hygiene.md` | `11_GIT_INTEGRATION.md`, `24_PROJECT_FOLDER_STRUCTURE.md` |
 | `tune-instruction-layers.md` | `25_PROJECT_INSTRUCTION_LAYERS.md`, `01_CLAUDE_MD.md` |
-| `analyze-project.md` (+ `analyze-project-reference.md`) | All guides (`01`–`26`) — its dimension criteria summarise the full set; review after any guide change |
+| `analyze-project.md` (+ `analyze-project-reference.md`) | All guides (`01`–`27`) — its dimension criteria summarise the full set; review after any guide change |
 
 ---
 

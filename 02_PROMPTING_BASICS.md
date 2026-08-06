@@ -2,7 +2,7 @@
 
 > The quality of Claude's output is determined almost entirely by the quality of the instructions it receives. This guide is about writing better instructions — whether in CLAUDE.md, a skill, a task, or a chat message.
 
-> **Companion guides:** [Guide 01 — CLAUDE.md](./01_CLAUDE_MD.md) for applying these principles to your standing instructions. [Guide 03 — Skills](./03_SKILLS.md) for skill descriptions and trigger phrases. [Guide 26 — Context Scoping](./26_CONTEXT_SCOPING.md) for the layer above this one: deciding what a session should be allowed to see, and having Claude build a high-stakes prompt for you rather than writing it yourself.
+> **Companion guides:** [Guide 01 — CLAUDE.md](./01_CLAUDE_MD.md) for applying these principles to your standing instructions. [Guide 03 — Skills](./03_SKILLS.md) for skill descriptions and trigger phrases. [Guide 26 — Context Scoping](./26_CONTEXT_SCOPING.md) for the layer above this one: deciding what a session should be allowed to see, and having Claude build a high-stakes prompt for you rather than writing it yourself. [Guide 27 — Independent Judgment](./27_INDEPENDENT_JUDGMENT.md) covers a failure that better instructions can make worse: a precisely specified prompt that tells Claude what you already think will return your own view, well formatted.
 
 > **Giving this guide to Claude:**
 > "Read 02_PROMPTING_BASICS.md and help me improve my [CLAUDE.md / SKILL.md / task instructions]. Read the file I want to improve and apply the principles from the guide."

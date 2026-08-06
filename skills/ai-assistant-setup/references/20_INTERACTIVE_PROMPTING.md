@@ -269,7 +269,7 @@ Instead of doing it all in the main conversation:
 
 The subagent does the exploration in a separate context, then returns a concise summary. Your main context window stays clean.
 
-That is context scoping used as a *token* lever. The same tool is also a *quality* lever: withholding context from a reviewing session so it cannot resolve ambiguities the real reader will trip over. That case, and the deny-list a subagent needs before it is genuinely uninformed, is [Guide 26](./26_CONTEXT_SCOPING.md).
+That is context scoping used as a *token* lever. The same tool is also a *quality* lever: withholding context from a reviewing session so it cannot resolve ambiguities the real reader will trip over. That case, and the deny-list a subagent needs before it is genuinely uninformed, is [Guide 26](./26_CONTEXT_SCOPING.md). When the context you need to withhold is your own opinion rather than a file, that is [Guide 27](./27_INDEPENDENT_JUDGMENT.md).
 
 ### When context is near its limit
 
