@@ -56,7 +56,15 @@ Against Guide 25:
 
 **Across layers.** Every rule and fact has exactly one home (Guide 23's single-owner principle applied across layers). The one sanctioned duplication is a hard safety rule restated in the instructions field. Anything else stated twice is a finding — name which layer should own it.
 
-Produce a short findings list, one line each, with the layer and the guide section.
+Produce a short findings list, one line each, with the layer and the guide section — and name the layers
+you checked and found sound. A project whose three layers are healthy should read as healthy, not as an
+empty findings list.
+
+**Finding discipline.** For anything that rests on judgement rather than on a file being present or
+absent, carry a **confidence** (high / medium / low) and a **would-drop-it-if** line naming the evidence
+that would make you withdraw the finding. A finding with no answer to that question is an opinion — leave
+it out rather than padding the report with it. When the user pushes back, check the finding against its
+would-drop-it-if line instead of trading verdicts (`27_INDEPENDENT_JUDGMENT.md`).
 
 ### Step 3 — Present the plan and get sign-off
 

@@ -580,6 +580,31 @@ Analyzes another Claude project — Claude Code or Cowork, from a local folder o
 
 ---
 
+### review-protocol
+
+Runs a structured review that produces a judgment Claude reached on its own rather than a reflection of
+the view you already hold. Withholds your conclusions from the brief while keeping stakes and audience
+in it, commits findings to a file before you say anything, and carries the finding schema — location,
+severity, confidence, and the evidence that would make Claude drop the finding. Also reconciles two
+independent reviews of the same artefact, anonymised, and names what neither of them caught.
+
+**Install:** Copy `review-protocol/` to `~/.claude/skills/` (Claude Code), or zip the folder as
+`review-protocol.zip` and upload it to Claude.ai Personal Skills.
+
+**Use when:**
+- You have already formed a view and want a second opinion you can rely on
+- You suspect Claude is agreeing with you rather than assessing
+- You are building a review step into a task or workflow you intend to trust
+
+**Example prompts:**
+> "Review this before it goes to the client. I have my own read but I'll keep it to myself for now."
+
+> "Give me an independent read on this plan — write your findings down before I say anything."
+
+> "Here are two reviews of the same document, A and B. Reconcile them and tell me what neither caught."
+
+---
+
 ### security-review
 
 A structured, phased security audit of the Claude Code environment and a target project. Covers credential exposure, MCP server risk, permission controls and execution guard hooks, session data hygiene, supply chain scanning, and malware detection. Read-only assessment phases run automatically; mutating phases (hook installation, tool installs) pause for approval before making any changes.

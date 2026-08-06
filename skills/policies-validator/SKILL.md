@@ -75,6 +75,12 @@ For each relevant policy: load the content using the loading method in §6 (file
 
 If any answer is "no" or "unclear", emit `⚠️ POLICY ALERT`. Otherwise, emit `✅ POLICY ALIGNED`.
 
+The draft and the check come from the same response, so this is a first filter rather than an audit, and
+it fails generously by default. Two rules keep it honest. A requirement you cannot verify against the
+policy text as loaded is *unverified*, and unverified goes in the alert — never folded into the green
+line. And the aligned block names what was actually checked, so a reader can see whether the check
+covered the thing they care about.
+
 ### Step 5 — Multi-policy output
 If several policies produce blocks, show them in order: T1 blocks first (response is halted there), then T2 alerts, then a single combined T2 aligned line if all other T2 checks passed.
 
@@ -112,7 +118,8 @@ Fix:    [Concrete action the user should take before using the output]
 Place after the drafted response. Combine multiple policies onto a single line.
 
 ```
-✅ POLICY ALIGNED — [Policy 1], [Policy 2] checks passed.
+✅ POLICY ALIGNED — [Policy 1]: [what was verified]. [Policy 2]: [what was verified].
+   Not verified: [any requirement the loaded policy text did not settle — omit the line if none]
 ```
 
 ### T3

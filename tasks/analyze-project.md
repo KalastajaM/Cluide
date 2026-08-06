@@ -90,21 +90,37 @@ dimension, apply its checks against the target and the relevant guide. For each,
 - **Status** — ✓ Healthy / ⚠ Partial / ✗ Missing / — N/A
 - **Findings** — concrete, with `file:line` evidence from the target
 - **Priority** — HIGH / MEDIUM / LOW by impact (mirrors `audit-task-efficiency.md`)
+- **Confidence** — high / medium / low, on any finding that is a judgement rather than a file being present
+  or absent
+- **Would drop it if** — the evidence that would make you withdraw the finding. No answer means it is an
+  opinion, and it does not go in the plan
 - **Fix** — the exact `setup-*` / `audit-*` task or skill that implements it
 
 Do **not** write anything to the target in this step. Never copy secret or credential **values** into
 your notes or the plan — reference their location only.
 
-### Step 4 — Draft the plan for review
+### Step 4 — Commit the draft, then present it
 
-Present the draft **in chat first** so the user can react before anything is written. Use the structure
-in `analyze-project-reference.md § Improvement-plan template`: summary, scorecard, prioritised findings,
-open questions, recommended implementation order, and the "How to implement" handoff.
+Write the full draft to a file **before** you say anything about what you found — in your own working
+area, not into the target, which still receives exactly one file in Step 6. Then present it in chat.
+Writing first is the point: a verdict given in conversation is cheap to soften once the user reacts, and
+the softening leaves no trace (`27_INDEPENDENT_JUDGMENT.md`). Do not ask the user what they think is
+wrong with the project before that file exists.
+
+Use the structure in `analyze-project-reference.md § Improvement-plan template`: summary, scorecard,
+prioritised findings, open questions, recommended implementation order, and the "How to implement"
+handoff.
 
 ### Step 5 — Review loop
 
 Fold in the user's answers and edits: drop dimensions they mark N/A, re-prioritise, refine wording, and
-resolve the open questions you can. Keep iterating until the user is happy with the draft.
+resolve the open questions you can.
+
+Two rules keep this a reconciliation rather than a negotiation. A finding the user disputes is removed
+only when they supply evidence that meets its would-drop-it-if line; otherwise it stays, with their
+objection recorded beside it. And every finding that was dropped or changed priority after the draft
+gets a line in *Revised in review*, so the written plan still shows what the draft said. Iterate until
+the open questions are resolved, not until the draft stops attracting objections.
 
 ### Step 6 — Write the final plan and stop
 

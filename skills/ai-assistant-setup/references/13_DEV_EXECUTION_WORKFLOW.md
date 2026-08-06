@@ -84,8 +84,8 @@ Use the guides as reference material directly in Claude Code:
 > "Read 03_SKILLS.md and create a new skill for [what you want]. Follow all the best practices in the guide."
 
 **3. Review before using it in Cowork.**
-In Claude Code, read the file you just created or edited. Ask Claude to check it:
-> "Read this SKILL.md and tell me: will the description trigger reliably? Are there missing edge cases? Is the output format specific enough?"
+Start a new Claude Code session for this rather than continuing in the one that wrote the file — the writing session already believes the file is right, and it will defend rather than assess ([Guide 27](./27_INDEPENDENT_JUDGMENT.md)). Ask neutrally:
+> "Read this SKILL.md. What does it do well that must survive editing, what does it do badly, and where would it fail in real use? Cover the description's trigger reliability, edge cases and output format. If a part is fine, say so."
 
 For tasks, ask for a dry-run analysis:
 > "Read TASK.md and LAST_RUN.md. Walk me through what this task would do if it ran right now — without actually running it."
@@ -216,6 +216,8 @@ The self-improvement system (Guide 07) generates proposals in IMPROVEMENTS.md th
 6. Cowork picks up the changes on the next run
 
 This keeps the review thoughtful (Claude Code has the full file context and your explicit direction) and keeps Cowork focused on execution.
+
+The proposals were written by Claude, so asking Claude whether to apply them is not an independent check — the reviewer and the author share their priors about what a good change looks like. Ask what would go wrong if you applied it, and what would have to be true for the proposal to be a mistake, rather than for a recommendation ([Guide 27](./27_INDEPENDENT_JUDGMENT.md)).
 
 ---
 

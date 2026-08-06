@@ -3,10 +3,10 @@
 > A collection of lessons learned from real use. Not theory — things that actually make the difference.
 > These apply whether you're setting up your first skill or optimising a system you've been running for months.
 
-> **Companion guides:** [Guide 01](./01_CLAUDE_MD.md) covers CLAUDE.md — the foundation these practices build on. [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) covers task efficiency. [Guide 10](./10_COST_PERFORMANCE.md) covers cost monitoring. [Guide 13](./13_DEV_EXECUTION_WORKFLOW.md) covers the development workflow.
+> **Companion guides:** [Guide 01](./01_CLAUDE_MD.md) covers CLAUDE.md — the foundation these practices build on. [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) covers task efficiency. [Guide 10](./10_COST_PERFORMANCE.md) covers cost monitoring. [Guide 13](./13_DEV_EXECUTION_WORKFLOW.md) covers the development workflow. [Guide 27](./27_INDEPENDENT_JUDGMENT.md) covers the limit on several practices below: a review by the session that produced the work is not a second opinion.
 
 > **Giving this guide to Claude:**
-> "Read 16_BEST_PRACTICES.md and review how I'm currently working with you. Identify the top 3 practices I'm not following and suggest how to apply them."
+> "Read 16_BEST_PRACTICES.md and review how I'm currently working with you. Name any practices I'm not following and suggest how to apply them — if I'm already following them, say so rather than finding a fixed number of gaps. Tell me which ones are working."
 
 ---
 
@@ -40,8 +40,8 @@ Don't ask Claude to create a project plan, strategy, or document from scratch wi
 **Use steelman or devil's advocate to validate suggestions.**
 Before committing to a plan, ask: "What's the strongest argument against this?" or "Steelman the opposing view." This surfaces blind spots and weak assumptions. Especially useful for decisions with meaningful consequences.
 
-**The self-review is free.**
-After Claude produces something, ask: "What's the weakest part of this?" or "What assumptions did you make that might be wrong?" It usually identifies the real problems before you do. Takes 10 seconds, regularly saves significant revision time.
+**The self-review is cheap, and it is not a second opinion.**
+After Claude produces something, asking "what assumptions did you make that might be wrong?" costs ten seconds and regularly surfaces something worth fixing. Know what you are buying. The session that wrote the thing is checking its own work with the priors that produced it, so it misses in the same places — the pass is a first filter, not verification. Two things make it worth more. Ask neutrally: "what does this do well, what does it do badly, and where would a critic attack it?" beats "what's the weakest part of this?", which guarantees a weakness gets named whether one exists or not. And when the answer matters, get the judgment from somewhere the artefact did not come from — [Guide 27](./27_INDEPENDENT_JUDGMENT.md) has the protocol.
 
 **Chain tasks, don't stack them.**
 A → review → B → review → C produces better results than one giant prompt with 10 requirements. Each handoff is a chance to verify and course-correct. Stacked prompts compound errors; chained tasks catch them early.
@@ -97,7 +97,7 @@ Tasks where "good enough fast" beats "perfect slow." Tasks where you need to pro
 A 2-minute task you can do yourself is slower with Claude factored in. Fetching a single fact from a website you already have open, formatting something trivial, tasks where your judgment is the entire value — these are often faster done directly. The goal is leverage, not automation for its own sake.
 
 **Verify outputs before acting on them.**
-Claude can be confidently wrong. For anything consequential — facts you'll repeat to others, numbers in a proposal, actions taken on your behalf — verify independently or ask Claude to show its reasoning. Especially true for emails, calendar events, and anything involving real commitments. Always read before you send.
+Claude can be confidently wrong. For anything consequential — facts you'll repeat to others, numbers in a proposal, actions taken on your behalf — verify independently. Asking Claude to show its reasoning helps you run that check, but it is not the check: reasoning narrated by the session that made the error narrates the error too ([Guide 27](./27_INDEPENDENT_JUDGMENT.md)). Especially true for emails, calendar events, and anything involving real commitments. Always read before you send.
 
 **Open the file before you cite it.**
 In document- or evidence-heavy projects, never quote, summarise, or attribute a file's contents from memory or its filename alone — open it this session first. Misattributing one document's content to another is a costly, hard-to-spot error, and a confident summary of a file Claude never actually read looks identical to a correct one. If this happens even once, codify "read before attributing" as a standing rule in CLAUDE.md.
@@ -141,7 +141,7 @@ A setup that grows without pruning becomes a liability. These practices keep thi
 
 5. Plan before executing on multi-step tasks
 6. Use steelman to stress-test proposals
-7. Ask Claude to review its own output
+7. Use the self-review as a first filter, never as verification
 8. Chain tasks; don't stack them
 9. Use output immediately; improve incrementally
 

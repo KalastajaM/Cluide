@@ -152,7 +152,7 @@ For a task that is high stakes and roughly one-shot, the prompt is worth treatin
 
 Bring the mess. Constraints, prior mistakes, things that must not be touched and why, what the output has to look like, who reads it. Ask Claude to interview you, then produce the prompt as a standalone file.
 
-A prompt-review skill can do this if you have one installed ([Guide 03](./03_SKILLS.md) covers skills); otherwise use the fallback prompt below:
+The bundled `review-protocol` skill can do this; [Guide 03](./03_SKILLS.md) covers installing it. Otherwise use the fallback prompt below:
 
 > "I need to write a prompt for [task]. Before drafting, ask me the questions you need answered to write it well. Then produce the prompt as a standalone file I can run in a clean session — it must work for someone who was not part of this conversation."
 
@@ -170,6 +170,7 @@ Two things to watch:
 
 - **The critique stays behind.** The reasoning that produced the prompt is context for you, not for the run session. Only the prompt travels. If the final block says "as discussed above" or "per the constraint we identified", it is not standalone yet.
 - **Check what silently dropped.** A prompt rebuilt from a critique tends to lose constraints that were in your original but outside the critique's field of view. Diff the new prompt against your original requirements, not against the critique.
+- **Check it for your own fingerprints.** You brought the mess to the design session, including what you already believe the answer is. If the finished prompt tells the run session what to conclude, or that problems exist, the clean run is not clean ([Guide 27](./27_INDEPENDENT_JUDGMENT.md)).
 
 ### Stage 2 — Run session
 

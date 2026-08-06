@@ -57,6 +57,10 @@
 
 *(Larger changes awaiting human input. Human responds by annotating here or in the task output file.)*
 
+*`drop_if` is what makes a proposal reviewable rather than a verdict to agree or disagree with: the task
+wrote the proposal and rated its own confidence, so the useful question is what evidence would settle it.
+A proposal with nothing in that field is an opinion — do not raise it.*
+
 ```json
 [
   {
@@ -66,6 +70,7 @@
     "rationale": "Why this would improve the task's output or efficiency",
     "change": "Exactly what would change — which file, which step, what wording",
     "confidence": "HIGH | MEDIUM | LOW",
+    "drop_if": "What would show this proposal is wrong — the observation or outcome that would make you withdraw it",
     "status": "PENDING | APPROVED | REJECTED | MODIFIED"
   }
 ]

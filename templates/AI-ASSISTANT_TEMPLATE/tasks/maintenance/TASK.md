@@ -86,7 +86,14 @@ New steps, new output files, new data sources, or significant scope expansions. 
 ### ⚡ Refactoring
 Changes that preserve behaviour but improve speed, tool-call efficiency, clarity, or Claude prompt optimization. Examples: merging redundant steps, simplifying decision trees, reducing conditional complexity.
 
+### ✅ Working as intended
+Parts of the procedure the run log shows working, which the next pass should leave alone. Name them.
+
 For each candidate: note the category, the specific change, and the rationale. Do not generate PROP-NNNs yet — this step is analysis only.
+
+**Report every category, including the empty ones, as `none`.** Six categories with nothing in them is a
+valid result and has to be reportable as one — a category list with no way to say "nothing here" makes
+the pass produce findings whether or not any exist.
 
 ---
 
@@ -120,6 +127,7 @@ For each candidate identified in Step 3 that warrants a PROP-NNN (structural cha
 - **Confidence:** LOW | MEDIUM | HIGH
 - **Proposed change:** [Precise enough to apply without ambiguity]
 - **Risk:** [What could go wrong]
+- **Would drop it if:** [The observation or outcome that would show this proposal is wrong. No answer means it is an opinion — do not raise it]
 - **Source issue:** [ISSUE-N or log entry date, if applicable]
 ```
 

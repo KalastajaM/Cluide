@@ -3,7 +3,7 @@
 > A framework for building tasks that get better over time.
 > Integrate the relevant sections into any task's TASK.md or TASK_REFERENCE.md.
 
-> **Companion guides:** [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) covers token efficiency -- set that up first. Part 9 below installs the ready-to-use IMPROVEMENTS.md template that implements this system.
+> **Companion guides:** [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) covers token efficiency -- set that up first. Part 9 below installs the ready-to-use IMPROVEMENTS.md template that implements this system. [Guide 27](./27_INDEPENDENT_JUDGMENT.md) covers the judgment problem this system runs into: the task assesses its own behaviour, so repeated observations from the same task confirm that the behaviour is stable rather than that the reading of it is right.
 
 > **Giving this guide to Claude:**
 > "Read 07_TASK_LEARNING_GUIDE.md and add the self-improvement system to my task at [path/to/TASK.md]. Include signal detection, the apply-vs-propose rules, and set up an IMPROVEMENTS.md file using the template (installation in Part 9)."
@@ -161,7 +161,7 @@ Unobserved → [HYPOTHESIS LOW] → [HYPOTHESIS MEDIUM] → [HYPOTHESIS HIGH] �
 
 *User confirmation can promote a hypothesis to CONFIRMED from any level — mark it `[USER-CONFIRMED]`. The rules below are authoritative:*
 
-- **LOW → MEDIUM:** Second independent observation, or one strong observation.
+- **LOW → MEDIUM:** A second observation from a different run context, or one strong observation. Two observations from the same task running the same procedure are one observation seen twice — they establish that the behaviour is stable, not that the hypothesis is correct ([Guide 27](./27_INDEPENDENT_JUDGMENT.md)).
 - **MEDIUM → HIGH:** Multiple consistent observations across different contexts.
 - **HIGH → CONFIRMED:** User explicitly validates, or unambiguous direct evidence.
 - **Downgrade:** Contradicting evidence appears → lower confidence, note the conflict.

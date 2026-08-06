@@ -143,12 +143,18 @@ When this skill is active, apply the following checklist to every response:
 
 > ⚠️ **GUARDRAIL ALERT**: [Short description of the issue]
 > - **Charter Reference**: [Which section/decision is affected]
+> - **Severity**: Blocker (do not proceed) | Material (resolve first) | Minor
+> - **Confidence**: High | Medium | Low — and what would settle it
 > - **Risk**: [What could go wrong]
 > - **Recommendation**: [How to bring the action back into alignment]
 
 ### Output format when action is aligned:
 
-> ✅ **Charter Aligned**: [Brief confirmation of which objectives/KPIs this serves]
+> ✅ **Charter Aligned**: [Which checklist items were actually verified, and against which charter section]
+
+Name what was checked rather than what the action serves. The recommendation and the check come from the
+same response, so the tick is a first filter, not an audit — and a checklist item that could not be
+verified from the charter as loaded is reported as unverified, never folded into the green line.
 
 ---
 

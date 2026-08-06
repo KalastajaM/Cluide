@@ -91,6 +91,8 @@ Write this section as a hard rule, not a preference. Use "NEVER" intentionally �
 
 The third point shows a useful pattern: pair each constraint with a positive counterpart. "Never send autonomously" + "produce a polished draft ready to send" gives the assistant something concrete to do rather than just a prohibition.
 
+A rule about judgment has to name a behaviour, the same as a rule about actions. "Be objective", "push back", "don't just agree with me" describe a disposition, so Claude has to infer what to actually do, and the usual result is a token disagreement offered to satisfy the rule. Write the action instead: *state the strongest objection before saying whether you agree*, or *when I ask whether something will work, answer what would actually work first, then assess my version against it*. [Guide 27](./27_INDEPENDENT_JUDGMENT.md) has the full set and the honest limit on what a standing rule can buy.
+
 For data projects, add an epistemic rule alongside the action rules: if the project holds both records you observed and records a script derived (predictions, scores, candidates), state that derived records are hypotheses and must never be presented as confirmed facts — and that the distinction stays explicit in every answer. See [Guide 14 §2, rule 7](./14_PERSONAL_DATA_LAYER.md).
 
 ---
@@ -230,7 +232,7 @@ For comparison — a CLAUDE.md for a software engineer who uses Claude for code 
 - Technical responses are fine — don't simplify unless I ask
 - Be concise; avoid restating what I just said
 - No emojis
-- If I ask for a code review, give direct feedback — don't soften problems
+- When I ask for a code review, state the strongest objection to the code before saying whether it looks fine
 
 # Critical Rules
 - NEVER commit, push, or run destructive commands autonomously

@@ -146,6 +146,7 @@ The installable skills bundled in `skills/` are listed below. Install only the o
 | `template-exporter` | Turns any Claude setup into a clean, shareable template |
 | `cowork-optimizer` | Audits a Cowork task for token efficiency and structural quality |
 | `project-analyzer` | Analyzes another Claude project against the full guide set and writes an improvement plan into it (thin trigger for `tasks/analyze-project.md`) |
+| `review-protocol` | Structured review that stays independent of your own view — commit-then-reveal, finding schema, blinded reconciliation |
 | `security-review` | Structured security audit of a Claude Code environment and project |
 | `backlog` | Portable backlog manager — prioritised work items, grooming, decision logging |
 | `policies-validator` | Tiered company-policy guardrail (T1 block / T2 alert / T3 soft guidance) — ships as a template; fill the Policy Registry before use |

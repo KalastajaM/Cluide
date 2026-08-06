@@ -125,6 +125,7 @@ Then customise the copy:
     "rationale": "Why this would improve the task's output or efficiency",
     "change": "Exactly what would change — which file, which step, what wording",
     "confidence": "HIGH | MEDIUM | LOW",
+    "drop_if": "What would show this proposal is wrong — the observation or outcome that would make you withdraw it",
     "status": "PENDING | APPROVED | REJECTED | MODIFIED"
   }
 ]
@@ -191,14 +192,19 @@ Scan for:
 ### B. Refactor Trigger Check
 Check `runs_since_last_refactor`. If ≥ `refactor_threshold`:
 1. Review all always-loaded files — remove stale, duplicate, contradictory entries
-2. Review TASK.md — remove steps no longer followed or now outdated
+2. Review TASK.md — identify steps no longer followed or now outdated. A removal is never applied
+   directly; it goes through §C as a proposal, because the session judging the step is the one it
+   constrains
 3. Review pending/open state — identify orphaned or obsolete items
 4. Archive Applied Fixes entries beyond the 10 most recent
 5. Reset `runs_since_last_refactor` to 0; set `last_refactor_date` and `next_refactor_due_at_run`
 6. Note "Refactor: [summary of what was found]" in the run log
 
 ### C. Auto-apply vs. Propose
-**Apply directly** (all must be true): clearly correct with HIGH confidence AND low-risk AND narrow scope AND purely additive.
+**Apply directly** (all must be true): the change is **mechanically checkable** — it corrects a confirmed
+error, or writes down something the run already does — AND low-risk AND narrow scope AND purely additive.
+"It seemed clearly correct" is not a criterion: the session proposing the change is the one that would
+have to notice it was wrong (`27_INDEPENDENT_JUDGMENT.md`). Removals and rewrites never qualify.
 
 **Propose in IMPROVEMENTS.md** (if any is true): affects behaviour in a non-obvious way, restructures tracking, modifies core logic, touches 3+ files or 10+ lines, confidence below HIGH, user hasn't explicitly requested it. Use the proposal JSON format shown in IMPROVEMENTS.md §Pending Proposals.
 
