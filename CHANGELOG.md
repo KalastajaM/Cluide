@@ -22,6 +22,34 @@ The **consumed surface** — dimension numbers in `tasks/analyze-project-referen
   `tasks/analyze-project-reference.md` widened to `guides 20, 26, 27` and was renamed to
   "Interactive prompting, context scoping & independent judgment". Nothing was renumbered, removed,
   or reused.
+- **`review-protocol` skill.** Ships the protocol Guide 27 recommends putting in a skill: stakes and
+  audience in the brief with the operator's conclusions kept out, findings written to a file before
+  the operator speaks, the finding schema (location, severity, confidence, and the evidence that
+  would make Claude drop the finding), and anonymised reconciliation of two independent reviews in a
+  fresh session. Guide 27 and Guide 26 now name it instead of describing an asset the repo did not
+  ship, and dimension 13 names it as the fix.
+
+### Changed
+
+- **Cluide now follows Guide 27 itself.** A compliance pass found the guide set teaching, in its own
+  worked prompts and tasks, several of the things Guide 27 identifies as failures. `16_BEST_PRACTICES.md`
+  presented the self-review as a free win and offered "ask Claude to show its reasoning" as an
+  alternative to verification; `tasks/analyze-project.md` — the task that administers the dimension 13
+  check — presented its findings in chat and iterated until the operator was satisfied, with nothing
+  written first and no record of what was argued away; and no finding schema anywhere in the repo
+  carried a confidence or a drop-test.
+  Fixed across guides 01, 02, 07, 13, 16, 17 and 26, the six `audit-*` tasks, `analyze-project`,
+  `tune-instruction-layers`, `review-tasks`, `setup-self-improving-task`, the `ai-assistant-setup`,
+  `cowork-optimizer` and `policies-validator` skills, the task, assistant and PMO templates, and
+  `CHEATSHEET.md`. The auto-apply gates in both self-improvement templates now require a change to be
+  mechanically checkable rather than "clearly correct", which also resolves the contradiction where
+  the refactor step was told to remove steps the apply rule forbade it to touch.
+  Full findings, with locations and severities, in `development/REVIEW_G27_2026-08-06.md`.
+- **Merge gate check 1** compares the branch diff against the scope written into the branch's first
+  commit message, rather than against the session's recollection of it.
+- **`CLUIDE_IMPROVEMENT_PLAN.md` gained a *Revised in review* section** — findings dropped or
+  re-prioritised after the draft was presented, with the evidence that moved them. The consumed
+  surface did not change: no dimension number, `tasks/` filename, or guide number was touched.
 
 ---
 
