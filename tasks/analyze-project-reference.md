@@ -78,9 +78,9 @@ or audit task rather than re-deriving it here.
 - **Healthy:** no committed secrets, MCP servers trust-evaluated, PreToolUse guard hook where Claude runs bash, session-data hygiene, prompt-injection awareness in autonomous tasks.
 - **Checks:** grep for credential patterns (report **location only**, never values); permission breadth; missing guard hook on a bash-running project; autonomous task handling untrusted input without guardrails. For a deeper pass, recommend the `security-review` skill.
 
-### 11. Git & ignore hygiene — guide 11 → `setup-github` / `setup-ignore-hygiene` / `audit-file-hygiene`
+### 11. Git & ignore hygiene — guide 11 → `setup-github` / `setup-ignore-hygiene` / `audit-file-hygiene` / `git-guru` skill
 - **Healthy:** `.gitignore` excludes run logs / outputs / personal data; `.claudeignore` excludes large generated context; tracked files that should be ignored are untracked; the working tree is free of OS junk, lock/temp files, and duplicate families.
-- **Checks:** missing ignore files? Run logs / `LAST_RUN.md` / secrets tracked? Personal-data files committed? An ignore rule covering one artifact but not its near-identical sibling? Accumulated clutter or a large duplicate tree that is gitignored but *not* claudeignored, so it still loads as context — recommend `audit-file-hygiene` for the sweep.
+- **Checks:** missing ignore files? Run logs / `LAST_RUN.md` / secrets tracked? Personal-data files committed? An ignore rule covering one artifact but not its near-identical sibling? Accumulated clutter or a large duplicate tree that is gitignored but *not* claudeignored, so it still loads as context — recommend `audit-file-hygiene` for the sweep. For ongoing git operations and repo-flow problems (stale branches, sync drift, missing repo profile), the fix is installing and running the `git-guru` skill.
 
 ### 12. Output formatting — guide 19 → `html-report` skill
 - **Healthy:** user-facing output has a specified, consistent format; standalone reports use the self-contained HTML skeleton.
