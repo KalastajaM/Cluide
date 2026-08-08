@@ -8,6 +8,16 @@ The **consumed surface** — dimension numbers in `tasks/analyze-project-referen
 
 ### Added
 
+- **`git-guru` skill.** Full-lifecycle git and GitHub management: a diagnose-first loop
+  (never advise from memory), a three-regime environment model (Cowork device mounts /
+  cloud container / plain local) with the mount lock mechanics documented, judgment-based
+  autonomy with explicit safety tiers (working-tree-destroying operations always propose
+  first; pushed-history rewrites only for approved secret remediation), repo-resident
+  profiles (`## Git` section per repo, template included), an added-lines-only secrets and
+  personal-data scan before commits toward public or unverified remotes, and a handover
+  format for commands the user must run (self-labelling output, validated against live
+  state). Skills are not part of the consumed surface; nothing renumbered.
+
 - **Guide 27 — Independent Judgment.** A guide on getting a judgment Claude reached on its own,
   rather than your own view reflected back. It separates the two mechanisms that cause it —
   anchoring (you state a view, the answer lands near it) and agreement pressure (you ask Claude to
