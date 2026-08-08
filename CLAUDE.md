@@ -78,3 +78,21 @@ Cluide is trunk-based. Work happens on a short-lived branch per change, merged i
 A cloud session can commit on the device but cannot push, fetch, or open a PR. Finish the gate, then hand the maintainer the `git push -u origin <branch>` and `gh pr create` commands to run in their own terminal.
 
 **Releases are content events, not a calendar.** Never cut a version on a schedule and never propose one. Tag when guides are added, a reading track restructures, or the consumed surface changes: minor for additions and restructures, patch for corrections. Tags are `vMAJOR.MINOR.PATCH`, continuing from `v1.0.0`. A major bump means the append-only rule in check 4 was deliberately broken, which should effectively never happen. At each tag, record what changed in `CHANGELOG.md`, built from `git log <previous tag>..HEAD`; create that file at the first tag if it does not exist.
+
+## App-side fields (mirror)
+
+Versioned record of the app-side project fields (Guide 25). The app holds the
+live text; this block is its history. When either field changes in the app,
+update this block in the same session — and vice versa.
+Last verified: 2026-08-07 (texts supplied by the maintainer in chat).
+
+**Description:**
+
+> Complete operational framework for building, running, and improving a
+> persistent Claude assistant — setup guides, skills, memory, scheduled
+> tasks, and self-improvement patterns.
+
+**Instructions:** deliberately empty — a documentation repository with no live
+system to guard; per Guide 25's audit checklist, an empty instructions field
+is a valid recorded state for a low-stakes project.
+
