@@ -4,7 +4,7 @@ Cluide is versioned by content event, not on a calendar: a tag marks guides bein
 
 The **consumed surface** — dimension numbers in `tasks/analyze-project-reference.md`, filenames in `tasks/`, and guide numbers — is append-only. Entries below note explicitly when it grows.
 
-## [Unreleased]
+## [1.1.0] — 2026-08-08
 
 ### Added
 
