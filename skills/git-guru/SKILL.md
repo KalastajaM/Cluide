@@ -153,13 +153,16 @@ game — removing a secret from pushed history is a different, painful procedure
 (see practices reference), so the scan happens *before* the commit, not before
 the push alone.
 
-### .gitignore stewardship
+### Ignore stewardship — .gitignore and .claudeignore
 
 On first touch of a repo, and whenever a new artifact type appears (build output,
 data snapshot, log, cache), check ignore coverage: OS junk, editor droppings,
 build artifacts, logs, `.env*`, credentials, large generated files. Propose
 additions with a one-line why each; also check whether anything already tracked
-should be untracked.
+should be untracked. Where Claude works in the repo, give `.claudeignore` the
+same care: `node_modules/`, vendored bulk, generated output, and worktree
+folders belong out of Claude's *context* just as much as out of git — an agent
+paying to read regenerable bulk is the context-side version of committing it.
 
 ## Sequencing — one plan, one order
 
