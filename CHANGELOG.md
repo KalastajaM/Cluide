@@ -19,7 +19,8 @@ The **consumed surface** — dimension numbers in `tasks/analyze-project-referen
   state). Post-review additions: worktree-per-agent
   pattern (parallel writers reconciled with the one-writer rule), GitHub branch-protection
   guidance, `.claudeignore` stewardship beside `.gitignore`, an agent-attribution commit
-  trailer, and first-publish auth troubleshooting. Skills are not part of the consumed
+  trailer, and first-publish auth troubleshooting. Registered: Guide 11 gained a companion
+  pointer and dimension 11's fix list now names the skill. Skills are not part of the consumed
   surface; nothing renumbered.
 
 - **Guide 27 — Independent Judgment.** A guide on getting a judgment Claude reached on its own,
