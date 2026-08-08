@@ -137,6 +137,8 @@ The lifecycle stage most likely to be asked for as "get this onto GitHub":
    secrets/personal-data scan of the whole tree, not just the diff.
 3. Write the repo's profile (`## Git` section) immediately — a repo born with
    its flow documented never joins the mess backlog.
+4. When `gh` or a push fails unexpectedly, check auth first: `gh auth status`,
+   then `gh auth login` — it is the cause of most first-publish failures.
 
 ## Merge conflicts
 
@@ -164,6 +166,36 @@ are invisible in `git branch`, easy to forget, and `stash drop`/`clear` losses
 are unrecoverable — which is also why dropping a stash is propose-first.
 `git stash list` belongs in the diagnose step; a repo with old stashes has
 forgotten work in it.
+
+## Worktrees — parallel work without the stash dance
+
+`git worktree add ../repo-feature feature/x` gives a second working directory
+sharing the same `.git`: two branches checked out at once, separate index and
+tree, one history. When to reach for it:
+
+- **Parallel agents or agent + human on one repo.** The one-writer-per-repo
+  rule applies to a *working tree*, not the repo: give each writer its own
+  worktree on its own branch and parallel work is safe. Claude Code does this
+  natively (`.claude/worktrees/`).
+- Reviewing or testing one branch while mid-work on another.
+- A long-running experiment kept physically separate from the trunk checkout.
+
+Not a substitute for branches — a worktree is *where* a branch is checked out,
+nothing more. Clean up with `git worktree remove <path>` and
+`git worktree prune`; a forgotten worktree pins its branch (git refuses to
+delete a branch checked out anywhere). On Cowork device mounts, creation works
+but removal needs deletes the mount refuses — create there if useful, clean up
+from the user's terminal.
+
+## Branch protection — physics where rules are prose
+
+For any repo where agents operate (or that matters at all), enable GitHub
+branch protection on the trunk and stable line: require PRs, block direct
+pushes and force-pushes. This skill's "never force-push" is an instruction;
+protection is enforcement — defense in depth against any agent's or human's
+bad moment. One-time setup per repo (GitHub → Settings → Branches), recorded
+in the repo's profile. `gh api` can set it, but the UI is clearer for a
+one-time action.
 
 ## Cleanup recipes
 

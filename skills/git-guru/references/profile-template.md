@@ -16,7 +16,8 @@ last month must parse the same as one written today.
 - **Stable/release line** — if one exists (e.g. `main` fast-forwarded + tagged
   at bless moments), how it advances. Omit if the trunk is the only line.
 - **Gates** — anything that must pass before a merge (checks, scripts, review
-  steps), as pointers to where they're defined, not restatements.
+  steps), as pointers to where they're defined, not restatements. Include
+  whether GitHub branch protection is enabled on the trunk/stable line.
 - **Special rules** — pointers to repo-native procedures (a close procedure, a
   data/code commit split, vendoring consumers, single-writer constraints).
 - **Identity** — the commit author to use when the environment has none

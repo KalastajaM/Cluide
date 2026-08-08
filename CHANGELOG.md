@@ -16,7 +16,11 @@ The **consumed surface** — dimension numbers in `tasks/analyze-project-referen
   profiles (`## Git` section per repo, template included), an added-lines-only secrets and
   personal-data scan before commits toward public or unverified remotes, and a handover
   format for commands the user must run (self-labelling output, validated against live
-  state). Skills are not part of the consumed surface; nothing renumbered.
+  state). Post-review additions: worktree-per-agent
+  pattern (parallel writers reconciled with the one-writer rule), GitHub branch-protection
+  guidance, `.claudeignore` stewardship beside `.gitignore`, an agent-attribution commit
+  trailer, and first-publish auth troubleshooting. Skills are not part of the consumed
+  surface; nothing renumbered.
 
 - **Guide 27 — Independent Judgment.** A guide on getting a judgment Claude reached on its own,
   rather than your own view reflected back. It separates the two mechanisms that cause it —

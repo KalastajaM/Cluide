@@ -81,6 +81,9 @@ export GIT_COMMITTER_NAME="Claude" GIT_COMMITTER_EMAIL="noreply@anthropic.com"
 
 On a repo that may ever go public, agent-attributed commits mislead blame and
 contribution history — prefer the user's identity whenever it is configured.
+Either way, add a `Co-Authored-By: Claude <noreply@anthropic.com>` trailer to
+agent-made commits: `blame` then always distinguishes the agent's hand from the
+user's, whichever identity authored the commit.
 
 ## Two execution environments, split capabilities
 
