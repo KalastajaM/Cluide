@@ -412,6 +412,12 @@ A project workspace for managing a structured programme or project. Includes a `
 
 **Use this when:** managing a structured programme or project where you want Claude to maintain registers, capture decisions, and track actions across sessions.
 
+
+### [ACCOUNT_INSTRUCTIONS_TEMPLATE.md](./templates/ACCOUNT_INSTRUCTIONS_TEMPLATE.md)
+A ready-to-fill starter for the two account-level instruction fields (Guide 25, *The account layers above the project*): account-wide preferences and Cowork-wide instructions. A guidance comment explains what earns a place in the About-me section; the rules below it are a working set proven in production, meant to be adapted.
+
+**Use this when:** setting up or overhauling your account-level instructions rather than a single project's.
+
 ---
 
 ## Tasks: One-Command Setup and Auditing
