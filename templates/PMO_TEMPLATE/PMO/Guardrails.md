@@ -33,8 +33,8 @@ Refer to the **Governance – Phase** section of the Initiative Charter for the 
 | Gate | Stage | Condition |
 |---|---|---|
 | Gate 1 | [PLACEHOLDER: Gate 1 name] → [PLACEHOLDER: Gate 2 name] | Approval required to proceed |
-| Gate 2 | Business Case → Implementation Plan | Approval required to proceed |
-| Gate 3 | Implementation Plan → Execute | Approval required to proceed |
+| Gate 2 | [PLACEHOLDER: Gate 2 name] → [PLACEHOLDER: Gate 3 name] | Approval required to proceed |
+| Gate 3 | [PLACEHOLDER: Gate 3 name] → [PLACEHOLDER: Gate 4 name] | Approval required to proceed |
 | Gate 4 | [PLACEHOLDER: Gate 4 name] → [PLACEHOLDER: Gate 5 name] | Approval required to proceed |
 | Gate 5 | Final milestone | Completed after the last gate is signed off |
 | — | Cancelled / On Hold | Allowed post-Gate 1 |
