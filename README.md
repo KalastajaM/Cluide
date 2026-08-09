@@ -164,6 +164,7 @@ The copy-paste starting points in `templates/`:
 | `TASK_TEMPLATE/` | Scheduled task folder with `TASK.md`, `IMPROVEMENTS.md`, `RUN_LOG.md` |
 | `AI-ASSISTANT_TEMPLATE/` | Full personal business assistant — email, calendar, Teams, daily briefings |
 | `PMO_TEMPLATE/` | Programme workspace with risk register, action tracker, and decision log |
+| `ACCOUNT_INSTRUCTIONS_TEMPLATE.md` | The two account-level instruction fields (preferences + Cowork-wide), ready to fill and paste |
 
 ---
 

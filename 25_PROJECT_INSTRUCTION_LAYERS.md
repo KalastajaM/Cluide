@@ -123,7 +123,7 @@ Division of labor that holds up in practice:
 - **Cowork-wide instructions** carry only what is specific to agentic file work: how terse prompts should be interpreted against project files, unattended-run behavior, when to agree scope before executing, and model-tier routing for subagents and scheduled tasks ([Guide 10](./10_COST_PERFORMANCE.md)).
 - Keep the two non-overlapping, and open the Cowork field with an explicit "these apply on top of my preferences; do not restate them" so a future edit knows the contract.
 
-Like the project fields, the account fields have no history, no diff, and no review. The same mirror-file fix applies: keep the canonical text of both fields in a versioned file in whichever project owns your account-level configuration, edit that file first, paste into the UI, and record the sync date next to each field. `tasks/tune-instruction-layers.md` covers tuning them against evidence.
+Like the project fields, the account fields have no history, no diff, and no review. The same mirror-file fix applies: keep the canonical text of both fields in a versioned file in whichever project owns your account-level configuration, edit that file first, paste into the UI, and record the sync date next to each field. `tasks/tune-instruction-layers.md` covers tuning them against evidence. A ready-to-fill starter for both fields lives in [`templates/ACCOUNT_INSTRUCTIONS_TEMPLATE.md`](./templates/ACCOUNT_INSTRUCTIONS_TEMPLATE.md).
 
 ## Short version
 
