@@ -85,6 +85,10 @@ Not every task needs the most capable model. Four tiers, four jobs:
 
 In practice, most scheduled tasks work well on Sonnet. Drop feeder steps to Haiku once the procedure is stable, and reserve Opus or Fable for the tasks where you've noticed Sonnet's output isn't good enough.
 
+Standing instructions can route model choice only where the session controls it: subagents, workflow stages, and the model proposed when creating a scheduled task. A session cannot switch its own model — that is set in the UI, or in the scheduled task's configuration. The working pattern: instruct Claude to use the cheapest tier that does the job reliably wherever it chooses a model, and to flag a clearly mismatched session model once and continue, leaving the switch to the user.
+
+<!-- harvested: 2026-08-09 from a multi-project maintenance setup -->
+
 ---
 
 ## Prompt Caching
