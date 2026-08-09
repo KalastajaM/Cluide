@@ -111,6 +111,20 @@ Because the fields are unversioned, the folder needs a record of them:
 
 `tasks/tune-instruction-layers.md` runs this checklist end to end.
 
+## The account layers above the project
+
+<!-- harvested: 2026-08-09 from a multi-project maintenance setup -->
+
+Two more instruction fields sit above every project: the **account-wide preferences** (injected into every session, chat and Cowork alike) and the **Cowork-wide instructions** (injected into every Cowork session, on top of the preferences). *Behaviour verified against Cowork as of August 2026 — both fields arrive together in every Cowork session; re-verify after app updates.* Anything duplicated between them is paid for twice in every session and — because neither field is versioned — drifts silently. This is the same asymmetry that drives the rest of this guide, one level up.
+
+Division of labor that holds up in practice:
+
+- **Account preferences** carry the full standing set: who you are (role, working languages, domains), when to ask vs. proceed, output format, tone, and rules for text you will send as your own.
+- **Cowork-wide instructions** carry only what is specific to agentic file work: how terse prompts should be interpreted against project files, unattended-run behavior, when to agree scope before executing, and model-tier routing for subagents and scheduled tasks ([Guide 10](./10_COST_PERFORMANCE.md)).
+- Keep the two non-overlapping, and open the Cowork field with an explicit "these apply on top of my preferences; do not restate them" so a future edit knows the contract.
+
+Like the project fields, the account fields have no history, no diff, and no review. The same mirror-file fix applies: keep the canonical text of both fields in a versioned file in whichever project owns your account-level configuration, edit that file first, paste into the UI, and record the sync date next to each field. `tasks/tune-instruction-layers.md` covers tuning them against evidence.
+
 ## Short version
 
 1. Three layers: description and instructions in the app (always injected, unversioned, but readable from `spaces.json`), CLAUDE.md in the folder (versioned and auditable, but only loaded when connected).
@@ -121,3 +135,4 @@ Because the fields are unversioned, the folder needs a record of them:
 6. Chat projects: the instructions field is the whole contract — structure it like a mini CLAUDE.md and keep a versioned copy of the text.
 7. Mirror both fields into the folder with a last-verified date, and re-check them whenever CLAUDE.md's purpose or rules change. Read the live text from `spaces.json` to make the check mechanical; the mirror is still what gives the fields a history.
 8. Run `tasks/tune-instruction-layers.md` to review all three layers against this guide.
+9. Two account-level fields sit above every project (account-wide preferences + Cowork-wide instructions); both are injected into every Cowork session, so keep them non-overlapping, and mirror them into a versioned file like the project fields.
