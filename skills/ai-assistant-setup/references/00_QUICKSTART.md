@@ -48,7 +48,7 @@ Here is a starting template — replace the placeholders with your own details:
 
 **Keep it short.** 15–25 lines is ideal. Every line you add is loaded into every session — make each one count.
 
-> **Tip:** The more specific you are, the better the results. "I work in cybersecurity sales, my main contacts are IT managers and CISOs" is more useful than "I work in tech."
+> **Tip:** The more specific you are, the better the results. "I work in enterprise software sales, my main contacts are procurement leads and IT directors" is more useful than "I work in tech."
 
 ---
 

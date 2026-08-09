@@ -152,7 +152,7 @@ internal ID). The Data Classification Policy prohibits sending Confidential
 data to this assistant.
 
 Policy: ~/CompanyPolicies/data-classification.md §3.2
-Owner:  Information Security team — infosec@example.com
+Owner:  Data Governance team — datagovernance@example.com
 
 What to do next: re-run with the export redacted to Public/Internal only,
 or route the request through an approved internal tool.
