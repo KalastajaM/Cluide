@@ -154,6 +154,14 @@ When a clarifying question has a **bounded set of options**, use the `AskUserQue
 - "Describe the situation you need help with."
 - "What's the target audience for this document?"
 
+Two rules make standing instructions about questions work:
+
+**A consequence filter beats a blanket rule.** "Always ask if unclear" causes over-asking on routine work; "never ask" causes wrong guesses on decisions that matter. Write the filter explicitly: ask before proceeding only when the answer would materially change the work or the action is hard to reverse — the scope of a large build, anything destructive, anything sent in the user's name. Otherwise proceed and state the assumptions made, up front, so they can be corrected cheaply.
+
+**Every question must be self-contained and decidable.** A question reaches the user as a short prompt with options, detached from the file or finding that prompted it. State what was found, what hinges on the answer, and what each option implies — never assume the user remembers the detail being referred to. When options are close, recommend one and say why.
+
+<!-- harvested: 2026-08-09 from a multi-project maintenance setup -->
+
 ---
 
 ## Writing Skill Descriptions: Triggers, Not Titles
