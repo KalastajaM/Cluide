@@ -87,6 +87,22 @@ Once the user confirms they have pasted the field texts into the app, update the
 
 If the user has not pasted them yet, do **not** update the mirror — a mirror that describes text nobody applied is worse than a stale one, because it reads as verified. Leave it and say what is outstanding.
 
+## Account-level mode: the two account fields
+
+<!-- harvested: 2026-08-09 from a multi-project maintenance setup -->
+
+The account-wide preferences and the Cowork-wide instructions (Guide 25, *The account layers above the project*) are tuned with the same loop as the project fields — diagnose, plan, sign-off, apply, mirror — plus two evidence steps the project mode does not have.
+
+**Evidence 1 — session history.** The desktop app stores one JSON record per session under `~/Library/Application Support/Claude/local-agent-mode-sessions/<accountId>/<profileId>/`, including each session's opening prompt, title, model, and connected folders. *App-internal, verified August 2026 — re-verify after app updates.* The folder picker refuses `~/Library` as a protected location; read the files via a Filesystem MCP allowlist entry (Guide 05), or have the user zip the JSONs and attach the archive to a session. Session openers are ground truth about real prompting style. Three metrics turn them into instruction evidence:
+
+- how often the user explicitly invites clarifying questions — calibrates the ask-vs-proceed default;
+- the opening-prompt length distribution — whether the instructions should tell Claude to interpret terse prompts against project files instead of asking;
+- the language and terminology mix — what the instructions should say about working languages and domain terms.
+
+Exclude scheduled-task openers before computing anything (they start with a scheduled-task marker) — they are machine-written and swamp the human signal.
+
+**Evidence 2 — probe tests.** Before shipping a candidate instruction set, give it to a subagent together with a handful of representative requests and check the simulated behavior for over-asking, literal misreadings of ambiguous rules, and contradiction pairs. A rule that reads clearly to its author can still fail this test; fix the rule, not the probe.
+
 ## Output
 
 1. A three-layer findings list (Step 2).
