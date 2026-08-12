@@ -729,6 +729,26 @@ Routes delegated work — subagents, workflow stages, scheduled tasks — to the
 
 ---
 
+### git-guru
+
+Full-lifecycle git and GitHub management. Diagnoses the repo's real state before advising, applies judgment-based autonomy (safe actions run, destructive ones are proposed first), keeps a per-repo flow profile in the repo itself, adapts its mechanics to the environment (Cowork device mount, cloud container, or plain local machine), and scans staged changes for secrets and personal data before anything moves toward a public remote. The operational companion to Guide 11: the guide is the why, this skill is the how.
+
+**Install:** Copy `git-guru/` to `~/.claude/skills/` (Claude Code), or zip the folder as `git-guru.zip` and upload it to Claude.ai Personal Skills. Install it as an account skill so it triggers in any session that touches git.
+
+**Use when:**
+- Committing, branching, merging, tagging, or getting work onto GitHub
+- A repo shows uncommitted changes, lock files, or sync drift against the remote
+- You say things like "save my work", "is this synced?", or "did my changes land?"
+
+**Example prompts:**
+> "Back this project up to GitHub."
+
+> "Clean up this repo — old branches, uncommitted bits, the lot."
+
+> "Did yesterday's changes actually land on main?"
+
+---
+
 ## Quick Start Without the Skill
 
 Prefer to do it manually? Start here:
