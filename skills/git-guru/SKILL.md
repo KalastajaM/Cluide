@@ -191,7 +191,17 @@ a decision. Assume the user reads the question cold.
   from an earlier summary.
 - One fenced block per purpose, copy-paste ready, no placeholders left inside.
 - Absolute paths: `cd "$HOME/..."` — never `~` inside quotes (it doesn't expand).
-- The last line is always a self-check (`git log --oneline -1`, `gh pr view`).
+- The last line is always a self-check — and it must test the **goal state**,
+  not merely that the last command ran. "Push and merge" is checked by what
+  `origin/main` points at (`git log origin/main --oneline -1` after a pull, or
+  state the expected result: "the last line should print `<sha>`"), not by a
+  local `git log` that succeeds even when a later step was skipped.
+- Every step between here and the goal is either a command in the block —
+  including the decisive one (e.g. `gh pr merge <N> --squash --delete-branch`
+  when landing the PR is the goal) — or explicitly labelled as a manual step
+  the user's "done" does not cover. A goal step left in prose reads as
+  optional and silently drops; the user then reports "done" in good faith
+  with the goal unreached.
 - When output must be pasted back, make it self-labelling: put an
   `echo "=== <label> ==="` between commands, or use one command per block —
   a multi-command block produces an unlabelled wall of text the user cannot
