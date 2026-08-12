@@ -181,6 +181,26 @@ Key tools: `screenshot`, `left_click`, `type`, `scroll`, `key`, `open_applicatio
 
 ---
 
+## The Cost of an Enabled Server
+
+Every enabled server puts the full definition of each of its tools — name, description, parameter schema — into the context of every session, before you have typed anything. A handful of servers is unnoticeable. A dozen is not: on a large setup the tool definitions alone can run to tens of thousands of tokens, paid on every request, and the cost is the smaller half of the problem. The larger half is that a model choosing between eighty tools with overlapping descriptions picks the wrong one more often than a model choosing between fifteen. Servers that expose several near-identical read tools are the usual culprits.
+
+This is progressive disclosure applied to your tool loadout ([Guide 02](./02_PROMPTING_BASICS.md)): the tools that are always available should be the ones you always need.
+
+**Curate on three questions.**
+
+*Have I used it in the last month?* Servers get enabled for one experiment and stay forever. Disable rather than delete — re-enabling is a checkbox.
+
+*Does it overlap with something else I have?* Two servers that both read files, or a connector plus a local server for the same service, mean every session picks between them. Keep one.
+
+*Does it need to be on by default, or only for one kind of work?* In Claude Code, `.mcp.json` is per-project, so a server can be enabled in the one repo that needs it instead of globally in `~/.claude.json`. In Cowork, connectors are account-wide, so the lever is the connector toggle in Settings — turn off what a given stretch of work does not need.
+
+Some surfaces load tool schemas on demand rather than up front, so the definitions cost nothing until something matches. Where that happens you will see it in the session (tools described as available but not yet loaded), and the curation argument weakens on cost while the wrong-tool argument still holds.
+
+**Symptoms of an overloaded loadout:** Claude reaches for a plausible-but-wrong tool, or narrates a search for the right one; simple sessions start expensive before any work happens; a skill that names its tools explicitly behaves noticeably better than one that does not. That last one is a workaround rather than a fix, and it is the next section.
+
+---
+
 ## Naming Tools in Skills
 
 When writing a skill (see [Guide 03](./03_SKILLS.md)), name the exact MCP tool in the workflow steps. Do not just say "check the calendar" — say `gcal_list_events`. This prevents Claude from improvising a different approach each session.

@@ -62,7 +62,7 @@ The guide numbers are stable addresses, not a reading order — new guides get t
 | **Foundation** | [Quickstart](./00_QUICKSTART.md) → [01](./01_CLAUDE_MD.md) → [02](./02_PROMPTING_BASICS.md) → [20](./20_INTERACTIVE_PROMPTING.md) → [27](./27_INDEPENDENT_JUDGMENT.md) → [03](./03_SKILLS.md) → [04](./04_MEMORY_AND_PROFILE.md) → [05](./05_MCP_SERVERS.md) | Everyone — start here |
 | **Scheduled tasks** | [06](./06_TASK_EFFICIENCY_GUIDE.md) → [07](./07_TASK_LEARNING_GUIDE.md) (incl. Part 9: the template) → [09](./09_MULTI_TASK_ORCHESTRATION.md) → [10](./10_COST_PERFORMANCE.md) | Once you automate anything |
 | **Operations & safety** | [12](./12_SECURITY.md) → [11](./11_GIT_INTEGRATION.md) → [13](./13_DEV_EXECUTION_WORKFLOW.md) → [17](./17_TROUBLESHOOTING.md) | Securing and maintaining your setup |
-| **Data & knowledge** | [14](./14_PERSONAL_DATA_LAYER.md) → [15](./15_LLM_WIKI.md) | Getting personal data and knowledge bases into Claude |
+| **Data & knowledge** | [14](./14_PERSONAL_DATA_LAYER.md) → [15](./15_LLM_WIKI.md) → [28](./28_SECOND_BRAIN.md) | Getting personal data, knowledge bases, and your own notes into Claude |
 | **Projects & context** | [24](./24_PROJECT_FOLDER_STRUCTURE.md) → [25](./25_PROJECT_INSTRUCTION_LAYERS.md) → [23](./23_MULTI_PROJECT_SETUPS.md) → [21](./21_COMPANY_POLICIES.md) → [22](./22_HELPER_APPS.md) → [26](./26_CONTEXT_SCOPING.md) → [27](./27_INDEPENDENT_JUDGMENT.md) | Power users structuring larger setups |
 | **Reference — read anytime** | [16](./16_BEST_PRACTICES.md) · [17](./17_TROUBLESHOOTING.md) · [18](./18_END_TO_END_WALKTHROUGH.md) · [19](./19_OUTPUT_FORMATTING.md) · CHEATSHEET (in the Cluide repo) | Digest, walkthrough, formatting, quick lookup |
 
@@ -372,6 +372,17 @@ Covers: the two mechanisms (anchoring and agreement pressure) and why "would thi
 
 ---
 
+### [28 — Second Brain](./28_SECOND_BRAIN.md)
+`[Power user]` · `~15 min`
+
+*The personal knowledge layer above your projects: notes, clippings and decisions that belong to your working life rather than to any one piece of work. What survives from classic second-brain method once an LLM is the reader, and what stops being worth the effort.*
+
+Covers: the test for whether the layer is worth building at all (and the four things it should hold that no source system does), what changes when Claude reads your notes — tags stop earning their keep, distillation becomes a context lever rather than a re-reading aid, capture can be rawer, and app databases become a structural mistake — the four homes sorted by relevance decay rather than topic, the capture template and the rule that an inbox is emptied rather than managed, the four triage outcomes, distilling for a conclusion instead of a summary, index-first retrieval as progressive disclosure applied to your own notes, the weekly review split between what Claude can do mechanically and what only you can decide, a layer-boundary table against guides 04, 14, 15, 23 and 24, and the anti-patterns that kill these systems.
+
+**Use this when:** your notes, clippings and decisions are scattered across apps and none of it reaches your actual work — or you already keep notes and want Claude to be able to use them.
+
+---
+
 ## Templates: Copy-Paste Starting Points
 
 The ready-to-copy folder structures live in the `templates/` folder of the Cluide repo. They are **not bundled inside this skill** — copy them from a Cluide checkout, or recreate the structure from the relevant guide. Use them when you want to start a new project or task without building from scratch.
@@ -462,7 +473,7 @@ Tasks are designed to be portable: copy any task file to another project's `task
 | `tasks/audit-memory.md` | Check memory for staleness, duplicates, misplaced content — across all three layers (native, `.auto-memory/`, profile files) | 04 |
 | `tasks/audit-skill.md` | Review a `SKILL.md` — trigger quality, workflow, output format, edge cases, `allowed-tools` enforcement | 03, 02 |
 | `tasks/audit-file-hygiene.md` | Sweep actual clutter: OS junk, lock/temp files, duplicate families, superseded outputs, and trees that are gitignored but still loading as context | 11, 24 |
-| `tasks/analyze-project.md` | Whole-project sweep of *another* Claude project (local or GitHub) against the full guide set → writes a `CLUIDE_IMPROVEMENT_PLAN.md` into it; read-only, plan-only (criteria in `analyze-project-reference.md`) | All (01–27) |
+| `tasks/analyze-project.md` | Whole-project sweep of *another* Claude project (local or GitHub) against the full guide set → writes a `CLUIDE_IMPROVEMENT_PLAN.md` into it; read-only, plan-only (criteria in `analyze-project-reference.md`) | All (01–28) |
 | `tasks/reorganize-project.md` | Safely restructure a project's folders: move files and rewire every reference without breaking it; takes a restore point first | 24 |
 | `tasks/relocate-project.md` | Move a project (or a whole projects root) somewhere else — sweeps the project, scheduled-task, and app-config layers, and refuses streaming sync folders | 11, 24 |
 

@@ -41,6 +41,7 @@ This folder contains a complete operational framework for building, running, and
 | `25_PROJECT_INSTRUCTION_LAYERS.md` | Project description and instructions fields vs. CLAUDE.md — what belongs in which layer, drift control |
 | `26_CONTEXT_SCOPING.md` | Context scoping — what a session should see; blind vs. in-context review passes; building one-shot prompts |
 | `27_INDEPENDENT_JUDGMENT.md` | Independent judgment — anchoring and agreement pressure, commit-then-reveal, blinded reconciliation, false independence |
+| `28_SECOND_BRAIN.md` | Personal knowledge layer — capture and inbox discipline, the four homes, distillation, index-first retrieval, weekly review |
 
 When the user asks a question or makes a request that a guide covers, read the relevant guide before responding.
 
