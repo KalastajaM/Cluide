@@ -75,6 +75,11 @@ silent; this section only states what is specific to Cluide.
 - Log dispatches to `development/ROUTING_LOG.md` (gitignored: the log is working state, not
   distribution — this section is the published example, the log is not)
 
+Before executing any task with bulk, parallel, or mechanical parts, load the `dispatch` skill —
+even when another skill (maintenance-dispatcher, a playbook) has already provided the procedure.
+Playbook skills say what to do; dispatch says what tier does it. If a task lands under dispatch's
+inline floor, doing it inline is correct — log it as inline rather than forcing a subagent.
+
 ---
 
 ## Branching and Releases

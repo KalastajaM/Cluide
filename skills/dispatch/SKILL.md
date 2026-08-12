@@ -5,9 +5,12 @@ description: >
   session is about to spawn subagents, split a task into parallel or independent parts, choose a
   model or effort for a subtask, workflow stage, or scheduled task, or when the user says things
   like "dispatch", "route this", "orchestrate", "fan out", "run in parallel", "which model should
-  this use", or asks for a multi-step task that contains bulk, mechanical, or independent parts.
-  Also use when creating or editing a scheduled task, to propose its model tier. Do NOT use for
-  choosing the session's own model — a session cannot switch that.
+  this use", or asks for a multi-step task that contains bulk, mechanical, or independent parts —
+  including sweeps, audits, and fixes phrased as "sweep all X", "check every Y", "audit the Z",
+  "fix what's broken across". Load it ALONGSIDE any playbook or maintenance skill that also
+  triggers: that skill says what to do, this one says what model tier does each part. Also use
+  when creating or editing a scheduled task, to propose its model tier. Do NOT use for choosing
+  the session's own model — a session cannot switch that.
 ---
 
 # Dispatch — model-aware orchestration
@@ -36,7 +39,15 @@ output back has re-bought the tokens it saved, and clogs its own context besides
 
 **Inline floor.** If a subtask is smaller than the cost of briefing a worker — roughly under two
 minutes of work, or it would need most of the main context anyway — do it inline. Dispatch has
-real fixed costs; routing everything is as wrong as routing nothing.
+real fixed costs; routing everything is as wrong as routing nothing. A whole task can land under
+the floor: a sweep that reduces to a few grep or script invocations is inline work however many
+files it touches. When that happens, note the routing decision anyway (one log line, tier
+"inline") so the log shows the policy was consulted, not skipped.
+
+**Composing with playbook skills.** This skill decides *who runs each part*, not *what the parts
+are*. When another skill provides the procedure (a maintenance playbook, a review protocol, a
+setup task), follow that skill for the steps and this one for the tier of each step. One skill
+loading does not displace the other.
 
 ## Routing table
 
