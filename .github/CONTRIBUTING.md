@@ -84,7 +84,9 @@ Prefer concrete examples over abstract description, and invented ones over real 
 
 ## Changelog
 
-Add an entry under `## [Unreleased]` in `CHANGELOG.md` describing what changed and why. If your change grows the consumed surface — a new guide number, a new `tasks/` filename, a new dimension — say so explicitly in the entry.
+Do not edit `CHANGELOG.md` in a pull request. It is written at tag time from `git log <previous tag>..HEAD`, so what actually reaches it is the squashed commit subject your pull request title becomes. Write that title as the changelog entry you want it to be: what the change covers, and — if it grows the consumed surface with a new guide number, a new `tasks/` filename or a new dimension — what was added.
+
+There is no `## [Unreleased]` section, and there should not be one. It existed briefly, was consumed by the v1.1.0 tag and never re-created, which left this file asking for an entry under a heading that no longer existed. Six pull requests in a row then skipped the changelog without anyone noticing, which is the cost of a rule that cannot be followed.
 
 Releases are content events rather than a calendar. Do not propose a version bump in a pull request; the maintainer tags when guides are added, a reading track restructures, or the consumed surface changes.
 
