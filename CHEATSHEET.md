@@ -22,6 +22,7 @@
 | Control what a session is allowed to see | Context scoping | [26](./26_CONTEXT_SCOPING.md) |
 | Get a second opinion you can actually rely on | Review protocol | [27](./27_INDEPENDENT_JUDGMENT.md) + `review-protocol` skill |
 | Route delegated work to the right model tier | Dispatch policy | [09](./09_MULTI_TASK_ORCHESTRATION.md) + `dispatch` skill |
+| Keep a repo healthy and get changes onto GitHub | Git management | [11](./11_GIT_INTEGRATION.md) + `git-guru` skill |
 
 ---
 

@@ -152,6 +152,7 @@ The installable skills bundled in `skills/` are listed below. Install only the o
 | `backlog` | Portable backlog manager — prioritised work items, grooming, decision logging |
 | `policies-validator` | Tiered company-policy guardrail (T1 block / T2 alert / T3 soft guidance) — ships as a template; fill the Policy Registry before use |
 | `html-report` | Generates polished, self-contained HTML reports from task output (Guide 19 skeleton bundled) |
+| `git-guru` | Full-lifecycle git and GitHub management — diagnoses the repo's real state, acts where it safely can, hands over validated commands where it can't (Guide 11 companion) |
 | `dispatch` | Routes delegated work — subagents, workflow stages, scheduled tasks — to the right model tier and effort, with an escalation ladder and per-project overrides (Guide 09 §Model-Aware Dispatch) |
 
 ---
