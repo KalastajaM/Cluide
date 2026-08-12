@@ -61,6 +61,27 @@ If a newly created file should be ignored but is already tracked by git, run `gi
 
 ---
 
+## Dispatch Overrides
+
+Routing exceptions for work delegated from sessions in this project — subagents, workflow
+stages, scheduled tasks. The `dispatch` skill's routing table applies wherever this section is
+silent; this section only states what is specific to Cluide.
+
+- Default worker tier: sonnet
+- Never below opus for: writing or reviewing guide prose that ships, and review verdicts on
+  guides, skills, or templates — publication quality is this repo's whole product
+- Known-safe on haiku: link checks, byte-identity mirror sweeps (`diff -q`), guide-number
+  citation greps, file inventories — anything the merge gate defines mechanically
+- Log dispatches to `development/ROUTING_LOG.md` (gitignored: the log is working state, not
+  distribution — this section is the published example, the log is not)
+
+Before executing any task with bulk, parallel, or mechanical parts, load the `dispatch` skill —
+even when another skill (maintenance-dispatcher, a playbook) has already provided the procedure.
+Playbook skills say what to do; dispatch says what tier does it. If a task lands under dispatch's
+inline floor, doing it inline is correct — log it as inline rather than forcing a subagent.
+
+---
+
 ## Branching and Releases
 
 Cluide is trunk-based. Work happens on a short-lived branch per change, merged into `main` by PR, branch deleted on merge. `main` is always the current, self-consistent guide set.
