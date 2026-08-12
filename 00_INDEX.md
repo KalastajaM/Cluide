@@ -166,11 +166,11 @@ Covers: what to learn and how to store it, detecting feedback signals, the apply
 ### [09 — Multi-Task Orchestration](./09_MULTI_TASK_ORCHESTRATION.md)
 `[Power user]` · `~20 min`
 
-*Coordinating multiple tasks: dependencies, shared state, and data passing.*
+*Coordinating multiple tasks: dependencies, shared state, and data passing — plus model-aware dispatch of delegated work.*
 
-Covers: sequential chains, shared state, dependency graphs, data handoff between tasks, scheduling orchestrated runs, and avoiding implicit coupling.
+Covers: sequential chains, shared state, dependency graphs, data handoff between tasks, scheduling orchestrated runs, avoiding implicit coupling, and model-aware dispatch — routing subagents and workflow stages across model tiers, the escalation ladder, verification economics, and per-project routing overrides (packaged as the `dispatch` skill).
 
-**Use this when:** you have multiple scheduled tasks that need to share data, run in a specific order, or produce a combined output.
+**Use this when:** you have multiple scheduled tasks that need to share data, run in a specific order, or produce a combined output — or when sessions delegate work to subagents and you want the model tier per subtask chosen deliberately.
 
 ---
 
@@ -394,6 +394,7 @@ The ready-to-copy folder structures in the `templates/` folder. Use them when yo
 - ...run a single automated task on a schedule → **TASK_TEMPLATE**
 - ...have a personal assistant that monitors email/calendar daily → **AI-ASSISTANT_TEMPLATE**
 - ...manage a programme with risks, actions, and financials → **PMO_TEMPLATE**
+- ...pin model tiers into Claude Code subagents → **AGENT_STARTER_PACK**
 
 | Attribute | PROJECT | TASK | AI-ASSISTANT | PMO |
 |---|---|---|---|---|
@@ -428,6 +429,11 @@ A project workspace for managing a structured programme or project. Includes a `
 A ready-to-fill starter for the two account-level instruction fields (Guide 25, *The account layers above the project*): account-wide preferences and Cowork-wide instructions. A guidance comment explains what earns a place in the About-me section; the rules below it are a working set proven in production, meant to be adapted.
 
 **Use this when:** setting up or overhauling your account-level instructions rather than a single project's.
+
+### [AGENT_STARTER_PACK/](./templates/AGENT_STARTER_PACK/README.md)
+Four Claude Code subagent definitions with the model tier pinned in frontmatter — `scout` (haiku, bulk reading and extraction), `builder` (sonnet, well-specified changes), `verifier` (opus, adversarial checking), `researcher` (sonnet, web legwork) — plus a CLAUDE.md delegation stanza. The structural Claude Code binding for the `dispatch` skill: frontmatter pins routing so it isn't re-decided per prompt. Claude Code only; Cowork sessions route via per-spawn model parameters instead.
+
+**Use this when:** you orchestrate work in Claude Code and want delegated subtasks to land on the right model tier by default. Copy the four `.md` files to `~/.claude/agents/`.
 
 ---
 
@@ -700,6 +706,26 @@ Generates polished, self-contained HTML reports, briefings, and dashboards from 
 > "Generate a styled dashboard from RUN_LOG.md."
 
 > "Make my daily briefing look good in a browser."
+
+---
+
+### dispatch
+
+Routes delegated work — subagents, workflow stages, scheduled tasks — to the right model tier and effort level. Carries the routing table by task archetype, the escalation ladder (dispatch cheap, verify, re-dispatch one tier up on failure), verification-scope rules, fan-out sizing, and the per-project Dispatch Overrides convention. The policy behind Guide 09 §Model-Aware Dispatch; pairs with the AGENT_STARTER_PACK template in Claude Code.
+
+**Install:** Copy `dispatch/` to `~/.claude/skills/` (Claude Code), or zip the folder as `dispatch.zip` and upload it to Claude.ai Personal Skills. Then add the always-loaded hook line to each delegating project's instructions (see Guide 09 §Model-Aware Dispatch — policy skills need it to load alongside playbook skills).
+
+**Use when:**
+- A session is about to spawn subagents or split a task into parallel or independent parts
+- You are choosing a model or effort for a subtask, workflow stage, or scheduled task
+- A task contains bulk, mechanical, or sweep-shaped parts that shouldn't run at the session's own tier
+
+**Example prompts:**
+> "Sweep all the guides for broken links and fix what's broken."
+
+> "Which model should this scheduled task use?"
+
+> "Fan this audit out across the three folders in parallel."
 
 ---
 

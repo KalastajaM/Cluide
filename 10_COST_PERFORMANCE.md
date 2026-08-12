@@ -87,6 +87,8 @@ In practice, most scheduled tasks work well on Sonnet. Drop feeder steps to Haik
 
 Standing instructions can route model choice only where the session controls it: subagents, workflow stages, and the model proposed when creating a scheduled task. A session cannot switch its own model — that is set in the UI, or in the scheduled task's configuration. The working pattern: instruct Claude to use the cheapest tier that does the job reliably wherever it chooses a model, and to flag a clearly mismatched session model once and continue, leaving the switch to the user.
 
+This tier logic is developed into a full routing policy — archetype table, escalation ladder, verification economics, per-project overrides — in [Guide 09 §Model-Aware Dispatch](./09_MULTI_TASK_ORCHESTRATION.md), packaged as the installable `dispatch` skill (`skills/dispatch/`).
+
 <!-- harvested: 2026-08-09 from a multi-project maintenance setup -->
 
 ---

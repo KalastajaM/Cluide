@@ -251,6 +251,30 @@ When to care: if a sequential chain or dependency graph from this guide starts f
 
 ---
 
+## Model-Aware Dispatch
+
+The patterns above coordinate *scheduled tasks*. The same orchestrator stance applies one level down, inside a single session: when a task decomposes into independent or mechanical parts, the session plans and reviews at its own tier while dispatching the parts to subagents or workflow stages on cheaper models. Two facts make this worth engineering. The cost spread between the cheapest and most expensive tier is roughly 10x ([Guide 10 §What Things Actually Cost](./10_COST_PERFORMANCE.md)), and in most real tasks the bulk of the token volume is mechanical — reading, extracting, sweeping, applying agreed edits — work that does not need the top tier. Delegation also protects the orchestrator's own context: workers burn their context windows, not yours, which is what keeps a long session planning well.
+
+**The stance.** Plan the decomposition, dispatch with self-contained prompts (subagents do not see the conversation — every prompt carries its own context, file paths, output format, and done-criteria), review the results, synthesize. Three rules keep the economics honest:
+
+- **Summaries, not payloads.** Workers return a compact summary plus file paths to their full output. An orchestrator that reads every worker's full output back has re-bought the tokens it saved.
+- **Batch the fan-out.** How many workers a task splits into usually moves cost more than which tier runs them — every spawn re-buys its briefing and its own context. One worker per fifty files, not per file; split finer only when items are independent *and* wall-clock matters.
+- **Respect the inline floor.** A subtask smaller than the cost of briefing a worker is inline work, however it is phrased. Routing everything is as wrong as routing nothing.
+
+**Routing by archetype.** Bulk mechanical work (extraction, classification, sweeps, format conversion) runs on the cheapest tier; research legwork and building to a clear spec on the mid tier; judgment, sensitive drafting, and the verification of cheaper work on the top working tier; the most expensive tier is rarely dispatched at all — it is usually the orchestrating session itself. The operational routing table, the effort dial, and the standing rules live in the **`dispatch` skill** (`skills/dispatch/SKILL.md`) — install it as an account skill so every session carries the policy rather than re-deriving it.
+
+**The escalation ladder is what makes cheap-by-default rational.** Dispatch cheap, check the result, and on failure re-dispatch one tier up, quoting the failure so the retry doesn't repeat it — one escalation, then do the work inline. This converts "which model is good enough?" from a prediction into a cheap empirical loop, and the escalation frequency becomes your tuning signal.
+
+**Verification has economics too.** A verification pass that rechecks everything at a top tier can cost more than doing the work one tier up would have — which silently erases the saving. State the verification scope in the brief: a sample for bulk output, a full recheck only where errors are expensive (figures, dates, legal terms, anything that will be relied on — and never below the mid tier for those).
+
+**Bindings differ per surface.** In Claude Code, pin tiers structurally with model-pinned agent definitions — `templates/AGENT_STARTER_PACK/` in the Cluide repo ships four (scout, builder, verifier, researcher). In Cowork, agent definitions don't persist between sessions; the per-spawn model parameter plus the account-installed skill are the mechanism. For scheduled tasks, propose the cheapest tier the task's hardest step needs. A session can never switch its own model — only what it delegates is routable ([Guide 10 §Model Tier Selection](./10_COST_PERFORMANCE.md)).
+
+**Overrides and calibration are per project.** Model facts are global, risk is not. A **Dispatch Overrides** section in the project's `CLAUDE.md` (the PROJECT_TEMPLATE ships one) names the content types that must never go below a given tier and the archetypes proven safe on the cheap one. A `ROUTING_LOG.md` — one line per dispatch: date, archetype, tier, effort, escalated, outcome — is the evidence a periodic review (`tasks/review-tasks.md`, step 4d) turns into promote/demote proposals. The log is evidence, not policy; changes land in Dispatch Overrides after your sign-off.
+
+**One trap: policy skills lose the trigger race.** A skill that shapes *how* work is done will not reliably load alongside a skill that says *what* to do — the playbook matches the task lexically, supplies the procedure, and the session never reconsiders execution strategy. The fix is an always-loaded hook: one line in the project's instructions saying to load the dispatch skill alongside any playbook when the task has bulk, parallel, or mechanical parts. Description-broadening helps; the instructions line is the reliable mechanism.
+
+---
+
 ## Checklist
 
 When setting up multi-task orchestration:
@@ -263,3 +287,4 @@ When setting up multi-task orchestration:
 - [ ] Add fallback handling for missing, malformed, and stale inputs in downstream tasks
 - [ ] Log task outcomes (success/skipped/failed) to `RUN_LOG.md`
 - [ ] Set up cost monitoring ([Guide 10](./10_COST_PERFORMANCE.md)) across all coordinated tasks
+- [ ] If sessions delegate work, install the `dispatch` skill and add a Dispatch Overrides section to the project's `CLAUDE.md` (see Model-Aware Dispatch above)

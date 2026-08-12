@@ -4,7 +4,7 @@
 > `Claude, run tasks/review-tasks.md`
 
 ## Purpose
-Detect which guides have changed since each task was last reviewed, then check whether the affected tasks need updating to stay in sync. Also runs structural drift checks: the bundled guide copies in `skills/ai-assistant-setup/references/` against the root guides, the canonical IMPROVEMENTS template against its one marked inline copy, and guide-set coverage (every guide scored or explicitly not scored, every task in the mapping table, the advertised guide range correct). Keeps the tasks/ collection accurate as the Cluide guides evolve.
+Detect which guides have changed since each task was last reviewed, then check whether the affected tasks need updating to stay in sync. Also runs structural drift checks: the bundled guide copies in `skills/ai-assistant-setup/references/` against the root guides, the canonical IMPROVEMENTS template against its one marked inline copy, and guide-set coverage (every guide scored or explicitly not scored, every task in the mapping table, the advertised guide range correct). Where a routing log exists, also calibrates model routing from it (step 4d). Keeps the tasks/ collection accurate as the Cluide guides evolve.
 
 > **Complementary task:** this keeps the framework in sync when a *guide* changes. Its inverse,
 > `tasks/harvest-from-projects.md`, goes the other way — it harvests proven patterns from your *live
@@ -168,6 +168,28 @@ Run all three assertions:
 Flag each failure with the specific file and the missing wiring. These are one-line fixes individually, and
 the check is cheap enough to run every time.
 
+#### 4d. Routing-log calibration (only where a routing log exists)
+
+If the project keeps a routing log (`development/ROUTING_LOG.md` here; `ROUTING_LOG.md` in projects built
+from PROJECT_TEMPLATE), review it against the `dispatch` skill's thresholds. Skip silently if no log exists
+— do not create one.
+
+1. Read the rows added since the last calibration (the previous review's date in this file's footer is the
+   cutoff). Group by archetype and compute the escalation rate per archetype.
+2. Propose changes, both requiring the user's approval before anything is written:
+   - **Demote a tier:** an archetype with ~10+ dispatches and zero escalations is a candidate to run one
+     tier cheaper.
+   - **Promote a tier:** an archetype escalating more than ~1 in 3 is a candidate to start one tier higher.
+3. Approved changes are recorded in the project's **Dispatch Overrides** section (`CLAUDE.md`), never in
+   the log — the log is evidence, not policy ([Guide 09 §Model-Aware Dispatch](../09_MULTI_TASK_ORCHESTRATION.md)).
+4. Also flag reversion: a log whose bulk archetypes mostly run at top tiers, or a long gap with no rows at
+   all in a project that delegates work, means dispatches are silently inheriting the session model — the
+   policy is being skipped, not consulted. Note it as a finding; the fix is the always-loaded hook line in
+   the project's instructions, not more log discipline.
+
+Sample sizes below ~10 dispatches per archetype prove nothing; say "insufficient data" rather than
+proposing on noise.
+
 ### Step 5 — Present findings
 
 ```
@@ -210,6 +232,8 @@ Tell the user:
 - Which had issues and what was fixed
 - Which were clean
 - Whether the bundled reference copies, the IMPROVEMENTS template, and the guide-set coverage checks passed
+- Routing-log calibration outcome, if a log exists (proposals made, or "insufficient data")
 - "Run this task again after the next guide update, or quarterly as a health check."
 
-<!-- last reviewed: 2026-08-04 — added step 4c guide-set coverage -->
+<!-- last reviewed: 2026-08-12 — added step 4d routing-log calibration -->
+<!-- last routing calibration: never — first log rows date from 2026-08-12 -->
