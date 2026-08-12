@@ -51,6 +51,10 @@ Do small subtasks inline; dispatching has overhead.
   overrides every agent's frontmatter, so it would flatten the tiers you just installed.
 - The dispatching model can still override any agent's model per invocation; the frontmatter is
   the default, not a cage.
+- "Read-only" on scout and verifier is instruction, not enforcement: both carry Bash for
+  inspection commands, and Bash can write. Treat it as a convention that holds in practice, not
+  a sandbox — drop Bash from their `tools` line if you need the hard guarantee and can live
+  without shell-based checks.
 - The escalation ladder (cheap → verify → one tier up on failure) and the routing table live in
   the `dispatch` skill; keep the two in sync if you edit either.
 - Frontmatter fields used here (`model`, `effort`, `tools`) are documented at

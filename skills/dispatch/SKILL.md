@@ -20,7 +20,9 @@ each piece are choosable. This skill is the routing policy: it makes the session
 orchestrator that plans and reviews at its own tier while routing the bulk of token volume to
 cheaper tiers, with verification as the safety net. The cost spread makes this worthwhile — see
 Guide 10 §What Things Actually Cost for the canonical pricing table; the spread between the
-cheapest and most expensive tier is roughly 10x.
+cheapest and most expensive tier is roughly 10x. Tier names in this skill are model families
+(the values the `model` parameters accept), not versions — if the lineup has changed since this
+skill was last touched, follow Guide 10's current table rather than the names here.
 
 ## Orchestrator stance
 
@@ -32,6 +34,12 @@ review rather than executing everything inline:
    must carry its own context, file paths, output format, and done-criteria. Independent
    dispatches go out in parallel (in one message / one fan-out).
 3. **Review** results against the verification column, then synthesize.
+
+**Size the fan-out in batches, not items.** How many workers a task splits into usually moves
+cost more than which tier runs them: every spawn re-buys its briefing, its context, and its
+overhead. Batch homogeneous items so each worker gets meaningful volume — one scout per fifty
+files, not per file. Split finer only when items are truly independent *and* wall-clock matters,
+and past roughly five concurrent agents propose a Workflow instead (see Surface bindings).
 
 **Return summaries, not payloads.** Instruct every subagent to return a compact summary plus file
 paths to its full output — never the full content. An orchestrator that reads every worker's full
@@ -54,16 +62,22 @@ loading does not displace the other.
 | Archetype | Tier | Effort | Verification |
 |---|---|---|---|
 | Bulk read / extract / classify / OCR; file inventories and sweeps; format conversion; mechanical renames | haiku | low | orchestrator spot-checks a sample |
-| Web research legwork; structured drafting from a clear spec; routine code; applying agreed edits | sonnet | medium–high | orchestrator reviews the output |
+| Web research legwork; structured drafting from a clear spec; routine code; applying agreed edits | sonnet | medium | orchestrator reviews the output |
 | Judgment calls; sensitive drafting (legal, financial, anything with figures and dates that will be used); synthesis across sources; verifying lower-tier work | opus | high | second independent pass only if high-stakes |
-| Longest-horizon synthesis needing very large context; hardest planning | fable | high–xhigh | rarely dispatched — usually the session itself |
+| Longest-horizon synthesis needing very large context; hardest planning | fable | high | rarely dispatched — usually the session itself |
 
-Two standing rules ride on this table:
+The Effort column is a per-row default, not a range; when and how to deviate is the Effort
+section's job. Three standing rules ride on this table:
 
 - **Never route figure-bearing or legal-domain verification below the mid tier.** Extraction may
   run cheap; the check on anything that will be relied on does not.
 - **When in doubt between two tiers, take the cheaper one and attach verification.** The
   escalation ladder makes this rational.
+- **A dispatched verification states its scope in the brief: full recheck, or a sample of stated
+  size.** Bulk cheap-tier output gets a sample by default — a full recheck at the verify tier can
+  cost more than doing the work one tier up would have, which erases the saving routing exists to
+  capture. Reserve full rechecks for what the first rule mandates: figure-bearing and legal-domain
+  content that will be relied on.
 
 ## Escalation ladder
 
@@ -75,8 +89,15 @@ into a cheap empirical loop — and escalation frequency is the learning signal 
 ## Effort
 
 Effort is a second dial on top of tier. Default to the table above; drop to `low` for anything
-whose output is a label, a list, or a lookup; raise to `xhigh` only for the hardest verification
-or planning stages. Do not pay `high` effort for mechanical work just because it is the default.
+whose output is a label, a list, or a lookup; raise to `high` on sonnet for drafting that needs
+real care, and to `xhigh` only for the hardest verification or planning stages. Do not pay `high`
+effort for mechanical work just because it is the default.
+
+Know where the dial actually exists. Workflow stages expose per-call `effort`, and Claude Code
+agent frontmatter pins it per agent (that is what the starter pack does). A plain Cowork Agent
+spawn has **no effort parameter** — it controls tier only, and effort comes from the agent
+definition. So in Cowork, route effort-sensitive stages through a Workflow (opt-in required) or
+accept the definition's default; do not claim an effort level the surface cannot set.
 
 ## Project overrides
 
@@ -87,7 +108,8 @@ safe on the cheap tier. If the project has none, the table above applies unmodif
 
 ## Surface bindings
 
-**Cowork:** route via the Agent tool's `model` parameter per spawn. When a fan-out would exceed
+**Cowork:** route via the Agent tool's `model` parameter per spawn (tier only — there is no
+per-spawn effort parameter; see Effort). When a fan-out would exceed
 roughly five agents or needs staged verification, propose a Workflow instead — but workflows
 require the user's explicit opt-in ("use a workflow" / ultracode), so ask; plain Agent-tool
 dispatch needs no opt-in. Agent definition files do not persist between Cowork sessions; this
