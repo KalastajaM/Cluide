@@ -2,7 +2,7 @@
 
 *Guides last reviewed: August 2026 — the guides are maintained and reviewed as a set, so individual guides no longer carry their own "last reviewed" dates. This line is the single source of truth.*
 
-> A complete framework for building, running, and improving a persistent AI assistant with Claude.
+> A complete framework for building, running, and improving a persistent Claude assistant.
 > Includes architecture guides, runnable setup tasks, installable skills, and copy-paste templates.
 
 *Written for Claude Code and Cowork with current Claude models (Haiku, Sonnet, Opus, Fable); the core concepts are model-agnostic.*
@@ -11,7 +11,7 @@
 
 ## What This Is
 
-Cluide is an operational framework for building AI assistants that persist, learn, and improve over time — not a collection of tips, but a complete system you can actually install and run. It covers the full lifecycle: initial setup, scheduled automation, self-improvement, security, and long-term maintenance.
+Cluide is an operational framework for building Claude assistants that persist, learn, and improve over time — not a collection of tips, but a complete system you can actually install and run. It covers the full lifecycle: initial setup, scheduled automation, self-improvement, security, and long-term maintenance.
 
 The deliverables are concrete: a set of interlocking guides that define the architecture, a library of runnable task files that do the setup work for you, a set of installable skills, and the ready-to-use templates in `templates/`. The guides are documentation for the system; the tasks are its installation scripts.
 
