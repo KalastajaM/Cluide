@@ -22,6 +22,17 @@
 - [Hard constraint 2]
 - [Add only rules that override default behavior — don't list things Claude would do anyway]
 
+# Dispatch Overrides
+
+*Optional — delete this section if work in this project is never delegated to subagents,
+workflow stages, or scheduled tasks. These overrides refine the global routing policy (the
+`dispatch` skill) for this project; the policy's table applies wherever this section is silent.*
+
+- Default worker tier for this project: [sonnet]
+- Never below [opus] for: [content types where errors are costly — e.g. legal terms, figures that will be relied on, anything sent in my name]
+- Known-safe on the cheap tier: [bulk archetypes proven in this project — e.g. receipt OCR, file inventory sweeps]
+- Log dispatches to `ROUTING_LOG.md` [keep this line only if the project has one]
+
 # Context Loading
 
 Read `Profile/PROFILE_SUMMARY.md` at the start of every session. See `README.md` for the full file map and lookup patterns.

@@ -10,6 +10,7 @@
 ```
 PROJECT_TEMPLATE/
 ├── CLAUDE.md                    ← Project instructions: who you are, rules, file map
+├── ROUTING_LOG.md               ← Optional: dispatch log for model routing (delete if unused)
 ├── Profile/
 │   ├── PROFILE_SUMMARY.md       ← Compact digest — read every session (≤ 50 lines)
 │   └── PROFILE_detail.md        ← Full detail: people, projects, patterns, hypotheses
@@ -47,6 +48,7 @@ Open `CLAUDE.md` and replace all `[PLACEHOLDER]` text. Search for `[` to find th
 - **About** — your name, role, timezone
 - **Context** — 2–4 lines describing what this project covers
 - **Critical Rules** — hard constraints only (things that override default behavior)
+- **Dispatch Overrides** — optional; fill in if this project delegates work to subagents or scheduled tasks, delete otherwise
 - **File Map** — update the table as you add or remove files
 
 ### Step 3 — Seed the Profile
@@ -88,6 +90,7 @@ See `TASK_TEMPLATE/README.md` for full task setup instructions.
 | `Profile/PROFILE_detail.md` | Full detail: people, projects, patterns, history |
 | `Knowledge/INDEX.md` | Index of all topic knowledge files |
 | `Knowledge/[TOPIC].md` | Per-topic file: key facts, decisions, current status, open questions |
+| `ROUTING_LOG.md` | Optional: one line per dispatched subtask, for tuning model routing |
 
 Common lookups:
 - **"What's the status of [project]?"** → `Knowledge/INDEX.md` → relevant `Knowledge/[TOPIC].md`
@@ -120,6 +123,24 @@ The `Knowledge/` folder stores deep, structured context on specific topics — c
 `Knowledge/INDEX.md` is the entry point — Claude reads it first to know what files exist, then opens only what's needed. This keeps token cost low on sessions that only touch one or two topics.
 
 The template for a topic file is embedded in `Knowledge/INDEX.md`.
+
+---
+
+## Dispatch Overrides and the Routing Log (optional)
+
+When sessions in this project delegate work — subagents, workflow stages, scheduled tasks — the
+`dispatch` skill routes each piece to a model tier and effort level. Two project-level hooks
+refine that:
+
+- The **Dispatch Overrides** section in `CLAUDE.md` states this project's exceptions to the
+  global routing table: the default worker tier, content types that must never go below a named
+  tier, and archetypes proven safe on the cheap tier.
+- **`ROUTING_LOG.md`** records one line per dispatch. Over time it shows which routings hold and
+  which escalate, and a periodic review turns that into proposed override changes.
+
+Both are optional. A project that never delegates should delete the CLAUDE.md section and the
+log file; a project that delegates heavily should keep both, because the log is what makes the
+routing improve instead of staying a guess.
 
 ---
 
