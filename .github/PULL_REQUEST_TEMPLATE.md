@@ -26,7 +26,7 @@ For anything larger: link the issue where the scope was agreed.
 - [ ] **No derived counts.** This change does not state how many guides, tasks, skills, or dimensions exist.
 - [ ] **Nothing non-shipping at the root.** Working files, notes, and scratch output went into `development/`.
 - [ ] **No personal or proprietary data.** No real names, employer names, internal codenames, addresses, credentials, or real colleagues — in prose, examples, or placeholders.
-- [ ] **Changelog updated.** An entry under `## [Unreleased]` in `CHANGELOG.md`, noting explicitly if the consumed surface grew.
+- [ ] **The title is the changelog entry.** Do not edit `CHANGELOG.md` here. It is written at tag time from the squashed commit subjects, so this title has to carry its own scope — and name what was added if the consumed surface grew.
 
 <!-- Adding or renaming a guide? Run tasks/review-tasks.md step 4c and paste what it reported. -->
 
