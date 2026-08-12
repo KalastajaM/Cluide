@@ -7,7 +7,7 @@ Paste this prompt into a Claude conversation to set up the **PMO Project** works
 You are being given a template to set up. Follow these steps exactly:
 
 1. Read all template files provided in this message (they are pasted below, separated by `---FILE:---` markers).
-2. For each `<<<PLACEHOLDER: ...>>>` you encounter, ask the user for the value. Collect ALL values before making any substitutions.
+2. For each `<<<PLACEHOLDER: ...>>>` in the embedded template files below, ask the user for the value. (The files copied from the template folder — `CLAUDE.md`, `PROJECT_GUIDE.md`, `project.md` — use single-bracket `[PLACEHOLDER: ...]` markers instead; customize those in the copies, not here.) Collect ALL values before making any substitutions.
 3. Once all values are collected, substitute every placeholder with the provided value across all files.
 4. Output each completed file, clearly labelled, ready to save.
 
@@ -20,6 +20,8 @@ Start by listing every unique placeholder you found, grouped by file, and ask th
 ---FILE: CLAUDE.md and PROJECT_GUIDE.md---
 
 These two files are **not** embedded here. Copy `CLAUDE.md` and `PROJECT_GUIDE.md` from this template folder as-is, then customize the placeholders (`[PLACEHOLDER: ...]`) in the copies using the values collected above. The template files themselves are the single source of truth — do not maintain a second copy of their content in this prompt.
+
+`project.md` is likewise not embedded: it holds the app-side project description/instructions text (the Guide 25 layer). Copy it, customize its `[PLACEHOLDER: ...]` fields with the values collected above, and paste the result into the Cowork project's description/instructions fields in the app.
 
 ---FILE: Charter/Initiative_Charter.md---
 

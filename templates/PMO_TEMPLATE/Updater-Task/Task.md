@@ -30,9 +30,9 @@ Read all five files listed above before making any changes. You need the complet
 
 For every cross-reference, confirm the link exists on **both** sides:
 
-- **Risk ↔ Action:** every `R-##` that lists a mitigating `ACT-##` must appear as the source in that action's entry, and vice versa.
+- **Risk ↔ Action:** every `R-##` that lists a mitigating `ACT-<Cat>-##` must appear as the source in that action's entry, and vice versa.
 - **Risk ↔ Dependency:** every `R-##` that cites a driving `D-##` must appear in that dependency's "linked risks" field, and vice versa.
-- **Dependency ↔ Action:** every `D-##` that lists a tracking `ACT-##` must appear as the source in that action's entry, and vice versa.
+- **Dependency ↔ Action:** every `D-##` that lists a tracking `ACT-<Cat>-##` must appear as the source in that action's entry, and vice versa.
 - **Decision ↔ Action / Risk:** every `DEC-##` that closes or changes the status of a linked item must reference that item, and the item must reference the decision back.
 - **KB ↔ Register entry:** every `KB §#` reference on a risk, dependency, action, or decision must point to a real section in `Knowledge_Base.md`.
 

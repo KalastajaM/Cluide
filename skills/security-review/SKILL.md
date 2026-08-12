@@ -154,7 +154,8 @@ Print consolidated risk table:
 
 **Explain first:** This hook intercepts every Bash command Claude tries to run and blocks
 dangerous patterns before they execute. It prevents: pipe-to-shell installs, credential
-exfiltration, dangerous flag usage, and recursive deletion of critical directories.
+exfiltration, dangerous flag usage, recursive deletion of critical directories, and
+world-writable permission changes (`chmod 777`-style).
 
 Use `AskUserQuestion` with buttons: "Create `.claude/hooks/security-precheck.sh` and wire it into your Claude settings?"
 > Buttons: `Yes` / `No`
@@ -229,8 +230,8 @@ cd "$PROJECT"
 
 ## Phase 4: File-Level Malware Scanning (APPROVAL REQUIRED)
 
-**Explain first:** ClamAV scans downloaded files and newly written files for known malware
-signatures. The PostToolUse hook triggers a scan after curl/wget/download commands.
+**Explain first:** ClamAV scans the Downloads folder and `/tmp` for known malware
+signatures. The PostToolUse hook triggers the scan after curl/wget/download-type commands.
 
 Use `AskUserQuestion` with buttons: "Install ClamAV and set up automatic file scanning?"
 > Buttons: `Yes` / `No`

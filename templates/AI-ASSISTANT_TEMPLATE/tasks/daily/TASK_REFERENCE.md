@@ -272,7 +272,7 @@ Section structure for `ACTIONS.md`. All sections must be present (use empty or "
 [Scheduling Conflicts sub-section at top]
 
 ## 💬 Teams Follow-ups
-## 💡 Proactive Suggestions
+## 💡 Proactive Suggestions *(max `PROACTIVE_CAP` items, → CONFIG.md)*
 ## 📝 Draft Messages
 [PA-ID, recipient, channel label (Email / Teams), draft text]
 

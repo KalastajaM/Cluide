@@ -28,7 +28,9 @@ midday/
 ├── LAST_RUN.txt             ← Single-line ISO 8601 UTC timestamp of previous scan start
 ├── RUN_LOG.md               ← Append-only scan history
 ├── ISSUES_LOG.md            ← Append-only log of issues found during runs
-└── IMPROVEMENTS.md          ← Pending proposals and run counter
+├── IMPROVEMENTS.md          ← Pending proposals and run counter
+├── urgent_data.json         ← Structured scan output (input to the HTML generator)
+└── generate_urgent_html.py  ← Renders ../../Actions/ACTIONS_URGENT.html
 ```
 
 Output: `../../Actions/ACTIONS_URGENT.html` (archived before each run)

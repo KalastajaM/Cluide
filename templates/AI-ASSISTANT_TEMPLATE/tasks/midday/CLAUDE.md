@@ -9,5 +9,7 @@ All project-level context (user identity, communication style, critical rules, b
 | `RUN_LOG.md` | Append-only history of scan runs |
 | `ISSUES_LOG.md` | Append-only log of operational issues encountered during production runs |
 | `IMPROVEMENTS.md` | Pending proposals and run counter |
+| `urgent_data.json` | Structured scan output written each run (input to the HTML generator) |
+| `generate_urgent_html.py` | Script: renders the urgent-actions HTML from urgent_data.json |
 
 Output file: `../../Actions/ACTIONS_URGENT.html` (archived to `../../Actions/History/` before each run).
