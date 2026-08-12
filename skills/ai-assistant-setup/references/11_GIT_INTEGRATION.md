@@ -488,3 +488,14 @@ This makes the task self-contained on a fresh clone. The bootstrap files are the
 **To review what a recent run changed:**
 > "Run `git diff HEAD~1 HEAD -- [task-folder]/` and summarise what changed in the last run."
 
+## The git-guru skill
+
+Cluide ships an operational companion to this guide: `skills/git-guru/` — a
+full-lifecycle git/GitHub management skill that diagnoses a repo's real state
+before advising, applies judgment-based autonomy (safe actions run, destructive
+ones are proposed first), keeps per-repo flow profiles in the repo itself, and
+scans staged changes for secrets and personal data before anything moves toward
+a public remote. This guide is the *why* — what to track and how the layers
+relate; the skill is the *how* for day-to-day operations. Install it as an
+account skill so it triggers in any session that touches git.
+

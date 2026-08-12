@@ -271,6 +271,24 @@ The subagent does the exploration in a separate context, then returns a concise 
 
 That is context scoping used as a *token* lever. The same tool is also a *quality* lever: withholding context from a reviewing session so it cannot resolve ambiguities the real reader will trip over. That case, and the deny-list a subagent needs before it is genuinely uninformed, is [Guide 26](./26_CONTEXT_SCOPING.md). When the context you need to withhold is your own opinion rather than a file, that is [Guide 27](./27_INDEPENDENT_JUDGMENT.md).
 
+### Drop tool output you've finished with
+
+The bulkiest thing in a long session is usually not the conversation, it's the accumulated tool results: full file reads where you needed one function, search output you've already acted on, a fetched page you extracted two numbers from. Once you've used a result, the raw version is dead weight that still competes for attention.
+
+Some clients drop old tool results automatically. You can also do it deliberately, and the cheap version is to pre-empt it — ask for the extract rather than the dump:
+
+> "Read the config and tell me just the timeout values — don't paste the file."
+
+When the dump has already happened, name it and move on: *"You've got what you need from that log; work from the three errors you listed, not the full output."* This is the lightest-touch form of compaction — you lose raw material you were never going to re-read, and keep everything the session actually concluded.
+
+### Let Claude write notes outside the session
+
+On a long task, ask Claude to keep a working file — decisions made, what's done, what's left — and update it as it goes. The context window holds a conversation; the file holds the state.
+
+> "Keep `notes/migration-progress.md` updated as we go: what's converted, what broke, what's still open. Update it after each file."
+
+Two payoffs. The session can be compacted or restarted without losing the thread, because the file survives what the context window doesn't. And the file is a better handoff than a summary written at the end, when the details it should contain have already been squeezed out. Worth doing on anything spanning more than a few hours or more than one sitting; for what should persist across sessions permanently, that's memory rather than a working file ([Guide 04](./04_MEMORY_AND_PROFILE.md)).
+
 ### When context is near its limit
 
 Signs you're approaching the limit: responses start omitting details they'd normally include, or Claude seems to "forget" instructions from earlier in the session.

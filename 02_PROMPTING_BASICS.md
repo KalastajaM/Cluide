@@ -45,6 +45,20 @@ Anthropic's current framing for all of this is **context engineering**: treat Cl
 
 This guide's advice is context engineering in practice: precise tasks instead of vague ones (fewer tokens, higher signal), templates instead of descriptions (one example outperforms paragraphs of explanation), and putting rules where they're needed (Mistake 2 below — a bloated CLAUDE.md is an attention-budget failure, not just a style problem).
 
+### Progressive disclosure
+
+The structural half of context engineering has a name: **progressive disclosure**. Split what Claude might need into layers, put a cheap always-loaded pointer at the top, and let each deeper layer load only when a step actually reaches it. Anthropic names it as the core design principle for skills; it is not specific to skills, and almost every recurring cost problem in this repo is solved by the same move.
+
+| Layer | Always in context | Loaded on demand |
+|---|---|---|
+| Skill ([03](./03_SKILLS.md)) | the `description` | `SKILL.md`, then `references/` |
+| Scheduled task ([06](./06_TASK_EFFICIENCY_GUIDE.md)) | `TASK.md` | `TASK_REFERENCE.md`, `LESSONS.md` |
+| Project ([24](./24_PROJECT_FOLDER_STRUCTURE.md)) | `CLAUDE.md` | the files it points at |
+| Notes ([28](./28_SECOND_BRAIN.md)) | `index.md` | the individual notes |
+| Data ([14](./14_PERSONAL_DATA_LAYER.md)) | a feeder script's compact output | the raw source, never directly |
+
+Two tests tell you a layer is wrong. If a file is always loaded and is usually not needed, it belongs one layer down. If Claude routinely has to open three files to answer a question the pointer should have answered, the pointer is too thin. Related levers: [Guide 05](./05_MCP_SERVERS.md) on the tools you leave enabled, [Guide 20](./20_INTERACTIVE_PROMPTING.md) on clearing what a session has already accumulated, and [Guide 26](./26_CONTEXT_SCOPING.md) on withholding context for quality rather than for cost.
+
 Full treatment: [anthropic.com/engineering/effective-context-engineering-for-ai-agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents).
 
 ---

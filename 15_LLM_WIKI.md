@@ -2,7 +2,7 @@
 
 > Most people use LLMs for Q&A — ask a question, get an answer, lose it to chat history. The LLM wiki pattern is different: the LLM incrementally builds and maintains a persistent, structured knowledge base that gets richer with every source you add and every question you ask. Nothing is re-derived from scratch. Knowledge compounds.
 
-> **Companion guides:** [Guide 11](./11_GIT_INTEGRATION.md) covers git — a wiki is just a folder of markdown files, and versioning it costs nothing. [Guide 14](./14_PERSONAL_DATA_LAYER.md) covers personal data — wikis and data layers are complementary, not alternatives. [Guide 04](./04_MEMORY_AND_PROFILE.md) covers `.auto-memory/` — which serves a different purpose (see below).
+> **Companion guides:** [Guide 11](./11_GIT_INTEGRATION.md) covers git — a wiki is just a folder of markdown files, and versioning it costs nothing. [Guide 14](./14_PERSONAL_DATA_LAYER.md) covers personal data — wikis and data layers are complementary, not alternatives. [Guide 04](./04_MEMORY_AND_PROFILE.md) covers `.auto-memory/` — which serves a different purpose (see below). [Guide 28](./28_SECOND_BRAIN.md) covers the other neighbour: a wiki is one curated subject, synthesised; a second brain is your whole working life, mostly triaged rather than synthesised. Run both in separate roots if you need both.
 
 > **Giving this guide to Claude:**
 > "Read 15_LLM_WIKI.md and help me set up an LLM wiki for [topic]. Ask me what sources I have and what I want to be able to query."
