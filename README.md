@@ -64,7 +64,7 @@ Cluide is AI-assisted work — openly and deliberately. The patterns, lessons, a
 | 06 | [Task Efficiency](./06_TASK_EFFICIENCY_GUIDE.md) | Scheduled tasks | Minimizing token use in automated tasks |
 | 07 | [Task Self-Improvement](./07_TASK_LEARNING_GUIDE.md) | Scheduled tasks | Tasks that learn and improve over time |
 | 08 | [Self-Improvement Template](./08_SELFIMPROVE_TEMPLATE.md) | Scheduled tasks | Merged into Guide 07 (Part 9) — kept as a pointer stub |
-| 09 | [Multi-Task Orchestration](./09_MULTI_TASK_ORCHESTRATION.md) | Power users | Coordinating tasks with shared state and dependencies |
+| 09 | [Multi-Task Orchestration](./09_MULTI_TASK_ORCHESTRATION.md) | Power users | Coordinating tasks with shared state and dependencies; routing delegated work across model tiers |
 | 10 | [Cost & Performance](./10_COST_PERFORMANCE.md) | Scheduled tasks | Tracking costs and finding expensive operations |
 | 11 | [Git Integration](./11_GIT_INTEGRATION.md) | Power users | Version control for your assistant's state |
 | 12 | [Security](./12_SECURITY.md) | All | Credential hygiene, MCP trust, safe automation |
@@ -152,6 +152,7 @@ The installable skills bundled in `skills/` are listed below. Install only the o
 | `backlog` | Portable backlog manager — prioritised work items, grooming, decision logging |
 | `policies-validator` | Tiered company-policy guardrail (T1 block / T2 alert / T3 soft guidance) — ships as a template; fill the Policy Registry before use |
 | `html-report` | Generates polished, self-contained HTML reports from task output (Guide 19 skeleton bundled) |
+| `dispatch` | Routes delegated work — subagents, workflow stages, scheduled tasks — to the right model tier and effort, with an escalation ladder and per-project overrides (Guide 09 §Model-Aware Dispatch) |
 
 ---
 
@@ -166,6 +167,7 @@ The copy-paste starting points in `templates/`:
 | `AI-ASSISTANT_TEMPLATE/` | Full personal business assistant — email, calendar, Teams, daily briefings |
 | `PMO_TEMPLATE/` | Programme workspace with risk register, action tracker, and decision log |
 | `ACCOUNT_INSTRUCTIONS_TEMPLATE.md` | The two account-level instruction fields (preferences + Cowork-wide), ready to fill and paste |
+| `AGENT_STARTER_PACK/` | Four model-pinned Claude Code subagents (scout, builder, verifier, researcher) — the structural binding for the `dispatch` skill |
 
 ---
 

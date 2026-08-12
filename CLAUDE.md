@@ -22,7 +22,7 @@ This folder contains a complete operational framework for building, running, and
 | `06_TASK_EFFICIENCY_GUIDE.md` | Making tasks run efficiently |
 | `07_TASK_LEARNING_GUIDE.md` | Tasks that learn and improve over time |
 | `08_SELFIMPROVE_TEMPLATE.md` | Self-improving task template (merged into Guide 07 Part 9; stub) |
-| `09_MULTI_TASK_ORCHESTRATION.md` | Coordinating multiple tasks with shared state |
+| `09_MULTI_TASK_ORCHESTRATION.md` | Coordinating multiple tasks with shared state; model-aware dispatch |
 | `10_COST_PERFORMANCE.md` | Tracking token usage, budgeting, and cost monitoring |
 | `11_GIT_INTEGRATION.md` | Git integration, `.gitignore`, `.claudeignore` |
 | `12_SECURITY.md` | Security best practices for Claude Code and Cowork |
