@@ -10,7 +10,7 @@
 
 - Be direct and structured — use tables and register formats where appropriate
 - No emojis unless asked
-- Always reference register IDs (R-##, ACT-##, D-##, DEC-##) when discussing tracked items
+- Always reference register IDs (R-##, ACT-<Cat>-##, D-##, DEC-##) when discussing tracked items
 
 ## Before starting any task
 Read `PROJECT_GUIDE.md` in this folder. It maps every folder and file in the project, tells you what is read-only vs. updatable, and is the authoritative guide for navigating this project.
@@ -41,24 +41,24 @@ Read `PROJECT_GUIDE.md` in this folder. It maps every folder and file in the pro
 
 - **New or updated Risk (R-##):**
   - Does it stem from an open Dependency? → add the D-## link in the Risk entry and confirm the Dependency entry references this risk.
-  - Is there an Action tracking its mitigation? → add the ACT-## link in the Risk entry and confirm the Action entry references this risk as its source.
+  - Is there an Action tracking its mitigation? → add the ACT-<Cat>-## link in the Risk entry and confirm the Action entry references this risk as its source.
   - Does the KB contain relevant context? → add the KB §# reference in the Risk entry.
-  - Is the risk significant enough to require a new Action? → if yes, create ACT-## and link both ways.
+  - Is the risk significant enough to require a new Action? → if yes, create ACT-<Cat>-## and link both ways.
 
 - **New or updated Dependency (D-##):**
   - Does an unresolved dependency drive an existing Risk? → add/update the "Linked dependencies" field in that Risk entry.
-  - Is there an Action tracking resolution of this dependency? → link ACT-## in the Dependency entry; confirm the Action references the Dependency as its source.
+  - Is there an Action tracking resolution of this dependency? → link ACT-<Cat>-## in the Dependency entry; confirm the Action references the Dependency as its source.
   - If no tracking Action exists for an open/high-priority Dependency, consider creating one.
 
-- **New or updated Action (ACT-##):**
+- **New or updated Action (ACT-<Cat>-##):**
   - What is its source? → ensure the source (R-##, D-##, or DEC-##) is recorded in the Action entry and that the source item references this Action.
   - If the Action is marked Done or Blocked, check whether the linked Risk or Dependency status should also change.
 
 - **New or updated KB entry (§#):**
   - Does the insight reveal or strengthen an existing Risk? → add the KB §# reference to that Risk entry.
   - Does it imply a new Risk not yet registered? → consider creating R-## and linking back to the KB section.
-  - Does it imply a new Dependency or Action? → create D-## or ACT-## as appropriate and link to the KB section.
+  - Does it imply a new Dependency or Action? → create D-## or ACT-<Cat>-## as appropriate and link to the KB section.
 
 - **New or updated Decision (DEC-##):**
   - Does it close, supersede, or change the status of any open Actions or Risks? → update those entries to reflect the decision.
-  - Does it introduce new Actions required to implement it? → create ACT-## entries and link them to the DEC-##.
+  - Does it introduce new Actions required to implement it? → create ACT-<Cat>-## entries and link them to the DEC-##.

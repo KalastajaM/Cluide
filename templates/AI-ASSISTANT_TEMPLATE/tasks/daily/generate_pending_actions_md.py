@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 generate_pending_actions_md.py
-Converts Assistant-Task/pending_actions.json → Actions/PENDING_ACTIONS.md
+Converts tasks/daily/pending_actions.json → Actions/PENDING_ACTIONS.md
 
 Replaces Claude's manual Step 6 (markdown generation) — runs as a Python
 subprocess, consuming zero Claude tokens for this deterministic transformation.
@@ -11,7 +11,7 @@ Usage:
     python3 generate_pending_actions_md.py --json /path/to/pending_actions.json --output /path/to/PENDING_ACTIONS.md
 
 Paths default to siblings of this script's location:
-    <AI-Assistant>/Assistant-Task/pending_actions.json
+    <AI-Assistant>/tasks/daily/pending_actions.json
     <AI-Assistant>/Actions/PENDING_ACTIONS.md
 """
 

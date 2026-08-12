@@ -16,7 +16,9 @@ This is the inverse of `tasks/review-tasks.md`. Together they form a two-way mai
 | `review-tasks.md` | A Cluide **guide** changed → flag the tasks/skills/templates that drifted out of sync |
 | `harvest-from-projects.md` (this task) | A live **project** evolved → flag the patterns Cluide doesn't yet capture |
 
-**Hard rule:** Cluide is a public, content-free framework. Never import project-specific content
+## Hard rules
+
+Cluide is a public, content-free framework. Never import project-specific content
 verbatim. Only the *shape* of a pattern crosses over — every candidate passes the redaction gate in
 Step 3 before it can be proposed.
 

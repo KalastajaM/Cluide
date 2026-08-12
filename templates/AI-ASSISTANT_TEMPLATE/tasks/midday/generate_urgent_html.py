@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
 generate_urgent_html.py
-Generates Actions/ACTIONS_URGENT.html from UrgentScan-Task/urgent_data.json.
+Generates Actions/ACTIONS_URGENT.html from tasks/midday/urgent_data.json.
 
 Replaces Claude's manual Step 5B — runs as a Python subprocess, consuming
 zero Claude tokens for HTML rendering.
 
 Usage (from any directory):
-    python3 /path/to/UrgentScan-Task/generate_urgent_html.py
+    python3 /path/to/tasks/midday/generate_urgent_html.py
     python3 generate_urgent_html.py --data /path/to/urgent_data.json
     python3 generate_urgent_html.py --output /path/to/ACTIONS_URGENT.html
 """
@@ -27,8 +27,8 @@ USER_TIMEZONE_UTC_OFFSET_HOURS = 2         # Fallback offset if zoneinfo unavail
 # ============================================================
 
 # ─── Path resolution ──────────────────────────────────────────────────────────
-SCRIPT_DIR  = Path(__file__).resolve().parent   # UrgentScan-Task/
-AI_ROOT     = SCRIPT_DIR.parent                  # AI-Assistant/
+SCRIPT_DIR  = Path(__file__).resolve().parent   # tasks/midday/
+AI_ROOT     = SCRIPT_DIR.parent.parent           # AI-Assistant/
 ACTIONS_DIR = AI_ROOT / "Actions"
 HISTORY_DIR = ACTIONS_DIR / "History"
 

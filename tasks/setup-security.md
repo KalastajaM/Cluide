@@ -198,7 +198,7 @@ Append to `.gitignore` (create if missing):
 .env
 .env.*
 *.env
-.claude/settings.json
+.claude/settings.local.json
 credentials.json
 token.json
 *.oauth

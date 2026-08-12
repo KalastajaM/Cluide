@@ -150,6 +150,9 @@ Operational signals:
 - Is the same section of KNOWLEDGE_SUMMARY.md being rewritten every run? → Consider a structural improvement.
 - Did any file operation fail? → Log as known issue.
 
+Append each lesson extracted above as a dated one-liner to `LESSONS.md` — the append-only reasoning
+history the file map lists.
+
 ### B. Refactor Trigger Check
 
 | Trigger | Condition | Action |

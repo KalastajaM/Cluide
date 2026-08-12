@@ -12,9 +12,9 @@
 
 | File | Agent | Model | Effort | Role |
 |---|---|---|---|---|
-| `scout.md` | scout | haiku | low | Bulk reading, searching, extraction, classification. Read-only. |
+| `scout.md` | scout | haiku | low | Bulk reading, searching, extraction, classification. Instructed read-only (Bash granted for inspection commands). |
 | `builder.md` | builder | sonnet | (default) | Implementing well-specified changes and drafts. |
-| `verifier.md` | verifier | opus | high | Adversarial checking of other agents' output. Read-only, cannot spawn. |
+| `verifier.md` | verifier | opus | high | Adversarial checking of other agents' output. Instructed read-only (Bash for checks), cannot spawn. |
 | `researcher.md` | researcher | sonnet | (default) | Web research legwork; returns findings with sources. |
 
 ## Install

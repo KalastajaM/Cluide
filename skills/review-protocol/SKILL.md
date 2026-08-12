@@ -9,7 +9,8 @@ description: >
   opinion", "what's wrong with this", "am I missing something", "tell me honestly", "poke holes in
   this", "I think X but check me", "stress-test this plan", or "are you just agreeing with me?". Also
   use when reconciling two independent reviews of the same artefact, or when building a review step
-  into a task or workflow that someone intends to rely on.
+  into a task or workflow that someone intends to rely on. For optimizing a Cowork task or project
+  definition (speed, tokens, structure), load `cowork-optimizer` instead.
 ---
 
 # Review Protocol

@@ -1,7 +1,7 @@
 ---
 name: cowork-optimizer
 description: >
-  Analyze and optimize a Cowork task or project to make it run faster, use fewer tokens, reduce unnecessary steps, and improve overall structure. Use this skill whenever the user shares a Cowork task or project and asks to optimize, improve, speed up, refactor, or reduce Claude usage. Also trigger when the user says things like "make this more efficient", "this task is slow", "can we trim this down", "review my task", or pastes a Cowork task/project definition and asks for feedback.
+  Analyze and optimize a Cowork task or project to make it run faster, use fewer tokens, reduce unnecessary steps, and improve overall structure. Use this skill whenever the user shares a Cowork task or project and asks to optimize, improve, speed up, refactor, or reduce Claude usage. Also trigger when the user says things like "make this more efficient", "this task is slow", "can we trim this down", "review my task setup", or pastes a Cowork task/project definition and asks for feedback.
 ---
  
 # Cowork Optimizer

@@ -22,6 +22,7 @@ The template is structured as a Cowork project folder. When customized and dropp
 ```
 PMO_TEMPLATE/
 ├── CLAUDE.md                          ← Claude project instructions (rules + routing)
+├── project.md                         ← App-side description/instructions text (Guide 25 fields — paste into the app)
 ├── PROJECT_GUIDE.md                   ← Folder map: what every file is, what to update
 ├── Charter/
 │   └── Initiative_Charter.md          ← Initiative charter (scope, objectives, team, KPIs)

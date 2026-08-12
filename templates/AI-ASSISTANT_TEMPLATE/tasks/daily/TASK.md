@@ -147,6 +147,7 @@ Source of truth. Read in Step 1; write here in a single Write call (`tasks/daily
 **5B Contextual:** For PAs without `resolution_check`: look for evidence in new emails/Teams. Reply sent → RESOLVED; deadline passed with no action → OVERDUE (🔴).
 
 **5C Staleness:** PA open `PA_STALENESS_DAYS`+ days (→ CONFIG.md) with no progress → `"stale": true`, surface in ❓.
+**5C-1 Portal/waiting staleness:** `PORTAL_PENDING` / `WAITING_OTHER` PA with no update and a deadline within `PORTAL_STALENESS_DAYS` days (→ CONFIG.md) → escalate to URGENT (🔴).
 **5D Snoozed:** `snoozed[].reminder_date` within 14 days of today → move to `open`.
 **5D-1 Resolved overflow:** If `resolved_last_30_days` exceeds `RESOLVED_INLINE_CAP` (→ CONFIG.md), move the excess (oldest `resolved_date` first) to `resolved_archive.json` (`archived_resolved` array) and write both files.
 
