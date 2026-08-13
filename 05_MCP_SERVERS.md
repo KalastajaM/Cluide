@@ -142,7 +142,7 @@ A knowledge-graph memory server: Claude stores entities, relations, and observat
 
 ### Claude in Chrome
 
-The Claude in Chrome MCP server (`mcp__Claude_in_Chrome__*`) gives Claude full control of your browser — navigating pages, clicking, filling forms, taking screenshots, reading page content, and extracting data. It is installed via the Claude browser extension (Chrome Web Store) and exposes a rich tool set that goes well beyond passive page reading.
+The Claude in Chrome MCP server gives Claude full control of your browser — navigating pages, clicking, filling forms, taking screenshots, reading page content, and extracting data. It is installed via the Claude browser extension (Chrome Web Store) and exposes a rich tool set that goes well beyond passive page reading.
 
 Key tools: `navigate`, `read_page`, `get_page_text`, `find`, `left_click`, `form_input`, `javascript_tool`, `screenshot`, `tabs_create`, `tabs_context`
 
@@ -152,6 +152,12 @@ Key tools: `navigate`, `read_page`, `get_page_text`, `find`, `left_click`, `form
 - You want Claude to extract structured data from a live web interface
 
 **Limitation:** Browsers are granted at "read" tier in computer use (see Computer Use below) — if you need to click or type in a browser, use the Claude in Chrome MCP rather than the computer use MCP.
+
+**A note on the tool namespace.** The prefix these tools appear under is not stable across surfaces — a Cowork session sees `mcp__claude-in-chrome__*`, and other surfaces have exposed a differently cased variant. A skill that hard-codes the string will break silently when it is wrong, so read the namespace from your own tool list before writing it into a skill, and re-check it after an extension or app update.
+
+**The extension is also a Cowork surface.** As of August 2026 the Claude in Chrome side panel runs a full Cowork session rather than a browser-only chat: the skills, connectors and plugins you have configured elsewhere are available in it, and the session persists to your history, so work started in the browser can be picked up in the desktop or mobile app and the other way round. That turns the extension into a decision about *where a session runs*, not only about which tool drives the browser — and it makes the browser a sensible home for the multi-step web work described above, since the session that scrapes a vendor portal is the same one that holds your spreadsheet skill.
+
+Two limits shape when that is the right choice. It runs in Chrome only: other Chromium browsers and mobile are not supported. And working with local files still goes through the desktop app, so a browser session reaches your project folder over that bridge or not at all — the failure mode described in [Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md) applies here unchanged. *Verified August 2026. Availability differs by plan and was still rolling out at the time of writing; re-verify against the current product rather than trusting this paragraph's timing.*
 
 Configure by installing the Claude browser extension from the Chrome Web Store and connecting it in your Claude settings.
 
