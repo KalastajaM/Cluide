@@ -7,7 +7,7 @@
 > **Giving this guide to Claude:**
 > "Read 20_INTERACTIVE_PROMPTING.md and apply the patterns here to help me set up / improve / debug [my workflow / this task / this skill]."
 
-A note on surfaces: AskUserQuestion dialogs, plan mode, `/clear`, `/compact`, and subagents are Claude Code features. In Cowork, Claude asks clarifying questions in plain text instead of structured dialogs, and context hygiene means starting a fresh conversation rather than clearing the current one. The prompting patterns themselves apply everywhere.
+A note on surfaces: AskUserQuestion dialogs, plan mode, `/clear`, `/compact`, and subagents are Claude Code features. In Cowork, Claude asks clarifying questions in plain text instead of structured dialogs, and context hygiene means starting a fresh conversation rather than clearing the current one. Cowork itself now runs in more than one place — the desktop app, the web and mobile apps, and since August 2026 the Chrome side panel ([Guide 05](./05_MCP_SERVERS.md)) — and one session can move between them, so the distinction that matters for these patterns is Claude Code versus Cowork, not which window you are typing in. The prompting patterns themselves apply everywhere.
 
 ---
 
