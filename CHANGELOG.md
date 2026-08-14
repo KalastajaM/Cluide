@@ -6,8 +6,9 @@ The **consumed surface** — dimension numbers in `tasks/analyze-project-referen
 
 ## [1.2.0] — 2026-08-14
 
-Nineteen pull requests since v1.1.0 (#12–#30). **The consumed surface grew:** guide 28 was
-added, and no number was renumbered or reused.
+Eighteen content pull requests since v1.1.0 (#12–#28, #30), plus the changelog PRs that carry
+this section. **The consumed surface grew:** guide 28 was added, and no number was renumbered or
+reused.
 
 ### Added
 
