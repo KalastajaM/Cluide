@@ -76,7 +76,28 @@ behind the remote or behind another machine/session.
 ## Releases and tags
 
 Solo projects version with **tags on main**, not release branches:
-`git tag -a v1.2.0 -m "..." && git push origin v1.2.0`. A GitHub release on top
+`git tag -a v1.2.0 -m "..." && git push origin v1.2.0`.
+
+Three ordering rules, each of which has cost a re-done release:
+
+- **Tag only a commit that is already on the trunk in its final form.** Where
+  the trunk squash-merges, the merged commit is a *new* sha, so a tag created
+  on the pre-merge branch points at a commit the trunk never reaches — and
+  under branch protection that tag cannot be fixed by pushing the branch. Land
+  the PR, pull, then tag the merged commit.
+- **Never push a branch and a tag in one command.** `git push origin main
+  v1.2.0` pushes the two refs independently: a protected trunk refuses the
+  branch and the tag lands anyway, publishing a tag pointing at unreachable
+  history. Push the branch, confirm it landed, then push the tag.
+- **Verify a tag by peeling it, not by the push succeeding**: `git ls-remote
+  origin refs/heads/main "refs/tags/vX.Y.Z*"` and check `refs/tags/vX.Y.Z^{}`
+  equals the trunk tip. Deleting and re-pushing a tag nobody has consumed yet
+  is cheap; a wrong tag left in place is not.
+
+On a trunk with branch protection, the release commit — changelog included —
+goes through a PR like any other change. Read the repo profile's Gates field
+before proposing a direct commit to trunk; proposing one on a protected repo
+wastes a round trip and, if a tag rides along, leaves a mess to clean up. A GitHub release on top
 of the tag (`gh release create v1.2.0 --notes "..."`) adds a download page and
 notes — worth it when anyone else consumes the project. Keep a CHANGELOG.md when
 anything downstream consumes the project; update it in the same branch as the

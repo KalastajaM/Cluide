@@ -202,6 +202,16 @@ a decision. Assume the user reads the question cold.
   the user's "done" does not cover. A goal step left in prose reads as
   optional and silently drops; the user then reports "done" in good faith
   with the goal unreached.
+- **One ref per push when any of them can be rejected.** `git push origin main
+  v1.2.0` pushes refs independently — the branch can be refused while the tag
+  lands, which publishes a tag pointing at history the trunk never reaches.
+  Split them, and put the confirming step between.
+- **On device mounts, sweep git locks and prove none remain before handing
+  over** (`find .git -name "*.lock"`, expecting no output). The mount is the
+  user's own working tree, so a lock this session left is one *their* next
+  command dies on — and a `git checkout` that dies on a stale `HEAD.lock` has
+  already rewritten their files, leaving the tree silently on another branch's
+  content. See `references/cowork-git-mechanics.md`.
 - When output must be pasted back, make it self-labelling: put an
   `echo "=== <label> ==="` between commands, or use one command per block —
   a multi-command block produces an unlabelled wall of text the user cannot

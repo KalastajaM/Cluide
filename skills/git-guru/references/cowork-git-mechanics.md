@@ -12,16 +12,35 @@ leaves its lock behind, and the next command refuses to start. The mount does
 allow **moves** — that is the whole trick:
 
 ```bash
-unlock() { find .git -maxdepth 3 -name "*.lock" -type f 2>/dev/null | \
+unlock() { find .git -name "*.lock" -type f 2>/dev/null | \
   while read -r l; do mv "$l" "${l%.lock}.stale-$(date +%s%N)"; done; true; }
 ```
 
 (The find-based version also catches ref locks like
 `refs/heads/<branch>.lock`, `packed-refs.lock` and `config.lock`, any of which
-block their operation just as hard as `index.lock`.)
+block their operation just as hard as `index.lock`. Do not bound it with
+`-maxdepth`: a branch ref lock sits at depth 3 and a namespaced one
+(`refs/heads/feat/x.lock`) at depth 4, and the one you miss is the one that
+wedges the next command.)
 
 - Call `unlock` before **every** git command: `unlock; git add -A`,
   `unlock; git commit -m "..."`, `unlock; git log --oneline -1`.
+- **And sweep again after the last git command of the turn, before handing
+  anything over.** The mount is not a private copy — it is the user's own
+  working tree, so the lock this session left behind is the one *their* next
+  command dies on. Verify with `find .git -name "*.lock"` returning nothing,
+  and treat that check as part of the handover, not as tidiness.
+- **A stranded lock does not just block — it can silently revert the user's
+  files.** `git checkout <branch>` updates the working tree first and writes
+  `HEAD` second: hitting a stale `HEAD.lock` at that second step leaves the
+  files rewritten to the target branch's content while `HEAD` still points at
+  the old branch. Nothing errors afterwards. Everything the user runs next —
+  `git tag`, `git commit`, a build — operates on a tree that is not the branch
+  they think they are on. This has published a release tag on the wrong commit.
+  When a user reports a mid-block `cannot lock ref` failure, do not just retry:
+  re-derive `HEAD`, the branch refs, and whether the working tree matches the
+  commit it claims (`git show HEAD:<path> | cmp - <path>`), because the failed
+  command may have half-succeeded.
 - **Shell state does not persist between tool calls** — each device_bash call
   is a fresh `bash -c`. Inline the `unlock` definition and the identity exports
   in every call; a function defined last call does not exist now.
