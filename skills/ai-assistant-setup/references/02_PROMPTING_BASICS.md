@@ -53,7 +53,7 @@ The structural half of context engineering has a name: **progressive disclosure*
 |---|---|---|
 | Skill ([03](./03_SKILLS.md)) | the `description` | `SKILL.md`, then `references/` |
 | Scheduled task ([06](./06_TASK_EFFICIENCY_GUIDE.md)) | `TASK.md` | `TASK_REFERENCE.md`, `LESSONS.md` |
-| Project ([24](./24_PROJECT_FOLDER_STRUCTURE.md)) | `CLAUDE.md` | the files it points at |
+| Project ([24](./24_PROJECT_FOLDER_STRUCTURE.md)) | `CLAUDE.md` | `CLAUDE_REFERENCE.md` ([01](./01_CLAUDE_MD.md)), then the files it points at |
 | Notes ([28](./28_SECOND_BRAIN.md)) | `index.md` | the individual notes |
 | Data ([14](./14_PERSONAL_DATA_LAYER.md)) | a feeder script's compact output | the raw source, never directly |
 
