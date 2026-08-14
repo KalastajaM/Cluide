@@ -23,3 +23,10 @@ token.json
 
 # Point-in-time review artifacts — keep local, same rule as REVIEW_*.md
 GUIDE_REVIEW_FEEDBACK.md
+
+# Editor state that has to sit at the repo root rather than under development/
+.obsidian/
+
+# Python bytecode caches, generated beside the template task scripts
+__pycache__/
+*.pyc
