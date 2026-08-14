@@ -147,6 +147,33 @@ This pattern applies whenever a project manages two or more linked registers. Th
 
 ---
 
+## When CLAUDE.md Cannot Be Short: the reference companion
+
+The section above removes what does not belong. It does not help with the harder case: rules that
+genuinely belong in CLAUDE.md, apply rarely, and are expensive to get wrong. "Never cite a section
+number from memory — use the verified map" is not clutter, and deleting it is not an option, but it
+earns its always-loaded cost only in the sessions that cite one.
+
+Split the file rather than choosing between a bloated CLAUDE.md and a missing rule. Standing rules and
+the working set stay in `CLAUDE.md`; situational material moves to a `CLAUDE_REFERENCE.md` beside it;
+and the parent keeps a pointer at the exact place the rule would have been, naming the trigger rather
+than the topic:
+
+> **Before citing any section number, read `CLAUDE_REFERENCE.md` § Citation Map.** Do not cite from
+> memory.
+
+The pointer is what makes this work. A companion file with no triggers in the parent is a file nobody
+opens, and a trigger written as "see the reference file for more detail" is one nobody acts on. Write
+the condition under which reading is mandatory.
+
+This is the project layer of progressive disclosure ([Guide 02](./02_PROMPTING_BASICS.md) §
+Progressive disclosure) — the same split as `SKILL.md` → `references/` and `TASK.md` →
+`TASK_REFERENCE.md`. Use it where a project is genuinely complex: a long-running case file, a
+regulated domain, a codebase with real invariants. Do not use it to avoid pruning. A CLAUDE.md that is
+long because nobody maintained it needs the *Maintenance* section below, not a second file.
+
+---
+
 ## Maintenance
 
 CLAUDE.md should evolve. When you correct the assistant on a behaviour repeatedly, that correction belongs in CLAUDE.md. Common triggers:
