@@ -46,12 +46,15 @@ For each approved move, in one unit of work:
 1. Move (or rename) the file. Prefer a history-preserving move if the project is under git.
 2. Rewire every reference to it: paths in `CLAUDE.md`, the README file map, skills, tasks, and cross-file links on both sides. A move without its rewires is a dead reference.
 3. Prefer archiving over deleting: move superseded files into an `[ARCHIVE]`/`_archive/` folder rather than removing them.
+4. **Record the move in a durable old→new mapping** inside the project — a move-log file in the archive folder, appended as you go. The approved table from Step 3 lives in a session; the log outlives it. It is what makes a reference missed on the day repairable later rather than lost.
 
 Apply only the approved rows. If applying reveals something the plan missed, stop and present a revised plan rather than improvising.
 
 ### Step 6 — Verify
 
 Confirm no dead references remain (grep the project for the old paths), the file map in `CLAUDE.md` matches the new tree, and any scheduled tasks or skills still resolve. If the project runs a workflow, do a dry read-through to confirm it still finds its inputs. Report what moved and confirm the tree is clean. Once verified, retire the restore point: a git snapshot stays in history, so just delete any zip you created.
+
+**Then check outside the project.** Guide 23 makes the owner responsible for its consumers: a canonical path another project cites is a contract, and a restructure breaks it silently, because every grep inside the moving project passes. List the projects that reference this one, mount them, and grep each for the old paths, fixing what you find in the same change. Where a consumer cannot be reached this session, say so explicitly and point at the move log — do not report the reorganisation clean. A consumer nobody checked is not a consumer that passed.
 
 ## Output
 
