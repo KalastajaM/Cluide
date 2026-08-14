@@ -39,8 +39,8 @@ or audit task rather than re-deriving it here.
 > dimensions there are — should be read from here rather than copied into the consumer.
 
 ### 1. Project type & structure — guides 13, 18, 24 → `onboard-project` / `reorganize-project`
-- **Healthy:** definition files and state files live together and both tools can read them; the layout matches the Guide 18 "full picture" for the project's type; definitions, state and outputs each have a home, and the layout has held up as the project grew (Guide 24).
-- **Checks:** is there a coherent `.claude/` (or Cowork task) layout? Are state files (`RUN_LOG.md`, `IMPROVEMENTS.md`) co-located with definitions? Any orphaned or duplicated config? Are generated outputs accumulating at the root instead of in their own folder? Do recurring files of the same kind share a format? If a restructure is warranted, recommend `reorganize-project` rather than ad-hoc moves.
+- **Healthy:** definition files and state files live together and both tools can read them; the layout matches the Guide 18 "full picture" for the project's type; definitions, state and outputs each have a home, and the layout has held up as the project grew (Guide 24); where material reaches the project outside a chat, there is one intake folder and it is empty at rest.
+- **Checks:** is there a coherent `.claude/` (or Cowork task) layout? Are state files (`RUN_LOG.md`, `IMPROVEMENTS.md`) co-located with definitions? Any orphaned or duplicated config? Are generated outputs accumulating at the root instead of in their own folder? Do recurring files of the same kind share a format? Does inbound material that arrives outside a chat (scans, exports, downloads, files handed over by someone else) have a named landing place, or is it accumulating at the root? If there is an intake folder, does it have permanent residents, and does `CLAUDE.md` say what Claude may file where? **N/A** for the intake checks where every input arrives through a session. If a restructure is warranted, recommend `reorganize-project` rather than ad-hoc moves.
 
 ### 2. CLAUDE.md quality — guides 01, 16, 02 → `setup-claude-md` / `audit-claude-md`
 - **Healthy:** present, lean (~30 lines of real content), has Identity / Communication / Critical Rules, no dead or contradictory rules, current.
@@ -100,7 +100,7 @@ or audit task rather than re-deriving it here.
 
 ### 16. LLM wiki & personal knowledge layer — guides 15, 28 → `setup-wiki`
 - **Healthy (knowledge-base projects only):** sources / wiki / schema layers, ingest-query-lint operations, index + log conventions. Where the project holds general notes rather than one curated domain, the second-brain shape applies instead (Guide 28): an index file cheap enough to always load, an inbox that is emptied rather than managed, homes sorted by when a note stops being relevant, and a review pass that prunes and resolves contradictions.
-- **Checks:** a knowledge project using flat notes instead of a compounding wiki? A notes folder with no index, so any question loads the whole tree? An inbox or `unsorted/` with permanent residents? Notes contradicting each other with nothing marked superseded? Curated domain material and general working notes mixed in one root (Guide 28 — the two need different handling)? **N/A** otherwise.
+- **Checks:** a knowledge project using flat notes instead of a compounding wiki? A notes folder with no index, so any question loads the whole tree? An inbox or `unsorted/` with permanent residents (a project-level intake folder is dimension 1; this is the knowledge layer's own inbox)? Notes contradicting each other with nothing marked superseded? Curated domain material and general working notes mixed in one root (Guide 28 — the two need different handling)? **N/A** otherwise.
 
 ### 17. Helper-app patterns — guide 22 → guidance only
 - **Healthy (small local tools only):** domain invariant + helper index + verification gates in `CLAUDE.md`, tight permission allowlist.
