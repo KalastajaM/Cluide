@@ -33,6 +33,18 @@ workflow stages, or scheduled tasks. These overrides refine the global routing p
 - Known-safe on the cheap tier: [bulk archetypes proven in this project — e.g. receipt OCR, file inventory sweeps]
 - Log dispatches to `ROUTING_LOG.md` [keep this line only if the project has one]
 
+# Incoming
+
+*Optional — delete this section and the `Incoming/` folder if all material reaches this
+project through chat.*
+
+- `Incoming/` holds files that arrived outside a session and have not been filed yet.
+- [Check it at the start of every session] / [only when I ask] — pick one and delete the other.
+- File by opening the file, not by trusting its name; rename to this project's convention.
+- Propose destinations before moving anything [delete this line if Claude may file directly].
+- Never delete from `Incoming/` — anything that does not belong goes to the archive.
+- Legal destinations: [list them, e.g. `Knowledge/`, `Profile/`, `_archive/`].
+
 # Context Loading
 
 Read `Profile/PROFILE_SUMMARY.md` at the start of every session. See `README.md` for the full file map and lookup patterns.

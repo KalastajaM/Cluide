@@ -2,7 +2,7 @@
 
 > A second brain is the layer above your projects: the notes, clippings, decisions and reference material that belong to your working life rather than to any one piece of work. The classic advice for building one — capture everything, organise it into buckets, distil as you read, review weekly — was written for a reader who cannot search their own filing cabinet. Claude can. This guide covers what survives that change, what stops being worth the effort, and how to build the layer so it stays useful instead of becoming an archive nobody opens.
 
-> **Companion guides:** [Guide 15](./15_LLM_WIKI.md) is the closest neighbour and the boundary is the point. Guide 15 builds a wiki *about a subject* — one domain, deliberately curated, where every new source enriches existing pages. This guide covers the layer *about your work* — many domains, mostly uncurated, where the job is triage rather than synthesis. Most people need both, and mixing them ruins both. [Guide 04](./04_MEMORY_AND_PROFILE.md) is the third neighbour: memory holds facts about *you* that Claude needs in order to behave correctly, not material you want to consult. [Guide 24](./24_PROJECT_FOLDER_STRUCTURE.md) is the layout *inside* one project; this is the layer above them. [Guide 23](./23_MULTI_PROJECT_SETUPS.md) decides when knowledge earns its own project. [Guide 14](./14_PERSONAL_DATA_LAYER.md) covers structured personal data, which does not belong in notes at all.
+> **Companion guides:** [Guide 15](./15_LLM_WIKI.md) is the closest neighbour and the boundary is the point. Guide 15 builds a wiki *about a subject* — one domain, deliberately curated, where every new source enriches existing pages. This guide covers the layer *about your work* — many domains, mostly uncurated, where the job is triage rather than synthesis. Most people need both, and mixing them ruins both. [Guide 04](./04_MEMORY_AND_PROFILE.md) is the third neighbour: memory holds facts about *you* that Claude needs in order to behave correctly, not material you want to consult. [Guide 24](./24_PROJECT_FOLDER_STRUCTURE.md) is the layout *inside* one project; this is the layer above them, and its `incoming/` folder is a per-project intake queue rather than the inbox described here. [Guide 23](./23_MULTI_PROJECT_SETUPS.md) decides when knowledge earns its own project. [Guide 14](./14_PERSONAL_DATA_LAYER.md) covers structured personal data, which does not belong in notes at all.
 
 > **Giving this guide to Claude:**
 > "Read 28_SECOND_BRAIN.md. Here is what I currently keep and where [describe it]. Tell me whether a second brain layer is worth building for me, and if so, what the four homes and the index should look like."
@@ -90,6 +90,8 @@ Practical capture routes: a browser clipper writing markdown into `inbox/`, a pl
 
 **The one rule: the inbox is emptied, not managed.** An inbox with permanent residents is not an inbox, it is a `resources/` folder with a misleading name — and once it becomes one, capture stops feeling free and the habit decays. Empty it on a fixed cadence (weekly is enough for most people) and accept deletion as the most common outcome. If you cannot empty it weekly, you are capturing too much; tighten the filter from the first section rather than extending the cadence.
 
+A project folder can have an intake folder of its own (Guide 24 calls it `incoming/`, and the emptying rule there is this one). The two are not interchangeable. Anything landing in a project's `incoming/` is already known to belong to that project, so triage only picks a folder; anything landing here has no home yet, and triage may well decide it should not have one. Give them different names and the ambiguity disappears.
+
 ---
 
 ## Triage and Distillation
@@ -162,6 +164,7 @@ Guide 15's lint pass is the same instinct applied to a curated domain wiki, and 
 | A note about your work, your decisions, or something you read | Second brain | this guide |
 | Structured data with values that change (holdings, transactions, measurements) | Data layer, behind a feeder script | [14](./14_PERSONAL_DATA_LAYER.md) |
 | A working file belonging to one active piece of work | That project's folder | [24](./24_PROJECT_FOLDER_STRUCTURE.md) |
+| Material that arrived outside a chat and belongs to one project, not yet filed | That project's `incoming/`, briefly | [24](./24_PROJECT_FOLDER_STRUCTURE.md) |
 | Knowledge several projects consume and none owns | Its own project | [23](./23_MULTI_PROJECT_SETUPS.md) |
 
 The two boundaries that get violated most: putting facts about yourself into the notes layer, where nothing reads them at the moment they are needed, and letting the second brain accumulate structured data as prose, where it goes stale invisibly and cannot be computed with.

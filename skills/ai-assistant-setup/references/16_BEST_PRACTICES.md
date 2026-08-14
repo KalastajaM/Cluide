@@ -86,6 +86,9 @@ Well-designed skills and templates are useful to other people, not just you. Whe
 **One folder per tracked entity, the same artifact set in each.**
 When a workflow tracks many like items — deals, job applications, cases, properties — give each its own folder holding the same named set of working files (the brief, the analysis, the draft, the final), created from a template and pointed to by a row in a central tracker. The tracker is the index; the folder is the workspace. Consistent per-entity structure means Claude always knows where each artifact lives, and adding a new item is a copy-the-template operation rather than an improvisation.
 
+**Give inbound material one intake folder, and keep it empty.**
+Anything that reaches a project outside a chat — scans, downloads, phone photos, an email export, files someone else drops in a shared folder — needs a named landing place, or the project root becomes one. A single `incoming/` folder solves it, on four conditions: it is emptied rather than managed, Claude files by opening the file rather than trusting the filename, destinations are proposed before anything moves (these are your documents, and a wrong move is expensive to spot later), and material that does not belong is archived rather than deleted. [Guide 24](./24_PROJECT_FOLDER_STRUCTURE.md) has the full pattern, including why this is not the same folder as a second brain's inbox.
+
 ---
 
 ## Knowing When to Use Claude
@@ -162,4 +165,5 @@ A setup that grows without pruning becomes a liability. These practices keep thi
 19. Use `AskUserQuestion` buttons for bounded-choice questions; plain text for open-ended ones
 20. Open a file before citing it — never attribute content you haven't read this session
 21. One folder per tracked entity, the same artifact set in each, indexed by a central tracker
+22. Give inbound material one intake folder and keep it empty: file by content rather than filename, propose destinations before moving, archive rather than delete
 

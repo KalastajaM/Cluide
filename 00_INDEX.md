@@ -333,7 +333,7 @@ Covers: when to split one project into linked projects (and when not to), how to
 
 *How to lay out one project's folders so Claude always finds things, and keep the layout from rotting as the project grows. Also covers standard formats for recurring files. The single-project counterpart to Guide 23.*
 
-Covers: the standard five-home layout (instructions, source of truth, generated outputs, scratch, archive), one folder per tracked entity indexed by a central tracker, documenting the layout as a file map, growth hygiene (outputs out of the root, archive don't delete, `_LATEST`/`[ARCHIVE]` naming, splitting oversized files), standard formats for recurring file kinds, and when structure should become linked projects (Guide 23).
+Covers: the standard layout (instructions, source of truth, generated outputs, scratch, archive, plus an intake folder when material arrives outside a chat), the `incoming/` queue and its four rules — emptied not managed, filed by content not filename, destinations proposed before moving, archived never deleted — and why it is not the second brain's inbox, one folder per tracked entity indexed by a central tracker, documenting the layout as a file map, growth hygiene (outputs out of the root, archive don't delete, `_LATEST`/`[ARCHIVE]` naming, splitting oversized files), standard formats for recurring file kinds, and when structure should become linked projects (Guide 23).
 
 **Use this when:** a project is getting messy as it grows, or you want a predictable structure new projects can start from.
 

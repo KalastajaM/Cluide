@@ -1,20 +1,38 @@
 # 24 — Project Folder Structure
 
-> How to lay out a single project's folders so Claude always knows where things live, and how to keep that layout from rotting as the project grows. For structure *across* several projects, see Guide 23; this guide is about one project's internal shape.
+> How to lay out a single project's folders so Claude always knows where things live, and how to keep that layout from rotting as the project grows. For structure *across* several projects, see Guide 23; for the note layer sitting above all of them, see Guide 28. This guide is about one project's internal shape.
 
 A project's folder layout is an interface Claude reads every session. When it is predictable, Claude finds the right file on the first try and puts new files where they belong. When it drifts (outputs piling at the root, three versions of the same document, a `notes` folder that became a junk drawer), Claude wastes context hunting and starts guessing. Structure is cheap to get right early and expensive to retrofit, so it is worth a small standard.
 
 ## The standard layout
 
-Every project, whatever its purpose, wants a home for each of these five kinds of thing. The names matter less than having exactly one obvious place for each:
+Every project, whatever its purpose, wants a home for each of these kinds of thing. The names matter less than having exactly one obvious place for each:
 
 - **Instructions** at the root: `CLAUDE.md` (how Claude should behave here) and, if a human will open the project, `README.md`. These are read first.
 - **Source of truth**: the canonical data or working files the project is actually about. Markdown is the source of truth; see Guide 19.
 - **Generated outputs**: finished deliverables (Word, PPT, PDF, exports) that are produced *from* the source of truth. These live in their own home, not scattered at the root, because they are regenerable and should never be confused with the source.
 - **Scratch / working files**: transient in-progress material, clearly separated so it does not masquerade as a deliverable.
 - **Archive**: old material kept for reference, in a folder that is never read back (see naming below).
+- **Intake**, when material reaches the project outside a chat: one `incoming/` folder where new documents land before anyone has decided where they belong. The only conditional home on this list, and the only one whose correct steady state is empty. See the next section.
 
 Cluide ships four templates (see `00_INDEX.md` for all of them); two are project-layout starting points relevant here: `PROJECT_TEMPLATE/` for a lean assistant-style project (`CLAUDE.md` + `Profile/` + `Knowledge/`), and `PMO_TEMPLATE/` for a richer project with deliverables and registers. Copy whichever is closer rather than inventing a layout.
+
+## Intake: the `incoming/` folder
+
+A project whose material only ever arrives through chat does not need this folder. You attach a file, Claude reads it and writes it to the right home in the same turn, and an intake folder is just a stop the file passes through. It earns its place when material arrives with no session attached to it: scans and downloads, photos from a phone, an email export, a family member or colleague dropping documents into a shared folder, a scheduled task fetching statements. Those files land somewhere. Without a named home, the somewhere is the project root.
+
+Treat it as a queue rather than a home. Four rules keep it one:
+
+- **`incoming/` is emptied, not managed.** Permanent residents mean it has quietly become a `resources/` folder with a misleading name, and once that happens nobody trusts it enough to drop anything in. Clear it on a cadence you will actually keep — weekly for most projects, or at the start of the next session that opens the project.
+- **Filing is proposed, not silent.** Claude is moving *your* files, and a wrong destination is expensive to notice three months later. Have it list what it found and where each item would go before it moves anything, or let it move and leave a short manifest of source and destination. Either works; doing neither is how a document goes missing.
+- **Nothing is deleted out of `incoming/`.** Material that turns out not to belong goes to the archive like everything else in the project. Deletion is a decision to make later, with the file in front of you.
+- **File by content, not by filename.** Routing inbound material through Claude is worth doing precisely because `IMG_4821.pdf` and `Scan_2026-08-14.pdf` say nothing. Claude opens the file, works out what it is, and renames it to the project's convention on the way in. When it cannot tell, the item stays in `incoming/` with a question attached rather than being filed on a guess.
+
+Then say in `CLAUDE.md` what should happen to the folder: which destinations are legal, whether Claude may file without asking or must propose first, and whether it checks the folder every session or only when told. An intake folder nobody has told Claude to look at is a folder that fills up.
+
+Casing follows whatever convention the project already uses — `Incoming/` in a project whose folders are capitalised, `incoming/` in one whose folders are not. The Cluide project templates ship the capitalised form to match their existing layout.
+
+**This is not the second brain's `inbox/` (Guide 28), even though the discipline is nearly identical.** `incoming/` holds material whose destination is inside *this* project, where the only open question is which folder. The second brain's `inbox/` holds material whose destination is your whole working life, and triage there decides whether the item survives at all. If you run both, keeping the two names distinct is worth the small effort, so that "put it in the inbox" has exactly one meaning.
 
 ## Core principles
 
@@ -52,7 +70,7 @@ If the layout is straining because the project is really two purposes sharing a 
 
 ## Short version
 
-1. Give every file kind one obvious home: instructions, source of truth, generated outputs, scratch, archive.
+1. Give every file kind one obvious home: instructions, source of truth, generated outputs, scratch, archive — plus intake, if material reaches the project outside a chat.
 2. Copy a template (`PROJECT_TEMPLATE` or `PMO_TEMPLATE`) instead of inventing a layout.
 3. Keep generated outputs out of the root and separate from their sources.
 4. One folder per tracked entity, same artifact set, indexed by a central tracker.
@@ -60,3 +78,4 @@ If the layout is straining because the project is really two purposes sharing a 
 6. Give each recurring file kind a standard format too, as a template or a documented Format section, kept in one place.
 7. Archive (never delete) into `[ARCHIVE]`/`_archive/` folders that are never read back; mark the active version `_LATEST`.
 8. Split oversized files and junk-drawer folders early; run `reorganize-project` to fix a project that has already drifted.
+9. Route inbound material through one `incoming/` folder: file by content, propose destinations before moving, archive rather than delete, and keep it empty.
