@@ -4,6 +4,100 @@ Cluide is versioned by content event, not on a calendar: a tag marks guides bein
 
 The **consumed surface** — dimension numbers in `tasks/analyze-project-reference.md`, filenames in `tasks/`, and guide numbers — is append-only. Entries below note explicitly when it grows.
 
+## [1.2.0] — 2026-08-14
+
+Seventeen pull requests since v1.1.0 (#12–#28). **The consumed surface grew:** guide 28 was
+added, and no number was renumbered or reused.
+
+### Added
+
+- **Guide 28 — Second Brain.** The personal knowledge layer above all projects (#17). It opens by
+  arguing against building one — most die, and Claude can now read the source systems directly —
+  then gives four tests for what the layer holds that no source system does. Its substantive claim
+  is what changes when an LLM is the reader: topical tags stop earning their keep, distillation
+  becomes a context lever rather than a re-reading aid, capture can be rawer while the inbox rule
+  gets stricter to compensate, and an app database is the one structural mistake that is expensive
+  to reverse. Registered across every touchpoint plus the **Data & knowledge** reading track
+  (14 → 15 → 28); dimension 16 of `tasks/analyze-project-reference.md` was widened rather than
+  renumbered.
+
+- **Progressive disclosure as a named principle.** `02_PROMPTING_BASICS.md` § Context Engineering
+  gained a five-row layer table (skill / task / project / notes / data) naming what is always
+  loaded versus loaded on demand, plus two tests for a wrong layer (#17). The repo already
+  practised this in guides 03, 06, 14, 24 and 28 without saying so. Same change added
+  `05_MCP_SERVERS.md` § The Cost of an Enabled Server and two context-hygiene subsections in
+  `20_INTERACTIVE_PROMPTING.md`.
+
+- **`dispatch` skill — model-aware routing for delegated work** (#19, #23, #24). A routing policy
+  for subagents, workflow stages and scheduled tasks: routing table, escalation ladder,
+  verification economics, batch-based fan-out sizing, and where the effort dial actually exists per
+  surface. Ships with `AGENT_STARTER_PACK` (model-pinned Claude Code agents) and a
+  Dispatch-Overrides section plus `ROUTING_LOG.md` convention in `PROJECT_TEMPLATE`. Registered in
+  Guide 09 § Model-Aware Dispatch, cross-referenced from Guide 10. A live test exposed the
+  policy-skill trigger trap — a playbook skill wins the trigger race and the routing policy is
+  never consulted — so the composition rule is anchored by an always-loaded CLAUDE.md line, not by
+  the skill description alone.
+
+- **Guide 24 § Intake — the `incoming/` folder** (#27). A sixth, conditional home for material that
+  reaches a project outside a chat: scans, downloads, email exports, files handed over by someone
+  else. Four rules keep it a queue rather than a junk drawer — emptied not managed, filed by
+  content rather than filename, destinations proposed before anything moves, archived never
+  deleted. Guide 28 already owned inbox discipline, so the boundary is stated from both sides
+  rather than duplicated: `incoming/` holds material already known to belong to this project;
+  the second brain's `inbox/` holds material with no home yet. Also in this change: a Guide 16
+  practice and Short Version item 22, `Incoming/` in both project templates, and dimension 1 of
+  `tasks/analyze-project-reference.md` now scoring the intake folder.
+
+- **The Chrome side panel as a Cowork surface** (#26). Guides 05, 12 and 20 record that the Claude
+  in Chrome side panel runs a full Cowork session, which makes choosing it a decision about *where
+  a session runs* rather than only which tool drives the browser. Guide 12 § 6 adds browser
+  sessions to the highest-risk injection list and covers the pre-action verification check, quoting
+  Anthropic's stated limit rather than paraphrasing it.
+
+- **`ACCOUNT_INSTRUCTIONS_TEMPLATE`** (#15) and **Guide 25's account layer** (#12): both
+  account-level instruction fields, the non-overlap contract with project-level instructions, and
+  an account-level mode in `tasks/tune-instruction-layers.md` that tests with session-history
+  evidence and subagent probes.
+
+- **Guide 02 § Asking Clarifying Questions** gained the consequence filter — ask only when the
+  answer would materially change the work or the action is hard to reverse, otherwise proceed with
+  stated assumptions — and the self-contained-question rule (#14). **Guide 10 § Model Tier
+  Selection** gained the paragraph on standing instructions routing model choice, and the limit
+  that a session cannot switch its own model (#13).
+
+### Changed
+
+- **The changelog itself is now written at tag time** (#18). The `## [Unreleased]` section is gone
+  and a pull request never edits `CHANGELOG.md`. The failure it fixes: the v1.1.0 roll renamed
+  `[Unreleased]` and never re-created it, both `.github` files kept pointing at a heading that no
+  longer existed, and six consecutive PRs merged without touching the changelog. The whole weight
+  now sits on commit subjects, which is why the merge gate grades a diff against the scope written
+  into the branch's first commit message.
+
+- **`git-guru` handover format** (#22): the self-check must test the goal state, not merely that
+  the last command ran, and every step toward the goal is a command in the block rather than prose.
+  A handover whose decisive step sat in prose let a session report success while the goal was
+  unreached.
+
+- **Public framing** (#21): the README tagline, its What This Is copy and the identical
+  `00_INDEX.md` tagline no longer say "AI assistant".
+
+- **`git-guru` registration** (#25): the skill shipped in v1.1.0 documented in Guide 11 but absent
+  from every discovery surface — now in the README skills table, `00_INDEX.md` (root and bundled)
+  and `CHEATSHEET.md`.
+
+- **Ignore coverage** (#28): `.obsidian/`, `__pycache__/` and `*.pyc` in `.gitignore`; `.obsidian/`
+  in `.claudeignore`. Untracked and unignored in a public repo is one `git add -A` from published.
+
+- **`PMO_TEMPLATE` guardrails** (#16): gates 2 and 3 still carried literal internal stage names
+  while 1 and 4 were already placeholders. The same change dropped the cybersecurity framing from
+  the `00_QUICKSTART.md` about-me example and the Guide 21 worked example, and moved the LICENSE
+  copyright holder to the handle used for every commit identity.
+
+### Fixed
+
+- **Sixteen corrections across tasks, skills and templates** from the 2026-08-12 audit (#20).
+
 ## [1.1.0] — 2026-08-08
 
 ### Added
