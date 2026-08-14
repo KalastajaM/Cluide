@@ -6,7 +6,7 @@ The **consumed surface** — dimension numbers in `tasks/analyze-project-referen
 
 ## [1.2.0] — 2026-08-14
 
-Seventeen pull requests since v1.1.0 (#12–#28). **The consumed surface grew:** guide 28 was
+Nineteen pull requests since v1.1.0 (#12–#30). **The consumed surface grew:** guide 28 was
 added, and no number was renumbered or reused.
 
 ### Added
@@ -78,6 +78,17 @@ added, and no number was renumbered or reused.
   the last command ran, and every step toward the goal is a command in the block rather than prose.
   A handover whose decisive step sat in prose let a session report success while the goal was
   unreached.
+
+- **`git-guru` lock, tagging and handover rules** (#30), each from a failure that actually
+  happened. Sweep git locks as the *last* act before a handover, not only before each command: on a
+  Cowork device mount the session shares the user's working tree, so the lock it leaves is the one
+  their next command dies on — and `git checkout` updates the working tree before it writes `HEAD`,
+  so dying on a stale `HEAD.lock` leaves files on another branch's content with nothing erroring
+  afterwards. Never tag before the merge lands and never push a branch and a tag in one command:
+  the refs go independently, so a protected trunk can refuse the branch while the tag lands on a
+  pre-squash commit nothing reaches. And no `#` comment lines inside a handover block, since
+  interactive zsh runs them as commands and a step written as a comment disappears from what the
+  user actually runs.
 
 - **Public framing** (#21): the README tagline, its What This Is copy and the identical
   `00_INDEX.md` tagline no longer say "AI assistant".
