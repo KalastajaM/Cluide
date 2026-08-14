@@ -202,6 +202,14 @@ a decision. Assume the user reads the question cold.
   the user's "done" does not cover. A goal step left in prose reads as
   optional and silently drops; the user then reports "done" in good faith
   with the goal unreached.
+- **No comment lines inside the block, and no step hidden in one.** Interactive
+  zsh does not treat `#` as a comment: the line errors out, and any instruction
+  carried in a comment (`# merge the open PR first, then:`) vanishes from what
+  the user actually runs. Trailing comments corrupt arguments the same way
+  (`git branch -D old # -D forces` → "unknown switch"). A block holds only
+  commands that are safe to paste top-to-bottom; every explanation, and every
+  step the terminal cannot perform (a GitHub UI merge), goes in prose outside
+  it.
 - **One ref per push when any of them can be rejected.** `git push origin main
   v1.2.0` pushes refs independently — the branch can be refused while the tag
   lands, which publishes a tag pointing at history the trunk never reaches.
