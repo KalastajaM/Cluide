@@ -31,6 +31,7 @@ PMO_TEMPLATE/
 ├── Project Plan/
 │   └── Project_Plan.md               ← Project plan (scope, milestones, timeline)
 ├── Data/                              ← Raw data exports (do not modify)
+├── Incoming/                          ← Intake queue for material arriving outside chat (delete if unused)
 ├── PMO/
 │   ├── Guardrails.md                  ← Claude skill: PMO validation guardrails
 │   ├── Knowledge_Base.md              ← Running knowledge base / institutional memory

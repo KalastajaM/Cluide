@@ -11,6 +11,8 @@
 PROJECT_TEMPLATE/
 ├── CLAUDE.md                    ← Project instructions: who you are, rules, file map
 ├── ROUTING_LOG.md               ← Optional: dispatch log for model routing (delete if unused)
+├── Incoming/
+│   └── README.md                ← Intake queue for material arriving outside chat (delete if unused)
 ├── Profile/
 │   ├── PROFILE_SUMMARY.md       ← Compact digest — read every session (≤ 50 lines)
 │   └── PROFILE_detail.md        ← Full detail: people, projects, patterns, hypotheses
@@ -49,6 +51,7 @@ Open `CLAUDE.md` and replace all `[PLACEHOLDER]` text. Search for `[` to find th
 - **Context** — 2–4 lines describing what this project covers
 - **Critical Rules** — hard constraints only (things that override default behavior)
 - **Dispatch Overrides** — optional; fill in if this project delegates work to subagents or scheduled tasks, delete otherwise
+- **Incoming** — fill in `Incoming/README.md` with the folders Claude may file into, or delete the folder if all material arrives through chat
 - **File Map** — update the table as you add or remove files
 
 ### Step 3 — Seed the Profile
@@ -91,6 +94,7 @@ See `TASK_TEMPLATE/README.md` for full task setup instructions.
 | `Knowledge/INDEX.md` | Index of all topic knowledge files |
 | `Knowledge/[TOPIC].md` | Per-topic file: key facts, decisions, current status, open questions |
 | `ROUTING_LOG.md` | Optional: one line per dispatched subtask, for tuning model routing |
+| `Incoming/` | Optional intake queue: files that arrived outside a chat, waiting to be filed. Always empty at rest — see Guide 24 |
 
 Common lookups:
 - **"What's the status of [project]?"** → `Knowledge/INDEX.md` → relevant `Knowledge/[TOPIC].md`

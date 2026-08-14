@@ -15,6 +15,7 @@
 | Work with the financial model itself | `Financial Model/[PLACEHOLDER: Financial Model Filename].xlsx` | ✅ Main financial model |
 | Access raw source data | `Data/*.csv` (or equivalent) | ❌ Raw source data — do not modify |
 | View or build the project plan | `Project Plan/` | ✅ Work in progress |
+| File new material that arrived outside a chat | `Incoming/` | ✅ Propose destinations, then move and leave the folder empty |
 | Run the cross-reference audit on the registers | `Updater-Task/Task.md` | Follow the task instructions |
 
 ---
@@ -43,6 +44,9 @@ Raw data exports and a normalized file used as input for the financial model.
 
 - **Raw exports** — source data, do not modify.
 - **Normalized data file** — the processed version that feeds into the financial model. Update this when a new export is brought in.
+
+### `Incoming/`
+Intake queue for material that reaches the project outside a chat: exports, scans, documents handed over by someone else. Nothing lives here. Open each file to work out what it is (filenames from scanners and downloads are meaningless), propose a destination before moving it, rename it to the project's convention, and archive rather than delete anything that does not belong. Delete the folder if every input to this project arrives through chat. See Guide 24.
 
 ### `Project Plan/`
 Home for the project plan. Update `Project_Plan.md` (or equivalent) whenever scope, timeline, or milestones change.

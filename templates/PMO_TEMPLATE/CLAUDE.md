@@ -23,6 +23,8 @@ Read `PROJECT_GUIDE.md` in this folder. It maps every folder and file in the pro
 
 **Protected files:** Do not modify `Charter/Initiative_Charter.md` or `PMO/Guardrails.md` unless the user explicitly instructs you to.
 
+**Incoming:** `Incoming/` is an intake queue, not a home. File what is in it by reading each file rather than trusting its name, propose destinations before moving anything, and archive rather than delete. Leave it empty. (Delete this rule and the folder if all material arrives through chat.)
+
 **Financial model:** Whenever the financial model Excel is updated, also update `Financial Model/Model_Summary.md`.
 
 **Knowledge base:** Capture new insights, decisions, and findings in `PMO/Knowledge_Base.md`. This is the project's institutional memory — when in doubt about where to record something, put it here.

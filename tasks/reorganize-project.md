@@ -23,7 +23,7 @@ List the folder tree and classify what exists: instructions, source-of-truth fil
 
 ### Step 2 — Diagnose against the standard
 
-Compare the inventory to Guide 24: which of the five homes (instructions, source of truth, outputs, scratch, archive) are missing or muddled? Which naming and archive conventions are violated? Produce a short findings list.
+Compare the inventory to Guide 24: which of the homes (instructions, source of truth, outputs, scratch, archive, plus intake if material reaches the project outside a chat) are missing or muddled? If the project has an intake folder, is it empty, or has it acquired permanent residents? Which naming and archive conventions are violated? Produce a short findings list.
 
 ### Step 3 — Propose the target layout and get sign-off
 
