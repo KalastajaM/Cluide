@@ -48,6 +48,8 @@ The task instruction file is loaded on every run. Keep it to **~200 lines / ~3K 
 | TASK.md | ~200 target, 250 hard cap | Every run |
 | TASK_REFERENCE.md | any | On demand |
 
+These figures carry a tolerance band. See §6, *Tolerance: enforce the band, not the digit*.
+
 ---
 
 ### 2. Script fixed-format artifact generation
@@ -144,6 +146,14 @@ Trim strategy: compress older entries, remove superseded items, archive resolved
 
 **Run log format and retention:**
 Each `RUN_LOG.md` entry uses the header `## [YYYY-MM-DD] Run #N` and includes a `**Tokens (est.):** ~XK input, ~YK output` line. Keep the last 20 entries in full — [Guide 10](./10_COST_PERFORMANCE.md)'s drift monitoring compares recent runs against runs 16–20, so it needs them. Once the file exceeds ~30 entries, archive older ones to `RUN_LOG_ARCHIVE.md`. Tasks that only ever need to debug the most recent run can keep a `LAST_RUN.md` instead — cheaper, but it gives up cross-run pattern detection and Guide 10's monitoring.
+
+**Tolerance: enforce the band, not the digit.**
+
+Every size figure in this guide, and every one the `audit-*` tasks check against, is a target with a tolerance band of roughly 5%. A 260-line TASK.md is inside the band; a 310-line one is not. Do not raise a finding, block a merge, or restructure a file to shave four lines off a cap. These caps exist to hold down the cost of files that load on every run, and a 2% overshoot does not measurably change that, while treating the number as exact produces findings that are noise — and a check that fires on noise is one people learn to skip.
+
+The band is not licence to drift. A file that lands just inside tolerance twice running is growing, and the answer is the split the cap was pointing at, not a third round of trimming.
+
+**Technical cliffs are hard caps and get no tolerance.** Where a number is enforced by something outside the project — a loader, an API, a context window — one line past it is not slightly worse, it is a different outcome. The instance in this framework is native memory's auto-load limit: only the first 200 lines / 25KB of `MEMORY.md` reaches a session, so line 201 is invisible rather than expensive (see [Guide 04](./04_MEMORY_AND_PROFILE.md)). Treat every externally enforced limit the same way. If you cannot name what enforces a number, it is a target and the band applies.
 
 ---
 
