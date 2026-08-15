@@ -10,7 +10,7 @@ Run one with, for example: `Claude, run tasks/audit-skill.md`.
 - **`audit-*`**: inspect one component read-only against its guide, report findings, then optionally apply approved fixes.
 - **Structural change** (`reorganize-project`, `relocate-project`, `tune-instruction-layers`): move or rewrite something that other things point at. All three take a restore point and rewire references in the same unit of work.
 - **`analyze-project`**: sweep a whole project against the full guide set and write an improvement plan (criteria in `analyze-project-reference.md`).
-- **`onboard-project`**: set up a new project end-to-end — orchestrates the setup tasks in sequence (CLAUDE.md, ignore hygiene, git, security, optionally memory and MCP).
+- **`onboard-project`**: set up a new project end-to-end — installs the default layout from `templates/PROJECT_TEMPLATE/`, sets all three instruction layers, offers the optional blocks in `templates/BLOCKS.md`, then orchestrates the remaining setup tasks (ignore hygiene, git, security, MCP).
 - **Framework maintenance** (`harvest-from-projects`, `review-tasks`): keep Cluide itself consistent. These operate on the framework, not on a user project.
 
 ## Standard format

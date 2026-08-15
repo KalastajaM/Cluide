@@ -163,12 +163,13 @@ The copy-paste starting points in `templates/`:
 
 | Template | What it is |
 |----------|-----------|
-| `PROJECT_TEMPLATE/` | Project folder with `CLAUDE.md`, `Profile/`, and `Knowledge/` pre-structured |
+| `PROJECT_TEMPLATE/` | The default project layout: `CLAUDE.md` with a file map and an app-side mirror block, `Outputs/`, `Working/`, `_archive/`, plus the memory, intake, and routing blocks ready to keep or delete |
 | `TASK_TEMPLATE/` | Scheduled task folder with `TASK.md`, `IMPROVEMENTS.md`, `RUN_LOG.md` |
 | `AI-ASSISTANT_TEMPLATE/` | Full personal business assistant — email, calendar, Teams, daily briefings |
 | `PMO_TEMPLATE/` | Programme workspace with risk register, action tracker, and decision log |
 | `ACCOUNT_INSTRUCTIONS_TEMPLATE.md` | The two account-level instruction fields (preferences + Cowork-wide), ready to fill and paste |
 | `AGENT_STARTER_PACK/` | Four model-pinned Claude Code subagents (scout, builder, verifier, researcher) — the structural binding for the `dispatch` skill |
+| `BLOCKS.md` | Catalogue of the optional blocks a project adds to that core, and the task that installs each |
 
 ---
 

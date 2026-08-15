@@ -2,12 +2,17 @@
 
 > **Cluide task** — run this to set up a new project end-to-end:
 > `Claude, run tasks/onboard-project.md`
-> **Source guides:** `01_CLAUDE_MD.md`, `04_MEMORY_AND_PROFILE.md`, `05_MCP_SERVERS.md`, `11_GIT_INTEGRATION.md`, `12_SECURITY.md`
+> **Source guides:** `01_CLAUDE_MD.md`, `04_MEMORY_AND_PROFILE.md`, `05_MCP_SERVERS.md`, `11_GIT_INTEGRATION.md`, `12_SECURITY.md`, `24_PROJECT_FOLDER_STRUCTURE.md`, `25_PROJECT_INSTRUCTION_LAYERS.md`
 
 ## Purpose
-Set up a new project for use with Claude end-to-end — in the right order, without having to know which individual setup tasks to run. Covers: CLAUDE.md, ignore hygiene, git/GitHub, security, and optionally memory and MCP. Can start from a project template if one fits.
+Set up a new project end-to-end, in the right order, without the user having to know which
+individual setup tasks exist. It installs the default layout first (Guide 24), sets all three
+instruction layers (Guide 25), and only then offers the optional blocks from
+`templates/BLOCKS.md`. Git, ignore hygiene, and security run last, over a project that already
+has its real shape.
 
-This task orchestrates the other setup tasks rather than duplicating their logic. It reads the relevant task files and runs them in sequence.
+This task orchestrates the other setup tasks rather than duplicating their logic: it reads the
+relevant task files and runs them in sequence.
 
 ---
 
@@ -15,133 +20,188 @@ This task orchestrates the other setup tasks rather than duplicating their logic
 
 > **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
 
+### Step 0 — Locate Cluide and the destination
+
+Confirm the Cluide folder is reachable (the templates and tasks below are read from it) and that
+the destination folder for the new project exists or can be created. If Cluide is not mounted,
+stop and ask for it rather than reconstructing a layout from memory.
+
 ### Step 1 — Understand the project
 
 Ask:
 > 1. What is this project? (one sentence)
-> 2. Is this a new empty folder, an existing codebase, or something else?
-> 3. What will Claude mainly help you with in this project? (e.g. writing code, managing documents, running scheduled tasks, research)
-> 4. Will this project use any external tools — email, calendar, GitHub, databases?
-> 5. Will it contain sensitive data, credentials, or personal information?
+> 2. Is this a new empty folder, an existing codebase, or a pile of material that needs organising?
+> 3. What will Claude mainly help with here — writing, code, documents, research, scheduled runs?
+> 4. What does it produce? (documents, code, reports, nothing tangible)
+> 5. Does material arrive here outside a chat — scans, downloads, exports, files from other people?
+> 6. Will it use external tools: email, calendar, GitHub, a database?
+> 7. Will it hold sensitive data, credentials, or personal information?
 
-Then use `AskUserQuestion` with buttons to ask which starting point the user prefers:
+Question 4 decides the outputs home and question 5 the intake block; do not skip either because
+the user's one-sentence answer to question 1 sounded complete.
 
-> "Would you like to start from one of the available project templates, or set up from scratch?"
+### Step 2 — Choose the starting point
+
+Use `AskUserQuestion` with buttons:
+
+> "Which starting point fits this project?"
 >
-> Buttons: `PROJECT_TEMPLATE` / `AI-ASSISTANT_TEMPLATE` / `PMO_TEMPLATE` / `Start from scratch`
+> Buttons: `PROJECT_TEMPLATE (default)` / `PMO_TEMPLATE` / `AI-ASSISTANT_TEMPLATE` / `Existing folder, retrofit the layout`
 >
-> **Template descriptions:**
-> - **PROJECT_TEMPLATE** — general-purpose project with `CLAUDE.md`, `Profile/`, and `Knowledge/` pre-structured. Good for: document management, research, ongoing projects.
-> - **AI-ASSISTANT_TEMPLATE** — complete personal business assistant with Microsoft 365 integration (email, Teams, calendar) and four coordinated scheduled tasks. Good for: setting up a daily work assistant.
-> - **PMO_TEMPLATE** — project workspace with a full PMO register suite: risk register, action tracker, dependency register, decision tracker, knowledge base. Good for: structured project management.
-> - **Start from scratch** — run individual setup tasks tailored to this project. More flexible; takes a few extra minutes.
+> - **PROJECT_TEMPLATE** — the default layout: instructions, outputs, scratch, archive, plus the
+>   memory, intake, and routing blocks ready to keep or delete. Right for almost everything.
+> - **PMO_TEMPLATE** — the same idea with a full register suite (risk, action, decision,
+>   dependency) already built. Right for a structured programme.
+> - **AI-ASSISTANT_TEMPLATE** — a turn-key personal assistant with Microsoft 365 and four
+>   coordinated scheduled tasks. It has its own setup procedure.
+> - **Existing folder** — the project already has material. The layout gets retrofitted around it.
 
-Based on the answers, recommend a template if one clearly fits, or recommend scratch if none does. Don't force a template.
+Recommend one based on Step 1 rather than leaving the choice open, then route the three
+non-default answers explicitly:
 
-### Step 2 — Option A: Start from a template
+- **PMO_TEMPLATE** — run Step 3 against `templates/PMO_TEMPLATE/` and follow
+  `templates/PMO_TEMPLATE/README.md` rather than PROJECT_TEMPLATE's, then continue at Step 4. Its
+  registers replace the blocks PROJECT_TEMPLATE ships; do not offer both.
+- **AI-ASSISTANT_TEMPLATE** — follow `templates/AI-ASSISTANT_TEMPLATE/bootstrap/SETUP.md`
+  instead of Steps 3–5, then rejoin at Step 6.
+- **Existing folder** — run `tasks/reorganize-project.md` (it takes a restore point before
+  moving anything) targeting the layout in `templates/PROJECT_TEMPLATE/README.md`. That task moves
+  files; it does not write a `CLAUDE.md`. Rejoin at Step 3, skipping only its copy sub-step, so the
+  project still gets its instructions file and file map.
 
-If the user chooses a template:
+### Step 3 — Install the core
 
-**For PROJECT_TEMPLATE:**
+Copy the chosen template to the destination and rename it:
+
 ```bash
-cp -r /path/to/Cluide/templates/PROJECT_TEMPLATE ./
+cp -r "<CLUIDE>/templates/<chosen template>" "<destination>/<Project Name>"
 ```
-Tell the user: "Copy the template folder to your project root, then rename it and fill in the placeholders marked `[placeholder]` in each file. I'll help you do that now."
 
-Read `templates/PROJECT_TEMPLATE/README.md` and walk the user through filling in:
-- `CLAUDE.md` — replace placeholders with real identity, style, and rules
-- `Profile/PROFILE_SUMMARY.md` — replace with actual project summary
-- `Knowledge/` — add any domain knowledge files relevant to the project
+Then work through the core with the user, following that template's `README.md` Steps 2–4. For
+PROJECT_TEMPLATE that means:
 
-Then skip to Step 4 (ignore hygiene) — CLAUDE.md is already handled.
+1. **Delete the blocks this project does not need**, using the Step 1 answers. No material
+   arriving outside chat means `Incoming/` and its `CLAUDE.md` section go. No delegation means
+   `ROUTING_LOG.md` and the *Dispatch Overrides* section go. Deleting a block means deleting all of
+   its pieces — folder, `CLAUDE.md` section, and file-map rows — never one without the
+   others. Dropping the memory block also means replacing the auto-read line above the file map,
+   which names `Profile/PROFILE_SUMMARY.md`: that line sits in the part of `CLAUDE.md` that loads
+   in every session, so a stale one is the most expensive leftover in the file.
+2. **Fill in `CLAUDE.md`**: identity, context, communication style, critical rules, and the file
+   map. Prune the file map rows for deleted blocks and add a row for each folder this project
+   needs that the template does not ship.
+3. **Seed the memory block** if it was kept: `Profile/PROFILE_SUMMARY.md` first, then any
+   `Profile/PROFILE_detail.md` entries Claude will need from day one.
 
-**For AI-ASSISTANT_TEMPLATE:**
-Read `templates/AI-ASSISTANT_TEMPLATE/bootstrap/SETUP.md` and walk the user through the setup steps it describes. This template has its own setup procedure — follow it rather than the generic steps below.
+For a project whose rules need drawing out rather than typing in — an unfamiliar domain, hard
+constraints the user has not articulated, an existing codebase with conventions worth capturing —
+run `tasks/setup-claude-md.md` for its interview and bring the result into the template's file
+rather than replacing the file with its output. The template's file map and app-side block are
+not part of that task's output and must survive.
 
-After completing the template setup, ask: "Would you also like me to run the security and GitHub setup steps?"
+Do not fill in the *App-side fields* block yet — Step 4 produces its text.
 
-**For PMO_TEMPLATE:**
-```bash
-cp -r /path/to/Cluide/templates/PMO_TEMPLATE ./
-```
-Read `templates/PMO_TEMPLATE/README.md` and walk the user through filling in the initiative-specific placeholders.
+### Step 4 — Set all three instruction layers
 
-Then continue with Steps 4–7 below (ignore hygiene, git, security).
+The folder is one of three channels a Cowork project speaks through, and it is the only one this
+task can write directly. Follow `25_PROJECT_INSTRUCTION_LAYERS.md`:
 
----
+1. **Draft the description** — one to three sentences on what the project is and does, naming the
+   concrete entities involved, no rules, distinct from the user's other projects.
+2. **Draft the instructions field** — only what must hold before any file is read: the pointer to
+   `CLAUDE.md`, mount verification, and the project's single hardest safety rule restated. Add the
+   bridge guard from that guide if this project's outputs will be written back to a local folder
+   from cloud sessions. Leave it empty only for a project with no real-world stakes, and say so
+   explicitly rather than by omission.
+3. **Hand both texts to the user to paste** into the app's project settings. This task cannot
+   write them: the app rewrites its own state file wholesale, so an edit made on disk is
+   discarded.
+4. **Write both into the *App-side fields* block** at the bottom of `CLAUDE.md`, with today's
+   date on the `Last verified` line.
 
-### Step 2 — Option B: Start from scratch
+An existing project may already have these fields set. Read them rather than assuming — the guide
+names the state file and the freshness caveat — and reconcile before overwriting anything.
 
-If starting from scratch, run Steps 3–7 in order.
+### Step 5 — Offer the blocks
 
----
+Read `templates/BLOCKS.md` and present only the blocks the Step 1 answers actually point at.
+Do not read the catalogue out. For each one offered, say what it adds and what it costs per
+session, then install it by following its *Install* column — a task for most, a guide section or
+a copy from another template for the rest.
 
-### Step 3 — CLAUDE.md
+Recommend deferring anything the project cannot yet use. A wiki with no material, a scheduled
+task with nothing to run, and a skill for a workflow that has happened once are all better added
+in a month, and the catalogue is where the user will find them.
 
-Say: "I'll run the CLAUDE.md setup now."
+### Step 6 — Ignore hygiene
 
-Follow all steps in `tasks/setup-claude-md.md` — interview, draft, review, write.
+Follow `tasks/setup-ignore-hygiene.md` — scan, propose, apply, handle already-tracked files. The
+template ships a `.gitignore.template`; rename it to `.gitignore` and treat it as the starting
+point, not the answer.
 
-### Step 4 — Ignore hygiene
+For the enforcement option in that task, recommend Option A (PostToolUse hook) for a code
+project and Option B (CLAUDE.md rule) otherwise.
 
-Say: "Now I'll check what should be in `.gitignore` and `.claudeignore`."
-
-Follow all steps in `tasks/setup-ignore-hygiene.md` — scan, propose, apply, handle tracked files.
-
-For the enforcement option in that task, recommend:
-- If this is a code project: Option A (PostToolUse hook)
-- Otherwise: Option B (CLAUDE.md rule)
-
-### Step 5 — Git and GitHub
-
-Ask:
-> "Is this project going to be on GitHub? (Yes / No / Already is)"
-
-- **Yes:** follow all steps in `tasks/setup-github.md` — init, create repo, first commit, ongoing sync.
-- **Already is:** skip to checking if ongoing sync is set up. If not, offer to add it (Step 8 of `setup-github.md`).
-- **No:** run `git init` and make a first local commit. No remote needed.
-
-### Step 6 — Security
-
-Say: "I'll run a quick security check."
-
-Follow Steps 1–3 of `tasks/setup-security.md` — credential scan, permission audit, file hygiene check.
-
-Ask: "Would you like me to also install the PreToolUse hook that blocks dangerous shell commands? (Recommended for projects where Claude runs bash commands.)"
-
-If yes, follow Step 6 Fix A of `tasks/setup-security.md`.
-
-### Step 7 — Optional: Memory
-
-Ask:
-> "Would you like to set up a memory system so Claude remembers facts, preferences, and project context across sessions? (Recommended for projects you'll work on regularly.)"
-
-If yes, follow all steps in `tasks/setup-memory.md`.
-
-### Step 8 — Optional: MCP servers
+### Step 7 — Git and GitHub
 
 Ask:
-> "Does this project need Claude to connect to external tools — email, calendar, GitHub API, filesystem access outside this folder, or a browser?"
+> "Should this project be on GitHub? (Yes / No / It already is)"
 
-If yes, follow Steps 2–4 of `tasks/setup-mcp.md` for the specific servers needed.
+- **Yes:** follow `tasks/setup-github.md` — init, create the repo, first commit, ongoing sync.
+- **Already is:** check whether ongoing sync is set up; offer Step 8 of `setup-github.md` if not.
+- **No:** `git init` and one local commit. A project holding anything worth keeping gets version
+  control even with no remote.
 
-### Step 9 — Confirm
+### Step 8 — Security
 
-Tell the user what was set up:
+Follow Steps 1–3 of `tasks/setup-security.md` — credential scan, permission audit, file hygiene.
+
+Then ask whether to install the PreToolUse hook that blocks dangerous shell commands, and follow
+Step 6 Fix A of that task if yes. Recommend it whenever the project's work involves running
+commands.
+
+### Step 9 — Optional: MCP servers
+
+If Step 1 named external systems, follow Steps 2–4 of `tasks/setup-mcp.md` for those servers
+only. Curate the loadout rather than enabling everything available — Guide 05 covers why the
+wrong-tool cost matters more than the token cost.
+
+### Step 10 — Confirm
+
+Report what was set up:
 
 ```
 Project Onboarding Complete
 ────────────────────────────
-✓ CLAUDE.md — [N lines]
-✓ .gitignore / .claudeignore — [N patterns added]
-✓ Git / GitHub — [local only / pushed to github.com/...]
+✓ Layout — core installed at [path]; blocks kept: [list]; blocks deleted: [list]
+✓ CLAUDE.md — [N lines], file map covers [N] homes
+✓ Instruction layers — description set, instructions [set / deliberately empty], mirror block dated [date]
+✓ .gitignore / .claudeignore — [N patterns]
+✓ Git / GitHub — [local only / github.com/...]
 ✓ Security — [clean / N issues found and fixed]
-[✓ Memory — N memory files created]
-[✓ MCP servers — N servers configured]
-[✓ Template — started from [template name]]
+[✓ Blocks installed — [names]]
+[✓ MCP servers — [names]]
+⚠ Placeholders still to fill — [file and section for each, or "none"]
 ```
 
-Suggest what to do next based on what the project is:
-- Code project: "Consider running `tasks/setup-skill.md` to create skills for tasks you do repeatedly in this project."
-- Scheduled tasks project: "Consider running `tasks/setup-scheduled-task.md` to scaffold your first automated task."
-- Research/knowledge project: "Consider running `tasks/setup-wiki.md` to create a knowledge base for this topic."
+Then name the one or two blocks most likely to be needed next and where they live, so the user
+does not have to remember this task existed.
+
+---
+
+## Output
+
+A project folder containing the core layout, a filled-in `CLAUDE.md` with a file map and a dated
+app-side mirror block, whichever blocks the project needed, git and ignore hygiene, and a
+security pass. Plus two texts handed to the user for pasting into the app's project settings.
+
+## Constraints
+
+- **The app-side fields are written by the user, never by this task.** Produce ready-to-paste
+  text and confirm afterwards; do not edit the app's state file.
+- **Never fill placeholders with plausible guesses.** An unanswered question stays a placeholder
+  and is named in the Step 10 report.
+- **Retrofitting an existing folder goes through `tasks/reorganize-project.md`**, which takes a
+  restore point first. Do not move a user's existing files directly from this task.
+- **Blocks are offered, not installed by default.** Every always-loaded block is paid for in
+  every session, including the ones that never use it.

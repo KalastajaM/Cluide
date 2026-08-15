@@ -10,7 +10,7 @@
 
 | File | Topic | Last updated | Status |
 |------|-------|--------------|--------|
-| `[TOPIC_NAME].md` | [What this topic covers] | [YYYY-MM-DD] | Active |
+| `[TOPIC_NAME].md` | [What this topic covers — delete this example row] | [YYYY-MM-DD] | Active |
 
 *No topics yet — create the first one when a topic emerges that warrants its own file.*
 

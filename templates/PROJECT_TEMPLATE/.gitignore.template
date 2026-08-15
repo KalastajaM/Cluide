@@ -1,6 +1,24 @@
-# Personal data — do not commit to version control
+# Personal data — the memory block is untracked in full, folders and all.
+# A fresh clone therefore has no Profile/ or Knowledge/: recreate them from
+# templates/PROJECT_TEMPLATE/ rather than expecting git to restore them.
 Profile/
 Knowledge/
 
-# Runtime state
-*.json
+# Runtime state written by tasks or tooling. Name the files; do not glob *.json,
+# which would also swallow .mcp.json, package.json, and any JSON this project owns.
+# [Add the specific state files this project produces.]
+*.state.json
+*.cache.json
+
+# Scratch and generated deliverables — regenerable; keep the folder notes only.
+# Note: because these patterns exclude subdirectories too, git will not descend
+# into them, so a later "!Outputs/Some/Subfolder/file" negation cannot work.
+# Un-ignore the parent folder first if you ever need one.
+Working/*
+!Working/README.md
+Outputs/*
+!Outputs/README.md
+
+# Intake queue — the folder is committed, its contents are not.
+Incoming/*
+!Incoming/README.md
