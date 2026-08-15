@@ -145,7 +145,7 @@ For templates >300 lines, instruct the user to attach the template file instead.
 
 ## Step 7: Deliver the Output
 
-**In Cowork:** Create the ZIP and use `present_files` to deliver it.
+**In Cowork:** Create the ZIP and deliver it with `SendUserFile`.
 **In Claude Code:** Write all files to disk under the current working directory, then report the full output path to the user.
 
 ZIP command (adjust for your environment):

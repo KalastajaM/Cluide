@@ -77,7 +77,9 @@ State explicitly which findings you are *not* proposing to fix and why (usually:
 
 Then **stop and wait**. Do not proceed on assumed approval.
 
-### Step 4 — Apply the CLAUDE.md edits
+### Step 4 — Take a restore point, then apply the CLAUDE.md edits
+
+Before the first edit, take a way back: a git commit or tag when the project is under version control, otherwise a dated copy of `CLAUDE.md` (and `UI-FIELDS.md` if it exists) stored outside the working tree. Confirm it exists before writing anything. Rewriting the instruction layer is a structural change — a bad rewrite is not obvious until a later session behaves oddly, which is exactly when nobody remembers what the file used to say.
 
 Apply only what was approved. If applying reveals something the plan missed, stop and present a revised plan rather than improvising.
 
