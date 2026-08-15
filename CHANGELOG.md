@@ -4,6 +4,160 @@ Cluide is versioned by content event, not on a calendar: a tag marks guides bein
 
 The **consumed surface** — dimension numbers in `tasks/analyze-project-reference.md`, filenames in `tasks/`, and guide numbers — is append-only. Entries below note explicitly when it grows.
 
+## [1.3.0] — 2026-08-15
+
+Ten pull requests since v1.2.0 (#33–#42), plus the changelog PR that carries this section. Six of
+them (#37–#42) are remediation of a full asset audit of `tasks/`, `skills/` and `templates/`.
+**The consumed surface grew:** two `tasks/` filenames were added and nothing was renumbered,
+renamed or reused.
+
+**If you have installed Cluide's skills, read *Removed* below — three of them are gone.**
+
+### Added
+
+- **`tasks/setup-second-brain.md`** (#38). Dimension 16 of `tasks/analyze-project-reference.md` was
+  widened to score against Guide 28 when that guide landed in v1.2.0, but it kept naming
+  `setup-wiki` as the fix. `setup-wiki` builds one curated domain and has no inbox, no capture
+  step, no distillation and no review pass, so a scored dimension in the public consumed surface
+  named a task that could not perform the fix — and `templates/BLOCKS.md` corroborated the hole,
+  its second-brain row reading "No task: Guide 28". The new task applies Guide 28's objection test
+  first and will stop rather than build a layer for material that does not need one, then
+  interviews, plans, builds the four homes and the index, migrates existing notes behind a restore
+  point, and wires the review pass and the return leg. Dimension 16 now names both tasks, split by
+  guide.
+
+- **`tasks/relocate-project-reference.md`** (#41). `relocate-project.md` swept three layers and
+  named two of them in a single line each. The reference adds the per-layer mechanics: anchored
+  replacement and the doubled slash an unanchored replace leaves behind (POSIX collapses it
+  mid-path, so the shell keeps working while every string-matching consumer breaks, and a *leading*
+  double is rejected outright); the scheduled-task layer's three failure modes and why retiring a
+  task takes two steps, because the folder and its registration in `scheduled-tasks.json` break
+  separately; classifying artifacts by what feeds them rather than grepping them for paths, and
+  re-running every generator afterwards, since an artifact behind a broken generator renders stale
+  data with no error anywhere; Claude Code's path-mangled `~/.claude/projects/` directories and why
+  that rename is urgent rather than last; the app-state catch-22, where the files are rewritten
+  wholesale from memory and the only remote write path dies with the app, so the output is a script
+  handed to the user rather than an edit; and the rule that dated reports record where things were
+  and are never rewritten. The task's Step 2 table gains two layers and Step 6 gains three
+  verifications it previously could not make. `<CLAUDE_ROOT>`, used as if defined, now says where
+  to read it from.
+
+- **`templates/BLOCKS.md`, and `PROJECT_TEMPLATE` as core plus blocks** (#35). Guide 24 names five
+  homes a project wants and the template shipped three, so the first deliverable a project
+  generated landed at the root — the failure that guide opens by warning about. It was also
+  assistant-shaped rather than general: `Profile/` and `Knowledge/` are the Guide 04 memory
+  pattern, one flavour presented as the default. The template now ships `Outputs/`, `Working/` and
+  `_archive/` with folder notes, a file map with a may-write column, and a Guide 25 app-side
+  mirror block; `BLOCKS.md` catalogues every optional block with what it adds, when it is earned,
+  what it costs per session, and where its install procedure lives. `tasks/onboard-project.md` is
+  rewritten to install the core, set all three instruction layers, then offer blocks — it
+  previously never mentioned the app-side fields at all.
+
+- **Guide 01 § the `CLAUDE_REFERENCE.md` companion** (#34). Guide 02's progressive-disclosure table
+  gave every layer a two-tier split except the project row, so there was no home for instruction
+  material that is still `CLAUDE.md`'s job but only situationally. Without one, Guide 01's lean
+  target reads as unachievable for a genuinely complex project, which is how a lean rule gets
+  ignored rather than followed. Guide 02's project row gains the matching reference tier.
+
+### Changed
+
+- **`skills/` shrank from eleven to eight, and the survivors gained negative scope** (#39, #42).
+  Cluide shipped eleven skills and its author installed four — a hit rate worth acting on rather
+  than advertising. Beyond the three removals below, `ai-assistant-setup` loses "Trigger broadly —
+  when in doubt, load this skill", which had it winning every collision with the specialists by
+  instruction rather than by fit, and gains an explicit exclusion list. It also now checks `tasks/`
+  before working from guide prose: it previously did not mention the folder at all, so the flagship
+  skill bypassed this repo's own installation scripts. `cowork-optimizer`, `policies-validator` and
+  `template-exporter` each gain a "do NOT use" clause; `policies-validator` additionally stops
+  claiming the entire trigger space while its Policy Registry is still unfilled, which is the state
+  it ships in.
+
+- **`security-review` loads its mutating phases on demand** (#42). Phases 2–5 are the only ones
+  that install software or write configuration, and a user who declines all four still gets a
+  complete audit from Phases 0, 1, 6 and 7 — yet every session that loaded the skill paid for a
+  Homebrew install, a launchd plist and two `settings.json` hook blocks it would almost never run.
+  Those four phases now live in `references/phases-2-5-install.md`, loaded on opt-in; `SKILL.md`
+  drops from 15.9KB to 11.5KB and gains a phase index. **Phase numbers are unchanged**, because
+  `12_SECURITY.md` cites Phases 0b, 2, 3, 5 and 6 by number: moving a phase into a reference is
+  fine, renumbering one is not.
+
+- **Criteria are delegated rather than restated, in five places** (#40). The audit found the
+  failure mode the consumed-surface contract exists to prevent happening *inside* the repo.
+  `analyze-project-reference.md` said outright that its criteria were "summarised from the existing
+  `audit-*` tasks" and carried their numbers — the `CLAUDE.md` length target, the
+  `KNOWLEDGE_SUMMARY.md` and `TASK.md` caps, the `IMPROVEMENTS.md` bound — with exactly one
+  dimension delegating properly. Dimensions 2, 4, 6, 7 and 11 now use dimension 5's shape: run the
+  audit task read-only and score from what it reports. Three tasks wrote three different credential
+  lists into one `.gitignore`, two of them pointing at `setup-ignore-hygiene` before writing their
+  own anyway; that task now owns the list and the others cite it. `onboard-project` Step 4 ran a
+  second implementation of `tune-instruction-layers`, including a duplicate copy of the app
+  state-file caveat, and now runs the task instead.
+
+- **`reorganize-project` persists its move log and checks consumers outside the project** (#33).
+  Guide 23 makes an owner responsible for its consumers, and the task that actually performs a
+  restructure applied none of it: "both sides" meant both sides of a link *within* the project, the
+  verification grepped only the project, and nothing persisted the old→new mapping, so the approved
+  move table died with the session that approved it.
+
+- **`setup-self-improving-task` Step 4 is now the canonical block verbatim** (#40).
+  `setup-scheduled-task` offered a conditional fallback between `templates/TASK_TEMPLATE/TASK.md`
+  Step 6 and this one, and the two were not equivalent — the fallback dropped four of six refactor
+  triggers and the `LESSONS.md` line, so a task scaffolded outside a Cluide checkout silently lost
+  them. Both pointers now describe a mirror rather than a choice.
+
+### Removed
+
+- **`skills/backlog/`** (#39). No guide, no task, no template, and no mention anywhere except its
+  own file and one index section. It also contradicted `git-guru` on committing, so loading both
+  produced a fight. Guide 03 keeps its worked description as one of four illustrative patterns; the
+  line claiming it ships is corrected.
+- **`skills/project-analyzer/`** (#39). A self-declared thin router over `tasks/analyze-project.md`
+  with a hard precondition that it run from a Cluide checkout — where the user can already run the
+  task by name.
+- **`skills/html-report/`** (#39). It duplicated the HTML skeleton Guide 19 already carries inline.
+  Guide 19 is now the single source and says so.
+
+If you have any of these installed, remove them from `~/.claude/skills/` (or Claude.ai Personal
+Skills). Guide 19's inline skeleton replaces `html-report`; `tasks/analyze-project.md` replaces
+`project-analyzer`; `backlog` has no successor here.
+
+### Fixed
+
+- **A U+200B zero-width space inside a filename template** (#37). It sat in the block
+  `setup-orchestration.md` tells Claude to paste into consumer `TASK.md` files, so every generated
+  freshness check looked for a filename that cannot exist and — per the line immediately after it —
+  treated that as unavailable, silently, on every run.
+- **`setup-github.md`'s git sequence** (#37). `git init` followed by
+  `git config init.defaultBranch main` renames nothing, because git reads that key *during* init;
+  it is now `git init -b main`. `gh repo create --push` also ran before the first commit existed.
+- **Restore points where the repo claimed to have them** (#37). `tasks/README.md` stated that all
+  three structural-change tasks take one; `tune-instruction-layers` had none. `audit-file-hygiene`
+  archived in bulk and permitted deletion with no way back, against the convention stated in the
+  same README. Both now take one before their apply step.
+- **`template-exporter` delivered with a call that does not exist** (#37). Its final action in
+  Cowork was `present_files`; it is `SendUserFile`.
+- **Three bugs in `security-review`** (#42). Final Verification built the home path as
+  `'/Users/' + getenv('USER')` while Phase 0a in the same file used `expanduser` correctly, so it
+  broke on Linux and on any account whose home is not under `/Users`. Phase 1f ran a bare
+  `cd "$PROJECT"` and never returned, so the later `references/…` paths resolved against the target
+  project — including the drift check the skill introduces specifically to catch silent divergence,
+  which would itself have failed silently. And Phase 2 showed a `settings.json` hooks block with no
+  command and no merge guidance for a user who already had a `hooks` key; it now merges with a
+  membership test, prints the result for review, and writes only after approval.
+- **Two stale bundled copies of `12_SECURITY.md`** (#36). The browser-session material reached the
+  root guide and the `ai-assistant-setup` mirror but not `cowork-optimizer` or
+  `policies-validator`, so both shipped a security reference with no warning about browser sessions
+  as an untrusted-input surface. Partial registration is this repo's known drift mode; check 4a of
+  `review-tasks` caught it.
+
+### Erratum to v1.2.0
+
+That release recorded that the private companion project "is no longer named". The redaction
+reached merge-gate check 5 and missed the *Branching and Releases* paragraph eight lines above it,
+so the name shipped in `CLAUDE.md`. Corrected in #37. The lesson is cheap and worth stating: a
+redaction is verified by a repo-wide grep for the string, never by re-reading the passage you
+edited, and no changelog should claim a scrub without that grep having been run.
+
 ## [1.2.0] — 2026-08-14
 
 Eighteen content pull requests since v1.1.0 (#12–#28, #30), plus the changelog PRs that carry
