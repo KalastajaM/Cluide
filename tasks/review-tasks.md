@@ -25,6 +25,7 @@ Detect which guides have changed since each task was last reviewed, then check w
 | `setup-ignore-hygiene.md` | `11_GIT_INTEGRATION.md`, `12_SECURITY.md` |
 | `setup-self-improving-task.md` | `07_TASK_LEARNING_GUIDE.md` (incl. Part 9) |
 | `setup-wiki.md` | `15_LLM_WIKI.md` |
+| `setup-second-brain.md` | `28_SECOND_BRAIN.md`, `15_LLM_WIKI.md` (the boundary) |
 | `setup-bootstrap-folder.md` | `11_GIT_INTEGRATION.md` |
 | `audit-claude-md.md` | `01_CLAUDE_MD.md`, `16_BEST_PRACTICES.md` |
 | `audit-task-efficiency.md` | `06_TASK_EFFICIENCY_GUIDE.md` |

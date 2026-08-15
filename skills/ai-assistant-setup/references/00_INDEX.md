@@ -467,6 +467,7 @@ Tasks are designed to be portable: copy any task file to another project's `task
 | `tasks/setup-ignore-hygiene.md` | Audit `.gitignore`/`.claudeignore`, install check hook | 11, 12 |
 | `tasks/setup-self-improving-task.md` | Add `IMPROVEMENTS.md` + self-improvement loop to any task | 07 (Part 9) |
 | `tasks/setup-wiki.md` | Create LLM wiki structure for a topic | 15 |
+| `tasks/setup-second-brain.md` | Build or repair a personal knowledge layer — four homes, index, inbox rule, review pass | 28, 15 |
 | `tasks/setup-bootstrap-folder.md` | Create `bootstrap/` stubs for gitignored runtime state files | 11 |
 | `tasks/setup-skill.md` | Interview → generate a `SKILL.md` with reliable triggering and full structure | 03 |
 | `tasks/setup-scheduled-task.md` | Scaffold a new scheduled task with efficiency + self-improvement built in | 06, 07 |

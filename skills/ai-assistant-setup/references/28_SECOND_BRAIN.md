@@ -6,6 +6,8 @@
 
 > **Giving this guide to Claude:**
 > "Read 28_SECOND_BRAIN.md. Here is what I currently keep and where [describe it]. Tell me whether a second brain layer is worth building for me, and if so, what the four homes and the index should look like."
+>
+> **Faster alternative:** `tasks/setup-second-brain.md` applies the objection test first, then interviews you and builds or repairs the layer without reading the guide first.
 
 ---
 
