@@ -100,7 +100,9 @@ would-drop-it-if line instead of trading verdicts (`27_INDEPENDENT_JUDGMENT.md`)
 
 Then **stop and wait.**
 
-### Step 4 — Apply
+### Step 4 — Take a restore point, then apply
+
+This step moves files in bulk and may delete some, so take a way back first: a git commit or tag when the project is under version control, otherwise a dated zip of just the affected folders stored outside the working tree. Confirm it exists before the first move. Retire it once Step 5 verifies the result.
 
 Apply only approved rows. Create `_archive/` if needed. For `.claudeignore` additions, show the diff before writing.
 
@@ -117,6 +119,7 @@ A categorised findings table (Step 3), an approved change plan, and a post-apply
 ## Constraints
 
 - Read-only until Step 3 is approved.
+- **Restore point before the first move.** No bulk archive or delete without a way back (Step 4).
 - **Archive by default; deletion needs explicit per-file approval.** Never a blanket delete, and never a cross-project sweep applied without a per-project plan.
 - Never edit file *contents* — this task moves and removes only. Content problems belong to the relevant `audit-*` task.
 - Never open or echo anything that looks like a secret; report location only.

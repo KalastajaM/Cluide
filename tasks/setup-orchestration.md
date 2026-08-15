@@ -98,7 +98,7 @@ Set `updated_at` to now. Log "handoff written" in RUN_LOG.md.
 **Consumer / synthesis tasks** — add as an early step:
 
 ```markdown
-Read `shared/[feeder-name]_[today]​.json`. Freshness check: if the file is missing,
+Read `shared/[feeder-name]_[today].json`. Freshness check: if the file is missing,
 malformed (required fields absent), or dated before today — treat as unavailable.
 Note "[feeder] not available — continuing without it" in the output, or stop with a
 clear log message if the input is essential. Never assume the upstream task succeeded.

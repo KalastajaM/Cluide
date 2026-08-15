@@ -78,9 +78,10 @@ For the repository step, ask:
 If git is not yet initialized:
 
 ```bash
-git init
-git config --local init.defaultBranch main
+git init -b main
 ```
+
+`-b main` is the only form that works: `init.defaultBranch` is read *by* `git init`, so setting it afterwards renames nothing. On git older than 2.28, run `git init` then `git branch -M main`.
 
 If `user.name` or `user.email` are not set globally, check and prompt:
 ```bash
@@ -126,9 +127,9 @@ Tell the user: "This is a minimal `.gitignore`. Run `tasks/setup-ignore-hygiene.
 
 **If creating a new repo:**
 ```bash
-gh repo create <name> --<public|private> --source=. --remote=origin --push
+gh repo create <name> --<public|private> --source=. --remote=origin
 ```
-Note: `--source=. --remote=origin --push` initializes the remote and pushes in one step. Skip Steps 6 and 7 if this succeeds — `gh repo create --push` handles them.
+Note: no `--push` here. The repository has no commits yet, so there is nothing to push — Step 6 makes the first commit and Step 7 pushes it. Adding `--push` at this point fails.
 
 **If connecting to an existing repo:**
 ```bash

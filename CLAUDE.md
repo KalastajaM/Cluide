@@ -86,7 +86,7 @@ inline floor, doing it inline is correct — log it as inline rather than forcin
 
 Cluide is trunk-based. Work happens on a short-lived branch per change, merged into `main` by PR, branch deleted on merge. `main` is always the current, self-consistent guide set.
 
-**Do not add a `develop` or release branch.** A stabilisation branch solves a problem this repo does not have: one maintainer, no build step, no artefact anyone pins. A fresh clone and the `CoWork Project Maintenance` project both read `main` directly, so a second integration branch would add a merge that catches nothing while leaving the consumed working tree unprotected. Version by content event instead — see *Releases* below.
+**Do not add a `develop` or release branch.** A stabilisation branch solves a problem this repo does not have: one maintainer, no build step, no artefact anyone pins. A fresh clone and the private companion project both read `main` directly, so a second integration branch would add a merge that catches nothing while leaving the consumed working tree unprotected. Version by content event instead — see *Releases* below.
 
 **When the maintainer asks to merge a branch, run this gate first.** Name each check and its result, and stop at the first failure rather than merging past it.
 
