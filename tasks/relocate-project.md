@@ -1,7 +1,8 @@
 # Task: Relocate Project
 
 > **Cluide task** — move a project, several projects, or an entire projects root to a new location without leaving broken references behind.
-> **Source guides:** 11 (Git Integration), 24 (Project Folder Structure). Where `reorganize-project.md` tidies *inside* one project, this moves the project itself.
+> **Source guides:** `11_GIT_INTEGRATION.md`, `24_PROJECT_FOLDER_STRUCTURE.md`. Where `reorganize-project.md` tidies *inside* one project, this moves the project itself.
+> **Per-layer detail:** `relocate-project-reference.md` — load it at Step 2 or Step 5, not before.
 
 ## Purpose
 
@@ -68,10 +69,16 @@ Sweep three layers. The second and third are outside the projects and are the on
 | Layer | Where | Why it breaks |
 |---|---|---|
 | **Projects** | The moved project(s), plus any *other* project that points at them | `CLAUDE.md` file maps, READMEs, task files, cross-project pointers |
-| **Scheduled tasks** | The scheduled-task definitions (e.g. `<CLAUDE_ROOT>/Scheduled/*/`) | They run unattended: a broken one fails quietly on a schedule |
+| **Scheduled tasks** | Definitions under `<CLAUDE_ROOT>/Scheduled/*/`, and their registrations in `scheduled-tasks.json` | They run unattended: a broken one fails quietly on a schedule, and the folder and the registration break separately |
+| **Artifacts** | `<CLAUDE_ROOT>/Artifacts/<id>/index.html` and whatever generates them | An artifact fed by a broken generator keeps rendering stale data with no error anywhere |
+| **Claude Code state** | `~/.claude/projects/` (one directory per project, named after its path) and `~/.claude.json` | A move orphans the project's whole transcript history under a dead name, and orphans can be garbage-collected |
 | **Config** | `~/Library/Application Support/Claude/` — including `spaces.json`, which records `folders[].path` per project | The app's own record of where each project's folder is |
 
-Classify every hit before proposing a fix. A path inside a code fence in a guide is documentation; a path in a scheduled task's definition is load-bearing. They get different treatment, and telling them apart is the point of classifying.
+`<CLAUDE_ROOT>` is the Claude data root, recorded as `coworkUserFilesPath` in `claude_desktop_config.json`. Read it there rather than assuming a location.
+
+Classify every hit before proposing a fix. A path inside a code fence in a guide is documentation; a path in a scheduled task's definition is load-bearing; a path in a dated report is history and must not be rewritten at all. They get different treatment, and telling them apart is the point of classifying.
+
+**Read `relocate-project-reference.md` for the per-layer mechanics before sweeping any layer beyond the projects themselves.** Each of the other four has a failure mode a path grep does not see, and three of them cannot be repaired from a session at all.
 
 ### Step 3 — Propose the plan and get sign-off
 
@@ -102,7 +109,7 @@ Retire the restore point only once Step 6 verifies the result.
 1. **Quit the desktop app before touching its config.** It rewrites its state files wholesale from memory, so an edit made while it runs is silently discarded (Guide 25). This is the single most common way a config fix appears to work and doesn't.
 2. **Move the folders.** Prefer a copy-then-verify-then-remove over an in-place move when crossing volumes.
 3. **Verify arrival before rewiring:** diff the Step 1 project list against the destination, and re-run `git -C <project> rev-parse HEAD` on every repo. A repo that reports a different HEAD, or fails, stops the run.
-4. **Rewire each approved reference.** Never bulk-replace blind across the whole tree: a global search-and-replace on a path string will rewrite documentation, historical logs, and other projects' records of where things used to be. Apply the classified table from Step 2, row by row.
+4. **Rewire each approved reference.** Never bulk-replace blind across the whole tree: a global search-and-replace on a path string will rewrite documentation, historical logs, and other projects' records of where things used to be. Apply the classified table from Step 2, row by row, using the anchored-replacement rules in `relocate-project-reference.md` — replace complete strings only, assert before and after, and check for the doubled slash an unanchored replace leaves behind, which POSIX hides from the shell while every string-matching consumer breaks on it.
 5. **Restart the app** and confirm the projects resolve.
 
 If applying reveals something the plan missed, stop and present a revised plan.
@@ -111,7 +118,9 @@ If applying reveals something the plan missed, stop and present a revised plan.
 
 - No references to the old path remain outside the ones deliberately kept (re-run the Step 2 grep).
 - Every project from the Step 1 list is present at the destination, with matching HEADs.
-- Every scheduled task resolves to a path that exists. Read each definition; do not infer from the folder existing.
+- Every scheduled task resolves to a path that exists. Read each definition; do not infer from the folder existing. A repaired folder with a stale registration is still broken (reference, *The scheduled-task layer*).
+- Every generator task has been re-run and each artifact's own as-of date has advanced. A stale artifact is the one failure in this list that shows no error.
+- `~/.claude/projects/` has a directory under the new path name, and the old one has been merged or renamed rather than left to be collected.
 - The app lists every project and each opens its folder.
 - No lock files (`index.lock`, `HEAD.lock`) left behind in any repository.
 
