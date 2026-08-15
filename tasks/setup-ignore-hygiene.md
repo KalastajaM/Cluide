@@ -27,7 +27,8 @@ Use `git ls-files -o --exclude-standard` to list untracked files and `git ls-fil
 - Dependency directories: `node_modules/`, `.venv/`, `env/`, `venv/`
 - Log files: `*.log`, `*.log.*`
 - Temp/backup files: `*.tmp`, `*.bak`, `*.swp`, `*~`
-- Secrets: `.env`, `.env.*`, `*.pem`, `*.key`, `secrets.*`
+- Secrets: `.env`, `.env.*`, `*.env`, `*.pem`, `*.key`, `*.p12`, `secrets.*`, `credentials.json`, `token.json`, `*.oauth`, `.claude/settings.local.json`
+  <!-- canonical: this task owns the credential pattern list. setup-security.md and setup-github.md cite it; they do not ship their own copy. -->
 - Runtime state files: files named `*_state.json`, `*_archive.json`, `pending_*.json`, `recent_*.json`
 - Generated outputs: `*.html` in project root (if clearly generated, not source), `*.pdf` (generated)
 - IDE/editor directories: `.vscode/`, `.idea/`, `*.code-workspace`

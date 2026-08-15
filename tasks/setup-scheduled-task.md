@@ -104,8 +104,10 @@ Keep the last 20 entries in full; once the file exceeds ~30 entries, archive old
 ## Self-Improvement (A–D)
 
 [The A–D instructions live here in TASK.md — IMPROVEMENTS.md stores state only (Guide 07 Part 9).
-Copy this section from the canonical version in `templates/TASK_TEMPLATE/TASK.md` Step 6 if available;
-otherwise use the condensed A–D block in `tasks/setup-self-improving-task.md` Step 4.
+Copy this section from the canonical version in `templates/TASK_TEMPLATE/TASK.md` Step 6. Outside a
+Cluide checkout, `tasks/setup-self-improving-task.md` Step 4 carries the same block verbatim — a
+mirror, not a shorter variant. If the copy you can reach lacks the refactor-trigger table or the
+LESSONS.md line, it has drifted: say so rather than shipping the shorter one.
 A: Feedback Signal Detection → B: Refactor Trigger Check → C: Auto-apply vs. Propose → D: Update IMPROVEMENTS.md]
 ```
 

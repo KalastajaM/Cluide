@@ -104,7 +104,10 @@ If `.gitignore` does not exist and the user wants to continue without running `s
 Thumbs.db
 
 # Secrets — never commit
+# (Partial. tasks/setup-ignore-hygiene.md owns the full credential pattern list —
+#  run it after this task and let it complete the file.)
 .env
+.env.*
 *.pem
 *.key
 credentials.json
