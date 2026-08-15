@@ -617,7 +617,7 @@ independent reviews of the same artefact, anonymised, and names what neither of 
 
 ### security-review
 
-A structured, phased security audit of the Claude Code environment and a target project. Covers credential exposure, MCP server risk, permission controls and execution guard hooks, session data hygiene, supply chain scanning, and malware detection. Read-only assessment phases run automatically; mutating phases (hook installation, tool installs) pause for approval before making any changes.
+A structured, phased security audit of the Claude Code environment and a target project. Covers credential exposure, MCP server risk, permission controls and execution guard hooks, session data hygiene, supply chain scanning, and malware detection. Read-only assessment phases (0, 1, 6, 7) run automatically and live in `SKILL.md`; the four mutating phases (2-5: hook installation, tool installs) pause for approval and load their procedures from `references/phases-2-5-install.md` only once the user opts in. Declining all four still produces a complete audit.
 
 **Install:** Copy `security-review/` to `~/.claude/skills/` (Claude Code).
 
