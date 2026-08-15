@@ -33,6 +33,12 @@ Determine the target project path:
 
 Store this as `$PROJECT` for use throughout.
 
+Also store `$SKILL_DIR` — the directory containing this `SKILL.md`. Every `references/…` path in
+this skill and in `references/phases-2-5-install.md` must be written as `"$SKILL_DIR/references/…"`.
+Phase 1f changes the working directory to `$PROJECT`, so a bare `references/…` afterwards resolves
+against the target project, where it either finds nothing or — worse for the drift check in Phase
+5b — silently compares against the wrong file.
+
 ---
 
 ## Phase 0: Immediate Flags (read-only)
@@ -122,13 +128,15 @@ cat ~/.claude/settings.local.json 2>/dev/null || echo "No settings.local.json"
 Check for `permissions.defaultMode` set to `"bypassPermissions"`, or stale permission entries.
 
 **1f. Project-specific checks (if `$PROJECT` is set)**
+
+Run in a subshell so the working directory does not leak into later phases:
 ```bash
-cd "$PROJECT"
-find . -name '.env*' -not -path './.git/*' | head -20
-grep -rn --include="*.js" --include="*.ts" --include="*.py" --include="*.sh" \
-  -E "(API_KEY|SECRET|PASSWORD|TOKEN)\s*=\s*['\"][^'\"]{8,}" . \
-  --exclude-dir=node_modules --exclude-dir=.git 2>/dev/null | head -20
-cat .gitignore 2>/dev/null | grep -E "\.env|secret|credential" || echo ".gitignore: no secret patterns found"
+( cd "$PROJECT"
+  find . -name '.env*' -not -path './.git/*' | head -20
+  grep -rn --include="*.js" --include="*.ts" --include="*.py" --include="*.sh" \
+    -E "(API_KEY|SECRET|PASSWORD|TOKEN)\s*=\s*['\"][^'\"]{8,}" . \
+    --exclude-dir=node_modules --exclude-dir=.git 2>/dev/null | head -20
+  cat .gitignore 2>/dev/null | grep -E "\.env|secret|credential" || echo ".gitignore: no secret patterns found" )
 ```
 
 **1g. Shell snapshots**
@@ -150,176 +158,24 @@ Print consolidated risk table:
 
 ---
 
-## Phase 2: PreToolUse Hook — Execution Guard (APPROVAL REQUIRED)
+## Phases 2-5: the mutating phases (APPROVAL REQUIRED)
 
-**Explain first:** This hook intercepts every Bash command Claude tries to run and blocks
-dangerous patterns before they execute. It prevents: pipe-to-shell installs, credential
-exfiltration, dangerous flag usage, recursive deletion of critical directories, and
-world-writable permission changes (`chmod 777`-style).
+These four install software, write hook files, or modify `~/.claude/settings.json`. Their
+procedures live in **`references/phases-2-5-install.md`** — read it when the user opts into one,
+not before. A user who declines all four still gets a complete audit from Phases 0, 1, 6 and 7,
+so do not treat declining as a failed run.
 
-Use `AskUserQuestion` with buttons: "Create `.claude/hooks/security-precheck.sh` and wire it into your Claude settings?"
-> Buttons: `Yes` / `No`
+| Phase | What it does | Reads/writes |
+|---|---|---|
+| **2** | PreToolUse execution guard — installs `security-precheck.sh` and merges it into `settings.json` | `~/.claude/hooks/`, `~/.claude/settings.json` |
+| **3** | Supply chain — Socket CLI and pip-audit, plus an npm-install check appended to the Phase 2 hook | global npm/pipx, the Phase 2 hook |
+| **4** | File-level malware scanning — ClamAV and a PostToolUse scan hook | Homebrew, `~/.claude/hooks/`, `~/.claude/settings.json` |
+| **5** | Credential hygiene in transcripts (5a, read-only scan) and the session cleanup script (5b) | `~/.claude/projects/` (read), `~/.claude/hooks/` |
 
-If approved, copy `references/hook-security-precheck.sh` to `~/.claude/hooks/security-precheck.sh`.
+**Phase numbers are a cited surface.** `12_SECURITY.md` points readers at Phases 0b, 2, 3, 5 and 6
+by number. Moving a phase into a reference file is fine; renumbering one is not.
 
-Then make it executable and wire it into `~/.claude/settings.json`:
-```bash
-chmod +x ~/.claude/hooks/security-precheck.sh
-```
-
-Add to `~/.claude/settings.json` under `hooks`:
-```json
-"hooks": {
-  "PreToolUse": [
-    {
-      "matcher": "Bash",
-      "hooks": [
-        {
-          "type": "command",
-          "command": "~/.claude/hooks/security-precheck.sh"
-        }
-      ]
-    }
-  ]
-}
-```
-
-How it works: the hook receives the tool call as JSON on stdin (`.tool_input.command`);
-exit 0 allows the command, exit 2 blocks it and feeds stderr back to Claude as the reason.
-
-**Limitation:** This hook catches patterns, not intent. A determined attacker with shell
-access can bypass it. It's a speed-bump against accidents and simple prompt injections,
-not a security boundary.
-
----
-
-## Phase 3: Supply Chain Protection (APPROVAL REQUIRED)
-
-**Explain first:** npm/pip packages can run arbitrary code during install via lifecycle
-scripts (postinstall). This phase adds scanning tools that check packages before they run.
-
-Use `AskUserQuestion` with buttons: "Install Socket CLI (npm supply chain scanner) and pip-audit (Python CVE scanner)?"
-> Buttons: `Yes` / `No`
-
-If approved:
-```bash
-npm install -g socket 2>/dev/null && echo "Socket CLI installed" || echo "Socket CLI install failed (npm not found?)"
-pipx install pip-audit 2>/dev/null && echo "pip-audit installed" || echo "pip-audit install failed (pipx not found?)"
-```
-
-Add Socket check to the PreToolUse hook (append before the final `exit 0`):
-```bash
-# 6. Socket CLI scan for npm/bun installs
-if echo "$CMD" | grep -qE '(npm|bun)\s+install'; then
-  PKG=$(echo "$CMD" | grep -oE '[a-z@][a-zA-Z0-9@/_-]+' | tail -1)
-  if [ -n "$PKG" ] && command -v socket &>/dev/null; then
-    socket npm:report "$PKG" 2>/dev/null | grep -i "high\|critical" && \
-      block "Blocked: Socket CLI flagged $PKG as high/critical risk"
-  fi
-fi
-```
-
-Run an initial scan on `$PROJECT`:
-```bash
-cd "$PROJECT"
-[ -f package-lock.json ] && socket npm:report . 2>/dev/null | head -30
-[ -f requirements.txt ] && pip-audit -r requirements.txt 2>/dev/null | head -30
-```
-
----
-
-## Phase 4: File-Level Malware Scanning (APPROVAL REQUIRED)
-
-**Explain first:** ClamAV scans the Downloads folder and `/tmp` for known malware
-signatures. The PostToolUse hook triggers the scan after curl/wget/download-type commands.
-
-Use `AskUserQuestion` with buttons: "Install ClamAV and set up automatic file scanning?"
-> Buttons: `Yes` / `No`
-
-If approved:
-```bash
-brew install clamav 2>/dev/null && \
-  cp /opt/homebrew/etc/clamav/freshclam.conf.sample /opt/homebrew/etc/clamav/freshclam.conf && \
-  freshclam && echo "ClamAV ready"
-```
-
-Copy `references/hook-security-scan.sh` to `~/.claude/hooks/security-scan.sh`, then:
-```bash
-chmod +x ~/.claude/hooks/security-scan.sh
-```
-
-Wire PostToolUse in `~/.claude/settings.json`:
-```json
-"PostToolUse": [
-  {
-    "matcher": "Bash",
-    "hooks": [
-      {
-        "type": "command",
-        "command": "~/.claude/hooks/security-scan.sh"
-      }
-    ]
-  }
-]
-```
-
-**Limitation:** ClamAV uses signature-based detection — it misses novel or obfuscated malware.
-It catches known threats, not zero-days.
-
----
-
-## Phase 5: Credential Hygiene & Session Cleanup (APPROVAL REQUIRED)
-
-**5a. Credential scrub in transcripts**
-
-Use `AskUserQuestion` with buttons: "Scan session transcripts for exposed credentials and report findings?"
-> Buttons: `Yes` / `No`
-
-If approved, scan the session transcripts under `~/.claude/projects/` (one `.jsonl` file per session, grouped by project) for credential patterns:
-```bash
-grep -rl --include="*.jsonl" -E "(PASSWORD|SECRET|API_KEY|TOKEN)\s*[:=]\s*\S{8,}" \
-  ~/.claude/projects/ 2>/dev/null | head -10
-```
-Report findings. Do NOT auto-delete — let the user decide.
-
-Report matches only, and never persist one. A script that stores a credential pattern in order to scrub it is storing the credential, in plaintext, in a file that gets read, synced and backed up.
-
-**5b. Session cleanup script**
-
-Use `AskUserQuestion` with buttons: "Install a maintenance script that prunes shell snapshots older than 7 days and reports transcript storage?"
-> Buttons: `Yes` / `No`
-
-If approved:
-```bash
-mkdir -p ~/.claude/hooks
-cp references/hook-session-cleanup.sh ~/.claude/hooks/session-cleanup.sh
-chmod +x ~/.claude/hooks/session-cleanup.sh
-```
-
-**Never add process-killing to this script.** Read the header comment in
-`references/hook-session-cleanup.sh` first: any pattern broad enough to match the Claude
-app also matches every MCP server the app spawns, and an idle stdio MCP server sits at
-0.0% CPU as its healthy state, so `%cpu` is not a liveness signal. An earlier version of
-this script SIGTERM'd a user's entire MCP fleet on every scheduled run for weeks.
-
-Despite the `hook-` filename this is **not** wired to a hook event — it is a standalone job
-that does nothing until something runs it. If the user wants it scheduled, ask first, then
-record the label and interval here so the installed copy and this reference cannot silently
-diverge:
-
-```bash
-# macOS example — label com.user.claude-session-cleanup, daily at 09:00
-launchctl bootout gui/$UID/com.user.claude-session-cleanup 2>/dev/null || true
-launchctl bootstrap gui/$UID ~/Library/LaunchAgents/com.user.claude-session-cleanup.plist
-```
-
-Every time this phase runs, check the installed copy against the reference and report drift
-before offering to overwrite:
-```bash
-diff ~/.claude/hooks/session-cleanup.sh references/hook-session-cleanup.sh \
-  && echo "session-cleanup: in sync" \
-  || echo "session-cleanup: DRIFT — installed copy differs from this reference"
-```
+Ask before each, with `AskUserQuestion` buttons, and act only on an explicit yes.
 
 ---
 
@@ -387,7 +243,7 @@ Generated: [date]
 - If `$PROJECT` is not a git repository: skip `.env` tracking check (0b) and `.gitignore` coverage (1f); note "Not a git repo — git-based checks skipped."
 - If the user declines all APPROVAL REQUIRED phases: produce the Phase 0 + Phase 1 read-only report and the Phase 7 governance doc. Do not treat declining as an error.
 - If a scanning tool (Socket CLI, ClamAV, pip-audit) fails to install: log the failure, skip that specific check, and continue with remaining phases. Do not abort the entire audit.
-- If `~/.claude/hooks/` already contains a `security-precheck.sh`: read it, compare to the reference version, and use `AskUserQuestion` with buttons: "An existing hook is already installed."
+- If `~/.claude/hooks/` already contains a `security-precheck.sh`: read it, compare to `"$SKILL_DIR/references/hook-security-precheck.sh"`, and use `AskUserQuestion` with buttons: "An existing hook is already installed."
   > Buttons: `Replace with updated version` / `Keep current` / `Show diff`
 
 ---
@@ -398,9 +254,9 @@ After all selected phases, run:
 ```bash
 ls -la ~/.claude/hooks/*.sh 2>/dev/null || echo "No hooks installed"
 python3 -c "
-import json
-d = json.load(open('/Users/' + __import__('os').getenv('USER') + '/.claude/settings.json'))
-hooks = d.get('hooks', {})
+import json, pathlib
+p = pathlib.Path.home() / '.claude' / 'settings.json'
+hooks = json.loads(p.read_text()).get('hooks', {}) if p.exists() else {}
 print('PreToolUse:', 'configured' if 'PreToolUse' in hooks else 'MISSING')
 print('PostToolUse:', 'configured' if 'PostToolUse' in hooks else 'MISSING')
 "
