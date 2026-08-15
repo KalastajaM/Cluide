@@ -488,7 +488,7 @@ Tasks are designed to be portable: copy any task file to another project's `task
 | `tasks/audit-file-hygiene.md` | Sweep actual clutter: OS junk, lock/temp files, duplicate families, superseded outputs, and trees that are gitignored but still loading as context | 11, 24 |
 | `tasks/analyze-project.md` | Whole-project sweep of *another* Claude project (local or GitHub) against the full guide set → writes a `CLUIDE_IMPROVEMENT_PLAN.md` into it; read-only, plan-only (criteria in `analyze-project-reference.md`) | All (01–28) |
 | `tasks/reorganize-project.md` | Safely restructure a project's folders: move files and rewire every reference without breaking it; takes a restore point first | 24 |
-| `tasks/relocate-project.md` | Move a project (or a whole projects root) somewhere else — sweeps the project, scheduled-task, and app-config layers, and refuses streaming sync folders | 11, 24 |
+| `tasks/relocate-project.md` | Move a project (or a whole projects root) somewhere else — sweeps the project, scheduled-task, artifact, Claude Code state and app-config layers, and refuses streaming sync folders. Per-layer detail in `relocate-project-reference.md` | 11, 24, 05, 25 |
 
 ### Maintenance (Cluide only)
 

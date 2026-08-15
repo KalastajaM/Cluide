@@ -129,7 +129,7 @@ Tasks are standalone instruction files for setup and auditing. Run them by sayin
 | `tasks/audit-file-hygiene.md` | Sweep clutter — OS junk, lock/temp files, duplicate families, and trees that are gitignored but still loading as context |
 | `tasks/analyze-project.md` | Analyze *another* Claude project (local or GitHub) against the full guide set → write a `CLUIDE_IMPROVEMENT_PLAN.md` into it (read-only, plan-only) |
 | `tasks/reorganize-project.md` | Safely restructure a project's folders — move files and rewire every reference without breaking it; takes a restore point first |
-| `tasks/relocate-project.md` | Move a project (or a whole projects root) elsewhere — sweeps the project, scheduled-task, and app-config layers |
+| `tasks/relocate-project.md` | Move a project (or a whole projects root) elsewhere — sweeps the project, scheduled-task, artifact, Claude Code state and app-config layers |
 | `tasks/review-tasks.md` | Cluide maintenance — detect guide changes and flag tasks, skill bundles, and templates that drifted |
 | `tasks/harvest-from-projects.md` | Cluide maintenance — the inverse of `review-tasks.md`: harvest proven patterns from your live projects back into the guides, tasks, templates, and skills |
 

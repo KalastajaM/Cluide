@@ -39,7 +39,7 @@ Detect which guides have changed since each task was last reviewed, then check w
 | `setup-data-layer.md` | `14_PERSONAL_DATA_LAYER.md` |
 | `setup-policies.md` | `21_COMPANY_POLICIES.md`, `03_SKILLS.md`, `05_MCP_SERVERS.md` |
 | `reorganize-project.md` | `24_PROJECT_FOLDER_STRUCTURE.md` |
-| `relocate-project.md` | `11_GIT_INTEGRATION.md`, `24_PROJECT_FOLDER_STRUCTURE.md` |
+| `relocate-project.md` (+ `relocate-project-reference.md`) | `11_GIT_INTEGRATION.md`, `24_PROJECT_FOLDER_STRUCTURE.md`, `05_MCP_SERVERS.md`, `25_PROJECT_INSTRUCTION_LAYERS.md` |
 | `audit-file-hygiene.md` | `11_GIT_INTEGRATION.md`, `24_PROJECT_FOLDER_STRUCTURE.md` |
 | `tune-instruction-layers.md` | `25_PROJECT_INSTRUCTION_LAYERS.md`, `01_CLAUDE_MD.md` |
 | `analyze-project.md` (+ `analyze-project-reference.md`) | All guides (`01`–`28`) — its dimension criteria summarise the full set; review after any guide change |
