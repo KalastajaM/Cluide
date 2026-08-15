@@ -82,9 +82,9 @@ or audit task rather than re-deriving it here.
 - **Healthy:** `.gitignore` excludes run logs / outputs / personal data; `.claudeignore` excludes large generated context; tracked files that should be ignored are untracked; the working tree is free of OS junk, lock/temp files, and duplicate families.
 - **Checks:** missing ignore files? Run logs / `LAST_RUN.md` / secrets tracked? Personal-data files committed? An ignore rule covering one artifact but not its near-identical sibling? Accumulated clutter or a large duplicate tree that is gitignored but *not* claudeignored, so it still loads as context — recommend `audit-file-hygiene` for the sweep. For ongoing git operations and repo-flow problems (stale branches, sync drift, missing repo profile), the fix is installing and running the `git-guru` skill.
 
-### 12. Output formatting — guide 19 → `html-report` skill
+### 12. Output formatting — guide 19
 - **Healthy:** user-facing output has a specified, consistent format; standalone reports use the self-contained HTML skeleton.
-- **Checks:** tasks/skills producing wall-of-text output? A briefing/dashboard that would benefit from the `html-report` skill?
+- **Checks:** tasks/skills producing wall-of-text output? A briefing or dashboard that would read better against Guide 19's HTML skeleton?
 
 ### 13. Interactive prompting, context scoping & independent judgment — guides 20, 26, 27 → `review-protocol` skill / guidance
 - **Healthy:** tasks/skills use `AskUserQuestion` for fixed-option choices, `@` references, and plan-mode-style review where it helps; the project is explicit about what a session needs loaded for a given kind of work, and review passes that should be blind are run in a session that has not already seen the material (Guide 26). Where the project has a review or second-opinion workflow, it has Claude commit findings in writing before the operator states their own view, and does not read agreement between two same-prompt runs as confirmation (Guide 27).
