@@ -1,17 +1,17 @@
 ---
 name: policies-validator
 description: >
-  Company policy guardrail for every Claude response. Use this skill ALWAYS before
-  answering any question, drafting any output, running any task, or recommending any
-  action that could touch company policy. Triggers include: drafting external or
-  internal communications, handling data of any classification, making decisions
-  about tools or vendors, summarising or forwarding content, content generation of
-  any kind, recommending technical approaches with security implications, and any
-  task or prompt that processes organisational data. If the user asks anything that
-  could implicate the AI use policy, Claude guidelines, Code of Conduct, data
-  classification, acceptable use, or related policies, this skill MUST be consulted
-  first. Applies three enforcement tiers: hard block (T1), required check (T2),
-  soft guidance (T3).
+  Company policy guardrail, applying three enforcement tiers: hard block (T1),
+  required check (T2), soft guidance (T3). Use this skill when the Policy Registry in
+  §1 has been filled in for this organisation AND the request touches one of the
+  policies listed there — typically drafting external or internal communications,
+  handling classified data, choosing a tool or vendor, forwarding or summarising
+  organisational content, or recommending an approach with security implications.
+  Where it applies, consult it before producing the response, not after. Do NOT use
+  it while the Policy Registry still contains [PLACEHOLDER] rows: an unfilled copy
+  enforces nothing, and loading it anyway displaces the skill that would have
+  helped. Do NOT use it for personal projects with no organisational policy, or as a
+  general-purpose review skill — that is `review-protocol`.
 ---
 
 # Company Policies — Validation & Guardrail Skill

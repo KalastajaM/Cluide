@@ -11,7 +11,11 @@ description: >
   project, configure MCP servers, integrate git, or asks anything like "how do I
   set up Claude to...", "help me improve my...", "create a skill for...", "set up
   a task that...", "Claude keeps forgetting...", or "how do I get Claude to work
-  with my data". Trigger broadly — when in doubt, load this skill.
+  with my data". Do NOT use when a more specific skill owns the request: `cowork-optimizer`
+  for making one existing task cheaper or faster, `dispatch` for choosing a model tier,
+  `git-guru` for anything git or GitHub, `template-exporter` for turning a setup into a
+  shareable template, `review-protocol` for reviewing a document or decision. This skill is
+  the router for setup and improvement work that none of those owns.
 ---
 
 # Claude Personal Assistant Setup
@@ -98,7 +102,18 @@ For "improve" and "fix" requests: ask the user to share the relevant files so yo
 
 Read only what you need. For a focused request (e.g., "create a skill for X"), one guide is usually enough. For a broad request (e.g., "set up everything from scratch"), read guides in order: 01 → 03 → 04 (CLAUDE.md → skills → memory), pausing to help the user complete each layer before moving to the next.
 
-### Step 3: Act
+### Step 3: Act — run the task if one exists
+
+**Check `tasks/` before working from the guide.** The guides are documentation for the
+system; the tasks are its installation scripts. Nearly every guide has a task that
+implements it — `setup-claude-md.md`, `setup-skill.md`, `setup-memory.md`,
+`setup-scheduled-task.md`, `setup-second-brain.md`, and the `audit-*` set for review
+work. `tasks/README.md` is the routing table. Running the task gives the user the same
+result as re-deriving it from prose, in fewer steps and with the task's own approval
+gates and restore points intact.
+
+If you are running outside a Cluide checkout and `tasks/` is not reachable, say so, then
+follow the guide's instructions directly.
 
 Follow the guide's instructions to help the user. Create real files, don't just describe what to create. Adapt examples to the user's actual domain and file names — never leave placeholder names like `{project_name}` in files you hand to the user.
 

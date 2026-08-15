@@ -198,7 +198,7 @@ Adjust the bullet points to match your specific report structure.
 
 ### Minimal Styled HTML Skeleton
 
-This skeleton also ships as the `html-report` skill (`skills/html-report/`), which applies it for you.
+This skeleton is the canonical one. Hand it to Claude with the prompt above rather than keeping a second copy of it in a skill — a duplicated skeleton is a duplicated maintenance point, and the guide is where it stays current.
 
 ```html
 <!DOCTYPE html>

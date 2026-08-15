@@ -214,7 +214,7 @@ Reach for this only when the unit of reuse is an entire project. For a single re
 
 ## Real-World Examples
 
-Four skills that illustrate different patterns. Only `backlog` ships in this repo's `skills/` folder; the other three are described to illustrate the patterns.
+Four skills that illustrate different patterns. None of them ships in this repo's `skills/` folder — they are described here to illustrate the patterns, not to be installed. For the skills Cluide does ship, see `00_INDEX.md`.
 
 ---
 

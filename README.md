@@ -140,19 +140,16 @@ Tasks are standalone instruction files for setup and auditing. Run them by sayin
 The installable skills bundled in `skills/` are listed below. Install only the ones you need.
 
 **Claude Code:** copy the skill folder to `~/.claude/skills/`
-**Claude.ai:** zip the skill folder (e.g. `cd skills && zip -r backlog.zip backlog/` — or ask Claude to bundle it), then upload the `.zip` via **Settings → Skills → Upload skill**
+**Claude.ai:** zip the skill folder (e.g. `cd skills && zip -r dispatch.zip dispatch/` — or ask Claude to bundle it), then upload the `.zip` via **Settings → Skills → Upload skill**
 
 | Skill | What it does |
 |-------|-------------|
 | `ai-assistant-setup` | Interactive setup coach — all guides bundled. Describe what you want and Claude does the work. |
 | `template-exporter` | Turns any Claude setup into a clean, shareable template |
 | `cowork-optimizer` | Audits a Cowork task for token efficiency and structural quality |
-| `project-analyzer` | Analyzes another Claude project against the full guide set and writes an improvement plan into it (thin trigger for `tasks/analyze-project.md`) |
 | `review-protocol` | Structured review that stays independent of your own view — commit-then-reveal, finding schema, blinded reconciliation |
 | `security-review` | Structured security audit of a Claude Code environment and project |
-| `backlog` | Portable backlog manager — prioritised work items, grooming, decision logging |
 | `policies-validator` | Tiered company-policy guardrail (T1 block / T2 alert / T3 soft guidance) — ships as a template; fill the Policy Registry before use |
-| `html-report` | Generates polished, self-contained HTML reports from task output (Guide 19 skeleton bundled) |
 | `git-guru` | Full-lifecycle git and GitHub management — diagnoses the repo's real state, acts where it safely can, hands over validated commands where it can't (Guide 11 companion) |
 | `dispatch` | Routes delegated work — subagents, workflow stages, scheduled tasks — to the right model tier and effort, with an escalation ladder and per-project overrides (Guide 09 §Model-Aware Dispatch) |
 

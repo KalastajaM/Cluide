@@ -590,26 +590,6 @@ Audits a Cowork task or project for token efficiency, run speed, and structural 
 
 ---
 
-### project-analyzer
-
-Analyzes another Claude project — Claude Code or Cowork, from a local folder or a GitHub repo — against the full Cluide guide set and writes a single reviewable improvement plan (`CLUIDE_IMPROVEMENT_PLAN.md`) into that project. Read-only on the target except for that one file; it produces a reviewed plan and stops, naming the `setup-*`/`audit-*` tasks that implement each fix. A thin trigger for `tasks/analyze-project.md` (single source of truth — no bundled guide copies). Where `cowork-optimizer` deep-optimizes one Cowork task, this scores a whole project across every dimension.
-
-**Install:** Copy `project-analyzer/` to `~/.claude/skills/` (Claude Code). Run it from a Cluide checkout — the analysis criteria reference the root guides.
-
-**Use when:**
-- You want a whole-project health check of a Claude setup other than the one in front of you
-- You're inheriting or reviewing someone else's Claude project and want a prioritized improvement plan
-- You want a single document that maps each gap to the exact Cluide task that fixes it
-
-**Example prompts:**
-> "Analyze my other Claude project against Cluide."
-
-> "Review this repo's Claude setup and give me an improvement plan."
-
-> "Score my assistant project against the guides — what should I fix first?"
-
----
-
 ### review-protocol
 
 Runs a structured review that produces a judgment Claude reached on its own rather than a reflection of
@@ -656,26 +636,6 @@ A structured, phased security audit of the Claude Code environment and a target 
 
 ---
 
-### backlog
-
-A portable backlog manager for any project. Maintains a `BACKLOG.md` file of prioritised work items and a `DECISIONS.md` log of choices made during grooming. Supports two session modes: standard (quick orient, pick next item) and grooming (review the full backlog, re-prioritise, resolve conflicts).
-
-**Install:** Copy `backlog/` to `~/.claude/skills/` (Claude Code), or zip the folder as `backlog.zip` and upload it to Claude.ai Personal Skills.
-
-**Use when:**
-- You want a lightweight backlog without a separate tool (Linear, Jira)
-- You need to decide what to work on next in a project
-- You want to groom and re-prioritise a set of work items
-
-**Example prompts:**
-> "What should we work on next?"
-
-> "Add 'implement caching layer' to the backlog."
-
-> "Let's groom the backlog."
-
----
-
 ### policies-validator
 
 Enforcement layer for company policies — AI use policy, Code of Conduct, data classification, Claude guidelines, and similar. Keeps policy *content* outside Cluide (stored centrally or fetched via MCP) and applies tiered enforcement: T1 hard block, T2 required check with `✅ POLICY ALIGNED` / `⚠️ POLICY ALERT` output, T3 soft guidance. Ships as a placeholder-filled template; `tasks/setup-policies.md` fills it in.
@@ -693,26 +653,6 @@ Enforcement layer for company policies — AI use policy, Code of Conduct, data 
 > "Summarise this internal document I'm pasting." (T1 classification policy halts if data is flagged Confidential)
 
 > "Write a blog post about the new release." (T3 style guide shapes the output silently)
-
----
-
-### html-report
-
-Generates polished, self-contained HTML reports, briefings, and dashboards from task or skill output. Bundles the HTML/CSS skeleton from Guide 19 — embedded styles, card layout, status badges, no external dependencies — so reports look consistent without redesigning the layout each time.
-
-**Install:** Copy `html-report/` to `~/.claude/skills/` (Claude Code), or zip the folder as `html-report.zip` and upload it to Claude.ai Personal Skills.
-
-**Use when:**
-- A task's output should be a styled report someone opens in a browser
-- You want status colours, summary metrics, or card layout instead of plain text
-- You're converting an existing Markdown briefing into something shareable
-
-**Example prompts:**
-> "Turn this run summary into an HTML report."
-
-> "Generate a styled dashboard from RUN_LOG.md."
-
-> "Make my daily briefing look good in a browser."
 
 ---
 

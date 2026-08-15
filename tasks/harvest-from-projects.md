@@ -35,7 +35,7 @@ Each thing worth harvesting maps to where it belongs in Cluide. Use this table i
 | Scheduled-task structure | Efficiency tricks, self-improvement loops, run-log conventions proven across real runs | `06`, `07`, `08`, `templates/TASK_TEMPLATE/` |
 | Memory / profile schema | Profile and knowledge file shapes that earned their keep | `04_MEMORY_AND_PROFILE.md`, `14_PERSONAL_DATA_LAYER.md`, templates |
 | MCP / hooks / security | Connector setups, guard hooks, permission patterns, credential handling | `05_MCP_SERVERS.md`, `12_SECURITY.md`, `setup-*` tasks |
-| Output formatting | HTML / Markdown report generators worth generalizing | `19_OUTPUT_FORMATTING.md`, `html-report` skill |
+| Output formatting | HTML / Markdown report generators worth generalizing | `19_OUTPUT_FORMATTING.md` |
 | Troubleshooting / quirks | Logged connector bugs and their fixes (often dated notes in a reference file) | `17_TROUBLESHOOTING.md` |
 | Orchestration / data layer | Multi-task coordination, shared state, Python feeders, JSON "databases", browser extraction | `09`, `14`, `setup-orchestration.md`, `setup-data-layer.md` |
 
