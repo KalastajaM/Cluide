@@ -91,7 +91,10 @@ PROJECT_TEMPLATE that means:
    map. Prune the file map rows for deleted blocks and add a row for each folder this project
    needs that the template does not ship.
 3. **Seed the memory block** if it was kept: `Profile/PROFILE_SUMMARY.md` first, then any
-   `Profile/PROFILE_detail.md` entries Claude will need from day one.
+   `Profile/PROFILE_detail.md` entries Claude will need from day one. Where the project needs a
+   layer the template does not ship — native memory or `.auto-memory/` rather than profile files —
+   run `tasks/setup-memory.md`; it owns the choice between the three layers and this task does
+   not restate it.
 
 For a project whose rules need drawing out rather than typing in — an unfamiliar domain, hard
 constraints the user has not articulated, an existing codebase with conventions worth capturing —
@@ -104,23 +107,22 @@ Do not fill in the *App-side fields* block yet — Step 4 produces its text.
 ### Step 4 — Set all three instruction layers
 
 The folder is one of three channels a Cowork project speaks through, and it is the only one this
-task can write directly. Follow `25_PROJECT_INSTRUCTION_LAYERS.md`:
+task can write directly. **`tasks/tune-instruction-layers.md` owns this step** — run its Step 1
+(read the fields as they currently stand), Step 3 (draft and present both texts) and Step 5
+(update the mirror block once the user confirms they have pasted them). It carries the state-file
+path, the absent-versus-empty rule, the freshness caveat and the sibling files to ignore; none of
+that is repeated here, because a second copy of an app-internal detail is a second thing to
+re-verify after every app update.
 
-1. **Draft the description** — one to three sentences on what the project is and does, naming the
-   concrete entities involved, no rules, distinct from the user's other projects.
-2. **Draft the instructions field** — only what must hold before any file is read: the pointer to
-   `CLAUDE.md`, mount verification, and the project's single hardest safety rule restated. Add the
-   bridge guard from that guide if this project's outputs will be written back to a local folder
-   from cloud sessions. Leave it empty only for a project with no real-world stakes, and say so
-   explicitly rather than by omission.
-3. **Hand both texts to the user to paste** into the app's project settings. This task cannot
-   write them: the app rewrites its own state file wholesale, so an edit made on disk is
-   discarded.
-4. **Write both into the *App-side fields* block** at the bottom of `CLAUDE.md`, with today's
-   date on the `Last verified` line.
+Two things this task adds on top, because they are specific to a project being created rather
+than tuned:
 
-An existing project may already have these fields set. Read them rather than assuming — the guide
-names the state file and the freshness caveat — and reconcile before overwriting anything.
+1. **A new project has no fields to read.** Where Step 1 finds nothing, that is the expected state,
+   not a finding — draft both texts from the Step 1 answers and the template's own purpose.
+2. **Leave the instructions field empty only for a project with no real-world stakes**, and say so
+   explicitly rather than by omission, so the empty field reads as a decision.
+
+Where this task and `tune-instruction-layers.md` appear to differ, that task wins.
 
 ### Step 5 — Offer the blocks
 

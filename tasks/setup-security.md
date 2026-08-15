@@ -192,21 +192,9 @@ How it works: the hook receives the tool call as JSON on stdin; exit 0 allows th
 
 #### Fix B — Add credential patterns to .gitignore
 
-Append to `.gitignore` (create if missing):
-```
-# Credentials — never commit
-.env
-.env.*
-*.env
-.claude/settings.local.json
-credentials.json
-token.json
-*.oauth
-*.pem
-*.key
-*.p12
-secrets.*
-```
+`tasks/setup-ignore-hygiene.md` owns the credential pattern list. Read the Secrets line in its Step 1 and append exactly those patterns to `.gitignore` under a `# Credentials — never commit` heading, creating the file if it is missing. Do not write a list from memory: three tasks used to ship three different lists into one file, and the shortest one won whichever ran last.
+
+If `setup-ignore-hygiene.md` is not reachable — this task copied to a project outside a Cluide checkout — say so, apply the patterns you can name, and tell the user the list is partial and to run the ignore-hygiene task when they next have the repo.
 
 #### Fix C — Add prompt injection guard to CLAUDE.md
 

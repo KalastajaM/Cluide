@@ -178,53 +178,76 @@ Act on any proposals marked [APPROVED], [REJECTED], or [MODIFY: ...] before proc
 Run the Self-Improvement section below (A–D), then write the run log entry.
 ```
 
-**3. Append the Self-Improvement section (A–D) to TASK.md** — a condensed version of the canonical block in `templates/TASK_TEMPLATE/TASK.md` Step 6:
+**3. Append the Self-Improvement section (A–D) to TASK.md.**
+Inline copy (verbatim from `templates/TASK_TEMPLATE/TASK.md` Step 6, with the step heading
+renamed). Use the template file when this task runs inside a Cluide checkout; this copy exists
+so the task still works when copied elsewhere. The two must stay identical — `tasks/review-tasks.md` checks it.
 
 ```markdown
 ## Self-Improvement (A–D)
 
-Run at the end of every run, after primary work, before the run log.
+Run after primary work, before writing the run log.
 
 ### A. Feedback Signal Detection
-Scan for:
-- User annotations on output files since last run ([DONE] / [SKIP] / [WRONG] / corrections)
-- Manual edits to state files managed by this task — reconcile and extract the lesson
-- Items open/unresolved for 14+ days — flag and review priority
-- Any query or operation that failed or produced unexpected output
-- Recurring patterns (3+ observations) not yet codified as a rule
+
+From the user:
+- Did the user correct anything in an output file since last run? → Extract the lesson. Apply or propose a fix.
+- Did the user annotate output with `[DONE]` / `[SKIP]` / `[WRONG]`? → Process annotations; extract the general rule.
+- Did a proposal sit `PENDING` for 2+ runs with no response? → Archive it in IMPROVEMENTS.md.
+- Did an item resolve unusually fast? → Priority calibration was correct; reinforce.
+- Did an item sit open 14+ days with no action? → Review priority or action clarity.
+
+Operational signals:
+- Did any query return 0 results when it should have found something? → Log as known issue; try alternative syntax next run.
+- Did the task miss something only apparent later? → Add a detection rule.
+- Is the same section of KNOWLEDGE_SUMMARY.md being rewritten every run? → Consider a structural improvement.
+- Did any file operation fail? → Log as known issue.
+
+Append each lesson extracted above as a dated one-liner to `LESSONS.md` — the append-only reasoning
+history the file map lists.
 
 ### B. Refactor Trigger Check
-Check `runs_since_last_refactor`. If ≥ `refactor_threshold`:
-1. Review all always-loaded files — remove stale, duplicate, contradictory entries
-2. Review TASK.md — identify steps no longer followed or now outdated. A removal is never applied
-   directly; it goes through §C as a proposal, because the session judging the step is the one it
-   constrains
-3. Review pending/open state — identify orphaned or obsolete items
-4. Archive Applied Fixes entries beyond the 10 most recent
-5. Reset `runs_since_last_refactor` to 0; set `last_refactor_date` and `next_refactor_due_at_run`
-6. Note "Refactor: [summary of what was found]" in the run log
 
-### C. Auto-apply vs. Propose
-**Apply directly** (all must be true): the change is **mechanically checkable** — it corrects a confirmed
-error, or writes down something the run already does — AND low-risk AND narrow scope AND purely additive.
-"It seemed clearly correct" is not a criterion: the session proposing the change is the one that would
-have to notice it was wrong (`27_INDEPENDENT_JUDGMENT.md`). Removals and rewrites never qualify.
+| Trigger | Condition | Action |
+|---------|-----------|--------|
+| Run count | `runs_since_last_refactor` ≥ threshold | Run full refactor this run |
+| File size | TASK.md > 250 lines | Propose consolidation |
+| File size | Any always-loaded file > 300 lines | Propose consolidation |
+| Stale content | Any section not updated in 3+ months | Flag in output |
+| Accumulated state | > 8 open items at once | Review and reprioritize |
+| Repeated failure | Same check failing 5+ runs | Revise the check |
 
-**Propose in IMPROVEMENTS.md** (if any is true): affects behaviour in a non-obvious way, restructures tracking, modifies core logic, touches 3+ files or 10+ lines, confidence below HIGH, user hasn't explicitly requested it. Use the proposal JSON format shown in IMPROVEMENTS.md §Pending Proposals.
+When a full refactor runs:
+1. Review all tracked files for stale, duplicate, or contradictory content — consolidate.
+2. Review TASK.md for steps that are unclear, never followed, or outdated. Removing one is a proposal, never a direct apply — the session judging the step is the one it constrains.
+3. Review open items — close or merge where possible.
+4. Reset `runs_since_last_refactor` to 0. Summarize findings in the run log.
 
-The two-run rule: archive proposals not responded to after 2 runs.
+### C. Apply or Propose
+
+**Apply directly** (no confirmation needed) when ALL are true:
+- Change is **mechanically checkable** — it corrects a confirmed error, or writes down something the run
+  already does. "It seemed clearly correct" is not a criterion: the session proposing the change is the
+  one that would have to notice it was wrong
+- Change is low-risk
+- Scope is a single field, sentence, or entry in a single file
+- Change is purely additive or corrects a confirmed error — never a removal or a rewrite
+
+**Propose in IMPROVEMENTS.md** when ANY is true:
+- Change affects behavior in a non-obvious way
+- Change restructures how information is tracked
+- Change modifies core logic (step order, priority rules, thresholds)
+- Change touches 3+ files or 10+ lines
+- Confidence is below HIGH
 
 ### D. Update IMPROVEMENTS.md
-At end of every run:
-1. Increment `total_runs` and `runs_since_last_refactor`
-2. Move any APPROVED proposals to Applied Fixes; record what changed
-3. Archive REJECTED proposals
-4. Add any new proposals from signal detection
-5. Add new known issues discovered this run
-6. Add low-priority observations to Improvement Ideas Backlog
-```
 
-Show the user the exact diff — the three insertions — and ask for approval before writing.
+- Increment `total_runs` and `runs_since_last_refactor`
+- Add new applied fixes (newest first; archive when list exceeds 10)
+- Add/update pending proposals
+- Add/update known issues
+- Archive resolved items
+```
 
 ### Step 5 — Create LESSONS.md (if requested)
 

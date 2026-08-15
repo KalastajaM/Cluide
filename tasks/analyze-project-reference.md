@@ -27,9 +27,10 @@ applicability (e.g. a hybrid that's also a knowledge base gets the wiki dimensio
 ## § Dimension criteria
 
 For each dimension: what **healthy** looks like, the **checks** to run against the target, the **guide**
-it's judged against, and the **fix** task/skill the plan recommends. Apply read-only. Criteria are
-summarised from the existing `audit-*` tasks and the guides — when you need depth, open the cited guide
-or audit task rather than re-deriving it here.
+it's judged against, and the **fix** task/skill the plan recommends. Apply read-only. Where a dimension has an
+`audit-*` task, the criteria live in that task and this file delegates to it rather than restating them:
+run the audit read-only and score from what it reports. Numbers in particular belong in one place — a
+threshold copied here goes stale silently, because nothing breaks when the audit task changes it.
 
 > **These dimension numbers are a public surface.** Tools and projects outside this repo cite dimensions by
 > number, and a renumbering silently changes what those citations mean. Add new dimensions at the end;
@@ -43,28 +44,28 @@ or audit task rather than re-deriving it here.
 - **Checks:** is there a coherent `.claude/` (or Cowork task) layout? Are state files (`RUN_LOG.md`, `IMPROVEMENTS.md`) co-located with definitions? Any orphaned or duplicated config? Are generated outputs accumulating at the root instead of in their own folder? Do recurring files of the same kind share a format? Does inbound material that arrives outside a chat (scans, exports, downloads, files handed over by someone else) have a named landing place, or is it accumulating at the root? If there is an intake folder, does it have permanent residents, and does `CLAUDE.md` say what Claude may file where? **N/A** for the intake checks where every input arrives through a session. If a restructure is warranted, recommend `reorganize-project` rather than ad-hoc moves.
 
 ### 2. CLAUDE.md quality — guides 01, 16, 02 → `setup-claude-md` / `audit-claude-md`
-- **Healthy:** present, lean (~30 lines of real content), has Identity / Communication / Critical Rules, no dead or contradictory rules, current.
-- **Checks:** exists? Over-length or bloated? Missing core sections? Stale or contradicted-by-behaviour rules? Vague instructions that should be examples (Guide 02)?
+- **Healthy:** present, lean, sectioned, and current — `audit-claude-md.md` holds the length target and the required sections.
+- **Checks:** run `audit-claude-md.md`'s checklist read-only. Flag a missing or empty file, bloat against its stated target, missing core sections, rules contradicted by observed behaviour, and vague instructions that should be examples (Guide 02).
 
 ### 3. Skills — guides 03, 02 → `setup-skill` / `audit-skill`
 - **Healthy:** each skill has a trigger-quality `description` (concrete phrases), a complete workflow, a specified output format, named tools, and edge-case handling. A skill with a hard "never do X" constraint enforces it with an `allowed-tools` allowlist rather than trusting the prose.
 - **Checks:** weak/generic descriptions that won't trigger; missing output format; unnamed tools; no edge cases; skill that should be a task (or vice-versa, per Guide 03). Any skill whose constraints say NEVER write / send / run, with no `allowed-tools` line to make it so (Guide 03, optional frontmatter; Guide 12 for why it matters)?
 
 ### 4. Memory & profile — guides 04, 14 → `setup-memory` / `audit-memory`
-- **Healthy:** one of the three layers (native memory, `.auto-memory/`, or profile files) is in place where cross-session persistence is needed, and it is the *right* one — scheduled tasks use `.auto-memory/` or profiles, never native memory (Guide 04); compact summaries (`KNOWLEDGE_SUMMARY.md` ≤ 40 lines); no stale/duplicate/misplaced facts.
-- **Checks:** persistence expected but absent? Bloated always-loaded memory? Stale or duplicated entries? Facts that belong in a profile vs memory? A scheduled task relying on native memory, which is not reliably available to autonomous runs? Do not report "no memory system" on the absence of `.auto-memory/` alone — check for native memory and profile files first.
+- **Healthy:** one of the three layers (native memory, `.auto-memory/`, or profile files) is in place where cross-session persistence is needed, and it is the *right* one — scheduled tasks use `.auto-memory/` or profiles, never native memory (Guide 04). `audit-memory.md` holds the size targets and the per-layer checks.
+- **Checks:** run `audit-memory.md` read-only against every layer present, not just `.auto-memory/`. Flag persistence expected but absent, bloated always-loaded memory, stale or duplicated entries, facts that belong in a profile rather than memory, and a scheduled task relying on native memory. Do not report "no memory system" on the absence of `.auto-memory/` alone — check for native memory and profile files first.
 
 ### 5. Scheduled-task efficiency — guide 06 → `setup-scheduled-task` / `audit-task-efficiency`
 - **Healthy:** `TASK.md` ≤ 250 lines, heavy detail split to `TASK_REFERENCE.md`, fixed-format output scripted, partial reads, two-pass triage, hard size limits, run dedup.
 - **Checks:** run `audit-task-efficiency.md`'s six checks read-only against each task file. Flag oversized always-loaded files, un-scripted fixed-format generation, full-file reads, unbounded logs.
 
 ### 6. Task self-improvement — guide 07 (incl. Part 9) → `setup-self-improving-task`
-- **Healthy:** recurring tasks carry `IMPROVEMENTS.md` with counters, apply-vs-propose discipline, refactor triggers, and a run log.
-- **Checks:** scheduled task without a self-improvement loop? `IMPROVEMENTS.md` present but unbounded (> 150 lines, Applied Fixes never archived)? No refactor threshold?
+- **Healthy:** recurring tasks carry `IMPROVEMENTS.md` with counters, apply-vs-propose discipline, refactor triggers, and a run log, in the shape `templates/TASK_TEMPLATE/IMPROVEMENTS.md` defines.
+- **Checks:** scheduled task without a self-improvement loop? An `IMPROVEMENTS.md` that has outgrown the template's size rule, with Applied Fixes never archived — `audit-cost.md` carries that threshold, read it there. No refactor trigger at all?
 
 ### 7. Cost & performance — guide 10 → `audit-cost`
-- **Healthy:** per-run metrics captured, model tier matches the work, file budgets respected, no cost spikes.
-- **Checks:** any run metrics at all? Over-tier model for a simple task? Expensive steps with no triage?
+- **Healthy:** per-run metrics captured, model tier matches the work, file budgets respected, no cost spikes. `audit-cost.md` holds the budgets, the tier table and the current pricing pointer.
+- **Checks:** run `audit-cost.md` read-only. Flag the absence of any run metrics, an over-tier model for mechanical work, expensive steps with no triage, and unbounded always-loaded files. Do not quote a model name or a price from memory — the audit task reads them from Guide 10, which reads them from anthropic.com.
 
 ### 8. Orchestration — guide 09 → `setup-orchestration`
 - **Healthy:** multiple coordinated tasks use shared state with `updated_at`, clear ownership, freshness/skip handling.
@@ -79,8 +80,8 @@ or audit task rather than re-deriving it here.
 - **Checks:** grep for credential patterns (report **location only**, never values); permission breadth; missing guard hook on a bash-running project; autonomous task handling untrusted input without guardrails. For a deeper pass, recommend the `security-review` skill.
 
 ### 11. Git & ignore hygiene — guide 11 → `setup-github` / `setup-ignore-hygiene` / `audit-file-hygiene` / `git-guru` skill
-- **Healthy:** `.gitignore` excludes run logs / outputs / personal data; `.claudeignore` excludes large generated context; tracked files that should be ignored are untracked; the working tree is free of OS junk, lock/temp files, and duplicate families.
-- **Checks:** missing ignore files? Run logs / `LAST_RUN.md` / secrets tracked? Personal-data files committed? An ignore rule covering one artifact but not its near-identical sibling? Accumulated clutter or a large duplicate tree that is gitignored but *not* claudeignored, so it still loads as context — recommend `audit-file-hygiene` for the sweep. For ongoing git operations and repo-flow problems (stale branches, sync drift, missing repo profile), the fix is installing and running the `git-guru` skill.
+- **Healthy:** `.gitignore` excludes run logs / outputs / personal data; `.claudeignore` excludes large generated context; tracked files that should be ignored are untracked; the working tree is free of OS junk, lock/temp files, and duplicate families. `setup-ignore-hygiene.md` owns the ignore-pattern list; `audit-file-hygiene.md` owns the clutter checks.
+- **Checks:** run `audit-file-hygiene.md`'s six checks read-only for the working-tree half, and `setup-ignore-hygiene.md`'s audit step for the ignore-file half. Flag missing ignore files, run logs or secrets tracked, personal-data files committed, an ignore rule covering one artifact but not its near-identical sibling, and anything gitignored but not claudeignored that still loads as context. For ongoing git operations and repo-flow problems (stale branches, sync drift, missing repo profile), the fix is installing and running the `git-guru` skill.
 
 ### 12. Output formatting — guide 19
 - **Healthy:** user-facing output has a specified, consistent format; standalone reports use the self-contained HTML skeleton.
