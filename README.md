@@ -111,6 +111,7 @@ Tasks are standalone instruction files for setup and auditing. Run them by sayin
 | `tasks/setup-self-improving-task.md` | Add `IMPROVEMENTS.md` + self-improvement loop to any task |
 | `tasks/setup-orchestration.md` | Wire multi-task coordination — shared state, run order, handoff files |
 | `tasks/setup-wiki.md` | Create an LLM wiki structure for a topic |
+| `tasks/setup-second-brain.md` | Build or repair a personal knowledge layer — four homes, index, inbox rule, review pass |
 | `tasks/setup-data-layer.md` | Set up data patterns (Python feeder, JSON DB, browser extraction) |
 | `tasks/setup-ignore-hygiene.md` | Audit `.gitignore`/`.claudeignore`, install check hook |
 | `tasks/setup-bootstrap-folder.md` | Create `bootstrap/` stubs for gitignored runtime state files |

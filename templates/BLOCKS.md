@@ -51,7 +51,7 @@ decision is a deletion rather than an addition.
 | **Security hardening** | A credential scan, permission audit, and the shell-command guard hook | Claude runs commands here, or the folder sits near anything sensitive | The hook is not context | `tasks/setup-security.md` (Guide 12) |
 | **Reference companion** | `CLAUDE_REFERENCE.md` beside `CLAUDE.md`, with triggers written into the parent | Rules genuinely belong in `CLAUDE.md`, apply rarely, and are expensive to get wrong | On trigger only — that is the point of it | No task: Guide 01, *When CLAUDE.md Cannot Be Short* |
 | **Helper app** | A small locally-run tool with its invariants and verification gates written down | You keep asking for the same computed answer and a script would settle it | Not loaded | No task: Guide 22 |
-| **Second-brain link** | A one-way return leg from this project to your notes layer | You run a notes layer above your projects and this project produces conclusions worth keeping | Not loaded | No task: Guide 28 |
+| **Second-brain link** | A one-way return leg from this project to your notes layer | You run a notes layer above your projects and this project produces conclusions worth keeping | Not loaded | `tasks/setup-second-brain.md` (Guide 28) |
 
 ## What is not a block
 

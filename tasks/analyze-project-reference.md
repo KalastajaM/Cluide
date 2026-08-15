@@ -98,7 +98,7 @@ or audit task rather than re-deriving it here.
 - **Healthy (only if the project reasons over personal data):** a deliberate pattern (Python feeder, JSON DB, browser extraction, vision) rather than ad-hoc pasting.
 - **Checks:** large/no-API personal data handled by hand? **N/A** if the project has no personal-data inputs.
 
-### 16. LLM wiki & personal knowledge layer — guides 15, 28 → `setup-wiki`
+### 16. LLM wiki & personal knowledge layer — guides 15, 28 → `setup-wiki` (guide 15) / `setup-second-brain` (guide 28)
 - **Healthy (knowledge-base projects only):** sources / wiki / schema layers, ingest-query-lint operations, index + log conventions. Where the project holds general notes rather than one curated domain, the second-brain shape applies instead (Guide 28): an index file cheap enough to always load, an inbox that is emptied rather than managed, homes sorted by when a note stops being relevant, and a review pass that prunes and resolves contradictions.
 - **Checks:** a knowledge project using flat notes instead of a compounding wiki? A notes folder with no index, so any question loads the whole tree? An inbox or `unsorted/` with permanent residents (a project-level intake folder is dimension 1; this is the knowledge layer's own inbox)? Notes contradicting each other with nothing marked superseded? Curated domain material and general working notes mixed in one root (Guide 28 — the two need different handling)? **N/A** otherwise.
 
