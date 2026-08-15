@@ -1,177 +1,164 @@
 # Project Template — Setup Instructions
 
-> A ready-to-copy folder structure for a Claude project with persistent context, knowledge management, and optional scheduled tasks.
-> Based on the patterns in Guide 04 (Memory & Profile) and the TASK_TEMPLATE.
+> The default layout for a Claude project: a small core that every project wants, plus optional
+> blocks you keep or delete. Implements the standard layout in Guide 24
+> (`24_PROJECT_FOLDER_STRUCTURE.md`), the three instruction layers in Guide 25, and the profile
+> pattern in Guide 04.
 
 ---
 
-## What's in This Folder
+## Core and blocks
+
+The folder ships with everything in place, so setting a project up is mostly **deleting what it
+does not need**. That is deliberate: a block deleted on day one costs nothing, while a home that
+was never created is where files quietly pile up at the root.
+
+What you copied:
 
 ```
-PROJECT_TEMPLATE/
-├── CLAUDE.md                    ← Project instructions: who you are, rules, file map
-├── ROUTING_LOG.md               ← Optional: dispatch log for model routing (delete if unused)
-├── Incoming/
-│   └── README.md                ← Intake queue for material arriving outside chat (delete if unused)
-├── Profile/
-│   ├── PROFILE_SUMMARY.md       ← Compact digest — read every session (≤ 50 lines)
-│   └── PROFILE_detail.md        ← Full detail: people, projects, patterns, hypotheses
-└── Knowledge/
-    └── INDEX.md                 ← Index of topic files + template for creating new ones
+CLAUDE.md      ← instructions, file map, and the mirror of the app-side fields
+README.md      ← this file; how the layout works and how to set it up
+Outputs/       ← finished deliverables, generated from the sources
+Working/       ← scratch and in-progress material
+_archive/      ← superseded material, never read back
+.gitignore.template
+Profile/  Knowledge/  Incoming/  ROUTING_LOG.md   ← blocks; keep or delete each
 ```
 
-**Created automatically as the project evolves:**
+That covers four of the five kinds of home in Guide 24's standard layout: instructions, generated
+outputs, scratch, and archive. The fifth — the source of truth, the material the project is
+actually *about* — is the one no template can supply, because it is different in every project.
+In this template the memory block stands in for it; in yours it might be case files, a dataset, a
+codebase, or a folder per tracked entity.
 
-```
-Knowledge/[TOPIC].md             ← One file per topic/project (created as needed)
-[TaskName]-Task/                 ← Scheduled task folders (from TASK_TEMPLATE)
-```
+The listing above says what exists. `CLAUDE.md`'s **File Map** says what each thing is *for* and
+what Claude may write to — that table is what a session actually reads, and it is the one to keep
+current as the project changes.
+
+**The blocks:**
+
+| Block | Folder / file | Keep it when |
+|---|---|---|
+| Memory | `Profile/`, `Knowledge/` | Claude needs context that outlives a session — who people are, where topics stand |
+| Intake | `Incoming/` | material reaches this project outside a chat (`Incoming/README.md` has the cases) |
+| Dispatch routing | `ROUTING_LOG.md` + the *Dispatch Overrides* section of `CLAUDE.md` | work here gets delegated to subagents, workflow stages, or scheduled tasks |
+
+`templates/BLOCKS.md` is the full catalogue: these three, plus the blocks a project installs later
+from a task or another template, each with what it costs per session and where its installation
+procedure lives.
 
 ---
 
-## How to Set Up a New Project
+## Setting it up
 
-### Step 1 — Copy this folder
+### Step 1 — Copy and rename
 
-Copy `PROJECT_TEMPLATE/` to your project's location and rename it. Example:
+Copy `PROJECT_TEMPLATE/` to where the project should live and rename it.
 
-```
-Projects/
-└── MyProject/
-    ├── CLAUDE.md
-    ├── Profile/
-    └── Knowledge/
-```
+### Step 2 — Delete the blocks you don't need
 
-### Step 2 — Fill in CLAUDE.md
+Work down the block table above. For each block you drop, delete **all** of its pieces: the folder
+or file, its section in `CLAUDE.md`, and its rows in the file map. Dropping the memory block also
+means replacing the auto-read line above that table, which names `Profile/PROFILE_SUMMARY.md`. A
+rule pointing at a folder that no longer exists is worse than no rule, and it sits in the part of
+`CLAUDE.md` that loads in every session.
 
-Open `CLAUDE.md` and replace all `[PLACEHOLDER]` text. Search for `[` to find them. Key sections:
+### Step 3 — Fill in CLAUDE.md
 
-- **About** — your name, role, timezone
-- **Context** — 2–4 lines describing what this project covers
-- **Critical Rules** — hard constraints only (things that override default behavior)
-- **Dispatch Overrides** — optional; fill in if this project delegates work to subagents or scheduled tasks, delete otherwise
-- **Incoming** — fill in `Incoming/README.md` with the folders Claude may file into, or delete the folder if all material arrives through chat
-- **File Map** — update the table as you add or remove files
+Replace every `[PLACEHOLDER]`; search for `[` to find them. The sections that need real thought:
 
-### Step 3 — Seed the Profile
+- **About** — delete it outright for a project that is not about a person.
+- **Context** — what this project covers, specifically enough that a stranger could tell it apart
+  from your other projects.
+- **Critical Rules** — hard constraints only, the ones that override default behavior.
+- **File Map** — prune and extend it to match what the folder actually holds.
+- **App-side fields** — leave it until Step 5.
 
-Open `Profile/PROFILE_SUMMARY.md` and fill in:
-- Who you are (2–3 lines)
-- Active priorities (what matters most right now)
-- Key contacts (people Claude will encounter in this project)
+### Step 4 — Seed the memory block (if you kept it)
 
-Leave the Open Action Items table empty — it will fill in naturally.
+In `Profile/PROFILE_SUMMARY.md`, fill in who you are, what is active right now, and the people
+Claude will meet in this project. Leave the Open Action Items table empty; it fills itself.
 
-Open `Profile/PROFILE_detail.md` and add initial entries for anyone or any project you know Claude will need context on from day one.
+In `Profile/PROFILE_detail.md`, add entries for anyone or anything Claude needs context on from
+day one. `Knowledge/` starts with just its index; topic files get created when a topic earns one.
 
-### Step 4 — Open in Claude Code
+### Step 5 — Set the two app-side fields
 
-Point Claude Code at your new project folder. Test with a question like: "What are my active priorities?" — Claude should read `PROFILE_SUMMARY.md` and answer from it.
+A Cowork project speaks to Claude through three channels, and the folder is only one of them
+(Guide 25). In the app's project settings:
 
-### Step 5 — Add scheduled tasks (optional)
+- **Description** — one to three sentences on what the project is and does, naming the concrete
+  entities involved. No rules. It is injected as the project's identity in every session, so a
+  stale or copy-pasted one is expensive.
+- **Instructions** — only what must hold before any file is read: point at `CLAUDE.md`, have
+  Claude verify the folder is connected, and restate the project's single hardest safety rule.
 
-If this project needs automated runs, copy `TASK_TEMPLATE/` into your project folder for each task you want:
+Then paste both texts into the **App-side fields** block at the bottom of `CLAUDE.md` and date it.
+The fields have no version history; that block is the only record of what they used to say.
 
-```
-MyProject/
-├── CLAUDE.md
-├── Profile/
-├── Knowledge/
-└── DailyDigest-Task/            ← from TASK_TEMPLATE, renamed and filled in
-```
+### Step 6 — Connect it and check
 
-See `TASK_TEMPLATE/README.md` for full task setup instructions.
+Open the project with the folder connected and ask something the project should be able to answer
+without being told where to look — "what are my active priorities?" if you kept the memory block,
+otherwise anything `CLAUDE.md` covers. If Claude has to be pointed at a file, the file map or the
+auto-read line is wrong.
 
----
+### Step 7 — Add blocks as the project earns them
 
-## File Map & Lookup Patterns
-
-| File | What it contains |
-|------|-----------------|
-| `Profile/PROFILE_SUMMARY.md` | Compact digest: who I am, active priorities, key contacts. **Read first for any task.** |
-| `Profile/PROFILE_detail.md` | Full detail: people, projects, patterns, history |
-| `Knowledge/INDEX.md` | Index of all topic knowledge files |
-| `Knowledge/[TOPIC].md` | Per-topic file: key facts, decisions, current status, open questions |
-| `ROUTING_LOG.md` | Optional: one line per dispatched subtask, for tuning model routing |
-| `Incoming/` | Optional intake queue: files that arrived outside a chat, waiting to be filed. Always empty at rest — see Guide 24 |
-
-Common lookups:
-- **"What's the status of [project]?"** → `Knowledge/INDEX.md` → relevant `Knowledge/[TOPIC].md`
-- **"Who is [person]?"** → `Profile/PROFILE_detail.md`
-- **General context** → Always start with `Profile/PROFILE_SUMMARY.md`
-
-> **Note:** For simple projects, Claude's built-in `.auto-memory/` system (see Guide 04) may be sufficient. Profile files are the richer option when you need structured, multi-file context.
+Nothing else needs deciding up front. When the project starts producing a recurring run, or
+accumulating a domain worth a wiki, or needing its own skill, open `templates/BLOCKS.md` and
+install that block then. `tasks/onboard-project.md` walks all of this interactively, including the
+git, ignore-hygiene, and security passes this file does not cover.
 
 ---
 
-## How the Profile Grows Over Time
+## How the project grows
 
-**You seed it once; Claude maintains it from then on.**
+**The profile maintains itself; you correct it.** After seeding, Claude updates the profile files
+as it learns things — in conversation, from a task run, or when you tell it to remember something.
+The hypothesis system in `PROFILE_detail.md` tracks what Claude believes but has not confirmed;
+review those occasionally and mark them `[CONFIRMED]` or delete them.
 
-After setup, Claude updates the profile files automatically when:
-- It learns new facts about people, projects, or topics in conversation
-- A task run surfaces new information
-- You explicitly ask it to remember something
+**Files split before they sprawl.** A profile or knowledge file past roughly 150 lines splits into
+topic files with the index updated. Update the file map in `CLAUDE.md` when it does.
 
-**You review and correct periodically.** The hypothesis system in `PROFILE_detail.md` lets Claude track things it's reasonably confident about but hasn't confirmed with you — check these occasionally and mark them `[CONFIRMED]` or delete them.
+**Outputs never accumulate at the root.** That is one of the failures this layout exists to
+prevent, and it happens one "just this once" at a time. `Outputs/README.md` carries the naming
+convention for deliverables that go through versions.
 
-**Profile files split when they grow.** When `PROFILE_detail.md` exceeds ~150 lines, split it into `PROFILE_people.md`, `PROFILE_projects.md`, etc. Update the file map in `CLAUDE.md` accordingly.
-
----
-
-## How Knowledge Files Work
-
-The `Knowledge/` folder stores deep, structured context on specific topics — clients, projects, systems, decisions. It grows organically: Claude creates a new `Knowledge/[TOPIC].md` when a topic warrants its own file, and updates it as new facts emerge.
-
-`Knowledge/INDEX.md` is the entry point — Claude reads it first to know what files exist, then opens only what's needed. This keeps token cost low on sessions that only touch one or two topics.
-
-The template for a topic file is embedded in `Knowledge/INDEX.md`.
+To fix a project that has already drifted, run `tasks/reorganize-project.md` — it takes a restore
+point first, then moves files and rewires every reference to them.
 
 ---
 
-## Dispatch Overrides and the Routing Log (optional)
+## This template vs. the others
 
-When sessions in this project delegate work — subagents, workflow stages, scheduled tasks — the
-`dispatch` skill routes each piece to a model tier and effort level. Two project-level hooks
-refine that:
+| | PROJECT_TEMPLATE | TASK_TEMPLATE | PMO_TEMPLATE |
+|--|---|---|---|
+| **What it is** | A project workspace — the container Claude operates in | One scheduled automated workflow | A programme workspace with registers |
+| **When Claude runs** | On demand, in your sessions | On a schedule | On demand, in your sessions |
+| **Primary file** | `CLAUDE.md` (always loaded) | `TASK.md` (loaded per run) | `CLAUDE.md` + `PROJECT_GUIDE.md` |
+| **Memory** | Profile + Knowledge files | `KNOWLEDGE_SUMMARY.md` + `IMPROVEMENTS.md` | The register suite |
+| **Self-improvement** | Your corrections in conversation | The Step 6 self-improvement loop | The cross-reference audit task |
 
-- The **Dispatch Overrides** section in `CLAUDE.md` states this project's exceptions to the
-  global routing table: the default worker tier, content types that must never go below a named
-  tier, and archetypes proven safe on the cheap tier.
-- **`ROUTING_LOG.md`** records one line per dispatch. Over time it shows which routings hold and
-  which escalate, and a periodic review turns that into proposed override changes.
-
-Both are optional. A project that never delegates should delete the CLAUDE.md section and the
-log file; a project that delegates heavily should keep both, because the log is what makes the
-routing improve instead of staying a guess.
+A project contains tasks, not the other way round: a task folder from `TASK_TEMPLATE` is dropped
+*into* a project and reads and updates that project's files.
 
 ---
 
-## Key Differences from TASK_TEMPLATE
+## Handing this template to Claude
 
-| | PROJECT_TEMPLATE | TASK_TEMPLATE |
-|--|-----------------|---------------|
-| **What it is** | A project workspace — the container Claude operates in | A scheduled automated workflow |
-| **When Claude runs** | On demand, during your sessions | On a schedule, automatically |
-| **Primary file** | `CLAUDE.md` (always loaded) | `TASK.md` (loaded at each run) |
-| **Memory** | Profile + Knowledge files | KNOWLEDGE_SUMMARY.md + IMPROVEMENTS.md |
-| **Self-improvement** | Through your corrections in conversation | Through the Step 6 self-improvement loop |
+To set up a new project:
 
-A project can contain multiple tasks. Tasks operate within (and update) the project's profile and knowledge files.
+> "Read `templates/PROJECT_TEMPLATE/README.md`, copy the folder to [destination], rename it
+> [project name], and walk me through Steps 2–6. Here is what the project is: [describe it, the
+> domain, and any hard rules]."
 
----
+To add a block to a project that already exists:
 
-## Giving This Template to Claude
+> "Read `templates/BLOCKS.md` and install the [block name] block in [path]. Ask me what you need."
 
-To set up a new project from scratch:
+To retrofit this layout onto a project that grew without one:
 
-> "Read `PROJECT_TEMPLATE/README.md`, copy the folder to [destination], rename it [project name], and fill in all the placeholders. I'll tell you what I need: [describe the project, domain, and any critical rules]."
-
-To add a profile system to an existing project:
-
-> "Read `04_MEMORY_AND_PROFILE.md` and create profile files for my project at [path]. Start with `PROFILE_SUMMARY.md` — ask me what you need to seed it correctly."
-
-To add a scheduled task to an existing project:
-
-> "Read `TASK_TEMPLATE/README.md` and create a new task in [path/to/project/] called [TaskName]-Task. The task should [describe what it does]."
+> "Read `tasks/reorganize-project.md` and run it against [path], targeting the layout in
+> `templates/PROJECT_TEMPLATE/README.md`."

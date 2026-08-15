@@ -69,7 +69,8 @@ Ready-to-copy folder structures are available in the `templates/` folder of the 
 | Template | Use when... |
 |----------|------------|
 | `TASK_TEMPLATE/` | Creating any new scheduled automated task. Copy, rename to `[TaskName]-Task/`, fill in the domain-specific logic. |
-| `PROJECT_TEMPLATE/` | Starting any new Claude project that needs cross-session memory, profile tracking, or topic knowledge files. |
+| `PROJECT_TEMPLATE/` | Starting any new Claude project. Ships the default layout (instructions, outputs, scratch, archive) with the memory, intake, and routing blocks ready to keep or delete. |
+| `BLOCKS.md` | Deciding what a project needs beyond that core — the catalogue of optional blocks and the task that installs each. |
 | `AI-ASSISTANT_TEMPLATE/` | Setting up a personal business assistant that monitors email, Teams, and calendar via Microsoft 365. Includes four coordinated scheduled tasks ready to deploy. |
 | `PMO_TEMPLATE/` | Managing a product migration or programme initiative. Includes a full PMO register suite (risks, actions, dependencies, decisions, knowledge base). |
 

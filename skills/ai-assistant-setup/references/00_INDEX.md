@@ -390,7 +390,8 @@ The ready-to-copy folder structures live in the `templates/` folder of the Cluid
 ### Choosing a Template
 
 **"I want to..."**
-- ...give Claude persistent memory for a project → **PROJECT_TEMPLATE**
+- ...start any new project on a sound default layout → **PROJECT_TEMPLATE**
+- ...work out which optional pieces a project should have → **BLOCKS.md**
 - ...run a single automated task on a schedule → **TASK_TEMPLATE**
 - ...have a personal assistant that monitors email/calendar daily → **AI-ASSISTANT_TEMPLATE**
 - ...manage a programme with risks, actions, and financials → **PMO_TEMPLATE**
@@ -405,9 +406,9 @@ The ready-to-copy folder structures live in the `templates/` folder of the Cluid
 | **Best for** | Any project needing cross-session memory | Single recurring automated task | Turn-key personal business assistant | Programme/portfolio management workspace |
 
 ### PROJECT_TEMPLATE/
-A complete project folder with `CLAUDE.md`, `Profile/`, and `Knowledge/` pre-structured and filled with placeholder text. Copy it, rename it, fill in the placeholders, and you have a working persistent assistant context from run 1.
+The default layout for a Claude project, and the starting point for almost all of them. The core is Guide 24's standard layout — `CLAUDE.md` (identity, rules, file map, and the versioned mirror of the app-side fields), `Outputs/` for generated deliverables, `Working/` for scratch, `_archive/` for superseded material — and the optional blocks ship inside the folder, so setup is deleting what the project does not need rather than building what it does. Copy it, rename it, delete the unused blocks, fill in the placeholders.
 
-**Use this when:** starting any new Claude project that needs cross-session memory, profile tracking, or topic knowledge files.
+**Use this when:** starting any new Claude project. Add further blocks from `BLOCKS.md` as the project earns them.
 
 ### TASK_TEMPLATE/
 A complete scheduled task folder with `TASK.md`, `IMPROVEMENTS.md`, `KNOWLEDGE_SUMMARY.md`, `RUN_LOG.md`, and `LESSONS.md` — all pre-structured and ready to fill in. Implements the patterns from Guide 06 (efficiency) and Guide 07 (self-improvement) out of the box.
@@ -429,6 +430,11 @@ A project workspace for managing a structured programme or project. Includes a `
 A ready-to-fill starter for the two account-level instruction fields (Guide 25, *The account layers above the project*): account-wide preferences and Cowork-wide instructions. A guidance comment explains what earns a place in the About-me section; the rules below it are a working set proven in production, meant to be adapted.
 
 **Use this when:** setting up or overhauling your account-level instructions rather than a single project's.
+
+### BLOCKS.md
+The catalogue of optional blocks that sit on top of the PROJECT_TEMPLATE core: what each adds, when a project has earned it, whether it costs context in every session or only on demand, and the task or template that installs it. Covers the three blocks shipped inside PROJECT_TEMPLATE (memory, intake, dispatch routing) and the ones installed from elsewhere (scheduled tasks, orchestration, subagents, registers, data layer, wiki, skills, policies, MCP, git, security, reference companion, helper apps, second-brain link).
+
+**Use this when:** deciding what a project needs beyond the core — at setup, or months later when a need shows up.
 
 ### AGENT_STARTER_PACK/
 Four Claude Code subagent definitions with the model tier pinned in frontmatter — `scout` (haiku, bulk reading and extraction), `builder` (sonnet, well-specified changes), `verifier` (opus, adversarial checking), `researcher` (sonnet, web legwork) — plus a CLAUDE.md delegation stanza. The structural Claude Code binding for the `dispatch` skill: frontmatter pins routing so it isn't re-decided per prompt. Claude Code only; Cowork sessions route via per-spawn model parameters instead.
@@ -452,7 +458,7 @@ Tasks are designed to be portable: copy any task file to another project's `task
 
 | Task | What it does | Source guide |
 |------|-------------|-------------|
-| `tasks/onboard-project.md` | End-to-end project setup — orchestrates the tasks below in the right order; optionally starts from a template | 01, 04, 05, 11, 12 |
+| `tasks/onboard-project.md` | End-to-end project setup — installs the default layout, sets all three instruction layers, then offers the optional blocks; orchestrates the tasks below in the right order | 01, 04, 05, 11, 12, 24, 25 |
 | `tasks/setup-claude-md.md` | Interview → generate `CLAUDE.md` | 01 |
 | `tasks/setup-memory.md` | Create `.auto-memory/` with initial memory files | 04, 14 |
 | `tasks/setup-mcp.md` | Audit and add MCP server connections | 05 |

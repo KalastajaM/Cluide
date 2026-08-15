@@ -34,7 +34,7 @@ Detect which guides have changed since each task was last reviewed, then check w
 | `setup-scheduled-task.md` | `06_TASK_EFFICIENCY_GUIDE.md`, `07_TASK_LEARNING_GUIDE.md` (incl. Part 9) |
 | `setup-orchestration.md` | `09_MULTI_TASK_ORCHESTRATION.md` |
 | `audit-cost.md` | `10_COST_PERFORMANCE.md` |
-| `onboard-project.md` | `01_CLAUDE_MD.md`, `04_MEMORY_AND_PROFILE.md`, `05_MCP_SERVERS.md`, `11_GIT_INTEGRATION.md`, `12_SECURITY.md` |
+| `onboard-project.md` | `01_CLAUDE_MD.md`, `04_MEMORY_AND_PROFILE.md`, `05_MCP_SERVERS.md`, `11_GIT_INTEGRATION.md`, `12_SECURITY.md`, `24_PROJECT_FOLDER_STRUCTURE.md`, `25_PROJECT_INSTRUCTION_LAYERS.md` |
 | `setup-data-layer.md` | `14_PERSONAL_DATA_LAYER.md` |
 | `setup-policies.md` | `21_COMPANY_POLICIES.md`, `03_SKILLS.md`, `05_MCP_SERVERS.md` |
 | `reorganize-project.md` | `24_PROJECT_FOLDER_STRUCTURE.md` |

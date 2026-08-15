@@ -15,7 +15,7 @@ Every project, whatever its purpose, wants a home for each of these kinds of thi
 - **Archive**: old material kept for reference, in a folder that is never read back (see naming below).
 - **Intake**, when material reaches the project outside a chat: one `incoming/` folder where new documents land before anyone has decided where they belong. The only conditional home on this list, and the only one whose correct steady state is empty. See the next section.
 
-Cluide ships four templates (see `00_INDEX.md` for all of them); two are project-layout starting points relevant here: `PROJECT_TEMPLATE/` for a lean assistant-style project (`CLAUDE.md` + `Profile/` + `Knowledge/`), and `PMO_TEMPLATE/` for a richer project with deliverables and registers. Copy whichever is closer rather than inventing a layout.
+Two of the templates Cluide ships (see `00_INDEX.md` for all of them) are project-layout starting points: `PROJECT_TEMPLATE/` implements this list less the source-of-truth home, which is project-specific by definition, and ships the optional pieces already in the folder so that setting a project up is deleting what it does not need rather than building what it does; and `PMO_TEMPLATE/` covers a richer project with deliverables and registers. Copy whichever is closer rather than inventing a layout, then add optional pieces from `templates/BLOCKS.md` as the project earns them; that catalogue carries the reasoning for adding late rather than up front.
 
 ## Intake: the `incoming/` folder
 
@@ -58,7 +58,7 @@ Keep the format definition in one place and point to it; do not restate it insid
 Messiness is not one event; it is a slow accumulation of small "I will sort it later" decisions. These conventions stop it:
 
 - **Outputs never pile at the root.** Route them to a dedicated outputs home (or the relevant entity folder) the moment there is more than one.
-- **Archive, do not delete.** Move superseded material into an archive folder rather than deleting it, and never read from it. Prefix such folders `[ARCHIVE]` (or use a single `_archive/`) so both you and Claude skip them by default.
+- **Archive, do not delete.** Move superseded material into an archive folder rather than deleting it, and never read from it. One archive is the default: a single `_archive/`, which is what `PROJECT_TEMPLATE` ships. Use `[ARCHIVE] <name>/` folders instead only when a project accumulates several distinct bodies of retired material worth keeping apart, as `PMO_TEMPLATE` does. Either way the underscore or the prefix is what makes both you and Claude skip them by default.
 - **Name versions consistently.** While there is one copy, use a plain name. Once a file goes through versioned iterations, mark the active one with a `_LATEST` suffix and move older revisions into an archive folder. Use dates (`YYYYMMDD`) for point-in-time snapshots. Pick one casing convention and hold it.
 - **Split a file when it grows.** A profile or knowledge file past roughly 150 lines should split into topic files, with the index updated. A folder holding dozens of mixed files should gain subfolders by kind or entity.
 - **No duplicated facts.** If the same fact would live in two files, keep it in one and link from the other. Duplication is how a project starts contradicting itself.
@@ -76,6 +76,6 @@ If the layout is straining because the project is really two purposes sharing a 
 4. One folder per tracked entity, same artifact set, indexed by a central tracker.
 5. Document the layout as a file map in `CLAUDE.md`, ideally with a read-only vs updatable column.
 6. Give each recurring file kind a standard format too, as a template or a documented Format section, kept in one place.
-7. Archive (never delete) into `[ARCHIVE]`/`_archive/` folders that are never read back; mark the active version `_LATEST`.
+7. Archive (never delete) into a single `_archive/` — or `[ARCHIVE] <name>/` folders where one archive is not enough — never read back; mark the active version `_LATEST`.
 8. Split oversized files and junk-drawer folders early; run `reorganize-project` to fix a project that has already drifted.
 9. Route inbound material through one `incoming/` folder: file by content, propose destinations before moving, archive rather than delete, and keep it empty.
