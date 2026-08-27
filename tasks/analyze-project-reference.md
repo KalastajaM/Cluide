@@ -138,6 +138,15 @@ outside a single-project audit. Judge only what is visible from inside the targe
   paste in. A dimension score that silently omits the app side is a false negative, so state the partial
   coverage explicitly in the finding rather than scoring the folder side alone.
 
+### 21. Accretion & respecification — guide 29 → guidance only
+- **Healthy:** every standing rule and every skill has one owner; fixes address a cause rather than
+  suppressing a symptom; a learning log is distilled into properties rather than only appended to.
+- **Checks:** count compensating machinery rather than judging tone — two skills that can trigger on the
+  same request, a rule added to undo what another rule causes, one convention stated in three files, the
+  same correction recurring across sessions, an invariant documented in prose with nothing enforcing it.
+  Several classes tracing back to a shared root is the signal that respecification beats another patch;
+  isolated defects are not. Guidance only. **N/A** for a young or small project.
+
 ### Guides not scored
 
 These guides carry no dimension by design. Listed here so the guide-set coverage check in

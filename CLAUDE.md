@@ -42,6 +42,7 @@ This folder contains a complete operational framework for building, running, and
 | `26_CONTEXT_SCOPING.md` | Context scoping — what a session should see; blind vs. in-context review passes; building one-shot prompts |
 | `27_INDEPENDENT_JUDGMENT.md` | Independent judgment — anchoring and agreement pressure, commit-then-reveal, blinded reconciliation, false independence |
 | `28_SECOND_BRAIN.md` | Personal knowledge layer — capture and inbox discipline, the four homes, distillation, index-first retrieval, weekly review |
+| `29_SPEC_BEFORE_REBUILD.md` | Specifying a grown artefact before rebuilding it — compensating-machinery triggers, normative specs with divergence markers, the old version as acceptance oracle, prevention over detection |
 
 When the user asks a question or makes a request that a guide covers, read the relevant guide before responding.
 
