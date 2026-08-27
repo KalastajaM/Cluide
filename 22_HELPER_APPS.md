@@ -34,6 +34,8 @@ It is also not a guide for anything larger. If the tool grows a second user, an 
 
 These layer on top of the general CLAUDE.md advice in [Guide 01](./01_CLAUDE_MD.md). Each is one short block. Together they prevent the drift and false-done failure modes from Section 1.
 
+**All four are checks, and it is worth knowing which layer you are on.** A rule in CLAUDE.md catches a mistake after Claude has made it, and it fails quietly when the file is long or the context is tight. *Structure* — one canonical helper rather than a list of five, a file format with nowhere to put the wrong thing, a layout where the bad state cannot be written — makes the mistake unconstructible instead. Checks are the cheap layer and for a helper app they are usually enough. When you notice yourself adding a rule to suppress what another rule causes, or stating the same convention in a third place, the cheap layer has stopped working and the fix is structural; [Guide 29](./29_SPEC_BEFORE_REBUILD.md) is what to do at that point.
+
 ### Pattern A — The Domain Invariant
 
 Every helper app has one non-negotiable truth about its data. Money in = money out plus savings. Books read this year + books to read = total books. Sum of time tracked per project = total time tracked. Find yours, state it in one line, and tell Claude to preserve it through every change.
@@ -86,6 +88,12 @@ State, per class of change, what "done" requires. Not "run the tests" — specif
 ```
 
 The point is to deny Claude the move of writing code, noting the code compiles, and reporting success. The gate is a tool call, not a promise.
+
+Two refinements are worth building into the gates from the start.
+
+**Check the whole output, not the part you changed.** The expensive bugs are the ones that leave the output *self-consistent while wrong* — a figure converted in one place and displayed in another, an invariant that holds because both sides are wrong in the same direction. A gate that looks only at the screen you touched passes straight over that class. Where the app has a few derived surfaces — a summary, a list, an export — have the gate capture all of them in one run, so a change that moves two of them in step is visible.
+
+**Compute the expected answer before you ask for it.** When a gate involves a number, work it out by hand from the invariant first and put it in the prompt. Asking Claude what the total should be and then checking that the app agrees tests only that two runs of the same reasoning agree, which is not evidence that either is right.
 
 ### Pattern D — Convention Normalisations
 

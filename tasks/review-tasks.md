@@ -141,7 +141,7 @@ The IMPROVEMENTS template must exist in **exactly one canonical place** — `tem
 The checks above compare copies against copies. This one checks that the *set* is complete — it is what
 catches a new guide landing without ever being wired into the audit engine or the mapping table.
 
-Run all three assertions:
+Run all four assertions:
 
 1. **Every guide is either scored or explicitly not scored.** For each root `NN_*.md`, confirm its number
    is cited by a dimension heading in `analyze-project-reference.md`, or that the guide appears in the
@@ -165,9 +165,20 @@ Run all three assertions:
 3. **The advertised range matches reality.** The highest `NN_` guide on disk must equal the range stated in
    the `analyze-project.md` mapping row above, in `analyze-project.md` itself, and in `00_INDEX.md`. Three
    places say it; all three must agree.
+4. **Every count a document states about its own contents is true.** A figure a file asserts about the set
+   it belongs to — "28 guides", "the four homes", "eleven cross-cutting rules", "8 dimensions" — drifts
+   silently through an edit made for another reason, because nobody re-counts while changing something
+   else. These are the cheapest possible assertions and the ones most likely to be quietly wrong.
+   ```bash
+   grep -rnoE "\b(two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|[0-9]+)\b [a-z-]*(guides|dimensions|homes|patterns|rules|layers|skills|tasks|templates|steps|phases|checks)\b" \
+     *.md tasks/*.md skills/*/SKILL.md
+   ```
+   Read each hit and count the thing it names. Where the count is wrong, fix the number rather than the
+   set. Where a hit is about something outside this repo (a target project, an example), ignore it — the
+   grep is deliberately loose, and the reading is the check.
 
-Flag each failure with the specific file and the missing wiring. These are one-line fixes individually, and
-the check is cheap enough to run every time.
+Flag each failure with the specific file and the missing wiring. All four are one-line fixes individually,
+and the check is cheap enough to run every time.
 
 #### 4d. Routing-log calibration (only where a routing log exists)
 
