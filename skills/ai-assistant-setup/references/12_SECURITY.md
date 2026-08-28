@@ -364,6 +364,35 @@ Warning signs that your setup may have been manipulated or is behaving unexpecte
 
 ---
 
+## Recording What a Refactor Must Not Weaken
+
+Some of a setup's security comes from rules — a hook, a deny-list, a checklist someone runs. The
+rest comes from structure: a folder gitignored as a whole so there is no ignore rule to forget,
+secrets that live in a store the repo cannot read, a scheduled task with no credential to leak
+because it never holds one. The structural half is the durable half, and it is also the half that
+gets removed by accident, because from inside a cleanup it looks like inconvenience rather than
+protection.
+
+Write those properties down where a future session will read them — a short table in the project's
+`CLAUDE.md`:
+
+```markdown
+## Security properties — do not weaken without saying so
+
+| Property | Why it holds | What would break it |
+|---|---|---|
+| No credential is ever in the repo | Everything secret is read from the keychain at run time | Adding a `.env` "just for local" |
+| Personal data cannot reach a public branch | All non-shipping files live in one gitignored folder | Creating a working file at the repo root |
+| The scheduled task cannot send mail | Its connector has no send scope | Widening the scope to unblock a draft step |
+```
+
+The third column is where the value is. A property with a named failure mode is recognisable while
+someone is about to cause it, which is what turns "we do it this way" into something a session can
+decline. A change that would weaken a row is a security decision and should be handled as one,
+rather than as a refactor that happens to touch it.
+
+---
+
 ## Running a Security Audit
 
 The `security-review` skill automates a full audit across all areas above. Read-only assessment phases run automatically; phases that install software or modify config pause for approval.

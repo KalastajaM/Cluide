@@ -192,6 +192,7 @@ Small improvements happen every run. Structural improvements -- rethinking how t
 | Instruction drift | Task instructions contradict observed behavior | Fix small drifts, propose large ones |
 | State accumulation | Pending items / open issues > comfortable threshold | Review and prioritize |
 | Repeated failure | Same resolution check failing 5+ runs | Revise the check |
+| Log length | More than ~20 applied fixes since the last distillation | Distil the log into properties (below) |
 
 ### What a refactor does
 
@@ -203,6 +204,32 @@ A refactor is **structural cleanup, not content change**. It should make the sys
 4. Review improvements log -- close resolved issues, archive old applied fixes.
 5. Reset the run counter.
 6. Summarize what was found and changed.
+
+### Distillation: from incidents to properties
+
+The refactor above compresses. This step changes what the log is *about*, and it is what keeps a
+long-lived task workable.
+
+Every entry in the improvements log began as an incident: something went wrong, a rule was added.
+Left alone, the log becomes a specification written backwards — it records what has failed rather
+than what must be true, it is over-fitted to its own history, and past about forty entries nobody
+can tell which ones still matter or which three are the same rule in different words. A task in
+that state resists redesign, because any change looks like it might undo a fix nobody understands.
+
+Distil at each refactor. Read the applied fixes together and ask what handful of **properties**
+they are all instances of. Write those down as the task's stated requirements: a short list,
+present tense, each one a thing that must hold on every run. Then archive the individual entries
+that are merely instances of a property you have now stated, and keep only the ones carrying
+information the property does not — a specific trap, a value, a source that behaves oddly.
+
+The test for an entry worth dropping is that it is a past incident restated. *"Do not send the
+Tuesday digest twice"* is an incident. *"Each item is reported exactly once across all runs"* is
+the property: it covers the Tuesday case and several others, and unlike the incident it is
+something a future session can actually check itself against.
+
+This is the same move [Guide 28](./28_SECOND_BRAIN.md) applies to notes and
+[Guide 29](./29_SPEC_BEFORE_REBUILD.md) applies to a whole artefact — state what must be true, and
+stop maintaining the list of occasions when it was not.
 
 ---
 

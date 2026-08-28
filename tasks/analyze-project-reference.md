@@ -138,6 +138,25 @@ outside a single-project audit. Judge only what is visible from inside the targe
   paste in. A dimension score that silently omits the app side is a false negative, so state the partial
   coverage explicitly in the finding rather than scoring the folder side alone.
 
+### 21. Accretion & respecification — guide 29 → guidance only
+- **Healthy:** every standing rule and every skill has one owner; fixes address a cause rather than
+  suppressing a symptom; a learning log is distilled into properties rather than only appended to.
+- **Checks:** count compensating machinery rather than judging tone — two skills that can trigger on the
+  same request, a rule added to undo what another rule causes, one convention stated in three files, the
+  same correction recurring across sessions, an invariant documented in prose with nothing enforcing it.
+  Several classes tracing back to a shared root is the signal that respecification beats another patch;
+  isolated defects are not. Guidance only. **N/A** for a young or small project.
+
+### 22. Controlled documents — guide 30 → guidance only
+- **Healthy:** documents with an owner or an approver are named as such in CLAUDE.md by path; Claude
+  reviews them as tracked changes with explanatory comments and never accepts or approves; filenames are
+  stable and carry no version number; one authored register with every other view generated from it.
+- **Checks:** look for version numbers or `FINAL`/`v2` in document filenames, an approval status with no
+  approver or date beside it, two places that both claim to answer "which version was approved", a
+  generated view that has been hand-edited, and standing rules that live only in a skill description
+  rather than in CLAUDE.md. Guidance only. **N/A** for a project with no third-party-owned or approved
+  documents.
+
 ### Guides not scored
 
 These guides carry no dimension by design. Listed here so the guide-set coverage check in

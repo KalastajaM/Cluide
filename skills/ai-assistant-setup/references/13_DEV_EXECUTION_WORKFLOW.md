@@ -193,6 +193,15 @@ After fixing, do a quick review:
 
 If the reasoning sounds right, commit and let Cowork run it.
 
+**If the fix changes figures or output the task has produced before**, do not compare the next run
+against your memory of the last one. Keep the last known-good output and compare against it — and
+treat the comparison as three-way rather than as a diff: things that match, differences you
+predicted and can state in advance, and differences you cannot explain. Only the third kind stops
+the rollout, and it stops it every time: an unexplained difference is either a defect in the fix or
+a behaviour of the old version that nobody had written down, and both need resolving before the
+number is trusted. [Guide 29](./29_SPEC_BEFORE_REBUILD.md) covers the full form of this, including
+what to do when the old version can no longer be run at all.
+
 ### Step 5: Add a guard if the bug was silent
 
 If the bug ran for multiple sessions before you noticed — producing subtly wrong output that you only caught later — add a validation step to the task so it cannot happen again silently:
