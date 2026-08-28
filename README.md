@@ -85,6 +85,7 @@ Cluide is AI-assisted work — openly and deliberately. The patterns, lessons, a
 | 27 | [Independent Judgment](./27_INDEPENDENT_JUDGMENT.md) | All users | Getting a judgment Claude reached on its own: anchoring and agreement pressure, commit-then-reveal, blinded reconciliation, and why two Claude runs agreeing is not corroboration |
 | 28 | [Second Brain](./28_SECOND_BRAIN.md) | Power users | A personal knowledge layer Claude can read: the test for whether it is worth building, the four homes, inbox discipline, distilling for a conclusion rather than a summary, and the weekly review |
 | 29 | [Specify Before You Rebuild](./29_SPEC_BEFORE_REBUILD.md) | Power users | Respecifying something that grew ad hoc: the compensating-machinery triggers, auditing before specifying, a normative spec with divergences marked inline, prevention over detection, and the old version as an acceptance oracle |
+| 30 | [Controlled Documents](./30_CONTROLLED_DOCUMENTS.md) | Power users | Documents with an owner and an approver: tracked-change review with comments and never a silent edit, acceptance as a human act, stable filenames with state inside, one authored register with generated views, and trackers merged on identifier |
 
 **Recommended order:** Quickstart → 01 → 02 → **20** → 03 → 04 → 05 → (06–10 once you have scheduled tasks running). The guide numbers are stable addresses, not a reading order — see the [Reading Tracks in 00_INDEX.md](./00_INDEX.md#reading-tracks) for per-goal paths, or follow [Guide 18](./18_END_TO_END_WALKTHROUGH.md) for a guided path through all stages.
 
@@ -178,7 +179,7 @@ The copy-paste starting points in `templates/`:
 /
 ├── 00_INDEX.md               # Full annotated guide index
 ├── 00_QUICKSTART.md          # Start here if you're new
-├── 01_CLAUDE_MD.md – 29_SPEC_BEFORE_REBUILD.md
+├── 01_CLAUDE_MD.md – 30_CONTROLLED_DOCUMENTS.md
 ├── CHEATSHEET.md             # One-page quick reference
 ├── tasks/                    # Setup and audit task files
 ├── skills/                   # Bundled installable skills

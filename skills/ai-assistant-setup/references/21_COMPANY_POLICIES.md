@@ -2,7 +2,7 @@
 
 > How to make Claude honour your organisation's existing policies — AI use policy, Code of Conduct, data classification, and similar — without copying the policy content into Cluide. Policies stay where they already live; Cluide holds only the pointers and the enforcement logic.
 
-> **Companion guides:** [Guide 03](./03_SKILLS.md) covers skill design — the `policies-validator` skill follows its conventions. [Guide 05](./05_MCP_SERVERS.md) covers MCP server setup, needed when policies live in SharePoint or Confluence. [Guide 12](./12_SECURITY.md) covers operational security; this guide covers *policy* enforcement.
+> **Companion guides:** [Guide 03](./03_SKILLS.md) covers skill design — the `policies-validator` skill follows its conventions. [Guide 05](./05_MCP_SERVERS.md) covers MCP server setup, needed when policies live in SharePoint or Confluence. [Guide 12](./12_SECURITY.md) covers operational security; this guide covers *policy* enforcement. [Guide 30](./30_CONTROLLED_DOCUMENTS.md) covers maintaining the policy documents themselves — review, versioning and approval — where this guide covers applying them.
 
 > **Giving this guide to Claude:**
 > "Read 21_COMPANY_POLICIES.md and help me wire up the company policies I care about."

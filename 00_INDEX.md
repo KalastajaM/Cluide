@@ -63,7 +63,7 @@ The guide numbers are stable addresses, not a reading order — new guides get t
 | **Scheduled tasks** | [06](./06_TASK_EFFICIENCY_GUIDE.md) → [07](./07_TASK_LEARNING_GUIDE.md) (incl. Part 9: the template) → [09](./09_MULTI_TASK_ORCHESTRATION.md) → [10](./10_COST_PERFORMANCE.md) | Once you automate anything |
 | **Operations & safety** | [12](./12_SECURITY.md) → [11](./11_GIT_INTEGRATION.md) → [13](./13_DEV_EXECUTION_WORKFLOW.md) → [17](./17_TROUBLESHOOTING.md) | Securing and maintaining your setup |
 | **Data & knowledge** | [14](./14_PERSONAL_DATA_LAYER.md) → [15](./15_LLM_WIKI.md) → [28](./28_SECOND_BRAIN.md) | Getting personal data, knowledge bases, and your own notes into Claude |
-| **Projects & context** | [24](./24_PROJECT_FOLDER_STRUCTURE.md) → [25](./25_PROJECT_INSTRUCTION_LAYERS.md) → [23](./23_MULTI_PROJECT_SETUPS.md) → [21](./21_COMPANY_POLICIES.md) → [22](./22_HELPER_APPS.md) → [26](./26_CONTEXT_SCOPING.md) → [27](./27_INDEPENDENT_JUDGMENT.md) → [29](./29_SPEC_BEFORE_REBUILD.md) | Power users structuring larger setups |
+| **Projects & context** | [24](./24_PROJECT_FOLDER_STRUCTURE.md) → [25](./25_PROJECT_INSTRUCTION_LAYERS.md) → [23](./23_MULTI_PROJECT_SETUPS.md) → [21](./21_COMPANY_POLICIES.md) → [22](./22_HELPER_APPS.md) → [26](./26_CONTEXT_SCOPING.md) → [27](./27_INDEPENDENT_JUDGMENT.md) → [29](./29_SPEC_BEFORE_REBUILD.md) → [30](./30_CONTROLLED_DOCUMENTS.md) | Power users structuring larger setups |
 | **Reference — read anytime** | [16](./16_BEST_PRACTICES.md) · [17](./17_TROUBLESHOOTING.md) · [18](./18_END_TO_END_WALKTHROUGH.md) · [19](./19_OUTPUT_FORMATTING.md) · [CHEATSHEET](./CHEATSHEET.md) | Digest, walkthrough, formatting, quick lookup |
 
 ---
@@ -394,6 +394,17 @@ Covers: the compensating-machinery signals that say patching has stopped working
 
 ---
 
+### [30 — Controlled Documents](./30_CONTROLLED_DOCUMENTS.md)
+`[Power user]` · `~12 min`
+
+*Working on documents that have an owner, a version and an approver: Claude proposes and comments, you accept.*
+
+Covers: the test that separates a controlled document from a draft, review as tracked changes plus explanatory comments under a non-human author name and never a silent edit, the two review directions (actioning someone else's comments, and reviewing against a named clause), what the docx toolchain actually does and the round trip it forces on a connected folder, acceptance and approval as human acts that Claude never performs, stable filenames with identity in the name and state inside the document, control-block templates retrofitted on touch rather than in bulk, one authored register with every other view generated and invariants enforced by the sync script rather than by prose, shared trackers merged on identifier and never on row position, human markers Claude must not clear, and the CLAUDE.md block that makes all of it standing instruction.
+
+**Use this when:** your project contains documents someone else owns or approves — policies, contracts, minutes, a management-system document set — and you want Claude reviewing and maintaining them without ever becoming the one who signed off.
+
+---
+
 ## Templates: Copy-Paste Starting Points
 
 The ready-to-copy folder structures in the `templates/` folder. Use them when you want to start a new project or task without building from scratch.
@@ -497,7 +508,7 @@ Tasks are designed to be portable: copy any task file to another project's `task
 | `tasks/audit-memory.md` | Check memory for staleness, duplicates, misplaced content — across all three layers (native, `.auto-memory/`, profile files) | 04 |
 | `tasks/audit-skill.md` | Review a `SKILL.md` — trigger quality, workflow, output format, edge cases, `allowed-tools` enforcement | 03, 02 |
 | `tasks/audit-file-hygiene.md` | Sweep actual clutter: OS junk, lock/temp files, duplicate families, superseded outputs, and trees that are gitignored but still loading as context | 11, 24 |
-| `tasks/analyze-project.md` | Whole-project sweep of *another* Claude project (local or GitHub) against the full guide set → writes a `CLUIDE_IMPROVEMENT_PLAN.md` into it; read-only, plan-only (criteria in `analyze-project-reference.md`) | All (01–29) |
+| `tasks/analyze-project.md` | Whole-project sweep of *another* Claude project (local or GitHub) against the full guide set → writes a `CLUIDE_IMPROVEMENT_PLAN.md` into it; read-only, plan-only (criteria in `analyze-project-reference.md`) | All (01–30) |
 | `tasks/reorganize-project.md` | Safely restructure a project's folders: move files and rewire every reference without breaking it; takes a restore point first | 24 |
 | `tasks/relocate-project.md` | Move a project (or a whole projects root) somewhere else — sweeps the project, scheduled-task, artifact, Claude Code state and app-config layers, and refuses streaming sync folders. Per-layer detail in `relocate-project-reference.md` | 11, 24, 05, 25 |
 

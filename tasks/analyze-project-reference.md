@@ -147,6 +147,16 @@ outside a single-project audit. Judge only what is visible from inside the targe
   Several classes tracing back to a shared root is the signal that respecification beats another patch;
   isolated defects are not. Guidance only. **N/A** for a young or small project.
 
+### 22. Controlled documents — guide 30 → guidance only
+- **Healthy:** documents with an owner or an approver are named as such in CLAUDE.md by path; Claude
+  reviews them as tracked changes with explanatory comments and never accepts or approves; filenames are
+  stable and carry no version number; one authored register with every other view generated from it.
+- **Checks:** look for version numbers or `FINAL`/`v2` in document filenames, an approval status with no
+  approver or date beside it, two places that both claim to answer "which version was approved", a
+  generated view that has been hand-edited, and standing rules that live only in a skill description
+  rather than in CLAUDE.md. Guidance only. **N/A** for a project with no third-party-owned or approved
+  documents.
+
 ### Guides not scored
 
 These guides carry no dimension by design. Listed here so the guide-set coverage check in
