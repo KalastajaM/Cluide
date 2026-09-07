@@ -29,6 +29,7 @@ A good description:
 - names the concrete entities (accounts, parcels, people, systems) that make it unmistakable which project this is;
 - contains no rules — behavior belongs in the instructions field or CLAUDE.md;
 - is unique. A duplicated or copy-pasted description is not cosmetic: it is injected into every session as the project's identity.
+- fits the field's hard cap. Cowork's description field maxes out at 500 characters, line breaks included (verified 2026-09-06) — draft to that limit rather than writing long and trimming after the app rejects it.
 
 The failure mode to guard against: a wrong description (stale after the project's purpose shifted, or accidentally pasted from another project) is injected as the project's identity in every session, and because the field is unversioned nothing in git will ever show it changed. Three fixes, cheapest first: a periodic scan of the project list; the mirror block below, which puts a checkable copy in CLAUDE.md; and an audit that reads the field directly (see *Reading the app-side fields*) — the only one that catches a description you never look at.
 
