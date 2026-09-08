@@ -4,6 +4,105 @@ Cluide is versioned by content event, not on a calendar: a tag marks guides bein
 
 The **consumed surface** — dimension numbers in `tasks/analyze-project-reference.md`, filenames in `tasks/`, and guide numbers — is append-only. Entries below note explicitly when it grows.
 
+## [1.4.0] — 2026-09-08
+
+Four pull requests since v1.3.0 (#44–#47), plus the changelog PR that carries this section. Two add
+guides, one is a single-line correction, and one (#47) is the first platform-currency sweep: every
+version-sensitive claim in the guides checked against what Anthropic shipped between mid-August and
+early September 2026, and a task added so the check has an owner from now on. **The consumed surface
+grew:** guide numbers 29 and 30, dimensions 21 and 22 in `tasks/analyze-project-reference.md`, and one
+`tasks/` filename were added; nothing was renumbered, renamed or reused.
+
+### Added
+
+- **`29_SPEC_BEFORE_REBUILD.md`** (#45). The manoeuvre for an artefact that grew ad hoc and has started
+  defending itself: compensating-machinery triggers counted from history, audit before specify, a
+  normative specification with divergences from the current version marked inline, decisions carrying
+  status, cost and a falsification condition, prevention over detection with the ratio as the argument,
+  the old version as an acceptance oracle reconciled three ways, sequencing by exit criteria, and keeping
+  the spec honest against itself. The worked example is a CLAUDE.md-and-skills setup rather than code.
+  Scored as dimension 21 (accretion and respecification, guidance only).
+
+- **`30_CONTROLLED_DOCUMENTS.md`** (#45). Working on documents that have an owner, a version and an
+  approver: tracked-change review with explanatory comments under a non-human author and never a silent
+  edit; acceptance and approval as human acts Claude never performs; identity in the filename with
+  version and status inside the document; control blocks retrofitted on touch rather than in bulk; one
+  authored register with every other view generated and its invariants enforced by the sync script;
+  shared trackers merged on identifier rather than row position. Scored as dimension 22. Reciprocal
+  links in Guide 27 (the judgment boundary in its most concrete form) and Guide 21 (applying policies
+  versus maintaining the documents).
+
+- **`tasks/review-platform-changes.md`** (#47). The outward leg of the maintenance loop, beside
+  `review-tasks.md` (guide-to-task drift) and `harvest-from-projects.md` (patterns from live projects).
+  It fixes a boundary from the last tag or the last sweep commit, reads a fixed list of primary sources
+  (the Claude Code weekly digest and changelog, the Cowork changelog and guide pages, the Claude apps
+  release notes, the platform release notes and pricing page, the MCP specification changelog), builds a
+  claim register from the guides' own "as of", "verified" and "not supported" markers, diffs the
+  reference pages against the guides that carry them, and reports findings as wrong, stale,
+  unverifiable or process. The sweep that produced it found twelve wrong-now claims within three weeks
+  of v1.3.0; the pricing table alone had gone stale in that time.
+
+- **Guide 06 § tolerance band** (#44). Every size figure in the guide and the `audit-*` tasks is a
+  target with a band of roughly 5%: a marginal overshoot is not a finding and not a merge blocker.
+  Technical cliffs enforced outside the project — the 200-line / 25KB auto-load limit on a memory
+  index — are hard caps with no band. The test: if you cannot name what enforces a number, it is a
+  target.
+
+### Changed
+
+- **The platform sweep** (#47), grouped as it was applied. *Pricing and lineup:* Guide 10's table now
+  carries Sonnet 5 at $2/$10 as the standard price and Fable 5.1 with its 0.025x cache-read multiplier;
+  the tier ratios are recomputed (Opus about 2.5x Sonnet, Fable 5x, Haiku half); 1M context is no longer
+  presented as Fable's differentiator, since Opus 5 and Sonnet 5 run a native 1M window; Guides 16 and 17
+  and `tasks/audit-cost.md` follow, and the CHEATSHEET token table is labelled as measured before Sonnet
+  5's tokenizer. *Skills:* Guide 03 documents `disallowed-tools`, `paths`, `context: fork`,
+  `when_to_use`, `model` and `effort`, points at `/skill-doctor` for per-skill cost, and states that
+  Cowork loads skills from Customize rather than `~/.claude`; `audit-skill` and `setup-skill` check for
+  the deny field they used to deny existed. *Cowork parity:* Guides 02, 13 and 20 now say AskUserQuestion,
+  plan mode and subagents work in Cowork, leaving only `/clear` and `/compact` to the CLI. *Surfaces:*
+  Guide 05 records Claude in Chrome's general availability with autonomous actions on by default,
+  `claude mcp login`/`logout`, the MCP specification's 2026-07-28 deprecations and the documented
+  result-size limits; Guide 19 describes the relaunched artifacts (sharing tiers, per-artifact
+  connectors, version history, the republish rule); Guide 25 adds a Cowork project's Links and memory
+  store, the fact that Cowork's Dispatch agent reads the description when routing, the
+  `organizationInstructions` layer on managed desktops, and a re-verify note on the folder picker.
+  *Permission modes:* Guide 12 describes auto mode as the starting mode on Pro, Max and Team, the
+  `manual` alias, `dontAsk`, the project-settings caveat, `Tool(param:value)` rules, `--restricted` and
+  `--permission-prompts none`; `setup-security` and `security-review` no longer read an unset mode as
+  manual. *Orchestration:* Guide 09 covers background subagents, `/fork`, cross-session messaging, fork
+  mode and the concurrency and depth settings, and distinguishes Cowork's Dispatch feature from
+  Model-Aware Dispatch; Guides 26 and 27 and the `review-protocol` skill require a non-fork subagent for
+  a blind pass, because a fork inherits the whole conversation; Guide 06 lists four scheduling
+  mechanisms and more hook events. *Memory:* Guide 04's table has four layers — Claude Code auto
+  memory, the account memory unified across chat and Cowork in August 2026, `.auto-memory/` and profile
+  files — with the auto-memory section rewritten from the current documentation; scheduled-task
+  availability of the built-in layers is now "not verified" rather than "unreliable", and
+  `audit-memory` asks whether any such reliance has been tested.
+
+- **Guide 29's companions** (#45). Guide 22 names its four CLAUDE.md patterns as checks and says when
+  the cheap layer has stopped working; Guide 07 gains a distillation step and a refactor trigger at
+  about twenty applied fixes; Guide 12 gains a section on recording the structural properties a
+  refactor must not weaken; Guide 13's debugging loop compares a changed task against the last
+  known-good output three ways; Guide 27 asks for load-bearing claims checked against the source.
+  `review-tasks.md` step 4c gains a fourth assertion: every count a document states about its own
+  contents is verified.
+
+- **Guide 25 states the description field's cap** (#46): 500 characters, line breaks included,
+  verified in the app.
+
+### Fixed
+
+- **`templates/AGENT_STARTER_PACK/README.md` had the model-variable precedence backwards** (#47). It
+  warned that `CLAUDE_CODE_SUBAGENT_MODEL` overrides every agent's frontmatter; it is the fallback for
+  agents that set no model. `CLAUDE_CODE_SUBAGENT_MODEL_FORCE=1` is the variable that overrides, and the
+  note now says so.
+
+- **Four bundled guide copies outside `ai-assistant-setup` had drifted** (changelog PR).
+  `cowork-optimizer/references/` (06, 12) and `policies-validator/references/` (12, 21) were not
+  re-copied by #45 and #47, which only mirrored into `ai-assistant-setup/references/`. Re-copied
+  byte-identically; the merge gate's mirror check names only the one skill, so `review-tasks.md`
+  step 4a's loop over `skills/*/references/` is the check that catches these.
+
 ## [1.3.0] — 2026-08-15
 
 Ten pull requests since v1.2.0 (#33–#42), plus the changelog PR that carries this section. Six of
