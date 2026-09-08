@@ -119,7 +119,7 @@ A setup that grows without pruning becomes a liability. These practices keep thi
 
 **Delete skills you don't trigger.** If a skill hasn't been used in 2-3 months, delete or archive it. Unused skills add noise to trigger matching and false confidence that the capability exists. Check git history if unsure.
 
-**Retire tasks that have completed their purpose.** A task built for a specific project or event doesn't need to keep running after that project ends. Disable the schedule and archive the task folder to git before removing it.
+**Retire tasks that have completed their purpose.** A task built for a specific project or event doesn't need to keep running after that project ends. Disable the schedule and archive the task folder to git before removing it. [Guide 33](./33_RETIRING_AND_LEAVING.md) has the full procedure for a task, a project, or a whole account — the removal step is the one people skip.
 
 **Update or delete, don't annotate.** When a skill or task instruction is wrong, fix it. Don't add comments like "no longer applies" or "use X instead" — these instructions are still loaded and create confusion. Remove the dead text.
 

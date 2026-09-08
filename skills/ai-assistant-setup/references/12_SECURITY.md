@@ -340,6 +340,8 @@ Scheduled and autonomous tasks run without a human reviewing each step. This amp
 - **Scope actions tightly** — if a task only needs to read calendar and write to one file, give it only those capabilities
 - **Audit task output** — review what the task actually did after early runs before trusting it fully
 
+These four are the floor. [Guide 32](./32_ACTION_AUTHORITY.md) is the general form: actions classified by consequence rather than by tool, standing approvals written so an unattended task can act without guessing, and the outbox and log that show you afterwards what it did.
+
 **Computer use:** Cowork's computer-use capability lets Claude control desktop applications directly — clicking, typing, and reading whatever the app shows. There is no sandbox between Claude and the apps it controls, so granting an application is comparable to granting Bash access to everything that application can do. Scope approvals narrowly — grant only the apps a task actually needs, only for as long as it needs them — and never grant financial apps (banking, trading, payments) to autonomous tasks.
 
 **Review checklist before deploying a new autonomous task:**

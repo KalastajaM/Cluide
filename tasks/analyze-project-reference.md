@@ -157,6 +157,35 @@ outside a single-project audit. Judge only what is visible from inside the targe
   rather than in CLAUDE.md. Guidance only. **N/A** for a project with no third-party-owned or approved
   documents.
 
+### 23. Behaviour tests — guide 31 → `setup-behaviour-tests`
+- **Healthy:** the rules and skills that would be costly to lose silently each have a case — a prompt plus
+  checkable graders — under a test root; every positive trigger case has a negative neighbour; task cases
+  run on fixtures; results are appended per run with date and model; the suite was run after the last
+  model launch and after the last rule or skill edit.
+- **Checks:** look for standing rules or skills with no case, a trigger case with no negative pair, a case
+  whose prompt describes the test rather than making the request, a case pointed at live data, a results
+  file overwritten rather than appended, and a rule edited after the last recorded run. **N/A** for a
+  project with no standing rules, skills or scheduled tasks of its own.
+
+### 24. Action authority — guide 32 → `setup-action-authority`
+- **Healthy:** every action the project's tasks and skills can take is classified by consequence; outbound
+  and irreversible capabilities are absent from unattended tasks where the connector allows it, and the
+  absence is a security-properties row; standing approvals carry shape, scope, limit, grant date, evidence
+  and expiry; unattended tasks write outbound actions to an outbox and log each approval row they act under.
+- **Checks:** look for authority granted by tool name ("may use Gmail"), a task that sends, posts or deletes
+  with no approval row to cite, an approval with no limit or expiry, permission inferred from a previous
+  session, a connector scope wider than the task's classified actions, and a boundary that lives only in a
+  skill. **N/A** for a project whose tasks and skills can only read and write inside its own folder.
+
+### 25. Retirement hygiene — guide 33 → `retire-project`
+- **Healthy:** a project that has ended carries `RETIRED.md` and is archived, and nothing current points at
+  it — no scheduled-task registration, no owner row, no present-tense memory line, no live grant; owned
+  facts were transferred, retired or frozen and the registry says which.
+- **Checks:** look for a scheduled task that is disabled but still registered, an owner row for a project
+  nobody opens, a present-tense memory or second-brain line about a project with no recent activity, a
+  public remote for an archived project, and a grant scoped to a project with no live task. **N/A** for a
+  project with no dormant components and no dormant siblings.
+
 ### Guides not scored
 
 These guides carry no dimension by design. Listed here so the guide-set coverage check in

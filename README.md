@@ -86,6 +86,9 @@ Cluide is AI-assisted work — openly and deliberately. The patterns, lessons, a
 | 28 | [Second Brain](./28_SECOND_BRAIN.md) | Power users | A personal knowledge layer Claude can read: the test for whether it is worth building, the four homes, inbox discipline, distilling for a conclusion rather than a summary, and the weekly review |
 | 29 | [Specify Before You Rebuild](./29_SPEC_BEFORE_REBUILD.md) | Power users | Respecifying something that grew ad hoc: the compensating-machinery triggers, auditing before specifying, a normative spec with divergences marked inline, prevention over detection, and the old version as an acceptance oracle |
 | 30 | [Controlled Documents](./30_CONTROLLED_DOCUMENTS.md) | Power users | Documents with an owner and an approver: tracked-change review with comments and never a silent edit, acceptance as a human act, stable filenames with state inside, one authored register with generated views, and trackers merged on identifier |
+| 31 | [Behaviour Tests](./31_BEHAVIOUR_TESTS.md) | All users | Checking the setup still does what you built: the four ways behaviour drifts with no file changing, cases as a prompt plus checkable graders, three runners and the three-run rule, when to run the suite, and what a failure means |
+| 32 | [Action Authority](./32_ACTION_AUTHORITY.md) | All users | What Claude may do without asking, classified by consequence rather than tool: four classes, standing approvals with scope and expiry, the proposal contract, the outbox and action log for unattended runs, and structural enforcement first |
+| 33 | [Retiring and Leaving](./33_RETIRING_AND_LEAVING.md) | Power users | Ending a task, a project or an account without live wires: the inventory of everything that still points at it, ownership transfer before archive, the freeze, and which layers of a setup were ever yours to take |
 
 **Recommended order:** Quickstart → 01 → 02 → **20** → 03 → 04 → 05 → (06–10 once you have scheduled tasks running). The guide numbers are stable addresses, not a reading order — see the [Reading Tracks in 00_INDEX.md](./00_INDEX.md#reading-tracks) for per-goal paths, or follow [Guide 18](./18_END_TO_END_WALKTHROUGH.md) for a guided path through all stages.
 
@@ -118,6 +121,8 @@ Tasks are standalone instruction files for setup and auditing. Run them by sayin
 | `tasks/setup-ignore-hygiene.md` | Audit `.gitignore`/`.claudeignore`, install check hook |
 | `tasks/setup-bootstrap-folder.md` | Create `bootstrap/` stubs for gitignored runtime state files |
 | `tasks/tune-instruction-layers.md` | Review all three instruction layers — the app-side description and instructions fields plus `CLAUDE.md` |
+| `tasks/setup-behaviour-tests.md` | Build a `tests/behaviour/` suite — prompt-plus-grader cases, a hand-run baseline, and the `CLAUDE.md` block that ties rule edits to a test run |
+| `tasks/setup-action-authority.md` | Classify every action a project's tasks and skills can take, install the action-authority block, propose standing approvals from logged evidence only |
 
 ### Audit & maintenance tasks
 
@@ -132,6 +137,7 @@ Tasks are standalone instruction files for setup and auditing. Run them by sayin
 | `tasks/analyze-project.md` | Analyze *another* Claude project (local or GitHub) against the full guide set → write a `CLUIDE_IMPROVEMENT_PLAN.md` into it (read-only, plan-only) |
 | `tasks/reorganize-project.md` | Safely restructure a project's folders — move files and rewire every reference without breaking it; takes a restore point first |
 | `tasks/relocate-project.md` | Move a project (or a whole projects root) elsewhere — sweeps the project, scheduled-task, artifact, Claude Code state and app-config layers |
+| `tasks/retire-project.md` | End a project or one task — inventory everything that still points at it, transfer what it owned, delete registrations, freeze the folder with `RETIRED.md` |
 | `tasks/review-tasks.md` | Cluide maintenance — detect guide changes and flag tasks, skill bundles, and templates that drifted |
 | `tasks/harvest-from-projects.md` | Cluide maintenance — the inverse of `review-tasks.md`: harvest proven patterns from your live projects back into the guides, tasks, templates, and skills |
 | `tasks/review-platform-changes.md` | Cluide maintenance — read what Anthropic shipped since the last sweep (Claude Code, Cowork, claude.ai, API, MCP) and flag the guide claims that are now wrong, stale or unverifiable; run after each model launch or monthly |
@@ -180,7 +186,7 @@ The copy-paste starting points in `templates/`:
 /
 ├── 00_INDEX.md               # Full annotated guide index
 ├── 00_QUICKSTART.md          # Start here if you're new
-├── 01_CLAUDE_MD.md – 30_CONTROLLED_DOCUMENTS.md
+├── 01_CLAUDE_MD.md – 33_RETIRING_AND_LEAVING.md
 ├── CHEATSHEET.md             # One-page quick reference
 ├── tasks/                    # Setup and audit task files
 ├── skills/                   # Bundled installable skills

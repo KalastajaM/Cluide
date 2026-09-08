@@ -50,6 +50,8 @@ Not sure where to start? Use this table:
 | Coordinate multiple tasks that share data | Orchestrator | [09](./09_MULTI_TASK_ORCHESTRATION.md) |
 | Make task or skill output look good | Guide 19 | [19](./19_OUTPUT_FORMATTING.md) |
 | Track and control task costs | Run metrics | [10](./10_COST_PERFORMANCE.md) |
+| Know the setup still behaves after a change | Behaviour-test suite | [31](./31_BEHAVIOUR_TESTS.md) |
+| Decide what a task may do while you are away | Action-authority block | [32](./32_ACTION_AUTHORITY.md) |
 
 ---
 
@@ -61,9 +63,9 @@ The guide numbers are stable addresses, not a reading order — new guides get t
 |---|---|---|
 | **Foundation** | [Quickstart](./00_QUICKSTART.md) → [01](./01_CLAUDE_MD.md) → [02](./02_PROMPTING_BASICS.md) → [20](./20_INTERACTIVE_PROMPTING.md) → [27](./27_INDEPENDENT_JUDGMENT.md) → [03](./03_SKILLS.md) → [04](./04_MEMORY_AND_PROFILE.md) → [05](./05_MCP_SERVERS.md) | Everyone — start here |
 | **Scheduled tasks** | [06](./06_TASK_EFFICIENCY_GUIDE.md) → [07](./07_TASK_LEARNING_GUIDE.md) (incl. Part 9: the template) → [09](./09_MULTI_TASK_ORCHESTRATION.md) → [10](./10_COST_PERFORMANCE.md) | Once you automate anything |
-| **Operations & safety** | [12](./12_SECURITY.md) → [11](./11_GIT_INTEGRATION.md) → [13](./13_DEV_EXECUTION_WORKFLOW.md) → [17](./17_TROUBLESHOOTING.md) | Securing and maintaining your setup |
+| **Operations & safety** | [12](./12_SECURITY.md) → [32](./32_ACTION_AUTHORITY.md) → [11](./11_GIT_INTEGRATION.md) → [13](./13_DEV_EXECUTION_WORKFLOW.md) → [31](./31_BEHAVIOUR_TESTS.md) → [17](./17_TROUBLESHOOTING.md) | Securing and maintaining your setup |
 | **Data & knowledge** | [14](./14_PERSONAL_DATA_LAYER.md) → [15](./15_LLM_WIKI.md) → [28](./28_SECOND_BRAIN.md) | Getting personal data, knowledge bases, and your own notes into Claude |
-| **Projects & context** | [24](./24_PROJECT_FOLDER_STRUCTURE.md) → [25](./25_PROJECT_INSTRUCTION_LAYERS.md) → [23](./23_MULTI_PROJECT_SETUPS.md) → [21](./21_COMPANY_POLICIES.md) → [22](./22_HELPER_APPS.md) → [26](./26_CONTEXT_SCOPING.md) → [27](./27_INDEPENDENT_JUDGMENT.md) → [29](./29_SPEC_BEFORE_REBUILD.md) → [30](./30_CONTROLLED_DOCUMENTS.md) | Power users structuring larger setups |
+| **Projects & context** | [24](./24_PROJECT_FOLDER_STRUCTURE.md) → [25](./25_PROJECT_INSTRUCTION_LAYERS.md) → [23](./23_MULTI_PROJECT_SETUPS.md) → [21](./21_COMPANY_POLICIES.md) → [22](./22_HELPER_APPS.md) → [26](./26_CONTEXT_SCOPING.md) → [27](./27_INDEPENDENT_JUDGMENT.md) → [29](./29_SPEC_BEFORE_REBUILD.md) → [30](./30_CONTROLLED_DOCUMENTS.md) → [33](./33_RETIRING_AND_LEAVING.md) | Power users structuring larger setups |
 | **Reference — read anytime** | [16](./16_BEST_PRACTICES.md) · [17](./17_TROUBLESHOOTING.md) · [18](./18_END_TO_END_WALKTHROUGH.md) · [19](./19_OUTPUT_FORMATTING.md) · [CHEATSHEET](./CHEATSHEET.md) | Digest, walkthrough, formatting, quick lookup |
 
 ---
@@ -405,6 +407,39 @@ Covers: the test that separates a controlled document from a draft, review as tr
 
 ---
 
+### [31 — Behaviour Tests](./31_BEHAVIOUR_TESTS.md)
+`[All users]` · `~12 min`
+
+*Checking that the setup still does what you built — the behaviour, not the file.*
+
+Covers: the four ways behaviour drifts without any file changing (model, platform, your own accretion, accumulated context), what earns a case (trigger tests with negative neighbours, rule tests with the request that never names the rule, task tests on frozen fixtures), a case as a prompt plus checkable graders in the platform's own case-folder shape, three runners (by hand in a fresh session, scripted with `claude -p`, `claude plugin eval` where enabled) and the three-run rule, the four times to run the suite, grading judgement without grading yourself, sorting a failure into model, accretion, marginal or platform, and keeping the suite honest.
+
+**Use this when:** a model launch has just happened, you have edited a rule or a skill description, you have added a skill beside older ones, or you want to know whether the setup still behaves before you find out from a wrong email.
+
+---
+
+### [32 — Action Authority](./32_ACTION_AUTHORITY.md)
+`[All users]` · `~12 min`
+
+*What Claude may do without asking, classified by consequence rather than by tool, and how it hands back the rest.*
+
+Covers: why authority is decided by accident, four classes by who can undo an action and who sees it (act; restore point then act under a standing approval; prepare and propose; never), standing approvals with shape, scope, limit, evidence and expiry, the proposal contract (one row per action, irreversible first, then stop; partial approval is partial apply; a surprise stops the run), the outbox and action log for unattended runs and notifications that name actions rather than runs, enforcing structurally where a capability can simply be absent, the requests that erode the boundary, and the CLAUDE.md block.
+
+**Use this when:** a task can send, post, delete or move on your behalf, you keep answering the same permission question, a task did something you did not expect, or you are deciding what a scheduled task may do while you are asleep.
+
+---
+
+### [33 — Retiring and Leaving](./33_RETIRING_AND_LEAVING.md)
+`[Power user]` · `~12 min`
+
+*Ending a task, a project, or an account without leaving live wires — the ending as a rewiring operation.*
+
+Covers: why stopping is not ending, the inventory of every layer that can still point at a project (other projects and the registry, scheduled tasks, orchestration, every memory store including the app-side ones, the second brain, app-side fields, artifacts, grants, Claude Code state, git), transferring ownership before touching the folder, the freeze (`RETIRED.md`, a final tag, registrations deleted rather than disabled, fields set to retired, grants revoked, the folder archived) with its verification list, leaving an organisation or an account with the account-bound / folder-bound / machine-bound table and the keep-transfer-purge procedure in both directions, and retiring a single task.
+
+**Use this when:** a project's purpose has ended, a task has outlived its event, a project is being absorbed into another, or you are leaving an employer or closing an account and need to know which parts of the setup were ever yours to take.
+
+---
+
 ## Templates: Copy-Paste Starting Points
 
 The ready-to-copy folder structures in the `templates/` folder. Use them when you want to start a new project or task without building from scratch.
@@ -497,6 +532,8 @@ Tasks are designed to be portable: copy any task file to another project's `task
 | `tasks/setup-data-layer.md` | Set up data patterns for personal data (Python feeder, JSON DB, browser extraction, vision) | 14 |
 | `tasks/setup-policies.md` | Interview → wire company policies into `policies-validator` skill + `CLAUDE.md` with tiered enforcement | 21, 03, 05 |
 | `tasks/tune-instruction-layers.md` | Review all three instruction layers — app-side description and instructions fields (read from `spaces.json`, applied by you) plus `CLAUDE.md` and its mirror block | 25, 01 |
+| `tasks/setup-behaviour-tests.md` | Interview → a `tests/behaviour/` suite of prompt-plus-grader cases, a hand-run baseline, and the `CLAUDE.md` block that ties rule edits to a test run | 31 |
+| `tasks/setup-action-authority.md` | Inventory the actions tasks and skills can take, classify them by consequence, install the action-authority block, propose standing approvals only from logged evidence | 32, 12 |
 
 ### Audit tasks (re-runnable)
 
@@ -508,9 +545,10 @@ Tasks are designed to be portable: copy any task file to another project's `task
 | `tasks/audit-memory.md` | Check memory for staleness, duplicates, misplaced content — across the three on-disk layers (Claude Code auto memory, `.auto-memory/`, profile files), with a check for untested reliance on the cloud account memory | 04 |
 | `tasks/audit-skill.md` | Review a `SKILL.md` — trigger quality, workflow, output format, edge cases, `allowed-tools` enforcement | 03, 02 |
 | `tasks/audit-file-hygiene.md` | Sweep actual clutter: OS junk, lock/temp files, duplicate families, superseded outputs, and trees that are gitignored but still loading as context | 11, 24 |
-| `tasks/analyze-project.md` | Whole-project sweep of *another* Claude project (local or GitHub) against the full guide set → writes a `CLUIDE_IMPROVEMENT_PLAN.md` into it; read-only, plan-only (criteria in `analyze-project-reference.md`) | All (01–30) |
+| `tasks/analyze-project.md` | Whole-project sweep of *another* Claude project (local or GitHub) against the full guide set → writes a `CLUIDE_IMPROVEMENT_PLAN.md` into it; read-only, plan-only (criteria in `analyze-project-reference.md`) | All (01–33) |
 | `tasks/reorganize-project.md` | Safely restructure a project's folders: move files and rewire every reference without breaking it; takes a restore point first | 24 |
 | `tasks/relocate-project.md` | Move a project (or a whole projects root) somewhere else — sweeps the project, scheduled-task, artifact, Claude Code state and app-config layers, and refuses streaming sync folders. Per-layer detail in `relocate-project-reference.md` | 11, 24, 05, 25 |
+| `tasks/retire-project.md` | End a project (or one task): inventory every layer that still points at it, transfer what it owned, delete registrations, freeze the folder with `RETIRED.md` — the sibling of `relocate-project.md` | 33, 23, 24 |
 
 ### Maintenance (Cluide only)
 
