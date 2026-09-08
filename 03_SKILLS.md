@@ -74,9 +74,13 @@ description: >
 
 The second version lists the implicit triggers ("shoot the client a note") and tells the assistant what to do proactively (confirm tone). This prevents a common failure mode where the assistant processes the request itself rather than consulting the skill.
 
-**Optional frontmatter fields.** Beyond `name` and `description`, the frontmatter supports additional fields. The most useful is `allowed-tools` — an allowlist of the only tools the skill may use (e.g., a read-only reporting skill that lists just `Read` and `Grep`, so it can never call `Write` or `Bash`). There is no enforced deny-list field — to restrict a skill's tools, list only the allowed ones. This turns a "the skill shouldn't do X" instruction into an enforced restriction, which matters for the security posture covered in [Guide 12](./12_SECURITY.md).
+**Optional frontmatter fields.** Beyond `name` and `description`, the frontmatter supports additional fields. Two of them control tools. `allowed-tools` pre-approves tools for the invoking turn — a read-only reporting skill lists just `Read` and `Grep`, and nothing else is pre-approved. `disallowed-tools` goes further: it removes those tools from Claude's available pool while the skill is active, which is what you want for an autonomous or background skill that must never call something — `AskUserQuestion` in an unattended loop, for instance. Either turns a "the skill shouldn't do X" instruction into an enforced restriction, which matters for the security posture covered in [Guide 12](./12_SECURITY.md).
+
+Other fields worth knowing: `paths` takes glob patterns and auto-activates the skill only when you're working with matching files; `context: fork` runs the skill in a forked subagent context, with `agent` choosing the subagent type and `background: false` waiting for the result; `when_to_use` adds trigger context appended to the description; `model` and `effort` override which model and effort level the skill runs at. The full field list is on [code.claude.com/docs/en/skills](https://code.claude.com/docs/en/skills).
 
 **Editing skills without restarting:** Claude Code rescans skills with the `/reload-skills` command (or automatically via a SessionStart hook with `reloadSkills: true`) — you don't need to restart the session after editing a SKILL.md.
+
+**Skills in Cowork:** Cowork loads the skills enabled for your account under Customize, and does not read the Claude Code CLI's `~/.claude` directory on your machine — a skill that exists only there has to be added in Customize before Cowork can use it. Cowork can also record a skill and save skills Claude proposes during a conversation, so a skill can start life there rather than in a file you write by hand.
 
 ---
 
@@ -136,7 +140,7 @@ Aim for under 500 lines in SKILL.md. If you need more:
 - Reference those files from SKILL.md with a clear note: "For full schema, see references/schemas.md"
 - Put reusable scripts in `scripts/` — the assistant can execute them without reading every line into context
 
-The goal is that reading SKILL.md takes <60 seconds and the assistant is ready to go. Long skills that dump everything into one file are harder to follow and slower to load.
+The goal is that reading SKILL.md takes <60 seconds and the assistant is ready to go. Long skills that dump everything into one file are harder to follow and slower to load. To see what your skills actually cost, run `/skill-doctor` — it reports what each skill costs in context and how often it gets used, so you can decide which ones to turn off; the skill listing itself is budgeted at 1% of the context window, raised with the `skillListingBudgetFraction` setting.
 
 ---
 

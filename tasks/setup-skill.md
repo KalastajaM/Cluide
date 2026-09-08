@@ -67,14 +67,18 @@ description: >
    3. What to do proactively if unclear (e.g. "confirm tone unless already clear")
    Aim for 4–8 lines. Vague descriptions cause the skill to never trigger.]
 [allowed-tools: Read, Grep, Glob]
+[disallowed-tools: AskUserQuestion]
 ---
 
 > Include the `allowed-tools` line whenever the skill has a hard prohibition that maps onto a tool —
-> it is an allowlist of the only tools the skill may use, so everything omitted is unavailable rather
-> than merely discouraged. There is no deny-list field: to forbid something, leave it out. Omit the
-> line entirely for a general-purpose skill that legitimately needs the full toolset.
+> it pre-approves the tools the skill may use, so everything omitted is not pre-approved rather than
+> merely discouraged. Keep the list minimal. Omit the line entirely for a general-purpose skill that
+> legitimately needs the full toolset.
 > Common shapes: read-only reporting → `Read, Grep, Glob`; drafting without sending → the draft tool
 > but not the send tool; anything that should never touch the shell → omit `Bash`.
+> For a skill that runs autonomously or in the background, add `disallowed-tools` for anything it must
+> never call — it removes those tools from Claude's pool while the skill is active (the usual case is
+> `AskUserQuestion` in an unattended loop). Drop the line for interactive skills.
 
 ## Purpose
 [2–3 sentences: what this skill is responsible for and why it exists.]

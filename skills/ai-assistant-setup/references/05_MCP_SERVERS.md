@@ -23,6 +23,8 @@ Cowork and Claude Code configure MCP servers differently. The JSON shape — a `
 - **Desktop extensions** (`.mcpb`) — installable local servers from the Connectors settings page, no JSON editing required.
 - **Plugins** — can bundle MCP servers via their own `.mcp.json`.
 
+The official reference for all of these is [claude.com/docs/connectors/overview](https://claude.com/docs/connectors/overview) — the connector directory, desktop extensions, MCP tunnels and custom remote MCP servers are all documented there.
+
 ### In Claude Code
 
 Servers are registered with the `claude mcp add` command, which supports three scopes:
@@ -37,7 +39,7 @@ claude mcp add --transport http github https://api.githubcopilot.com/mcp/   # re
 claude mcp add --scope project mytool -- npx -y some-mcp-server             # shared via .mcp.json
 ```
 
-Use project scope when a server is only relevant to one project; use user scope for servers you use everywhere. Inspect with `claude mcp list` or the `/mcp` command in a session.
+Use project scope when a server is only relevant to one project; use user scope for servers you use everywhere. Inspect with `claude mcp list` or the `/mcp` command in a session. For servers that authenticate over OAuth, `claude mcp login <name>` runs the flow from the shell and `claude mcp logout <name>` clears the stored token — useful when a server's auth expires mid-task and you would rather not open a session to fix it.
 
 **Minimal example** (this block lives in `.mcp.json` for Claude Code project scope, or in `claude_desktop_config.json` for Cowork local servers):
 
@@ -155,9 +157,11 @@ Key tools: `navigate`, `read_page`, `get_page_text`, `find`, `left_click`, `form
 
 **A note on the tool namespace.** The prefix these tools appear under is not stable across surfaces — a Cowork session sees `mcp__claude-in-chrome__*`, and other surfaces have exposed a differently cased variant. A skill that hard-codes the string will break silently when it is wrong, so read the namespace from your own tool list before writing it into a skill, and re-check it after an extension or app update.
 
-**The extension is also a Cowork surface.** As of August 2026 the Claude in Chrome side panel runs a full Cowork session rather than a browser-only chat: the skills, connectors and plugins you have configured elsewhere are available in it, and the session persists to your history, so work started in the browser can be picked up in the desktop or mobile app and the other way round. That turns the extension into a decision about *where a session runs*, not only about which tool drives the browser — and it makes the browser a sensible home for the multi-step web work described above, since the session that scrapes a vendor portal is the same one that holds your spreadsheet skill.
+**The extension is also a Cowork surface.** Claude in Chrome reached general availability on every paid plan on 26 August 2026, and its side panel runs a full Cowork session rather than a browser-only chat: the skills, connectors and plugins you have configured elsewhere are available in it, and the session persists to your history, so work started in the browser can be picked up in the desktop or mobile app and the other way round. That turns the extension into a decision about *where a session runs*, not only about which tool drives the browser — and it makes the browser a sensible home for the multi-step web work described above, since the session that scrapes a vendor portal is the same one that holds your spreadsheet skill.
 
-Two limits shape when that is the right choice. It runs in Chrome only: other Chromium browsers and mobile are not supported. And working with local files still goes through the desktop app, so a browser session reaches your project folder over that bridge or not at all — the failure mode described in [Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md) applies here unchanged. *Verified August 2026. Availability differs by plan and was still rolling out at the time of writing; re-verify against the current product rather than trusting this paragraph's timing.*
+Autonomous multi-step actions are on by default: the extension acts through a sequence of steps without asking you to approve each one, with a safety classifier checking every action first. You can turn that off in settings and go back to approving each action, and in Cowork you grant browser access per website — the "Allow all browser actions" option was removed from the permission cards in August 2026. [Guide 12](./12_SECURITY.md) covers when to make that per-site call.
+
+Two limits shape when the browser is the right place to run a session. It runs in Chrome only: other Chromium browsers and mobile are not supported. And working with local files still goes through the desktop app, so a browser session reaches your project folder over that bridge or not at all — the failure mode described in [Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md) applies here unchanged. *Verified September 2026.*
 
 Configure by installing the Claude browser extension from the Chrome Web Store and connecting it in your Claude settings.
 
@@ -184,6 +188,8 @@ Key tools: `screenshot`, `left_click`, `type`, `scroll`, `key`, `open_applicatio
 ---
 
 **Finding more servers:** The maintained discovery points are the official MCP Registry at [registry.modelcontextprotocol.io](https://registry.modelcontextprotocol.io) and the reference server repo at [github.com/modelcontextprotocol/servers](https://github.com/modelcontextprotocol/servers). If you're using Claude.ai (the web interface) or Cowork, the built-in connector directory lets you discover and enable integrations directly — no JSON required.
+
+**If you are writing a server rather than installing one:** the MCP specification of 28 July 2026 deprecates the HTTP+SSE transport along with the Roots, Sampling and Logging features, on a twelve-month window ([changelog](https://modelcontextprotocol.io/specification/2026-07-28/changelog)). Target streamable HTTP for remote servers and stdio for local ones, and treat a server still built on HTTP+SSE as something to migrate rather than to copy.
 
 ---
 
@@ -327,6 +333,8 @@ Run through this checklist for any server that appears dead:
 | "Permission denied" | macOS file permissions or TCC restriction | Check Finder > Get Info permissions. On macOS, some folders (Desktop, Documents) require explicit app access in System Settings > Privacy. |
 | Symlinks not followed | Server doesn't resolve symlinks by default | Add the symlink's real target path to the allowed list, or use the resolved absolute path in your skill. |
 | Large file read hangs or times out | File exceeds server buffer | Avoid reading files >10 MB through MCP. Use the Bash tool or `head`/`tail` for large files. |
+
+The ">10 MB" rule of thumb has a documented frame behind it: Claude Code warns at 10,000 tokens of MCP result and caps a result at 25,000 tokens by default. Raise the cap for a session with `MAX_MCP_OUTPUT_TOKENS`, or — if you write the server — set a per-tool ceiling of up to 500,000 characters via `_meta.anthropic/maxResultSizeChars`. Raising either is a last resort: a tool that returns 25,000 tokens is usually a tool that should be filtering server-side.
 
 ---
 

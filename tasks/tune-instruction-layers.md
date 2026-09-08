@@ -40,7 +40,7 @@ Three things to get right:
 - **Report freshness.** Convert `updatedAt` (epoch ms) to a readable date and state it alongside anything you quote. If it predates a change the user says they made, ask them to confirm that one field rather than distrusting the whole file.
 - **Ignore the siblings.** `remote-session-spaces.json` holds session/folder state only; any `spaces copy.json` is a stale duplicate.
 
-**If the file is unreachable** — no Filesystem MCP access to `~/Library/Application Support` (the folder picker refuses it; see Guide 05), or this is not a Cowork project — say so plainly and ask the user to paste the two field texts. Do not guess, and do not silently review only CLAUDE.md: a two-layer review reported as a three-layer review is the failure this task exists to prevent.
+**If the file is unreachable** — no Filesystem MCP access to `~/Library/Application Support` (see Guide 05; re-verify after September 2026 — the picker now accepts the Library folder but protects Claude's own data), or this is not a Cowork project — say so plainly and ask the user to paste the two field texts. Do not guess, and do not silently review only CLAUDE.md: a two-layer review reported as a three-layer review is the failure this task exists to prevent.
 
 For a **chat project** (no folder), there is no CLAUDE.md layer: the instructions field is the whole contract. Review only the two fields, judged as a mini CLAUDE.md (Guide 25, *Chat projects*), and skip Steps 4 and 5.
 
@@ -95,7 +95,7 @@ If the user has not pasted them yet, do **not** update the mirror — a mirror t
 
 The account-wide preferences and the Cowork-wide instructions (Guide 25, *The account layers above the project*) are tuned with the same loop as the project fields — diagnose, plan, sign-off, apply, mirror — plus two evidence steps the project mode does not have.
 
-**Evidence 1 — session history.** The desktop app stores one JSON record per session under `~/Library/Application Support/Claude/local-agent-mode-sessions/<accountId>/<profileId>/`, including each session's opening prompt, title, model, and connected folders. *App-internal, verified August 2026 — re-verify after app updates.* The folder picker refuses `~/Library` as a protected location; read the files via a Filesystem MCP allowlist entry (Guide 05), or have the user zip the JSONs and attach the archive to a session. Session openers are ground truth about real prompting style. Three metrics turn them into instruction evidence:
+**Evidence 1 — session history.** The desktop app stores one JSON record per session under `~/Library/Application Support/Claude/local-agent-mode-sessions/<accountId>/<profileId>/`, including each session's opening prompt, title, model, and connected folders. *App-internal, verified August 2026 — re-verify after app updates.* Read the files via a Filesystem MCP allowlist entry (Guide 05; re-verify after September 2026 — the picker now accepts the Library folder but protects Claude's own data), or have the user zip the JSONs and attach the archive to a session. Session openers are ground truth about real prompting style. Three metrics turn them into instruction evidence:
 
 - how often the user explicitly invites clarifying questions — calibrates the ask-vs-proceed default;
 - the opening-prompt length distribution — whether the instructions should tell Claude to interpret terse prompts against project files instead of asking;

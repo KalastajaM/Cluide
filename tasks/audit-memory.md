@@ -7,7 +7,7 @@
 ## Purpose
 Review the project's memory for stale entries, missing index pointers, duplicates, and entries that belong in `CLAUDE.md` instead. Keeps memory lean and current so it stays useful as sessions accumulate.
 
-Guide 04 describes three layers — **native memory**, the `.auto-memory/` folder, and **profile files**. All three use the same `MEMORY.md`-index-plus-topic-files shape, so the checks below apply to whichever the project actually uses. Audit every layer present, not just `.auto-memory/`.
+Guide 04 describes three on-disk layers — **native memory**, the `.auto-memory/` folder, and **profile files**. All three use the same `MEMORY.md`-index-plus-topic-files shape, so the checks below apply to whichever the project actually uses. Audit every layer present, not just `.auto-memory/`. The fourth layer in Guide 04's table, the account memory behind claude.ai and Cowork, lives in the cloud and cannot be audited from the filesystem — it appears here only in Check 8.
 
 Target: index under 30 entries, each memory file under ~10 lines, no entries older than 6 months without a freshness check.
 
@@ -97,9 +97,10 @@ For each memory file:
 
 #### Check 8: Right layer for the job
 
-Guide 04's rule: **scheduled tasks must not depend on native memory.** It is built for interactive sessions and is not reliably available to autonomous runs — a task that relies on it works some runs and forgets everything on others, which reads as a task bug rather than a memory bug.
+Guide 04's rule: **scheduled tasks must not depend on native memory or on the account-level memory behind claude.ai and Cowork.** Neither is verified for autonomous runs — a task that relies on one may work some runs and forget everything on others, which reads as a task bug rather than a memory bug. The rule is conservative pending a test, so report the dependency as unverified rather than as known-broken.
 
 - Any scheduled task in this project that expects remembered context, with no `.auto-memory/` or profile file it explicitly loads: flag as HIGH.
+- Any reliance on the **Cowork project memory store or the account memory** (Settings → Memory) for something a scheduled task needs: flag, and ask whether it has actually been tested in a scheduled run. Untested is the same as unknown here — if it has not been tested, the fact belongs in a file the task loads explicitly.
 - Native memory redirected into the project via `autoMemoryDirectory`: not a finding — that puts it on disk where a task can read it. Note the configuration so the next audit doesn't re-flag it.
 - The reverse case is also worth a note: heavy profile machinery built for purely interactive use, where native memory would have done the job with no files to maintain.
 

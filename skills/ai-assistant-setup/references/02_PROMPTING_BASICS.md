@@ -150,7 +150,7 @@ Use Level 3 for anything that runs repeatedly — skills, tasks, any instruction
 
 ## Asking Clarifying Questions
 
-When a clarifying question has a **bounded set of options**, use the `AskUserQuestion` tool with buttons. Fall back to plain text only when the question is genuinely open-ended. Note: `AskUserQuestion` is a Claude Code tool; in Cowork/claude.ai Claude asks the same questions as plain text.
+When a clarifying question has a **bounded set of options**, use the `AskUserQuestion` tool with buttons. Fall back to plain text only when the question is genuinely open-ended. `AskUserQuestion` is available in both Claude Code and Cowork.
 
 | Question type | Approach |
 |---|---|

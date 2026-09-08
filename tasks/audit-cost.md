@@ -57,9 +57,9 @@ Match the task's work against the current lineup (Guide 10 §Model Tier Selectio
 | Tier | Right for |
 |------|-----------|
 | **Haiku 4.5** | Triage, classification, bulk extraction — output is a label or short record |
-| **Sonnet 4.6 / Sonnet 5** | The default — template-driven output, clear instructions, fixed format |
-| **Opus 4.8 / Opus 5** | Judgment-heavy review, sensitive drafting, complex multi-step reasoning |
-| **Fable 5** | Hardest long-horizon synthesis; 1M context holds whole projects — advantage grows with task length |
+| **Sonnet 5** (Sonnet 4.6 still available) | The default — template-driven output, clear instructions, fixed format |
+| **Opus 5** (Opus 4.8 still available) | Judgment-heavy review, sensitive drafting, complex multi-step reasoning |
+| **Fable 5.1** (Fable 5 still available) | Hardest long-horizon synthesis — advantage grows with task length. Not a context play: Opus 5 and Sonnet 5 run a native 1M window too |
 
 Verify tiers and prices against Guide 10's canonical pricing table (and anthropic.com/pricing) before recommending a change — the lineup shifts between releases.
 
@@ -81,7 +81,7 @@ Does TASK.md contain a budget check (Step 0 reading recent log entries, 2x alert
 
 #### Check 5: Plan usage fit (scheduled tasks)
 
-If the task runs on a schedule: note that the non-interactive usage policy changed during 2026 — an earlier formulation gave scheduled/automated runs (Agent SDK, `claude -p`) a separate monthly usage-credit pool; as of this writing they draw from **the same usage allowance as interactive use**. Remind the user to check the current policy and their balance (`/usage`, support.claude.com) before budgeting.
+If the task runs on a schedule: note that the non-interactive usage policy changed during 2026 — an earlier formulation gave scheduled/automated runs (Agent SDK, `claude -p`) a separate monthly usage-credit pool; as of September 2026, and unverified against a primary source, they draw from **the same usage allowance as interactive use**. Remind the user to check the current policy and their balance (`/usage`, support.claude.com) before budgeting.
 
 Estimate: cost per run × runs per month × 1.5 headroom. Ask which plan the user is on, then report what fraction of the plan's allowance this task consumes — and flag if the sum across the user's scheduled tasks (plus their interactive use) plausibly exceeds it.
 Use `AskUserQuestion` with buttons: `Pro` / `Max 5x` / `Max 20x` / `Skip this check`

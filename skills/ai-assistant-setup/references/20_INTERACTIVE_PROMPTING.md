@@ -7,7 +7,7 @@
 > **Giving this guide to Claude:**
 > "Read 20_INTERACTIVE_PROMPTING.md and apply the patterns here to help me set up / improve / debug [my workflow / this task / this skill]."
 
-A note on surfaces: AskUserQuestion dialogs, plan mode, `/clear`, `/compact`, and subagents are Claude Code features. In Cowork, Claude asks clarifying questions in plain text instead of structured dialogs, and context hygiene means starting a fresh conversation rather than clearing the current one. Cowork itself now runs in more than one place — the desktop app, the web and mobile apps, and since August 2026 the Chrome side panel ([Guide 05](./05_MCP_SERVERS.md)) — and one session can move between them, so the distinction that matters for these patterns is Claude Code versus Cowork, not which window you are typing in. The prompting patterns themselves apply everywhere.
+A note on surfaces: AskUserQuestion dialogs, plan mode and subagents work in both Claude Code and Cowork — a Cowork session gets the same button dialogs, the same plan-then-approve flow, and the same ability to dispatch subagents. Only `/clear` and `/compact` are Claude Code commands; in Cowork, context hygiene means starting a fresh conversation rather than clearing the current one. Cowork itself now runs in more than one place — the desktop app, the web and mobile apps, and since August 2026 the Chrome side panel ([Guide 05](./05_MCP_SERVERS.md)) — and one session can move between them, so the distinction that matters for these patterns is Claude Code versus Cowork, not which window you are typing in. The prompting patterns themselves apply everywhere.
 
 ---
 
@@ -139,7 +139,7 @@ Or explicitly:
 
 > "Enter plan mode and propose how you'd implement X. Don't write any code yet."
 
-In Claude Code, plan mode is also available as a built-in mode (toggle with Shift+Tab — see [Guide 13](./13_DEV_EXECUTION_WORKFLOW.md)) — Claude will read files, run searches, and ask clarifying questions, then present a plan for your approval before doing anything irreversible.
+In Claude Code, plan mode is also available as a built-in mode (toggle with Shift+Tab — see [Guide 13](./13_DEV_EXECUTION_WORKFLOW.md)), or prefix a single prompt with `/plan` to plan just that one turn. Claude will read files, run searches, and ask clarifying questions, then present a plan for your approval before doing anything irreversible. Where auto mode is available, the classifier reviews the shell commands a planning turn wants to run instead of prompting you for each one ([Guide 12](./12_SECURITY.md)).
 
 ---
 

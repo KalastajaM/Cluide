@@ -125,7 +125,7 @@ Note which of PreToolUse / PostToolUse hooks are missing.
 ```bash
 cat ~/.claude/settings.local.json 2>/dev/null || echo "No settings.local.json"
 ```
-Check for `permissions.defaultMode` set to `"bypassPermissions"`, or stale permission entries.
+Check for `permissions.defaultMode` set to `"bypassPermissions"`, or stale permission entries. `"auto"` is the built-in starting mode on Pro, Max and Team and is not a finding; `"dontAsk"` in a settings file that is not a CI or unattended setup is worth asking the user about.
 
 **1f. Project-specific checks (if `$PROJECT` is set)**
 

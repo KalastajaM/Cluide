@@ -37,6 +37,10 @@ it is `27_INDEPENDENT_JUDGMENT.md` in the Cluide guide set; the skill stands alo
 - **Never say what the user thinks is wrong to a subagent.** If part of the review is delegated, write
   the brief before hearing their view, or reuse a fixed brief verbatim. A subagent briefed after the
   user speaks is uninformed about the project and perfectly informed about their opinion.
+- **Spawn the blind reviewer as a non-fork subagent type** — `general-purpose`, or a named agent
+  definition — and never `fork`. A `fork` subagent inherits the entire conversation and the parent's
+  memory, which destroys the blind pass. The brief must therefore stand entirely on its own: name the
+  artefact path, the rubric, and the output format, and rely on nothing said earlier in this session.
 - **Write findings to a file before discussing them.** A verdict given in conversation is cheap to
   soften once the user reacts, and the softening leaves no trace.
 

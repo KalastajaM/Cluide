@@ -106,14 +106,15 @@ Some skills and scheduled tasks load their own instructions that may not repeat 
 
 **Symptom:** Claude forgets something it knew in a previous session -- a preference, a project, a standing fact about you.
 
-**Understand the two memory systems first:**
+**Understand the built-in memory systems first:**
 
 | System | How it works | Survives context reset? |
 |---|---|---|
-| **Native Claude memory** | Built-in; Claude writes facts automatically | Persists across sessions, but not reliably loaded in scheduled/autonomous runs ([Guide 04](./04_MEMORY_AND_PROFILE.md)) |
+| **Claude Code auto memory** | Built-in; Claude writes facts automatically, on this machine only | Persists across sessions, but not verified for scheduled/autonomous runs ([Guide 04](./04_MEMORY_AND_PROFILE.md)) |
+| **claude.ai / Cowork memory** | Cloud store on your account, plus a per-project store in each Cowork project; read and edit the topics under Settings → Memory | Persists across sessions and across surfaces, but availability in scheduled tasks is untested |
 | **`.auto-memory/` folder** | Explicit markdown files on disk | Yes -- loaded from disk every session |
 
-(Guide 04 adds a third layer: profile files.) Native memory is not reliably loaded in autonomous task runs. Scheduled tasks must use the file-based system.
+(Guide 04 adds profile files as a further layer.) Neither built-in system is verified for autonomous runs. Scheduled tasks must use the file-based system.
 
 **Most likely causes and fixes:**
 
@@ -358,7 +359,7 @@ An applied IMPROVEMENTS.md proposal may have added "also read [file]" to the tas
 *Fix:* Review recently applied proposals. Revert any that added file reads without clear justification.
 
 **3. You switched to a more expensive model without adjusting scope**
-Opus costs roughly 1.7x Sonnet — noticeable, but rarely the whole story. The bigger cost lever points the other way: extraction and triage steps often run fine on Haiku at a fraction of the cost (see Guide 10's canonical table for current per-model prices).
+Opus costs roughly 2.5x Sonnet — noticeable, but rarely the whole story. The bigger cost lever points the other way: extraction and triage steps often run fine on Haiku at a fraction of the cost (see Guide 10's canonical table for current per-model prices).
 
 *Fix:* Match the model to the step — Haiku for extraction/triage, Sonnet for routine runs — or reduce the task's input scope to compensate. Use the cost tables in [Guide 10](./10_COST_PERFORMANCE.md) to estimate the difference.
 

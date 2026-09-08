@@ -46,7 +46,7 @@ Report findings without showing actual credential values — show only which fil
 Read `.claude/settings.json` and `~/.claude/settings.json`:
 
 Check for:
-- `permissions.defaultMode: "bypassPermissions"` — flag this; it disables all permission prompts
+- `permissions.defaultMode` — the valid values are `default` (alias `manual`), `auto`, `acceptEdits`, `plan`, `dontAsk` and `bypassPermissions`. Flag `bypassPermissions`: it disables all permission prompts. Flag `dontAsk` too if this is not a CI or unattended setup. An unset value no longer means every action is prompted — auto is the built-in starting mode on Pro, Max and Team, so report "not set (auto on Pro/Max/Team)" rather than assuming manual. Note also that `"auto"` set in a project-level `.claude/settings.json` or `settings.local.json` has no effect; it belongs in `~/.claude/settings.json` or managed settings.
 - `allowedTools` entries with broad scope (e.g. allowing all Bash commands without restriction)
 - Existing hooks — are they configured correctly?
 

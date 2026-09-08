@@ -9,8 +9,9 @@ description: >
   including sweeps, audits, and fixes phrased as "sweep all X", "check every Y", "audit the Z",
   "fix what's broken across". Load it ALONGSIDE any playbook or maintenance skill that also
   triggers: that skill says what to do, this one says what model tier does each part. Also use
-  when creating or editing a scheduled task, to propose its model tier. Do NOT use for choosing
-  the session's own model — a session cannot switch that.
+  when creating or editing a scheduled task, to propose its model tier. This is model-tier routing,
+  not the Cowork Dispatch sidebar agent, which runs long background tasks and is unrelated to model
+  routing. Do NOT use for choosing the session's own model — a session cannot switch that.
 ---
 
 # Dispatch — model-aware orchestration
@@ -23,6 +24,10 @@ Guide 10 §What Things Actually Cost for the canonical pricing table; the spread
 cheapest and most expensive tier is roughly 10x. Tier names in this skill are model families
 (the values the `model` parameters accept), not versions — if the lineup has changed since this
 skill was last touched, follow Guide 10's current table rather than the names here.
+
+**Name collision.** Cowork also ships a feature called Dispatch — a long-running background agent
+that carries out high-level instructions by splitting them into child tasks. This skill is not that
+feature and does not drive it; "dispatch" here means choosing the model tier for delegated work.
 
 ## Orchestrator stance
 
@@ -119,6 +124,10 @@ skill plus per-spawn parameters are the mechanism.
 `verifier`, `researcher` — see `templates/AGENT_STARTER_PACK/` in Cluide), since their frontmatter
 pins tier structurally. Otherwise pass the per-invocation `model` parameter. Recommended session
 default for orchestrating work: `opus` (or `opusplan` where plan/execute phases are distinct).
+Check that `CLAUDE_CODE_SUBAGENT_MODEL_FORCE` is not set: at `1` it ignores the `model` field of
+every subagent definition and blocks passing a model per spawn, so no routing in this skill takes
+effect. In the other direction, a permission deny rule of the form `Agent(model:<tier>)` enforces a
+ceiling that project overrides can otherwise only advise.
 
 **Scheduled tasks:** when creating or editing one, propose the cheapest tier the task's hardest
 step needs, per the table — and say which step set the tier. Never change an existing scheduled

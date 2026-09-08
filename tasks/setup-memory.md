@@ -7,7 +7,7 @@
 ## Purpose
 Set up a persistent memory system so Claude remembers key facts, preferences, and projects across sessions. Creates the `.auto-memory/` folder structure and populates it with an initial set of memory files based on a user interview.
 
-This is the recommended memory system for deliberate, cross-session memory. It survives context resets and works in scheduled tasks — unlike native Claude memory.
+This is the recommended memory system for deliberate, cross-session memory. It survives context resets and works in scheduled tasks — unlike Claude Code auto memory or the account memory behind claude.ai and Cowork, whose availability in scheduled runs is not verified.
 
 ---
 

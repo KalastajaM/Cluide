@@ -60,9 +60,9 @@ Flag weak descriptions with: "A user saying '[phrase]' would not trigger this sk
 
 - [ ] Hard limits are stated with "NEVER" (e.g. "NEVER send — always draft")
 - [ ] Each prohibition has a positive counterpart (what to do instead)
-- [ ] Any prohibition that maps onto a tool is **enforced** by an `allowed-tools` allowlist in the frontmatter, not left to prose
+- [ ] Any prohibition that maps onto a tool is **enforced** in the frontmatter, not left to prose: `allowed-tools` for the tools the skill may use, and — for a skill that runs autonomously or in the background — `disallowed-tools` for the tools it must never call
 
-On the last point: `allowed-tools` lists the only tools the skill may use, so anything omitted is unavailable rather than discouraged. There is no deny-list field. Flag with: "This skill says NEVER [X] but has no `allowed-tools` line — a session under pressure can still do it. Add `allowed-tools: [list]` to make the constraint real." Do not flag a general-purpose skill that legitimately needs the full toolset; the finding is for skills whose own constraints describe a restriction the frontmatter doesn't implement (Guide 03 optional frontmatter, Guide 12).
+On the last point: `allowed-tools` pre-approves tools for the skill's turn, so anything omitted is not pre-approved; `disallowed-tools` removes tools from Claude's available pool while the skill is active, which is the harder guarantee an unattended skill needs (e.g. never calling `AskUserQuestion` in a background loop). Flag with: "This skill says NEVER [X] but has no `allowed-tools` line — a session under pressure can still do it. Add `allowed-tools: [list]`, or `disallowed-tools: [tool]` if the skill runs unattended, to make the constraint real." Do not flag a general-purpose skill that legitimately needs the full toolset; the finding is for skills whose own constraints describe a restriction the frontmatter doesn't implement (Guide 03 optional frontmatter, Guide 12).
 
 #### Check 5: Edge cases
 
@@ -75,6 +75,7 @@ On the last point: `allowed-tools` lists the only tools the skill may use, so an
 - [ ] SKILL.md is under 500 lines
 - [ ] If over 500 lines: detailed reference content is moved (or should be moved) to `references/`
 - [ ] `references/` files are named from SKILL.md — not silently expected
+- [ ] Measured, not guessed: run `/skill-doctor` for what this skill costs in context and how often it actually gets used — a large skill that never fires is a stronger finding than line count alone
 
 #### Check 7: Memory (if applicable)
 

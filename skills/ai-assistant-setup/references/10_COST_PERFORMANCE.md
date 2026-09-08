@@ -26,32 +26,37 @@ You don't need exact numbers. Rough estimates are enough to spot trends and catc
 
 ## What Things Actually Cost
 
-Claude pricing (as of August 2026) uses per-token rates that differ by model tier. Rough reference:
+Claude pricing (as of September 2026) uses per-token rates that differ by model tier. Rough reference:
 
 | Model | Input (per 1M tokens) | Output (per 1M tokens) |
 |---|---|---|
 | **Haiku 4.5** | ~$1 | ~$5 |
 | **Sonnet 4.6** | ~$3 | ~$15 |
-| **Sonnet 5** | ~$3 (intro ~$2 through 2026-08-31) | ~$15 (intro ~$10 through 2026-08-31) |
+| **Sonnet 5** | ~$2 | ~$10 |
 | **Opus 4.8** | ~$5 | ~$25 |
 | **Opus 5** | ~$5 | ~$25 |
-| **Fable 5** | ~$10 | ~$50 |
+| **Fable 5.1** | ~$10 | ~$50 |
+| **Fable 5** (superseded by 5.1) | ~$10 | ~$50 |
 
-> This table is the canonical pricing reference for the guide set — other guides point here. Last verified August 2026; check [anthropic.com/pricing](https://www.anthropic.com/pricing) before budgeting.
+> Cache reads are the one place the tiers don't scale together: Fable 5.1 reads cost $0.25/MTok — a 0.025x multiplier on input price, against 0.1x for every other model, Fable 5 included.
+
+> This table is the canonical pricing reference for the guide set — other guides point here. Last verified September 2026; check [platform.claude.com/docs/en/about-claude/pricing](https://platform.claude.com/docs/en/about-claude/pricing) or [anthropic.com/pricing](https://www.anthropic.com/pricing) before budgeting.
 
 These are API list prices. Batch API pricing is typically 50% cheaper (see "Batch vs. Interactive" below). Prompt caching drops input costs further when the same context is reused across calls (see "Prompt Caching" below).
 
-**Typical task costs per run (Sonnet):**
+**Typical task costs per run (Sonnet 5, at ~$2/~$10):**
 
 | Task type | Input tokens | Output tokens | Estimated cost |
 |---|---|---|---|
-| Email digest (triage 20 emails, write summary) | ~12K | ~3K | ~$0.08 |
-| Weekly planner (read calendar + profile, write plan) | ~8K | ~2K | ~$0.05 |
-| Data ingestion (parse 5 pages, update wiki) | ~20K | ~5K | ~$0.14 |
-| Full morning briefing (email + calendar + profile + output) | ~25K | ~6K | ~$0.17 |
-| Complex research task (multi-step, 50K context) | ~50K | ~10K | ~$0.30 |
+| Email digest (triage 20 emails, write summary) | ~12K | ~3K | ~$0.05 |
+| Weekly planner (read calendar + profile, write plan) | ~8K | ~2K | ~$0.04 |
+| Data ingestion (parse 5 pages, update wiki) | ~20K | ~5K | ~$0.09 |
+| Full morning briefing (email + calendar + profile + output) | ~25K | ~6K | ~$0.11 |
+| Complex research task (multi-step, 50K context) | ~50K | ~10K | ~$0.20 |
 
-At one run per day, the morning briefing costs roughly $5/month on Sonnet (~$0.17/run × 30). The same token volume costs roughly $8/month on Opus (~$0.28/run — about 1.7x Sonnet), $16.50/month on Fable 5 (~$0.55/run — about 3.3x), and $1.65/month on Haiku (~$0.06/run — about a third of Sonnet). The Opus premium is far smaller than it used to be, but the tiers still compound across many tasks and many runs.
+> The token counts in this table were measured before Sonnet 5's tokenizer, which uses roughly 30% more tokens for the same text (Sonnet 5 launch post). Treat them as a lower bound on Sonnet 5 and as approximate on every other model.
+
+At one run per day, the morning briefing costs roughly $3.30/month on Sonnet 5 (~$0.11/run × 30). The same token volume costs roughly $8.25/month on Opus 5 (~$0.28/run — about 2.5x Sonnet), $16.50/month on Fable (~$0.55/run — about 5x), and $1.65/month on Haiku (~$0.06/run — about half of Sonnet). The tiers compound across many tasks and many runs.
 
 ---
 
@@ -78,7 +83,7 @@ Not every task needs the most capable model. Four tiers, four jobs:
 
 **Use Fable for:**
 - The hardest long-horizon synthesis: multi-source research reports, large refactors, planning across an entire project's state
-- Tasks where you'd otherwise split the work to fit context — Fable's 1M default context can hold it whole
+- Not for context size: Opus 5 and Sonnet 5 also run a native 1M window on the API, so a task that only needs to hold a lot at once belongs on a cheaper tier
 - Its advantage over Opus grows with task length; for short tasks the gap is small and the 2x price rarely pays off
 
 **The hybrid approach:** Run the data-gathering and triage steps on Haiku or Sonnet and the synthesis/judgment step on Opus. A morning briefing that fetches and triages on Haiku, then drafts the narrative on Opus, costs far less than running everything on Opus while keeping output quality high.
@@ -98,6 +103,8 @@ This tier logic is developed into a full routing policy — archetype table, esc
 Cached input tokens cost roughly 90% less than fresh ones. When the same prefix (system prompt, TASK.md, PROFILE_SUMMARY.md) is sent repeatedly within the cache window, only the first read pays full price — so the naive per-run math in this guide overstates the cost of always-loaded files for anything that runs back-to-back or makes many calls in one session. Note that cache *writes* cost a premium (~1.25x–2x base input, depending on cache duration), so a single-pass run that never re-reads the prefix doesn't benefit.
 
 The catch for scheduled tasks: the cache expires between runs spaced hours apart. A daily 7 AM task pays full price for its always-loaded files every run — caching helps *within* a run (a multi-step task re-sending the same context across calls) but not *across* daily runs. So the advice stands: trim always-loaded files anyway. A lean TASK.md is cheap on every run; a bloated one is only cheap when the cache happens to be warm.
+
+Claude Code exposes the cache directly. `promptCacheTtl` and `subagentPromptCacheTtl` (v2.1.243) set how long the main conversation's and subagents' caches live; per-agent `experimental.cacheTtl` frontmatter (v2.1.248) overrides it for one agent; and `/cost` carries a per-session cache line (v2.1.251) showing hit ratio, misses, TTL and whether the cache was warm — which is how you tell whether a long session is actually reusing its prefix. On Fable 5.1 the read discount is steeper than elsewhere (0.025x base input, $0.25/MTok), so a long Fable session that keeps re-reading the same context is cheaper than its headline price suggests.
 
 When you want to see where money actually goes, `/usage` now itemizes cost by skill, subagent, plugin, and per-MCP-server — far more precise than the estimates in this guide. Use it to confirm which component of a task is the expensive one before optimizing.
 
@@ -152,7 +159,7 @@ Monthly budget = (average cost per run) × (runs per month) × 1.5
 
 The 1.5x multiplier gives headroom for occasional expensive runs (more emails than usual, larger API responses).
 
-**Example:** A daily email digest averaging $0.08/run on Sonnet: $0.08 × 30 × 1.5 = **$3.60/month budget**. If actual spend crosses $3.60, something changed.
+**Example:** A daily email digest averaging $0.05/run on Sonnet: $0.05 × 30 × 1.5 = **$2.25/month budget**. If actual spend crosses $2.25, something changed.
 
 **Adding a budget check to your task:**
 
@@ -170,13 +177,13 @@ This catches gradual drift before it becomes expensive. It costs almost nothing 
 
 ## Non-Interactive Usage and Your Plan
 
-The policy for non-interactive usage — Agent SDK calls, `claude -p`, scheduled and automated runs, GitHub Actions — has changed during 2026. An earlier formulation gave it a separate monthly usage-credit pool; as of this writing (August 2026), scheduled and automated runs draw from **the same usage allowance as your interactive use**. Check the current policy and your balance (`/usage`, support.claude.com) before budgeting.
+The policy for non-interactive usage — Agent SDK calls, `claude -p`, scheduled and automated runs, GitHub Actions — has changed during 2026. An earlier formulation gave it a separate monthly usage-credit pool; as of September 2026, and unverified against a primary source, scheduled and automated runs draw from **the same usage allowance as your interactive use**. Check the current policy and your balance (`/usage`, support.claude.com) before budgeting. Cowork tasks show `/usage` and `/cost` as inline cards in the task itself (desktop app, July 2026), so per-task spend is visible without leaving the run.
 
 This matters more for this project than any pricing change, because everything in these guides runs on schedules. Practical implications:
 
-- **Budget scheduled tasks against your plan's usage allowance — which interactive use also draws from.** A $20 Pro plan covers roughly three daily-briefing-sized tasks at Sonnet prices (~$5/month each) with headroom — and far more if feeder steps run on Haiku.
+- **Budget scheduled tasks against your plan's usage allowance — which interactive use also draws from.** A $20 Pro plan covers several daily-briefing-sized tasks at Sonnet prices (~$3.30/month each) with headroom — and far more if feeder steps run on Haiku.
 - **The per-run cost estimates in this guide are what each run draws from that allowance.** The budgeting formula above has a hard ceiling: the sum of all your tasks' monthly budgets should stay under your plan's allowance, with headroom left for interactive sessions.
-- **Model tier choice has direct monthly consequences.** Moving one daily task from Opus to Sonnet frees ~$3/month; from Sonnet to Haiku, another ~$3.
+- **Model tier choice has direct monthly consequences.** Moving one daily task from Opus to Sonnet frees ~$5/month; from Sonnet to Haiku, another ~$1.65.
 
 Source: support.claude.com/en/articles/12429409.
 
