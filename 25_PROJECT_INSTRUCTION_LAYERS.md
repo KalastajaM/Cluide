@@ -10,7 +10,9 @@
 | Project instructions | The app (project settings) | Injected into every session at start, before any file is read | No — no history, no diff | Yes, read-only — see *Reading the app-side fields* |
 | CLAUDE.md | The project folder | Read when the folder is connected | Yes — in the folder, in git | Yes — read and write |
 
-*Behaviour verified against Cowork as of August 2026 — re-verify after app updates; the injection semantics of these fields are version-specific.*
+*Behaviour verified against Cowork as of September 2026 — re-verify after app updates; the injection semantics of these fields are version-specific.*
+
+A Cowork project holds more than these three fields. The [projects documentation](https://claude.com/docs/cowork/guide/projects) also lists **Links**, **Projects from Chat** (claude.ai projects linked to this one), and **Memory** — a project-scoped memory store that persists across sessions, separate from every layer in the table and from the other memory systems in [Guide 04](./04_MEMORY_AND_PROFILE.md). Those carry context rather than instructions, so they sit outside the layer table, but one of them changes how the description is read: **Dispatch**, Cowork's background agent, reads the description when choosing a project for a task. The description is now machine-read for routing, not only injected as session context — which makes the "concrete, no rules" rule below load-bearing rather than stylistic.
 
 The asymmetry between the layers drives everything in this guide:
 
@@ -56,7 +58,7 @@ The two path segments are the account and profile identifiers — find them by l
 
 Three things make this a read path and not a write path:
 
-- **Reaching it needs the Filesystem MCP server** (Guide 05), not the folder picker, which refuses `~/Library/Application Support` as a protected location. Add the directory to the server's `allowed_directories` and restart the app; the server reads that list once at startup.
+- **Reaching it needs the Filesystem MCP server** (Guide 05). The folder picker changed in September 2026: it now accepts the macOS Library folder (and the home folder and whole drives), while Claude's own configuration and session data inside them stay off-limits — so whether this particular path is reachable through the picker has to be re-verified. Until it is, the Filesystem route stands: add the directory to the server's `allowed_directories` and restart the app; the server reads that list once at startup.
 - **Applying changes stays manual.** The app rewrites `spaces.json` wholesale from memory, so an edit written to the file while the app is running is silently discarded. An audit therefore produces ready-to-paste field text, and you paste it in the app — the file is the mirror, not the control.
 - **Check freshness before quoting.** The file is written on project mutation plus a flush at app launch, so a field edited in the UI minutes ago may not be on disk yet. Whenever you quote a field, also report that entry's `updatedAt` as a readable date; if it predates a change you know you made, confirm that one field rather than distrusting all of them.
 
@@ -116,7 +118,9 @@ Because the fields are unversioned, the folder needs a record of them:
 
 <!-- harvested: 2026-08-09 from a multi-project maintenance setup -->
 
-Two more instruction fields sit above every project: the **account-wide preferences** (injected into every session, chat and Cowork alike) and the **Cowork-wide instructions** (injected into every Cowork session, on top of the preferences). *Behaviour verified against Cowork as of August 2026 — both fields arrive together in every Cowork session; re-verify after app updates.* Anything duplicated between them is paid for twice in every session and — because neither field is versioned — drifts silently. This is the same asymmetry that drives the rest of this guide, one level up.
+Two more instruction fields sit above every project: the **account-wide preferences** (injected into every session, chat and Cowork alike) and the **Cowork-wide instructions** (injected into every Cowork session, on top of the preferences). *Behaviour verified against Cowork as of September 2026 — both fields arrive together in every Cowork session; re-verify after app updates.* Anything duplicated between them is paid for twice in every session and — because neither field is versioned — drifts silently. This is the same asymmetry that drives the rest of this guide, one level up.
+
+On organisation-managed desktops a third field sits above both: `organizationInstructions`, up to 3,000 characters, appended to the system prompt in Chat, Cowork and Code sessions and set through device management, a local configuration file, or the bootstrap response. It is guidance appended to the prompt rather than an enforced control, so treat it as the top instruction layer and not as a policy mechanism — and count it when you check for duplication, because it is paid for in every session on every surface.
 
 Division of labor that holds up in practice:
 

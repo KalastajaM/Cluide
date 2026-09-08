@@ -152,6 +152,8 @@ description: >
 
 ## Token Cost Quick Reference
 
+These figures were measured before Sonnet 5's tokenizer, which uses roughly 30% more tokens for the same text. Treat them as approximate, and as varying by model.
+
 | File size | Approx. tokens | Notes |
 |---|---|---|
 | 20 lines | ~300 t | CLAUDE.md target |

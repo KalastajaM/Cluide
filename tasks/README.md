@@ -11,7 +11,7 @@ Run one with, for example: `Claude, run tasks/audit-skill.md`.
 - **Structural change** (`reorganize-project`, `relocate-project`, `tune-instruction-layers`): move or rewrite something that other things point at. Each takes a restore point before its apply step and rewires references in the same unit of work.
 - **`analyze-project`**: sweep a whole project against the full guide set and write an improvement plan (criteria in `analyze-project-reference.md`).
 - **`onboard-project`**: set up a new project end-to-end — installs the default layout from `templates/PROJECT_TEMPLATE/`, sets all three instruction layers, offers the optional blocks in `templates/BLOCKS.md`, then orchestrates the remaining setup tasks (ignore hygiene, git, security, MCP).
-- **Framework maintenance** (`harvest-from-projects`, `review-tasks`): keep Cluide itself consistent. These operate on the framework, not on a user project.
+- **Framework maintenance** (`harvest-from-projects`, `review-tasks`, `review-platform-changes`): keep Cluide itself consistent — with its own guides, with your live projects, and with what Anthropic has shipped. These operate on the framework, not on a user project.
 
 ## Standard format
 

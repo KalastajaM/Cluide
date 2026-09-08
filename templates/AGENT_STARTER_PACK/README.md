@@ -47,8 +47,12 @@ Do small subtasks inline; dispatching has overhead.
 
 ## Notes
 
-- **Don't set `CLAUDE_CODE_SUBAGENT_MODEL`** alongside this pack: the environment variable
-  overrides every agent's frontmatter, so it would flatten the tiers you just installed.
+- **Leave `CLAUDE_CODE_SUBAGENT_MODEL_FORCE` unset** alongside this pack: at `1` it ignores the
+  `model` field of every subagent definition, including the built-in Explore and Plan subagents,
+  and Claude can't pass a model when it starts a subagent either — it would flatten the tiers you
+  just installed. `CLAUDE_CODE_SUBAGENT_MODEL` on its own is harmless here: it is only the fallback
+  for agents whose definition sets no model, and every agent in this pack sets one (resolution order:
+  per-invocation model, then the definition's `model`, then the variable, then the session model).
 - The dispatching model can still override any agent's model per invocation; the frontmatter is
   the default, not a cage.
 - "Read-only" on scout and verifier is instruction, not enforcement: both carry Bash for
@@ -59,3 +63,6 @@ Do small subtasks inline; dispatching has overhead.
   the `dispatch` skill; keep the two in sync if you edit either.
 - Frontmatter fields used here (`model`, `effort`, `tools`) are documented at
   [code.claude.com/docs/en/sub-agents](https://code.claude.com/docs/en/sub-agents).
+- Fields this pack doesn't set but that are available on the same page: `background` (keep the agent
+  running in the background), `maxTurns` (a hard turn budget per run), and `experimental.cacheTtl`
+  (`5m` or `1h`, worth setting on an agent you fan out repeatedly).

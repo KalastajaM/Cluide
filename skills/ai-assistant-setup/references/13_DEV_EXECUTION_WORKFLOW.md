@@ -136,12 +136,7 @@ Work through them one at a time. Claude will make the change in the TASK.md once
 
 ### What You Miss Without Claude Code
 
-Without Claude Code, you don't have:
-- **Plan mode** — the plan/approve/execute flow (you can replicate it by asking Claude to "describe what you'll change before making any edits")
-- **Git integration** — rollback, history, pre-run snapshots (recommended even for non-developers: see [Guide 11](./11_GIT_INTEGRATION.md))
-- **Subagents** — parallel exploration and analysis agents
-
-You can work effectively without these, but git in particular is worth setting up — it is the single best protection against "I broke something and don't know what".
+Cowork has plan mode and subagents of its own, so the main thing you give up by staying out of Claude Code is **git integration** — rollback, history, pre-run snapshots ([Guide 11](./11_GIT_INTEGRATION.md)). You can work effectively without it, but it is worth setting up even if you are not a developer: it is the single best protection against "I broke something and don't know what".
 
 ---
 

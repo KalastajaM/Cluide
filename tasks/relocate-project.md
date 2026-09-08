@@ -26,7 +26,7 @@ Confirm all of these before touching anything:
 - The old location is still fully readable, or a complete backup of it is. Never start from a half-copied tree.
 - Every git repository in scope is committed and clean. Check, don't assume.
 - The parent of everything being moved is mounted, plus any project that references it.
-- If the config layer is in scope: the Filesystem MCP server is connected with `~/Library/Application Support/Claude` in its `allowed_directories` — the folder picker refuses that path (Guide 05).
+- If the config layer is in scope: the Filesystem MCP server is connected with `~/Library/Application Support/Claude` in its `allowed_directories` (Guide 05; re-verify after September 2026 — the picker now accepts the Library folder but protects Claude's own data).
 
 ### Why not a sync folder
 

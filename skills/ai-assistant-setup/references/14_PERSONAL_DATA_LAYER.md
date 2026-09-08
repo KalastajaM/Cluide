@@ -19,7 +19,7 @@ This is an advanced guide. The patterns here require writing Python scripts, run
 - You have local files (CSV, JSON) that are too large or raw to paste into Claude directly
 - A task needs computed values (P&L, totals, averages) rather than raw records
 
-**If you just want Claude to remember things about you:** that's [Guide 04 — Memory](./04_MEMORY_AND_PROFILE.md), not this guide.
+**If you just want Claude to remember things about you:** that's [Guide 04 — Memory](./04_MEMORY_AND_PROFILE.md), not this guide. The account memory behind claude.ai and Cowork is the right home for conversational preferences that should follow you across surfaces; profile files remain the home for facts a scheduled task must load deterministically — Guide 04's table compares the layers.
 
 ---
 

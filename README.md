@@ -1,6 +1,6 @@
 # Cluide — The Claude Guide
 
-*Guides last reviewed: August 2026 — the guides are maintained and reviewed as a set, so individual guides no longer carry their own "last reviewed" dates. This line is the single source of truth.*
+*Guides last reviewed: September 2026 — the guides are maintained and reviewed as a set, so individual guides no longer carry their own "last reviewed" dates. This line is the single source of truth.*
 
 > A complete framework for building, running, and improving a persistent Claude assistant.
 > Includes architecture guides, runnable setup tasks, installable skills, and copy-paste templates.
@@ -134,6 +134,7 @@ Tasks are standalone instruction files for setup and auditing. Run them by sayin
 | `tasks/relocate-project.md` | Move a project (or a whole projects root) elsewhere — sweeps the project, scheduled-task, artifact, Claude Code state and app-config layers |
 | `tasks/review-tasks.md` | Cluide maintenance — detect guide changes and flag tasks, skill bundles, and templates that drifted |
 | `tasks/harvest-from-projects.md` | Cluide maintenance — the inverse of `review-tasks.md`: harvest proven patterns from your live projects back into the guides, tasks, templates, and skills |
+| `tasks/review-platform-changes.md` | Cluide maintenance — read what Anthropic shipped since the last sweep (Claude Code, Cowork, claude.ai, API, MCP) and flag the guide claims that are now wrong, stale or unverifiable; run after each model launch or monthly |
 
 ---
 
@@ -153,7 +154,7 @@ The installable skills bundled in `skills/` are listed below. Install only the o
 | `security-review` | Structured security audit of a Claude Code environment and project |
 | `policies-validator` | Tiered company-policy guardrail (T1 block / T2 alert / T3 soft guidance) — ships as a template; fill the Policy Registry before use |
 | `git-guru` | Full-lifecycle git and GitHub management — diagnoses the repo's real state, acts where it safely can, hands over validated commands where it can't (Guide 11 companion) |
-| `dispatch` | Routes delegated work — subagents, workflow stages, scheduled tasks — to the right model tier and effort, with an escalation ladder and per-project overrides (Guide 09 §Model-Aware Dispatch) |
+| `dispatch` | Routes delegated work — subagents, workflow stages, scheduled tasks — to the right model tier and effort, with an escalation ladder and per-project overrides (Guide 09 §Model-Aware Dispatch). Unrelated to Cowork's Dispatch sidebar agent |
 
 ---
 

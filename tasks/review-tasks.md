@@ -8,7 +8,8 @@ Detect which guides have changed since each task was last reviewed, then check w
 
 > **Complementary task:** this keeps the framework in sync when a *guide* changes. Its inverse,
 > `tasks/harvest-from-projects.md`, goes the other way — it harvests proven patterns from your *live
-> projects* back into the guides, tasks, templates, and skills. Run them together as a quarterly
+> projects* back into the guides, tasks, templates, and skills. The third leg, `tasks/review-platform-changes.md`,
+> checks the guides against what Anthropic has shipped. Run the three together as a quarterly
 > health check.
 
 ---
@@ -43,6 +44,7 @@ Detect which guides have changed since each task was last reviewed, then check w
 | `audit-file-hygiene.md` | `11_GIT_INTEGRATION.md`, `24_PROJECT_FOLDER_STRUCTURE.md` |
 | `tune-instruction-layers.md` | `25_PROJECT_INSTRUCTION_LAYERS.md`, `01_CLAUDE_MD.md` |
 | `analyze-project.md` (+ `analyze-project-reference.md`) | All guides (`01`–`30`) — its dimension criteria summarise the full set; review after any guide change |
+| `review-platform-changes.md` | All guides — its Step 4 table names which reference page each guide must agree with; review when a guide gains or loses a platform-facing claim |
 
 ---
 

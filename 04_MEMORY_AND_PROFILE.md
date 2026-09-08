@@ -6,35 +6,37 @@ Without memory, every session starts from zero — you re-explain your situation
 
 ## Which System Should You Use?
 
-### Native Memory vs. `.auto-memory/` vs. Profile Files
+### The four memory layers
 
-Three memory layers are available. Understanding when each applies prevents a common frustration: expecting memory to persist when the system you're relying on doesn't support your use case.
+Four memory layers are available. Understanding when each applies prevents a common frustration: expecting memory to persist when the system you're relying on doesn't support your use case.
 
-**Naming collision warning:** Cluide's `.auto-memory/` folder convention predates and is distinct from Claude Code's native "auto memory" feature. When this guide says "auto-memory" it means the explicit folder pattern below; the native feature is always called "native memory" here.
+**Naming collision warning:** Cluide's `.auto-memory/` folder convention predates and is distinct from Claude Code's built-in "auto memory" feature, and both are distinct again from the cloud memory behind claude.ai and Cowork. When this guide says "auto-memory" it means the explicit folder pattern below; Claude Code's feature is always called "Claude Code auto memory" here, and the cloud store is called "account memory".
 
-| Dimension | Native Claude Memory | `.auto-memory/` folder | Profile files |
-|---|---|---|---|
-| Setup required | None — always active | Create folder + MEMORY.md + one CLAUDE.md line | Create profile folder structure |
-| Where it lives | `~/.claude/projects/[hash]/memory/MEMORY.md` | Your project folder on disk | Your task folder on disk |
-| Survives context reset? | **Yes** — persists across sessions (see the scheduled-tasks caveat below) | **Yes** — read from disk each session | **Yes** — read explicitly each run |
-| Works in scheduled tasks? | **Not reliably** | **Yes** — explicitly loaded | **Yes** — explicitly loaded |
-| Multiple files? | Yes — MEMORY.md index + topic files (only the first 200 lines / 25KB of MEMORY.md auto-load) | Yes — one file per topic | Yes — one file per profile domain |
-| Best for | Chat assistant use, corrections in conversations | Cross-session facts, preferences, projects | Scheduled task agents needing deep context |
+| Dimension | Claude Code auto memory | claude.ai / Cowork memory | `.auto-memory/` folder | Profile files |
+|---|---|---|---|---|
+| Setup required | None — always active | None — on by default on Free/Pro/Max, org-enabled on Team/Enterprise | Create folder + MEMORY.md + one CLAUDE.md line | Create profile folder structure |
+| Where it lives | `~/.claude/projects/<project>/memory/` on the machine you are working on | In your account, in the cloud — one store shared by chat and Cowork since August 2026, plus a per-project store in each Cowork project | Your project folder on disk | Your task folder on disk |
+| Survives context reset? | **Yes** — persists across sessions (see the scheduled-tasks caveat below) | **Yes** — persists across sessions and across surfaces | **Yes** — read from disk each session | **Yes** — read explicitly each run |
+| Works in scheduled tasks? | **Not verified** | **Untested** — a cloud scheduled task is a fresh cloud session; verify before relying on it | **Yes** — explicitly loaded | **Yes** — explicitly loaded |
+| Multiple files? | Yes — MEMORY.md index + topic files (only the first 200 lines / 25KB of MEMORY.md auto-load) | Individual topic entries, readable, editable and deletable under Settings → Memory; sensitive topics excluded unless you turn them on | Yes — one file per topic | Yes — one file per profile domain |
+| Best for | Chat assistant use, corrections in conversations | Conversational preferences and facts that should follow you across chat and Cowork | Cross-session facts, preferences, projects | Scheduled task agents needing deep context |
 
-**Critical rule for scheduled tasks: always use `.auto-memory/` or profile files, not native memory.** Native memory is designed for interactive sessions and is not reliably available to autonomous task runs. A task that depends on native memory may work some runs and forget everything on others.
+**Critical rule for scheduled tasks: always use `.auto-memory/` or profile files, not Claude Code auto memory or account memory.** Neither is verified to be available to autonomous task runs — the documentation neither promises it nor rules it out, and no test has settled it. The rule is deliberately conservative pending that test: a task that depends on memory it cannot prove loads may work some runs and forget everything on others.
 
-**If you are just getting started:** let native memory handle your conversational use. Add `.auto-memory/` when you want structured, reliable memory. Add profile files only when a scheduled task needs them — after auto-memory is already in place.
+**If you are just getting started:** let Claude Code auto memory and account memory handle your conversational use. Add `.auto-memory/` when you want structured, reliable memory. Add profile files only when a scheduled task needs them — after auto-memory is already in place.
 
-The systems coexist without conflict: native memory for interactive chat, `.auto-memory/` for tasks and projects.
+The systems coexist without conflict: the built-in layers for interactive chat, `.auto-memory/` for tasks and projects.
 
-### Native Memory as of June 2026
+### Claude Code auto memory as of September 2026
 
 *These are version-specific product details — verify against current Claude Code docs before relying on them.*
 
-Native memory has grown up. Claude Code now auto-summarizes and indexes conversations and recalls relevant memories autonomously — its structure (a `MEMORY.md` index plus topic files) now mirrors the pattern this guide describes. Two things to know:
+Claude Code keeps its own auto memory per project, in `~/.claude/projects/<project>/memory/` — the project is derived from the git repository, so worktrees share one memory directory. It stores four kinds of note, tagged with a `type` field (`user`, `feedback`, `project`, `reference`), in the same shape this guide describes below: a `MEMORY.md` index plus topic files. Four things to know:
 
-- **Only the first 200 lines / 25KB of the native MEMORY.md auto-load** into a session. This externally validates the rule this guide already enforces: keep the index compact, push detail into topic files. Inspect what native memory holds with the `/memory` command.
-- **You can redirect native memory into your project.** The `autoMemoryEnabled` and `autoMemoryDirectory` settings let you point native memory at a folder inside your project, where it's on disk, git-trackable, and readable by scheduled tasks. For interactive use this can replace part of the custom `.auto-memory/` machinery below — treat it as an alternative, not a replacement: the explicit `.auto-memory/` pattern remains the reliable choice for scheduled tasks, and the save/update discipline in this guide applies to both.
+- **Only the first 200 lines of `MEMORY.md`, or the first 25KB, whichever comes first, load at the start of every conversation**; topic files load on demand. This externally validates the rule this guide already enforces: keep the index compact, push detail into topic files. Browse and toggle what it holds with the `/memory` command. Claude records a `modified` timestamp in each file's frontmatter (v2.1.214 and later).
+- **It is machine-local.** Auto memory is not shared across machines or cloud environments — a fact recorded on your laptop is not there in a cloud session.
+- **Subagents don't inherit it.** The main conversation's auto memory isn't loaded into subagents; the exception is a fork, which inherits the parent conversation. A subagent gets memory of its own only when its definition sets the `memory` field (scopes: user, project, local).
+- **You can redirect it into your project.** The `autoMemoryEnabled` and `autoMemoryDirectory` settings (an absolute or `~/` path, settable in any settings scope) let you point it at a folder inside your project, where it's on disk, git-trackable, and readable by scheduled tasks; `CLAUDE_CODE_DISABLE_AUTO_MEMORY=1` turns it off entirely. For interactive use this can replace part of the custom `.auto-memory/` machinery below — treat it as an alternative, not a replacement: the explicit `.auto-memory/` pattern remains the reliable choice for scheduled tasks, and the save/update discipline in this guide applies to both.
 
 **Note:** This guide covers memory *about you* — your preferences, projects, and working style. If you want to build a knowledge base *about a subject domain* (research, threat intelligence, competitive analysis), that's a different system: see [Guide 15 — LLM Wiki](./15_LLM_WIKI.md).
 

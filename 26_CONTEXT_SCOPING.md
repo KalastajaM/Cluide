@@ -34,13 +34,15 @@ Three levers, and they are not interchangeable. Each hides something different a
 | Lever | Hides | Still leaks | Cost |
 |---|---|---|---|
 | **Fresh session** (`/clear`, new chat) | Everything said earlier in the conversation | CLAUDE.md, project instructions, memory, the whole folder | No token cost; you lose the working state. |
-| **Subagent** (Agent tool) | Nothing by default — see below | CLAUDE.md, project instructions, folder read access, whatever you put in the brief | One agent's tokens. Returns whatever its brief asks for. |
+| **Subagent** (Agent tool) | Nothing by default — see below | CLAUDE.md, project instructions, folder read access, whatever you put in the brief. A `fork`-type subagent also inherits the entire conversation and the parent's auto memory. | One agent's tokens. Returns whatever its brief asks for. |
 | **Staged copy** (artefact alone in a scratch directory) | Every project file, because they are not there to read | Nothing on the filesystem side. CLAUDE.md still loads. | A copy step. The only lever that is enforced rather than requested. |
 | **Saved prompt file** | The reasoning, negotiation, and dead ends that produced the instruction | Only what you wrote into the prompt | A design session up front. Reusable after. |
 
 ### The subagent trap
 
 A subagent is **not blind by default.** It inherits CLAUDE.md and project instructions, and it can read every file in the folder. "Delegate this to a subagent for fresh eyes" gets you nothing on its own — you have handed the same context to a different instance. There is a second leak channel on the human side: a brief written *after* you have stated your own view carries that view into the subagent, which then arrives uninformed about the project and perfectly informed about your opinion. [Guide 27](./27_INDEPENDENT_JUDGMENT.md) covers it.
+
+There is now a third channel, and it is the worst of them. One subagent type — `fork` — inherits the entire conversation so far and the parent's auto memory, which is exactly what a blind pass must not have; in Claude Code interactive sessions fork mode is **on by default**, so an unpinned "delegate this for fresh eyes" may hand the reviewer everything you just said. A blind pass has to pin a non-fork subagent type: a named agent definition, or the general-purpose type with an explicit brief. Say which type you want when you ask for the pass, and check the type in the run.
 
 Blindness has to be constructed. The brief needs an explicit deny-list naming what is off limits:
 

@@ -115,9 +115,9 @@ Covers: the anatomy of a SKILL.md file, writing descriptions that trigger reliab
 ### [04 — Memory & Profile](./04_MEMORY_AND_PROFILE.md)
 `[All users]` · `~15 min`
 
-*Three persistence layers: native memory, auto-memory, and profile files.*
+*Four persistence layers: Claude Code auto memory, the account memory behind claude.ai and Cowork, `.auto-memory/`, and profile files.*
 
-Covers: native Claude memory (built-in, zero setup) vs. the `.auto-memory/` folder system (structured, project-specific), profile files for complex recurring agents, what to store, how to keep files lean, and the hypothesis system.
+Covers: the two built-in memories — Claude Code auto memory (machine-local) and the cloud account memory shared by chat and Cowork since August 2026 — vs. the `.auto-memory/` folder system (structured, project-specific), profile files for complex recurring agents, what to store, how to keep files lean, and the hypothesis system.
 
 **Use this when:** you want Claude to remember things across sessions — your preferences, corrections, ongoing projects, and key contacts.
 
@@ -139,7 +139,7 @@ Covers: what MCP servers are, global vs. project-level configuration, the most u
 
 *How to design and optimize scheduled tasks for minimal token consumption.*
 
-Covers: splitting instruction files, scripting fixed-format output, targeted file edits, two-pass triage for external data, hard size limits, run deduplication, and the two scheduling mechanisms (Cowork's scheduled-tasks feature — set up by asking in natural language — vs. SessionStart hooks).
+Covers: splitting instruction files, scripting fixed-format output, targeted file edits, two-pass triage for external data, hard size limits, run deduplication, and the four scheduling mechanisms (Cowork's scheduled-tasks feature — set up by asking in natural language — Claude Code Routines, session-scoped `/loop`, and SessionStart hooks).
 
 **Use this when:** you have a scheduled task running regularly and want to audit it for efficiency — or want to set one up correctly from the start.
 
@@ -168,7 +168,7 @@ Covers: what to learn and how to store it, detecting feedback signals, the apply
 
 *Coordinating multiple tasks: dependencies, shared state, and data passing — plus model-aware dispatch of delegated work.*
 
-Covers: sequential chains, shared state, dependency graphs, data handoff between tasks, scheduling orchestrated runs, avoiding implicit coupling, and model-aware dispatch — routing subagents and workflow stages across model tiers, the escalation ladder, verification economics, and per-project routing overrides (packaged as the `dispatch` skill).
+Covers: sequential chains, shared state, dependency graphs, data handoff between tasks, scheduling orchestrated runs, avoiding implicit coupling, and model-aware dispatch — routing subagents and workflow stages across model tiers, the escalation ladder, verification economics, and per-project routing overrides (packaged as the `dispatch` skill) — plus the newer orchestration surfaces (background subagents, forks, cross-session messaging) and how Cowork's unrelated Dispatch agent differs.
 
 **Use this when:** you have multiple scheduled tasks that need to share data, run in a specific order, or produce a combined output — or when sessions delegate work to subagents and you want the model tier per subtask chosen deliberately.
 
@@ -505,7 +505,7 @@ Tasks are designed to be portable: copy any task file to another project's `task
 | `tasks/audit-claude-md.md` | Review `CLAUDE.md` — dead rules, missing sections, over-length | 01, 16 |
 | `tasks/audit-task-efficiency.md` | Token efficiency checklist for any task file | 06 |
 | `tasks/audit-cost.md` | Audit a task's token economics — file budgets, model tier, run metrics | 10 |
-| `tasks/audit-memory.md` | Check memory for staleness, duplicates, misplaced content — across all three layers (native, `.auto-memory/`, profile files) | 04 |
+| `tasks/audit-memory.md` | Check memory for staleness, duplicates, misplaced content — across the three on-disk layers (Claude Code auto memory, `.auto-memory/`, profile files), with a check for untested reliance on the cloud account memory | 04 |
 | `tasks/audit-skill.md` | Review a `SKILL.md` — trigger quality, workflow, output format, edge cases, `allowed-tools` enforcement | 03, 02 |
 | `tasks/audit-file-hygiene.md` | Sweep actual clutter: OS junk, lock/temp files, duplicate families, superseded outputs, and trees that are gitignored but still loading as context | 11, 24 |
 | `tasks/analyze-project.md` | Whole-project sweep of *another* Claude project (local or GitHub) against the full guide set → writes a `CLUIDE_IMPROVEMENT_PLAN.md` into it; read-only, plan-only (criteria in `analyze-project-reference.md`) | All (01–30) |
@@ -518,6 +518,7 @@ Tasks are designed to be portable: copy any task file to another project's `task
 |------|-------------|
 | `tasks/review-tasks.md` | Detect guide updates and flag tasks that need syncing; also checks bundled reference copies, the IMPROVEMENTS template, and guide-set coverage for drift — run after editing any guide |
 | `tasks/harvest-from-projects.md` | The inverse of `review-tasks.md` — scan your live Claude projects and propose folding their proven, generalized patterns back into the guides, tasks, templates, and skills |
+| `tasks/review-platform-changes.md` | The outward leg — read what Anthropic shipped since the last sweep (Claude Code, Cowork, claude.ai, API, MCP), re-check every dated or hedged claim in the guides, and report what is wrong, stale or unverifiable; run after each model launch or monthly |
 
 ---
 
@@ -680,7 +681,7 @@ Enforcement layer for company policies — AI use policy, Code of Conduct, data 
 
 ### dispatch
 
-Routes delegated work — subagents, workflow stages, scheduled tasks — to the right model tier and effort level. Carries the routing table by task archetype, the escalation ladder (dispatch cheap, verify, re-dispatch one tier up on failure), verification-scope rules, fan-out sizing, and the per-project Dispatch Overrides convention. The policy behind Guide 09 §Model-Aware Dispatch; pairs with the AGENT_STARTER_PACK template in Claude Code.
+Routes delegated work — subagents, workflow stages, scheduled tasks — to the right model tier and effort level. Carries the routing table by task archetype, the escalation ladder (dispatch cheap, verify, re-dispatch one tier up on failure), verification-scope rules, fan-out sizing, and the per-project Dispatch Overrides convention. The policy behind Guide 09 §Model-Aware Dispatch; pairs with the AGENT_STARTER_PACK template in Claude Code. Not Cowork's Dispatch sidebar agent, which runs background tasks and has nothing to do with model routing.
 
 **Install:** Copy `dispatch/` to `~/.claude/skills/` (Claude Code), or zip the folder as `dispatch.zip` and upload it to Claude.ai Personal Skills. Then add the always-loaded hook line to each delegating project's instructions (see Guide 09 §Model-Aware Dispatch — policy skills need it to load alongside playbook skills).
 
