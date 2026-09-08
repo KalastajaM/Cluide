@@ -114,8 +114,8 @@ Present the report and **stop**. Ask which units to apply.
 ### Step 6 — Apply with approval
 
 For each approved unit: branch from `main`, apply the edits, mirror every changed guide byte-identically
-into `skills/ai-assistant-setup/references/` (the bundled `00_INDEX.md` takes the same patch with links
-stripped per `review-tasks.md` step 4a), run `review-tasks.md` step 4c, and re-stamp every touched
+into every `skills/*/references/` copy that carries it (the bundled `00_INDEX.md` takes the same patch
+with links stripped per `review-tasks.md` step 4a), run `review-tasks.md` steps 4a and 4c, and re-stamp every touched
 "as of" marker with the sweep month. Put the boundary for the next run into the commit subject:
 
 ```
