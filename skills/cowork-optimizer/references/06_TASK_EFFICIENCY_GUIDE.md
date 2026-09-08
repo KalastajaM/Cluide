@@ -216,13 +216,13 @@ Use this to roughly estimate per-run cost and identify the highest-leverage impr
 
 ## How Scheduled Tasks Are Triggered
 
-Two mechanisms exist. Choose based on how autonomous the task needs to be.
+Four mechanisms exist. Choose based on how autonomous the task needs to be.
 
 ---
 
 ### Option A: Cowork Scheduled Tasks (recommended for production tasks)
 
-Cowork's scheduled tasks are a built-in feature: they run on a schedule **independently of any open Claude session** — no session needed, no manual trigger. This is the proper approach for daily digests, automated monitoring tasks, and anything that should run reliably on a fixed schedule.
+Cowork's scheduled tasks are a built-in feature: they run on a schedule **independently of any open Claude session** — no session needed, no manual trigger. Since July 2026 they run cloud-side, so they fire even with your computer asleep — except a task that needs local files or apps, which still runs on your computer and needs it awake. When the model is unreachable a run is retried automatically after 5, 15 and 30 minutes. The task form also carries a 1M-context model row for tasks that need one. This is the proper approach for daily digests, automated monitoring tasks, and anything that should run reliably on a fixed schedule.
 
 **To set up a scheduled task, just ask Claude in natural language:**
 > "Run this task every weekday at 7am."
@@ -233,7 +233,19 @@ This approach avoids the main problem with SessionStart hooks: tasks running mul
 
 ---
 
-### Option B: SessionStart Hooks (simpler, for session-triggered automation)
+### Option B: Claude Code Routines (cloud, for repo-attached automation)
+
+Routines are Claude Code's own cloud scheduled tasks, set up on the web. They run on Anthropic's infrastructure with no local machine involved, and can be triggered by a schedule, a GitHub event, or an API call. The minimum interval is one hour. Reach for these when the work belongs to a repository rather than to a Cowork project — a nightly check on a branch, a response to a pull request.
+
+---
+
+### Option C: `/loop` (session-scoped, for work you are watching)
+
+`/loop` sets up a recurring task inside the current CLI session: `/loop 5m <prompt>` for a fixed interval, `/loop <prompt>` to let Claude pace itself, `/loop` alone for the built-in maintenance prompt (replaceable via `.claude/loop.md`). It dies with the session, so it is the wrong tool for a daily digest and the right one for "keep checking this while I work".
+
+---
+
+### Option D: SessionStart Hooks (simpler, for session-triggered automation)
 
 Hooks are shell commands that fire automatically in response to Claude Code events. Configure them in `~/.claude/settings.json` (global) or `.claude/settings.json` (project-level).
 
@@ -260,9 +272,14 @@ Hooks are shell commands that fire automatically in response to Claude Code even
 **Other hook events:**
 - **PreToolUse** — fires before a tool runs. Useful for validation or logging. Unlike CLAUDE.md instructions (guidance Claude can overlook), a PreToolUse hook is an enforcement layer — it can hard-block a tool call.
 - **PostToolUse** — fires after a tool completes. Useful for follow-up actions (e.g., after a file write, trigger a view regeneration).
+- **PostToolUseFailure** — fires when a tool call fails. Useful for logging what actually breaks in autonomous runs.
 - **UserPromptSubmit** — fires when a prompt is submitted, before Claude processes it. Useful for injecting context or validating input.
-- **Stop** — fires when Claude ends a response.
+- **Stop** — fires when Claude ends a response. A Stop hook can return `additionalContext`, which pushes text back into the session rather than only blocking or logging.
+- **SubagentStart / SubagentStop** — fire around each delegated subagent. Useful for tracking fan-out cost and for logging what workers returned.
 - **SessionEnd** — fires when a session closes. Useful for cleanup or end-of-session logging.
+- **Setup** — fires for `claude -p --init` and `--maintenance` runs, which is where scheduled and headless work starts.
+- **InstructionsLoaded** — fires once the instruction files are in. It logs which files loaded and why, which is the fastest way to answer "did my CLAUDE.md actually load?" ([Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md)).
+- **PreModelSwitch / PostModelSwitch** — fire around a model change within a session.
 - **PreCompact** — fires before context compaction. Useful for saving state that would otherwise be summarized away.
 - **Notification** — fires when Claude sends a notification.
 

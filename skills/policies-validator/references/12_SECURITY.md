@@ -109,13 +109,17 @@ Mitigations:
 
 Claude Code offers several controls over what Claude can do without your approval.
 
-**Permission modes** (Shift+Tab cycles default → acceptEdits → plan in Claude Code; exact mode names and the set available vary by version):
-- **default** — Claude asks before edits and commands not covered by your allow rules.
+**Permission modes** in Claude Code — which one you start in depends on your plan:
+- **Manual** (`default`, alias `manual`) — Claude asks before edits and before any command not covered by your allow rules. This is the mode that asks about everything.
+- **auto** — the built-in starting mode on Pro, Max and Team since August 2026. A classifier reviews each action that edits a file, runs a command or reaches the network, instead of prompting you; it blocks destructive git commands, `rm -rf`, transcript tampering and cloud-metadata access. You see the denials, listed under "Recently denied" in `/permissions`. The `autoMode` settings hold your own allow and deny rules for the classifier, including hard denies it cannot override, and `disableAutoMode: "disable"` removes the mode for an organisation. One trap: `permissions.defaultMode: "auto"` has no effect in a project's `.claude/settings.json` or `settings.local.json` — set it in `~/.claude/settings.json` or in managed settings.
 - **acceptEdits** — file edits are auto-approved; commands still prompt.
 - **plan** — Claude proposes a plan; nothing is written or executed until you approve. Use for reviewing changes to important files.
-- **bypassPermissions** — all permission checks are skipped. Not in the Shift+Tab cycle: it requires an explicit flag or setting to enable. Appropriate only for trusted, well-tested tasks in isolated environments.
+- **dontAsk** — no prompts and no classifier. Meant for CI and unattended runs, not for a session you are sitting in front of.
+- **bypassPermissions** — every permission check is skipped. Appropriate only for trusted, well-tested tasks in isolated environments such as a container.
 
-Do not live in `bypassPermissions` — it disables every permission prompt. (Note: `bypassPermissionsMode` is not a settings key; the related setting is `disableBypassPermissionsMode`, which prevents the mode from being used at all.) Cowork is separate: it has its own per-folder and per-app permission prompts and is not governed by these CLI modes.
+Shift+Tab cycles between them: from auto it moves to Manual first, then Manual → acceptEdits → plan and back. `dontAsk` is never in the cycle, and `bypassPermissions` joins it only if the session was started with `--permission-mode bypassPermissions` or `--dangerously-skip-permissions`.
+
+Do not live in `bypassPermissions` — it disables every permission prompt. (Note: `bypassPermissionsMode` is not a settings key; the related setting is `permissions.disableBypassPermissionsMode`, which prevents the mode from being used at all.) Cowork is separate: it has its own per-folder and per-app permission prompts and is not governed by these CLI modes.
 
 **PreToolUse hooks — execution guards:**
 
@@ -211,7 +215,7 @@ When Claude installs software on your behalf, that software runs code on your ma
 
 The `security-review` skill (Phase 3) installs Socket CLI and pip-audit, and extends the PreToolUse hook to scan npm installs automatically.
 
-Three related points worth knowing: Claude Code ships sandboxing features that isolate command execution where available — enable them where your platform supports them (see the current Claude Code docs). The `--dangerously-skip-permissions` flag disables the permission layer entirely and should never be used with autonomous tasks. And a cloned repository's `.mcp.json` is a supply-chain vector in its own right — auto-approving its servers means running someone else's code with your privileges, so review the file before trusting it.
+A few related points worth knowing: Claude Code ships sandboxing features that isolate command execution where available — enable them where your platform supports them (see the current Claude Code docs). The `--dangerously-skip-permissions` flag disables the permission layer entirely and should never be used with autonomous tasks; `--restricted` goes the other way, removing the built-in command and code-execution tools and WebFetch for locked-down environments, and `--permission-prompts none` is the right flag for a headless run where nobody is there to answer a prompt. On Enterprise plans, third-party skills and plugins are scanned for malicious content before install (August 2026) — useful, but not a substitute for reading what you install. And a cloned repository's `.mcp.json` is a supply-chain vector in its own right — auto-approving its servers means running someone else's code with your privileges, so review the file before trusting it.
 
 ---
 
@@ -236,7 +240,7 @@ When Claude reads external content — emails, calendar events, web pages, files
 
 **Running Claude in the browser is the sharpest version of this.** A browser session sees arbitrary page content and carries your connectors at the same time, which is precisely the reading-and-acting combination the mitigations above exist to keep apart. Anthropic's countermeasure is a verification step ahead of consequential actions such as submitting a form or downloading a file: a separate check that the action matches what you actually asked for. Its stated limit is worth taking literally rather than paraphrasing — the measures "meaningfully reduce the risk" but "cannot eliminate it."
 
-Treat auto mode, which lets a browser session act without approving each step, as a per-site decision rather than a global default. It earns its keep on a documentation site or an internal dashboard you are extracting from, where the worst case is a wasted run. It does not belong on banking, tax, or anything holding legal or identity records, where the worst case is an action you cannot take back. The general rule from this section still governs: if the session can act, assume the page is trying to make it act.
+Acting without approving each step is now the default in Claude in Chrome: autonomous multi-step actions are on, with a safety classifier checking each action first. Treat that as a per-site decision rather than a global default — grant browser access per website, and for sensitive sites switch back to approving each action, which is a setting you can turn on. Autonomy earns its keep on a documentation site or an internal dashboard you are extracting from, where the worst case is a wasted run. It does not belong on banking, tax, or anything holding legal or identity records, where the worst case is an action you cannot take back. The general rule from this section still governs: if the session can act, assume the page is trying to make it act.
 
 ---
 
@@ -306,6 +310,8 @@ output/
   }
 }
 ```
+
+Deny rules are the one layer that holds in every mode, `bypassPermissions` included, which is what makes them the right place for the handful of paths and commands that must never be touched. They can also pin a tool's inputs rather than just its name — `Tool(param:value)` matching means a rule like `Agent(model:opus)` denies one model of subagent while leaving the rest alone. And `permissions.blockReadsOutsideWorkingDirectories` stops reads escaping the directories the session was started in.
 
 **Bash-path caveat:** a deny rule on the Read tool does not by itself block `cat .env` or `python -c "open('.env')"` through the Bash tool — coverage of Bash-mediated file access is version-dependent. Pair Read deny rules with Bash deny rules (e.g. `"Bash(cat .env*)"`) and/or the PreToolUse guard from this guide. The combination — not deny rules alone — is the enforced posture.
 
