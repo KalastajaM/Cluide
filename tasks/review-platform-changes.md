@@ -87,13 +87,14 @@ against the guide that carries it:
 |----------------|--------------------------|
 | Pricing table, model lineup, default model per plan | `10`, `16`, `17`, `tasks/audit-cost.md`, `CHEATSHEET.md` |
 | Permission modes and settings keys | `12`, `20`, `tasks/setup-security.md`, `skills/security-review/` |
-| Hook events | `06`, `11`, `12` |
+| Hook events | `06`, `11`, `12`, `31` |
 | SKILL.md frontmatter fields | `03`, `tasks/audit-skill.md`, `tasks/setup-skill.md` |
 | Subagent frontmatter fields, fork mode, concurrency | `09`, `26`, `27`, `skills/dispatch/`, `templates/AGENT_STARTER_PACK/` |
-| Memory (auto memory, account memory, project memory) | `04`, `14`, `17`, `tasks/audit-memory.md`, `tasks/setup-memory.md` |
+| Memory (auto memory, account memory, project memory) | `04`, `14`, `17`, `33`, `tasks/audit-memory.md`, `tasks/setup-memory.md`, `tasks/retire-project.md` |
 | `claude mcp` subcommands, result limits, MCP spec status | `05`, `15`, `tasks/setup-mcp.md` |
 | Cowork project fields, scheduled tasks, folder access | `25`, `06`, `tasks/tune-instruction-layers.md`, `tasks/relocate-project.md` |
 | Artifacts, Claude in Chrome | `19`, `05`, `12`, `22` |
+| Print mode flags (`claude -p`), `claude plugin eval` availability and case format, `/skill-doctor` | `31`, `tasks/setup-behaviour-tests.md` |
 
 ### Step 5 — Findings report
 

@@ -44,6 +44,9 @@ This folder contains a complete operational framework for building, running, and
 | `28_SECOND_BRAIN.md` | Personal knowledge layer — capture and inbox discipline, the four homes, distillation, index-first retrieval, weekly review |
 | `29_SPEC_BEFORE_REBUILD.md` | Specifying a grown artefact before rebuilding it — compensating-machinery triggers, normative specs with divergence markers, the old version as acceptance oracle, prevention over detection |
 | `30_CONTROLLED_DOCUMENTS.md` | Documents with owners and approvals — tracked-change review with comments, no silent edits, acceptance as a human act, filename/state separation, one authored register with generated views, tracker merge safety |
+| `31_BEHAVIOUR_TESTS.md` | Behaviour tests — cases as prompt plus checkable graders, negative trigger neighbours, fixtures not live data, three runners, when to run the suite, sorting a failure into model / accretion / marginal / platform |
+| `32_ACTION_AUTHORITY.md` | Action authority — four classes by consequence, standing approvals with scope and expiry, the proposal contract, outbox and action log for unattended runs, structural enforcement before prose |
+| `33_RETIRING_AND_LEAVING.md` | Retiring and leaving — the inventory of everything still pointing at a project, ownership transfer before archive, the freeze, registrations deleted not disabled, the account / folder / machine layer table for a departure |
 
 When the user asks a question or makes a request that a guide covers, read the relevant guide before responding.
 
