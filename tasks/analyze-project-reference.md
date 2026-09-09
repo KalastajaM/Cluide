@@ -197,6 +197,7 @@ These guides carry no dimension by design. Listed here so the guide-set coverage
 | `00_INDEX.md` | Index of this repo, not a standard to audit against |
 | `08_SELFIMPROVE_TEMPLATE.md` | Pointer stub — its content merged into Guide 07 Part 9, which dimension 6 scores. The number is retained as a stable address |
 | `17_TROUBLESHOOTING.md` | Diagnostic reference consulted when a check fails; nothing to score |
+| `34_IMPORTING_FROM_OTHER_ASSISTANTS.md` | One-time onboarding motion, not a property of a target project; what it produces is scored by the dimensions of the homes it routes to |
 
 ---
 

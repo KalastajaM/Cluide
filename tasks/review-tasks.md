@@ -46,7 +46,7 @@ Detect which guides have changed since each task was last reviewed, then check w
 | `setup-behaviour-tests.md` | `31_BEHAVIOUR_TESTS.md` (see also `27_INDEPENDENT_JUDGMENT.md`, `26_CONTEXT_SCOPING.md`) |
 | `setup-action-authority.md` | `32_ACTION_AUTHORITY.md`, `12_SECURITY.md` (§8 and the security-properties table), `07_TASK_LEARNING_GUIDE.md` (Part 3) |
 | `retire-project.md` | `33_RETIRING_AND_LEAVING.md`, `23_MULTI_PROJECT_SETUPS.md`, `24_PROJECT_FOLDER_STRUCTURE.md` |
-| `analyze-project.md` (+ `analyze-project-reference.md`) | All guides (`01`–`33`) — its dimension criteria summarise the full set; review after any guide change |
+| `analyze-project.md` (+ `analyze-project-reference.md`) | All guides (`01`–`34`) — its dimension criteria summarise the full set; review after any guide change |
 | `review-platform-changes.md` | All guides — its Step 4 table names which reference page each guide must agree with; review when a guide gains or loses a platform-facing claim |
 
 ---

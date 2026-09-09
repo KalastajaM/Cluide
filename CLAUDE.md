@@ -47,6 +47,7 @@ This folder contains a complete operational framework for building, running, and
 | `31_BEHAVIOUR_TESTS.md` | Behaviour tests — cases as prompt plus checkable graders, negative trigger neighbours, fixtures not live data, three runners, when to run the suite, sorting a failure into model / accretion / marginal / platform |
 | `32_ACTION_AUTHORITY.md` | Action authority — four classes by consequence, standing approvals with scope and expiry, the proposal contract, outbox and action log for unattended runs, structural enforcement before prose |
 | `33_RETIRING_AND_LEAVING.md` | Retiring and leaving — the inventory of everything still pointing at a project, ownership transfer before archive, the freeze, registrations deleted not disabled, the account / folder / machine layer table for a departure |
+| `34_IMPORTING_FROM_OTHER_ASSISTANTS.md` | Importing from other assistants — the self-export prompt (ask the assistant, not the product), the category-to-home routing table, the export as data, additive and never destructive, the import as the audit, confirm before writing; no vendor steps by rule |
 
 When the user asks a question or makes a request that a guide covers, read the relevant guide before responding.
 
