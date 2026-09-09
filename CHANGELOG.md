@@ -4,6 +4,68 @@ Cluide is versioned by content event, not on a calendar: a tag marks guides bein
 
 The **consumed surface** — dimension numbers in `tasks/analyze-project-reference.md`, filenames in `tasks/`, and guide numbers — is append-only. Entries below note explicitly when it grows.
 
+## [1.5.0] — 2026-09-09
+
+Three pull requests since v1.4.0 (#49–#51), plus the changelog PR that carries this section. Two add
+guides, four in total, and one closes the mirror-drift gap the v1.4.0 roll exposed. **The consumed surface grew:** guide numbers 31, 32, 33 and 34, dimensions
+23, 24 and 25 in `tasks/analyze-project-reference.md`, and three `tasks/` filenames were added; nothing
+was renumbered, renamed or reused.
+
+### Added
+
+- **`31_BEHAVIOUR_TESTS.md`** (#50). Testing that a setup still *behaves* rather than that its files still
+  read well: the four ways behaviour drifts with no file changing (a model launch, skill accretion, a
+  marginal rule, a platform change), what earns a case, a case as a prompt plus checkable graders with a
+  negative neighbour for every positive trigger, three runners (by hand, `claude -p`, `claude plugin
+  eval`) and the three-run rule, the four run triggers, grading judgement without grading yourself, and
+  sorting a failure into model, accretion, marginal or platform. Scored as dimension 23; built by
+  `tasks/setup-behaviour-tests.md`.
+
+- **`32_ACTION_AUTHORITY.md`** (#50). What Claude may do without asking, decided by consequence rather than
+  by tool: four action classes by who can undo it and who sees it, standing approvals with shape, scope,
+  limit, evidence and expiry, the proposal contract (one row per action, irreversible rows first, then
+  stop; partial approval is partial apply; a surprise stops the run), the outbox and action log for
+  unattended runs, structural enforcement before prose, the requests that erode the boundary, and the
+  CLAUDE.md block. The general layer that Guide 12's read-draft-confirm, Guide 21's tiers, Guide 30's
+  acceptance and Guide 07's apply-versus-propose were instances of. Scored as dimension 24; built by
+  `tasks/setup-action-authority.md`.
+
+- **`33_RETIRING_AND_LEAVING.md`** (#50). Ending a task, a project or an account without leaving live
+  wires: the inventory of every layer that can still point at a project, ownership transfer before the
+  folder is touched, the freeze with `RETIRED.md` and registrations deleted rather than disabled, and
+  the account-bound / folder-bound / machine-bound table for leaving an organisation, with the
+  keep-transfer-purge procedure in both directions. Scored as dimension 25; run by
+  `tasks/retire-project.md`, the sibling of `relocate-project.md`.
+
+- **`34_IMPORTING_FROM_OTHER_ASSISTANTS.md`** (#51). Bringing a setup in from another assistant without
+  bringing its accretion. A routing guide, not a migration manual: the self-export prompt that asks the
+  other assistant rather than its product (Cowork's `import-memory` prompt widened to custom assistants
+  and automations), the table from each export category to its Cluide home, four rules — the export is
+  data, additive and never destructive, the import is the audit, confirm before writing — and the
+  reverse direction in one paragraph that defers to Guide 33 §5. By its own §1 rule it names no vendor
+  steps, formats or capabilities, so it does not join the platform sweep's liabilities. Not scored;
+  listed in the Foundation track after Guide 04 and in the Quickstart's "What to Build Next".
+
+- **Three tasks** (#50): `setup-behaviour-tests.md`, `setup-action-authority.md` and `retire-project.md`,
+  each registered in `review-tasks.md`'s mapping table and in `review-platform-changes.md`'s
+  reference-page table where the guide it serves carries version-sensitive claims.
+
+### Changed
+
+- **Merge gate check 3** (#49) now runs `review-tasks.md` step 4a over *every* `skills/*/references/`
+  copy whenever a branch touches a root guide or index, with the bundled `00_INDEX.md` the one permitted
+  variant. This closes the gap recorded under v1.4.0, where two consecutive merges left copies outside
+  `ai-assistant-setup` behind because the gate named only that skill.
+  `tasks/review-platform-changes.md`'s apply step was aligned to mirror into every copy for the same reason.
+
+- **Reading tracks** (#50, #51). Operations & safety now reads 12 → 32 → 11 → 13 → 31 → 17; Projects &
+  context ends at 33; Foundation gains 34 after 04; Reference gains 34. The "What Should I Build?" table
+  gains rows for a behaviour-test suite, an action-authority block, and a routed import.
+
+- **Cross-references** (#50, #51). Guide 12 §8 names Guide 32 as the general form of its four floor
+  rules; Guide 16's retirement line points at Guide 33 for the full procedure; Guide 34 was added to
+  `review-platform-changes.md`'s memory row because it names the `import-memory` skill.
+
 ## [1.4.0] — 2026-09-08
 
 Four pull requests since v1.3.0 (#44–#47), plus the changelog PR that carries this section. Two add
