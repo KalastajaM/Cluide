@@ -89,6 +89,7 @@ Cluide is AI-assisted work — openly and deliberately. The patterns, lessons, a
 | 31 | [Behaviour Tests](./31_BEHAVIOUR_TESTS.md) | All users | Checking the setup still does what you built: the four ways behaviour drifts with no file changing, cases as a prompt plus checkable graders, three runners and the three-run rule, when to run the suite, and what a failure means |
 | 32 | [Action Authority](./32_ACTION_AUTHORITY.md) | All users | What Claude may do without asking, classified by consequence rather than tool: four classes, standing approvals with scope and expiry, the proposal contract, the outbox and action log for unattended runs, and structural enforcement first |
 | 33 | [Retiring and Leaving](./33_RETIRING_AND_LEAVING.md) | Power users | Ending a task, a project or an account without live wires: the inventory of everything that still points at it, ownership transfer before archive, the freeze, and which layers of a setup were ever yours to take |
+| 34 | [Importing From Other Assistants](./34_IMPORTING_FROM_OTHER_ASSISTANTS.md) | New users | Bringing a setup in from another assistant: ask the assistant to export itself, route each category to its Cluide home, treat the export as data and as a specification to triage rather than a file to copy, and the one-paragraph reverse direction |
 
 **Recommended order:** Quickstart → 01 → 02 → **20** → 03 → 04 → 05 → (06–10 once you have scheduled tasks running). The guide numbers are stable addresses, not a reading order — see the [Reading Tracks in 00_INDEX.md](./00_INDEX.md#reading-tracks) for per-goal paths, or follow [Guide 18](./18_END_TO_END_WALKTHROUGH.md) for a guided path through all stages.
 
@@ -186,7 +187,7 @@ The copy-paste starting points in `templates/`:
 /
 ├── 00_INDEX.md               # Full annotated guide index
 ├── 00_QUICKSTART.md          # Start here if you're new
-├── 01_CLAUDE_MD.md – 33_RETIRING_AND_LEAVING.md
+├── 01_CLAUDE_MD.md – 34_IMPORTING_FROM_OTHER_ASSISTANTS.md
 ├── CHEATSHEET.md             # One-page quick reference
 ├── tasks/                    # Setup and audit task files
 ├── skills/                   # Bundled installable skills
