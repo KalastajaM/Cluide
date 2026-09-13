@@ -64,7 +64,7 @@ grep -rIn -e "<old-root>" -e "<old-root-with-~>" -e "<old-root-url-encoded>" \
   --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=dist <scope>
 ```
 
-Sweep three layers. The second and third are outside the projects and are the ones a naive grep misses:
+Sweep five layers. The last four are outside the projects and are the ones a naive grep misses:
 
 | Layer | Where | Why it breaks |
 |---|---|---|

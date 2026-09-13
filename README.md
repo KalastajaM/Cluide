@@ -7,6 +7,10 @@
 
 *Written for Claude Code and Cowork with current Claude models (Haiku, Sonnet, Opus, Fable); the core concepts are model-agnostic.*
 
+## Working on Cluide with either platform
+
+This repository now has shared contributor instructions in [AGENTS.md](./AGENTS.md), a Claude entry point in [CLAUDE.md](./CLAUDE.md), and [setup instructions for Claude, ChatGPT, and Codex](./PLATFORM_SETUP.md). The guide content below remains Claude-focused pending its dual-platform content review. Repository readiness does not yet mean every bundled task, skill, or template supports both platforms.
+
 ---
 
 ## What This Is

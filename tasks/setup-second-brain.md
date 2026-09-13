@@ -93,7 +93,7 @@ State plainly what a return leg must not capture: routine work, in-progress stat
 
 ## Output
 
-A created or repaired notes root with the five homes and an `index.md`; a capture convention written where capture happens; where notes were migrated, a list of what moved, what was flagged as contradictory, and what was routed elsewhere; and either a scheduled review task or an agreed manual cadence.
+A created or repaired notes root with the four homes, an inbox, and an `index.md`; a capture convention written where capture happens; where notes were migrated, a list of what moved, what was flagged as contradictory, and what was routed elsewhere; and either a scheduled review task or an agreed manual cadence.
 
 ## Constraints
 
