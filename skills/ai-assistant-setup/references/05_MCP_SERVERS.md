@@ -242,6 +242,14 @@ Claude enumerates connected servers and their tools. Use this when writing skill
 
 ---
 
+## Deferred Tools
+
+A session connected to many MCP servers may list some tools by name only, with no parameter schema attached — the tool is "deferred" until its schema is explicitly loaded. This is progressive tool discovery: rather than injecting every connected server’s full tool definitions into context up front (expensive, and it dilutes attention at scale), the host defers less-likely-needed tools and loads a schema only when Claude asks for it — typically via a search/lookup tool in the same list (naming varies by surface; Claude Code and Cowork currently call it `ToolSearch`). Calling a deferred tool directly, before its schema is loaded, fails.
+
+If a tool you need appears in a list but calling it errors or is refused, look for a lookup tool alongside it and use it to load the schema first — batch every tool you expect to need into one lookup call rather than one per tool, since each call is a round trip.
+
+---
+
 ## Credentials and Security
 
 MCP server credentials (API keys, OAuth tokens) live in the MCP config file (`claude_desktop_config.json` for Cowork local servers, `.mcp.json` or `~/.claude.json` for Claude Code) or in environment variables. Rules:

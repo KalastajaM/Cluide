@@ -151,8 +151,9 @@ Guardrails are cheap on day 1 and painful to retrofit. Before the app has any re
 - **Secret handling.** If the app ever calls an external API, decide where the key lives (env var, local file outside the repo) and write that in CLAUDE.md. Never let the first version hardcode a key "temporarily".
 - **Input validation at the boundary.** Any data read from disk, URL, or user input gets validated once at the boundary. Claude will follow this if it is stated; it will not invent it unprompted.
 - **Data backup.** If the app writes to local files that matter to you, decide a backup strategy (git commit of the data, periodic copy) before the first real entry goes in.
+- **API version awareness.** If the app calls the Anthropic Messages API directly, write in CLAUDE.md that this is a post-prefill, adaptive-thinking API: assistant message prefilling and manual `budget_tokens` thinking both return a 400 error on Claude Sonnet 4.6 and later, including Sonnet 5; use structured outputs or a system-prompt instruction instead of prefill, and `output_config.effort` instead of a token budget. Without this line Claude may write code against the older pattern from training.
 
-Four lines in CLAUDE.md. Five minutes on day 1. Many hours not spent later.
+Five lines in CLAUDE.md. Five minutes on day 1. Many hours not spent later.
 
 ---
 
