@@ -94,6 +94,7 @@ Cluide is AI-assisted work — openly and deliberately. The patterns, lessons, a
 | 32 | [Action Authority](./32_ACTION_AUTHORITY.md) | All users | What Claude may do without asking, classified by consequence rather than tool: four classes, standing approvals with scope and expiry, the proposal contract, the outbox and action log for unattended runs, and structural enforcement first |
 | 33 | [Retiring and Leaving](./33_RETIRING_AND_LEAVING.md) | Power users | Ending a task, a project or an account without live wires: the inventory of everything that still points at it, ownership transfer before archive, the freeze, and which layers of a setup were ever yours to take |
 | 34 | [Importing From Other Assistants](./34_IMPORTING_FROM_OTHER_ASSISTANTS.md) | New users | Bringing a setup in from another assistant: ask the assistant to export itself, route each category to its Cluide home, treat the export as data and as a specification to triage rather than a file to copy, and the one-paragraph reverse direction |
+| 35 | [Dual-Platform Projects](./35_DUAL_PLATFORM_PROJECTS.md) | Power users | Running one project from Claude and ChatGPT or Codex: one shared policy with thin native adapters, capability gaps recorded rather than translated, platform-local memory and one scheduler owner per job, and a fresh-session check on each surface |
 
 **Recommended order:** Quickstart → 01 → 02 → **20** → 03 → 04 → 05 → (06–10 once you have scheduled tasks running). The guide numbers are stable addresses, not a reading order — see the [Reading Tracks in 00_INDEX.md](./00_INDEX.md#reading-tracks) for per-goal paths, or follow [Guide 18](./18_END_TO_END_WALKTHROUGH.md) for a guided path through all stages.
 
@@ -128,6 +129,7 @@ Tasks are standalone instruction files for setup and auditing. Run them by sayin
 | `tasks/tune-instruction-layers.md` | Review all three instruction layers — the app-side description and instructions fields plus `CLAUDE.md` |
 | `tasks/setup-behaviour-tests.md` | Build a `tests/behaviour/` suite — prompt-plus-grader cases, a hand-run baseline, and the `CLAUDE.md` block that ties rule edits to a test run |
 | `tasks/setup-action-authority.md` | Classify every action a project's tasks and skills can take, install the action-authority block, propose standing approvals from logged evidence only |
+| `tasks/setup-dual-platform.md` | Make a project usable from Claude and ChatGPT/Codex — shared `AGENTS.md`, thin `CLAUDE.md` adapter, per-surface setup and ready-to-paste app text, fresh-session check on each surface |
 
 ### Audit & maintenance tasks
 
@@ -191,7 +193,7 @@ The copy-paste starting points in `templates/`:
 /
 ├── 00_INDEX.md               # Full annotated guide index
 ├── 00_QUICKSTART.md          # Start here if you're new
-├── 01_CLAUDE_MD.md – 34_IMPORTING_FROM_OTHER_ASSISTANTS.md
+├── 01_CLAUDE_MD.md – 35_DUAL_PLATFORM_PROJECTS.md
 ├── CHEATSHEET.md             # One-page quick reference
 ├── tasks/                    # Setup and audit task files
 ├── skills/                   # Bundled installable skills

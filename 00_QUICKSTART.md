@@ -185,6 +185,7 @@ You now have the foundation. Here is the natural next step for each direction:
 |---|---|
 | Make the assistant smarter about who you are | [Guide 04 — Memory & Profile](./04_MEMORY_AND_PROFILE.md) |
 | Bring your setup over from another assistant | [Guide 34 — Importing From Other Assistants](./34_IMPORTING_FROM_OTHER_ASSISTANTS.md) |
+| Use the same project from ChatGPT or Codex as well | [Guide 35 — Dual-Platform Projects](./35_DUAL_PLATFORM_PROJECTS.md) |
 | Build skills for email, calendar, and Teams | [Guide 05 — MCP Servers](./05_MCP_SERVERS.md) |
 | Create more skills (better descriptions, edge cases) | [Guide 03 — Skills](./03_SKILLS.md) |
 | Make the assistant learn from each task run | [Guide 07 — Task Self-Improvement](./07_TASK_LEARNING_GUIDE.md) |
