@@ -4,6 +4,76 @@ Cluide is versioned by content event, not on a calendar: a tag marks guides bein
 
 The **consumed surface** — dimension numbers in `tasks/analyze-project-reference.md`, filenames in `tasks/`, and guide numbers — is append-only. Entries below note explicitly when it grows.
 
+## [1.6.0] — 2026-09-13
+
+Three pull requests since v1.5.0 (#53–#55), plus the changelog PR that carries this section:
+
+- #55 adds a guide and the task that applies it.
+- #54 gives the repository shared instructions for Claude and ChatGPT or Codex.
+- #53 adds two version-sensitive notes.
+
+**The consumed surface grew:** guide number 35, dimension 26 in `tasks/analyze-project-reference.md`, and
+one `tasks/` filename were added; nothing was renumbered, renamed or reused.
+
+### Added
+
+- **`35_DUAL_PLATFORM_PROJECTS.md`** (#55). Running one project from Claude and from ChatGPT or Codex through
+  a single shared policy, without pretending one product's mechanisms exist in the other:
+  - coexistence rather than migration;
+  - when a second platform is worth its running cost;
+  - four homes for every rule and file (shared policy, native adapter, platform-specific rules,
+    platform-local state);
+  - a shared `AGENTS.md` with a thin `CLAUDE.md` that imports it and carries a read fallback;
+  - app-side instructions and uploaded-source copies on each platform, mirrored per platform;
+  - capability gaps recorded as verified, no counterpart or untested, never produced by path conversion;
+  - native memory kept local, one scheduler owner per recurring job, one writer or separate branches,
+    and a handoff record;
+  - a fresh-session check on each surface.
+
+  Every product-specific fact sits in one dated table (§9), sourced from official documentation on
+  2026-09-13. Four of its rows carry *re-verify* markers, and the Codex import row is labelled as an
+  inference. Scored as dimension 26 (N/A for projects used only from Claude surfaces); built by
+  `tasks/setup-dual-platform.md`.
+
+- **`tasks/setup-dual-platform.md`** (#55). Applies Guide 35 to a project, in seven steps:
+  1. Choose the surfaces and verify the platform facts against official sources.
+  2. Inventory everything that binds the project to one platform.
+  3. Sort each rule into one home, and list capability gaps, scheduler owners and concurrent writers.
+  4. Present a plan with ready-to-paste app-side text, and stop for approval.
+  5. Take a restore point, then apply.
+  6. Verify on disk, then in a fresh session on each surface, recorded as verified, failed or untested.
+  7. Update the field mirrors once the user has pasted the text.
+
+- **Shared repository instructions** (#54). `AGENTS.md` is now the canonical repository policy: the guide
+  map, file hygiene, platform and dispatch boundaries, branching and releases, and app-side fields. Root
+  `CLAUDE.md` is a thin adapter that imports it, with a read fallback, and `PLATFORM_SETUP.md` covers
+  working on Cluide from Codex, Claude Code, a ChatGPT project and conversational Claude. This is
+  repository readiness only: the README states that the guide content is still Claude-focused pending its
+  dual-platform content review, and no task, skill or template is claimed to be portable yet.
+
+### Changed
+
+- **Reading tracks and entry points** (#55). Projects & context now reads 24 → 25 → 35 → 23 → …; the "What
+  Should I Build?" table and the Quickstart's "What to Build Next" each gain a dual-platform row.
+
+- **Audit and maintenance wiring** (#55). `analyze-project-reference.md` gains a dual-platform detection
+  row, recorded as a secondary shape and distinct from Claude Code plus Cowork. `review-platform-changes.md`
+  Step 4 gains a row for `CLAUDE.md` locations and imports, and states that the OpenAI rows in Guide 35 §9
+  fall outside its fixed Anthropic source list.
+
+- **Cross-references** (#55). Guide 34 links Guide 35 from its companion list and its §1 scope rule. Its
+  routing row for other coding agents' instruction files now says to keep such a file as the shared policy
+  if that agent will keep working on the project.
+
+- **Guide 05 and Guide 22** (#53). Guide 05 gains a *Deferred Tools* subsection on progressive tool
+  discovery: tools listed without a schema until one is loaded, loaded in a single batched lookup. Guide
+  22's early-hardening list gains an API version-awareness bullet. On Claude Sonnet 4.6 and later,
+  including Sonnet 5, assistant prefill and manual `budget_tokens` thinking return a 400 error; use
+  structured outputs or a system-prompt instruction, and `output_config.effort` (verified 2026-09-13).
+
+- **Count corrections** (#54). `tasks/relocate-project.md` sweeps five layers, not three, and
+  `tasks/setup-second-brain.md`'s output names four homes plus an inbox, not five homes.
+
 ## [1.5.0] — 2026-09-09
 
 Three pull requests since v1.4.0 (#49–#51), plus the changelog PR that carries this section. Two add
