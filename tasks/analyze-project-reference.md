@@ -18,6 +18,7 @@ Classify the target from what's present. The shape decides which dimensions appl
 | Both of the above | **Hybrid** (built in Claude Code, run in Cowork — the Guide 13 split) |
 | A single small app + `CLAUDE.md` with a helper index / domain invariant, tight permission allowlist | **Helper-app** (Guide 22) |
 | `Knowledge/` or a wiki structure with an `INDEX.md` + sources + schema | **Knowledge-base / wiki** (Guide 15) |
+| `AGENTS.md` beside `CLAUDE.md`, a Claude adapter that imports a shared policy file, or a setup page naming ChatGPT or Codex surfaces | **Dual-platform** (Guide 35) — a secondary shape; not the same as Claude Code plus Cowork |
 
 A project can be more than one shape. Record the primary shape plus any secondary one — both affect
 applicability (e.g. a hybrid that's also a knowledge base gets the wiki dimension too).
@@ -186,6 +187,20 @@ outside a single-project audit. Judge only what is visible from inside the targe
   public remote for an archived project, and a grant scoped to a project with no live task. **N/A** for a
   project with no dormant components and no dormant siblings.
 
+### 26. Platform coexistence — guide 35 → `setup-dual-platform`
+- **Healthy (only if the project is used from a Claude surface and an OpenAI surface):** one shared policy
+  file, which each platform's native entry point adapts rather than restates; product-specific facts in the
+  project carry a source and a date; every mechanism the project relies on that exists on only one platform
+  is listed with its verified counterpart, or marked as having none; each recurring job has one owning
+  platform; native memory, credentials and registrations stay platform-local; each supported surface has a
+  recorded fresh-session check.
+- **Checks:** look for a rule stated in both `CLAUDE.md` and `AGENTS.md` (or stated differently in each), a
+  Claude adapter with no import or read fallback for the shared file, a mirror of `.claude/` produced by path
+  conversion, a prose rule silently standing in for an enforcement mechanism the other platform lacks, the
+  same scheduled job registered on both platforms, an uploaded-source copy older than the repository, and a
+  surface described as supported with no check recorded. **N/A** for a project used only from Claude
+  surfaces (Claude Code plus Cowork included). Record the absence of other-platform files as the evidence.
+
 ### Guides not scored
 
 These guides carry no dimension by design. Listed here so the guide-set coverage check in
@@ -228,7 +243,7 @@ priority sections; keep findings concrete and evidence-backed.
 ```markdown
 # Cluide Improvement Plan — <project name>
 
-> Generated <YYYY-MM-DD> · Project type: <Claude Code | Cowork | hybrid> · Analyzed against Cluide (full guide set)
+> Generated <YYYY-MM-DD> · Project type: <Claude Code | Cowork | hybrid>[, dual-platform] · Analyzed against Cluide (full guide set)
 > This is a proposal, not a change. Review it, then run the tasks named under "How to implement".
 
 ## Summary

@@ -90,11 +90,15 @@ against the guide that carries it:
 | Hook events | `06`, `11`, `12`, `31` |
 | SKILL.md frontmatter fields | `03`, `tasks/audit-skill.md`, `tasks/setup-skill.md` |
 | Subagent frontmatter fields, fork mode, concurrency | `09`, `26`, `27`, `skills/dispatch/`, `templates/AGENT_STARTER_PACK/` |
-| Memory (auto memory, account memory, project memory, the `import-memory` skill) | `04`, `14`, `17`, `33`, `34`, `tasks/audit-memory.md`, `tasks/setup-memory.md`, `tasks/retire-project.md` |
+| Memory (auto memory, account memory, project memory, the `import-memory` skill) | `04`, `14`, `17`, `33`, `34`, `35`, `tasks/audit-memory.md`, `tasks/setup-memory.md`, `tasks/retire-project.md` |
 | `claude mcp` subcommands, result limits, MCP spec status | `05`, `15`, `tasks/setup-mcp.md` |
 | Cowork project fields, scheduled tasks, folder access | `25`, `06`, `tasks/tune-instruction-layers.md`, `tasks/relocate-project.md` |
 | Artifacts, Claude in Chrome | `19`, `05`, `12`, `22` |
 | Print mode flags (`claude -p`), `claude plugin eval` availability and case format, `/skill-doctor` | `31`, `tasks/setup-behaviour-tests.md` |
+| `CLAUDE.md` locations, imports and the loaded-files view | `01`, `25`, `35`, `tasks/setup-dual-platform.md` |
+
+Guide 35 §9 also carries OpenAI facts. They fall outside this task's fixed source list, so re-check them
+against the OpenAI page each row cites. A row not re-checked is a C finding, never a silent pass.
 
 ### Step 5 — Findings report
 

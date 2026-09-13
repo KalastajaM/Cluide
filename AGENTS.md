@@ -48,6 +48,7 @@ Cluide is being extended from a Claude guide into a guide for Claude and ChatGPT
 | `32_ACTION_AUTHORITY.md` | Action authority — four classes by consequence, standing approvals with scope and expiry, the proposal contract, outbox and action log for unattended runs, structural enforcement before prose |
 | `33_RETIRING_AND_LEAVING.md` | Retiring and leaving — the inventory of everything still pointing at a project, ownership transfer before archive, the freeze, registrations deleted not disabled, the account / folder / machine layer table for a departure |
 | `34_IMPORTING_FROM_OTHER_ASSISTANTS.md` | Importing from other assistants — the self-export prompt (ask the assistant, not the product), the category-to-home routing table, the export as data, additive and never destructive, the import as the audit, confirm before writing; no vendor steps by rule |
+| `35_DUAL_PLATFORM_PROJECTS.md` | Dual-platform projects — one shared policy with thin native adapters, four homes for rules and state, capability gaps as verified / none / untested, one scheduler owner per job, a fresh-session check per surface, product facts in one dated table |
 
 When the user asks a question or makes a request that a guide covers, read the relevant guide before responding.
 
