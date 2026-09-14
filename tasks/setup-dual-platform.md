@@ -3,7 +3,7 @@
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
 > `Assistant, run tasks/setup-dual-platform.md`
 > The steps are written so Codex can run them from the same folder; that path has not yet been tested end to end.
-> **Source guides:** `35_DUAL_PLATFORM_PROJECTS.md` (the model this task installs), `25_PROJECT_INSTRUCTION_LAYERS.md` (layers and field mirrors), `01_CLAUDE_MD.md` (the adapter body), `24_PROJECT_FOLDER_STRUCTURE.md` (where shared and platform-local files live), `11_GIT_INTEGRATION.md` (branches, worktrees and handoffs). See also `09_MULTI_TASK_ORCHESTRATION.md` for single-owner shared state and `34_IMPORTING_FROM_OTHER_ASSISTANTS.md` for moving native memory. Worked example: Cluide's own `AGENTS.md`, `CLAUDE.md` and `PLATFORM_SETUP.md`.
+> **Source guides:** `35_DUAL_PLATFORM_PROJECTS.md` (the model this task installs), `25_PROJECT_INSTRUCTION_LAYERS.md` (layers and field mirrors), `01_PROJECT_INSTRUCTIONS.md` (the adapter body), `24_PROJECT_FOLDER_STRUCTURE.md` (where shared and platform-local files live), `11_GIT_INTEGRATION.md` (branches, worktrees and handoffs). See also `09_MULTI_TASK_ORCHESTRATION.md` for single-owner shared state and `34_IMPORTING_FROM_OTHER_ASSISTANTS.md` for moving native memory. Worked example: Cluide's own `AGENTS.md`, `CLAUDE.md` and `PLATFORM_SETUP.md`.
 
 ## Runtime route
 

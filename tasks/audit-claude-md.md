@@ -2,7 +2,7 @@
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
 > `Assistant, run tasks/audit-claude-md.md`
-> **Source guides:** `01_CLAUDE_MD.md`, `16_BEST_PRACTICES.md`
+> **Source guides:** `01_PROJECT_INSTRUCTIONS.md`, `16_BEST_PRACTICES.md`
 
 ## Runtime route
 

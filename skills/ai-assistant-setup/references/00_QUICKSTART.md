@@ -115,7 +115,7 @@ For a weekly planner, record a stable job ID such as `weekly-plan`, one schedule
 
 | If you want to… | Read next |
 |---|---|
-| Improve standing instructions | [01 — Project Instructions](./01_CLAUDE_MD.md) |
+| Improve standing instructions | [01 — Project Instructions](./01_PROJECT_INSTRUCTIONS.md) |
 | Install the workflow as a native skill | [03 — Skills](./03_SKILLS.md) |
 | Keep shared knowledge between sessions | [04 — Memory & Profile](./04_MEMORY_AND_PROFILE.md) |
 | Connect email or calendar tools | [05 — MCP Servers](./05_MCP_SERVERS.md) |

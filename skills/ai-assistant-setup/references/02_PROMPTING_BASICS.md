@@ -2,7 +2,7 @@
 
 > Clear instructions improve either assistant's output, alongside source quality, model capability and tool access. This guide applies to shared `AGENTS.md` policy, Claude's `CLAUDE.md`, ChatGPT project instructions, skills, tasks and chat messages. Test the intended result on each surface; the same wording does not guarantee the same behaviour.
 
-> **Companion guides:** [Guide 01 — CLAUDE.md](./01_CLAUDE_MD.md) for applying these principles to your standing instructions. [Guide 03 — Skills](./03_SKILLS.md) for skill descriptions and trigger phrases. [Guide 26 — Context Scoping](./26_CONTEXT_SCOPING.md) for the layer above this one: deciding what a session should be allowed to see, and having Claude build a high-stakes prompt for you rather than writing it yourself. [Guide 27 — Independent Judgment](./27_INDEPENDENT_JUDGMENT.md) covers a failure that better instructions can make worse: a precisely specified prompt that tells Claude what you already think will return your own view, well formatted.
+> **Companion guides:** [Guide 01 — Project Instructions](./01_PROJECT_INSTRUCTIONS.md) for applying these principles to your standing instructions. [Guide 03 — Skills](./03_SKILLS.md) for skill descriptions and trigger phrases. [Guide 26 — Context Scoping](./26_CONTEXT_SCOPING.md) for the layer above this one: deciding what a session should be allowed to see, and having Claude build a high-stakes prompt for you rather than writing it yourself. [Guide 27 — Independent Judgment](./27_INDEPENDENT_JUDGMENT.md) covers a failure that better instructions can make worse: a precisely specified prompt that tells Claude what you already think will return your own view, well formatted.
 
 > **Giving this guide to an assistant:**
 > "Read 02_PROMPTING_BASICS.md and help me improve my [CLAUDE.md / SKILL.md / task instructions]. Read the file I want to improve and apply the principles from the guide."
@@ -53,7 +53,7 @@ The structural half of context engineering has a name: **progressive disclosure*
 |---|---|---|
 | Skill ([03](./03_SKILLS.md)) | the `description` | `SKILL.md`, then `references/` |
 | Scheduled task ([06](./06_TASK_EFFICIENCY_GUIDE.md)) | `TASK.md` | `TASK_REFERENCE.md`, `LESSONS.md` |
-| Project ([24](./24_PROJECT_FOLDER_STRUCTURE.md)) | `CLAUDE.md` | `CLAUDE_REFERENCE.md` ([01](./01_CLAUDE_MD.md)), then the files it points at |
+| Project ([24](./24_PROJECT_FOLDER_STRUCTURE.md)) | Shared `AGENTS.md` policy | `PROJECT_REFERENCE.md` ([01](./01_PROJECT_INSTRUCTIONS.md)), then the files it points at |
 | Notes ([28](./28_SECOND_BRAIN.md)) | `index.md` | the individual notes |
 | Data ([14](./14_PERSONAL_DATA_LAYER.md)) | a feeder script's compact output | the raw source, never directly |
 

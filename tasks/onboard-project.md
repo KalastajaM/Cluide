@@ -2,7 +2,7 @@
 
 > **Cluide task** — run this to set up a new project end-to-end:
 > `Assistant, run tasks/onboard-project.md`
-> **Source guides:** `01_CLAUDE_MD.md`, `04_MEMORY_AND_PROFILE.md`, `05_MCP_SERVERS.md`, `11_GIT_INTEGRATION.md`, `12_SECURITY.md`, `24_PROJECT_FOLDER_STRUCTURE.md`, `25_PROJECT_INSTRUCTION_LAYERS.md`
+> **Source guides:** `01_PROJECT_INSTRUCTIONS.md`, `04_MEMORY_AND_PROFILE.md`, `05_MCP_SERVERS.md`, `11_GIT_INTEGRATION.md`, `12_SECURITY.md`, `24_PROJECT_FOLDER_STRUCTURE.md`, `25_PROJECT_INSTRUCTION_LAYERS.md`
 
 ## Runtime route
 

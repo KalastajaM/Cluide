@@ -204,7 +204,7 @@ Claude will check these conditions before declaring the task complete.
 
 ## CLAUDE.md Structural Tips
 
-These tips extend [Guide 01](./01_CLAUDE_MD.md) with structural features that affect how instructions load and get used.
+These tips extend [Guide 01](./01_PROJECT_INSTRUCTIONS.md) with structural features that affect how instructions load and get used.
 
 ### `@` imports for modular CLAUDE.md files
 
@@ -239,7 +239,7 @@ A long CLAUDE.md file causes instructions to be ignored. The more rules you add,
 - Remove rules that describe Claude's default behaviour (they're redundant)
 - Merge rules that say the same thing
 
-Aim for [Guide 01](./01_CLAUDE_MD.md)'s canonical target: under 30 lines. "Takes under two minutes to read" is the same rule of thumb stated differently.
+Aim for [Guide 01](./01_PROJECT_INSTRUCTIONS.md)'s canonical target: under 30 lines. "Takes under two minutes to read" is the same rule of thumb stated differently.
 
 ### Emphasis markers
 

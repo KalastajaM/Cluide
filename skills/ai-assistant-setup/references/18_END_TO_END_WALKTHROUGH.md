@@ -12,7 +12,7 @@ Every Cluide guide plays a role in this walkthrough. Here is the full set, in th
 
 | Stage | Guides used |
 |---|---|
-| Foundation | [01 — CLAUDE.md](./01_CLAUDE_MD.md), [02 — Prompting Basics](./02_PROMPTING_BASICS.md) |
+| Foundation | [01 — CLAUDE.md](./01_PROJECT_INSTRUCTIONS.md), [02 — Prompting Basics](./02_PROMPTING_BASICS.md) |
 | First Skill | [03 — Skills](./03_SKILLS.md), [05 — MCP Servers](./05_MCP_SERVERS.md) |
 | Memory | [04 — Memory & Profile](./04_MEMORY_AND_PROFILE.md) |
 | First Scheduled Task | [06 — Task Efficiency](./06_TASK_EFFICIENCY_GUIDE.md), [07 — Task Self-Improvement](./07_TASK_LEARNING_GUIDE.md) (incl. Part 9: the template) |
@@ -45,12 +45,12 @@ The stages below develop this starter. Claude-only paths are labelled; choose th
 
 **What you are building:** The shared operating contract and its native entry point: `AGENTS.md`, with `CLAUDE.md` as the Claude adapter or project instructions for source-only use.
 
-**Read first:** [Guide 01](./01_CLAUDE_MD.md) (10 min), then [Guide 02](./02_PROMPTING_BASICS.md) (15 min).
+**Read first:** [Guide 01](./01_PROJECT_INSTRUCTIONS.md) (10 min), then [Guide 02](./02_PROMPTING_BASICS.md) (15 min).
 
 **Action — create the shared policy and native entry point:**
 
 ```
-"Read 01_CLAUDE_MD.md and help me write the shared policy for my chosen surface.
+"Read 01_PROJECT_INSTRUCTIONS.md and help me write the shared policy for my chosen surface.
 Create AGENTS.md and the appropriate adapter or project bootstrap. Ask only for
 identity, timezone, style and action rules that are not already known."
 ```
@@ -61,7 +61,7 @@ Or run the setup task directly:
 "Run tasks/setup-claude-md.md"
 ```
 
-The assistant establishes your identity, timezone, communication preferences and standing rules. Keep the personal policy compact ([Guide 01](./01_CLAUDE_MD.md)); the selected route above determines its entry point. Use root `AGENTS.md` for the shared starter.
+The assistant establishes your identity, timezone, communication preferences and standing rules. Keep the personal policy compact ([Guide 01](./01_PROJECT_INSTRUCTIONS.md)); the selected route above determines its entry point. Use root `AGENTS.md` for the shared starter.
 
 **What the result looks like:** A short file with sections for identity, communication style, and standing rules. Every line changes the intended behaviour — no filler.
 

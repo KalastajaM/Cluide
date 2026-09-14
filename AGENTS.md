@@ -14,7 +14,7 @@ Cluide covers Claude and ChatGPT, including Codex for repository work. This fold
 
 | Guide | Topic |
 |---|---|
-| `01_CLAUDE_MD.md` | Writing effective CLAUDE.md files |
+| `01_PROJECT_INSTRUCTIONS.md` | Writing shared project instructions and native adapters |
 | `02_PROMPTING_BASICS.md` | Writing instructions that produce consistent output |
 | `03_SKILLS.md` | Designing skills |
 | `04_MEMORY_AND_PROFILE.md` | Memory and profile files |

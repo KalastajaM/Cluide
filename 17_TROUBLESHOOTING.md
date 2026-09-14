@@ -105,7 +105,7 @@ It must be at the root of the project or at `.claude/CLAUDE.md`. Not inside a ne
 **2. The instruction is too vague**
 "Be concise" means different things in different contexts. "Keep responses to 5 bullet points or fewer unless I ask for detail" is specific enough to follow consistently.
 
-*Fix:* Rewrite vague rules as concrete, testable statements. See [Guide 01](./01_CLAUDE_MD.md) for examples.
+*Fix:* Rewrite vague rules as concrete, testable statements. See [Guide 01](./01_PROJECT_INSTRUCTIONS.md) for examples.
 
 **3. The instruction conflicts with another instruction**
 If CLAUDE.md says "be brief" but your SKILL.md says "include full detail", the more specific instruction (skill) wins. This is correct behavior but can feel like CLAUDE.md is being ignored.

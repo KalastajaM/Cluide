@@ -9,7 +9,7 @@
 
 | You want to... | Build | Guide |
 |---|---|---|
-| An assistant follows standing rules | Shared policy + native entry point | [01](./01_CLAUDE_MD.md) |
+| An assistant follows standing rules | Shared policy + native entry point | [01](./01_PROJECT_INSTRUCTIONS.md) |
 | Run the same task repeatedly when you ask | Skill | [03](./03_SKILLS.md) |
 | Run something automatically on a schedule | Scheduled Task | [18 Stage 4](./18_END_TO_END_WALKTHROUGH.md) + `tasks/setup-scheduled-task.md` |
 | An assistant retains context between sessions | Memory | [04](./04_MEMORY_AND_PROFILE.md) |
@@ -194,7 +194,7 @@ shared/
 ## Useful Prompts for Either Assistant
 
 **Set up project instructions:**
-> "Read 01_CLAUDE_MD.md and help me write shared project instructions and the native entry points I need. Ask me what you need to know."
+> "Read 01_PROJECT_INSTRUCTIONS.md and help me write shared project instructions and the native entry points I need. Ask me what you need to know."
 
 **Create a new skill:**
 > "Read 03_SKILLS.md and create a skill for [what you want]. Follow the guide's best practices."
