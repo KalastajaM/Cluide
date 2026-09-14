@@ -1,8 +1,18 @@
 # Task: Audit Memory
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Claude, run tasks/audit-memory.md`
+> `Assistant, run tasks/audit-memory.md`
 > **Source guide:** `04_MEMORY_AND_PROFILE.md`
+
+## Runtime route
+
+Name the target surface and available tools before running steps. Claude-only policy lives in `CLAUDE.md`; Codex uses `AGENTS.md`; dual-platform shares `AGENTS.md` through a thin Claude adapter. References below to editing project rules mean that selected policy, not duplicated adapters. ChatGPT source projects use project instructions and dated sources; without write access, return replacement artifacts and record refresh as pending.
+
+Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
+
+## Native implementation
+
+Inventory shared file memory/profile files, each surface's exposed native memory, and ChatGPT project-source revisions separately. A missing Claude native-memory path is N/A on OpenAI. Apply size/freshness/duplication checks to the relevant layer; do not infer native-memory contents from repository files. Validate explicit state loading in scheduled runs and record inaccessible native memory as unverified. Check one writer or branch isolation for shared state, and verify source refresh/recall separately on each supported surface.
 
 ## Purpose
 Review the project's memory for stale entries, missing index pointers, duplicates, and entries that belong in `CLAUDE.md` instead. Keeps memory lean and current so it stays useful as sessions accumulate.
@@ -15,11 +25,11 @@ Target: index under 30 entries, each memory file under ~10 lines, no entries old
 
 ## Instructions
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+> **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
 ### Step 1 — Find which layers are in use
 
-Check all three before concluding anything is missing:
+Check all applicable layers before concluding anything is missing. Use the shared folder/profile checks below with a filesystem; inspect ChatGPT/native memory through exposed controls or operator-provided evidence. The Layer 2 shell commands are **Claude Code only**.
 
 ```bash
 # Layer 1 — .auto-memory/ folder (the explicit pattern)
@@ -34,9 +44,9 @@ grep -rs "autoMemoryDirectory\|autoMemoryEnabled" .claude/settings.json ~/.claud
 ls Profile/PROFILE_SUMMARY.md */PROFILE_SUMMARY.md 2>/dev/null
 ```
 
-- **No layer found anywhere:** say "No memory system found. Run `tasks/setup-memory.md` to create one." Stop here.
-- **Any layer found:** read its index and topic files and audit it. Never report "no memory system" on the absence of `.auto-memory/` alone — native memory is on by default and holds the same kind of content.
-- **Native memory redirected into the project** (`autoMemoryDirectory` set): audit it as a folder like any other, and note that it is git-trackable and readable by scheduled tasks in that configuration.
+- **No layer found after all applicable layers were inspected** (unread native memory is unverified, not absent): say "No memory system found. Run `tasks/setup-memory.md` to create one." Stop here.
+- **Any layer found:** read its index and topic files and audit it. Never report "no memory system" on the absence of `.auto-memory/` alone — native-memory availability and defaults depend on the actual surface.
+- **Claude Code native memory redirected into the project** (`autoMemoryDirectory` set): audit it as a folder like any other, and note that it is git-trackable and readable by scheduled tasks in that configuration.
 
 Report:
 ```
@@ -54,7 +64,7 @@ Run every check against each layer found in Step 1.
 
 Count entries in `MEMORY.md`. Target: ≤ 30 entries.
 - Over 30: flag which entries are lowest-value candidates for consolidation or removal.
-- For native memory specifically, there is a hard reason for the limit: only the first 200 lines / 25KB of `MEMORY.md` auto-load into a session. Anything past that is invisible. If the index exceeds it, flag as HIGH — those entries are not merely low-value, they are silently not loading.
+- For Claude Code file-native memory only, re-check the current documented loader limit before scoring. The historical limit used here is: only the first 200 lines / 25KB of `MEMORY.md` auto-load into a session. Anything past that is invisible. If the index exceeds it, flag as HIGH — those entries are not merely low-value, they are silently not loading.
 
 #### Check 2: Orphaned files
 

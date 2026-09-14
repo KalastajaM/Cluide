@@ -1,10 +1,10 @@
 # Prompting Basics: Writing Instructions That Work
 
-> The quality of Claude's output is determined almost entirely by the quality of the instructions it receives. This guide is about writing better instructions — whether in CLAUDE.md, a skill, a task, or a chat message.
+> Clear instructions improve either assistant's output, alongside source quality, model capability and tool access. This guide applies to shared `AGENTS.md` policy, Claude's `CLAUDE.md`, ChatGPT project instructions, skills, tasks and chat messages. Test the intended result on each surface; the same wording does not guarantee the same behaviour.
 
 > **Companion guides:** [Guide 01 — CLAUDE.md](./01_CLAUDE_MD.md) for applying these principles to your standing instructions. [Guide 03 — Skills](./03_SKILLS.md) for skill descriptions and trigger phrases. [Guide 26 — Context Scoping](./26_CONTEXT_SCOPING.md) for the layer above this one: deciding what a session should be allowed to see, and having Claude build a high-stakes prompt for you rather than writing it yourself. [Guide 27 — Independent Judgment](./27_INDEPENDENT_JUDGMENT.md) covers a failure that better instructions can make worse: a precisely specified prompt that tells Claude what you already think will return your own view, well formatted.
 
-> **Giving this guide to Claude:**
+> **Giving this guide to an assistant:**
 > "Read 02_PROMPTING_BASICS.md and help me improve my [CLAUDE.md / SKILL.md / task instructions]. Read the file I want to improve and apply the principles from the guide."
 
 ---
@@ -41,7 +41,7 @@ Show a template or example of the expected output. This single addition more tha
 
 ## Context Engineering
 
-Anthropic's current framing for all of this is **context engineering**: treat Claude's attention as a finite budget, and curate the smallest set of high-signal tokens that gets the job done. Every token in the context — instructions, files, history — competes for that attention; low-signal content doesn't just cost money, it dilutes the instructions that matter.
+**Context engineering** means treating the assistant's attention as a finite budget, and curate the smallest set of high-signal tokens that gets the job done. Every token in the context — instructions, files, history — competes for that attention; low-signal content doesn't just cost money, it dilutes the instructions that matter.
 
 This guide's advice is context engineering in practice: precise tasks instead of vague ones (fewer tokens, higher signal), templates instead of descriptions (one example outperforms paragraphs of explanation), and putting rules where they're needed (Mistake 2 below — a bloated CLAUDE.md is an attention-budget failure, not just a style problem).
 

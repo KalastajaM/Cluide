@@ -1,8 +1,20 @@
 # Task: Setup Memory
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Claude, run tasks/setup-memory.md`
+> `Assistant, run tasks/setup-memory.md`
 > **Source guides:** `04_MEMORY_AND_PROFILE.md`, `14_PERSONAL_DATA_LAYER.md`
+
+## Runtime route
+
+Name the target surface and available tools before running steps. Claude-only policy lives in `CLAUDE.md`; Codex uses `AGENTS.md`; dual-platform shares `AGENTS.md` through a thin Claude adapter. References below to editing project rules mean that selected policy, not duplicated adapters. ChatGPT source projects use project instructions and dated sources; without write access, return replacement artifacts and record refresh as pending.
+
+Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
+
+## Native implementation
+
+Use the file-backed procedure below for state that must work across platforms. `.auto-memory/` is a project convention, not either product's native-memory directory. In Step 4 add the explicit index-read instruction to `AGENTS.md` for Codex/dual-platform or the Claude-only policy for Claude. For ChatGPT, supply the index and referenced files as current project sources and put the read instruction in project instructions; record source revision and refresh responsibility. A chat reply is not a saved memory edit: return replacement source artifacts when no write tool exists.
+
+Native Claude/ChatGPT/Codex memory stays platform-local and is not synchronized by this task. Recurring jobs must explicitly load their own file state in a verified scheduler run. Assign one writer for shared memory or use isolated branches; record handoff date, revision, changed files, verification and pending work. Test recall in a fresh session on every supported surface before promising persistence.
 
 ## Purpose
 Set up a persistent memory system so Claude remembers key facts, preferences, and projects across sessions. Creates the `.auto-memory/` folder structure and populates it with an initial set of memory files based on a user interview.
@@ -13,7 +25,7 @@ This is the recommended memory system for deliberate, cross-session memory. It s
 
 ## Instructions
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+> **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
 ### Step 1 — Check current state
 
@@ -81,14 +93,14 @@ File naming:
 
 Keep each index line under ~100 characters. Max 30 entries total.
 
-### Step 4 — Wire memory into CLAUDE.md
+### Step 4 — Wire memory into the selected policy
 
-Check if `CLAUDE.md` exists.
+Check the policy selected by the native implementation (`AGENTS.md`, Claude-only `CLAUDE.md`, or ChatGPT project instructions).
 
 - If yes: check if it already contains a line like `Read .auto-memory/MEMORY.md`. If not, add it to a `## Memory` section or append to the top-level list.
 - If no: tell the user "You don't have a CLAUDE.md yet. Run `tasks/setup-claude-md.md` to create one — it will include the memory loading instruction."
 
-The line to add to `CLAUDE.md`:
+The line to add to that policy:
 ```markdown
 ## Memory
 - Read `.auto-memory/MEMORY.md` at the start of every session.
@@ -99,5 +111,5 @@ The line to add to `CLAUDE.md`:
 Tell the user:
 - How many memory files were created
 - What's in the index
-- "Going forward, Claude will load these facts at the start of every session. To add a memory: ask Claude to save it. To update: ask Claude to update the relevant file. To remove: ask Claude to delete the file and its index entry."
+- "After the fresh-session loading test passes, the selected surface can use these facts. To add a memory: ask Claude to save it. To update: ask Claude to update the relevant file. To remove: ask Claude to delete the file and its index entry."
 - "Keep the index under 30 entries. If it grows beyond that, consolidate or remove stale entries."

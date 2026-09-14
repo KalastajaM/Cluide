@@ -1,8 +1,18 @@
 # Task: Setup Multi-Task Orchestration
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Claude, run tasks/setup-orchestration.md`
+> `Assistant, run tasks/setup-orchestration.md`
 > **Source guide:** `09_MULTI_TASK_ORCHESTRATION.md`
+
+## Runtime route
+
+Name the target surface and available tools before running steps. Claude-only policy lives in `CLAUDE.md`; Codex uses `AGENTS.md`; dual-platform shares `AGENTS.md` through a thin Claude adapter. References below to editing project rules mean that selected policy, not duplicated adapters. ChatGPT source projects use project instructions and dated sources; without write access, return replacement artifacts and record refresh as pending.
+
+Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
+
+## Native implementation
+
+Inventory each participating surface and scheduler, not just task folders. Shared-state sections need one writer, timestamps, schema and freshness thresholds; read access does not grant write ownership. Put job ID, definition, owner, timezone and duplicate-run key in the owner table. A multi-platform workflow must serialize shared writes or use separate branches/worktrees. Use only actually exposed delegation tools/models; Claude dispatch examples are Claude-only. When moving ownership, suspend the old trigger, test the new owner in isolation, delete the old registration, then activate one owner and record the handoff (revision, changed files, tests, pending work). If a source-only ChatGPT project cannot read/write the live state, use an explicit export/import handoff rather than claiming live orchestration.
 
 ## Purpose
 Wire coordination between existing scheduled tasks per Guide 09: a shared-state convention, run-order and dependency handling, documented handoff files between feeder tasks and a synthesis task, and failure handling so downstream tasks never silently break.
@@ -13,7 +23,7 @@ Wire coordination between existing scheduled tasks per Guide 09: a shared-state 
 
 ## Instructions
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+> **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
 ### Step 1 — Identify the tasks and the coupling
 
@@ -22,7 +32,7 @@ Ask: "Which tasks should I coordinate? Provide the paths to their task folders."
 Read each `TASK.md`. Then establish what actually couples them:
 
 > 1. What is the relationship between these tasks?
->    Use `AskUserQuestion` with buttons: `A feeds B (sequential)` / `They share state` / `C needs both A and B (dependency)` / `Not sure`
+>    Use the available question tool, or ask in chat: `A feeds B (sequential)` / `They share state` / `C needs both A and B (dependency)` / `Not sure`
 > 2. What data needs to pass between them? (e.g. action items, a daily summary, a status flag)
 > 3. When does each task run today, and is the schedule fixed?
 
@@ -50,7 +60,7 @@ Schedule: [task A at HH:MM] → [10+ min gap] → [task B at HH:MM]
 Edits to TASK.md files: [list of insertions per task]
 ```
 
-Use `AskUserQuestion` with buttons: `Apply as proposed` / `Adjust first` / `Cancel`
+Use the available question tool, or ask in chat: `Apply as proposed` / `Adjust first` / `Cancel`
 
 ### Step 3 — Create the shared-state scaffolding
 

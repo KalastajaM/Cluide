@@ -15,6 +15,18 @@ Without version control, state files are edited in place on every run. One bad r
 
 ---
 
+## Working Between Claude Code and Codex
+
+Git history belongs to the project. Either coding surface can review the same definitions and fixture results; its native conversation state is not part of the branch. Use `AGENTS.md` for shared workflow rules and a thin `CLAUDE.md` adapter. Keep private settings, credentials and run data out of published commits.
+
+When switching assistants, record the branch and commit, uncommitted changes, verification already run, unresolved issues and current writer. If two sessions work concurrently, use separate branches/worktrees and integrate through review. Never assume different product names make concurrent writes safe.
+
+`.gitignore` controls untracked files in Git. `.claudeignore` is a Claude-specific context convention whose support must be checked; it is not a Codex security control and there is no OpenAI ignore file to invent by analogy. Codex uses its actual sandbox, permissions and project instructions. Claude hook examples later in this guide are not portable Git hooks.
+
+A ChatGPT source project sees its uploaded revision, not the current checkout. Deliver a patch or file to the repository owner, review and commit it, then refresh the project's sources. A successful chat response alone is not a commit or deployment.
+
+---
+
 ## What to Track
 
 Not everything in your Claude setup belongs in git. Use this as a guide:
@@ -475,7 +487,7 @@ This makes the task self-contained on a fresh clone. The bootstrap files are the
 
 ---
 
-## Giving This to Claude
+## Giving This to an Assistant
 
 **To set up git integration for an existing task:**
 > "Read 11_GIT_INTEGRATION.md and add the pre-run and post-run commit steps to my task at [path/to/TASK.md]. Use the commit message format from the guide."
@@ -498,4 +510,3 @@ scans staged changes for secrets and personal data before anything moves toward
 a public remote. This guide is the *why* — what to track and how the layers
 relate; the skill is the *how* for day-to-day operations. Install it as an
 account skill so it triggers in any session that touches git.
-

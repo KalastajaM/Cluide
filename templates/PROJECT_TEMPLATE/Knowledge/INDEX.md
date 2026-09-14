@@ -28,7 +28,7 @@
 
 Create a new `Knowledge/[TOPIC].md` when:
 - A subject has 3+ distinct facts, decisions, or states worth tracking
-- You find yourself re-explaining the same context to Claude across sessions
+- You find yourself re-explaining the same context to your assistant across sessions
 - A project, client, or system warrants its own running record
 
 Use the template below to start a new topic file.

@@ -1,8 +1,18 @@
 # Task: Setup GitHub
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Claude, run tasks/setup-github.md`
+> `Assistant, run tasks/setup-github.md`
 > **Source guide:** `11_GIT_INTEGRATION.md`
+
+## Runtime route
+
+Name the target surface and available tools before running steps. Claude-only policy lives in `CLAUDE.md`; Codex uses `AGENTS.md`; dual-platform shares `AGENTS.md` through a thin Claude adapter. References below to editing project rules mean that selected policy, not duplicated adapters. ChatGPT source projects use project instructions and dated sources; without write access, return replacement artifacts and record refresh as pending.
+
+Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
+
+## Native implementation
+
+The Git/GitHub procedure is shared where a local checkout and authorized Git tools exist. On Codex, use those tools and the existing repository policy; Step 6's Claude SessionStart hook option is not available. A standing Git rule belongs in `AGENTS.md` for Codex/dual-platform. Do not install `.claude/settings.json` for an OpenAI session. For ChatGPT with a repository connector, inspect its actual read/write capabilities and use its authorized branch/PR workflow; source uploads alone cannot initialize, commit or push a repository. Return the remaining native Git steps as pending if no write tool exists.
 
 ## Purpose
 Make a local project available on GitHub: initialize git if needed, create or connect a remote repository, make the first commit, and set up ongoing sync so future changes are committed automatically.
@@ -15,7 +25,7 @@ This task is designed to be portable and run on any project. Do not assume any s
 
 ## Instructions
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+> **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
 Execute the following steps in order. Stop and ask the user before making any changes.
 
@@ -166,7 +176,7 @@ If the push fails because the remote has commits (e.g. it was initialized with a
 
 ### Step 8 — Set up ongoing sync
 
-Use `AskUserQuestion` with buttons to ask about ongoing sync:
+Use the available question tool, or ask in chat to ask about ongoing sync:
 
 > "Would you like me to set up ongoing sync so future changes are committed automatically?"
 > Buttons: `SessionStart hook` / `CLAUDE.md rule` / `Both` / `Skip`
@@ -180,9 +190,9 @@ Proceed based on the user's choice:
 
 ---
 
-#### Option A — SessionStart hook
+#### Option A — SessionStart hook (Claude Code only)
 
-Check if `.claude/settings.json` exists. If not, create it. Merge in the following under `hooks.SessionStart`:
+**Claude Code only:** check if `.claude/settings.json` exists. If not, create it. Merge in the following under `hooks.SessionStart`:
 
 ```json
 {
@@ -208,7 +218,7 @@ When merging: if `hooks.SessionStart` already exists as an array, append the ent
 
 #### Option B — CLAUDE.md rule
 
-Check if `CLAUDE.md` exists. If not, create it. Add or append a `## Git Sync` section:
+Check the selected policy (`AGENTS.md` for Codex/dual-platform, `CLAUDE.md` for Claude-only). If absent, create it through the instruction setup task. Add or append a `## Git Sync` section:
 
 ```markdown
 ## Git Sync

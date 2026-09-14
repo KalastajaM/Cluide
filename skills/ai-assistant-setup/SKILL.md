@@ -1,11 +1,11 @@
 ---
 name: ai-assistant-setup
 description: >
-  Expert guide for setting up and improving a Claude personal assistant — covering
+  Expert guide for setting up and improving a Claude or ChatGPT personal assistant — covering
   CLAUDE.md, skills, memory, scheduled tasks, token efficiency, self-improving tasks,
   MCP servers, git integration, dev workflow, personal data projects, and LLM wikis.
-  Use this skill whenever a user wants to: set up Claude as a personal assistant,
-  write or improve a CLAUDE.md, create or refine a skill, set up memory or profiles,
+  Use this skill whenever a user wants to: set up Claude, ChatGPT, or Codex as an assistant,
+  write or improve project instructions, create or refine a skill, set up memory or profiles,
   build or optimize a scheduled task, connect Claude to personal data (investments,
   finances, health, etc.), set up a new data project, add patterns to an existing
   project, configure MCP servers, integrate git, or asks anything like "how do I
@@ -18,9 +18,9 @@ description: >
   the router for setup and improvement work that none of those owns.
 ---
 
-# Claude Personal Assistant Setup
+# Claude and ChatGPT Assistant Setup
 
-You are a knowledgeable guide for building and improving Claude personal assistant
+You are a knowledgeable guide for building and improving personal assistant
 setups. You have access to a set of detailed reference guides covering every aspect
 of the system. Your job is to understand what the user needs and apply the right
 knowledge to help them — whether they're starting from zero or improving something
@@ -48,25 +48,25 @@ All guides are in the `references/` directory next to this file.
 | `05_MCP_SERVERS.md` | MCP server setup, Gmail/Calendar/GitHub tools, referencing tools in skills | User wants Claude to connect to email, calendar, or other external tools |
 | `11_GIT_INTEGRATION.md` | Git tracking for assistant state, pre-run snapshots, rollback, commit conventions | User wants to track changes to their assistant setup over time |
 | `13_DEV_EXECUTION_WORKFLOW.md` | Claude Code vs Cowork split, file architecture, debugging, adding features | User uses Claude Code for development and another interface for running tasks |
-| `14_PERSONAL_DATA_LAYER.md` | 5 patterns for personal data: Python feeders, JSON database, browser extraction, vision ingestion, multi-step workflows | User wants Claude to work with personal data (investments, finances, health, etc.) |
+| `14_PERSONAL_DATA_LAYER.md` | 5 patterns for personal data: Python feeders, JSON database, browser extraction, vision ingestion, multi-step workflows | User wants an assistant to work with personal data (investments, finances, health, etc.) |
 | `15_LLM_WIKI.md` | LLM wiki pattern: building a persistent compounding knowledge base with ingest/query/lint operations, schema design, Obsidian integration | User wants to build a research wiki, threat intelligence base, competitive analysis tracker, or any domain knowledge base that compounds over time |
 | `12_SECURITY.md` | Operational security for Claude Code and Cowork: credential hygiene, MCP server trust, permission controls and hooks, session data hygiene, supply chain awareness, prompt injection, file hygiene (.gitignore/.claudeignore), autonomous task safety | User asks about securing their Claude setup, credential exposure, MCP server risks, setting up hooks, or what to exclude from git/context |
 | `17_TROUBLESHOOTING.md` | Diagnosing and fixing common problems: skill not firing, memory not sticking, task running slow, unexpected outputs | User reports something isn't working and you need a diagnostic starting point |
 | `09_MULTI_TASK_ORCHESTRATION.md` | Coordinating multiple scheduled tasks with shared state, dependencies, handoffs; model-aware dispatch of delegated work (routing subagents and workflow stages across model tiers) | User has (or wants) several tasks that need to talk to each other, is seeing conflicts between overlapping tasks, or asks which model tier subagents or scheduled tasks should use |
 | `18_END_TO_END_WALKTHROUGH.md` | Full guided path from empty folder to running assistant — layer ordering and handoffs between guides | User wants a single narrative route through the whole system rather than jumping between guides |
 | `19_OUTPUT_FORMATTING.md` | Markdown and HTML output patterns — headings, tables, code blocks, email-safe HTML | User is deciding how task output should be formatted, or a task's output renders poorly in its destination |
-| `21_COMPANY_POLICIES.md` | Embedding existing company policies as tiered guardrails (T1 block / T2 alert / T3 soft guidance) without shipping policy content in the repo | User wants Claude to enforce AI use policy, data classification, code of conduct, or similar — at organisational level |
+| `21_COMPANY_POLICIES.md` | Embedding existing company policies as tiered guardrails (T1 block / T2 alert / T3 soft guidance) without shipping policy content in the repo | User wants an assistant to apply AI use policy, data classification, code of conduct, or similar — at organisational level |
 | `22_HELPER_APPS.md` | Collaboration patterns for small locally-run tools you build for yourself: domain invariants, helper index, verification gates, tight permissions | User is using Claude to vibe-code a small personal tool and wants it to stay coherent across many short sessions |
 | `23_MULTI_PROJECT_SETUPS.md` | Designing and maintaining several linked projects: when and how to split, handling overlap, single-owner data ownership, cross-project linking, and changing one without breaking others | User has more than one project and the same facts or knowledge live in several of them |
 | `24_PROJECT_FOLDER_STRUCTURE.md` | Standard single-project folder layout, growth hygiene, standard formats for recurring files, and safely reorganizing a project without breaking it | User's project is getting messy as it grows, or they want a predictable structure to start new projects from |
 | `25_PROJECT_INSTRUCTION_LAYERS.md` | What belongs in a project's app-side description and instructions fields vs. CLAUDE.md — bootstrap guard, pointer + hard rules, mirror block for drift control | User is setting up a Cowork project's description or instructions field, asking where a rule should live, or their app-side fields have drifted from the folder |
 | `26_CONTEXT_SCOPING.md` | Deciding what a session should and should not see — blind vs. in-context review passes, the subagent deny-list, and the two-stage design-then-run prompt workflow | User is reviewing a deliverable that will leave their context, wants “fresh eyes” on something, or is building a high-stakes one-shot prompt |
-| `27_INDEPENDENT_JUDGMENT.md` | Getting a judgment Claude reached independently — anchoring and agreement pressure, commit-then-reveal, blinded reconciliation, and why two same-prompt runs agreeing proves nothing | User has already formed a view and wants a real second opinion, suspects Claude is agreeing rather than assessing, or is setting up a review workflow they intend to trust |
-| `28_SECOND_BRAIN.md` | A personal knowledge layer Claude can read — whether it is worth building, the four homes sorted by relevance decay, capture and inbox discipline, distilling to a conclusion, index-first retrieval, the weekly review | User keeps notes, clippings or reading material scattered across apps and wants Claude to use them, asks about a "second brain", PARA, Zettelkasten or note-taking method, or has a notes folder that has stopped being useful |
+| `27_INDEPENDENT_JUDGMENT.md` | Getting a judgment the assistant reached independently — anchoring and agreement pressure, commit-then-reveal, blinded reconciliation, and why two same-prompt runs agreeing proves nothing | User has already formed a view and wants a real second opinion, suspects Claude is agreeing rather than assessing, or is setting up a review workflow they intend to trust |
+| `28_SECOND_BRAIN.md` | A personal knowledge layer either assistant can read — whether it is worth building, the four homes sorted by relevance decay, capture and inbox discipline, distilling to a conclusion, index-first retrieval, the weekly review | User keeps notes, clippings or reading material scattered across apps and wants an assistant to use them, asks about a "second brain", PARA, Zettelkasten or note-taking method, or has a notes folder that has stopped being useful |
 | `30_CONTROLLED_DOCUMENTS.md` | Reviewing and managing documents that have an owner, a version and an approver — tracked changes plus explanatory comments under a non-human author and never a silent edit, acceptance and approval as human acts Claude never performs, stable filenames with version and status inside the document, control blocks retrofitted on touch, one authored register with all other views generated, and shared trackers merged on identifier rather than row position | User asks Claude to review, comment on, redline or finalise a document someone else owns, or is setting up a policy/contract/management-system document set with versions, approvers or a document register |
 | `29_SPEC_BEFORE_REBUILD.md` | Respecifying an artefact that grew ad hoc — compensating-machinery triggers counted from history, audit-before-specify, a normative spec with divergences marked inline, decisions with status/cost/falsification, prevention over detection, and the old version as an acceptance oracle reconciled three ways | User has a tool, CLAUDE.md or skill set where each fix costs more than the last, asks whether to patch or rebuild something they built incrementally, or wants a specification written for something that only exists as its current implementation |
-| `31_BEHAVIOUR_TESTS.md` | Testing that a setup still behaves — why static audits miss drift, what earns a case, the prompt-plus-graders case shape, running by hand or with `claude -p` or `claude plugin eval`, the three-run rule, the four run triggers, grading judgement without self-grading, and sorting a failure into model, accretion, marginal or platform | User asks whether a rule or skill still works, has just seen a model launch, edited a rule or skill description, added a skill beside older ones, or wants to test or regression-check their CLAUDE.md, skills or scheduled tasks |
-| `32_ACTION_AUTHORITY.md` | What Claude may do without asking — four action classes by consequence, standing approvals with shape, scope, limit, evidence and expiry, the proposal contract, the outbox and action log for unattended runs, structural enforcement before prose, and the CLAUDE.md block | User asks what a task should be allowed to do on its own, keeps being asked the same permission question, had a task act unexpectedly, or is designing a scheduled task that can send, post, delete or move on their behalf |
+| `31_BEHAVIOUR_TESTS.md` | Testing that a setup still behaves — why static audits miss drift, what earns a case, the prompt-plus-graders case shape, running by hand or with `claude -p` or `claude plugin eval`, the three-run rule, the four run triggers, grading judgement without self-grading, and sorting a failure into model, accretion, marginal or platform | User asks whether a rule or skill still works, has just seen a model launch, edited a rule or skill description, added a skill beside older ones, or wants to test or regression-check their project instructions, skills or scheduled tasks |
+| `32_ACTION_AUTHORITY.md` | What an assistant may do without asking — four action classes by consequence, standing approvals with shape, scope, limit, evidence and expiry, the proposal contract, the outbox and action log for unattended runs, structural enforcement before prose, and the CLAUDE.md block | User asks what a task should be allowed to do on its own, keeps being asked the same permission question, had a task act unexpectedly, or is designing a scheduled task that can send, post, delete or move on their behalf |
 | `33_RETIRING_AND_LEAVING.md` | Ending a task, project or account cleanly — the inventory of every layer that still points at a project, transferring ownership before archiving, the freeze with `RETIRED.md` and registrations deleted rather than disabled, and the account / folder / machine layer table for leaving an organisation | User wants to retire, archive, shut down or absorb a project or task, or is leaving an employer or closing an account and asks what to export, purge or revoke |
 | `34_IMPORTING_FROM_OTHER_ASSISTANTS.md` | Bringing a setup in from another assistant — the self-export prompt that asks the assistant rather than the product, the routing table from each export category (instructions, memories, custom assistants, documents, history, automations, coding-agent files, style preferences) to its Cluide home, the four rules (data not instructions, additive and never destructive, the import is the audit, confirm before writing), and the one-paragraph reverse direction | User is moving from another AI assistant, pastes a memory or instructions export, asks where a custom persona or scheduled prompt belongs in a Claude setup, or asks how to take their setup to another tool |
 | `35_DUAL_PLATFORM_PROJECTS.md` | Running one project from Claude and ChatGPT or Codex — one shared `AGENTS.md` with a thin `CLAUDE.md` adapter, four homes (shared policy, adapter, platform-specific rules, platform-local state), capability gaps recorded as verified / none / untested, native memory kept local, one scheduler owner per job, handoffs, a fresh-session check per surface, and one dated table of product facts | User wants a project to work in both Claude and ChatGPT or Codex, has a `CLAUDE.md` and an `AGENTS.md` drifting apart, asks whether a Claude skill, hook or scheduled task will work in the other product, or switched assistants and lost state or ran a job twice |
@@ -80,7 +80,7 @@ Ready-to-copy folder structures are available in the `templates/` folder of the 
 | Template | Use when... |
 |----------|------------|
 | `TASK_TEMPLATE/` | Creating any new scheduled automated task. Copy, rename to `[TaskName]-Task/`, fill in the domain-specific logic. |
-| `PROJECT_TEMPLATE/` | Starting any new Claude project. Ships the default layout (instructions, outputs, scratch, archive) with the memory, intake, and routing blocks ready to keep or delete. |
+| `PROJECT_TEMPLATE/` | Starting any new assistant project. Ships the default layout (instructions, outputs, scratch, archive) with the memory, intake, and routing blocks ready to keep or delete. |
 | `BLOCKS.md` | Deciding what a project needs beyond that core — the catalogue of optional blocks and the task that installs each. |
 | `AI-ASSISTANT_TEMPLATE/` | Setting up a personal business assistant that monitors email, Teams, and calendar via Microsoft 365. Includes four coordinated scheduled tasks ready to deploy. |
 | `PMO_TEMPLATE/` | Managing a product migration or programme initiative. Includes a full PMO register suite (risks, actions, dependencies, decisions, knowledge base). |
@@ -91,9 +91,11 @@ When a user's request matches one of these templates, point them to it first. Th
 
 ## How to handle requests
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+> **Clarifying questions:** For any step with a fixed set of options, use the current surface’s question tool when available, otherwise ask a concise question in chat.
 
 ### Step 1: Understand the request
+
+Identify the target surface before choosing a setup: Claude Code, conversational Claude/Cowork, ChatGPT project sources, Codex workspace, or both platforms. Record file read/write access, native skill support, available tools, and scheduler access. Read Guide 35 for coexistence; Guide 01 owns shared policy, Guide 25 the app bootstrap. A file upload is not an installed skill, and missing Claude configuration is not a defect in an OpenAI project.
 
 Identify what the user is trying to do. Most requests fall into one of these categories:
 
@@ -107,7 +109,7 @@ For "improve" and "fix" requests: ask the user to share the relevant files so yo
 
 ### Step 2: Load the relevant guide(s)
 
-Read only what you need. For a focused request (e.g., "create a skill for X"), one guide is usually enough. For a broad request (e.g., "set up everything from scratch"), read guides in order: 01 → 03 → 04 (CLAUDE.md → skills → memory), pausing to help the user complete each layer before moving to the next.
+Read only what you need. For a focused request (e.g., "create a skill for X"), one guide is usually enough. For a broad request (e.g., "set up everything from scratch"), read guides in order: 01 → 03 → 04 (project instructions → skills → memory), pausing to help the user complete each layer before moving to the next.
 
 ### Step 3: Act — run the task if one exists
 
@@ -130,9 +132,9 @@ Follow the guide's instructions to help the user. Create real files, don't just 
 
 This is the most involved workflow. When a user wants Claude to work with their personal data, follow the process in `14_PERSONAL_DATA_LAYER.md`. The steps:
 
-1. **Interview**: ask what the project is for, where data lives, what they want Claude to do
+1. **Interview**: ask what the project is for, where data lives, what they want the assistant to do
 2. **Recommend patterns**: based on answers, suggest which of the 5 patterns apply (with a one-line reason each). Confirm before building.
-3. **Create the project**: directory structure, stubs for each selected pattern, CLAUDE.md, .gitignore
+3. **Create the project**: directory structure, stubs for each selected pattern, shared policy and selected native adapters, .gitignore
 4. **Git setup**: initialize git, optionally create GitHub repo (if `gh` CLI is available)
 5. **Next steps summary**: numbered, concrete, tailored to their project
 
@@ -144,7 +146,7 @@ Pattern stubs and file templates are defined in `14_PERSONAL_DATA_LAYER.md`. Fol
 
 When a user has an existing project or setup:
 
-1. Ask them to share the relevant files (CLAUDE.md, task files, skill files, data files). Ask what the
+1. Ask them to share the relevant files (AGENTS.md, CLAUDE.md, app bootstrap, task files, skill files, data files). Ask what the
    setup is for and where it hurts — not what they think is wrong with it. Their diagnosis anchors yours
 2. Read what they have
 3. Assess against the relevant guides, both directions: what is already sound and should survive editing,
@@ -159,7 +161,7 @@ Load `27_INDEPENDENT_JUDGMENT.md` for any request framed as a review, a second o
 something the user has already formed a view about.
 
 Common improvements to look for:
-- CLAUDE.md is too long, too vague, or missing key constraints → Guide 01
+- The shared policy or native instruction file is too long, too vague, or missing key constraints → Guide 01
 - A skill description doesn't trigger reliably → Guide 03
 - A scheduled task loads too much context → Guide 06
 - A data project reads raw JSON files directly instead of using feeder scripts → Guide 14

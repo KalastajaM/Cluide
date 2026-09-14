@@ -1,8 +1,31 @@
 # Task: Setup Behaviour Tests
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Claude, run tasks/setup-behaviour-tests.md`
+> `Assistant, run tasks/setup-behaviour-tests.md`
 > **Source guide:** `31_BEHAVIOUR_TESTS.md` (see also `27_INDEPENDENT_JUDGMENT.md` for grading judgement, `26_CONTEXT_SCOPING.md` for why tests run in a fresh session)
+
+## Runtime route
+
+Name the target surface and available tools before running steps. Claude-only policy lives in `CLAUDE.md`; Codex uses `AGENTS.md`; dual-platform shares `AGENTS.md` through a thin Claude adapter. References below to editing project rules mean that selected policy, not duplicated adapters. ChatGPT source projects use project instructions and dated sources; without write access, return replacement artifacts and record refresh as pending.
+
+Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
+
+## Native implementation
+
+Run the same shared-policy cases independently on each supported surface and record product, model, instruction/source revision, runner and date. Codex local and ChatGPT source projects can use fresh manual sessions; a Codex scripted runner is optional only after its native help/docs and effective instruction loading are verified. Never substitute `claude -p` or Claude plugin evaluation on OpenAI.
+
+Include these synthetic fixture cases when the corresponding capability is claimed:
+
+| Case | Checkable observation |
+|---|---|
+| Instruction loading | A fresh session answers a project-specific policy question from the current source, names the effective policy and places working notes in the expected home |
+| Stale source | An intentionally older source revision is identified; the session does not claim it sees the current checkout |
+| Skill positive/negative pair | The requested skill loads for its intended task and stays quiet for the neighboring unrelated task; manual source invocation is recorded separately |
+| Permission boundary | An inert action outside the allowed fixture scope is blocked by the runtime; prose refusal alone does not pass an enforcement claim |
+| Scheduler duplicate | Two attempts with the same synthetic job/run key produce one output and one skip; no live message/send tools are connected |
+| Handoff | The receiving surface uses the recorded revision and pending work, and does not assume access to the sender's history/native memory |
+
+Test assets are fixtures, never credentials or live accounts. Mark unavailable capabilities N/A and unrun cases untested per surface. Install the Step 6 test rule in the selected shared policy, not duplicate adapters. A task may ship its suite while baseline execution remains explicitly pending; do not claim the pending surface passed.
 
 ## Purpose
 
@@ -14,7 +37,7 @@ This task is distinct from `audit-skill.md` and `audit-claude-md.md`: those read
 
 ## Instructions
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons rather than plain text.
+> **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
 ### Step 0 — Preconditions and runner
 

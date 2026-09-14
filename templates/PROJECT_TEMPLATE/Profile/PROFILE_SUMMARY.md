@@ -9,7 +9,7 @@
 
 ## Who I Am
 
-[2–3 lines: name, role, key context. What Claude needs to know to act as a useful assistant in this project's domain.]
+[2–3 lines: name, role, key context. What the assistant needs to know to act as a useful assistant in this project's domain.]
 
 ---
 

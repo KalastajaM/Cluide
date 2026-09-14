@@ -1,8 +1,20 @@
 # Task: Audit CLAUDE.md
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Claude, run tasks/audit-claude-md.md`
+> `Assistant, run tasks/audit-claude-md.md`
 > **Source guides:** `01_CLAUDE_MD.md`, `16_BEST_PRACTICES.md`
+
+## Runtime route
+
+Name the target surface and available tools before running steps. Claude-only policy lives in `CLAUDE.md`; Codex uses `AGENTS.md`; dual-platform shares `AGENTS.md` through a thin Claude adapter. References below to editing project rules mean that selected policy, not duplicated adapters. ChatGPT source projects use project instructions and dated sources; without write access, return replacement artifacts and record refresh as pending.
+
+Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
+
+## Native implementation
+
+The stable filename audits **project instructions**, not the presence of a Claude file on every platform. Select the effective policy and adapter chain before Step 1: `CLAUDE.md` for Claude-only, `AGENTS.md` plus overrides/ancestors for Codex, shared policy plus adapters for dual-platform, and project instructions plus policy sources for ChatGPT. Run Steps 2–5 against that selection. A thin adapter is healthy when it loads the shared policy; do not flag it for lacking copied identity/style sections.
+
+For a repository policy, required content follows its purpose: scope, conventions, verification and action boundaries. Identity and timezone are required only where the work depends on them. Treat 30 lines as a small-policy heuristic, not a hard failing threshold; check the current native loader limit separately (Guide 35 §9). Check source revision, import/read fallback, contradictory overrides and a fresh-session policy question. Unread app fields or untested loaders are unverified, not “missing CLAUDE.md.”
 
 ## Purpose
 Review an existing `CLAUDE.md` against best-practice criteria: every line should change behaviour, the file should be short, and it should cover identity, style, and critical rules — nothing else. Flags dead rules, missing sections, over-length, and common mistakes.
@@ -11,9 +23,11 @@ Review an existing `CLAUDE.md` against best-practice criteria: every line should
 
 ## Instructions
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+> **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
 ### Step 1 — Locate and read the file
+
+Resolve the native policy as described above. The shell block and missing-file message below are **Claude-only**. On Codex inspect `AGENTS.md` and its effective overrides; on ChatGPT inspect project instructions and policy sources. A missing Claude file alone never stops an OpenAI audit.
 
 ```bash
 ls CLAUDE.md 2>/dev/null && echo "found" || echo "missing"
@@ -30,7 +44,7 @@ Evaluate each criterion. For each, mark ✓ (pass), ⚠ (concern), or ✗ (fail)
 - [ ] Under 30 lines of real content — longer files dilute the effective rules
 - [ ] No section exceeds what's needed — no padding or filler
 
-**Structure — required sections:**
+**Structure — required where relevant to the selected policy:**
 - [ ] Has an identity section (who the user is, timezone, language preference)
 - [ ] Has a communication style section (format, verbosity, tone, emoji)
 - [ ] Has a critical rules section (what Claude must never do + positive counterpart)
@@ -93,7 +107,7 @@ Based on the user's choice:
 
 **Option C — Review together:** walk through each issue one at a time, let the user decide what to keep, change, or remove.
 
-After any changes, re-count lines and confirm the file is under 30 lines of real content.
+After changes, re-count lines, retain necessary rules, check the native loader limit and report the fresh-session result.
 
 ### Step 5 — Confirm
 

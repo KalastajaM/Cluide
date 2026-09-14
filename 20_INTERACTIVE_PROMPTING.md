@@ -1,19 +1,29 @@
-# Guide 20: Interactive Prompting — Claude Code Features & Patterns
+# Guide 20: Interactive Prompting — Features and Patterns by Surface
 
 > Claude Code has interactive features that go beyond writing instructions well. This guide covers the tools and patterns that shape *how you work with Claude in a session* — file references, plan mode, question dialogs, and keeping the context window clean.
 
 > **Companion guides:** [Guide 02](./02_PROMPTING_BASICS.md) covers instruction quality — context, task, constraints, and output format. [Guide 13](./13_DEV_EXECUTION_WORKFLOW.md) covers Claude Code vs. Cowork — when to use each. This guide covers what to do *during* a Claude Code session.
 
-> **Giving this guide to Claude:**
+> **Giving this guide to an assistant:**
 > "Read 20_INTERACTIVE_PROMPTING.md and apply the patterns here to help me set up / improve / debug [my workflow / this task / this skill]."
 
-A note on surfaces: AskUserQuestion dialogs, plan mode and subagents work in both Claude Code and Cowork — a Cowork session gets the same button dialogs, the same plan-then-approve flow, and the same ability to dispatch subagents. Only `/clear` and `/compact` are Claude Code commands; in Cowork, context hygiene means starting a fresh conversation rather than clearing the current one. Cowork itself now runs in more than one place — the desktop app, the web and mobile apps, and since August 2026 the Chrome side panel ([Guide 05](./05_MCP_SERVERS.md)) — and one session can move between them, so the distinction that matters for these patterns is Claude Code versus Cowork, not which window you are typing in. The prompting patterns themselves apply everywhere.
+The patterns apply across Claude and OpenAI, but controls are native to the surface. `AskUserQuestion`, Claude slash commands and `CLAUDE.md` imports below are Claude examples, not a universal protocol. Inspect the current tool schema and UI rather than asking another host to execute them.
+
+## OpenAI Session Workflow
+
+In Codex, open the intended workspace and explicitly identify files to read or edit. Use the available file selector where supported, or give a plain path and ask the assistant to read it. In a ChatGPT project, select or upload the required source; naming a laptop path does not grant access. `@` can select a skill or app in some surfaces, so confirm what the selection actually references.
+
+For reusable OpenAI skills, current documentation describes `$skill-name` or `/skills` in Codex CLI/IDE, and a skill selection in ChatGPT. These are different from Claude `@path` instruction imports. [OpenAI skills](https://learn.chatgpt.com/docs/build-skills), checked 2026-09-14.
+
+Use plan mode when the host provides it and the work needs a reviewable plan. Otherwise ask for a plan in ordinary text and specify what may proceed before review. Neither phrase changes the sandbox or confers action authority. Follow the host's actual question-tool availability; a missing dialog is handled with a concise text question, not an invented `AskUserQuestion` call.
+
+For a clean review, start a new task/chat without inherited authoring history and provide only the required sources. A fork can inherit the very context you meant to hide. Record branch/source revision and outstanding work before switching. Do not prescribe `/clear` or `/compact` to ChatGPT as if they were universal controls. [Guide 26](./26_CONTEXT_SCOPING.md) covers scoping and [Guide 35](./35_DUAL_PLATFORM_PROJECTS.md) covers fresh-session verification.
 
 ---
 
 ## `@` File References
 
-When you mention a file in a message using `@filepath`, Claude reads the file before responding. This is faster and more accurate than describing the file's contents.
+In Claude Code, `@filepath` is the file-reference example used here. Verify that the reference resolved and the file was read before relying on its contents. This is faster and more accurate than describing the file's contents.
 
 **Without `@` reference:**
 > "I have a config file in the auth module — it sets up the JWT token lifetime. Can you make the timeout configurable?"

@@ -1,8 +1,14 @@
 # Task: Setup Bootstrap Folder
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Claude, run tasks/setup-bootstrap-folder.md`
+> `Assistant, run tasks/setup-bootstrap-folder.md`
 > **Source guide:** `11_GIT_INTEGRATION.md`
+
+## Runtime route
+
+Name the target surface and available tools before running steps. Claude-only policy lives in `CLAUDE.md`; Codex uses `AGENTS.md`; dual-platform shares `AGENTS.md` through a thin Claude adapter. References below to editing project rules mean that selected policy, not duplicated adapters. ChatGPT source projects use project instructions and dated sources; without write access, return replacement artifacts and record refresh as pending.
+
+Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
 
 ## Purpose
 Create a `bootstrap/` folder containing empty, non-personal stub versions of all runtime state files that are gitignored. This ensures the project works on a fresh clone without manual setup — and optionally adds self-bootstrap logic to task files so they detect and create missing state automatically.
@@ -13,7 +19,7 @@ Create a `bootstrap/` folder containing empty, non-personal stub versions of all
 
 ## Instructions
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+> **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
 ### Step 1 — Scan for gitignored runtime state files
 
@@ -32,7 +38,7 @@ Also look for common state file patterns even if not currently ignored:
 - `PROFILE_*.md`, `KNOWLEDGE_*.md`, `HYPOTHESES.md`
 - `.auto-memory/*.md`
 
-List candidates and use `AskUserQuestion` with buttons for each file (or as a group):
+List candidates and use the available question tool, or ask in chat, for each file (or as a group):
 > "I found these files that look like runtime state. Which ones need a bootstrap stub?"
 > Buttons: `All of them` / `Let me choose` / `None`
 > (If "Let me choose": ask about each file individually with `Yes` / `Skip` buttons.)

@@ -4,7 +4,7 @@
 
 > **Companion guides:** [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) for keeping orchestrated tasks efficient. [Guide 07](./07_TASK_LEARNING_GUIDE.md) for self-improvement across coordinated tasks. [Guide 10](./10_COST_PERFORMANCE.md) for monitoring costs when multiple tasks run daily. For how scheduled tasks are actually triggered, see [Guide 06 §How Scheduled Tasks Are Triggered](./06_TASK_EFFICIENCY_GUIDE.md).
 
-> **Giving this guide to Claude:**
+> **Giving this guide to an assistant:**
 > "Read 09_MULTI_TASK_ORCHESTRATION.md and help me coordinate my existing tasks at [paths]. They need to [share data / run in order / produce a combined output]."
 
 ---
@@ -23,6 +23,16 @@ Most setups don't need orchestration. Use this decision table:
 | A single complex task that does too many things | Split into a skill with phases, not separate tasks |
 
 **Rule of thumb:** if your tasks don't read each other's output and don't need to run in a specific order, you don't need this guide. Run them independently.
+
+---
+
+## Choose the Runtime and the Writer
+
+The sequential, shared-state and dependency patterns below work across platforms when the data contract is explicit. A producer records job ID, run ID, source revision, timestamp/timezone and success state; a consumer validates those before using the output. Native chat history is not the handoff.
+
+Claude Code and Codex may expose subagents or task coordination, but their tools, inheritance and lifecycle differ. Delegate only when authorized by the host and user. Give independent workers separate outputs or worktrees; one coordinator integrates changes. If delegation is unavailable, run the same bounded steps sequentially and record that execution mode.
+
+For a Cowork-to-Codex or ChatGPT-to-Claude handoff, include the last accepted files and unresolved work. A ChatGPT upload cannot be treated as a live shared state file: return the next revision through an authorized destination and wait for its acceptance before downstream use. Every recurring job has one scheduler owner, even when its producer and consumer use different platforms.
 
 ---
 
@@ -161,11 +171,15 @@ Keep shared state minimal. If only one task reads a piece of data, it belongs in
 
 ### Avoiding Collisions
 
-If two tasks write to `STATE.json` at the same time, one write can overwrite the other. Prevent this:
+If two tasks write to `STATE.json` at the same time, one can overwrite the other's changes. Use one of these actual exclusion mechanisms for every shared destination:
 
-- **Stagger schedules** with at least 10-minute gaps between tasks that write to the same file; tasks writing different files can run closer together (the timing template below uses 5 minutes)
-- **Use separate output files** per task (the `shared/[task-name]_[date].json` pattern) instead of a single shared file when possible
-- **Use the orchestrator pattern** for anything more complex than two tasks -- it serializes execution naturally
+- **One serialized writer:** producers write separate immutable outputs or proposals; one designated coordinator reads them and updates shared state. Only one coordinator run may be active.
+- **An atomic claim or lock:** acquire it before reading the state to update, re-read the current revision after acquisition, commit the complete update, and release it afterward. A failed claim waits or skips; it does not proceed. Recovery from a stale claim must verify that the previous writer is no longer running.
+- **A verified scheduler concurrency guarantee:** use it only if it covers every entry path, including retries and manual runs. A guarantee on one platform does not exclude an independent run on another.
+
+Separate output files per task/run reduce contention, but a common index, profile or summary still needs one of these protections. A date-only filename can collide on a retry, so use stable logical run identities and a documented deduplication rule. Keep one scheduler owner per job across Claude and OpenAI.
+
+Staggering schedules provides processing time and reduces waiting; it does not prevent races. A slow run, retry or manual invocation can consume any gap. The orchestrator pattern serializes its own stages only when a second orchestrator cannot run concurrently.
 
 ### Timing Template
 
@@ -177,7 +191,7 @@ A typical morning workflow:
 | 07:05 | Calendar check | `shared/calendar_2026-04-10.json` |
 | 07:15 | Orchestrator / Briefing | `output/briefing_2026-04-10.md` |
 
-Schedule conservatively. A task that usually takes 3 minutes might take 10 on a busy day.
+These times are latency buffers, not write locks. A task that usually takes three minutes might take ten or be retried. The briefing must check completion and freshness rather than assume earlier scheduled tasks have finished.
 
 ---
 
@@ -258,9 +272,11 @@ When to care: if a sequential chain or dependency graph from this guide starts f
 
 ## Model-Aware Dispatch
 
-The patterns above coordinate *scheduled tasks*. The same orchestrator stance applies one level down, inside a single session: when a task decomposes into independent or mechanical parts, the session plans and reviews at its own tier while dispatching the parts to subagents or workflow stages on cheaper models. Two facts make this worth engineering. The cost spread between the cheapest and most expensive tier is roughly 10x ([Guide 10 §What Things Actually Cost](./10_COST_PERFORMANCE.md)), and in most real tasks the bulk of the token volume is mechanical — reading, extracting, sweeping, applying agreed edits — work that does not need the top tier. Delegation also protects the orchestrator's own context: workers burn their context windows, not yours, which is what keeps a long session planning well.
+**Platform binding:** the tier names, agent definitions and model flags below describe the Claude route. OpenAI sessions retain the configured model unless the user or host policy authorizes another supported identifier. Discover actual availability; never substitute a guessed OpenAI name for a Claude tier. Record provider, model, effort if exposed, and outcome in the routing log. Shared policy owns the workload and quality requirement; native configuration owns model selection.
 
-**The stance.** Plan the decomposition, dispatch with self-contained prompts (subagents do not see the conversation — every prompt carries its own context, file paths, output format, and done-criteria), review the results, synthesize. Three rules keep the economics honest:
+The patterns above coordinate *scheduled tasks*. The same orchestrator stance applies one level down, inside a single session: when a task decomposes into independent or mechanical parts, the session plans and reviews at its own tier while dispatching the parts to subagents or workflow stages on cheaper models. Two facts make this worth engineering. Model costs differ ([Guide 10 §What Things Actually Cost](./10_COST_PERFORMANCE.md)), and in most real tasks the bulk of the token volume is mechanical — reading, extracting, sweeping, applying agreed edits — work that does not need the top tier. Delegation also protects the orchestrator's own context: workers burn their context windows, not yours, which is what keeps a long session planning well.
+
+**The stance.** Plan the decomposition, dispatch with self-contained prompts (context inheritance depends on the host and invocation — every prompt states its required context, file paths, output format, and done-criteria), review the results, synthesize. Three rules keep the economics honest:
 
 - **Summaries, not payloads.** Workers return a compact summary plus file paths to their full output. An orchestrator that reads every worker's full output back has re-bought the tokens it saved.
 - **Batch the fan-out.** How many workers a task splits into usually moves cost more than which tier runs them — every spawn re-buys its briefing and its own context. One worker per fifty files, not per file; split finer only when items are independent *and* wall-clock matters.
@@ -288,7 +304,7 @@ When setting up multi-task orchestration:
 - [ ] Choose the right pattern (sequential chain, shared state, or dependency graph)
 - [ ] Create `shared/` directory with `SCHEMA.md` documenting data contracts
 - [ ] Add freshness checks to every task that reads shared data
-- [ ] Stagger schedules with 10+ minute gaps between tasks that write the same file (different-file writers can run closer together)
+- [ ] Prevent overlapping writers with one owner and an atomic claim/lock or scheduler guarantee; schedule spacing alone is not exclusion
 - [ ] Add fallback handling for missing, malformed, and stale inputs in downstream tasks
 - [ ] Log task outcomes (success/skipped/failed) to `RUN_LOG.md`
 - [ ] Set up cost monitoring ([Guide 10](./10_COST_PERFORMANCE.md)) across all coordinated tasks

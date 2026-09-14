@@ -1,10 +1,10 @@
-# Second Brain: A Personal Knowledge Layer Claude Can Read
+# Second Brain: A Personal Knowledge Layer Assistants Can Read
 
 > A second brain is the layer above your projects: the notes, clippings, decisions and reference material that belong to your working life rather than to any one piece of work. The classic advice for building one — capture everything, organise it into buckets, distil as you read, review weekly — was written for a reader who cannot search their own filing cabinet. Claude can. This guide covers what survives that change, what stops being worth the effort, and how to build the layer so it stays useful instead of becoming an archive nobody opens.
 
 > **Companion guides:** [Guide 15](./15_LLM_WIKI.md) is the closest neighbour and the boundary is the point. Guide 15 builds a wiki *about a subject* — one domain, deliberately curated, where every new source enriches existing pages. This guide covers the layer *about your work* — many domains, mostly uncurated, where the job is triage rather than synthesis. Most people need both, and mixing them ruins both. [Guide 04](./04_MEMORY_AND_PROFILE.md) is the third neighbour: memory holds facts about *you* that Claude needs in order to behave correctly, not material you want to consult. [Guide 24](./24_PROJECT_FOLDER_STRUCTURE.md) is the layout *inside* one project; this is the layer above them, and its `incoming/` folder is a per-project intake queue rather than the inbox described here. [Guide 23](./23_MULTI_PROJECT_SETUPS.md) decides when knowledge earns its own project. [Guide 14](./14_PERSONAL_DATA_LAYER.md) covers structured personal data, which does not belong in notes at all.
 
-> **Giving this guide to Claude:**
+> **Giving this guide to an assistant:**
 > "Read 28_SECOND_BRAIN.md. Here is what I currently keep and where [describe it]. Tell me whether a second brain layer is worth building for me, and if so, what the four homes and the index should look like."
 >
 > **Faster alternative:** `tasks/setup-second-brain.md` applies the objection test first, then interviews you and builds or repairs the layer without reading the guide first.
@@ -15,7 +15,7 @@
 
 Most second brains die. They die the same way: capture is frictionless and enjoyable, triage is neither, so the inbox grows, the ratio of unread to read gets embarrassing, and consulting the thing stops being worth the guilt. The literature calls the underlying error the collector's fallacy — the feeling of having saved something standing in for the work of having understood it.
 
-An LLM does not fix this. It makes the first half cheaper and leaves the second half exactly where it was. Worse, Claude can now read your email, your drive, your repos and your project folders directly, which removes one of the original reasons for a curated middle layer: you no longer need a personal copy of a document in order to search it.
+An LLM does not fix this. It makes the first half cheaper and leaves the second half exactly where it was. When an assistant has authorized search tools for email, drives or repositories, you may not need to copy those documents into another store. Check the actual access first; an unavailable connector or stale upload changes what can be found.
 
 So the test is narrower than the usual advice implies. A second brain earns its keep when it holds something no source system holds:
 
@@ -114,6 +114,16 @@ Distillation is the step to hand to Claude, and it is worth being specific about
 > "Read the file in inbox/ and write a distilled note for resources/. State the conclusion first in one paragraph. Then: what it applies to and what it does not, anything the source asserts without evidence, and what would change the conclusion. Keep the source link. Do not summarise the structure of the original. Under 300 words unless the material genuinely needs more."
 
 **One idea per note.** Not for purity — because a note about two things is filed under one of them and lost to the other, and because loading a 3,000-word omnibus note to answer a narrow question wastes most of what it costs. Split at the point where you would need a new heading.
+
+---
+
+## One Knowledge Owner Across Assistants
+
+Keep the inbox, accepted notes, index and review log in one authored store. Claude and Codex can work on those files when connected; a ChatGPT project can use an uploaded or connected subset. In either case, index-first retrieval means reading the relevant index and then obtaining the actual note, not treating its title as sufficient evidence.
+
+Record the source revision for uploaded subsets. Return proposed note changes to the authoritative store and refresh the subset after acceptance. Use one writer for filing and index updates; another assistant can propose candidate notes without moving or deleting the originals. Native account memory is not the index and should not become a second copy of the knowledge layer.
+
+A weekly review needs one scheduler owner and an accessible durable destination for its decisions. Test with a small fixture inbox before enabling live filing. If the task cannot reach a referenced project, retain the item with a missing-source note rather than inventing the link target.
 
 ---
 

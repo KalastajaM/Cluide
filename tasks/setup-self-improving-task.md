@@ -1,8 +1,14 @@
 # Task: Setup Self-Improving Task
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Claude, run tasks/setup-self-improving-task.md` (then specify which task to upgrade)
+> `Assistant, run tasks/setup-self-improving-task.md` (then specify which task to upgrade)
 > **Source guides:** `07_TASK_LEARNING_GUIDE.md` (incl. Part 9, formerly Guide 08)
+
+## Runtime route
+
+Name the target surface and available tools before running steps. Claude-only policy lives in `CLAUDE.md`; Codex uses `AGENTS.md`; dual-platform shares `AGENTS.md` through a thin Claude adapter. References below to editing project rules mean that selected policy, not duplicated adapters. ChatGPT source projects use project instructions and dated sources; without write access, return replacement artifacts and record refresh as pending.
+
+Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
 
 ## Purpose
 Add the self-improvement scaffolding from Guide 07 to an existing task: an `IMPROVEMENTS.md` file, a self-improvement step wired into the run procedure, and optionally a `LESSONS.md` for reasoning history. After setup, the task will track its own evolution and get measurably better with each run.
@@ -13,7 +19,7 @@ Add the self-improvement scaffolding from Guide 07 to an existing task: an `IMPR
 
 ## Instructions
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+> **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
 ### Step 1 — Identify the task
 
@@ -30,10 +36,10 @@ If `IMPROVEMENTS.md` already exists: read it, tell the user what's already in pl
 ### Step 2 — Ask a few questions
 
 > 1. How often does this task run?
->    Use `AskUserQuestion` with buttons: `Daily` / `Weekly` / `On demand`
+>    Use the available question tool, or ask in chat: `Daily` / `Weekly` / `On demand`
 > 2. Does the task manage knowledge or profile files that accumulate over time? If so, which files?
 > 3. Should I also create a `LESSONS.md` for reasoning history? (Recommended for tasks with external connectors or complex logic that runs 30+ times.)
->    Use `AskUserQuestion` with buttons: `Yes` / `No`
+>    Use the available question tool, or ask in chat: `Yes` / `No`
 
 Based on the run frequency, set the refactor threshold:
 - Daily runs → 25
@@ -161,7 +167,7 @@ A proposal with nothing in that field is an opinion — do not raise it.*
 
 ### Step 4 — Write the self-improvement instructions (A–D) into TASK.md
 
-The instructions live in `TASK.md`, not in `IMPROVEMENTS.md` (which stores state only). Make three insertions:
+The instructions live in `TASK.md`, not in `IMPROVEMENTS.md` (which stores state only). Preserve existing ownership checks, run-key claims, duplicate-run guards, task-state loading and run logging when adding or later removing learning. Make three insertions:
 
 **1. Near the top of the run procedure** (in the "Read State" step, or as a new Step 0 if none exists):
 

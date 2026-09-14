@@ -19,6 +19,11 @@ and a wrong value makes every path below wrong.
 
 ---
 
+## Scope
+
+The app-storage and history procedures in this reference are **Claude-only**, version-sensitive operations. Use them only for a confirmed Claude installation with applicable authorization and a backup. For Codex use supported saved-project/automation tools or UI; for ChatGPT refresh source links/uploads. Neither product's native state is migrated by translating these paths. Report unsupported history migration separately from a successful shared-folder move.
+
+
 ## Anchored replacement: why a bulk find/replace is the most likely way to break the move
 
 A rollback done with an unanchored find/replace can strip an old root and leave its trailing

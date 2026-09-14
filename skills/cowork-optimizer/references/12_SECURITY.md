@@ -1,10 +1,10 @@
-# Security Guide: Using Claude Code and Cowork Safely
+# Security Guide: Using Claude, ChatGPT and Codex Safely
 
-> Operational security for using Claude Code and Cowork as tools. Covers credential hygiene, MCP server trust, permission controls, session data, supply chain risks, prompt injection, and file hygiene. Does not cover secure coding or application security practices.
+> Operational security for assistant tools, with separate enforcement paths for Claude Code, Cowork, ChatGPT and Codex. Covers credential hygiene, MCP server trust, permission controls, session data, supply chain risks, prompt injection, and file hygiene. Does not cover secure coding or application security practices.
 
 > **Companion guides:** [Guide 05](./05_MCP_SERVERS.md) covers MCP server setup — read it alongside this guide when configuring servers. [Guide 11](./11_GIT_INTEGRATION.md) covers `.gitignore` and `.claudeignore` in full.
 
-> **Giving this guide to Claude:**
+> **Giving this guide to an assistant:**
 > "Read 12_SECURITY.md and audit my Claude setup for the issues it covers. Start with credential exposure."
 > "Read 12_SECURITY.md, then run /security-review on my setup."
 >
@@ -17,7 +17,7 @@
 Credentials stored near Claude leak through multiple paths.
 
 **Where credentials must not live:**
-- `CLAUDE.md` — loaded into every session and may appear in output
+- `AGENTS.md`, `CLAUDE.md` and app instruction fields — supplied as context and potentially quoted
 - Skill files (`SKILL.md`) — read and quoted back to users
 - Memory files (`.auto-memory/`) — shared across sessions and potentially exported
 - Task files (`TASK.md`, `IMPROVEMENTS.md`) — read every run, sometimes logged
@@ -73,14 +73,14 @@ Act quickly. The order matters:
 
 ## 2. MCP Server Trust
 
-Every MCP server runs as a process on your machine with the permissions of your user account. Treat MCP server selection like software installation.
+A local MCP server runs code under its process account; a remote MCP service runs outside your machine and receives the data and grants you supply. Review both the local process boundary and the remote service boundary. Transport alone does not determine trust.
 
 **Evaluating a server:**
 
 | Factor | Lower risk | Higher risk |
 |--------|-----------|-------------|
 | Source | Official vendor or Anthropic | Unknown GitHub repo |
-| Transport | stdio (local process) | HTTP (network-accessible) |
+| Access boundary | Narrow filesystem/network access or scoped remote grants | Broad local privileges or excessive remote grants |
 | Version | Pinned to a specific release | `@latest` or no pin |
 | Secrets | Read from keychain | Plaintext in env block |
 | Scope | Read-only token | Full write/delete access |
@@ -105,6 +105,26 @@ Mitigations:
 
 ---
 
+## OpenAI Enforcement: Sandbox, Approvals and App Grants
+
+In Codex, inspect the effective filesystem and network boundary before choosing an approval mode. A read-only sandbox limits writes; a workspace-write sandbox allows edits within its configured scope. Approval policy controls escalation requests, not whether a user has authorized the intended business action. Managed settings can further restrict both.
+
+For an interactive inspection session, a documented CLI starting point is:
+
+```bash
+codex --sandbox read-only --ask-for-approval on-request
+```
+
+Use the host's supported permissions UI or configuration when work needs writes. Do not weaken the boundary just to make a check pass. The retired `untrusted` approval setting is not a current preset. An automatic approval reviewer is also a real boundary: report a rejection and its reason if a safer authorized path cannot complete the work.
+
+ChatGPT Apps and connected services have their own account grants; uploading a file does not authorize a connector to modify its source. Inspect read/write scope and confirm the actual destination account before testing. Keep credentials in the native secure authentication mechanism, outside shared policy and exports.
+
+Validate controls with harmless fixtures: a permitted read, a denied write outside the intended workspace, and an unavailable outbound tool. Record the result per surface. `.claudeignore`, `AGENTS.md` and skill prose cannot substitute for denied filesystem or tool access.
+
+Official controls checked 2026-09-14: [OpenAI approvals and sandbox](https://learn.chatgpt.com/docs/agent-approvals-security), [Claude Code security](https://code.claude.com/docs/en/security). The Claude settings and hook examples below apply only to Claude Code.
+
+---
+
 ## 3. Permission Controls and Hooks
 
 Claude Code offers several controls over what Claude can do without your approval.
@@ -123,7 +143,7 @@ Do not live in `bypassPermissions` — it disables every permission prompt. (Not
 
 **PreToolUse hooks — execution guards:**
 
-A PreToolUse hook intercepts every Bash command Claude tries to run and can block it before execution. This catches:
+A Claude Code PreToolUse hook matched to Bash can inspect and block Bash tool calls. It does not automatically cover other tools, remote connectors or another runtime. Test the actual tool paths the task uses. It can help catch: Examples to test include:
 - Pipe-to-shell patterns (`curl ... | bash`) — a supply chain attack vector
 - `rm -rf` targeting home directory, root, or sensitive dot-directories (`.ssh`, `.gnupg`, `.claude`)
 - World-writable `chmod` (777)

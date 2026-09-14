@@ -13,7 +13,37 @@
 2. Replace every `[PLACEHOLDER]` — search for `[` to find them all.
 3. Delete this "How to Use" section and the template note above.
 4. Set `refactor_threshold` in `IMPROVEMENTS.md` (25–30 for daily runs, 10–15 for weekly).
-5. Schedule the task and run it once manually to verify.
+5. Configure the ownership record below, implement the duplicate guard, test a supervised run, then enable one schedule.
+
+---
+
+## Runner contract
+
+- Surface: [Claude/Cowork/Codex/other verified runner]
+- Stable job ID: [project/task]
+- Owning scheduler: [exactly one; none until activated]
+- Timezone: [IANA Area/City; daylight saving follows this zone]
+- Native registration ID: [ID or local operations-record location]
+- Shared policy: [path to project AGENTS.md]
+- Required source revision and tools: [manifest/revision, read/write/script/connectors]
+- Shared lock and completed-run ledger: [location and tested atomic implementation]
+- Output directory: [project output location]
+
+Read shared policy and verify tools/sources before work. Uploaded-source chat alone does not
+provide a filesystem runner; report drafts as drafts. Do not copy credentials, native memory
+or registrations between products. Retain the configured model unless a supported override
+is explicitly selected. Read the owning project's platform setup before registration.
+
+Before any state writes, verify scheduler ownership, atomically claim the stable job ID plus
+scheduled time slot, and check the completion ledger. If locked/already completed, exit without
+duplicate work. If the guard is unavailable, stop; timestamps alone cannot prevent racing runs.
+Record completion only after successful writes; record failed/partial runs for supervised
+recovery rather than blindly retrying external actions. This prose requires an implementation
+and concurrency test before unattended activation.
+
+During handoff record branch/commit, changes, verification, pending work and unsaved drafts.
+Stop the old scheduler before activating a replacement; verify one supervised run, delete the
+old registration and record the new owner. Serialize any writes shared with other jobs.
 
 ---
 

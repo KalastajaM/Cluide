@@ -1,6 +1,6 @@
 # Dual-Platform Projects: One Project, Claude and ChatGPT
 
-> A project worked on from two assistants has two sets of entry points and one set of intentions. Claude reads `CLAUDE.md`, Codex reads `AGENTS.md`, and a Claude project and a ChatGPT project each have instruction fields that the other never sees. Left alone, this produces three failures:
+> A project worked on from two assistants has two sets of entry points and one set of intentions. Claude Code reads `CLAUDE.md`, Codex reads `AGENTS.md`, and a Claude project and a ChatGPT project each have instruction fields that the other never sees. Left alone, this produces three failures:
 > - two instruction files that start as copies and drift into disagreement;
 > - a skill or hook that one assistant honours and the other has never heard of;
 > - a scheduled job that runs twice because it was set up on both sides.
@@ -122,7 +122,7 @@ Both vendors have mechanisms in most of the same categories: skills, hooks, perm
 | Outcome | Means | Records |
 |---|---|---|
 | **Verified counterpart** | The other product has a mechanism that does the same job, and it has been checked as the project uses it | Its name, official source, date, and the check that was run |
-| **No verified counterpart** | The capability exists on one side only | What the other side does instead: a prose rule, nothing, or the work stays on the first platform |
+| **No verified counterpart** | No counterpart has been established for this project | What the other side does instead: a prose rule, nothing, or the work stays on the first platform |
 | **Untested** | A counterpart may exist, but nobody has checked | Who will check it, or that nobody will. It is a valid state, but it is not the same as verified |
 
 The list prevents two errors.
@@ -139,10 +139,10 @@ The list prevents two errors.
 
 **One owner per recurring job.** Every scheduled or recurring job has exactly one owning platform, a timezone, and a stable identity (its name and the task file it runs), recorded in an owner table on the setup page. Copying a `TASK.md` does not move a registration. To move a job:
 
-1. Register it on the new platform.
-2. Verify one run.
-3. Delete the old registration rather than disabling it ([Guide 33](./33_RETIRING_AND_LEAVING.md)).
-4. Record the date in the owner table.
+1. Inventory the old registration, pause it, and confirm no run is in flight. Preserve the last accepted state and stable deduplication key.
+2. Configure the new registration inactive, or test the new task manually with outbound effects disabled. Verify inputs, output and state once before recurring execution.
+3. Delete the old registration, then activate the new owner; never leave both schedules active. Pause is a transfer step, not the final retirement state ([Guide 33](./33_RETIRING_AND_LEAVING.md)).
+4. Record the new owner, registration identity, timezone, source revision, date and controlled-run result in the owner table. If verification fails, keep the new owner inactive and explicitly restore the previous one only after checking that no run overlaps.
 
 Find a job registered on both platforms by inventory, not by noticing duplicate output. Run deduplication inside the task itself ([Guide 06](./06_TASK_EFFICIENCY_GUIDE.md)) is the backstop, not the control.
 
@@ -175,7 +175,7 @@ Untested is an honest result. "Works on both" while one surface is untested is n
 
 ## 9. Platform Facts
 
-Checked on 2026-09-13 against official documentation. A row marked *re-verify* could not be confirmed cleanly on that date, so read the source before relying on its detail. This is the only section of the guide that goes stale. `tasks/setup-dual-platform.md` Step 0 re-checks the rows a project relies on each time it runs, and `tasks/review-platform-changes.md` re-checks the whole section.
+Checked on 2026-09-14 against official documentation. A row marked *re-verify* could not be confirmed cleanly on that date, so read the source before relying on its detail. This is the only section of the guide that goes stale. `tasks/setup-dual-platform.md` Step 0 re-checks the rows a project relies on each time it runs, and `tasks/review-platform-changes.md` re-checks the whole section.
 
 | Fact | Claude | OpenAI | Sources |
 |---|---|---|---|
@@ -184,10 +184,10 @@ Checked on 2026-09-13 against official documentation. A row marked *re-verify* c
 | Imports | `@path`, relative to the importing file, recursing up to four hops | No import syntax documented. Treat `AGENTS.md` as having to carry its own text. This is inferred from the documentation's silence and an open feature request, not stated by the vendor | As above; [openai/codex#28739](https://github.com/openai/codex/issues/28739) |
 | Size limit | No combined limit stated on the page checked; [Guide 01](./01_CLAUDE_MD.md)'s length target applies | Combined project instructions stop at `project_doc_max_bytes`, 32 KiB by default | [Codex AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md) |
 | Seeing what loaded | `/memory` lists the instruction files; `/context` shows what actually loaded | Not checked. Use the fresh-session question (§8) | [Claude Code memory](https://code.claude.com/docs/en/memory) |
-| Configuration | `.claude/settings.json` and hooks ([Guide 12](./12_SECURITY.md)) | `~/.codex/config.toml`, with project overrides in `.codex/config.toml`. MCP servers go under `mcp_servers`. `sandbox_mode` is `read-only`, `workspace-write` or `danger-full-access`, alongside `approval_policy` (*re-verify* its values) | [Codex config reference](https://learn.chatgpt.com/docs/config-file/config-reference) |
-| Skills | `SKILL.md` folders in `.claude/skills/` (project) or `~/.claude/skills/` (personal). Anthropic describes the format as the Agent Skills open standard, with Claude-specific extensions | `SKILL.md` folders with required `name` and `description` frontmatter; repository skills in `.agents/skills`. The user-level location is *re-verify* | [Claude Code skills](https://code.claude.com/docs/en/skills); [Codex skills](https://learn.chatgpt.com/docs/build-skills) |
-| Scheduled runs | Cowork scheduled tasks ([Guide 06](./06_TASK_EFFICIENCY_GUIDE.md)) | Codex app automations, in its Scheduled view. ChatGPT tasks, managed under Scheduled (*re-verify*: the page could not be read directly on the check date) | [Codex automations](https://learn.chatgpt.com/docs/automations?surface=app); [ChatGPT scheduled tasks](https://help.openai.com/en/articles/10291617-scheduled-tasks-in-chatgpt) |
-| Conversational projects | Cowork projects hold a description, instructions, local folders, links, linked claude.ai knowledge and project memory, and live on one computer. The page checked does not say a folder's `CLAUDE.md` loads as the project's instructions, so bootstrap it ([Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md), pattern 1) | ChatGPT projects hold instructions, uploaded files and project-scoped memory. There is no documented refresh of sources from a repository, and no documented reading of `AGENTS.md`. File limits vary by plan (*re-verify*: two official pages disagreed on the check date) | [Cowork projects](https://claude.com/docs/cowork/guide/projects); [Projects in ChatGPT](https://help.openai.com/en/articles/10169521-projects-in-chatgpt) |
+| Configuration | `.claude/settings.json` and hooks ([Guide 12](./12_SECURITY.md)) | `~/.codex/config.toml`, with project overrides in `.codex/config.toml`. MCP servers go under `mcp_servers`. `sandbox_mode` is `read-only`, `workspace-write` or `danger-full-access`, alongside the supported `approval_policy` settings; `on-request` is the interactive example and `untrusted` is retired | [Codex config reference](https://learn.chatgpt.com/docs/config-file/config-reference); [approvals and security](https://learn.chatgpt.com/docs/agent-approvals-security) |
+| Skills | `SKILL.md` folders in `.claude/skills/` (project) or `~/.claude/skills/` (personal). Anthropic describes the format as the Agent Skills open standard, with Claude-specific extensions | `SKILL.md` folders with required `name` and `description` frontmatter; repository skills in `.agents/skills`. User skills are in `~/.agents/skills`; optional OpenAI metadata lives in `agents/openai.yaml` | [Claude Code skills](https://code.claude.com/docs/en/skills); [Codex skills](https://learn.chatgpt.com/docs/build-skills) |
+| Scheduled runs | Cowork scheduled tasks ([Guide 06](./06_TASK_EFFICIENCY_GUIDE.md)) | OpenAI Scheduled supports local desktop and web execution. Local-file tasks need the computer on and app running; web tasks use uploaded/connected inputs. CLI/IDE prepare workflows but do not provide the Scheduled management interface | [OpenAI scheduled tasks](https://learn.chatgpt.com/docs/automations) |
+| Conversational projects | Cowork projects hold a description, instructions, local folders, links, linked claude.ai knowledge and project memory, and live on one computer. The page checked does not say a folder's `CLAUDE.md` loads as the project's instructions, so bootstrap it ([Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md), pattern 1) | ChatGPT source projects hold instructions and uploaded/connected context, without direct laptop-folder access. Local projects are a separate access mode. Record source revision and refresh uploaded policy explicitly; do not infer native `AGENTS.md` loading from an upload | [Cowork projects](https://claude.com/docs/cowork/guide/projects); [Projects and sources](https://learn.chatgpt.com/docs/projects) |
 
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: review-protocol
 description: >
-  Run a structured review that produces a judgment Claude reached on its own, rather than a reflection
+  Run a structured review that produces a judgment the assistant reached on its own, rather than a reflection
   of the view the user already holds. Use whenever the user wants something reviewed, critiqued,
   checked, sanity-checked, or second-opinioned — a document, a plan, a decision, a prompt, a piece of
   code — and especially when they say they have already formed a view, have doubts, or want to know
@@ -25,8 +25,7 @@ it is `27_INDEPENDENT_JUDGMENT.md` in the Cluide guide set; the skill stands alo
 
 ## Rules
 
-> **Clarifying questions:** for any step with a fixed set of options, use `AskUserQuestion` with
-> buttons rather than plain text.
+> **Clarifying questions:** for any step with a fixed set of options, use the current surface’s question tool when available, otherwise ask in chat.
 
 - **Do not ask the user what they think before reviewing.** If they offer their view unprompted, note
   that it has been heard, review anyway, and reconcile afterwards. If they insist on giving it first,
@@ -37,10 +36,7 @@ it is `27_INDEPENDENT_JUDGMENT.md` in the Cluide guide set; the skill stands alo
 - **Never say what the user thinks is wrong to a subagent.** If part of the review is delegated, write
   the brief before hearing their view, or reuse a fixed brief verbatim. A subagent briefed after the
   user speaks is uninformed about the project and perfectly informed about their opinion.
-- **Spawn the blind reviewer as a non-fork subagent type** — `general-purpose`, or a named agent
-  definition — and never `fork`. A `fork` subagent inherits the entire conversation and the parent's
-  memory, which destroys the blind pass. The brief must therefore stand entirely on its own: name the
-  artefact path, the rubric, and the output format, and rely on nothing said earlier in this session.
+- **Use a fresh reviewer without inherited conversation history.** Choose the host's documented no-history option; do not assume a tool called fork is isolated. Give the artifact, rubric, and output format in a self-contained brief. If isolation cannot be established, label the review non-independent.
 - **Write findings to a file before discussing them.** A verdict given in conversation is cheap to
   soften once the user reacts, and the softening leaves no trace.
 
@@ -101,7 +97,7 @@ When the user brings two reviews of the same artefact:
 
 - **Run it fresh.** Not in the session that produced either list.
 - **Anonymise and shuffle.** A and B, no authorship, and do not say that one is human and one is
-  Claude — that alone changes the treatment.
+  an AI assistant — that alone changes the treatment.
 - Match findings **by location in the artefact**, not by number; the two lists number independently.
 - Per finding: keep / drop / needs checking, with the reason. Where they conflict, say which you trust
   and why, and do not average them.
@@ -113,8 +109,7 @@ When the user brings two reviews of the same artefact:
 
 Say this out loud when the user is deciding how much weight to put on the result.
 
-- **Two Claude runs are not two opinions.** Same weights, same priors, correlated error. Agreement
-  between them means the answer is stable, not that it is right.
+- **Two model runs can share errors.** Repeated runs of one model have correlated priors; using Claude and ChatGPT also does not prove independence. Judge the evidence and the reviewer’s information access, not brand agreement.
 - **Rerunning the same prompt buys almost nothing.** Varying the lens, the persona or the rubric buys
   something and is cheap. A different model buys more. A human who is not the user buys the most.
 - **Read reasons, not vote counts.** A finding that survived a reviewer actively trying to refute it is

@@ -1,29 +1,33 @@
 ---
 name: cowork-optimizer
 description: >
-  Analyze and optimize a Cowork task or project to make it run faster, use fewer tokens, reduce unnecessary steps, and improve overall structure. Use this skill whenever the user shares a Cowork task or project and asks to optimize, improve, speed up, refactor, or reduce Claude usage. Also trigger when the user says things like "make this more efficient", "this task is slow", "can we trim this down", "review my task setup", or pastes a Cowork task/project definition and asks for feedback. Do NOT use for
+  Analyze and optimize an assistant task or project to make it run faster, use fewer tokens, reduce unnecessary steps, and improve overall structure. Use this skill whenever the user shares an assistant task or project and asks to optimize, improve, speed up, refactor, or reduce model usage. Also trigger when the user says things like "make this more efficient", "this task is slow", "can we trim this down", "review my task setup", or pastes an assistant task/project definition and asks for feedback. Do NOT use for
   building something new (use `ai-assistant-setup`), for auditing a whole project against
   the guide set (`tasks/analyze-project.md`), for choosing a model tier (`dispatch`), or
   for reviewing a document, plan or decision (`review-protocol`). The object here is an
   existing task or project that already runs and costs too much.
 ---
  
-# Cowork Optimizer
+# Assistant Task Optimizer
 
-Analyze a Cowork task or project definition, identify optimization opportunities, present a prioritized plan, get user sign-off, then implement agreed changes.
+Analyze an assistant task or project definition, identify optimization opportunities, present a prioritized plan, get user sign-off, then implement agreed changes.
 
 > This skill applies the patterns from [references/06_TASK_EFFICIENCY_GUIDE.md](references/06_TASK_EFFICIENCY_GUIDE.md) and [references/07_TASK_LEARNING_GUIDE.md](references/07_TASK_LEARNING_GUIDE.md). Read those guides if you want to understand the reasoning behind any recommendation.
 
 ## Rules
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+> **Clarifying questions:** For any step with a fixed set of options, use the current surface’s question tool when available, otherwise ask a concise question in chat.
 
-- Always use this skill before making any edits to a Cowork task or project — even if the user just says "take a look at my task."
+- Always use this skill before making any edits to an assistant task or project — even if the user just says "take a look at my task."
 - Do not silently apply changes beyond what was agreed in Phase 3.
 - Flag tradeoffs explicitly — do not silently optimize toward one axis (speed vs. thoroughness).
  
 ---
  
+## Platform selection
+
+The stable skill name remains `cowork-optimizer`. Identify Claude/Cowork, Codex, or ChatGPT and the actual task runner. Optimise the shared procedure without changing its scheduler owner, permissions, or outcomes. Use reported metrics where exposed; mark estimates as estimates and unavailable usage as unknown. For OpenAI/local folders, inspect only the supplied project, not `/sessions`; for source-only projects, work from supplied task definitions and return proposed edits if write access is absent.
+
 ## Phase 1: Ingest
 
 **If the content is already in the conversation, skip to Phase 2 immediately.**
@@ -34,9 +38,9 @@ Otherwise, attempt to locate the task autonomously before asking the user:
 find /sessions -maxdepth 6 -name "TASK.md" 2>/dev/null
 ```
 
-(`/sessions` is the Cowork container path — in Claude Code, skip this probe.)
+(`/sessions` is the Cowork container path — outside Cowork, skip this probe.)
 
-If one or more TASK.md files are found, present the list and use `AskUserQuestion` with buttons (one per found task + "Paste content here") to ask which to audit. If none are found, use `AskUserQuestion` with buttons to ask how the user wants to provide it:
+If one or more TASK.md files are found, present the list and use the current surface’s question tool (or chat if unavailable) (one per found task + "Paste content here") to ask which to audit. If none are found, use the current surface’s question tool (or chat if unavailable) to ask how the user wants to provide it:
 > Buttons: `Paste task instructions` / `Provide file path` / `Provide project folder path`
 
 If files are referenced inside the instructions (e.g., skill files, reference docs, templates), read those too — optimization depends on understanding the full dependency chain.
@@ -108,7 +112,7 @@ Then a prioritized list of findings, highest ROI first. For each:
  
 **Scope note:** Self-improvement infrastructure (IMPROVEMENTS.md, RUN_LOG.md, KNOWLEDGE_SUMMARY.md) is valuable but represents a meaningful addition, not just a cleanup. Present it as an optional enhancement, not a required fix, unless the task already has partial scaffolding.
  
-End with a `AskUserQuestion` with buttons: `All of them` / `Let me pick` / `None — findings only`
+End with a question using the available tool or chat: `All of them` / `Let me pick` / `None — findings only`
 (If "Let me pick": follow up with numbered buttons for each finding.)
  
 ---

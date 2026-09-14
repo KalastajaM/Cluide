@@ -16,6 +16,9 @@ commands.
 
 ### 0. Detect the environment — three regimes, different rules
 
+Detect filesystem and network behavior from the active environment, not the model brand. A ChatGPT source-only project may have no repository access: produce a patch or handover and do not claim a commit. Codex local and cloud workspaces use the regime their actual filesystem supports. Respect active sandbox approvals. At a platform handoff, record branch, commit, changed files, checks, and outstanding work; native session history does not travel with Git.
+
+
 Before any git command, establish which of three regimes applies; everything
 downstream branches on it:
 
@@ -24,7 +27,7 @@ downstream branches on it:
   no-delete workarounds, no network.
 - **Cloud container / any normal clone**: plain git with network; none of the
   mount rituals apply — no unlock dance, real deletes, `git status` is fine.
-- **Plain local machine** (e.g. Claude Code on the user's computer): normal git;
+- **Plain local machine** (e.g. Claude Code or Codex on the user's computer): normal git;
   locks may be held by live processes (see the lock rule below).
 
 Cargo-culting mount rituals into a normal repo pollutes it (`_to_delete/`
@@ -154,6 +157,9 @@ game — removing a secret from pushed history is a different, painful procedure
 the push alone.
 
 ### Ignore stewardship — .gitignore and .claudeignore
+
+`.claudeignore` is a Claude-specific context convention, not a prerequisite for an OpenAI project. On OpenAI use deliberate context selection and actual sandbox/connector controls; do not invent a counterpart ignore filename. Neither ignore file keeps a credential secret from a process already allowed to read it.
+
 
 On first touch of a repo, and whenever a new artifact type appears (build output,
 data snapshot, log, cache), check ignore coverage: OS junk, editor droppings,

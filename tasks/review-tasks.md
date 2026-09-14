@@ -1,7 +1,13 @@
 # Task: Review Tasks Against Guides
 
 > **Cluide maintenance task** — run this whenever guides in this project are updated.
-> `Claude, run tasks/review-tasks.md`
+> `Assistant, run tasks/review-tasks.md`
+
+## Runtime route
+
+Name the target surface and available tools before running steps. Claude-only policy lives in `CLAUDE.md`; Codex uses `AGENTS.md`; dual-platform shares `AGENTS.md` through a thin Claude adapter. References below to editing project rules mean that selected policy, not duplicated adapters. ChatGPT source projects use project instructions and dated sources; without write access, return replacement artifacts and record refresh as pending.
+
+Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
 
 ## Purpose
 Detect which guides have changed since each task was last reviewed, then check whether the affected tasks need updating to stay in sync. Also runs structural drift checks: the bundled guide copies in `skills/ai-assistant-setup/references/` against the root guides, the canonical IMPROVEMENTS template against its one marked inline copy, and guide-set coverage (every guide scored or explicitly not scored, every task in the mapping table, the advertised guide range correct). Where a routing log exists, also calibrates model routing from it (step 4d). Keeps the tasks/ collection accurate as the Cluide guides evolve.
@@ -9,7 +15,7 @@ Detect which guides have changed since each task was last reviewed, then check w
 > **Complementary task:** this keeps the framework in sync when a *guide* changes. Its inverse,
 > `tasks/harvest-from-projects.md`, goes the other way — it harvests proven patterns from your *live
 > projects* back into the guides, tasks, templates, and skills. The third leg, `tasks/review-platform-changes.md`,
-> checks the guides against what Anthropic has shipped. Run the three together as a quarterly
+> checks the guides against what Anthropic and OpenAI have shipped. Run the three together as a quarterly
 > health check.
 
 ---
@@ -54,7 +60,7 @@ Detect which guides have changed since each task was last reviewed, then check w
 
 ## Instructions
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+> **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
 ### Step 1 — Find recently changed guides
 
@@ -109,6 +115,11 @@ For each issue, note:
   Task says:  "[quote from task, or 'missing']"
   Suggested fix: [brief description]
 ```
+
+### Platform acceptance checks
+
+For every changed task, skill or template, exercise the applicable native routes with synthetic fixtures: a Claude Code project, Cowork project, ChatGPT source project, Codex local project and dual-platform project. Confirm audit detection uses both purpose and surface, missing Claude files do not create false OpenAI findings, source-only checks state partial access, and no OpenAI setup writes Claude configuration. Preserve dimension numbers and task filenames. Test shared-policy loading and positive/negative skill triggers per surface; a textual fixture walkthrough is not a live runtime pass. Record live tests as passed/failed/untested and keep untested claims explicit.
+
 
 ### Step 4 — Structural drift checks (run every time, regardless of git history)
 
@@ -201,9 +212,7 @@ from PROJECT_TEMPLATE), review it against the `dispatch` skill's thresholds. Ski
 3. Approved changes are recorded in the project's **Dispatch Overrides** section (`CLAUDE.md`), never in
    the log — the log is evidence, not policy ([Guide 09 §Model-Aware Dispatch](../09_MULTI_TASK_ORCHESTRATION.md)).
 4. Also flag reversion: a log whose bulk archetypes mostly run at top tiers, or a long gap with no rows at
-   all in a project that delegates work, means dispatches are silently inheriting the session model — the
-   policy is being skipped, not consulted. Note it as a finding; the fix is the always-loaded hook line in
-   the project's instructions, not more log discipline.
+   all in a project that delegates work, warrants checking its actual routing policy. Inheriting the configured model is correct on OpenAI unless an authorized alternative was selected; do not flag that as a defect. On Claude, compare with the explicit Claude dispatch override.
 
 Sample sizes below ~10 dispatches per archetype prove nothing; say "insufficient data" rather than
 proposing on noise.

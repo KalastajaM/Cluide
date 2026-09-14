@@ -30,6 +30,23 @@
 
 ---
 
+## Start with the Surface
+
+Before changing prompts, record the product, local/cloud execution, selected project, source revision and available tools. Diagnose the missing layer rather than installing the other platform's mechanism.
+
+| Symptom | Codex / local workspace check | ChatGPT source-project check | Claude check |
+|---|---|---|---|
+| Standing rule missing | Correct workspace? `AGENTS.override.md` shadowing the policy? Fresh session after edit? | Correct project instructions and uploaded policy revision? Source actually accessible? | Loaded `CLAUDE.md`, imports, parent/local rules; Cowork bootstrap and folder access |
+| Skill missing | Native `.agents/skills` location, metadata and selector | Skill/plugin installed for this account, or workflow explicitly supplied | Native `.claude/skills` or app installation |
+| Memory stale | Explicit file read and correct writer/revision | Uploaded/connected fact refreshed; do not assume local-file synchronization | Distinguish native memory from `.auto-memory/` |
+| Connector absent | Effective MCP config, authentication, tool discovery | App grant and tools exposed in this chat | Correct Code/Cowork connector configuration |
+| Scheduled output absent | Actual registered owner, local host awake, app running, last run status | Source availability, task status, authorized output destination | Correct Cowork/Routine owner and execution environment |
+| Duplicate output | Stable job/run key and overlapping writers across both platforms | Same registration inventory | Same registration inventory |
+
+Use one harmless diagnostic: read a known fixture, invoke the workflow explicitly, or inspect one registration. Record the exact failure without printing secrets. A capability that does not exist on the current surface is **unavailable**, not a malformed Claude setup. The sections below retain Claude-specific examples where their commands are named; [Guide 35](./35_DUAL_PLATFORM_PROJECTS.md) links the current native documentation.
+
+---
+
 ## General Debugging Mindset
 
 Before jumping to specific problems, apply this order:
@@ -468,7 +485,7 @@ Sometimes a task or setup has accumulated so many issues that repair takes longe
 
 ---
 
-## Giving This to Claude
+## Giving This to an Assistant
 
 **To diagnose a specific problem:**
 > "Read LAST_RUN.md and TASK.md for [task name]. The problem is: [describe it]. What is causing it and what should I change?"

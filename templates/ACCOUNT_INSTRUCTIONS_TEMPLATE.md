@@ -2,21 +2,22 @@
 
 <!-- harvested: 2026-08-09 from a multi-project maintenance setup -->
 
-A copy-paste starter for the two account-level instruction fields described in
-[Guide 25](../25_PROJECT_INSTRUCTION_LAYERS.md), section *The account layers
-above the project*:
+A copy-paste starter for personal preferences and file-work instructions (Guide 25).
+Choose the actual product; these are proposed texts, not applied account settings.
 
-- **Field 1 - account-wide preferences** (the app's profile preferences):
-  injected into every session, chat and Cowork alike.
-- **Field 2 - Cowork-wide instructions** (Cowork's global instructions
-  setting): injected into every Cowork session, on top of field 1.
+- **Claude:** field 1 is personal preferences; field 2 is Cowork-specific global guidance.
+- **ChatGPT:** adapt field 1 to its custom instructions. Put project-only file rules in the
+  project's instructions with a source bootstrap; do not assume a Cowork-wide field exists.
+- **Codex:** adapt applicable preferences to the user-level `AGENTS.md` discovered by the
+  configured Codex home; keep project rules in that repository's `AGENTS.md`. Inspect existing
+  content and merge additively. Do not overwrite a user's existing account instructions.
 
 How to use it:
 
 1. Fill in field 1's About-me section using its guidance comment, and adapt
    the rules below it - they are one working set proven in production, not
    doctrine. Delete anything you would not want applied to every conversation.
-2. Paste each field into its setting in the app.
+2. Apply only the fields supported by the chosen product; keep a separate mirror per product.
 3. Keep your filled version in a versioned file (Guide 25's mirror pattern)
    and record next to each field the date you last pasted it.
 
@@ -29,7 +30,7 @@ only adds what is specific to agentic file work.
 
 ```
 ## About me
-<!-- Only lines that change how Claude should respond, and only what you
+<!-- Only lines that change how the assistant should respond, and only what you
      are comfortable injecting into every conversation. Common candidates,
      each named by the behavior it buys - delete what doesn't apply:
      - Expertise: where to skip basics; where you want fuller explanation.
@@ -41,7 +42,7 @@ only adds what is specific to agentic file work.
        brevity, sources).
      - Conventions: date formats, units, jurisdiction - only if defaults
        keep being wrong.
-     Not here: task-specific rules (project instructions), facts Claude
+     Not here: task-specific rules (project instructions), facts the assistant
      can read from files, or personal details that carry no behavioral
      signal. Job, country, and name are optional - include them only for
      the behavior they imply, or state the behavior directly instead. -->
@@ -105,7 +106,7 @@ written by a competent human:
   re-asking or restating what is established.
 ```
 
-## Field 2 - Cowork-wide instructions
+## Field 2 - file-work additions (Cowork global; other surfaces scoped as above)
 
 ```
 These apply on top of my personal preferences; do not restate them.
@@ -114,17 +115,25 @@ These apply on top of my personal preferences; do not restate them.
   the relevant files first and interpret from them; ask only if the files
   don't settle it.
 - When running unattended (a scheduled task, or I've said I'll check back
-  later), never block on a clarifying question: take the most reasonable
-  interpretation, state it at the top of the work, and continue.
+  later), never block on a clarifying question: continue authorized, independent work with stated assumptions. If a missing answer affects
+  authority, source validity or a hard-to-reverse action, leave that action pending and report it.
 - For large builds or restructurings, agree scope with me before executing.
   For routine file work, proceed.
 - Deliver file outputs in chat and also save them into the connected project
-  folder unless I say otherwise.
-- Match model tier to task cost. When spawning subagents, designing workflows,
-  or proposing scheduled tasks, use the cheapest tier that does the job
-  reliably: mechanical or bulk work on the light tier, standard work on the
-  mid tier, complex reasoning and high-stakes output on the top tier. You
-  cannot switch the session's own model: if it is clearly mismatched to the
-  task, say so once and continue. Never change an existing scheduled task's
-  model unless I explicitly ask.
+  folder when write access is available. Otherwise label them as drafts, never as saved files.
+- For OpenAI sessions, retain the configured model unless I request a supported
+  alternative; delegate only when the host permits it. Do not translate Claude tiers.
+- For Claude delegation, match the available model tier to the task: mechanical
+  work on a light tier, routine work on a middle tier, and complex or high-stakes
+  work on a capable tier. Check actual model availability before selecting one.
+  Never change an existing scheduled task's model unless I explicitly ask.
 ```
+
+## OpenAI dispatch and verification
+
+For OpenAI sessions, retain the configured model and only delegate when the host permits it;
+do not translate Claude tier names. Keep native memories, credentials and settings separate.
+Read `PROJECT_TEMPLATE/PLATFORM_SETUP.md` for source-loading checks and settings mirrors.
+Product references checked 2026-09-14: [Codex instruction discovery](https://learn.chatgpt.com/docs/agent-configuration/agents-md)
+and [ChatGPT projects](https://help.openai.com/en/articles/10169521-projects-in-chatgpt).
+No account field has been applied or tested by copying this template.

@@ -1,11 +1,11 @@
-# Claude Task Efficiency Guide
+# Assistant Task Efficiency Guide
 
 > How to design and optimize Claude tasks for minimal token consumption.
 > Use as a one-time audit checklist when setting up a new task, or as a periodic optimization pass on an existing one.
 
 > **Companion guides:** This guide covers efficiency (keeping token use low). [Guide 07](./07_TASK_LEARNING_GUIDE.md) covers self-improvement (making the task smarter over time). The ready-to-use template that implements Guide 07 is installed via Guide 07 Part 9.
 
-> **Giving this guide to Claude:**
+> **Giving this guide to an assistant:**
 > "Read 06_TASK_EFFICIENCY_GUIDE.md and audit my existing task at [path/to/TASK.md] for token efficiency. Apply the checklist and propose specific changes."
 >
 > **Faster alternative:** `tasks/audit-task-efficiency.md` runs this checklist end-to-end. `tasks/setup-scheduled-task.md` scaffolds a new task with efficiency patterns built in from the start.
@@ -208,7 +208,7 @@ Use this to roughly estimate per-run cost and identify the highest-leverage impr
 | Each "read every run" file | ~15 tokens/line | |
 | Each external API fetch (full) | 200–2000 tokens | Varies by content size |
 | Each file write (generated output) | ~15 tokens/line | |
-| Script execution | ~50 tokens | Just the bash call + output |
+| Script execution | Depends on call and output size | Keep output compact; this is not the script's CPU or API bill |
 
 **Example:** A 500-line TASK.md costs ~7.5K tokens per run just to load. Splitting it to 200 lines saves ~4.5K per run — which over 50 runs saves 225K tokens.
 
@@ -216,11 +216,21 @@ Use this to roughly estimate per-run cost and identify the highest-leverage impr
 
 ## How Scheduled Tasks Are Triggered
 
-Four mechanisms exist. Choose based on how autonomous the task needs to be.
+Choose the owning execution surface before registering anything. The procedure can be shared, but one job has one active scheduler owner, stable identity, timezone, input revision and output destination. Native registrations stay on that platform. An interval is not a lock: overlapping runs need an atomic claim or an execution service that prevents concurrent writes.
 
 ---
 
-### Option A: Cowork Scheduled Tasks (recommended for production tasks)
+### OpenAI: Scheduled Tasks with Local or Cloud Inputs
+
+Prepare and manually test the task first. In the current OpenAI app, use Scheduled or the exposed scheduling tool to create the registration; CLI and IDE sessions can prepare the workflow but do not provide that management interface. Choose a recurring task in the current chat for a follow-up that needs its context, or a standalone task when each run should start from a saved prompt, following the host's available controls.
+
+Local scheduled work needs its computer on and app running. Web tasks use uploaded/connected sources rather than a persistent local folder. Record which mode owns the job and verify the first run's inputs and saved output. A notification alone does not prove successful execution. Checked 2026-09-14: [OpenAI scheduled tasks](https://learn.chatgpt.com/docs/automations).
+
+For a transfer, pause the old schedule and confirm no run is in flight, test the new owner once with outbound effects disabled, then remove the old registration and activate the new schedule. Keep the same deduplication key across the transfer. Guide 35 (in the Cluide guide set) carries the full handoff.
+
+---
+
+### Option A: Cowork Scheduled Tasks
 
 Cowork's scheduled tasks are a built-in feature: they run on a schedule **independently of any open Claude session** — no session needed, no manual trigger. Since July 2026 they run cloud-side, so they fire even with your computer asleep — except a task that needs local files or apps, which still runs on your computer and needs it awake. When the model is unreachable a run is retried automatically after 5, 15 and 30 minutes. The task form also carries a 1M-context model row for tasks that need one. This is the proper approach for daily digests, automated monitoring tasks, and anything that should run reliably on a fixed schedule.
 

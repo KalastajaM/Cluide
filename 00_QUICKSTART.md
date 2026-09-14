@@ -1,218 +1,132 @@
-# Quickstart: Your First Working Setup in 20 Minutes
+# Quickstart: Your First Working Setup
 
-> Build something real before reading anything else. This guide walks you through creating a working CLAUDE.md and your first skill — step by step, with the exact files you need. You do not need to read the other guides first.
-
-> **What you'll build:** A personal assistant that knows who you are, and a skill that helps you plan your day. No external tools required. Everything runs in a plain text editor and Cowork.
-
----
+Build a small assistant that plans your day from information you supply. Use Claude, ChatGPT, or Codex; the same instructions and sample input should produce the same useful outcome. No calendar connection, native memory, or scheduled job is required.
 
 ## Before You Start
 
-You need two things:
-1. **A text editor** — Windows Notepad, macOS TextEdit, or VS Code all work. You are creating plain `.md` text files.
-2. **Access to Cowork** — the Claude interface where you run your assistant.
+Choose the surface you will actually use:
 
-**Where do the files live?**
+| Surface | Where your project lives | How to supply instructions |
+|---|---|---|
+| Claude Code | An ordinary project folder | Root `CLAUDE.md` imports the shared `AGENTS.md` |
+| Codex | An ordinary project folder opened as the workspace | Root `AGENTS.md` |
+| Claude project / Cowork | Project sources or a connected folder | Project instructions explicitly ask it to read the supplied shared policy |
+| ChatGPT project | Uploaded or connected project sources | Project instructions explicitly ask it to read the supplied shared policy |
 
-Claude reads files from a special folder on your computer:
-- Windows: `C:\Users\[your username]\.claude\`
-- Mac/Linux: `~/.claude/`
+For the last two, access to a source is not proof of write access to the original folder. The [official instruction and project references in Guide 35](./35_DUAL_PLATFORM_PROJECTS.md) explain the differences. Use a text editor for local files, or ask the assistant to produce files you can add to the project.
 
-If this folder doesn't exist yet, create it. Everything you build goes inside it.
+## Step 1: Create the Shared Policy
 
----
-
-## Step 1: Create Your CLAUDE.md (5 minutes)
-
-`CLAUDE.md` is the instruction file Claude loads at the start of every session. It tells Claude who you are and how you want it to behave.
-
-**Create this file at:** `.claude/CLAUDE.md`
-
-Here is a starting template — replace the placeholders with your own details:
+Create a folder named `My Assistant`. Add `AGENTS.md` at its root, replacing the placeholders:
 
 ```markdown
-## Who I Am
-- I am [your name], working as [your role] at [your organisation]
-- Based in [your city], timezone [your timezone, e.g. Europe/Helsinki]
-- I communicate primarily in [your language]; respond in English unless I write in another language
-
-## How I Work
-- I prefer concise, structured responses — use bullet points and headers
-- When I ask for a draft (email, message, document), produce it directly without commentary
-- When something is unclear, ask one clarifying question before proceeding
-
-## Standing Rules
-- Never add unnecessary caveats or disclaimers
-- If you are unsure about a fact, say so rather than guessing
-```
-
-**Keep it short.** 15–25 lines is ideal. Every line you add is loaded into every session — make each one count.
-
-> **Tip:** The more specific you are, the better the results. "I work in enterprise software sales, my main contacts are procurement leads and IT directors" is more useful than "I work in tech."
-
----
-
-## Step 2: Create Your First Skill (10 minutes)
-
-A skill is a reusable instruction set for a specific task. Once it exists, you trigger it by describing what you need — Claude recognises the description and follows the skill instructions automatically.
-
-**You will build:** A "plan my day" skill that takes your list of priorities and returns a structured daily schedule.
-
-**First, create the folder:**
-```
-.claude/skills/plan-my-day/
-```
-
-**Then create the skill file at:** `.claude/skills/plan-my-day/SKILL.md`
-
-```markdown
----
-name: plan-my-day
-description: >
-  Use this skill when the user wants to plan their day, prioritise tasks,
-  structure their schedule, or organise what they need to get done today.
-  Triggers on phrases like "help me plan today", "what should I focus on",
-  "let's structure my day", or "I need to prioritise".
----
+# My Assistant
 
 ## Purpose
-Help the user produce a clear, actionable daily plan from a list of tasks,
-meetings, and priorities. The output is a structured schedule they can
-follow for the rest of the day.
+Help me organise work from the information I supply.
+
+## Who I Am
+- Name: [your name]
+- Role: [your role]
+- Timezone: [your timezone, e.g. Europe/Helsinki]
+
+## Working Rules
+- Use concise English unless I write in another language.
+- Distinguish supplied facts from assumptions; do not invent calendar access.
+- Draft a plan when I ask. Do not send messages or create events from a planning request.
+- Read plan-my-day/SKILL.md when I ask to plan my day.
+- Tell me whether output was saved to my project or only drafted in chat.
+```
+
+For Claude Code, add a root `CLAUDE.md`:
+
+```markdown
+# Claude Entry Point
+@AGENTS.md
+
+If this interface does not resolve imports, read AGENTS.md before working.
+```
+
+For a conversational project, supply `AGENTS.md` as a project source and put this in its project instructions:
+
+> Read the supplied AGENTS.md before working. If it is unavailable, tell me what is missing. Follow the shared rules and use only information and tools available in this conversation.
+
+Keep a note of the source revision or upload date. Replacing a repository file does not automatically replace an uploaded copy. Start a new session after changing the policy and verify the rules it received.
+
+## Step 2: Create Your First Reusable Workflow
+
+Create `plan-my-day/SKILL.md` beside `AGENTS.md`. This starter uses an explicit read instruction, so it works even before a native skill is installed.
+
+````markdown
+---
+name: plan-my-day
+description: Plan a day from supplied tasks, meetings, deadlines, and available hours. Use for "plan my day" or "prioritise today's work"; not for booking events or sending messages.
+---
 
 ## Workflow
-1. Read everything the user has provided: tasks, meetings, deadlines, and
-   available hours if mentioned
-2. Identify the 1–3 most important items (time-sensitive or high-impact)
-3. Group remaining tasks into: Focus blocks, Quick tasks (<15 min), and
-   Defer (can wait until tomorrow)
-4. Produce the plan in the output format below
+1. Read the supplied tasks, fixed meetings, deadlines, and available hours.
+2. Keep fixed meetings at their stated times. Identify the 1–3 priorities.
+3. Fit focus work around meetings. Do not invent duration or availability;
+   label suggested durations and flag overload.
+4. Group short tasks together and defer lower-priority work if needed.
+5. Return the plan below. Do not create events or send messages.
 
-## Output Format
-```
-## Today's Plan — [Day, Date]
-
-### Must Do
-- [Top priority item]
-- [Second priority if applicable]
-
-### Focus Blocks
-- [Time or slot]: [Task]
-- [Time or slot]: [Task]
-
-### Quick Tasks
-- [Task] (~10 min)
-- [Task] (~5 min)
-
-### Defer
-- [Task] → tomorrow or [specific date]
-
-### Notes
-[Any observations about workload, conflicts, or suggestions]
+## Output
+```text
+Today's Plan — [supplied date, or date unspecified]
+Must do: [highest priorities]
+Fixed meetings: [times as supplied]
+Focus blocks: [suggested work and times, if hours are known]
+Quick tasks: [short items]
+Defer: [items that can wait]
+Assumptions or conflicts: [only if needed]
 ```
 
 ## Edge Cases
-- If the user provides no time information, skip time slots and organise
-  by priority only
-- If the list is very short (1–2 items), skip grouping and just confirm
-  the priorities with a brief comment
-- If there are more than 10 items, flag potential overload and suggest
-  which items to move to tomorrow
-```
+- With no available hours, order priorities without inventing times.
+- With 1–2 tasks, keep the plan brief.
+- When asked to book or send, explain that this workflow only drafts;
+  use a separately authorised tool workflow for the external action.
+````
 
----
+For ChatGPT or Claude project sources, supply this file too. For local work, keep it in the folder. Native installation is optional: [Guide 03](./03_SKILLS.md) gives separately scoped installation steps. Do not assume a folder uploaded as a source is an installed skill.
 
-## Step 3: Test It in Cowork (5 minutes)
+## Step 3: Test a Fresh Session
 
-Open a **new Cowork conversation** and try this:
+First ask:
 
-> "Help me plan my day. I have: a 10am team meeting, three client emails to reply to, a proposal draft that's due tomorrow, and a quick call at 3pm."
+> Which shared policy did you read? What should happen if I ask you to book a meeting?
 
-Claude should recognise the trigger phrases and apply your skill automatically. You will see the structured output format from your SKILL.md.
+Then use this fixed input on each surface you intend to support:
 
-**If it doesn't work:**
-- Check that the skill file is at exactly `.claude/skills/plan-my-day/SKILL.md`
-- Make sure the file was saved as plain text (not `.md.txt` or a Word document)
-- Reload skills: in Claude Code, `/reload-skills` (or a SessionStart hook with `reloadSkills: true`) picks up skill changes without a restart; in Cowork — and for newly created skill folders — start a fresh session
-- See [Guide 17 — Troubleshooting](./17_TROUBLESHOOTING.md) for more help
+> Read plan-my-day/SKILL.md and plan my day for 14 September 2026. I work 09:00–17:00 Europe/Helsinki. Fixed meetings are 10:00–10:30 and 15:00–15:15. I need to reply to three client emails and draft a proposal due tomorrow. Draft only; don't contact anyone or create events.
 
----
+Check that both meetings retain their times, the proposal is prioritised, suggested durations are labelled, and no external actions occur. Repeat with “I have two tasks but no available hours”; the assistant should avoid invented time slots.
 
-## Step 4 (Optional): Add a Scheduled Task
+Record `surface / model if shown / source revision / date / pass or fail / observed result`. A written check is not a recorded pass. If you cannot run a surface, mark it **untested**. The project template’s behavior cases (`templates/PROJECT_TEMPLATE/tests/behaviour/README.md` in the Cluide checkout) extend this check to source freshness, unavailable tools, output delivery, handoffs, and schedules.
 
-A scheduled task runs automatically — without you asking — on a schedule you define. This is optional for your first setup; you can add it later.
+## Step 4 (Optional): Schedule Only After the Manual Run Works
 
-Here is the minimal structure for a weekly planning task. This example runs every Monday morning and asks you to review the week ahead:
+Use `tasks/setup-scheduled-task.md` to choose an available scheduler. First provide all inputs in a file or a connected source that the scheduled run can actually read; an unattended task cannot rely on you answering an interview midway through its run.
 
-**Create the folder:**
-```
-.claude/tasks/weekly-planner/
-```
-
-**Create the task file at:** `.claude/tasks/weekly-planner/TASK.md`
-
-```markdown
-# Weekly Planner Task
-
-## Purpose
-Produce a Monday morning summary to start the week focused.
-Run this task every Monday before 9am.
-
-## Steps
-1. Check today's date and calculate the current week number
-2. Ask the user: "What are your top 3 priorities for this week?"
-3. Produce a weekly plan in the same format as the plan-my-day skill,
-   but structured by day (Mon–Fri) rather than time blocks
-
-## Output
-Write the weekly plan as a clear message the user can read and act on.
-Save a one-line summary to LAST_RUN.md with the date and top priority.
-
-## Run log
-- Read LAST_RUN.md at the start of each run to see when it last ran
-- Write LAST_RUN.md at the end of each run with the date and a one-line summary
-```
-
-**To schedule it:** Create a scheduled task pointing at this file — use Cowork's scheduled-tasks feature by asking Claude in natural language (e.g. "schedule this task to run every Monday at 8am"). The alternative mechanism, SessionStart hooks, runs things when you open a session rather than on a clock — see [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md).
-
----
+For a weekly planner, record a stable job ID such as `weekly-plan`, one scheduler owner, your timezone, the weekly time slot, the input source, and the output destination. Check existing registrations on both platforms before adding one. Register on one platform only, verify the next run, and record its native registration ID. If no scheduler is available, keep the workflow manual. Merely creating `TASK.md` does not register anything.
 
 ## What to Build Next
 
-You now have the foundation. Here is the natural next step for each direction:
-
-| If you want to... | Read next |
+| If you want to… | Read next |
 |---|---|
-| Make the assistant smarter about who you are | [Guide 04 — Memory & Profile](./04_MEMORY_AND_PROFILE.md) |
-| Bring your setup over from another assistant | [Guide 34 — Importing From Other Assistants](./34_IMPORTING_FROM_OTHER_ASSISTANTS.md) |
-| Use the same project from ChatGPT or Codex as well | [Guide 35 — Dual-Platform Projects](./35_DUAL_PLATFORM_PROJECTS.md) |
-| Build skills for email, calendar, and Teams | [Guide 05 — MCP Servers](./05_MCP_SERVERS.md) |
-| Create more skills (better descriptions, edge cases) | [Guide 03 — Skills](./03_SKILLS.md) |
-| Make the assistant learn from each task run | [Guide 07 — Task Self-Improvement](./07_TASK_LEARNING_GUIDE.md) |
-| See all best practices in one place | [Guide 16 — Best Practices](./16_BEST_PRACTICES.md) |
-
----
+| Improve standing instructions | [01 — Project Instructions](./01_CLAUDE_MD.md) |
+| Install the workflow as a native skill | [03 — Skills](./03_SKILLS.md) |
+| Keep shared knowledge between sessions | [04 — Memory & Profile](./04_MEMORY_AND_PROFILE.md) |
+| Connect email or calendar tools | [05 — MCP Servers](./05_MCP_SERVERS.md) |
+| Let recurring work improve from evidence | [07 — Task Learning](./07_TASK_LEARNING_GUIDE.md) |
+| Move from another assistant | [34 — Importing](./34_IMPORTING_FROM_OTHER_ASSISTANTS.md) |
+| Keep both platforms working on one project | [35 — Dual-Platform Projects](./35_DUAL_PLATFORM_PROJECTS.md) |
 
 ## Troubleshooting
 
-**"Claude isn't applying my CLAUDE.md"**
-Make sure the file is at `.claude/CLAUDE.md` (not inside a project subfolder). Start a fresh Cowork conversation — CLAUDE.md changes take effect in new sessions only.
+If rules are missing, check the current folder or supplied source revision, then start a fresh session. If a native skill does not trigger, explicitly ask it to read the workflow first; if that works, investigate installation and discovery using Guide 03. If the assistant cannot read a local folder, upload the required sources or use a local workspace. [Guide 17](./17_TROUBLESHOOTING.md) covers the full diagnostic path.
 
-**"The skill isn't triggering"**
-The description field in the skill frontmatter controls when it triggers. Make sure it includes the phrases you actually use. If you say "can you plan my day?" and the description only mentions "organise tasks", Claude may not match them. Edit the description to include your natural phrasing.
+## Giving This to an Assistant
 
-**"The output format is wrong"**
-The output format section in SKILL.md should contain a code block showing exactly what the output should look like — including headers, bullet style, and field names. Vague descriptions like "produce a structured plan" are much weaker than a concrete template.
-
-**Something else isn't working?**
-See [Guide 17 — Troubleshooting](./17_TROUBLESHOOTING.md) for a full problem-by-problem guide.
-
----
-
-## Giving This to Claude
-
-You can ask Claude to build this setup for you instead of doing it manually:
-
-> "Read 00_QUICKSTART.md. Build the CLAUDE.md and plan-my-day skill it describes for me. Ask me for my name, role, timezone, and any preferences before writing the files."
-
-> "I followed 00_QUICKSTART.md but my skill isn't triggering. Here is my SKILL.md: [paste it]. What's wrong?"
+> Read 00_QUICKSTART.md and build its small planning setup for my chosen surface. Ask only for missing identity, timezone, and preference details. Create the files or provide them for upload, then walk through the fresh-session checks. Report what was actually tested.

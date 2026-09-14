@@ -4,7 +4,7 @@
 
 > **Companion guides:** [Guide 23](./23_MULTI_PROJECT_SETUPS.md) owns the ownership registry that §3 transfers from. [Guide 04](./04_MEMORY_AND_PROFILE.md) is the source for which memory layer lives where (§5 depends on it). [Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md)'s mirror block is what makes the app-side fields recoverable at all. [Guide 21](./21_COMPANY_POLICIES.md) is the mechanism by which an employer's policies, including any about what leaves with you, reach a session. [Guide 12](./12_SECURITY.md) §1 covers revoking credentials. [Guide 11](./11_GIT_INTEGRATION.md) is the archive mechanism. `tasks/retire-project.md` runs §2–§4; `tasks/relocate-project.md` is the sibling procedure for a project that continues elsewhere.
 
-> **Giving this guide to Claude:**
+> **Giving this guide to an assistant:**
 > "Read 33_RETIRING_AND_LEAVING.md. I want to retire the project `<name>`. Run the §2 inventory read-only and show me everything that still points at it, grouped by layer, before proposing anything."
 
 ---
@@ -26,17 +26,27 @@ Read-only, before any decision, and by layer — because the layers a naive sear
 | Layer | Where to look | Why it matters at an ending |
 |---|---|---|
 | **Other projects** | `grep -rIn "<project name>"` across the projects root, plus the coordinator's registry if you run one ([Guide 23](./23_MULTI_PROJECT_SETUPS.md)) | Cross-project links become dead pointers; a registry row becomes an owner that never updates |
-| **Scheduled tasks** | Every task definition and every registration, wherever your surface keeps them — Cowork's task registrations, Claude Code Routines, hooks that fire on a schedule | A disabled task is a stale reference with a switch; someone flips it |
+| **Scheduled tasks** | Every task definition and every registration, wherever your surface keeps them — Cowork registrations, Claude Code Routines, OpenAI Scheduled tasks/automations, and external schedulers or hooks | A disabled task is a stale reference with a switch; someone flips it |
 | **Orchestration** | [Guide 09](./09_MULTI_TASK_ORCHESTRATION.md) chains and shared-state files that named this project's task as a stage | The downstream stage waits for a handoff that never comes, or reads a file that stopped updating |
-| **Memory** | Account memory (Settings → Memory); the Cowork project's own per-project memory store; Claude Code auto memory; `.auto-memory/` in *other* projects; profile files in tasks | Present-tense lines about a dead project steer future sessions; this is the layer that outlives everything else, and two of its stores are app-side and invisible to a grep |
+| **Memory** | Account memory (Settings → Memory); each Claude or ChatGPT project's native memory; Claude Code and Codex native memory where enabled; `.auto-memory/` in *other* projects; profile files in tasks | Present-tense lines about a dead project steer future sessions; this is the layer that outlives everything else, and two of its stores are app-side and invisible to a grep |
 | **Second brain** | Notes and index entries that link into the project ([Guide 28](./28_SECOND_BRAIN.md)) | The links stay resolvable and stop being true |
-| **App-side fields** | The project's description and instructions in the app; its row in `spaces.json` ([Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md)) | The description is injected as identity into any session that opens the project, retired or not |
+| **App-side fields** | Each platform's project instructions/identity, accessible source copies and per-surface mirror ([Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md)) | A stale identity or uploaded policy can make a retired project appear current |
 | **Artifacts** | Published pages and the generators that feed them | A dashboard fed by a retired task renders stale data with no error, indefinitely |
 | **Credentials and grants** | Connector authorisations, app grants for computer use, tokens in a keychain or `.env` scoped to this project | A grant nobody uses is a grant nobody watches ([Guide 12](./12_SECURITY.md)) |
-| **Claude Code state** | `~/.claude/projects/`: transcripts under a path-derived name, auto memory under a repository-derived one ([Guide 04](./04_MEMORY_AND_PROFILE.md)) — locate them separately | Orphaned under a name nothing resolves; can be collected without warning |
+| **Native coding-agent state** | `~/.claude/projects/`: transcripts under a path-derived name, auto memory under a repository-derived one ([Guide 04](./04_MEMORY_AND_PROFILE.md)) — locate them separately; inspect Codex state through its supported controls without guessing corresponding Claude paths | Orphaned under a name nothing resolves; can be collected without warning |
 | **Git** | The remote, any open branches, any other repo that submodules or references it | A public remote for a retired project keeps publishing whatever was last pushed |
 
 Classify every hit the way `relocate-project.md` does: a mention in a dated report is history and stays; a mention in a task definition is load-bearing and must go; a mention in another project's CLAUDE.md is a pointer that needs a new target or a removal. The classification is the work; the edits are mechanical afterwards.
+
+---
+
+## Inventory Both Platforms Before Freezing Either
+
+Use the capability and scheduler-owner record from [Guide 35](./35_DUAL_PLATFORM_PROJECTS.md) as the starting inventory, then inspect live registrations and grants on each platform. A file search cannot find an account-side automation or stale ChatGPT upload. Record inaccessible stores as unverified, with who must close them out.
+
+Stop active writers and pause recurring execution before transferring accepted state. Delete obsolete registrations after the successor has passed a controlled test; paused registrations are a temporary migration control, not the final retirement state. Refresh or remove uploaded-source copies and app bootstraps that still describe the project as current.
+
+Keep exported private history and native memory out of public repositories. Retiring a local checkout does not close cloud projects, revoke Apps grants or delete schedules. Verify each layer explicitly and report what remains outstanding rather than declaring retirement from an archived folder alone.
 
 ---
 

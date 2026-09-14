@@ -5,8 +5,16 @@
 
 > **Companion guides:** [Guide 01](./01_CLAUDE_MD.md) covers CLAUDE.md — the foundation these practices build on. [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) covers task efficiency. [Guide 10](./10_COST_PERFORMANCE.md) covers cost monitoring. [Guide 13](./13_DEV_EXECUTION_WORKFLOW.md) covers the development workflow. [Guide 27](./27_INDEPENDENT_JUDGMENT.md) covers the limit on several practices below: a review by the session that produced the work is not a second opinion.
 
-> **Giving this guide to Claude:**
+> **Giving this guide to an assistant:**
 > "Read 16_BEST_PRACTICES.md and review how I'm currently working with you. Name any practices I'm not following and suggest how to apply them — if I'm already following them, say so rather than finding a fixed number of gaps. Tell me which ones are working."
+
+---
+
+## One Practice, Several Execution Surfaces
+
+Use these habits with Claude, ChatGPT and Codex. Keep the operating contract in one shared policy, verify its native entry point, and treat source access as something to prove. Before a task, identify whether the assistant can edit the authored files or only return a proposed result from uploaded sources.
+
+After a change, refresh the source or reload the session and check the intended behaviour. At a platform handoff, pass the accepted revision, changed files, validation and outstanding work. Keep native memory, permissions and registrations separate. A recurring job has one scheduler owner, and a shared file has one writer at a time. [Guide 35](./35_DUAL_PLATFORM_PROJECTS.md) ties these practices together.
 
 ---
 
@@ -16,7 +24,7 @@
 The default behaviour of AI assistants is to assume and proceed. If your instruction is ambiguous, it's cheaper to spend 10 seconds clarifying than to redirect after 5 minutes of output in the wrong direction. Tell Claude explicitly: "If anything is unclear, ask before proceeding."
 
 **Use buttons for bounded choices.**
-When asking a clarifying question with a defined set of options — tone, priority, format, approve/reject — use the `AskUserQuestion` tool with buttons. Reserve plain text for genuinely open-ended questions (see [Guide 02](./02_PROMPTING_BASICS.md)).
+Use a native question dialog when the current host exposes one for that purpose. `AskUserQuestion` is a Claude tool name, not an OpenAI instruction. Otherwise ask one concise text question. Existing authorization carries forward; do not add another confirmation merely because a button is available (see [Guide 20](./20_INTERACTIVE_PROMPTING.md)).
 
 **Show an example, don't just describe it.**
 Paste an email you wrote and say "write like this." Show a report you liked and say "use this structure." Output quality from a concrete example consistently beats output from a verbal description. When you have a good example, use it (see [Guide 02](./02_PROMPTING_BASICS.md)).
@@ -166,4 +174,3 @@ A setup that grows without pruning becomes a liability. These practices keep thi
 20. Open a file before citing it — never attribute content you haven't read this session
 21. One folder per tracked entity, the same artifact set in each, indexed by a central tracker
 22. Give inbound material one intake folder and keep it empty: file by content rather than filename, propose destinations before moving, archive rather than delete
-

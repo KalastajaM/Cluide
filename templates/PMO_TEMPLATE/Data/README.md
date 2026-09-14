@@ -18,4 +18,4 @@
 
 - Source files in this folder feed into the financial model and any analytical deliverables.
 - When a new version of a source file is added, update the table above and note any material differences from the previous version.
-- If Claude produces analysis based on a file in this folder, it should cite which file and version it used.
+- If the assistant produces analysis based on a file in this folder, it should cite which file and version it used.

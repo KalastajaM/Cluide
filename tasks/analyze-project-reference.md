@@ -9,19 +9,20 @@
 
 ## § Project-type detection
 
-Classify the target from what's present. The shape decides which dimensions apply.
+Record **surface(s)** and **purpose** separately. Confirm the surface from the runtime, project settings or user; a file suggests intent but does not establish availability.
 
-| Signal | Points to |
-|--------|-----------|
-| `.claude/` folder, `.claude/settings.json`, `.claude/skills/`, PreToolUse/SessionStart hooks | **Claude Code** |
-| Cowork scheduled-tasks (task folders with `TASK.md` + `IMPROVEMENTS.md` / `RUN_LOG.md`), no `.claude/settings.json` | **Cowork** |
-| Both of the above | **Hybrid** (built in Claude Code, run in Cowork — the Guide 13 split) |
-| A single small app + `CLAUDE.md` with a helper index / domain invariant, tight permission allowlist | **Helper-app** (Guide 22) |
-| `Knowledge/` or a wiki structure with an `INDEX.md` + sources + schema | **Knowledge-base / wiki** (Guide 15) |
-| `AGENTS.md` beside `CLAUDE.md`, a Claude adapter that imports a shared policy file, or a setup page naming ChatGPT or Codex surfaces | **Dual-platform** (Guide 35) — a secondary shape; not the same as Claude Code plus Cowork |
+| Evidence | Surface or purpose |
+|---|---|
+| Claude Code runtime and `.claude/` configuration | Claude Code |
+| Cowork project settings and scheduler registrations | Cowork; `TASK.md` alone is not a Cowork signal |
+| ChatGPT project instructions and uploaded/linked source inventory | ChatGPT source project; record source revision and available write tools |
+| Codex runtime, `AGENTS.md`, `.agents/skills/`, or verified Codex configuration | Codex local; establish whether the checkout is writable |
+| Both Claude Code and Cowork are confirmed | Claude Code + Cowork (one platform) |
+| At least one Claude surface and one OpenAI surface are confirmed | Dual-platform (Guide 35) |
+| A small local app with invariants and a helper index | Helper-app purpose (Guide 22), independent of surface |
+| Knowledge index, source layer and schema | Knowledge-base/wiki purpose (Guide 15), independent of surface |
 
-A project can be more than one shape. Record the primary shape plus any secondary one — both affect
-applicability (e.g. a hybrid that's also a knowledge base gets the wiki dimension too).
+Inventory capabilities separately: instruction loader, skills, shell/files, connectors, enforced permissions, scheduler and metrics. Mark each **verified counterpart**, **no verified counterpart**, or **untested**, with evidence. An unavailable optional mechanism is N/A; an unavailable mechanism required for the intended workflow is a capability gap, not a demand to install Claude configuration. Unread app fields or sources are unverified coverage, never healthy by default.
 
 ---
 
@@ -41,16 +42,16 @@ threshold copied here goes stale silently, because nothing breaks when the audit
 > dimensions there are — should be read from here rather than copied into the consumer.
 
 ### 1. Project type & structure — guides 13, 18, 24 → `onboard-project` / `reorganize-project`
-- **Healthy:** definition files and state files live together and both tools can read them; the layout matches the Guide 18 "full picture" for the project's type; definitions, state and outputs each have a home, and the layout has held up as the project grew (Guide 24); where material reaches the project outside a chat, there is one intake folder and it is empty at rest.
-- **Checks:** is there a coherent `.claude/` (or Cowork task) layout? Are state files (`RUN_LOG.md`, `IMPROVEMENTS.md`) co-located with definitions? Any orphaned or duplicated config? Are generated outputs accumulating at the root instead of in their own folder? Do recurring files of the same kind share a format? Does inbound material that arrives outside a chat (scans, exports, downloads, files handed over by someone else) have a named landing place, or is it accumulating at the root? If there is an intake folder, does it have permanent residents, and does `CLAUDE.md` say what Claude may file where? **N/A** for the intake checks where every input arrives through a session. If a restructure is warranted, recommend `reorganize-project` rather than ad-hoc moves.
+- **Healthy:** definition files and state files live together and the intended surfaces can read them; the layout matches the Guide 18 "full picture" for the project's type; definitions, state and outputs each have a home, and the layout has held up as the project grew (Guide 24); where material reaches the project outside a chat, there is one intake folder and it is empty at rest.
+- **Checks:** does the layout match the confirmed runtime and its native configuration/source model? Are state files (`RUN_LOG.md`, `IMPROVEMENTS.md`) co-located with definitions? Any orphaned or duplicated config? Are generated outputs accumulating at the root instead of in their own folder? Do recurring files of the same kind share a format? Does inbound material that arrives outside a chat (scans, exports, downloads, files handed over by someone else) have a named landing place, or is it accumulating at the root? If there is an intake folder, does it have permanent residents, and does the selected shared policy say what the assistant may file where? **N/A** for the intake checks where every input arrives through a session. If a restructure is warranted, recommend `reorganize-project` rather than ad-hoc moves.
 
-### 2. CLAUDE.md quality — guides 01, 16, 02 → `setup-claude-md` / `audit-claude-md`
+### 2. Project instruction quality — guides 01, 16, 02 → `setup-claude-md` / `audit-claude-md`
 - **Healthy:** present, lean, sectioned, and current — `audit-claude-md.md` holds the length target and the required sections.
-- **Checks:** run `audit-claude-md.md`'s checklist read-only. Flag a missing or empty file, bloat against its stated target, missing core sections, rules contradicted by observed behaviour, and vague instructions that should be examples (Guide 02).
+- **Checks:** run `audit-claude-md.md`'s checklist read-only. Flag a missing or empty native instruction target or project bootstrap, bloat against its stated target, missing core sections, rules contradicted by observed behaviour, and vague instructions that should be examples (Guide 02).
 
 ### 3. Skills — guides 03, 02 → `setup-skill` / `audit-skill`
-- **Healthy:** each skill has a trigger-quality `description` (concrete phrases), a complete workflow, a specified output format, named tools, and edge-case handling. A skill with a hard "never do X" constraint enforces it with an `allowed-tools` allowlist rather than trusting the prose.
-- **Checks:** weak/generic descriptions that won't trigger; missing output format; unnamed tools; no edge cases; skill that should be a task (or vice-versa, per Guide 03). Any skill whose constraints say NEVER write / send / run, with no `allowed-tools` line to make it so (Guide 03, optional frontmatter; Guide 12 for why it matters)?
+- **Healthy:** each skill has a trigger-quality `description` (concrete phrases), a complete workflow, a specified output format, named tools, and edge-case handling. Hard prohibitions are backed by actual runtime permissions or restricted connector scopes; metadata alone is not proof of denial.
+- **Checks:** weak/generic descriptions that won't trigger; missing output format; unnamed tools; no edge cases; skill that should be a task (or vice-versa, per Guide 03). Check native discovery and supported metadata for the declared surface. For prohibitions, inspect actual tool grants and sandbox/approval controls; never require Claude frontmatter for Codex or source-only ChatGPT.
 
 ### 4. Memory & profile — guides 04, 14 → `setup-memory` / `audit-memory`
 - **Healthy:** one of the three layers (native memory, `.auto-memory/`, or profile files) is in place where cross-session persistence is needed, and it is the *right* one — scheduled tasks use `.auto-memory/` or profiles, never native memory (Guide 04). `audit-memory.md` holds the size targets and the per-layer checks.
@@ -66,7 +67,7 @@ threshold copied here goes stale silently, because nothing breaks when the audit
 
 ### 7. Cost & performance — guide 10 → `audit-cost`
 - **Healthy:** per-run metrics captured, model tier matches the work, file budgets respected, no cost spikes. `audit-cost.md` holds the budgets, the tier table and the current pricing pointer.
-- **Checks:** run `audit-cost.md` read-only. Flag the absence of any run metrics, an over-tier model for mechanical work, expensive steps with no triage, and unbounded always-loaded files. Do not quote a model name or a price from memory — the audit task reads them from Guide 10, which reads them from anthropic.com.
+- **Checks:** run `audit-cost.md` read-only. Flag the absence of any run metrics, an over-tier model for mechanical work, expensive steps with no triage, and unbounded always-loaded files. Do not quote a model name or a price from memory — the audit task reads them from Guide 10, which checks the relevant vendor’s official sources; distinguish API cost from subscription allowance.
 
 ### 8. Orchestration — guide 09 → `setup-orchestration`
 - **Healthy:** multiple coordinated tasks use shared state with `updated_at`, clear ownership, freshness/skip handling.
@@ -77,24 +78,24 @@ threshold copied here goes stale silently, because nothing breaks when the audit
 - **Checks:** skills referencing tools from unconfigured servers? Over-broad server scope? Credentials in the wrong place (see Security)?
 
 ### 10. Security — guide 12 → `setup-security` / `security-review` skill
-- **Healthy:** no committed secrets, MCP servers trust-evaluated, PreToolUse guard hook where Claude runs bash, session-data hygiene, prompt-injection awareness in autonomous tasks.
-- **Checks:** grep for credential patterns (report **location only**, never values); permission breadth; missing guard hook on a bash-running project; autonomous task handling untrusted input without guardrails. For a deeper pass, recommend the `security-review` skill.
+- **Healthy:** no committed secrets, MCP servers trust-evaluated, effective least-privilege sandbox, approval and connector controls for each executing surface, session-data hygiene, prompt-injection awareness in autonomous tasks.
+- **Checks:** grep for credential patterns (report **location only**, never values); permission breadth; unrestricted shell or network access without a justified permission policy; autonomous task handling untrusted input without guardrails. For a deeper pass, recommend the `security-review` skill.
 
 ### 11. Git & ignore hygiene — guide 11 → `setup-github` / `setup-ignore-hygiene` / `audit-file-hygiene` / `git-guru` skill
-- **Healthy:** `.gitignore` excludes run logs / outputs / personal data; `.claudeignore` excludes large generated context; tracked files that should be ignored are untracked; the working tree is free of OS junk, lock/temp files, and duplicate families. `setup-ignore-hygiene.md` owns the ignore-pattern list; `audit-file-hygiene.md` owns the clutter checks.
-- **Checks:** run `audit-file-hygiene.md`'s six checks read-only for the working-tree half, and `setup-ignore-hygiene.md`'s audit step for the ignore-file half. Flag missing ignore files, run logs or secrets tracked, personal-data files committed, an ignore rule covering one artifact but not its near-identical sibling, and anything gitignored but not claudeignored that still loads as context. For ongoing git operations and repo-flow problems (stale branches, sync drift, missing repo profile), the fix is installing and running the `git-guru` skill.
+- **Healthy:** `.gitignore` excludes run logs / outputs / personal data; context-loading rules exclude large generated content; `.claudeignore` is only a Claude advisory convention; tracked files that should be ignored are untracked; the working tree is free of OS junk, lock/temp files, and duplicate families. `setup-ignore-hygiene.md` owns the ignore-pattern list; `audit-file-hygiene.md` owns the clutter checks.
+- **Checks:** run `audit-file-hygiene.md`'s six checks read-only for the working-tree half, and `setup-ignore-hygiene.md`'s audit step for the ignore-file half. Flag a missing `.gitignore` where git is used, run logs or secrets tracked, personal-data files committed, an ignore rule covering one artifact but not its near-identical sibling, and unnecessary generated material actually loaded as context; never require `.claudeignore` on OpenAI. For ongoing git operations and repo-flow problems (stale branches, sync drift, missing repo profile), the fix is installing and running the `git-guru` skill.
 
 ### 12. Output formatting — guide 19
 - **Healthy:** user-facing output has a specified, consistent format; standalone reports use the self-contained HTML skeleton.
 - **Checks:** tasks/skills producing wall-of-text output? A briefing or dashboard that would read better against Guide 19's HTML skeleton?
 
 ### 13. Interactive prompting, context scoping & independent judgment — guides 20, 26, 27 → `review-protocol` skill / guidance
-- **Healthy:** tasks/skills use `AskUserQuestion` for fixed-option choices, `@` references, and plan-mode-style review where it helps; the project is explicit about what a session needs loaded for a given kind of work, and review passes that should be blind are run in a session that has not already seen the material (Guide 26). Where the project has a review or second-opinion workflow, it has Claude commit findings in writing before the operator states their own view, and does not read agreement between two same-prompt runs as confirmation (Guide 27).
+- **Healthy:** tasks/skills use available runtime question tools or concise chat for choices, `@` references, and plan-mode-style review where it helps; the project is explicit about what a session needs loaded for a given kind of work, and review passes that should be blind are run in a session that has not already seen the material (Guide 26). Where the project has a review or second-opinion workflow, it has the assistant commit findings in writing before the operator states their own view, and does not read agreement between two same-prompt runs as confirmation (Guide 27).
 - **Checks:** fixed-option decisions asked as free text? No statement anywhere of what a session should have mounted or read for a given workflow? A one-shot prompt designed and executed in the same session that produced it, where a clean run was the point? A review skill or task that invites the operator's own view up front, or a second-opinion step that reruns one prompt and treats the matching answer as corroboration (Guide 27)? For a project that reviews its own work with no protocol at all, the fix is installing the `review-protocol` skill; otherwise note as LOW-priority guidance.
 
 ### 14. Company policies — guide 21 → `setup-policies` / `policies-validator` skill
 - **Healthy (only if the org has policies):** tiered enforcement (T1 block / T2 alert / T3 guidance) wired via the validator skill, policy content kept out of the repo.
-- **Checks:** org policies that Claude should honour but doesn't? Policy text pasted into `CLAUDE.md` instead of referenced? **N/A** if no org policies apply.
+- **Checks:** org policies that the assistant should honour but doesn't? Policy text pasted into the shared policy instead of referenced? **N/A** if no org policies apply.
 
 ### 15. Personal data layer — guide 14 → `setup-data-layer`
 - **Healthy (only if the project reasons over personal data):** a deliberate pattern (Python feeder, JSON DB, browser extraction, vision) rather than ad-hoc pasting.
@@ -105,12 +106,12 @@ threshold copied here goes stale silently, because nothing breaks when the audit
 - **Checks:** a knowledge project using flat notes instead of a compounding wiki? A notes folder with no index, so any question loads the whole tree? An inbox or `unsorted/` with permanent residents (a project-level intake folder is dimension 1; this is the knowledge layer's own inbox)? Notes contradicting each other with nothing marked superseded? Curated domain material and general working notes mixed in one root (Guide 28 — the two need different handling)? **N/A** otherwise.
 
 ### 17. Helper-app patterns — guide 22 → guidance only
-- **Healthy (small local tools only):** domain invariant + helper index + verification gates in `CLAUDE.md`, tight permission allowlist.
-- **Checks:** a vibe-coded helper drifting (duplicated helpers, stale CLAUDE.md, no verification gates)? Guidance only. **N/A** otherwise.
+- **Healthy (small local tools only):** domain invariant + helper index + verification gates in the selected policy, verified least-privilege permissions.
+- **Checks:** a vibe-coded helper drifting (duplicated helpers, stale project policy, no verification gates)? Guidance only. **N/A** otherwise.
 
 ### 18. Cowork-specific efficiency — guides 06, 13 → `cowork-optimizer` skill
 - **Healthy (Cowork projects):** tasks structured for fast, cheap Cowork runs (the `cowork-optimizer` 8-dimension view).
-- **Checks:** a Cowork task that's slow/expensive or structurally heavy? Recommend running the `cowork-optimizer` skill for the deep optimisation pass. **N/A** for pure Claude Code projects.
+- **Checks:** a Cowork task that's slow/expensive or structurally heavy? Recommend running the `cowork-optimizer` skill for the deep optimisation pass. **N/A** for every surface without Cowork.
 
 ### 19. Cross-project coupling — guide 23 → guidance only
 Scores what one project reveals about its links to others. It does **not** compare projects against each
@@ -125,19 +126,9 @@ outside a single-project audit. Judge only what is visible from inside the targe
   **N/A** if the project references no other project.
 
 ### 20. Instruction layers — guide 25 → `tune-instruction-layers`
-- **Healthy:** the app-side description and instructions fields and `CLAUDE.md` each carry what belongs in
-  their layer, with no contradiction between them; where `CLAUDE.md` mirrors an app-side field it is marked
-  as a mirror and names the authoritative side.
-- **Checks, folder side:** is there a mirror block, is it labelled, does it contradict the rest of the file?
-- **Checks, app side:** the description and instructions fields **are readable** — from the app's
-  `spaces.json` state file (Guide 25, *Reading the app-side fields*). Read them and score them: does the
-  description state the project's current purpose, is it unique across projects, is it free of rules? Do the
-  instructions carry only pre-file content (bootstrap, mount check, hard rules, posture)? Does the mirror
-  block match the live text? Report each entry's `updatedAt` alongside anything you quote.
-- **If `spaces.json` is unreachable** (no Filesystem MCP access to `~/Library/Application Support`, or a
-  non-Cowork target), fall back to *requires operator input*: say which fields you could not read and what to
-  paste in. A dimension score that silently omits the app side is a false negative, so state the partial
-  coverage explicitly in the finding rather than scoring the folder side alone.
+- **Healthy:** each surface's native instruction loader or project bootstrap reaches the current shared policy; app fields have dated mirrors and uploaded sources have revision records. Shared rules have one owner.
+- **Checks:** inspect effective `AGENTS.md` and any overrides for Codex, `CLAUDE.md` imports/fallbacks for Claude, and instructions plus sources for ChatGPT/Cowork. Use exposed app tools/UI or operator-provided text; Cowork's app-internal `spaces.json` is a Cowork-only, version-sensitive fallback, never an OpenAI source. Record each field's source and date. Local Codex without app fields has N/A app-field checks.
+- **Coverage:** unread fields and unconfirmed source refreshes are **unverified**, with the specific missing evidence. Do not infer a missing instruction layer from the absence of `CLAUDE.md`, or claim a full pass from folder-only inspection.
 
 ### 21. Accretion & respecification — guide 29 → guidance only
 - **Healthy:** every standing rule and every skill has one owner; fixes address a cause rather than
@@ -149,13 +140,13 @@ outside a single-project audit. Judge only what is visible from inside the targe
   isolated defects are not. Guidance only. **N/A** for a young or small project.
 
 ### 22. Controlled documents — guide 30 → guidance only
-- **Healthy:** documents with an owner or an approver are named as such in CLAUDE.md by path; Claude
+- **Healthy:** documents with an owner or an approver are named as such in the shared policy by path; Claude
   reviews them as tracked changes with explanatory comments and never accepts or approves; filenames are
   stable and carry no version number; one authored register with every other view generated from it.
 - **Checks:** look for version numbers or `FINAL`/`v2` in document filenames, an approval status with no
   approver or date beside it, two places that both claim to answer "which version was approved", a
   generated view that has been hand-edited, and standing rules that live only in a skill description
-  rather than in CLAUDE.md. Guidance only. **N/A** for a project with no third-party-owned or approved
+  rather than in the shared policy. Guidance only. **N/A** for a project with no third-party-owned or approved
   documents.
 
 ### 23. Behaviour tests — guide 31 → `setup-behaviour-tests`
@@ -198,8 +189,7 @@ outside a single-project audit. Judge only what is visible from inside the targe
   Claude adapter with no import or read fallback for the shared file, a mirror of `.claude/` produced by path
   conversion, a prose rule silently standing in for an enforcement mechanism the other platform lacks, the
   same scheduled job registered on both platforms, an uploaded-source copy older than the repository, and a
-  surface described as supported with no check recorded. **N/A** for a project used only from Claude
-  surfaces (Claude Code plus Cowork included). Record the absence of other-platform files as the evidence.
+  surface described as supported with no check recorded. **N/A** for any single-platform project, including OpenAI-only and Claude Code plus Cowork. Record confirmed surfaces as evidence.
 
 ### Guides not scored
 
@@ -220,6 +210,8 @@ These guides carry no dimension by design. Listed here so the guide-set coverage
 
 **Local folder.** Take a path; confirm you can list it (`ls [path]`). Read files directly. Write the
 plan directly to `[path]/CLUIDE_IMPROVEMENT_PLAN.md`.
+
+**ChatGPT/source-only project.** Read supplied project instructions and source artifacts, record revisions and omissions, and return the plan as an artifact if no write path exists. Do not claim it was saved into the project until the refreshed source is confirmed.
 
 **GitHub repo.** In a remote/web session you can only read repos **added to the session's scope**.
 - If scoped: read with the GitHub MCP tools — `get_file_contents` for known paths, `search_code` to
@@ -243,7 +235,7 @@ priority sections; keep findings concrete and evidence-backed.
 ```markdown
 # Cluide Improvement Plan — <project name>
 
-> Generated <YYYY-MM-DD> · Project type: <Claude Code | Cowork | hybrid>[, dual-platform] · Analyzed against Cluide (full guide set)
+> Generated <YYYY-MM-DD> · Surfaces: <Claude Code | Cowork | ChatGPT sources | Codex local | named combination> · Purpose: <purpose> · Analyzed against Cluide (full guide set)
 > This is a proposal, not a change. Review it, then run the tasks named under "How to implement".
 
 ## Summary
@@ -252,7 +244,7 @@ priority sections; keep findings concrete and evidence-backed.
 ## Scorecard
 | Dimension | Status | Priority |
 |-----------|--------|----------|
-| CLAUDE.md | ⚠ Partial | HIGH |
+| Project instructions | ⚠ Partial | HIGH |
 | Skills | ✓ Healthy | — |
 | Security | ✗ Missing | HIGH |
 | … | … | … |
@@ -285,8 +277,8 @@ said, what changed, and on what evidence. Omit the section only if the draft sur
 
 ## How to implement
 Each fix maps to a Cluide task or skill. When you're ready, run them in the order above — for example:
-- `Claude, run tasks/onboard-project.md` — for end-to-end setup of missing pieces
-- `Claude, run tasks/<specific-setup-or-audit>.md` — for a single dimension
+- `Assistant, run tasks/onboard-project.md` — for end-to-end setup of missing pieces
+- `Assistant, run tasks/<specific-setup-or-audit>.md` — for a single dimension
 - the `<skill>` skill — for <deep-dive, e.g. security-review / cowork-optimizer>
 
 *The analysis stops at this plan. No changes have been made to the project.*

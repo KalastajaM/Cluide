@@ -1,8 +1,18 @@
 # Task: Setup Data Layer
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Claude, run tasks/setup-data-layer.md`
+> `Assistant, run tasks/setup-data-layer.md`
 > **Source guide:** `14_PERSONAL_DATA_LAYER.md`
+
+## Runtime route
+
+Name the target surface and available tools before running steps. Claude-only policy lives in `CLAUDE.md`; Codex uses `AGENTS.md`; dual-platform shares `AGENTS.md` through a thin Claude adapter. References below to editing project rules mean that selected policy, not duplicated adapters. ChatGPT source projects use project instructions and dated sources; without write access, return replacement artifacts and record refresh as pending.
+
+Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
+
+## Native implementation
+
+Select the data access pattern from actual available tools. Python feeder and JSON-database patterns are vendor-neutral when shell/filesystem access exists. The `anthropic`/Claude vision code below is a labelled Claude API example, not an OpenAI setup command; use the current OpenAI API/SDK documentation and an available model to implement an OpenAI feeder, or use the runtime's verified vision tool. Keep credentials platform-local and record the native method and test. ChatGPT source-only projects receive a sanitized snapshot plus schema/revision, not a claim of live synchronization. Never fabricate a matching model name or promise updates without a working writer/scheduler.
 
 ## Purpose
 Help the user connect personal data — investments, finances, transactions, or any data living in local files or web apps — to Claude tasks in a token-efficient way. Recommends the right pattern(s) for the use case and sets up the initial structure.
@@ -13,7 +23,7 @@ The core idea: Claude should read *computed summaries*, not raw data files. A Py
 
 ## Instructions
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+> **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
 ### Step 1 — Understand the use case
 
@@ -38,7 +48,7 @@ Based on answers, recommend one or more patterns from the table below and explai
 | 4 — Vision ingestion | Data only accessible as screenshots or scanned documents |
 | 5 — Multi-step instruction file | Workflow with 3+ distinct phases (collect → process → analyse) |
 
-After recommending a pattern, use `AskUserQuestion` with buttons:
+After recommending a pattern, use the available question tool, or ask in chat:
 > "Based on what you described, I recommend Pattern [N]. Shall I set that up?"
 > Buttons: `Yes, set it up` / `Show me all patterns` / `I'll choose a different one`
 

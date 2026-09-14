@@ -1,10 +1,10 @@
 # Context Scoping and Prompt Construction
 
-> Every prompt makes a decision about what Claude is allowed to see. Most of the time that decision is made by accident — whatever happened to be in the session, whatever files the folder contains. This guide is about making it deliberately: when withholding context produces a *better* judgment, not just a cheaper one, and how to build a prompt in one session that you run in another.
+> Every prompt makes a decision about what the reviewing assistant can see. Most of the time that decision is made by accident — whatever happened to be in the session, whatever files the folder contains. This guide is about making it deliberately: when withholding context produces a *better* judgment, not just a cheaper one, and how to build a prompt in one session that you run in another.
 
 > **Companion guides:** [Guide 02](./02_PROMPTING_BASICS.md) covers instruction quality — context, task, constraints, output format. This guide covers the layer above it: which session gets which context. [Guide 27](./27_INDEPENDENT_JUDGMENT.md) is the closest neighbour and the boundary matters: this guide is about context leaking from the *environment*, that one is about your own view leaking from *you* — it owns anchoring, commit-then-reveal, blinded reconciliation, and why two Claude instances agreeing is not corroboration. [Guide 20](./20_INTERACTIVE_PROMPTING.md) covers the session mechanics (`/clear`, `@` references, plan mode). [Guide 13](./13_DEV_EXECUTION_WORKFLOW.md) covers subagents as a parallel-work tool. [Guide 04](./04_MEMORY_AND_PROFILE.md) covers memory, which is context that loads whether you want it or not.
 
-> **Giving this guide to Claude:**
+> **Giving this guide to an assistant:**
 > "Read 26_CONTEXT_SCOPING.md. I need to review [deliverable] before it goes to [audience] / build a one-shot prompt for [high-stakes task]. Help me scope what the reviewing session should and should not see."
 
 ---
@@ -29,13 +29,13 @@ The same mechanism bites every time an output leaves the environment that produc
 
 ## What Each Isolation Lever Actually Isolates
 
-Three levers, and they are not interchangeable. Each hides something different and leaks something different.
+These levers are not interchangeable. Each hides something different and leaks something different.
 
 | Lever | Hides | Still leaks | Cost |
 |---|---|---|---|
-| **Fresh session** (`/clear`, new chat) | Everything said earlier in the conversation | CLAUDE.md, project instructions, memory, the whole folder | No token cost; you lose the working state. |
+| **Fresh session** (new task/chat; Claude Code also has `/clear`) | Earlier conversation text, unless history is reintroduced | Native instructions, memory and accessible project sources | Fresh context must load again; working state needs a handoff. |
 | **Subagent** (Agent tool) | Nothing by default — see below | CLAUDE.md, project instructions, folder read access, whatever you put in the brief. A `fork`-type subagent also inherits the entire conversation and the parent's auto memory. | One agent's tokens. Returns whatever its brief asks for. |
-| **Staged copy** (artefact alone in a scratch directory) | Every project file, because they are not there to read | Nothing on the filesystem side. CLAUDE.md still loads. | A copy step. The only lever that is enforced rather than requested. |
+| **Staged copy** (artefact alone in a scratch directory) | Nearby project context | Other paths may remain readable; native instructions and memory may still load | Stronger only when permissions also restrict access to the staged inputs. |
 | **Saved prompt file** | The reasoning, negotiation, and dead ends that produced the instruction | Only what you wrote into the prompt | A design session up front. Reusable after. |
 
 ### The subagent trap
@@ -51,7 +51,8 @@ THE ONLY FILE IN YOUR BRIEF: [path to the artefact]
 
 DENY-LIST — do not open, search for, or reason from any of these:
 - Any other file in this folder or on any mounted device folder
-- Any CLAUDE.md, project instructions, or project memory
+- Additional project background or memory beyond instructions the host already supplied
+- Do not attempt to bypass or ignore the host's loaded instructions
 - [prior analyses, trackers, source material — name yours]
 - Web search
 If you find yourself wanting one of them, that is itself a finding:
@@ -72,7 +73,7 @@ Three responses, in increasing order of strength:
 
 1. **Ask for the file list.** Require the reviewer to open its report with every file it read. Cheap, and it makes most violations visible. It does not make them impossible: a model can produce an inaccurate list as easily as an inaccurate finding. Treat it as a smoke detector, not a lock.
 2. **Check the findings for leaked knowledge.** If a blind reviewer references a fact that appears nowhere in the artefact, it did not come from the artefact. This is the check that actually catches things.
-3. **Stage a copy.** Copy the artefact alone into a scratch directory outside the project and point the reviewer at that path. Now the project files are not merely forbidden, they are absent. CLAUDE.md still loads, so this is not perfect isolation, but the filesystem half is enforced rather than requested.
+3. **Stage a copy.** Copy the artefact alone into a scratch directory outside the project and point the reviewer at that path. The project files are absent from that folder, but may remain accessible elsewhere. Restrict the reviewer's actual read permissions or use a separate source-only environment if enforced isolation is required. Native instructions still apply; do not ask the reviewer to ignore higher-priority rules.
 
 Use the deny-list alone for routine reviews. Stage a copy when the finding actually matters — before something leaves for a client, a counterparty, or the public. It costs one `cp`.
 
@@ -81,6 +82,14 @@ Use the deny-list alone for routine reviews. Stage a copy when the finding actua
 - The reader will not have your context → **subagent with a deny-list**, plus a staged copy if the stakes justify it.
 - The instruction is worth reusing, or the stakes are high enough that you want to review the instruction itself before running it → **saved prompt file.**
 - You are just switching topics → **fresh session.** This is hygiene, not scoping.
+
+---
+
+## Verify Isolation on the Chosen Surface
+
+For Codex, check the actual task/agent history inheritance, `AGENTS.md` chain, native memory and filesystem grants. A fork is not a clean reviewer merely because it opens as another task. For ChatGPT, a new chat inside the same project can still receive project instructions and sources; use a deliberately scoped source set and report any unavoidable shared context. Claude subagent examples above are product-specific, not a guarantee about OpenAI agents.
+
+Before the review, write the allowed inputs and expected audience knowledge. Afterward, check the observed tool reads where available and reject findings that rely on withheld background. Record the evidence limit if the host does not expose reads. A different model or provider can broaden perspective, but neither changes the isolation contract by itself.
 
 ---
 

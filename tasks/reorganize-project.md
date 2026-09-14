@@ -3,6 +3,12 @@
 > **Cluide task** — safely restructure one project's folder layout without breaking it.
 > **Source guide:** 24 (Project Folder Structure) defines the target; this task moves an existing project toward it.
 
+## Runtime route
+
+Name the target surface and available tools before running steps. Claude-only policy lives in `CLAUDE.md`; Codex uses `AGENTS.md`; dual-platform shares `AGENTS.md` through a thin Claude adapter. References below to editing project rules mean that selected policy, not duplicated adapters. ChatGPT source projects use project instructions and dated sources; without write access, return replacement artifacts and record refresh as pending.
+
+Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
+
 ## Purpose
 
 Bring a project whose folders have drifted (outputs piled at the root, duplicate and versioned files, junk-drawer folders, no clear home for things) back to a clean layout, moving files and rewiring every reference so nothing breaks. Read-only until a plan is approved; it never moves anything on assumption.
@@ -11,7 +17,7 @@ Use it when a project has grown messy and you want it tidy, or after an audit fl
 
 ## Instructions
 
-> **Clarifying questions:** for any fixed-option choice, use `AskUserQuestion` rather than free text.
+> **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
 ### Step 0 — Confirm the target and read local rules
 

@@ -1,8 +1,28 @@
 # Task: Setup Scheduled Task
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Claude, run tasks/setup-scheduled-task.md`
+> `Assistant, run tasks/setup-scheduled-task.md`
 > **Source guides:** `06_TASK_EFFICIENCY_GUIDE.md`, `07_TASK_LEARNING_GUIDE.md` (incl. Part 9)
+
+## Runtime route
+
+Name the target surface and available tools before running steps. Claude-only policy lives in `CLAUDE.md`; Codex uses `AGENTS.md`; dual-platform shares `AGENTS.md` through a thin Claude adapter. References below to editing project rules mean that selected policy, not duplicated adapters. ChatGPT source projects use project instructions and dated sources; without write access, return replacement artifacts and record refresh as pending.
+
+Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
+
+## Native implementation
+
+Choose the owning scheduler before scaffolding: Cowork, Codex app, another explicitly supported scheduler, or manual. Record stable job ID, definition path/revision, owning surface, timezone, schedule, output/state paths and duplicate-run key in a project owner table. Inventory existing registrations on all used surfaces before creating one; update the matching job instead of duplicating it.
+
+**Codex app:** after writing/reviewing the files, use the exposed automation tool and its current schema to register the requested schedule against the intended project/task. Follow the runtime's heartbeat-versus-standalone rule; do not write scheduler storage directly. Verify the returned registration and one safe fixture run. If the tool is absent, provide the exact prompt/schedule/project for the native scheduling UI and mark registration pending.
+
+**ChatGPT:** verify the current task feature and whether it can access all required sources/tools. Only register when those capabilities support this workflow. A local file-processing task with no folder access stays on Codex/Cowork or manual execution; uploading `TASK.md` does not register it.
+
+**Cowork:** use the available native scheduler tool/UI, verify the project folder and connectors, and inspect one fixture run. **Claude Code SessionStart** below is a session reminder, not a time-based scheduler.
+
+For a handoff, pause the old trigger and confirm no run is active; create the new registration paused or with future activation, verify an isolated run, then delete the old registration and activate exactly one owner. Record IDs, timezone, cutover, verification and rollback plan. Never leave both triggers live while testing. Generated `TASK.md` Step 0 must check the owner, run key and existing in-progress/completed record before doing work; use an atomic claim where available, otherwise serialize runners. File-backed state is explicit input, not native memory.
+
+See [Codex scheduling](https://learn.chatgpt.com/docs/automations) (checked 2026-09-14); verify the actual runtime before registration.
 
 ## Purpose
 Scaffold a new scheduled task from scratch with efficiency and self-improvement patterns built in from run 1: a lean `TASK.md`, a `TASK_REFERENCE.md` for detail content, a `RUN_LOG.md`, and an `IMPROVEMENTS.md`. The result is a task ready to run and improve from its first execution.
@@ -13,7 +33,7 @@ Scaffold a new scheduled task from scratch with efficiency and self-improvement 
 
 ## Instructions
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+> **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
 ### Step 1 — Interview the user
 
@@ -31,9 +51,9 @@ Ask the following. Collect all answers before writing anything.
 
 **Self-improvement:**
 > 7. Should it learn and improve over time? (Recommended for tasks that run regularly — adds `IMPROVEMENTS.md` and a self-improvement step.)
->    Use `AskUserQuestion` with buttons: `Yes` / `No`
+>    Use the available question tool, or ask in chat: `Yes` / `No`
 > 8. If yes: how often does it run? (This sets the refactor threshold — daily → 25, weekly → 10.)
->    Use `AskUserQuestion` with buttons: `Daily` / `Weekly` / `On demand`
+>    Use the available question tool, or ask in chat: `Daily` / `Weekly` / `On demand`
 
 After collecting answers: "Thanks — I'll scaffold the task now."
 
@@ -69,6 +89,8 @@ Run frequency: [daily/weekly/on demand]
 
 ## Step 0 — Read state
 
+Verify this job’s owning scheduler and timezone. Claim its run key; skip if already complete or in progress.
+[Only if self-improvement is enabled:]
 Read `IMPROVEMENTS.md`. Note `runs_since_last_refactor` — increment it this run.
 Act on any proposals marked [APPROVED], [REJECTED], or [MODIFY: ...] before proceeding.
 
@@ -90,7 +112,7 @@ otherwise create with empty structure: [structure].
 
 ## Final Step — Self-improvement and run log
 
-Run the Self-Improvement section below (A–D), then append an entry to `RUN_LOG.md` in the canonical format (Guide 06/10):
+If self-improvement is enabled, run the Self-Improvement section below (A–D). Always append an entry to `RUN_LOG.md` in the canonical format (Guide 06/10):
 
 ## [YYYY-MM-DD] Run #[N]
 **Duration:** ~[X] min
@@ -153,7 +175,7 @@ Copy `templates/TASK_TEMPLATE/IMPROVEMENTS.md` **verbatim**. If that file is not
 
 IMPROVEMENTS.md stores **state only** — do not write the A–D instructions into it. Those belong in the generated TASK.md (see the Self-Improvement section in the skeleton above).
 
-If self-improvement was not requested, skip this file and omit the Step 0, Final Step, and Self-Improvement section from TASK.md.
+If self-improvement was not requested, skip `IMPROVEMENTS.md` and omit only its reads, proposal handling, learning counters and the Self-Improvement (A–D) section. Always retain Step 0’s scheduler ownership/timezone check, run-key claim and duplicate-run guard, plus any task-state loading/bootstrap. Keep the Final Step’s run-log entry and retention rules; rename it “Final Step — Run log” and omit only the call to self-improvement.
 
 ### Step 4 — Efficiency check on the draft
 
@@ -168,9 +190,9 @@ Show the user TASK.md line count and flag any efficiency issues before writing.
 
 Write all files. Show the list of files created.
 
-### Step 6 — Optional: schedule the task
+### Step 6 — Register through the selected native route
 
-Ask:
+If scheduling was already requested, proceed using that authorization and the native implementation above. Otherwise offer only supported routes. The following options describe the **Claude Code/manual branch**:
 > "Would you like me to set up scheduling? Options:
 > - (A) SessionStart hook — runs automatically when you open Claude Code in this project
 > - (B) Manual trigger — you run it by saying 'run tasks/[name]/TASK.md'

@@ -2,7 +2,13 @@
 
 > **Cluide maintenance task** — run this when your real assistant projects have evolved and you want
 > their proven patterns folded back into Cluide.
-> `Claude, run tasks/harvest-from-projects.md`
+> `Assistant, run tasks/harvest-from-projects.md`
+
+## Runtime route
+
+Name the target surface and available tools before running steps. Claude-only policy lives in `CLAUDE.md`; Codex uses `AGENTS.md`; dual-platform shares `AGENTS.md` through a thin Claude adapter. References below to editing project rules mean that selected policy, not duplicated adapters. ChatGPT source projects use project instructions and dated sources; without write access, return replacement artifacts and record refresh as pending.
+
+Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
 
 ## Purpose
 Scan one or more **live** Claude projects (e.g. a running personal assistant, a PMO workspace) and
@@ -43,8 +49,7 @@ Each thing worth harvesting maps to where it belongs in Cluide. Use this table i
 
 ## Instructions
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons
-> instead of plain text.
+> **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
 ### Step 0 — Confirm Cluide is the working repo
 
@@ -64,7 +69,7 @@ Where the projects live depends on how this session was started. Ask the user, t
   their contents. Tell the user exactly what to do: add the target repos to this session, or re-run
   locally.
 
-Then list candidate projects and confirm with `AskUserQuestion` which to harvest from:
+Then list candidate projects and confirm with an available question tool or chat which to harvest from:
 
 ```
 Projects available to harvest:

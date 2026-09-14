@@ -37,6 +37,9 @@
 
 ## 2.3 Run Flow Efficiency
 
+For dual-platform work, check scheduler ownership, timezone, stable job identity and the shared run key. A “read last run, then write” check is not an atomic lock. Preserve native scheduler ownership during optimisation; do not create a second registration to improve throughput.
+
+
 **Fast-path skip**
 - On tasks that run frequently, is there a content-based fast-path that exits early when there's nothing to process? After initial data fetch, evaluate: 0 new items + no imminent deadlines + no time-sensitive state → write a minimal log entry and exit. Without this, quiet runs still consume tokens doing nothing.
 
@@ -58,36 +61,36 @@
 
 ## 2.5 Output Generation & Script Offloading
 
-For every step that generates output, ask: **is Claude making a decision here, or just transforming data?**
+For every step that generates output, ask: **is the assistant making a decision here, or just transforming data?**
 
-If the format is fixed and only the data varies, it's a script candidate — not a Claude task. Script execution costs ~50 tokens (bash call + output) vs. hundreds or thousands for Claude composing the same artifact from scratch every run.
+If the format is fixed and only the data varies, it's a script candidate — not a the assistant task. Script execution costs ~50 tokens (bash call + output) vs. hundreds or thousands for the assistant composing the same artifact from scratch every run.
 
 **Common offload candidates:**
 
-| Task type | Claude doing it | Better as |
+| Task type | the assistant doing it | Better as |
 |-----------|----------------|-----------|
-| Rendering HTML/PDF from structured data | Claude writes markup | Python (Jinja2, WeasyPrint, reportlab) |
-| Formatting markdown → Word/PDF | Claude generates document | Python (pandoc, python-docx) |
-| Building CSV/Excel from JSON | Claude writes rows | Python (csv, openpyxl) |
-| Sending templated emails | Claude fills + sends | Python with string templates |
-| Archiving / rotating log entries | Claude trims and rewrites | Python script on the file directly |
-| Copying, moving, renaming files | Claude calls file tools | Bash or Python |
-| Parsing structured API responses | Claude extracts fields | Python with json/jq |
-| Generating charts/graphs from data | Claude produces SVG/code | Python (matplotlib, plotly) |
+| Rendering HTML/PDF from structured data | the assistant writes markup | Python (Jinja2, WeasyPrint, reportlab) |
+| Formatting markdown → Word/PDF | the assistant generates document | Python (pandoc, python-docx) |
+| Building CSV/Excel from JSON | the assistant writes rows | Python (csv, openpyxl) |
+| Sending templated emails | the assistant fills + sends | Python with string templates |
+| Archiving / rotating log entries | the assistant trims and rewrites | Python script on the file directly |
+| Copying, moving, renaming files | the assistant calls file tools | Bash or Python |
+| Parsing structured API responses | the assistant extracts fields | Python with json/jq |
+| Generating charts/graphs from data | the assistant produces SVG/code | Python (matplotlib, plotly) |
 
 **How to surface this in findings:**
 - Name the specific step (e.g., "Step 4: Generate weekly HTML report")
-- Estimate the token cost of the current Claude-based approach
+- Estimate the token cost of the current the assistant-based approach
 - Propose the script equivalent with a rough input → output contract
 - Effort: Low if the format is already well-defined; Medium if some design is needed
 
-**Caveat:** only propose offloading when the output format is stable and the transformation is fully deterministic. If the step involves judgment — deciding *what* to include, adapting tone, summarizing variable content — keep it with Claude.
+**Caveat:** only propose offloading when the output format is stable and the transformation is fully deterministic. If the step involves judgment — deciding *what* to include, adapting tone, summarizing variable content — keep it with the assistant.
 
 ## 2.7 Instruction Clarity
 
 (2.6 was merged into 2.5; numbering kept for stability.)
 
-- Are instructions ambiguous in ways likely to cause Claude to ask clarifying questions mid-task (wasted turns)?
+- Are instructions ambiguous in ways likely to cause the assistant to ask clarifying questions mid-task (wasted turns)?
 - Are success criteria missing or unclear?
 - Are edge cases unhandled that would cause the task to stall?
 - Are scope boundaries explicit? ("Update section 3 only, leave everything else unchanged" is often as important as the actual instruction.)

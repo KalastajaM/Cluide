@@ -1,6 +1,13 @@
 # Task Template — Setup Instructions
 
-> A ready-to-copy starter for self-learning, token-efficient Claude tasks.
+Choose a verified Claude or OpenAI runner before setup. The procedure is shared; schedules,
+credentials, native memory and tool bindings are product-local. Complete `TASK.md`'s Runner
+contract and implement/test its duplicate guard before enabling one owning scheduler. ChatGPT
+project uploads support source-based drafting, not an assumed live filesystem or script runner.
+Use `../PROJECT_TEMPLATE/PLATFORM_SETUP.md` for the source bootstrap and per-surface checks.
+
+
+> A ready-to-copy starter for self-learning, token-efficient assistant tasks.
 > Implements the patterns from Guide 06 (efficiency) and Guide 07 (self-improvement).
 
 ---
@@ -66,7 +73,7 @@ Before scheduling, trigger one manual run and verify:
 
 ### Step 6 — Schedule it
 
-Ask Claude in natural language (Cowork's scheduled-tasks feature). Suggested prompt:
+Use the selected scheduler after verification. For Cowork, request its native scheduled-task setup; for Codex use the available automation capability. Verify the actual runner can access these files and required tools. Suggested prompt:
 
 > "Schedule [MyTask] to run [daily at 8am]. The task file is at [path/to/MyTask/TASK.md]."
 
@@ -80,13 +87,13 @@ Ask Claude in natural language (Cowork's scheduled-tasks feature). Suggested pro
 
 **What does the task need to remember?** Seed `KNOWLEDGE_SUMMARY.md` with any context you already know: relevant people, known system quirks, standing rules. Don't start from zero if you don't have to.
 
-**What's the output?** Decide upfront whether output is a regenerated file (use conditional regeneration), a script-rendered artifact (write the script once), or a direct Claude composition. Scripted and conditional output are significantly cheaper at scale.
+**What's the output?** Decide upfront whether output is a regenerated file (use conditional regeneration), a script-rendered artifact (write the script once), or a direct assistant composition. Scripted and conditional output are significantly cheaper at scale.
 
 ---
 
-## Giving This Template to Claude
+## Giving This Template to your assistant
 
-To have Claude set up a new task for you:
+To have your assistant set up a new task for you:
 
 > "Read TASK_TEMPLATE/README.md, then copy the TASK_TEMPLATE folder to [destination], rename it [task name], and fill in all the placeholders based on the following: [describe what your task should do, what data sources it uses, what output it produces, and any domain-specific rules]."
 

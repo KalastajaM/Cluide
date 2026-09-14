@@ -1,8 +1,14 @@
 # Task: Audit Task Cost
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Claude, run tasks/audit-cost.md` (then specify which task folder to audit)
+> `Assistant, run tasks/audit-cost.md` (then specify which task folder to audit)
 > **Source guide:** `10_COST_PERFORMANCE.md`
+
+## Runtime route
+
+Name the target surface and available tools before running steps. Claude-only policy lives in `CLAUDE.md`; Codex uses `AGENTS.md`; dual-platform shares `AGENTS.md` through a thin Claude adapter. References below to editing project rules mean that selected policy, not duplicated adapters. ChatGPT source projects use project instructions and dated sources; without write access, return replacement artifacts and record refresh as pending.
+
+Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
 
 ## Purpose
 Audit a task folder's token economics against Guide 10: always-loaded file sizes vs. budgets, model tier appropriateness, run-metrics instrumentation, and monthly budget vs. the plan's usage allowance. Returns a prioritised list of findings and applies the agreed fixes.
@@ -13,7 +19,7 @@ Audit a task folder's token economics against Guide 10: always-loaded file sizes
 
 ## Instructions
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+> **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
 ### Step 1 — Identify the task to audit
 
@@ -24,7 +30,7 @@ Read `TASK.md` and list the folder contents. Identify:
 - Whether `RUN_LOG.md` exists and what each entry records
 - How often the task runs (from TASK.md, or ask)
 - Which model tier it runs on (ask if not stated)
-  Use `AskUserQuestion` with buttons: `Haiku` / `Sonnet` / `Opus` / `Fable` / `Don't know`
+  Use only model identifiers exposed by the current runtime; record unknown when the model is unavailable.
 
 Report:
 ```
@@ -52,21 +58,9 @@ Estimate the per-run fixed overhead: total always-loaded lines × ~15 tokens/lin
 
 #### Check 2: Model tier appropriateness
 
-Match the task's work against the current lineup (Guide 10 §Model Tier Selection):
+Identify the provider, actual configured model and supported alternatives from the current runtime. Compare quality, latency and measured usage on representative fixtures before recommending a cheaper option. Separate mechanical extraction from judgment only when the host supports that dispatch and the savings justify it. Claude model names are not aliases for OpenAI models.
 
-| Tier | Right for |
-|------|-----------|
-| **Haiku 4.5** | Triage, classification, bulk extraction — output is a label or short record |
-| **Sonnet 5** (Sonnet 4.6 still available) | The default — template-driven output, clear instructions, fixed format |
-| **Opus 5** (Opus 4.8 still available) | Judgment-heavy review, sensitive drafting, complex multi-step reasoning |
-| **Fable 5.1** (Fable 5 still available) | Hardest long-horizon synthesis — advantage grows with task length. Not a context play: Opus 5 and Sonnet 5 run a native 1M window too |
-
-Verify tiers and prices against Guide 10's canonical pricing table (and anthropic.com/pricing) before recommending a change — the lineup shifts between releases.
-
-Flag mismatches in both directions:
-- Triage/extraction steps running on Sonnet or above → "drop to Haiku"
-- A whole task on Opus/Fable when only one step needs the judgment → "hybrid: gather on Haiku/Sonnet, synthesise on Opus"
-- Short tasks on Fable → "the 2x-over-Opus price rarely pays off below long-horizon scale"
+Use Guide 10 and the provider's current official pricing/model documentation. Do not copy a cached lineup into this task. Retain the configured model if no supported alternative or comparable measurement is available.
 
 #### Check 3: Run metrics instrumentation
 
@@ -81,10 +75,9 @@ Does TASK.md contain a budget check (Step 0 reading recent log entries, 2x alert
 
 #### Check 5: Plan usage fit (scheduled tasks)
 
-If the task runs on a schedule: note that the non-interactive usage policy changed during 2026 — an earlier formulation gave scheduled/automated runs (Agent SDK, `claude -p`) a separate monthly usage-credit pool; as of September 2026, and unverified against a primary source, they draw from **the same usage allowance as interactive use**. Remind the user to check the current policy and their balance (`/usage`, support.claude.com) before budgeting.
+Identify the billing surface: API billing, subscription allowance, or an app-specific meter. For API calls, use measured token categories and current vendor prices, then estimate runs/month with stated headroom. For subscription runs, use the account's current usage/reset tools or settings; never divide an API dollar estimate by a subscription price to invent a remaining allowance. Record unavailable usage as unknown. Check whether scheduled runs share an allowance using the actual product's current official source.
 
-Estimate: cost per run × runs per month × 1.5 headroom. Ask which plan the user is on, then report what fraction of the plan's allowance this task consumes — and flag if the sum across the user's scheduled tasks (plus their interactive use) plausibly exceeds it.
-Use `AskUserQuestion` with buttons: `Pro` / `Max 5x` / `Max 20x` / `Skip this check`
+Report token estimates, measured metrics and billed dollars in separate fields. Do not invent token counts when the runtime does not expose them.
 
 ### Step 3 — Present findings
 
@@ -121,7 +114,7 @@ Ask:
 > - (D) All of the above
 > - (E) Findings only — no changes"
 
-Use `AskUserQuestion` with buttons: `A` / `B` / `C` / `All` / `Findings only`
+Use the available question tool, or ask in chat: `A` / `B` / `C` / `All` / `Findings only`
 
 ### Step 4 — Apply fixes
 

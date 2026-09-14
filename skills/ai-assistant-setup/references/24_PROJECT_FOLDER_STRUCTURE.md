@@ -1,6 +1,6 @@
 # 24 — Project Folder Structure
 
-> How to lay out a single project's folders so Claude always knows where things live, and how to keep that layout from rotting as the project grows. For structure *across* several projects, see Guide 23; for the note layer sitting above all of them, see Guide 28. This guide is about one project's internal shape.
+> How to lay out a single project's folders so each assistant can find the right files, and how to keep that layout from rotting as the project grows. For structure *across* several projects, see Guide 23; for the note layer sitting above all of them, see Guide 28. This guide is about one project's internal shape.
 
 A project's folder layout is an interface Claude reads every session. When it is predictable, Claude finds the right file on the first try and puts new files where they belong. When it drifts (outputs piling at the root, three versions of the same document, a `notes` folder that became a junk drawer), Claude wastes context hunting and starts guessing. Structure is cheap to get right early and expensive to retrofit, so it is worth a small standard.
 
@@ -8,7 +8,7 @@ A project's folder layout is an interface Claude reads every session. When it is
 
 Every project, whatever its purpose, wants a home for each of these kinds of thing. The names matter less than having exactly one obvious place for each:
 
-- **Instructions** at the root: `CLAUDE.md` (how Claude should behave here) and, if a human will open the project, `README.md`. These are read first.
+- **Instructions** at the root: `AGENTS.md` as shared policy, a thin `CLAUDE.md` adapter for Claude, and `README.md` for a human. `PLATFORM_SETUP.md` records native setup and verification. Claude-only projects can retain `CLAUDE.md` as their policy; use [Guide 35](./35_DUAL_PLATFORM_PROJECTS.md) when adding a second platform.
 - **Source of truth**: the canonical data or working files the project is actually about. Markdown is the source of truth; see Guide 19.
 - **Generated outputs**: finished deliverables (Word, PPT, PDF, exports) that are produced *from* the source of truth. These live in their own home, not scattered at the root, because they are regenerable and should never be confused with the source.
 - **Scratch / working files**: transient in-progress material, clearly separated so it does not masquerade as a deliverable.
@@ -16,6 +16,16 @@ Every project, whatever its purpose, wants a home for each of these kinds of thi
 - **Intake**, when material reaches the project outside a chat: one `incoming/` folder where new documents land before anyone has decided where they belong. The only conditional home on this list, and the only one whose correct steady state is empty. See the next section.
 
 Two of the templates Cluide ships (see `00_INDEX.md` for all of them) are project-layout starting points: `PROJECT_TEMPLATE/` implements this list less the source-of-truth home, which is project-specific by definition, and ships the optional pieces already in the folder so that setting a project up is deleting what it does not need rather than building what it does; and `PMO_TEMPLATE/` covers a richer project with deliverables and registers. Copy whichever is closer rather than inventing a layout, then add optional pieces from `templates/BLOCKS.md` as the project earns them; that catalogue carries the reasoning for adding late rather than up front.
+
+## Local Folders and Uploaded Sources
+
+For Codex and other local file-capable sessions, the file map describes real paths in the selected workspace. Confirm the workspace before writing. Keep authored definitions versioned and personal state private; `.claude/` and `.codex/` are native configuration locations, not interchangeable homes for shared task data. Install skill entry points using [Guide 03](./03_SKILLS.md).
+
+For ChatGPT uploaded-source projects, the same logical homes organize the source package, but they do not create a mounted filesystem. Upload the policy and the inputs needed for the task, record their revision, and say where returned edits will be incorporated. A relative Markdown link may identify a needed file without making that file available. Refresh the source package after accepted changes.
+
+Keep the native app fields, authentication, memory and scheduler registrations on their own platform. The project can hold a setup record describing them, but copying that record never installs them. [Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md) covers the bootstrap and mirror.
+
+---
 
 ## Intake: the `incoming/` folder
 
@@ -28,7 +38,7 @@ Treat it as a queue rather than a home. Four rules keep it one:
 - **Nothing is deleted out of `incoming/`.** Material that turns out not to belong goes to the archive like everything else in the project. Deletion is a decision to make later, with the file in front of you.
 - **File by content, not by filename.** Routing inbound material through Claude is worth doing precisely because `IMG_4821.pdf` and `Scan_2026-08-14.pdf` say nothing. Claude opens the file, works out what it is, and renames it to the project's convention on the way in. When it cannot tell, the item stays in `incoming/` with a question attached rather than being filed on a guess.
 
-Then say in `CLAUDE.md` what should happen to the folder: which destinations are legal, whether Claude may file without asking or must propose first, and whether it checks the folder every session or only when told. An intake folder nobody has told Claude to look at is a folder that fills up.
+Then say in the shared policy what should happen to the folder: which destinations are legal, whether Claude may file without asking or must propose first, and whether it checks the folder every session or only when told. An intake folder nobody has told Claude to look at is a folder that fills up.
 
 Casing follows whatever convention the project already uses — `Incoming/` in a project whose folders are capitalised, `incoming/` in one whose folders are not. The Cluide project templates ship the capitalised form to match their existing layout.
 
@@ -39,7 +49,7 @@ Casing follows whatever convention the project already uses — `Incoming/` in a
 - **One obvious home per file kind.** Before creating a file, there should be no doubt where it goes. If there is doubt, the layout is missing a folder or you are about to make a junk drawer.
 - **Separate definitions from generated outputs.** The thing you edit and the thing you export are different categories. Keep them in different folders so a regenerated PDF never overwrites a source, and so cleanup can safely target outputs.
 - **One folder per tracked entity, same artifact set in each.** When a project tracks many like items (properties, cases, applications, deals), give each its own folder holding the same named files, created from a template and indexed by a central tracker. The tracker is the index; the folder is the workspace. See the "one folder per tracked entity, the same artifact set in each" practice in Guide 16 (item 21 of its Short Version).
-- **Document the layout in CLAUDE.md as a file map.** List the folders and what each holds. The strongest version adds a "where to look / where to update" split so Claude knows which files are read-only inputs and which it may append to. `PMO_TEMPLATE/PROJECT_GUIDE.md` shows this pattern.
+- **Document the layout in the shared policy as a file map.** List the folders and what each holds. The strongest version adds a "where to look / where to update" split so Claude knows which files are read-only inputs and which it may append to. `PMO_TEMPLATE/PROJECT_GUIDE.md` shows this pattern.
 - **Mark file-access tiers.** Note what Claude should auto-read every session, what it should read only on demand, and what it should never touch (raw source data, archives, secrets). Guide 01 covers the tiers.
 
 ## Standard formats for recurring files
@@ -74,7 +84,7 @@ If the layout is straining because the project is really two purposes sharing a 
 2. Copy a template (`PROJECT_TEMPLATE` or `PMO_TEMPLATE`) instead of inventing a layout.
 3. Keep generated outputs out of the root and separate from their sources.
 4. One folder per tracked entity, same artifact set, indexed by a central tracker.
-5. Document the layout as a file map in `CLAUDE.md`, ideally with a read-only vs updatable column.
+5. Document the layout as a file map in the canonical policy (`AGENTS.md` for the shared setup; `CLAUDE.md` for Claude-only use), ideally with a read-only vs updatable column.
 6. Give each recurring file kind a standard format too, as a template or a documented Format section, kept in one place.
 7. Archive (never delete) into a single `_archive/` — or `[ARCHIVE] <name>/` folders where one archive is not enough — never read back; mark the active version `_LATEST`.
 8. Split oversized files and junk-drawer folders early; run `reorganize-project` to fix a project that has already drifted.

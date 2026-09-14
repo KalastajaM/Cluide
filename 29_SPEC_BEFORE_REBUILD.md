@@ -4,7 +4,7 @@
 
 > **Companion guides:** [Guide 22](./22_HELPER_APPS.md) covers a small self-built tool while it is still healthy — invariants, a helper index, verification gates. This guide is what to do when those stop holding. [Guide 13](./13_DEV_EXECUTION_WORKFLOW.md) is the day-to-day loop this interrupts. [Guide 09](./09_MULTI_TASK_ORCHESTRATION.md) and the `dispatch` skill run the audit fan-out; [Guide 26](./26_CONTEXT_SCOPING.md) scopes each pass and [Guide 27](./27_INDEPENDENT_JUDGMENT.md) is how you get the spec checked without hearing your own view back. [Guide 07](./07_TASK_LEARNING_GUIDE.md) has the same pathology inside a task's learning log. [Guide 24](./24_PROJECT_FOLDER_STRUCTURE.md) is where most of the prevention in §5 actually lives.
 
-> **Giving this guide to Claude:**
+> **Giving this guide to an assistant:**
 > "Read 29_SPEC_BEFORE_REBUILD.md. [Artefact] has grown ad hoc and I am deciding whether to keep patching it or respecify it. Run §1 first and tell me which trigger signals are actually present, with counts."
 
 **This is not only about code.** A CLAUDE.md that accreted over a year, a set of skills with overlapping triggers, a scheduled task whose improvements log outgrew the task itself — all of these are artefacts whose behaviour is defined only by their current implementation, and all of them reach the same wall. The examples below alternate deliberately.
@@ -108,6 +108,16 @@ Then build the table that justifies the whole exercise:
 ### The corollary for anything that learns
 
 A learning log ([Guide 07](./07_TASK_LEARNING_GUIDE.md)) accumulates one rule per incident. Left alone long enough it becomes a defect-driven specification in prose: it records what went wrong rather than what must be true, it is over-fitted to its own history, and it is hostile to any redesign because nobody can tell which entries still matter. Distil it periodically — restate the accumulated fixes as the handful of properties they are instances of, keep the properties, archive the instances. A rule that is a past incident restated is the thing to drop.
+
+---
+
+## Separate the Contract from the Runtime During a Migration
+
+For a Claude/OpenAI rebuild, specify what must remain true before translating mechanisms: accepted inputs, output schema, action authority, state ownership and failure behaviour. Loader names, skill metadata, connector calls and scheduler registrations are implementation choices with separate evidence.
+
+Keep the old accepted outputs as the oracle only for behaviours the specification endorses. Record deliberate divergences, such as replacing a Claude hook with a tested Codex permission boundary or delivering a file from ChatGPT instead of writing directly to a local folder. A missing counterpart is an explicit gap; do not silently weaken the contract to make both routes look complete.
+
+Run the same frozen cases on each intended surface and record results separately. Preserve guide/task identifiers and shared data schemas during the transition. Move the scheduler only after the new path passes its controlled run and the old one cannot overlap. [Guide 31](./31_BEHAVIOUR_TESTS.md) supplies the case shape; [Guide 35](./35_DUAL_PLATFORM_PROJECTS.md) supplies the native setup record.
 
 ---
 

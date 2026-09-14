@@ -1,6 +1,6 @@
 # 23 — Multi-Project Setups
 
-> How to design and maintain several linked Cowork projects so shared facts stay consistent and each one stays focused. This is the cross-*project* extension of Guide 09 (which handles shared state and ownership across multiple *tasks* inside one assistant).
+> How to design and maintain several linked projects across Claude and OpenAI so shared facts stay consistent and each one stays focused. This is the cross-*project* extension of Guide 09 (which handles shared state and ownership across multiple *tasks* inside one assistant).
 
 Most setups start as one project and should stay that way. You reach for multiple projects when a single `CLAUDE.md` and folder start pulling in two directions at once: different purposes, different lifecycles, or data that keeps colliding. This guide covers when that moment has arrived, how to split cleanly when it has, what to do when two independent projects grow an overlap instead, and how to keep linked projects consistent and change them without breaking each other afterward.
 
@@ -75,6 +75,16 @@ Track ownership explicitly in one place, a small table in whichever project coor
 - **Last verified** is when the references were last confirmed to match the owner.
 
 The registry is what makes drift detectable: to check consistency, you verify each referencing project still points at the owner and has not grown its own copy.
+
+## Linked Files Versus Uploaded Copies
+
+The ownership registry names the authoritative project and file, not merely the assistant that last answered. A local Codex or Claude session may follow a filesystem link only if the target is actually accessible. A ChatGPT project source is a snapshot or connected service: a local relative path in it does not grant access to the target project.
+
+For source-only projects, record the owning source's revision and refresh rule alongside the link. If another project needs to change the fact, return a proposal to the owner and wait for the accepted revision before refreshing consumers. Do not fork a shared contact list or policy into two independently edited uploads.
+
+Splitting a project requires separate native setup on each supported surface: instructions/bootstrap, source grants and scheduler ownership. Update those records with the file links. A move is incomplete while a schedule or uploaded policy still points at the old home; [Guide 33](./33_RETIRING_AND_LEAVING.md) gives the retirement inventory.
+
+---
 
 ## Cross-project linking conventions
 

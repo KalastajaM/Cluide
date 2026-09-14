@@ -1,4 +1,4 @@
-# Claude Assistant — Quick Reference Cheat Sheet
+# Claude and ChatGPT — Quick Reference
 
 > One-page reference for the most common patterns. Keep this open while building.
 > For the full explanation behind any section, see the linked guide.
@@ -9,10 +9,10 @@
 
 | You want to... | Build | Guide |
 |---|---|---|
-| Claude always responds a certain way | CLAUDE.md | [01](./01_CLAUDE_MD.md) |
+| An assistant follows standing rules | Shared policy + native entry point | [01](./01_CLAUDE_MD.md) |
 | Run the same task repeatedly when you ask | Skill | [03](./03_SKILLS.md) |
 | Run something automatically on a schedule | Scheduled Task | [18 Stage 4](./18_END_TO_END_WALKTHROUGH.md) + `tasks/setup-scheduled-task.md` |
-| Claude remembers things between sessions | Memory | [04](./04_MEMORY_AND_PROFILE.md) |
+| An assistant retains context between sessions | Memory | [04](./04_MEMORY_AND_PROFILE.md) |
 | A task that learns and improves over time | Task + IMPROVEMENTS.md | [07](./07_TASK_LEARNING_GUIDE.md) |
 | Answer a one-off question | Chat | — |
 | Coordinate tasks that share data | Orchestrator | [09](./09_MULTI_TASK_ORCHESTRATION.md) |
@@ -26,9 +26,9 @@
 
 ---
 
-## CLAUDE.md Skeleton
+## Shared Policy Skeleton
 
-**File location:** `.claude/CLAUDE.md` · **Max length:** ~30 lines
+**File location:** root `AGENTS.md` for the shared pattern; `CLAUDE.md` imports it for Claude Code. App-source projects need a bootstrap. Keep the starter short; length targets are design guidance, not universal product limits. See Guides 01 and 35.
 
 ```markdown
 ## Who I Am
@@ -42,21 +42,21 @@
 - [Decision preference: e.g. give me options / recommend one]
 
 ## Standing Rules
-- [Rule 1 that overrides Claude's default behaviour]
+- [Rule 1 that overrides default behaviour]
 - [Rule 2]
 - [Rule 3 — max 5 total]
 ```
 
-✅ Every line should change Claude's behaviour
-❌ Don't include: capability lists, project info, workflow steps, file paths
+✅ Every line should change the assistant's behaviour
+❌ Keep long workflow steps and reference material outside standing instructions; retain the project purpose and a short file map.
 
 ---
 
 ## SKILL.md Skeleton
 
-**File location:** `.claude/skills/[skill-name]/SKILL.md` · **Max length:** ~500 lines
+**Native locations:** Claude Code `.claude/skills/`; Codex `.agents/skills/`. Keep source workflows portable; install only through the selected surface’s route (Guide 03). ~500 lines is an authoring guideline, not a permission or loading guarantee.
 
-```markdown
+````markdown
 ---
 name: your-skill-name
 description: >
@@ -94,7 +94,7 @@ description: >
 ## Examples
 > User: "[typical trigger phrase]"
 > Skill produces: [brief description of expected output]
-```
+````
 
 ---
 
@@ -102,36 +102,9 @@ description: >
 
 **File location:** Inside your task folder · **Guide:** [07 Part 9](./07_TASK_LEARNING_GUIDE.md)
 
-> Simplified sketch — the canonical template (with counters, noise filters, and applied-fixes sections) lives at `templates/TASK_TEMPLATE/IMPROVEMENTS.md`. Use that when installing via Guide 07 Part 9.
+> Use the canonical [IMPROVEMENTS.md template](./templates/TASK_TEMPLATE/IMPROVEMENTS.md). It owns the counters, noise filters, proposals, and applied-fix history; do not maintain another inline copy.
 
-```markdown
-# Improvements Log — [Task Name]
-
-## Pending Proposals
-
-| ID | What | Why | Status |
-|----|------|-----|--------|
-| PROP-001 | [proposed change] | [observed reason] | PENDING |
-
-## Applied Fixes
-
-| ID | What | Applied | Result |
-|----|------|---------|--------|
-| — | — | — | — |
-
-## Confirmed Knowledge
-
-- [Fact confirmed after 3+ runs]
-- [User preference confirmed]
-
-## Hypotheses
-
-| ID | Belief | Confidence | Evidence |
-|----|--------|-----------|---------|
-| H-001 | [what the task believes] | LOW/MEDIUM/HIGH | [what led to this] |
-```
-
-**Responding to a PROP:** Tell Claude "Apply PROP-001", "Reject PROP-001 — [reason]", or "Modify PROP-001: instead of X, do Y."
+**Responding to a PROP:** Tell your assistant "Apply PROP-001", "Reject PROP-001 — [reason]", or "Modify PROP-001: instead of X, do Y."
 
 ---
 
@@ -139,36 +112,36 @@ description: >
 
 | File | Purpose |
 |---|---|
-| `TASK.md` | Main task instructions — edit in Claude Code or text editor |
+| `TASK.md` | Main task instructions — edit in a repository-capable session or text editor |
 | `TASK_REFERENCE.md` | Static reference data (too large for TASK.md, rarely changes) |
 | `LAST_RUN.md` | Output/log from the most recent task run (some templates use `LAST_RUN.txt` — pick one name per project) |
 | `RUN_LOG.md` | Running history of all runs |
 | `IMPROVEMENTS.md` | Self-improvement proposals and confirmed knowledge |
 | `PROFILE_SUMMARY.md` | Compact profile (≤50 lines) — read every run |
 | `PROFILE_[topic].md` | Detailed profile section — read only when updating |
-| `MEMORY.md` | Auto-memory index — loaded every session if referenced in CLAUDE.md |
+| `MEMORY.md` | Auto-memory index — read when explicitly requested by the shared policy; verify access on each surface |
 
 ---
 
 ## Token Cost Quick Reference
 
-These figures were measured before Sonnet 5's tokenizer, which uses roughly 30% more tokens for the same text. Treat them as approximate, and as varying by model.
+These are rough planning examples, not measured usage for your model. Use actual runtime usage where available; otherwise label the estimate. See Guide 10 for API pricing versus subscription limits.
 
 | File size | Approx. tokens | Notes |
 |---|---|---|
-| 20 lines | ~300 t | CLAUDE.md target |
+| 20 lines | ~300 t | short-policy example |
 | 50 lines | ~600 t | PROFILE_SUMMARY.md limit |
 | 150 lines | ~2,000 t | Good max for any always-loaded file |
 | 500 lines | ~6,000 t | Split this into reference + active sections |
 | 1,500 lines | ~18,000 t | Only load on demand |
 
-**Rule:** Files in CLAUDE.md load every session. Files in TASK.md load every run. Large always-loaded files slow down every interaction and raise cost.
+**Rule:** Explicitly decide what each session or run reads. A file link does not guarantee loading; verify native discovery or request the read. Large repeated inputs increase work even when token metrics are unavailable.
 
 ---
 
-## Common MCP Tool Names
+## Examples of Tool Operations
 
-| Tool | Typical name in skills |
+| Operation | Illustrative names, not portable identifiers |
 |---|---|
 | Read Gmail inbox | `gmail_list_emails` |
 | Send Gmail | `gmail_send_email` |
@@ -182,7 +155,7 @@ These figures were measured before Sonnet 5's tokenizer, which uses roughly 30% 
 | Jira issue | `getJiraIssue`, `createJiraIssue` |
 | Confluence page | `getConfluencePage`, `createConfluencePage` |
 
-**Important:** Use the exact tool name in your SKILL.md workflow steps. If you write "check the calendar" without naming the tool, Claude may not know which integration to use.
+**Important:** Use the exact tool name in your SKILL.md workflow steps. If you write "check the calendar" without naming the tool, the assistant may select the wrong integration; resolve actual names from the connected runtime.
 
 ---
 
@@ -214,14 +187,14 @@ shared/
 └── calendar_2026-04-10.json          ← written by calendar task
 ```
 
-**Rules:** each task owns its own files · always check freshness before reading · stagger schedules by 10+ minutes · keep shared files under 100 lines.
+**Rules:** each task owns its own files · always check freshness before reading · choose one scheduler owner per job and use a verified duplicate-run guard; staggering alone is not mutual exclusion · keep shared files under 100 lines.
 
 ---
 
-## Useful Prompts to Give Claude
+## Useful Prompts for Either Assistant
 
-**Set up or improve your CLAUDE.md:**
-> "Read 01_CLAUDE_MD.md and help me write my CLAUDE.md. Ask me what you need to know."
+**Set up project instructions:**
+> "Read 01_CLAUDE_MD.md and help me write shared project instructions and the native entry points I need. Ask me what you need to know."
 
 **Create a new skill:**
 > "Read 03_SKILLS.md and create a skill for [what you want]. Follow the guide's best practices."
@@ -239,7 +212,7 @@ shared/
 > "Read 27_INDEPENDENT_JUDGMENT.md. Review [file] and write the findings to a file before I say anything — location, what is wrong, severity, confidence, and what evidence would make you drop each one. Say what it does well too. I'll give you my own read afterwards."
 
 **Use Plan Mode before making changes:**
-> "Enter plan mode. Read [file] and plan how to [change]. Don't make any edits yet."
+> "Read [file] and plan how to [change]. Don’t make any edits yet. Use a native plan mode if this surface provides one."
 
 **Debug something broken:**
 > "Read LAST_RUN.md and TASK.md for [task name]. The last run had [problem]. What caused it and what should I change?"
@@ -257,3 +230,7 @@ shared/
 - [ ] Every MCP tool used is named exactly in the workflow steps
 - [ ] If it writes files, the format and size limit are defined
 - [ ] First run won't take any irreversible action without confirmation
+
+## Switching Platforms
+
+Read [Guide 35](./35_DUAL_PLATFORM_PROJECTS.md). Share the policy and task definitions; keep native memory, connector grants and scheduler registrations separate. Record the branch/revision, pending work, checks and output location at handoff. Refresh uploaded sources explicitly. Mark untested surfaces honestly.

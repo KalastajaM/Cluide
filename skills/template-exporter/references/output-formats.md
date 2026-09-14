@@ -6,7 +6,7 @@ This reference defines the exact file structure and content expectations for eac
 
 ## Chat System Prompt
 
-**Use when:** The source is a system prompt, persona definition, or instruction block intended for a Claude chat (claude.ai or API system prompt).
+**Use when:** The source is a system prompt, persona definition, or instruction block intended for an assistant chat (claude.ai or API system prompt).
 
 **Folder structure:**
 ```
@@ -23,13 +23,13 @@ template-[name]/
 - Do NOT include conversation history, examples, or sample user messages here — those belong in README.md under "Notes"
 
 **README "How to use it" section should say:**
-> Copy the contents of `system-prompt.md` into the System Prompt field when creating a new Claude chat at claude.ai, or pass it as the `system` parameter in your API call.
+> Use the selected surface’s documented project/custom-instruction route, or supply the text as an explicit source. API integrations must use that API’s documented instruction parameter. Verify the resulting behavior; app fields and API messages are different interfaces.
 
 ---
 
-## Cowork Task
+## Assistant Task
 
-**Use when:** The source is a single Cowork task definition — a TASK.md file or equivalent step-by-step automation workflow.
+**Use when:** The source is a single Assistant task definition — a TASK.md file or equivalent step-by-step automation workflow.
 
 **Folder structure:**
 ```
@@ -51,16 +51,19 @@ template-[name]/
 
 ---
 
-## Cowork Project
+## Project (Claude, ChatGPT, or Codex)
 
-**Use when:** The source is a multi-task Cowork project — a project config with multiple tasks, possibly a shared context or knowledge file.
+**Use when:** The source is a multi-task assistant project — a project config with multiple tasks, possibly a shared context or knowledge file.
 
 **Folder structure:**
 ```
 template-[name]/
 ├── README.md
 ├── SETUP.md
-├── project.md
+├── AGENTS.md             # shared policy
+├── CLAUDE.md             # thin native adapter
+├── PLATFORM_SETUP.md     # per-surface bootstrap, gaps, blank scheduler ownership
+├── project.md            # human-readable project description, not imported config
 └── tasks/
     ├── task-01.md
     ├── task-02.md
@@ -74,12 +77,12 @@ template-[name]/
 - `[PLACEHOLDER: ...]` for project name, owner, shared paths
 
 **`tasks/` subfolder:**
-- One file per task, following the Cowork Task spec above
+- One file per task, following the Assistant Task spec above
 - Files named `task-[nn]-[short-name].md` for clarity
 - Order files to reflect logical execution order (not alphabetical if different)
 
 **README "How to use it" section should say:**
-> Create a new Cowork project. Import `project.md` as the project config, then add each file in `tasks/` as a separate task. Customize all `[PLACEHOLDER: ...]` values before running.
+> Customise placeholders, then follow PLATFORM_SETUP.md for the selected surface. Supply project.md as context, not as an assumed native configuration format. Verify the shared policy in a new session. Task files are definitions: register only the jobs you choose, on one scheduler each, after a manual test.
 
 ---
 
@@ -117,4 +120,4 @@ template-[name]/
 - If a reference file is very large (>300 lines), note in README.md that it may need to be split for token efficiency
 
 **README "How to use it" section should say:**
-> Copy `SKILL.md` (and the `references/` folder if present) into your `.claude/skills/[skill-name]/` directory. Customize all `[PLACEHOLDER: ...]` values. The skill will be available in Claude Code automatically.
+> Customise placeholders and install the complete skill folder through the target surface’s supported mechanism. Claude Code uses `.claude/skills/`; Codex repository skills use `.agents/skills/`. For a conversational source-only route, supply the workflow and invoke it explicitly. Verify discovery and behavior after installation; never treat Claude-specific metadata as a portable permission control.

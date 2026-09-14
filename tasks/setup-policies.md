@@ -1,8 +1,20 @@
 # Task: Setup Company Policies
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Claude, run tasks/setup-policies.md`
+> `Assistant, run tasks/setup-policies.md`
 > **Source guide:** `21_COMPANY_POLICIES.md` (see also `03_SKILLS.md`, `05_MCP_SERVERS.md`)
+
+## Runtime route
+
+Name the target surface and available tools before running steps. Claude-only policy lives in `CLAUDE.md`; Codex uses `AGENTS.md`; dual-platform shares `AGENTS.md` through a thin Claude adapter. References below to editing project rules mean that selected policy, not duplicated adapters. ChatGPT source projects use project instructions and dated sources; without write access, return replacement artifacts and record refresh as pending.
+
+Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
+
+## Native implementation
+
+Install the validator through the selected surface's skill route: Codex project `.agents/skills/policies-validator/SKILL.md`, Claude project/personal skill location, or an explicitly invoked task/source where native installation is unavailable. Before using the Claude commands below, select that branch; on Codex inspect/create the `.agents/skills` folder instead and validate metadata using `setup-skill.md`. For ChatGPT, supply the policy pointers and validator workflow as sources, plus an instruction to invoke it before relevant work; do not claim automatic skill loading.
+
+Inspect actual exposed connector names/scopes rather than searching Claude settings for an OpenAI connection. Tier 1 means a verified structural block only when tool grants or runtime controls enforce it; otherwise report the enforcement gap and keep the affected action on a verified surface. Put the shared policy reference in the selected instruction target and record fresh-session checks. Never copy policy text or credentials into the distributable project.
 
 ## Purpose
 Wire existing company policies (AI use policy, Code of Conduct, data classification, Claude guidelines, and similar) into a Claude project as runtime guardrails — without copying any policy content into the project or into Cluide. Interviews the user, classifies each policy into an enforcement tier, fills in the `policies-validator` skill, and adds the one-line reference to `CLAUDE.md`.
@@ -13,13 +25,14 @@ Runs read-only checks first. Does not move or modify policy source files.
 
 ## Instructions
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+> **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
 ### Step 1 — Confirm the skill is available
 
 Check whether the `policies-validator` skill is already installed:
 
 ```bash
+# Claude-only installation checks; Codex uses .agents/skills/policies-validator/SKILL.md
 ls ~/.claude/skills/policies-validator/SKILL.md 2>/dev/null && echo "installed" || echo "missing"
 ls .claude/skills/policies-validator/SKILL.md 2>/dev/null && echo "installed-project" || echo "missing-project"
 ```
@@ -28,6 +41,7 @@ If the skill is missing in both locations, copy it from the Cluide repo (if pres
 
 ```bash
 # User-level (applies across all projects)
+# Claude personal-scope branch only
 mkdir -p ~/.claude/skills/policies-validator
 cp path/to/Cluide/skills/policies-validator/SKILL.md ~/.claude/skills/policies-validator/SKILL.md
 ```
@@ -40,7 +54,7 @@ Read the installed `SKILL.md` and look at the Policy Registry table (§1). If it
 
 > "You already have N policies configured: [list names]. Do you want to add new ones, re-classify existing ones, or start fresh?"
 
-Use `AskUserQuestion` with buttons: `Add new` / `Re-classify` / `Start fresh` / `Cancel`.
+Use the available question tool, or ask in chat: `Add new` / `Re-classify` / `Start fresh` / `Cancel`.
 
 ### Step 3 — Interview the user
 
@@ -65,7 +79,7 @@ For each policy, ask:
 > - An internal intranet URL
 > - Somewhere else"
 
-Use `AskUserQuestion` with buttons: `Local file` / `SharePoint` / `Confluence` / `Other URL` / `Skip for now`.
+Use the available question tool, or ask in chat: `Local file` / `SharePoint` / `Confluence` / `Other URL` / `Skip for now`.
 
 For **Local file**: ask for the absolute path.
 For **SharePoint / Confluence**: ask for the URL or page ID.
@@ -82,7 +96,7 @@ Before asking, show the tier definitions:
 >
 > **T3 — Soft guidance.** The policy shapes how Claude writes. No visible alert; the policy just influences output. Examples: style guides, preferred vendors.
 
-For each policy, use `AskUserQuestion` with buttons: `T1 — Hard block` / `T2 — Required check` / `T3 — Soft guidance`.
+For each policy, use the available question tool, or ask in chat: `T1 — Hard block` / `T2 — Required check` / `T3 — Soft guidance`.
 
 #### 3.4 — Escalation contacts
 
@@ -122,7 +136,7 @@ If not found, warn the user:
 > - Fall back to a local copy of the policy
 > - Proceed anyway (the skill will emit a POLICY ALERT when the policy can't be loaded)"
 
-Use `AskUserQuestion` with buttons: `Configure MCP first` / `Use local copy` / `Proceed anyway`.
+Use the available question tool, or ask in chat: `Configure MCP first` / `Use local copy` / `Proceed anyway`.
 
 **4.3 — Tier sanity check:**
 
@@ -140,7 +154,7 @@ Do not override the user's choice silently.
 
 ### Step 5 — Generate
 
-Edit the installed `SKILL.md` (either `~/.claude/skills/policies-validator/SKILL.md` or `.claude/skills/policies-validator/SKILL.md`):
+Edit the installed native skill selected above (Codex: `.agents/skills/policies-validator/SKILL.md`; Claude: either `~/.claude/skills/policies-validator/SKILL.md` or `.claude/skills/policies-validator/SKILL.md`):
 
 **5.1 — Policy Registry (§1):** replace placeholder rows with collected entries. Use this row format:
 
@@ -159,14 +173,14 @@ Preserve the rest of the skill (tier definitions, validation protocol, output fo
 
 ### Step 6 — Wire into CLAUDE.md
 
-Check for an existing CLAUDE.md in the project and at user level:
+Select the native policy target from the runtime route. The following project/user checks are Claude-only; Codex uses its effective `AGENTS.md` chain, and ChatGPT uses project instructions/source.
 
 ```bash
 ls .claude/CLAUDE.md 2>/dev/null && echo "project-claude-md"
 ls ~/.claude/CLAUDE.md 2>/dev/null && echo "user-claude-md"
 ```
 
-Ask the user where to add the policy reference. Use `AskUserQuestion` with buttons: `Project CLAUDE.md` / `User CLAUDE.md` / `Both` / `Skip`.
+Ask the user where to add the policy reference. Use the available question tool, or ask in chat: `Project CLAUDE.md` / `User CLAUDE.md` / `Both` / `Skip`.
 
 Append to the chosen file(s):
 
@@ -185,7 +199,7 @@ Ask:
 
 > "Do any of your existing tasks depend on these policies? For example, a task that drafts external emails depends on the AI use policy. Tagging them makes the dependency visible to anyone maintaining the task later."
 
-Use `AskUserQuestion` with buttons: `Yes — let me list them` / `No` / `Skip`.
+Use the available question tool, or ask in chat: `Yes — let me list them` / `No` / `Skip`.
 
 If yes: for each task the user names, read the task file and offer to prepend:
 

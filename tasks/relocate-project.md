@@ -4,6 +4,16 @@
 > **Source guides:** `11_GIT_INTEGRATION.md`, `24_PROJECT_FOLDER_STRUCTURE.md`. Where `reorganize-project.md` tidies *inside* one project, this moves the project itself.
 > **Per-layer detail:** `relocate-project-reference.md` — load it at Step 2 or Step 5, not before.
 
+## Runtime route
+
+Name the target surface and available tools before running steps. Claude-only policy lives in `CLAUDE.md`; Codex uses `AGENTS.md`; dual-platform shares `AGENTS.md` through a thin Claude adapter. References below to editing project rules mean that selected policy, not duplicated adapters. ChatGPT source projects use project instructions and dated sources; without write access, return replacement artifacts and record refresh as pending.
+
+Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
+
+## Native implementation
+
+Local relocation requires an actual writable folder and a restore point. Before moving, inventory each surface's saved project path, scheduler registration, connector folder grant and source link. Codex saved-project references and automations must be updated through supported app tools/UI, not by renaming internal session storage. For ChatGPT, refresh links/uploads and record source revisions; this does not move a local repository. Claude app/CLI history migration sections below apply only to confirmed Claude installations. Leave inaccessible platform-local state pending with its owner; do not certify relocation until the new project opens and one safe task resolves its inputs on each supported surface.
+
 ## Purpose
 
 Relocate one or more project folders and rewire every reference to them — in the projects, in the scheduled tasks that run unattended, and in the desktop app's own configuration. Absolute paths are recorded in all three places and all three break silently when a folder moves.
@@ -16,7 +26,7 @@ The reason this is its own task: a move looks like a filesystem operation and is
 
 ## Instructions
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+> **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
 ### Step 0 — Preconditions
 
@@ -106,7 +116,7 @@ Retire the restore point only once Step 6 verifies the result.
 
 ### Step 5 — Move, then rewire
 
-1. **Quit the desktop app before touching its config.** It rewrites its state files wholesale from memory, so an edit made while it runs is silently discarded (Guide 25). This is the single most common way a config fix appears to work and doesn't.
+1. **For the approved Claude app-internal config branch only, quit the desktop app before touching its config.** Codex/ChatGPT references use supported app tools/UI instead. It rewrites its state files wholesale from memory, so an edit made while it runs is silently discarded (Guide 25). This is the single most common way a config fix appears to work and doesn't.
 2. **Move the folders.** Prefer a copy-then-verify-then-remove over an in-place move when crossing volumes.
 3. **Verify arrival before rewiring:** diff the Step 1 project list against the destination, and re-run `git -C <project> rev-parse HEAD` on every repo. A repo that reports a different HEAD, or fails, stops the run.
 4. **Rewire each approved reference.** Never bulk-replace blind across the whole tree: a global search-and-replace on a path string will rewrite documentation, historical logs, and other projects' records of where things used to be. Apply the classified table from Step 2, row by row, using the anchored-replacement rules in `relocate-project-reference.md` — replace complete strings only, assert before and after, and check for the doubled slash an unanchored replace leaves behind, which POSIX hides from the shell while every string-matching consumer breaks on it.
@@ -119,8 +129,8 @@ If applying reveals something the plan missed, stop and present a revised plan.
 - No references to the old path remain outside the ones deliberately kept (re-run the Step 2 grep).
 - Every project from the Step 1 list is present at the destination, with matching HEADs.
 - Every scheduled task resolves to a path that exists. Read each definition; do not infer from the folder existing. A repaired folder with a stale registration is still broken (reference, *The scheduled-task layer*).
-- Every generator task has been re-run and each artifact's own as-of date has advanced. A stale artifact is the one failure in this list that shows no error.
-- `~/.claude/projects/` has a directory under the new path name, and the old one has been merged or renamed rather than left to be collected.
+- Every generator task has passed a safe verification run and each artifact’s source/date remains accurate; do not trigger live outbound actions just to test relocation. A stale artifact is the one failure in this list that shows no error.
+- **Claude Code only:** `~/.claude/projects/` has a directory under the new path name, and the old one has been merged or renamed rather than left to be collected.
 - The app lists every project and each opens its folder.
 - No lock files (`index.lock`, `HEAD.lock`) left behind in any repository.
 

@@ -4,7 +4,7 @@
 
 > **Companion guides:** [Guide 26](./26_CONTEXT_SCOPING.md) is the closest neighbour and the boundary matters. Guide 26 covers contamination from the *environment* — Claude knows something your reader will not, so the defect never surfaces. This guide covers contamination from *you* — Claude knows what you think, and converges on it. Guide 26 owns the artefact-review workflow (deny-lists, staged copies, the blind → in-context → reconcile passes); this guide owns why your own input biases an answer and what to do about it, in review and in ordinary conversation alike. [Guide 02](./02_PROMPTING_BASICS.md) covers instruction quality. [Guide 20](./20_INTERACTIVE_PROMPTING.md) covers session mechanics. [Guide 04](./04_MEMORY_AND_PROFILE.md) matters here too: a saved preference is a standing opinion Claude reads before it answers. [Guide 30](./30_CONTROLLED_DOCUMENTS.md) is this boundary in its most concrete form: on a document with an approver, accepting a change *is* the verdict, and Claude never performs it.
 
-> **Giving this guide to Claude:**
+> **Giving this guide to an assistant:**
 > "Read 27_INDEPENDENT_JUDGMENT.md. I want an independent read on [decision / document / plan] and I have already formed a view. Set up the protocol — tell me what to withhold, what to ask for, and in what order."
 
 ---
@@ -135,6 +135,16 @@ Then ask symmetrically:
 That last clause earns its place surprisingly often. Two reviewers converging on the same six findings both missed the seventh, and an arbiter looking only at the union will never look for it.
 
 **On findings the context explains:** keep Guide 26's rule. If the blind list flagged something your project knowledge dissolves, it stays, marked as explained. Your reader is blind too.
+
+---
+
+## Cross-Platform Review Uses the Same Protocol
+
+Claude and an OpenAI model can review the same artifact, but brand diversity does not prove independent evidence. They may see the same leading prompt, share common training patterns, retrieve the same source, or inherit the author's account/project context.
+
+Give each reviewer the same neutral inputs and criteria, withhold the author's preferred answer, and save each verdict before revealing the other. Ask a reconciler to map disagreements to specific evidence and unresolved assumptions. Record surface, model when available, source revision and context supplied. Agreement without independent evidence is still agreement, not validation.
+
+If a local Codex reviewer sees the whole repository while a ChatGPT reviewer sees only the uploaded artifact, label the roles accordingly: in-context review and reader-facing review. Those are useful complementary passes, but their difference is context, not a measured provider advantage.
 
 ---
 

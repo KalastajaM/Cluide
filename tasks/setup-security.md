@@ -1,11 +1,27 @@
 # Task: Setup Security
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Claude, run tasks/setup-security.md`
+> `Assistant, run tasks/setup-security.md`
 > **Source guide:** `12_SECURITY.md`
 
+## Runtime route
+
+Name the target surface and available tools before running steps. Claude-only policy lives in `CLAUDE.md`; Codex uses `AGENTS.md`; dual-platform shares `AGENTS.md` through a thin Claude adapter. References below to editing project rules mean that selected policy, not duplicated adapters. ChatGPT source projects use project instructions and dated sources; without write access, return replacement artifacts and record refresh as pending.
+
+Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
+
+## Native implementation
+
+Select the permission implementation before Step 2:
+
+- **Codex:** inspect the effective sandbox, writable roots, network policy, approval policy and connected-app grants exposed by the runtime. Read only relevant non-secret settings from user/project `config.toml` if available; managed settings may override them. Compare the effective capabilities with the task's needed actions, propose the smallest supported restriction and apply through the permitted native settings route. Verify a denied action using an inert temporary fixture and report the observed block. Use [Codex approvals/security](https://learn.chatgpt.com/docs/agent-approvals-security) and runtime documentation; unavailable documentation or controls stay unverified. Skip all Claude hook/JSON installation steps.
+- **ChatGPT:** inspect attached sources, connected apps, available write actions and admin controls. Remove unnecessary access through the supported app controls when authorized. Keep sensitive sources out of the project when no verified access boundary exists. Test draft-only behavior using a synthetic request; distinguish behavioral compliance from a tool being unavailable. Local shell/hook checks are N/A without that capability.
+- **Claude Code:** audit actual settings and supported hooks below. A shell pattern guard is defense in depth, not proof that every dangerous command is blocked. Cowork uses its actual folder/connector grants, not Claude Code hooks.
+
+Run shared credential, Git and external-input checks where those resources exist. Report inaccessible history/configuration as unverified, never clean. Put shared prompt-injection rules in the selected policy; `.claudeignore` is advisory and is not a secret-access control.
+
 ## Purpose
-Audit the Claude setup for common security issues: exposed credentials, risky permission settings, missing ignore rules for sensitive files, and prompt injection exposure. Optionally installs a PreToolUse hook that blocks dangerous shell commands.
+Audit the selected assistant setup for common security issues: exposed credentials, risky permission settings, missing ignore rules for sensitive files, and prompt injection exposure. Optionally installs a PreToolUse hook that blocks dangerous shell commands.
 
 This task runs read-only checks first and asks before making any changes.
 
@@ -13,14 +29,14 @@ This task runs read-only checks first and asks before making any changes.
 
 ## Instructions
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+> **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
 ### Step 1 — Credential scan
 
 **Check settings.json files for plaintext credentials:**
 ```bash
-grep -E "(API_KEY|TOKEN|SECRET|PASSWORD|key|token|secret)" ~/.claude/settings.json 2>/dev/null | grep -v "//\|#"
-grep -E "(API_KEY|TOKEN|SECRET|PASSWORD|key|token|secret)" .claude/settings.json 2>/dev/null | grep -v "//\|#"
+rg -l "API_KEY|TOKEN|SECRET|PASSWORD|key|token|secret" ~/.claude/settings.json 2>/dev/null
+rg -l "API_KEY|TOKEN|SECRET|PASSWORD|key|token|secret" .claude/settings.json 2>/dev/null
 ```
 
 **Check git-tracked files for accidentally committed secrets:**
@@ -36,16 +52,16 @@ git log -S "API_KEY\|TOKEN\|SECRET\|PASSWORD" --all --oneline 2>/dev/null | head
 
 **Check shell history for accidentally typed credentials:**
 ```bash
-grep -E "(PASSWORD|SECRET|API_KEY|TOKEN)\s*=" ~/.zsh_history ~/.bash_history 2>/dev/null | head -5
+rg -l "(PASSWORD|SECRET|API_KEY|TOKEN)\s*=" ~/.zsh_history ~/.bash_history 2>/dev/null
 ```
 
 Report findings without showing actual credential values — show only which files and patterns were matched.
 
-### Step 2 — Permission settings audit
+### Step 2 — Permission settings audit by surface
 
-Read `.claude/settings.json` and `~/.claude/settings.json`:
+**Codex/ChatGPT:** perform the native permission audit above and then proceed to Step 3; do not read Claude settings as evidence. **Claude Code only:** inspect relevant fields in `.claude/settings.json` and `~/.claude/settings.json`:
 
-Check for:
+Check current documented values before interpreting settings; the following Claude values require re-verification at runtime.
 - `permissions.defaultMode` — the valid values are `default` (alias `manual`), `auto`, `acceptEdits`, `plan`, `dontAsk` and `bypassPermissions`. Flag `bypassPermissions`: it disables all permission prompts. Flag `dontAsk` too if this is not a CI or unattended setup. An unset value no longer means every action is prompted — auto is the built-in starting mode on Pro, Max and Team, so report "not set (auto on Pro/Max/Team)" rather than assuming manual. Note also that `"auto"` set in a project-level `.claude/settings.json` or `settings.local.json` has no effect; it belongs in `~/.claude/settings.json` or managed settings.
 - `allowedTools` entries with broad scope (e.g. allowing all Bash commands without restriction)
 - Existing hooks — are they configured correctly?
@@ -64,6 +80,7 @@ Permission settings:
 # Check .gitignore for key patterns
 grep -E "\.env|credentials|token|key|secret" .gitignore 2>/dev/null || echo ".gitignore missing or no credential patterns"
 
+# Claude-only advisory check; omit on OpenAI
 # Check .claudeignore
 ls .claudeignore 2>/dev/null && echo "exists" || echo "missing"
 
@@ -106,7 +123,7 @@ Prompt injection exposure:
   [✓ / ℹ] [clean / potential read+act exposure]
 ```
 
-Use `AskUserQuestion` with buttons to ask what to fix:
+Use the available question tool, or ask in chat to ask what to fix:
 
 > "Would you like me to apply fixes?"
 > Buttons: `PreToolUse hook` / `Fix .gitignore` / `Add CLAUDE.md guard` / `All of the above` / `Skip`
@@ -196,9 +213,9 @@ How it works: the hook receives the tool call as JSON on stdin; exit 0 allows th
 
 If `setup-ignore-hygiene.md` is not reachable — this task copied to a project outside a Cluide checkout — say so, apply the patterns you can name, and tell the user the list is partial and to run the ignore-hygiene task when they next have the repo.
 
-#### Fix C — Add prompt injection guard to CLAUDE.md
+#### Fix C — Add prompt injection guard to the selected policy
 
-Add or append to `CLAUDE.md`:
+Add or append to the selected instruction target (`AGENTS.md` for Codex/dual-platform; project instructions/source for ChatGPT; `CLAUDE.md` for Claude-only):
 ```markdown
 ## Security
 

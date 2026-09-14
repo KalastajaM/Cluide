@@ -1,10 +1,10 @@
-# Personal Helper Apps Guide: Collaborating with Claude on Small Tools You Build for Yourself
+# Personal Helper Apps Guide: Building Small Tools with Claude or Codex
 
 > Most of Cluide is about co-work — how Claude drafts your emails, runs your briefings, files your actions. This guide is about an adjacent use-case: the small locally-run tool you build *for yourself* with Claude's help. A budget tracker, a reading log, a data dashboard, a CLI wrapper around an API. Not a product. Not a team deliverable. One user, local data, evolves feature-by-feature over many short sessions.
 
 > **Companion guides:** [Guide 01](./01_CLAUDE_MD.md) covers CLAUDE.md structure — this guide adds four patterns that are specific to helper apps. [Guide 05](./05_MCP_SERVERS.md) covers MCP servers, including Claude in Chrome, which this guide leans on for verification. [Guide 12](./12_SECURITY.md) covers permission hygiene. [Guide 13](./13_DEV_EXECUTION_WORKFLOW.md) covers the build-vs-run split. [Guide 20](./20_INTERACTIVE_PROMPTING.md) covers plan mode, which underpins the iteration loop described here.
 
-> **Giving this guide to Claude:**
+> **Giving this guide to an assistant:**
 > "Read 22_HELPER_APPS.md and help me set up the CLAUDE.md for this helper app — interview me about the app's one invariant, the helpers I already have, and what 'done' looks like for each class of change."
 
 ---
@@ -27,6 +27,16 @@ This guide is about pushing both failure modes back into the CLAUDE.md layer, wh
 It is not a software-engineering guide. No stack recommendations, no test framework advice, no architecture opinions. Use whatever you want — vanilla JS, Python, a single Bash script. What this guide covers is the *Claude-facing layer*: what to put in CLAUDE.md, how to structure the iteration loop, what MCP tools to use for verification, and how to keep the permission surface tight. Everything here applies whether your helper app is 200 lines or 20,000.
 
 It is also not a guide for anything larger. If the tool grows a second user, an auth system, or a production deployment, stop treating it as a helper app — it needs real engineering discipline, which is outside Cluide's scope entirely.
+
+---
+
+## Use a Shared App Contract and Native Verification Tools
+
+Put the invariant, helper index, conventions and definition of done in `AGENTS.md` for a dual-platform app, with the Claude adapter pointing to it. Claude Code and Codex should read the same contract and work on separate branches when active concurrently. Record data/schema changes and tests in the handoff so switching assistants does not repeat a migration or overwrite local state.
+
+Use the browser and execution tools actually available to the current session. A Claude in Chrome example is not an instruction to call that tool from Codex. A Codex session can run local tests and inspect a browser when its tools permit; ChatGPT without local execution can review supplied code or screenshots, but should report the app run as untested.
+
+For a UI change, exercise the user action and inspect the rendered result. For a data change, validate a copied fixture and confirm existing records remain intact. If a required check cannot run, deliver the change with that specific verification gap rather than marking it complete. This is the same gate below, bound to the real surface rather than a brand name.
 
 ---
 

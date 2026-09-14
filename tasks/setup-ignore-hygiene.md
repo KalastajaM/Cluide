@@ -1,8 +1,20 @@
 # Task: Setup Ignore Hygiene
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Claude, run tasks/setup-ignore-hygiene.md`
+> `Assistant, run tasks/setup-ignore-hygiene.md`
 > **Source guides:** `11_GIT_INTEGRATION.md`, `12_SECURITY.md`
+
+## Runtime route
+
+Name the target surface and available tools before running steps. Claude-only policy lives in `CLAUDE.md`; Codex uses `AGENTS.md`; dual-platform shares `AGENTS.md` through a thin Claude adapter. References below to editing project rules mean that selected policy, not duplicated adapters. ChatGPT source projects use project instructions and dated sources; without write access, return replacement artifacts and record refresh as pending.
+
+Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
+
+## Native implementation
+
+Run the `.gitignore` inventory and tracked-file checks on any local Git repository. For Codex, skip `.claudeignore` creation and the PostToolUse option; use the selected `AGENTS.md` to state which generated paths should be read only on demand, and use actual sandbox/access controls for restrictions. No OpenAI ignore filename is implied. For ChatGPT sources, audit the uploaded source inventory, remove or replace unnecessary generated/personal artifacts through the supported project UI, and record the new revision; local Git checks are N/A when no repository is supplied. In a dual-platform repo `.claudeignore` may remain as a labelled Claude advisory convention, but the shared policy must not treat it as enforced.
+
+Step 5 offers only supported choices: Claude Code hook (Claude Code only), a standing instruction in the selected policy (behavioral guidance on every surface), or manual audit. Scope Step 3's `.claudeignore` operation to Claude projects and Step 6's report to actions actually applied.
 
 ## Purpose
 Audit the project for files that should be ignored by git and/or Claude, update `.gitignore` and `.claudeignore` accordingly, and optionally install a PostToolUse hook (or CLAUDE.md rule) that flags newly created files that should be ignored.
@@ -13,7 +25,7 @@ This task is designed to be portable and run on any project. Do not assume any f
 
 ## Instructions
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+> **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
 Execute the following steps in order. Stop and ask the user before making any changes.
 
@@ -65,7 +77,7 @@ Ask: "Shall I apply these changes? You can also tell me which ones to skip."
 After the user approves (in full or partially):
 
 1. Check if `.gitignore` exists. If not, create it with a header comment. If yes, append the approved additions.
-2. Check if `.claudeignore` exists. If not, create it using the template below. If yes, append the approved additions.
+2. **Claude projects only:** check if `.claudeignore` exists. If not, create it using the template below. If yes, append the approved additions.
 
 **`.claudeignore` header template** (use when creating from scratch):
 ```
@@ -92,7 +104,7 @@ Only proceed with `git rm --cached` if the user explicitly says yes.
 
 ### Step 5 — Ongoing enforcement (choose one option)
 
-Use `AskUserQuestion` with buttons to ask about ongoing enforcement:
+Use the available question tool, or ask in chat to ask about ongoing enforcement:
 
 > "Would you also like ongoing enforcement — so future files that should be ignored get flagged automatically?"
 > Buttons: `PostToolUse hook` / `CLAUDE.md rule` / `Skip`
@@ -105,7 +117,7 @@ Proceed based on the user's choice:
 
 ---
 
-#### Option A — Install the PostToolUse hook
+#### Option A — Install the PostToolUse hook (Claude Code only)
 
 1. Check if `.claude/hooks/` directory exists. Create it if not.
 2. Write the file `.claude/hooks/check-ignore.sh` using the template below.
@@ -186,9 +198,9 @@ When merging: if `hooks.PostToolUse` already exists as an array, append the new 
 
 ---
 
-#### Option B — Add CLAUDE.md rule
+#### Option B — Add a selected-policy rule
 
-Check if `CLAUDE.md` exists in the project root.
+Select `AGENTS.md` for Codex/dual-platform, `CLAUDE.md` for Claude-only, or the ChatGPT policy source/instructions. Check that target exists.
 - If not: create it with a header comment and the rule below.
 - If yes: append the rule under a `## File Hygiene` section (or add that section if it doesn't exist).
 
@@ -196,9 +208,9 @@ Check if `CLAUDE.md` exists in the project root.
 ```markdown
 ## File Hygiene
 
-When creating or editing files, check whether the file belongs in `.gitignore` or `.claudeignore`:
+When creating or editing files, check Git hygiene and unnecessary context loading:
 - **Add to `.gitignore`**: run logs, output files, auto-generated bundles, any file containing personal data (paths, names, company names), secrets, temp files.
-- **Add to `.claudeignore`**: large generated files that don't need to be loaded as context (compiled bundles, output archives, large data dumps).
+- Keep large generated files out of routine context reads. On Claude, `.claudeignore` may document this advisory convention; it is not an enforced boundary.
 
 If a newly created file should be ignored but is already tracked by git, flag it and suggest: `git rm --cached <file>`
 ```

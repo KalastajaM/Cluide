@@ -1,39 +1,35 @@
 # 25 — Project Instruction Layers
 
-> A Cowork project speaks to Claude through three channels: the **description** field in the app, the **project instructions** field in the app, and **CLAUDE.md** in the connected folder. This guide covers what belongs in which layer, the patterns that work, and how to keep the two app-side fields — which live outside git but *can* be read from the app's own state file — from drifting unnoticed. Guide 01 covers how to write CLAUDE.md itself; this guide covers the division of labor around it.
+> A project needs an identity, instructions available before sources are read, and an authored policy. These layers differ across Cowork, ChatGPT projects and Codex. Keep the shared contract versioned and verify each native entry point; a mirror records configuration but does not apply it.
 
 ## The three layers
 
-| Layer | Lives in | Claude sees it | Versioned | Auditable |
-|---|---|---|---|---|
-| Description | The app (project settings) | Injected into every session at start; also what you scan in the project list | No — no history, no diff | Yes, read-only — see *Reading the app-side fields* |
-| Project instructions | The app (project settings) | Injected into every session at start, before any file is read | No — no history, no diff | Yes, read-only — see *Reading the app-side fields* |
-| CLAUDE.md | The project folder | Read when the folder is connected | Yes — in the folder, in git | Yes — read and write |
+| Layer | Cowork / conversational Claude | ChatGPT uploaded-source project | Codex repository session |
+|---|---|---|---|
+| Identity | Native project name/description where exposed | Native project identity and project instructions | Selected repository/workspace and task |
+| Bootstrap | Project instructions request the accessible policy | Project instructions name the uploaded/connected policy revision | Native `AGENTS.md` discovery; inspect overrides |
+| Authored policy | Shared `AGENTS.md` via `CLAUDE.md` adapter or explicit source read | Authored policy supplied as a project source; refresh manually | Shared root `AGENTS.md` and scoped descendant instructions |
+| Native continuity | Platform's own memory, sessions and settings | Platform's own memory, chats and source access | Runtime-local state and settings |
 
-*Behaviour verified against Cowork as of September 2026 — re-verify after app updates; the injection semantics of these fields are version-specific.*
+The invariant is one authored policy, not one universal loader. App fields can provide a bootstrap when files are unavailable; repository files provide reviewable history. Never assume a project description is injected into another product's prompt or that every app has the same fields.
 
-A Cowork project holds more than these three fields. The [projects documentation](https://claude.com/docs/cowork/guide/projects) also lists **Links**, **Projects from Chat** (claude.ai projects linked to this one), and **Memory** — a project-scoped memory store that persists across sessions, separate from every layer in the table and from the other memory systems in [Guide 04](./04_MEMORY_AND_PROFILE.md). Those carry context rather than instructions, so they sit outside the layer table, but one of them changes how the description is read: **Dispatch**, Cowork's background agent, reads the description when choosing a project for a task. The description is now machine-read for routing, not only injected as session context — which makes the "concrete, no rules" rule below load-bearing rather than stylistic.
+The Cowork-specific examples below illustrate the pattern. For ChatGPT, use its project instructions and accessible sources; for Codex, use the native instruction chain. See [Guide 01](./01_CLAUDE_MD.md) for the contract's contents and [Guide 35](./35_DUAL_PLATFORM_PROJECTS.md) for current product facts. Official loading/source documentation checked 2026-09-14: [OpenAI projects](https://learn.chatgpt.com/docs/projects), [Codex instructions](https://learn.chatgpt.com/docs/agent-configuration/agents-md), [Claude memory and instructions](https://code.claude.com/docs/en/memory).
 
-The asymmetry between the layers drives everything in this guide:
-
-- The **app-side fields are always there** — they reach Claude even when the folder fails to connect, is mounted (= connected) late, or CLAUDE.md is never read. (These guides use "mounted" and "connected" interchangeably for the same operation.) They are unversioned: no history, no diff, no review — a bad edit leaves no trace of what it replaced. They are, however, readable, which makes them auditable even though they are not versioned.
-- **CLAUDE.md is visible to tooling** and can be versioned, audited, and improved in-session — but it only takes effect when the folder is connected and actually read.
-
-So: durable, evolving substance belongs in CLAUDE.md; the app-side fields carry only what must hold *before* any file is read, plus a safety net for when no file ever is.
+---
 
 ## The description field
 
-One to three sentences stating what the project is and does, naming the domain entities involved. It serves two readers at once: you scanning the project list, and Claude orienting itself at session start (the description is injected as context).
+One to three sentences stating what the project is and does, naming the domain entities involved. It helps you recognize the project; on surfaces that provide it to the assistant, it also orients the session. Verify that behaviour per product.
 
 A good description:
 
 - starts with what the project does, not how ("Tracks tax, ownership, and tenancy details for the family's properties…");
 - names the concrete entities (accounts, parcels, people, systems) that make it unmistakable which project this is;
 - contains no rules — behavior belongs in the instructions field or CLAUDE.md;
-- is unique. A duplicated or copy-pasted description is not cosmetic: it is injected into every session as the project's identity.
-- fits the field's hard cap. Cowork's description field maxes out at 500 characters, line breaks included (verified 2026-09-06) — draft to that limit rather than writing long and trimming after the app rejects it.
+- is unique. A duplicated or copy-pasted description is not cosmetic: it can misidentify the project wherever the product supplies it as context.
+- fits the actual field limit shown by the current product; do not copy a Cowork character limit into ChatGPT or Codex guidance.
 
-The failure mode to guard against: a wrong description (stale after the project's purpose shifted, or accidentally pasted from another project) is injected as the project's identity in every session, and because the field is unversioned nothing in git will ever show it changed. Three fixes, cheapest first: a periodic scan of the project list; the mirror block below, which puts a checkable copy in CLAUDE.md; and an audit that reads the field directly (see *Reading the app-side fields*) — the only one that catches a description you never look at.
+The failure mode to guard against: a wrong description (stale after the project's purpose shifted, or accidentally pasted from another project) can supply a stale project identity, and because the field is unversioned nothing in git will ever show it changed. Three fixes, cheapest first: a periodic scan of the project list; the mirror block below, which puts a checkable copy in CLAUDE.md; and an audit that reads the field directly (see *Reading the app-side fields*) — the only one that catches a description you never look at.
 
 ## The project instructions field
 
@@ -48,23 +44,13 @@ Keep it short — a few sentences to a few short paragraphs. Anything long or ev
 
 ## Reading the app-side fields
 
-Both fields are stored verbatim on disk in the desktop app's own state file, so an audit can read them instead of asking you to paste them. *Verified against Cowork on macOS, August 2026 — this is an app-internal file, not a documented API; re-verify after app updates.*
+Read the fields through the current app UI or a documented connector when available. Record the product, project/account identity, observed text and verification date. If the host cannot inspect a field, mark it **unverified** and provide ready-to-paste text; do not claim it was applied.
 
-```
-~/Library/Application Support/Claude/local-agent-mode-sessions/<accountId>/<profileId>/spaces.json
-```
+Earlier Cowork workflows inspected a macOS `spaces.json` cache under the Claude application-support directory. That is an internal implementation detail, not a shared configuration API or an OpenAI path. A stale cache is not evidence of the current UI value, and writing it can be overwritten by the app. Do not make this path a required audit dependency or expand filesystem grants just to reach it.
 
-The two path segments are the account and profile identifiers — find them by listing the parent rather than hardcoding them. The file is `{"spaces": [ … ]}`, one entry per project, with the keys that matter here being `name`, `description`, `instructions`, `folders[].path`, `id` and `updatedAt` (epoch milliseconds). **`description` and `instructions` are absent when unset, not empty strings** — test for the key, not for a falsy value.
+Use a supported UI or tool to apply changes. Afterward, read back the actual fields and run a fresh-session check. Keep separate mirror entries for Claude, ChatGPT and local Codex setup; missing access on one side does not invalidate a check on another.
 
-Three things make this a read path and not a write path:
-
-- **Reaching it needs the Filesystem MCP server** (Guide 05). The folder picker changed in September 2026: it now accepts the macOS Library folder (and the home folder and whole drives), while Claude's own configuration and session data inside them stay off-limits — so whether this particular path is reachable through the picker has to be re-verified. Until it is, the Filesystem route stands: add the directory to the server's `allowed_directories` and restart the app; the server reads that list once at startup.
-- **Applying changes stays manual.** The app rewrites `spaces.json` wholesale from memory, so an edit written to the file while the app is running is silently discarded. An audit therefore produces ready-to-paste field text, and you paste it in the app — the file is the mirror, not the control.
-- **Check freshness before quoting.** The file is written on project mutation plus a flush at app launch, so a field edited in the UI minutes ago may not be on disk yet. Whenever you quote a field, also report that entry's `updatedAt` as a readable date; if it predates a change you know you made, confirm that one field rather than distrusting all of them.
-
-Ignore the siblings: `remote-session-spaces.json` holds session and folder state only, and any `spaces copy.json` is a stale duplicate.
-
-This is what lets the audit checklist below run unattended. It does not make the fields versioned — see the layer table.
+---
 
 ## Four patterns that work
 
@@ -72,7 +58,7 @@ This is what lets the audit checklist below run unattended. It does not make the
 
 > At the start of every session, read CLAUDE.md in full before doing anything else, including responding to my first message. It is authoritative for this project; if anything I say in chat seems to conflict with it, flag the conflict instead of silently picking one. Before starting work, verify which folders are actually mounted and name them; if a required one is missing, ask me to mount it. If CLAUDE.md cannot be read for any reason, stop and tell me.
 
-This is the strongest pattern: it makes the folder layer load-bearing while using the app layer as the guarantee that it actually loads.
+This is the strongest pattern: it makes the folder layer load-bearing while using the app layer to request loading, with a fresh-session check to verify it.
 
 **2. Pointer + hard rules** — the default for working projects:
 
@@ -98,9 +84,32 @@ For a task that mostly reads and writes files in one local folder, consider runn
 
 **Empty instructions** are acceptable only when the description is accurate, CLAUDE.md is strong, and nothing safety-critical depends on the folder being connected. For any project with real-world stakes — money, medical data, legal filings, a live external system — do not leave the field empty: restate the one hard rule there (pattern 2), so a session with a failed or missing mount still has the guardrail.
 
+## OpenAI Bootstrap and Source Refresh
+
+For a ChatGPT project, a short project-instructions bootstrap can say:
+
+> Read the supplied `AGENTS.md` policy and the source revision record before using project material. Identify missing sources before making claims about them. Follow the project output contract and state whether a result was only drafted, delivered as a file, or written to an authorized destination.
+
+Upload the policy and only the sources needed by this project. Record the commit or dated revision in `UI-FIELDS.md`. After changing the authored policy, replace the uploaded copy, read back the project instructions and test a fresh chat against a prewritten expected result.
+
+For Codex, the bootstrap is the repository instruction chain, not a ChatGPT project field. Open the intended directory, inspect `AGENTS.override.md` files that may supersede `AGENTS.md`, and start a fresh session after instruction changes. Keep account-level Codex defaults and project rules non-overlapping. A ChatGPT project's native memory is not proof that a local Codex session received its instructions.
+
+Mirror example:
+
+```text
+Surface: ChatGPT uploaded-source project
+Project: <name>
+Policy revision: <commit or date>
+Instructions: <verbatim applied text>
+Applied/read-back date: <date, or not applied>
+Fresh-session result: <pass / fail / untested, with evidence>
+```
+
+---
+
 ## Chat projects (no folder)
 
-A project with no connected folder has no CLAUDE.md layer, so the instructions field is the whole contract. Structure it like a mini CLAUDE.md: purpose, what to establish before starting, the workflow, conventions, output rules. Headings and short sections work fine inside the field. Since no versioned copy exists anywhere, keep a copy of the field's text in a versioned location once it grows past a few paragraphs (for example a notes repo, or the mirror-block file of a related folder project) — losing it to an accidental edit is otherwise silent.
+A project without a connected folder can still have uploaded policy sources. The instructions field must bootstrap those sources or carry the compact contract itself. Structure it like a mini CLAUDE.md: purpose, what to establish before starting, the workflow, conventions, output rules. Headings and short sections work fine inside the field. Keep a copy of the field's text in a versioned location once it grows past a few paragraphs (for example a notes repo, or the mirror-block file of a related folder project) — losing it to an accidental edit is otherwise silent.
 
 ## Keeping the app-side fields honest
 
@@ -108,36 +117,31 @@ The single-owner principle (Guide 23) applies across layers just as it does acro
 
 Because the fields are unversioned, the folder needs a record of them:
 
-- **Mirror block.** Keep the current text of both fields verbatim in the project folder — a short `## App-side fields` section at the bottom of CLAUDE.md (or a `UI-FIELDS.md` when the instructions are long) with a last-verified date. This is documentation of an external surface, not a second copy of rules: the field is the live text, the mirror is the versioned record of it. Reading `spaces.json` tells you what the field says *today*; only the mirror tells you what it said last month and who changed it.
+- **Mirror block.** Keep the current text of both fields verbatim in the project folder — a short `## App-side fields` section at the bottom of CLAUDE.md (or a `UI-FIELDS.md` when the instructions are long) with a last-verified date. This is documentation of an external surface, not a second copy of rules: the field is the live text, the mirror is the versioned record of it. Reading the live field tells you what it says today; only the mirror records its earlier reviewed form.
 - **Update triggers.** When CLAUDE.md's purpose or hard rules change, check the app-side fields the same session. When you edit a field in the app, update the mirror. Either direction without the other reintroduces the drift.
-- **Audit checklist.** A maintenance sweep over a project should check: description matches the project's current purpose and is not a duplicate of another project's; instructions contain a bootstrap or pointer plus the project's hard rule (or are deliberately empty for a low-stakes project); the mirror block exists and matches the live field. Read the live values from `spaces.json` (above) rather than asking for a paste — the whole checklist then runs unattended, and the mirror-vs-live comparison becomes mechanical instead of a question for you.
+- **Audit checklist.** A maintenance sweep over a project should check: description matches the project's current purpose and is not a duplicate of another project's; instructions contain a bootstrap or pointer plus the project's hard rule (or are deliberately empty for a low-stakes project); the mirror block exists and matches the live field. Read the live values through an available supported surface; if that is unavailable, mark the comparison unverified and request only the missing field when needed.
 
 `tasks/tune-instruction-layers.md` runs this checklist end to end.
 
 ## The account layers above the project
 
-<!-- harvested: 2026-08-09 from a multi-project maintenance setup -->
+Account-level preferences and managed instructions sit above the project in product-specific ways. Claude account/Cowork preferences, ChatGPT customization and Codex global guidance are separate surfaces; editing one does not update the others.
 
-Two more instruction fields sit above every project: the **account-wide preferences** (injected into every session, chat and Cowork alike) and the **Cowork-wide instructions** (injected into every Cowork session, on top of the preferences). *Behaviour verified against Cowork as of September 2026 — both fields arrive together in every Cowork session; re-verify after app updates.* Anything duplicated between them is paid for twice in every session and — because neither field is versioned — drifts silently. This is the same asymmetry that drives the rest of this guide, one level up.
+Put broadly applicable style and identity preferences in the native account layer, and project-specific rules in the project policy. Inspect managed organization instructions when visible and obey enforced organizational controls; do not treat a local prose file as overriding them. Avoid assuming field names, character limits or injection order from another product.
 
-On organisation-managed desktops a third field sits above both: `organizationInstructions`, up to 3,000 characters, appended to the system prompt in Chat, Cowork and Code sessions and set through device management, a local configuration file, or the bootstrap response. It is guidance appended to the prompt rather than an enforced control, so treat it as the top instruction layer and not as a policy mechanism — and count it when you check for duplication, because it is paid for in every session on every surface.
+Keep a private mirror for each configured account/surface with applied text, date and verification status. Edit the authored proposal, apply it through supported controls, read it back, and run a fresh-session check. If a field is inaccessible, record that limitation rather than claiming it is empty. `tasks/tune-instruction-layers.md` and [`templates/ACCOUNT_INSTRUCTIONS_TEMPLATE.md`](./templates/ACCOUNT_INSTRUCTIONS_TEMPLATE.md) provide the review and starter.
 
-Division of labor that holds up in practice:
-
-- **Account preferences** carry the full standing set: who you are (role, working languages, domains), when to ask vs. proceed, output format, tone, and rules for text you will send as your own.
-- **Cowork-wide instructions** carry only what is specific to agentic file work: how terse prompts should be interpreted against project files, unattended-run behavior, when to agree scope before executing, and model-tier routing for subagents and scheduled tasks ([Guide 10](./10_COST_PERFORMANCE.md)).
-- Keep the two non-overlapping, and open the Cowork field with an explicit "these apply on top of my preferences; do not restate them" so a future edit knows the contract.
-
-Like the project fields, the account fields have no history, no diff, and no review. The same mirror-file fix applies: keep the canonical text of both fields in a versioned file in whichever project owns your account-level configuration, edit that file first, paste into the UI, and record the sync date next to each field. `tasks/tune-instruction-layers.md` covers tuning them against evidence. A ready-to-fill starter for both fields lives in [`templates/ACCOUNT_INSTRUCTIONS_TEMPLATE.md`](./templates/ACCOUNT_INSTRUCTIONS_TEMPLATE.md).
+---
 
 ## Short version
 
-1. Three layers: description and instructions in the app (always injected, unversioned, but readable from `spaces.json`), CLAUDE.md in the folder (versioned and auditable, but only loaded when connected).
-2. Description: one to three sentences, what the project is and does, concrete entities, no rules, unique — it is injected as the project's identity every session.
-3. Instructions field: only what must hold before any file is read — bootstrap to CLAUDE.md, mount verification, restated hard rules, session posture, and a bridge guard when a cloud session has to write results back to a local folder.
-4. Everything else lives in CLAUDE.md.
-5. For any project with real-world stakes, restate the one hard safety rule in the instructions field; never leave it to depend on a mount succeeding.
-6. Chat projects: the instructions field is the whole contract — structure it like a mini CLAUDE.md and keep a versioned copy of the text.
-7. Mirror both fields into the folder with a last-verified date, and re-check them whenever CLAUDE.md's purpose or rules change. Read the live text from `spaces.json` to make the check mechanical; the mirror is still what gives the fields a history.
-8. Run `tasks/tune-instruction-layers.md` to review all three layers against this guide.
-9. Two account-level fields sit above every project (account-wide preferences + Cowork-wide instructions); both are injected into every Cowork session, so keep them non-overlapping, and mirror them into a versioned file like the project fields.
+1. One authored contract; native loaders and app fields differ by surface.
+2. Put identity in the available identity field, bootstrap and essential action constraints in instructions, and evolving detail in the shared policy.
+3. Keep `CLAUDE.md` thin when `AGENTS.md` owns the shared rules.
+4. Record uploaded-source revisions and refresh them after policy changes.
+5. Inspect and mirror each platform separately; proposed text is not applied configuration.
+6. Use supported UI/tools for app changes, not undocumented state-file writes.
+7. Verify a fresh session on every supported surface; record untested surfaces honestly.
+8. Use `tasks/tune-instruction-layers.md` to review the layers together.
+
+---

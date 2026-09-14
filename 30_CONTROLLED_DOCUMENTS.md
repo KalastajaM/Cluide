@@ -4,7 +4,7 @@
 
 > **Companion guides:** [Guide 27](./27_INDEPENDENT_JUDGMENT.md) is the general form of the boundary in §3 — where Claude's judgment stops and yours starts. [Guide 21](./21_COMPANY_POLICIES.md) covers turning existing policies into guardrails Claude applies; this guide covers maintaining the policy documents themselves. [Guide 24](./24_PROJECT_FOLDER_STRUCTURE.md) has the definitions-versus-generated-outputs principle that §5 applies to registers. [Guide 12](./12_SECURITY.md) covers the hard stops that hold regardless. [Guide 19](./19_OUTPUT_FORMATTING.md) is for documents you are producing rather than reviewing.
 
-> **Giving this guide to Claude:**
+> **Giving this guide to an assistant:**
 > "Read 30_CONTROLLED_DOCUMENTS.md. My project has documents with owners and approvals in it. Run §1 on the folder and tell me which files are controlled documents and which are drafts, then propose the CLAUDE.md block from §8 for my setup."
 
 **This applies well beyond compliance work.** An ISO or SOC 2 document set is the clearest case, but so are board minutes, contracts under negotiation, a shared research protocol, a family estate document that several people comment on, and any document where a person other than you owns the text. The examples below lean on management-system documents because that is where the conventions are most developed, not because the pattern is confined there.
@@ -26,6 +26,16 @@ The whole guide turns on one distinction, and it is worth making explicitly rath
 **The test:** if a change to this file could later be mistaken for something a person decided, it is a controlled document. That covers anything with an approver field, anything circulated for comment, anything referenced by an identifier elsewhere, and anything a third party will read as evidence of what was agreed.
 
 **State it in the project, not per request.** The classification belongs in CLAUDE.md as a rule about paths — `03 - Policies/**` is controlled, `drafts/**` is not — because a per-request instruction only protects the requests you remembered to protect. §8 has the block.
+
+---
+
+## Verify the Review Mechanism on Each Surface
+
+The document owner and acceptance rule are shared across Claude, ChatGPT and Codex. The editing tool is not. Before touching an original, check whether the available document/connector tool preserves tracked changes, comments, identifiers and approval fields in the actual file format.
+
+Use a copy for the first tool check. If tracked-change editing is unavailable or unverified, return a review table or separate proposed revision with location, original text, proposed change and reason. Do not present a rewritten download as though its changes were tracked in the owner's original.
+
+A ChatGPT upload is a source copy; a local Codex file is a workspace file; a connected document can be a live shared original. State which one you reviewed and its revision. Human acceptance remains explicit, and the register is updated only with evidence of that acceptance. Switching assistants does not transfer approval authority.
 
 ---
 

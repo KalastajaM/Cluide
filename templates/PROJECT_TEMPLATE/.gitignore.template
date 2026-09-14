@@ -22,3 +22,9 @@ Outputs/*
 # Intake queue — the folder is committed, its contents are not.
 Incoming/*
 !Incoming/README.md
+
+# Local operations records and credentials (git hygiene, not access control).
+OPERATIONS.local.md
+.env
+.env.*
+!.env.example

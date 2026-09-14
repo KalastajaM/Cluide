@@ -1,14 +1,32 @@
-# MCP Servers: Connecting Claude to Your Tools
+# MCP Servers: Connecting Assistants to Your Tools
 
-> MCP (Model Context Protocol) is how Claude gets access to external tools — Gmail, Calendar, files, GitHub, and more. Without it, Claude can only read and write text. With it, Claude can actually do things on your behalf. This guide explains what MCP servers are, how to set them up, and how to use them in skills.
+> MCP is one way to connect Claude, ChatGPT and Codex to external tools. Hosts can also provide native file, browser, shell and app tools without an MCP server. First inspect what the session already exposes; add a connection only for a missing capability.
 
 ---
 
 ## What MCP Servers Are
 
-An MCP server is a small program that runs alongside Claude and exposes tools Claude can call. When you ask Claude to "check your email" or "create a calendar event", it calls a tool provided by an MCP server. The server handles the actual API call and returns the result.
+An MCP server is a local process or remote service exposing tools an assistant can call. When you ask Claude to "check your email" or "create a calendar event", it calls a tool provided by an MCP server. The server handles the actual API call and returns the result.
 
 From Claude's perspective, MCP tools work like built-in capabilities — call `gmail_search_messages`, get a list of emails, then call `gmail_create_draft` to draft a reply. Claude doesn't need to know how the server works; it just knows what tools are available.
+
+---
+
+## OpenAI: Codex MCP and ChatGPT Apps
+
+For a Codex repository session, use its MCP configuration rather than a Claude JSON file. The official route is `codex mcp` or the `mcp_servers` tables in `~/.codex/config.toml`; trusted project configuration can also supply project-scoped settings. Start with a read-only connection and verify a harmless query.
+
+```toml
+# Codex configuration; example server label and public documentation endpoint
+[mcp_servers.openai_docs]
+url = "https://developers.openai.com/mcp"
+```
+
+For authenticated services, follow that server's documented OAuth or environment-variable mechanism. Keep tokens out of committed files and tool output. Registering a server does not grant an assistant authority to send, publish or delete; that remains governed by the host and the user's action policy.
+
+In ChatGPT, use the available Apps/plugin connection controls, authorize the intended account and inspect the tools exposed to that chat. An uploaded file is context, not a connector, and a connected remote service is not general access to a local folder. If the required app or custom MCP setup is unavailable to the account, record the gap and use an explicit export as input.
+
+Checked 2026-09-14: [OpenAI MCP configuration](https://learn.chatgpt.com/docs/extend/mcp), [ChatGPT project sources](https://learn.chatgpt.com/docs/projects). Claude setup below remains separately scoped; do not convert `mcpServers` JSON into OpenAI configuration by renaming a directory.
 
 ---
 
@@ -107,7 +125,7 @@ The easiest route is the **Slack connector** in Cowork / Claude (Settings → Co
 #### Filesystem
 **Package:** `@modelcontextprotocol/server-filesystem`
 
-Gives Claude read/write access to specific directories on your machine. Required for any skill that reads or writes local files.
+Gives a host read/write access to the directories configured for this server. It is optional when the host already has native file tools; adding it can create a separate access path that must be reviewed.
 
 ```json
 "filesystem": {
@@ -435,7 +453,7 @@ When an MCP tool fails, choose one of three responses based on the failure type:
 
 ---
 
-## Giving This to Claude
+## Giving This to an Assistant
 
 **To audit your current MCP setup:**
 > *"What MCP servers do I have configured? List the tools each one exposes and flag any that seem misconfigured."*

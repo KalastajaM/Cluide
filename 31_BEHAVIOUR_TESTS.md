@@ -4,7 +4,7 @@
 
 > **Companion guides:** [Guide 29](./29_SPEC_BEFORE_REBUILD.md) proves a *rebuild* against the old version as an oracle; this guide is the standing version of that proof, run against the setup you already have. [Guide 27](./27_INDEPENDENT_JUDGMENT.md) is why a model grading a model needs care (§6). [Guide 26](./26_CONTEXT_SCOPING.md) is why a test runs in a fresh session and never in the one you edited from. [Guide 07](./07_TASK_LEARNING_GUIDE.md) catches behaviour drift *inside* a scheduled task from its own feedback signals; this guide catches it from outside, on demand. [Guide 03](./03_SKILLS.md) and [Guide 01](./01_CLAUDE_MD.md) are what the tests protect. `tasks/review-platform-changes.md` checks whether Cluide's *guides* still match the platform; `tasks/setup-behaviour-tests.md` builds the suite that checks whether *your setup* does.
 
-> **Giving this guide to Claude:**
+> **Giving this guide to an assistant:**
 > "Read 31_BEHAVIOUR_TESTS.md. List the rules in my CLAUDE.md and the skills in this project that would be embarrassing to lose silently, then propose a case for each in the §3 shape. Do not run anything yet."
 
 ---
@@ -85,6 +85,25 @@ The suite is the same whichever way you run it. Pick by what you have.
 
 ---
 
+## Per-Surface Runners and Shared Outcomes
+
+Keep the prompt, frozen inputs and behavioural graders shared. Bind tool names, instruction loading and output collection in a small runner for each surface. A Claude CLI command is not a Codex runner, and neither proves what an uploaded-source ChatGPT project does.
+
+| Case | Shared expectation | Native setup to record |
+|---|---|---|
+| Instruction loading | Applies a rule without the test restating it | Loaded policy/override chain or uploaded policy revision |
+| Unavailable tool | Reports the missing capability; does not claim an action occurred | Actual exposed tools and connector grants |
+| Output destination | Produces the artifact and accurately reports delivery | Local workspace path versus download or connected destination |
+| Source freshness | Uses the changed fixture after the documented refresh | Commit/revision and refresh or fresh-session step |
+| Task handoff | Continues from accepted state without repeating completed actions | Handoff record and designated writer |
+| Duplicate scheduler | A second attempted run cannot repeat the logical action | Stable job/run key and simulated claim, with live schedules disabled |
+
+For Claude Code or Codex, run in an isolated fixture workspace with the intended native policy and skill entry points. For ChatGPT, use a test project with fixture sources and project instructions; capture the reply and delivered files. Remove live outbound grants from tests. When automation is unavailable, run the same cases manually and label the runner.
+
+Record product/surface, app or CLI version where visible, model, policy/skill revision, fixture version, native controls, repetitions and result. Use **pass**, **fail**, **unavailable**, or **untested** per case; an unavailable capability is not a pass and may block a claimed workflow. A structural content check is not a live acceptance result.
+
+---
+
 ## 5. When to Run the Suite
 
 Four triggers, and not "every session".
@@ -122,7 +141,7 @@ A failed case is a fact, not yet a diagnosis. Sort it into one of four before to
 | Fails intermittently at a stable rate | A marginal description or an under-specified rule | Sharpen it until the rate is 3 of 3, or accept the rate in writing |
 | Fails because the platform moved | A platform change | Record it in the suite README with the date; rewrite the case or the rule |
 
-**A test that fails after a model launch is a fact about the model, and the fix belongs in your instructions.** The instinct is to wait for the model to settle, or to file it as a platform problem. Neither changes what your setup does tomorrow morning.
+**A failure after a model launch is evidence to investigate, not proof of a single cause. Reproduce it with the same fixtures and controls before deciding whether to change instructions, repair the runner or record a platform limitation.** The instinct is to wait for the model to settle, or to file it as a platform problem. Neither changes what your setup does tomorrow morning.
 
 ---
 
