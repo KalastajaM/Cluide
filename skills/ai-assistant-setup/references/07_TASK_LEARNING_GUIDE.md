@@ -1,11 +1,11 @@
-# Claude Task Self-Improvement & Continuous Learning Guide
+# Task Self-Improvement & Continuous Learning Guide
 
 > A framework for building tasks that get better over time.
 > Integrate the relevant sections into any task's TASK.md or TASK_REFERENCE.md.
 
 > **Companion guides:** [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) covers token efficiency -- set that up first. Part 9 below installs the ready-to-use IMPROVEMENTS.md template that implements this system. [Guide 27](./27_INDEPENDENT_JUDGMENT.md) covers the judgment problem this system runs into: the task assesses its own behaviour, so repeated observations from the same task confirm that the behaviour is stable rather than that the reading of it is right.
 
-> **Giving this guide to Claude:**
+> **Giving this guide to an assistant:**
 > "Read 07_TASK_LEARNING_GUIDE.md and add the self-improvement system to my task at [path/to/TASK.md]. Include signal detection, the apply-vs-propose rules, and set up an IMPROVEMENTS.md file using the template (installation in Part 9)."
 >
 > **Faster alternative:** `tasks/setup-self-improving-task.md` adds the full self-improvement scaffolding to any existing task without reading the guide first.
@@ -17,6 +17,16 @@
 A task that runs 50 times and makes the same mistakes as run 1 is an expensive script. A well-designed task becomes measurably more accurate, efficient, and contextually aware with each run -- without manual tuning.
 
 This guide covers the mechanics: what to track, when to act, when to ask, and how to avoid failure modes that cause regression or stagnation.
+
+---
+
+## Shared Learning, Local Execution
+
+The learning loop applies to Claude and OpenAI: observe a run, distinguish facts from hypotheses, propose a change when authority requires it, and verify that the change improves the next run. Keep observations tagged with the surface, exact model when available, task revision and input fixture. A failure in one connector or renderer is not automatically a flaw in the shared procedure.
+
+Put durable accepted learning in the authored task/profile files. Native memory and session history remain local to the platform that produced them. For ChatGPT source projects, return a proposed patch or revised file and refresh the project source only after it becomes the accepted version. For local Codex or Claude sessions, use a single writer or a reviewed branch; do not let two runs append conflicting `IMPROVEMENTS.md` entries.
+
+Each scheduled task still has one owner. Transferring it transfers the task definition and accepted state, not its credentials, native memory or registration. Read Guide 35 (in the Cluide guide set) before enabling the second execution path.
 
 ---
 

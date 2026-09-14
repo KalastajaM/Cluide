@@ -8,37 +8,28 @@ Without memory, every session starts from zero — you re-explain your situation
 
 ### The four memory layers
 
-Four memory layers are available. Understanding when each applies prevents a common frustration: expecting memory to persist when the system you're relying on doesn't support your use case.
+Separate **native conversational memory**, **native coding-agent memory**, **explicit project memory**, and **task profiles**. The first two belong to the account or runtime; the last two are files you own and deliberately load. They can serve the same user without being the same store.
 
-**Naming collision warning:** Cluide's `.auto-memory/` folder convention predates and is distinct from Claude Code's built-in "auto memory" feature, and both are distinct again from the cloud memory behind claude.ai and Cowork. When this guide says "auto-memory" it means the explicit folder pattern below; Claude Code's feature is always called "Claude Code auto memory" here, and the cloud store is called "account memory".
+| Layer | Owner and use | Verification |
+|---|---|---|
+| Conversational memory in Claude or ChatGPT | Native account/project settings; useful for preferences and continuity | Inspect the current surface's memory controls; check whether the intended conversation can recall a harmless fact |
+| Claude Code or Codex native memory | Runtime-local state, when available | Inspect that runtime's current controls; do not infer paths or availability from the other product |
+| Cluide `.auto-memory/` | Explicit Markdown index and topic files in the project | Add a read instruction to the shared policy; test from a fresh session |
+| Task profile files | Explicit input to a recurring task | Name them in `TASK.md` and confirm access in the actual scheduled environment |
 
-| Dimension | Claude Code auto memory | claude.ai / Cowork memory | `.auto-memory/` folder | Profile files |
-|---|---|---|---|---|
-| Setup required | None — always active | None — on by default on Free/Pro/Max, org-enabled on Team/Enterprise | Create folder + MEMORY.md + one CLAUDE.md line | Create profile folder structure |
-| Where it lives | `~/.claude/projects/<project>/memory/` on the machine you are working on | In your account, in the cloud — one store shared by chat and Cowork since August 2026, plus a per-project store in each Cowork project | Your project folder on disk | Your task folder on disk |
-| Survives context reset? | **Yes** — persists across sessions (see the scheduled-tasks caveat below) | **Yes** — persists across sessions and across surfaces | **Yes** — read from disk each session | **Yes** — read explicitly each run |
-| Works in scheduled tasks? | **Not verified** | **Untested** — a cloud scheduled task is a fresh cloud session; verify before relying on it | **Yes** — explicitly loaded | **Yes** — explicitly loaded |
-| Multiple files? | Yes — MEMORY.md index + topic files (only the first 200 lines / 25KB of MEMORY.md auto-load) | Individual topic entries, readable, editable and deletable under Settings → Memory; sensitive topics excluded unless you turn them on | Yes — one file per topic | Yes — one file per profile domain |
-| Best for | Chat assistant use, corrections in conversations | Conversational preferences and facts that should follow you across chat and Cowork | Cross-session facts, preferences, projects | Scheduled task agents needing deep context |
+Cluide's `.auto-memory/` is a convention, not either vendor's native feature. Codex does not gain Claude Code memory by sharing a checkout, and a ChatGPT uploaded source does not update when a local memory file changes.
 
-**Critical rule for scheduled tasks: always use `.auto-memory/` or profile files, not Claude Code auto memory or account memory.** Neither is verified to be available to autonomous task runs — the documentation neither promises it nor rules it out, and no test has settled it. The rule is deliberately conservative pending that test: a task that depends on memory it cannot prove loads may work some runs and forget everything on others.
-
-**If you are just getting started:** let Claude Code auto memory and account memory handle your conversational use. Add `.auto-memory/` when you want structured, reliable memory. Add profile files only when a scheduled task needs them — after auto-memory is already in place.
-
-The systems coexist without conflict: the built-in layers for interactive chat, `.auto-memory/` for tasks and projects.
+For scheduled tasks, use explicit, accessible state whose revision and load can be verified. Local tasks can read project files; cloud tasks need uploaded or connected sources and an explicit write-back destination. A file on your laptop is not an available input merely because its path appears in the prompt. Keep one writer per memory topic; the other surface proposes updates or receives a handoff. Conflicts need evidence and dates, not last-writer-wins.
 
 ### Claude Code auto memory as of September 2026
 
-*These are version-specific product details — verify against current Claude Code docs before relying on them.*
+Claude Code documents per-project memory under `~/.claude/projects/<project>/memory/`, with a compact `MEMORY.md` index and on-demand topic files. Keep that store separate from shared project memory and exclude private content from distribution. Use its memory controls to inspect what is enabled rather than assuming every environment loads it. [Official memory documentation](https://code.claude.com/docs/en/memory), checked 2026-09-14.
 
-Claude Code keeps its own auto memory per project, in `~/.claude/projects/<project>/memory/` — the project is derived from the git repository, so worktrees share one memory directory. It stores four kinds of note, tagged with a `type` field (`user`, `feedback`, `project`, `reference`), in the same shape this guide describes below: a `MEMORY.md` index plus topic files. Four things to know:
+### ChatGPT and Codex continuity
 
-- **Only the first 200 lines of `MEMORY.md`, or the first 25KB, whichever comes first, load at the start of every conversation**; topic files load on demand. This externally validates the rule this guide already enforces: keep the index compact, push detail into topic files. Browse and toggle what it holds with the `/memory` command. Claude records a `modified` timestamp in each file's frontmatter (v2.1.214 and later).
-- **It is machine-local.** Auto memory is not shared across machines or cloud environments — a fact recorded on your laptop is not there in a cloud session.
-- **Subagents don't inherit it.** The main conversation's auto memory isn't loaded into subagents; the exception is a fork, which inherits the parent conversation. A subagent gets memory of its own only when its definition sets the `memory` field (scopes: user, project, local).
-- **You can redirect it into your project.** The `autoMemoryEnabled` and `autoMemoryDirectory` settings (an absolute or `~/` path, settable in any settings scope) let you point it at a folder inside your project, where it's on disk, git-trackable, and readable by scheduled tasks; `CLAUDE_CODE_DISABLE_AUTO_MEMORY=1` turns it off entirely. For interactive use this can replace part of the custom `.auto-memory/` machinery below — treat it as an alternative, not a replacement: the explicit `.auto-memory/` pattern remains the reliable choice for scheduled tasks, and the save/update discipline in this guide applies to both.
+For ChatGPT projects, put durable task facts in an accessible source and retain an authored copy outside chat if they need version history. Record which project and source revision are in use. For Codex, use `AGENTS.md` for standing rules and explicit reads for project memory; native memory is optional continuity, not the acceptance oracle. Verify one fact in a fresh session after updating it. [Projects and sources](https://learn.chatgpt.com/docs/projects) and [Codex instructions](https://learn.chatgpt.com/docs/agent-configuration/agents-md), checked 2026-09-14.
 
-**Note:** This guide covers memory *about you* — your preferences, projects, and working style. If you want to build a knowledge base *about a subject domain* (research, threat intelligence, competitive analysis), that's a different system: see [Guide 15 — LLM Wiki](./15_LLM_WIKI.md).
+Start with a short index. Add richer profiles when a recurring task needs narrative context. Domain research belongs in [Guide 15's wiki](./15_LLM_WIKI.md), not personal memory.
 
 ---
 
@@ -92,7 +83,7 @@ Uses Gmail (firstname.lastname@gmail.com) and Google Calendar as primary tools.
 [updated: 2026-01]
 ```
 
-To ensure Claude loads your memory index at the start of each session, add this line to your `CLAUDE.md`:
+To request explicit loading, add this line to the canonical policy (`AGENTS.md` in a shared repository, `CLAUDE.md` for Claude-only use), then verify it in a fresh session:
 
 ```markdown
 - Read `.auto-memory/MEMORY.md` at the start of every session.
@@ -270,9 +261,10 @@ A lean profile stays fast and useful. A 500-line dump of everything the assistan
 Multiple scheduled task agents (e.g., a daily email digest and a client pipeline tracker) can share the same profile files. The convention that makes this work:
 
 - All agents read `PROFILE_SUMMARY.md` every run
-- All agents update the relevant detail file when they discover new information
+- Agents submit discoveries to the designated profile writer, or acquire the shared destination's atomic claim before reading and updating it. Re-read the current revision after acquisition; a failed claim waits or skips. Do not permit all agents to write freely.
 - No agent overwrites `[USER]`-annotated entries
-- Each agent has its own session/run log so their histories don't collide
+- Each agent has its own session/run log; shared summaries, indexes and detail files still use the same writer/claim protection
+- Apply [Guide 09's collision procedure](./09_MULTI_TASK_ORCHESTRATION.md#avoiding-collisions) to manual runs, retries and both platforms. Schedule gaps and separate logs are not exclusion.
 
 The shared profile becomes connective tissue between agents — the user does not have to explain an ongoing client situation to both the email agent and the pipeline tracker. Both already know.
 
@@ -296,7 +288,7 @@ Facts that belong in auto-memory, shown here as illustrative examples. Each is s
 
 ---
 
-## Giving This to Claude
+## Giving This to an Assistant
 
 **To set up auto-memory from scratch:**
 > "Read 04_MEMORY_AND_PROFILE.md and start setting up my memory system. Ask me what you need to know about me, my projects, and my preferences — then save it in the right format."
@@ -305,4 +297,3 @@ Facts that belong in auto-memory, shown here as illustrative examples. Each is s
 > "Read 04_MEMORY_AND_PROFILE.md and create the profile file structure for my daily email digest task. The task already has a TASK.md — add the profile files it needs to track context across runs."
 
 **Faster alternative:** `tasks/setup-memory.md` interviews you and creates the full `.auto-memory/` structure without reading the guide first. `tasks/audit-memory.md` reviews an existing memory system for staleness and drift.
-

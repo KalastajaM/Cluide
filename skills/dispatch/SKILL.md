@@ -16,26 +16,19 @@ description: >
 
 # Dispatch — model-aware orchestration
 
-When work is delegated (subagents, workflow stages, scheduled tasks), the model and effort for
-each piece are choosable. This skill is the routing policy: it makes the session behave as an
-orchestrator that plans and reviews at its own tier while routing the bulk of token volume to
-cheaper tiers, with verification as the safety net. The cost spread makes this worthwhile — see
-Guide 10 §What Things Actually Cost for the canonical pricing table; the spread between the
-cheapest and most expensive tier is roughly 10x. Tier names in this skill are model families
-(the values the `model` parameters accept), not versions — if the lineup has changed since this
-skill was last touched, follow Guide 10's current table rather than the names here.
+Use this skill only when delegation is available and permitted by the host and the user's scope. Start by listing the actual supported models and effort controls. The same workflow can be used with Claude or OpenAI, but model identifiers and tool parameters are native to each runtime.
 
-**Name collision.** Cowork also ships a feature called Dispatch — a long-running background agent
-that carries out high-level instructions by splitting them into child tasks. This skill is not that
-feature and does not drive it; "dispatch" here means choosing the model tier for delegated work.
+For OpenAI, retain the configured model unless the user requests a supported alternative or the project's explicit policy selects one. Do not translate Claude tier names. If the surface has no delegation tool, execute the task inline and record that limitation. For Claude, the table below is a routing policy using Claude family names; verify that the requested names are available before invoking them.
+
+Cost comparison belongs in Guide 10. Use measured usage and current provider rates where available; do not assume a fixed price spread. This skill concerns model routing, not any product feature also named Dispatch.
 
 ## Orchestrator stance
 
 When a task decomposes into two or more independent or mechanical subtasks, plan, dispatch, and
 review rather than executing everything inline:
 
-1. **Plan** the decomposition and decide tier + effort per subtask from the routing table below.
-2. **Dispatch** with self-contained prompts. Subagents do not see the conversation — every prompt
+1. **Plan** the decomposition and select the native controls: retain configured OpenAI defaults, or use the Claude routing table for available Claude models.
+2. **Dispatch** with self-contained prompts. Context inheritance depends on the host and spawn mode; every prompt
    must carry its own context, file paths, output format, and done-criteria. Independent
    dispatches go out in parallel (in one message / one fan-out).
 3. **Review** results against the verification column, then synthesize.
@@ -62,7 +55,7 @@ are*. When another skill provides the procedure (a maintenance playbook, a revie
 setup task), follow that skill for the steps and this one for the tier of each step. One skill
 loading does not displace the other.
 
-## Routing table
+## Claude routing table
 
 | Archetype | Tier | Effort | Verification |
 |---|---|---|---|
@@ -84,14 +77,14 @@ section's job. Three standing rules ride on this table:
   capture. Reserve full rechecks for what the first rule mandates: figure-bearing and legal-domain
   content that will be relied on.
 
-## Escalation ladder
+## Claude escalation ladder
 
 Dispatch cheap → check the result → on failure, re-dispatch **one tier up**, quoting the failure
 in the new prompt so the retry doesn't repeat it. One escalation maximum; if the second attempt
 also fails, do the work inline. This converts "which model is good enough?" from a prediction
 into a cheap empirical loop — and escalation frequency is the learning signal (see Routing log).
 
-## Effort
+## Claude effort defaults
 
 Effort is a second dial on top of tier. Default to the table above; drop to `low` for anything
 whose output is a label, a list, or a lookup; raise to `high` on sonnet for drafting that needs
@@ -106,12 +99,16 @@ accept the definition's default; do not claim an effort level the surface cannot
 
 ## Project overrides
 
-Before routing, check the project's instructions (CLAUDE.md or the project instructions field)
+Before routing, check the shared policy and native adapter (or the project instructions field)
 for a **Dispatch Overrides** section. It takes precedence over the table for this project:
 default worker tier, content types that must never go below a named tier, and archetypes proven
-safe on the cheap tier. If the project has none, the table above applies unmodified.
+safe on the cheap tier. For Claude without overrides, use the Claude table. For OpenAI without overrides, retain configured defaults.
 
 ## Surface bindings
+
+**OpenAI:** use only the delegation controls exposed in the active Codex/ChatGPT session. A task in the app sidebar, a subagent, and an API call are different resources; do not create a user-owned task as a hidden worker. Supply a self-contained brief, restrict write ownership, and record actual model/effort rather than a Claude analogue. If settings are not exposed, retain the defaults and state that. Verify the host's context-inheritance behavior before calling a reviewer independent.
+
+**Claude examples below:** these bindings require the named tools to be present. Check current product documentation or the active tool schema before dispatch; do not infer support from a name in this skill.
 
 **Cowork:** route via the Agent tool's `model` parameter per spawn (tier only — there is no
 per-spawn effort parameter; see Effort). When a fan-out would exceed
@@ -129,8 +126,7 @@ every subagent definition and blocks passing a model per spawn, so no routing in
 effect. In the other direction, a permission deny rule of the form `Agent(model:<tier>)` enforces a
 ceiling that project overrides can otherwise only advise.
 
-**Scheduled tasks:** when creating or editing one, propose the cheapest tier the task's hardest
-step needs, per the table — and say which step set the tier. Never change an existing scheduled
+**Scheduled tasks:** for Claude, propose the cheapest available tier that meets the task's hardest step. For OpenAI, retain the configured model unless an alternative is requested and supported. Never change an existing scheduled
 task's model without the user asking (standing rule).
 
 ## Routing log

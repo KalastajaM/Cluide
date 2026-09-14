@@ -1,8 +1,18 @@
 # Task: Setup Action Authority
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Claude, run tasks/setup-action-authority.md`
+> `Assistant, run tasks/setup-action-authority.md`
 > **Source guide:** `32_ACTION_AUTHORITY.md` (see also `12_SECURITY.md` §8 and *Recording What a Refactor Must Not Weaken*, `07_TASK_LEARNING_GUIDE.md` Part 3 for the self-improvement instance)
+
+## Runtime route
+
+Name the target surface and available tools before running steps. Claude-only policy lives in `CLAUDE.md`; Codex uses `AGENTS.md`; dual-platform shares `AGENTS.md` through a thin Claude adapter. References below to editing project rules mean that selected policy, not duplicated adapters. ChatGPT source projects use project instructions and dated sources; without write access, return replacement artifacts and record refresh as pending.
+
+Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
+
+## Native implementation
+
+Inventory actual tool grants and effective permissions from each runtime, with Codex sandbox/approval controls and ChatGPT connected-app actions recorded separately from Claude settings. An unread scope is unverified. Write the shared action classes/outbox rules into the selected policy; approval evidence and action logs remain file-backed project state. For source-only projects, supply draft artifacts and name the owner who applies them. Verify each claimed enforcement boundary with an inert fixture; missing Claude metadata is not a security finding on OpenAI, and a prose-only rule never passes a structural-denial check.
 
 ## Purpose
 
@@ -12,7 +22,7 @@ Use it when a project has scheduled tasks with connectors that can act (send, po
 
 ## Instructions
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons rather than plain text.
+> **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
 ### Step 0 — Preconditions
 

@@ -1,9 +1,15 @@
 # Task: Setup Dual Platform
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Claude, run tasks/setup-dual-platform.md`
+> `Assistant, run tasks/setup-dual-platform.md`
 > The steps are written so Codex can run them from the same folder; that path has not yet been tested end to end.
 > **Source guides:** `35_DUAL_PLATFORM_PROJECTS.md` (the model this task installs), `25_PROJECT_INSTRUCTION_LAYERS.md` (layers and field mirrors), `01_CLAUDE_MD.md` (the adapter body), `24_PROJECT_FOLDER_STRUCTURE.md` (where shared and platform-local files live), `11_GIT_INTEGRATION.md` (branches, worktrees and handoffs). See also `09_MULTI_TASK_ORCHESTRATION.md` for single-owner shared state and `34_IMPORTING_FROM_OTHER_ASSISTANTS.md` for moving native memory. Worked example: Cluide's own `AGENTS.md`, `CLAUDE.md` and `PLATFORM_SETUP.md`.
+
+## Runtime route
+
+Name the target surface and available tools before running steps. Claude-only policy lives in `CLAUDE.md`; Codex uses `AGENTS.md`; dual-platform shares `AGENTS.md` through a thin Claude adapter. References below to editing project rules mean that selected policy, not duplicated adapters. ChatGPT source projects use project instructions and dated sources; without write access, return replacement artifacts and record refresh as pending.
+
+Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
 
 ## Purpose
 
@@ -13,7 +19,7 @@ Use it when a Claude project should also be worked on from ChatGPT or Codex (or 
 
 ## Instructions
 
-> **Clarifying questions:** For any step with a fixed set of options, use the host's question tool with buttons (`AskUserQuestion` in Claude Code) rather than plain text, where one is available.
+> **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
 ### Step 0 — Preconditions, surfaces and sources
 
@@ -51,7 +57,7 @@ Read the instruction files rule by rule and assign each one home:
 Then produce three lists that change the plan:
 
 - **Capability gaps.** Each Claude-only mechanism the project relies on (a hook, an `allowed-tools` allowlist, `.claudeignore`, a skill loader, a scheduled task, a subagent definition), with a verified OpenAI counterpart and its source, or **no verified counterpart**, or **untested**. Where Claude enforces something structurally, say plainly that a prose rule on the other platform is not the same guarantee (`12_SECURITY.md`). The same goes the other way for OpenAI sandbox or approval controls.
-- **Scheduler ownership.** Each recurring job gets exactly one owning platform, its timezone and a stable identity. A job registered on both is a duplicate-run finding, and copying `TASK.md` does not move a registration.
+- **Scheduler ownership.** Each recurring job gets exactly one owning platform, its timezone, stable identity and duplicate-run key. To transfer it: suspend the old trigger and drain runs, register/test the new owner in isolation, delete the old registration, then activate one owner and record cutover/rollback. Use the native routes in `setup-scheduled-task.md`. A job registered on both is a duplicate-run finding, and copying `TASK.md` does not move a registration.
 - **Concurrent writers.** Files both assistants may write, and the rule that prevents conflicting edits: separate branches or worktrees reconciled through git, or one named writer (`11_GIT_INTEGRATION.md`).
 
 Also flag every model name, tool name or path in a shared rule that belongs to one product. Never translate a Claude model name into a guessed OpenAI equivalent, or the reverse.

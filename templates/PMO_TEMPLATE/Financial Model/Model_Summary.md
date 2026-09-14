@@ -1,8 +1,8 @@
 # Financial Model Summary
 
-> **Auto-maintained by Claude** — update this file whenever the source financial model is changed.
+> **Auto-maintained by the assistant** — update this file whenever the source financial model is changed.
 > This is a human-readable narrative summary of the current model state.
-> The source model file lives in this folder. This summary is what Claude reads for financial questions.
+> The source model file lives in this folder. This summary is what the assistant reads for financial questions.
 > Last updated: [YYYY-MM-DD] | Based on model version: [VERSION or filename]
 
 ---

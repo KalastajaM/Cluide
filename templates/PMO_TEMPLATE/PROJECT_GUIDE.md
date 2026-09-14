@@ -37,7 +37,7 @@ Home for programme management artefacts: registers, the knowledge base, and guar
 
 ### `Financial Model/`
 - **`[PLACEHOLDER: Financial Model Filename].xlsx`** — the official financial model, supplied by you (it does not ship with the template). This is the primary source of truth for financial figures.
-- **`Model_Summary.md`** — a Claude-generated description of the model. **Must be updated** whenever the Excel model is updated.
+- **`Model_Summary.md`** — a the assistant-generated description of the model. **Must be updated** whenever the Excel model is updated.
 
 ### `Data/` (or equivalent data folder)
 Raw data exports and a normalized file used as input for the financial model.

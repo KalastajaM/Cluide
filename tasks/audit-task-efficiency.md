@@ -1,8 +1,14 @@
 # Task: Audit Task Efficiency
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Claude, run tasks/audit-task-efficiency.md` (then specify which task file to audit)
+> `Assistant, run tasks/audit-task-efficiency.md` (then specify which task file to audit)
 > **Source guide:** `06_TASK_EFFICIENCY_GUIDE.md`
+
+## Runtime route
+
+Name the target surface and available tools before running steps. Claude-only policy lives in `CLAUDE.md`; Codex uses `AGENTS.md`; dual-platform shares `AGENTS.md` through a thin Claude adapter. References below to editing project rules mean that selected policy, not duplicated adapters. ChatGPT source projects use project instructions and dated sources; without write access, return replacement artifacts and record refresh as pending.
+
+Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
 
 ## Purpose
 Audit a task file against the token efficiency checklist from Guide 06. Goal: keep always-loaded files compact, delegate fixed-format generation to scripts, and reduce unnecessary reads. Returns a prioritised list of improvements and applies them after approval.
@@ -11,7 +17,7 @@ Audit a task file against the token efficiency checklist from Guide 06. Goal: ke
 
 ## Instructions
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+> **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
 ### Step 1 — Identify the task to audit
 

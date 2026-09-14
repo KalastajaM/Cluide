@@ -1,8 +1,26 @@
 # Task: Setup Skill
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Claude, run tasks/setup-skill.md`
+> `Assistant, run tasks/setup-skill.md`
 > **Source guide:** `03_SKILLS.md`
+
+## Runtime route
+
+Name the target surface and available tools before running steps. Claude-only policy lives in `CLAUDE.md`; Codex uses `AGENTS.md`; dual-platform shares `AGENTS.md` through a thin Claude adapter. References below to editing project rules mean that selected policy, not duplicated adapters. ChatGPT source projects use project instructions and dated sources; without write access, return replacement artifacts and record refresh as pending.
+
+Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
+
+## Native implementation
+
+Choose discovery scope before Step 2; use the common `name`, `description` and workflow/output/edge-case structure below.
+
+- **Codex:** create a project skill at `.agents/skills/[name]/SKILL.md`. Check that folder for an existing skill, then write there in Step 5; never execute the `~/.claude/skills` commands. Omit Claude-only permission metadata. Inspect the runtime's skill catalog, then test a positive trigger and a nearby non-trigger in fresh sessions. Record discovery and behavior separately.
+- **Claude Code:** select `.claude/skills/[name]/SKILL.md` for project scope or `~/.claude/skills/[name]/SKILL.md` for personal scope before using the commands below. Check supported metadata against current Claude documentation.
+- **Cowork or ChatGPT:** use the runtime's exposed skill/plugin installation route if available and verified. A project-source upload alone is not native skill installation. If none is available, deliver the workflow as an explicitly invoked task/source with its trigger examples, mark native discovery unsupported here, and verify the manual invocation.
+
+For a hard prohibition, inspect actual sandbox, approval and connector controls. Claude `allowed-tools` pre-approves listed tools; omission is not an enforced deny. Do not add `disallowed-tools` without current documentation proving support for this artifact type. For Codex, configure verified runtime permissions or restrict connector scopes separately; do not copy Claude metadata and claim enforcement.
+
+Native discovery checked against [Codex skills](https://learn.chatgpt.com/docs/build-skills) on 2026-09-14; re-check the relevant surface before installation.
 
 ## Purpose
 Create a well-structured skill by interviewing the user and generating a `SKILL.md` that triggers reliably, follows a consistent workflow, and handles edge cases. Follows the conventions in Guide 03.
@@ -13,7 +31,7 @@ The most important part of any skill is the description — it controls whether 
 
 ## Instructions
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+> **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
 ### Step 1 — Interview the user
 
@@ -33,7 +51,7 @@ Ask the following questions. Collect all answers before writing anything.
 > 7. Are there any strong "never do this" rules for this skill? (e.g. "never send, only draft")
 > 8. Any edge cases you already know about? (e.g. "sometimes I'm in a hurry and just need the short version")
 
-If the answer to 7 names a hard prohibition, follow up: *"Should I enforce that with an `allowed-tools` allowlist, so the skill technically cannot do it, rather than only being told not to?"* Prose says "never send"; an allowlist without the send tool means it can't. Use the allowlist whenever the prohibition maps onto a tool — read-only skills, draft-only skills, anything that should never run shell commands.
+If answer 7 names a hard prohibition, document its actual runtime enforcement and test it with an inert fixture. Missing enforcement is a capability gap; an allowlist of pre-approved tools does not establish denial.
 
 **Memory (optional):**
 > 9. Should the skill remember anything between sessions? (e.g. preferences, recurring contacts, past decisions)
@@ -46,9 +64,9 @@ Derive a kebab-case name from the skill description (e.g. `client-status-update`
 
 Ask: "I'll create this as `[name]/SKILL.md`. Does that name work?"
 
-Check if the skill folder already exists:
+Check the **selected native skill folder**. For Codex, inspect `.agents/skills/[name]/`; for Claude project scope, `.claude/skills/[name]/`. Set `[selected-skill-folder]` to the exact native path before running the check:
 ```bash
-ls ~/.claude/skills/[name]/ 2>/dev/null && echo "exists" || echo "new"
+ls "[selected-skill-folder]" 2>/dev/null && echo "exists" || echo "new"
 ```
 
 If it exists, read the existing `SKILL.md` and tell the user. Ask whether to overwrite or improve it.
@@ -66,19 +84,9 @@ description: >
    2. Specific trigger phrases including casual ones
    3. What to do proactively if unclear (e.g. "confirm tone unless already clear")
    Aim for 4–8 lines. Vague descriptions cause the skill to never trigger.]
-[allowed-tools: Read, Grep, Glob]
-[disallowed-tools: AskUserQuestion]
 ---
 
-> Include the `allowed-tools` line whenever the skill has a hard prohibition that maps onto a tool —
-> it pre-approves the tools the skill may use, so everything omitted is not pre-approved rather than
-> merely discouraged. Keep the list minimal. Omit the line entirely for a general-purpose skill that
-> legitimately needs the full toolset.
-> Common shapes: read-only reporting → `Read, Grep, Glob`; drafting without sending → the draft tool
-> but not the send tool; anything that should never touch the shell → omit `Bash`.
-> For a skill that runs autonomously or in the background, add `disallowed-tools` for anything it must
-> never call — it removes those tools from Claude's pool while the skill is active (the usual case is
-> `AskUserQuestion` in an unattended loop). Drop the line for interactive skills.
+> Add optional metadata only for the selected runtime and only when its current documentation supports it. State tool requirements in the workflow and record enforced restrictions in the runtime configuration, not just prose.
 
 ## Purpose
 [2–3 sentences: what this skill is responsible for and why it exists.]
@@ -110,7 +118,7 @@ Include headers, bullet style, field names. Ambiguity here = inconsistent output
 Always pair a prohibition with a positive: "NEVER send — always create a draft the user reviews."]
 
 ## Tone and Format Rules
-[How this skill's output should be written. Override CLAUDE.md rules only if needed for this skill.]
+[How this skill's output should be written. Follow the effective instruction hierarchy; do not override higher-priority project rules.]
 
 ## Edge Cases
 - If [situation]: [handling]
@@ -195,11 +203,12 @@ Make requested changes.
 
 ### Step 5 — Write the file
 
+Write to the native folder selected in Step 2. Codex: create `.agents/skills/[name]/` and write `SKILL.md` there. ChatGPT without a native installer: deliver the explicitly invoked source artifact. With `[selected-skill-folder]` set to that exact native path:
 ```bash
-mkdir -p ~/.claude/skills/[name]
+mkdir -p "[selected-skill-folder]"
 ```
 
-Write the approved content to `~/.claude/skills/[name]/SKILL.md`.
+Write the approved content to `[selected-skill-folder]/SKILL.md`.
 
 If the skill needs a `references/` subfolder (for schemas, detailed specs, domain content that shouldn't load every activation), create it and note: "Add any detailed reference files here — name them from SKILL.md with 'See references/[file]'."
 
@@ -208,5 +217,5 @@ If the skill needs a `references/` subfolder (for schemas, detailed specs, domai
 Tell the user:
 - Where the skill was written
 - The trigger phrases in the description
-- "Test it: start a new Claude session and use one of the trigger phrases. If it doesn't activate, the description may need stronger phrasing — re-run this task or edit the description directly."
+- "Test it: start a fresh session on the selected surface and use one of the trigger phrases. If it doesn't activate, the description may need stronger phrasing — re-run this task or edit the description directly."
 - "To audit the skill later: run `tasks/audit-skill.md`."

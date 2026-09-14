@@ -1,0 +1,7 @@
+{
+  "expected_revision": "fixture-r2",
+  "uploaded_revision": "fixture-r1",
+  "file": "Knowledge/demo.md",
+  "available_tools": ["read_fixture"],
+  "required_tool": "calendar_write"
+}

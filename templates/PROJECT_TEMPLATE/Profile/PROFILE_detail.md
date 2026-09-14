@@ -14,7 +14,7 @@
 ### [Person Name]
 - Role: [job title and organization]
 - Relationship: [how they relate to you / this project]
-- Key context: [anything Claude needs to know to interact correctly about this person]
+- Key context: [anything the assistant needs to know to interact correctly about this person]
 - Tags: `[CONFIRMED]` / `[inferred]`
 
 ---

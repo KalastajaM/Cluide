@@ -1,12 +1,6 @@
-# Working Folder File Map (weekly-plan)
+# Claude entry point
 
-All project-level context (user identity, communication style, critical rules, business context, profile/knowledge/actions file map) is in `../../CLAUDE.md`.
+@AGENTS.md
 
-| File | What it contains |
-|------|-----------------|
-| `TASK.md` | Full run procedure for the Friday weekly planner (production) |
-| `RUN_LOG.md` | Append-only history of planner runs (script errors and run notes) |
-| `ISSUES_LOG.md` | Append-only log of operational issues encountered during production runs |
-| `IMPROVEMENTS.md` | Pending proposals and applied fixes |
-
-Output files are saved to `../../Actions/WeekPlans/`.
+`AGENTS.md` beside this file is the shared policy. If this interface does not resolve
+imports, read it in full before working. Shared rules live there, not in this adapter.

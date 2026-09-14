@@ -4,7 +4,7 @@ Finished deliverables — documents, decks, PDFs, exports, reports — generated
 source files. They live here and not at the root, because they are regenerable and must never be
 confused with the sources they came from.
 
-Two consequences of that separation, worth stating in `CLAUDE.md` if they matter here:
+Two consequences of that separation, worth stating in `AGENTS.md` if they matter here:
 
 - **Regeneration is safe in this folder and nowhere else.** Rebuilding an output overwrites a file
   here only. If a source ever ends up in this folder, that guarantee is gone.

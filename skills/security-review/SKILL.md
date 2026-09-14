@@ -1,7 +1,7 @@
 ---
 name: security-review
 description: >
-  Run a phased security audit of Claude Code configuration and a target project.
+  Run a phased security audit of Claude or OpenAI configuration and a target project.
   Use when the user asks to: review security, audit Claude Code setup, check for
   exposed credentials, set up security hooks, harden their Claude environment,
   scan a project for secrets, or anything like "check if my setup is secure",
@@ -10,16 +10,18 @@ description: >
   to scope project-level checks; defaults to the current working directory if omitted.
 ---
 
-# Claude Code Security Review
+# Assistant Security Review
 
-You are conducting a structured security audit of the user's Claude Code environment.
+First identify the surface. For **Codex or ChatGPT**, read `references/openai-review.md`, execute that route, and stop: the Claude phases below do not apply. For a dual-platform audit, assess each surface independently and combine the findings without treating either control set as portable.
+
+For **Claude Code**, conduct the structured review below. Its bundled shell hooks and configuration examples are Claude-specific.
 Work through phases sequentially. **Read-only phases run automatically. Mutating phases
 (marked APPROVAL REQUIRED) must pause and ask the user before creating any files,
 installing software, or modifying configuration.**
 
-At the end of each phase, print a summary and use `AskUserQuestion` with buttons: `Proceed to Phase N+1` / `Skip` / `Stop`
+At the end of each phase, print a summary and use the current surface’s question tool (or chat if unavailable): `Proceed to Phase N+1` / `Skip` / `Stop`
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+> **Clarifying questions:** For any step with a fixed set of options, use the current surface’s question tool when available, otherwise ask a concise question in chat.
 
 > **OS scope:** The commands in this skill are macOS-first (`sw_vers`, Homebrew paths). On Linux, adapt package installs (e.g. apt/dnf instead of brew) and paths; Phases 1a and 4 are macOS-specific as written.
 
@@ -175,7 +177,7 @@ so do not treat declining as a failed run.
 **Phase numbers are a cited surface.** `12_SECURITY.md` points readers at Phases 0b, 2, 3, 5 and 6
 by number. Moving a phase into a reference file is fine; renumbering one is not.
 
-Ask before each, with `AskUserQuestion` buttons, and act only on an explicit yes.
+Ask before each, with the available question tool or chat, and act only on an explicit yes.
 
 ---
 
@@ -243,7 +245,7 @@ Generated: [date]
 - If `$PROJECT` is not a git repository: skip `.env` tracking check (0b) and `.gitignore` coverage (1f); note "Not a git repo — git-based checks skipped."
 - If the user declines all APPROVAL REQUIRED phases: produce the Phase 0 + Phase 1 read-only report and the Phase 7 governance doc. Do not treat declining as an error.
 - If a scanning tool (Socket CLI, ClamAV, pip-audit) fails to install: log the failure, skip that specific check, and continue with remaining phases. Do not abort the entire audit.
-- If `~/.claude/hooks/` already contains a `security-precheck.sh`: read it, compare to `"$SKILL_DIR/references/hook-security-precheck.sh"`, and use `AskUserQuestion` with buttons: "An existing hook is already installed."
+- If `~/.claude/hooks/` already contains a `security-precheck.sh`: read it, compare to `"$SKILL_DIR/references/hook-security-precheck.sh"`, and use the current surface’s question tool (or chat if unavailable): "An existing hook is already installed."
   > Buttons: `Replace with updated version` / `Keep current` / `Show diff`
 
 ---

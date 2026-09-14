@@ -1,8 +1,20 @@
 # Task: Onboard Project
 
 > **Cluide task** — run this to set up a new project end-to-end:
-> `Claude, run tasks/onboard-project.md`
+> `Assistant, run tasks/onboard-project.md`
 > **Source guides:** `01_CLAUDE_MD.md`, `04_MEMORY_AND_PROFILE.md`, `05_MCP_SERVERS.md`, `11_GIT_INTEGRATION.md`, `12_SECURITY.md`, `24_PROJECT_FOLDER_STRUCTURE.md`, `25_PROJECT_INSTRUCTION_LAYERS.md`
+
+## Runtime route
+
+Name the target surface and available tools before running steps. Claude-only policy lives in `CLAUDE.md`; Codex uses `AGENTS.md`; dual-platform shares `AGENTS.md` through a thin Claude adapter. References below to editing project rules mean that selected policy, not duplicated adapters. ChatGPT source projects use project instructions and dated sources; without write access, return replacement artifacts and record refresh as pending.
+
+Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
+
+## Native implementation
+
+Choose the surface before copying a template. For Codex local, create the selected project layout, then run `setup-claude-md.md`'s Codex route to write `AGENTS.md`, `setup-skill.md` for any requested `.agents/skills` and the Codex MCP/security routes. Do not copy Claude hooks or settings from a template into active OpenAI configuration. For dual-platform projects use `setup-dual-platform.md` for the shared policy/adapter pair and capability list.
+
+For ChatGPT sources, the deliverable is a small policy source plus selected reference sources and a ready-to-paste project bootstrap. Inventory uploads/links, record revision and refresh owner, and verify a fresh project chat. Skip local Git, shell, hook and folder setup when those capabilities are absent, explicitly recording the scope. For Cowork or Claude Code follow the labelled native route. Step 10 must report each installed artifact and tested surface, not a universal “CLAUDE.md/.claudeignore complete” checklist. Proposed app fields are pending until applied and verified.
 
 ## Purpose
 Set up a new project end-to-end, in the right order, without the user having to know which
@@ -18,7 +30,7 @@ relevant task files and runs them in sequence.
 
 ## Instructions
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+> **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
 ### Step 0 — Locate Cluide and the destination
 
@@ -42,7 +54,7 @@ the user's one-sentence answer to question 1 sounded complete.
 
 ### Step 2 — Choose the starting point
 
-Use `AskUserQuestion` with buttons:
+Use the available question tool, or ask in chat:
 
 > "Which starting point fits this project?"
 >

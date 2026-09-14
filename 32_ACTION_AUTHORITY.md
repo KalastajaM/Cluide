@@ -1,10 +1,10 @@
-# Action Authority: What Claude May Do Without Asking, and How It Hands Back the Rest
+# Action Authority: What an Assistant May Do Without Asking, and How It Hands Back the Rest
 
 > Every session decides, many times, whether to do something or to propose it — and in most setups that decision is made per request, from the wording, by a model disposed to be helpful. The rules that should govern it are already in this repo, scattered: read-draft-confirm in [Guide 12](./12_SECURITY.md), tiered enforcement in [Guide 21](./21_COMPANY_POLICIES.md), acceptance as a human act in [Guide 30](./30_CONTROLLED_DOCUMENTS.md), apply-versus-propose in [Guide 07](./07_TASK_LEARNING_GUIDE.md). Each was written for its own case. This guide is the general layer they are instances of: a way of classifying actions that does not depend on which tool performs them, a form for standing approvals so an unattended task can act without you and without guessing, and the outbox and log that let you see afterwards what happened while you were away.
 
 > **Companion guides:** [Guide 12](./12_SECURITY.md) §8 is the safety floor this builds on and its *Recording What a Refactor Must Not Weaken* section is where the structural half lives. [Guide 30](./30_CONTROLLED_DOCUMENTS.md) is the document-shaped instance; [Guide 07](./07_TASK_LEARNING_GUIDE.md) Part 3 is the instruction-shaped one. [Guide 27](./27_INDEPENDENT_JUDGMENT.md) is the boundary between Claude's judgment and yours; this guide is the boundary between Claude's *actions* and yours. [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) and the `TASK_TEMPLATE` carry the run log this guide's action log extends. [Guide 31](./31_BEHAVIOUR_TESTS.md) is how you check the boundary still holds.
 
-> **Giving this guide to Claude:**
+> **Giving this guide to an assistant:**
 > "Read 32_ACTION_AUTHORITY.md. Inventory every action this project's tasks and skills can take — connectors, scopes, file operations — classify each under §2, and propose the CLAUDE.md block from §8. Do not grant yourself anything."
 
 ---
@@ -110,11 +110,21 @@ An outbox is not a weaker form of doing the task. For most tasks it is the whole
 A rule in CLAUDE.md is guidance. It holds most of the time, and "most of the time" is the wrong standard for Class C and D. The strongest authority rule is a capability that does not exist, and the order of preference is fixed:
 
 1. **The capability is absent.** A Gmail connector with read and draft scopes and no send scope cannot send, whatever the task is told or whatever an injected email says ([Guide 12](./12_SECURITY.md) §6). A scheduled task with no payment app granted cannot pay; in Cowork, the per-app and per-folder grants are this tier, and withholding a grant from a task is the strongest rule it can have. This is the only enforcement that survives prompt injection, and it is why the security-properties table in [Guide 12](./12_SECURITY.md) exists: write the absent capability down as a property, with the change that would break it, so that a future session widening the scope "to unblock a draft step" knows it is making a security decision.
-2. **A hook blocks it.** In Claude Code, a `PreToolUse` hook can refuse a tool call on a pattern. It catches the mechanical shape of an action, not its intent, and is a speed bump rather than a boundary — but a speed bump on `git push` to a public remote or on a delete outside `_archive/` catches the accident that CLAUDE.md would have talked itself past. Cowork has no hooks; a Cowork-only setup goes from tier 1 straight to tier 3, which is a reason to lean harder on tier 1 there.
+2. **A hook blocks it.** In Claude Code, a `PreToolUse` hook can refuse a tool call on a pattern. It catches the mechanical shape of an action, not its intent, and is a speed bump rather than a boundary — but a speed bump on `git push` to a public remote or on a delete outside `_archive/` catches the accident that CLAUDE.md would have talked itself past. Do not assume this hook exists on Cowork or OpenAI; inspect the native enforcement available there and record any gap.
 3. **The instructions field and CLAUDE.md state it.** The Class D line in the app's instructions field for a project with stakes, because it survives a failed mount ([Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md)); the classes, the standing approvals and the outbox rule in CLAUDE.md. Guidance, always loaded, versioned.
 4. **A skill states it.** Weakest, because it only exists for requests that trigger the skill. Fine for a skill's *own* actions; never the place a project-wide boundary lives.
 
 Move each Class C and D action as far up this list as your setup allows. Where the only enforcement available is a line of prose, say so in the security-properties table, so the gap is known rather than assumed closed.
+
+---
+
+## Bind Authority to the Actual Account and Surface
+
+The action classes are shared policy. A standing approval additionally names the authorized task, destination account/resource, limits, expiry and execution owner. Moving a definition from Claude to OpenAI does not move the old connector grant or establish that the same identity is active. Revalidate scope before the first live action; never widen authority to compensate for a missing tool.
+
+Codex uses its effective sandbox and approval controls; ChatGPT connected apps use their own grants; Claude Code hooks apply only to the tool paths they intercept. An automatic approval decision is not a new business authorization, and an instruction file does not override a sandbox denial. When only prose protects a consequential action, record that enforcement gap and keep the action in the proposal/outbox path.
+
+Already granted authorization within the current task remains valid within its scope; do not demand repeated approval for the same approved action merely because work crosses a session boundary. For unattended work, preserve the explicit standing-approval record and one scheduler owner so neither platform interprets a duplicated run as another grant. [Guide 35](./35_DUAL_PLATFORM_PROJECTS.md) provides the handoff and ownership record.
 
 ---
 

@@ -1,12 +1,18 @@
 # Task: Analyze Project
 
 > **Cluide task** — run this from a Cluide checkout to analyze *another* Claude project end-to-end:
-> `Claude, run tasks/analyze-project.md`
+> `Assistant, run tasks/analyze-project.md`
 > **Source guides:** the full Cluide set (01–35). Per-dimension criteria and the output template live
 > in `tasks/analyze-project-reference.md` (read on demand).
 
+## Runtime route
+
+Name the target surface and available tools before running steps. Claude-only policy lives in `CLAUDE.md`; Codex uses `AGENTS.md`; dual-platform shares `AGENTS.md` through a thin Claude adapter. References below to editing project rules mean that selected policy, not duplicated adapters. ChatGPT source projects use project instructions and dated sources; without write access, return replacement artifacts and record refresh as pending.
+
+Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
+
 ## Purpose
-Analyze another Claude project — Claude Code or Cowork, from a **local folder** or a **GitHub repo** —
+Analyze another assistant project — Claude, ChatGPT or Codex, from a **local folder**, **GitHub repo**, or **project sources** —
 against the full Cluide guide set, and write a single **improvement plan** into that project:
 `CLUIDE_IMPROVEMENT_PLAN.md`. The plan scores every applicable dimension, lists prioritised findings,
 and tells the user exactly which `setup-*` / `audit-*` task or skill implements each fix.
@@ -21,8 +27,7 @@ consolidates the result into one actionable document.
 
 ## Instructions
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons
-> instead of plain text.
+> **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
 ### Step 0 — Locate the target and confirm Cluide is available
 
@@ -31,8 +36,8 @@ This task **reads** another project and writes **one** file into it. Two things 
 1. **Cluide guides are present.** Confirm the current working directory is a Cluide checkout (it
    contains `00_INDEX.md` and a `tasks/` folder). The dimension criteria reference the root guides. If
    Cluide is not the working repo, stop and ask the user to run this from Cluide.
-2. **The target is reachable.** Ask whether the target project is a **local folder** or a **GitHub
-   repo** (`AskUserQuestion`). Then handle the mode — see
+2. **The target is reachable.** For source-only projects, inventory supplied files and project instructions; mark missing sources and return a downloadable/inline plan if no write path exists. Otherwise: Ask whether the target project is a **local folder** or a **GitHub
+   repo** (using the available question tool or chat). Then handle the mode — see
    `analyze-project-reference.md § Input handling` for the detail:
    - **Local folder** — a path to the project directory (e.g. `~/Projects/my-assistant`). Confirm you
      can list it.
@@ -46,18 +51,18 @@ repo to scope (cloud) or run this task locally where the project folder exists, 
 
 ### Step 1 — Detect project type and inventory
 
-Scan the target for the canonical files that make up a healthy Claude project (see
+Scan the target for the canonical files that make up a surface-appropriate project (see
 `analyze-project-reference.md § Project-type detection`):
 
-`CLAUDE.md` · `.claude/` · `skills/` · `tasks/` (or scheduled-task definitions) · `.auto-memory/` ·
+`AGENTS.md` · `CLAUDE.md` · project instructions/source revisions · `.agents/skills/` · `.codex/config.toml` · `.claude/` · `skills/` · `tasks/` (or scheduled-task definitions) · `.auto-memory/` ·
 `settings.json` · `.gitignore` / `.claudeignore` · MCP config · `README`.
 
-From what's present, classify the project: **Claude Code**, **Cowork**, or **hybrid** — and note any
+From what's present, classify the project: **Claude Code**, **Cowork**, **ChatGPT sources**, **Codex local**, or a named combination — and note any
 narrower shape (helper-app, knowledge-base/wiki). Report a **factual inventory only** — what exists and
 where. Do not judge yet.
 
 ```
-Target: [path or owner/repo]   |   Type: [Claude Code | Cowork | hybrid]
+Target: [path or owner/repo]   |   Type: [named surfaces + separate purpose]
 Inventory:
   CLAUDE.md           [present (N lines) | missing]
   Skills              [N found: names | none]
@@ -71,11 +76,11 @@ Inventory:
 
 ### Step 2 — Clarify intent
 
-Use `AskUserQuestion` to resolve only the ambiguities that change which dimensions **apply** or what to
+Use an available question tool or concise chat to resolve only the ambiguities that change which dimensions **apply** or what to
 recommend. Don't ask what the inventory already answered. Cover, as needed:
 
 - **Purpose** — code project / personal assistant / knowledge base / small helper tool?
-- **Surface** — Claude Code, Cowork, or both?
+- **Surface** — Claude Code, Cowork, ChatGPT sources, Codex local, or which combination?
 - **Automation** — does it run (or should it run) scheduled/automated tasks?
 - **Sensitive data** — does it handle credentials, personal, or confidential data?
 
@@ -126,7 +131,7 @@ the open questions are resolved, not until the draft stops attracting objections
 
 Write the agreed plan to **`CLUIDE_IMPROVEMENT_PLAN.md` at the target project's root**.
 
-- If that file already exists, ask (`AskUserQuestion`): overwrite, or write a date-suffixed copy
+- If that file already exists, ask (using the available question tool or chat): overwrite, or write a date-suffixed copy
   (`CLUIDE_IMPROVEMENT_PLAN_YYYY-MM-DD.md`)?
 - For a GitHub target, create the file via the GitHub MCP write path on the user's working branch — only
   after they confirm. For a local target, write it directly.

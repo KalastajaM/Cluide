@@ -1,0 +1,17 @@
+{
+  "stable_job_id": "demo/daily",
+  "timezone": "Europe/Helsinki",
+  "owner": "runner-a",
+  "requesting_runner": "runner-b",
+  "scheduled_slot": "2026-09-14T08:00:00+03:00",
+  "completed_keys": ["demo/daily|2026-09-14T08:00:00+03:00"],
+  "lock_held_by": "runner-a",
+  "handoff": {
+    "branch": "example/handoff",
+    "commit": "fixture-commit-2",
+    "changed_files": ["Knowledge/demo.md"],
+    "checks": "fixture link check passed; live runner untested",
+    "pending": "source refresh",
+    "unsaved_draft": "Outputs/demo-summary.md"
+  }
+}

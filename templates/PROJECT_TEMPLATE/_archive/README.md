@@ -7,7 +7,7 @@ the file in front of you.
 Two rules make the folder work:
 
 - **Never read from it.** A stale version in context is worse than an absent one — it contradicts
-  the current material without announcing that it is out of date. `CLAUDE.md` carries this as a
+  the current material without announcing that it is out of date. `AGENTS.md` carries this as a
   rule rather than a preference.
 - **Nothing arrives here new.** Only material that was live somewhere else in the project.
 

@@ -39,3 +39,7 @@ token.json
 
 # Bootstrap stubs — explicitly included despite global ignore rules above
 !bootstrap/**
+
+# Local operations records and credentials (git hygiene, not access control).
+OPERATIONS.local.md
+!.env.example

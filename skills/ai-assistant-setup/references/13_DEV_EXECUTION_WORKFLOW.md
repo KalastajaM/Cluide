@@ -1,6 +1,6 @@
-# Development and Execution: Using Claude Code and Cowork Together
+# Development and Execution: Working Across Claude and OpenAI
 
-> Two Claude tools, two distinct roles. Claude Code is where you build and maintain your assistant — editing task files, debugging problems, managing git. Cowork (or any conversational Claude interface) is where you run it — executing tasks, processing emails, doing the actual work. Keeping these roles separate is one of the most useful things you can do for the long-term health of your setup.
+> Separate changing the assistant from using it. Claude Code and Codex can maintain repository definitions; Cowork, ChatGPT and coding-agent sessions can execute workflows when they have the required sources and tools. Assign roles by capability, not by brand.
 
 > **See also:** [Guide 20 — Interactive Prompting](./20_INTERACTIVE_PROMPTING.md) for Claude Code session features: `@` file references, plan mode, AskUserQuestion input types, and context hygiene.
 
@@ -8,65 +8,45 @@
 
 ## The Two Roles
 
-| Role | Tool | What you do here |
-|------|------|-----------------|
-| **Development** | Claude Code | Edit TASK.md, SKILL.md, CLAUDE.md. Debug failing runs. Add new features. Review and apply IMPROVEMENTS.md proposals. Manage git. Run the guide-improvement task. |
-| **Execution** | Cowork (conversational Claude) | Run your daily tasks. Process emails. Draft messages. Use skills. Let tasks run and read the output. |
-| **Development (Cowork-only)** | Text editor + Cowork | Edit files in a text editor or via Cowork chat. Test in a new Cowork conversation. Debug by sharing files in Cowork. See the [Cowork-only section](#if-you-only-use-cowork-no-claude-code) below. |
+| Role | Suitable surface | What happens here |
+|---|---|---|
+| Development | Claude Code, Codex, or a file-capable assistant with a reviewable editor | Edit policy, tasks and skills; inspect failures; validate fixtures; review and commit changes |
+| Execution | Cowork, ChatGPT, Claude Code or Codex with the required access | Read stable definitions, process authorized inputs and save outputs/state |
+| Uploaded-source execution | ChatGPT or conversational Claude project | Work from a recorded source revision; return deliverables or write through an authorized connector |
 
-The third row is not a third role — it is the Cowork-only variant of the development role, for setups without Claude Code.
-
-The key principle: **do not mix the roles in a single session.** When you open Cowork to check your emails, you are not also editing your email skill. When you open Claude Code to fix a bug, you are not also running your actual tasks.
-
-Keeping the roles separate prevents a class of errors where mid-session edits interact with a running task, or where you accidentally trigger a live task while debugging it.
+Separate development and execution sessions when testing a changed workflow. Do not edit the definition under a live run. A fresh execution session proves that the saved instructions work without the author's conversation context. An uploaded-source session additionally needs refreshed sources before that test.
 
 ---
 
 ## Architecture: Files That Work in Both Tools
 
-The setup that works well for both tools has one structural rule: **the definition files and the state files live in the same place**, and both tools read from and write to that place.
+Use one authored definition set and explicit state ownership. Native configuration stays outside that contract.
 
+```text
+project/
+├── AGENTS.md                    # Shared policy
+├── CLAUDE.md                    # Claude adapter
+├── PLATFORM_SETUP.md            # Capabilities, source revisions, scheduler owner
+├── skills/                      # Authored workflow sources; install per surface
+├── tasks/email-digest/
+│   ├── TASK.md                  # Stable definition during a run
+│   ├── IMPROVEMENTS.md          # Proposed/applied changes with evidence
+│   ├── LAST_RUN.md              # State owned by one execution path
+│   └── RUN_LOG.md
+└── .auto-memory/                # Explicit project memory, private when personal
 ```
-.claude/
-├── CLAUDE.md                    # Read by both — definitions only
-├── settings.json                # Tool-specific — not shared
-├── skills/
-│   └── gmail-task-manager/
-│       └── SKILL.md             # Definition — edited in Claude Code, used in Cowork
-└── tasks/
-    └── email-digest/
-        ├── TASK.md              # Definition — edited in Claude Code
-        ├── IMPROVEMENTS.md      # State — written by Cowork, read and edited in Claude Code
-        ├── LAST_RUN.md          # State — written by Cowork, read in Claude Code
-        └── RUN_LOG.md           # State — written by Cowork
-
-.auto-memory/
-├── MEMORY.md                    # State — read and updated each session
-└── *.md                         # State — individual memory files
-```
-
-**Definition files** (TASK.md, SKILL.md, CLAUDE.md) are edited in Claude Code and read by Cowork. They should be stable between runs — Cowork reads them but does not modify them.
-
-**State files** (IMPROVEMENTS.md, LAST_RUN.md, RUN_LOG.md, profile files, memory files) are written by Cowork and read by both tools. Claude Code reads them to understand what happened; Cowork updates them every run.
 
 ### The shared folder approach
 
-If both tools point to the same directory on disk (or the same cloud-synced folder), edits you make in Claude Code are immediately available to Cowork on the next session — no explicit deployment step needed. This is the simplest setup.
+Two local tools can read the same project, but only one writes a given state file at a time. New sessions must load updated policy. Sharing a folder does not share native memory, installed skills, app grants or schedule registrations.
 
 ### The git approach
 
-If you use git, the typical flow is:
-1. Edit in Claude Code on a feature branch
-2. Commit and merge to main
-3. Cowork runs from main (either via a pull step in the task, or via a shared folder that is already on main)
-
-The git approach adds a deployment step but gives you the rollback and history benefits described in [Guide 11](./11_GIT_INTEGRATION.md).
+Develop on a branch or worktree, review the diff, validate fixtures and merge the complete change. Execution then uses a known revision. Do not pull into a checkout while a live run is writing it. Record the branch, commit, changed files, validation and outstanding work in a handoff.
 
 ### What to avoid
 
-**Hardcoded paths.** If TASK.md says `Read /Users/username/tasks/email-digest/LAST_RUN.md`, it will break if the folder moves or if another user tries to use your setup. Use relative paths from the task folder wherever possible.
-
-**Settings.json in shared files.** `settings.json` is Claude Code's (user-level at `~/.claude/settings.json`; project-level at `.claude/settings.json`); Cowork has its own configuration surface (Settings → Connectors / `claude_desktop_config.json` — see [Guide 05](./05_MCP_SERVERS.md)). Do not try to share these across tools — they contain tool-specific configuration.
+Do not run both platforms' schedules against the same job. Keep one scheduler owner and migrate it under [Guide 35](./35_DUAL_PLATFORM_PROJECTS.md#7-state-schedules-and-handoffs). Do not treat a ChatGPT upload as a shared folder: refresh the source revision and explicitly deliver accepted changes back to the authored project. Never copy native settings or credentials from `.claude/` into a guessed OpenAI path.
 
 ---
 
@@ -74,11 +54,11 @@ The git approach adds a deployment step but gives you the rollback and history b
 
 When you want to add a new skill, update a task, or make a CLAUDE.md change:
 
-**1. Open Claude Code.**
-All editing happens here. Claude Code has the file editing tools, git, and the ability to read and reason about your entire setup at once.
+**1. Open the development surface.**
+Use Claude Code, Codex or another authorized file-capable editor in the intended repository. Check the branch and instruction files before editing.
 
 **2. Edit the relevant file.**
-For a new skill: create the SKILL.md in the skills folder. For a task change: edit TASK.md or TASK_REFERENCE.md. For a behaviour change: edit CLAUDE.md.
+For a new skill: create the SKILL.md in the skills folder. For a task change: edit TASK.md or TASK_REFERENCE.md. For a shared behaviour change: edit `AGENTS.md`; keep product-specific behaviour in its native adapter.
 
 Use the guides as reference material directly in Claude Code:
 > "Read 03_SKILLS.md and create a new skill for [what you want]. Follow all the best practices in the guide."
@@ -93,8 +73,8 @@ For tasks, ask for a dry-run analysis:
 **4. Commit to git** (if you are using git).
 See [Guide 11 — Git Integration](./11_GIT_INTEGRATION.md) for commit conventions.
 
-**5. Switch to Cowork for the first live run.**
-The first real run of a new or changed skill is always in Cowork. Watch the output carefully. If it looks right, you are done. If something is off, go back to Claude Code to diagnose and fix.
+**5. Test on the intended execution surface.**
+Use a fresh session and fixtures first, then an authorized live run. Record results separately for Claude and OpenAI; passing in Codex does not prove that a ChatGPT project can reach the same inputs. If something fails, return to the development session with the evidence.
 
 ---
 
@@ -142,7 +122,7 @@ Cowork has plan mode and subagents of its own, so the main thing you give up by 
 
 ## Debugging: When Something Breaks in Cowork
 
-The diagnostic loop always starts in Claude Code, not in Cowork. Cowork is for running; Claude Code is for understanding and fixing.
+The example below uses Claude Code to diagnose a Cowork run. The same evidence-first loop works in Codex; use the actual execution surface for the final check.
 
 ### Step 1: Read the evidence in Claude Code
 
@@ -207,7 +187,7 @@ If the bug ran for multiple sessions before you noticed — producing subtly wro
 
 ## Reviewing and Applying IMPROVEMENTS.md Proposals
 
-The self-improvement system (Guide 07) generates proposals in IMPROVEMENTS.md that wait for your input. This review loop is naturally a Claude Code task, not a Cowork task.
+The self-improvement system (Guide 07) generates proposals in IMPROVEMENTS.md that wait for your input. Use a development session with the accepted files and evidence; Claude Code and Codex are both suitable. The numbered example below uses Claude Code.
 
 **The pattern:**
 
@@ -219,7 +199,7 @@ The self-improvement system (Guide 07) generates proposals in IMPROVEMENTS.md th
 5. Claude Code makes the edits, you review the diff, commit
 6. Cowork picks up the changes on the next run
 
-This keeps the review thoughtful (Claude Code has the full file context and your explicit direction) and keeps Cowork focused on execution.
+This separates review from execution and leaves a diff and validation record.
 
 The proposals were written by Claude, so asking Claude whether to apply them is not an independent check — the reviewer and the author share their priors about what a good change looks like. Ask what would go wrong if you applied it, and what would have to be true for the proposal to be a mistake, rather than for a recommendation ([Guide 27](./27_INDEPENDENT_JUDGMENT.md)).
 
@@ -270,7 +250,7 @@ Claude Code can spawn **subagents** — parallel Claude instances that work on f
 
 ## New Features: Development Checklist
 
-When building something new — a skill, a task, a profile update — use this checklist in Claude Code before taking it live in Cowork:
+When building something new — a skill, task or profile update — use this checklist in the development surface before taking it live on the selected execution surface:
 
 - [ ] **Description triggers correctly** — read the skill/task description aloud. Would it trigger from a casual, implicit phrasing, or only from an exact command?
 - [ ] **Output format is explicit** — is there a code block showing exactly what the output should look like? Ambiguous format = inconsistent output.
@@ -303,7 +283,7 @@ A sustainable rhythm for this two-tool workflow:
 
 ---
 
-## Giving This to Claude
+## Giving This to an Assistant
 
 **To debug a problem using Claude Code:**
 > "The email-digest task produced wrong output on the last run. Read LAST_RUN.md and TASK.md and tell me what caused it and what to fix."

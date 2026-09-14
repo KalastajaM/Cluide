@@ -1,5 +1,12 @@
 # AI Assistant — Maintenance Task
 
+**Before any run:** read local `AGENTS.md`, `../../AGENTS.md` and
+`../../PLATFORM_SETUP.md`. Verify required tools, source freshness, the active job owner,
+and the shared duplicate-run/write guard before state changes. If unavailable, stop dependent
+work and report the exact gap. Do not fabricate a successful fetch, saved output or registration.
+Tool names below describe the required operation; bind them to this session's verified tools.
+
+
 Run this task to analyze one or more assistant tasks, catalog issues, and generate improvement proposals. This is a generic procedure that targets any of the four assistant tasks, or all of them at once.
 
 **Trigger:** Run manually when [USER] requests a maintenance review, or on a scheduled basis.

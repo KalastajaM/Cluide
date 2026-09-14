@@ -1,11 +1,11 @@
 # Guide 19: Output Formatting — Markdown & HTML
 
-> How to make generated output look good — whether Claude is producing a Markdown summary or a full HTML report.
+> How to make generated output look good — whether Claude or OpenAI is producing a Markdown summary or a full HTML report.
 > Covers Markdown basics with Claude-specific tips, and a practical HTML layout pattern for polished, self-contained reports.
 
 > **Companion guides:** [Guide 02](./02_PROMPTING_BASICS.md) covers how to prompt Claude to use a specific output format. [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) explains when to script fixed-format artifact generation instead of having Claude compose it fresh each run.
 
-> **Giving this guide to Claude:**
+> **Giving this guide to an assistant:**
 > "Read 19_OUTPUT_FORMATTING.md and help me format the output of my [task/skill] as [Markdown / a styled HTML report]."
 
 ---
@@ -17,6 +17,16 @@ A task that produces a wall of unformatted text is a task nobody reads. A small 
 This guide covers two formats:
 - **Markdown** — best for output read in Claude's chat UI, GitHub, or a Markdown editor
 - **HTML** — best for standalone reports, dashboards, or anything that needs custom styling or status colours
+
+---
+
+## Delivery Is Part of the Format
+
+Markdown and HTML are portable files; chat rendering and artifact delivery are product-specific. In Claude, ChatGPT or Codex, use the preview/file mechanism actually exposed by that surface. A local file link can be useful in a desktop workspace but does not make a file on your laptop available to a cloud chat.
+
+Specify the destination together with the format: "save `outputs/report.html` in this workspace and preview it" for local work, or "return a downloadable self-contained HTML file" for a source-only chat. Verify that the file exists and opens, and distinguish generated, delivered, and published. A preview is not publication.
+
+Test the real renderer for tables, checkboxes, internal links and embedded assets. Keep a standalone export when the result must be shared outside the conversation. Use native document/slide tools when the deliverable needs editable office formatting; Markdown is not a substitute for tracked changes in a controlled document ([Guide 30](./30_CONTROLLED_DOCUMENTS.md)).
 
 ---
 
@@ -42,7 +52,9 @@ Before using Markdown in task output, check whether the output will actually be 
 
 **Rule:** if the output will be read in a rendered environment, use Markdown. If it's piped to a tool or sent as plain text, strip Markdown or avoid it entirely.
 
-### Claude-Specific Tips
+<a id="claude-specific-tips"></a>
+
+### Prompting for Consistent Markdown
 
 **Ask for specific elements, not just "use Markdown"**
 

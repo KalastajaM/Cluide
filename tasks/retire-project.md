@@ -4,6 +4,16 @@
 > **Source guides:** `33_RETIRING_AND_LEAVING.md`, `23_MULTI_PROJECT_SETUPS.md`, `24_PROJECT_FOLDER_STRUCTURE.md`. Where `relocate-project.md` moves a project that continues, this ends one. The two share the reference-layer inventory; this task adds memory, credentials and ownership, which a move does not need.
 > **Leaving an organisation or account** is Guide 33 §5 and is a checklist rather than a task, because most of its steps happen in app settings and on the user's own decisions. This task runs per project inside that checklist.
 
+## Runtime route
+
+Name the target surface and available tools before running steps. Claude-only policy lives in `CLAUDE.md`; Codex uses `AGENTS.md`; dual-platform shares `AGENTS.md` through a thin Claude adapter. References below to editing project rules mean that selected policy, not duplicated adapters. ChatGPT source projects use project instructions and dated sources; without write access, return replacement artifacts and record refresh as pending.
+
+Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
+
+## Native implementation
+
+Inventory registrations, connector grants, native memories, source uploads, project links and ownership rows separately for every used platform. Codex app automations are inspected/deleted through the exposed automation API or supported UI; ChatGPT tasks and source projects through their own controls; Cowork through its native scheduler. Never infer deletion from removing a task folder or disabling a trigger. Stop scheduling, drain active runs and transfer ownership before archiving. Record inaccessible registrations as pending operator action. A shared-policy edit or source deletion does not revoke account grants or erase platform-local memory. Apply the retirement checks below to each named surface; Claude paths and app storage examples remain Claude-only.
+
 ## Purpose
 
 Retire a project (or one task) without leaving live wires. A stopped project keeps a scheduled task that fails or runs stale, a registry row that owns facts nobody updates, memory lines in the present tense, an app-side description that loads as identity, grants nobody watches, and a public remote that keeps publishing. None of it breaks visibly, which is why the task exists: it inventories every layer that can point at the project, transfers ownership of anything it owned, rewires or removes every load-bearing reference, and freezes the folder in a state a future session recognises as ended.
@@ -14,7 +24,7 @@ Use it when a project's purpose has ended, when a project is being absorbed into
 
 ## Instructions
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+> **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
 ### Step 0 — Preconditions and scope
 

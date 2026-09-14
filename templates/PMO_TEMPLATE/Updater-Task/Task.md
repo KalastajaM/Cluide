@@ -2,7 +2,9 @@
 
 **Purpose:** Keep the four programme registers and the knowledge base internally consistent — no orphaned IDs, no missing back-links, no legacy ID formats. Run this after a heavy editing session, or on a regular cadence (e.g. weekly).
 
-This task operationalises the **Cross-reference consistency** rules already prescribed in `CLAUDE.md`. Nothing new is being enforced — the task just makes the audit explicit and repeatable.
+This task operationalises the **Cross-reference consistency** rules already prescribed in `../AGENTS.md`. Nothing new is being enforced — the task just makes the audit explicit and repeatable.
+
+Read `../AGENTS.md`, `../PROJECT_GUIDE.md` and `../PLATFORM_SETUP.md` first. All file paths below are relative to the PMO project root (the parent of this task folder). For recurring use, configure the single scheduler owner and duplicate guard before activation.
 
 ---
 

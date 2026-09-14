@@ -1,14 +1,25 @@
-# Best Practices: Writing CLAUDE.md for a Personal Assistant
+# Best Practices: Writing Shared Instructions, AGENTS.md and CLAUDE.md
 
-CLAUDE.md is the always-loaded instruction file that shapes every interaction. It is the difference between an assistant that constantly needs re-explaining and one that just gets it. This guide covers what to put in it, how to structure it, and what to avoid.
+Standing instructions shape how an assistant works across tasks. This guide covers their content and structure, then shows how that contract reaches Claude, ChatGPT projects and Codex. The historical filename stays stable; `CLAUDE.md` is the Claude entry point, not a universal loader.
 
 ---
 
 ## What CLAUDE.md Is For
 
-CLAUDE.md loads into every conversation automatically. It answers: "Before I do anything, what do I need to know about this person and how they want to work?" It is not a task list or a knowledge base — it is the standing operating contract between you and the assistant.
+Standing instructions answer: "Before I do anything, what do I need to know about this project or person?" They are an operating contract, not a task list or a knowledge base. **Every line should change behaviour.** If removing a line would not change an action or answer, cut it.
 
-The key principle: **every line should change behaviour.** If removing a line wouldn't change how the assistant acts, cut it.
+For a dual-platform repository, keep shared rules in root `AGENTS.md`; make `CLAUDE.md` a thin adapter containing `@AGENTS.md` plus an explicit instruction to read it if imports are not resolved. Keep Claude-only configuration outside the shared rules. This repository demonstrates the arrangement; [Guide 35](./35_DUAL_PLATFORM_PROJECTS.md) explains the ownership and migration rules.
+
+| Surface | Where the contract reaches the assistant | Check before relying on it |
+|---|---|---|
+| Claude Code | Native `CLAUDE.md` files and their imports | Inspect the loaded files, including parent and local instructions |
+| Cowork / conversational Claude | Project instructions bootstrap the accessible policy source | Confirm the connected folder or uploaded revision was actually read |
+| Codex repository session | Native `AGENTS.md` discovery; `AGENTS.override.md` can supersede it at a level | Start in the intended workspace and inspect overrides along the instruction chain |
+| ChatGPT uploaded-source project | Project instructions plus uploaded or connected policy source | Record source revision; a repository edit does not refresh an upload |
+
+Do not treat an `@` import as Codex syntax or an uploaded instruction file as proof of automatic loading. Put the full shared contract in `AGENTS.md`, with explicit read pointers for longer references. After changing rules, start a fresh session on each supported surface and test a behaviour that depends on them. Record missing sources as missing, not as permission to guess.
+
+Documentation checked 2026-09-14: [Claude instruction loading](https://code.claude.com/docs/en/memory), [Codex instruction discovery](https://learn.chatgpt.com/docs/agent-configuration/agents-md), [ChatGPT projects and sources](https://learn.chatgpt.com/docs/projects). The detailed product facts are maintained in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts).
 
 ---
 
@@ -37,7 +48,7 @@ What makes this effective: it is specific enough to resolve edge cases — the a
 
 ### 2. Communication Style
 
-Tell the assistant exactly how to format and phrase responses. The default Claude style — bullet points, headers, emojis, verbose summaries — is rarely what a regular user wants. Be explicit.
+Tell the assistant exactly how to format and phrase responses. Model defaults and user preferences differ; test the style you want rather than assuming a default. Be explicit.
 
 **What to cover:**
 - Prose vs. bullet points (and when each is acceptable)
@@ -53,18 +64,18 @@ Tell the assistant exactly how to format and phrase responses. The default Claud
 - No emojis unless asked
 ```
 
-**Why this matters:** Without these instructions, the assistant defaults to structured outputs with bullets and bold text for almost everything, including casual answers. Most people find this exhausting to read over time.
+**Why this matters:** A concrete format preference is easier to test than "write naturally". Check a short conversational answer and a structured artifact so the rule fits both.
 
 ### Writing Style: A Separate File
 
-Format preferences (prose vs. bullets, emoji use) belong in CLAUDE.md because they apply to every response. Language quality rules are different — longer, more nuanced, and benefiting from independent maintenance. Put them in a dedicated file, e.g. `writing-style.md`, and load it with a read instruction in CLAUDE.md.
+Format preferences (prose vs. bullets, emoji use) belong in the canonical policy: `AGENTS.md` for the shared setup, or `CLAUDE.md` for a Claude-only setup. Language quality rules are different — longer, more nuanced, and benefiting from independent maintenance. Put them in a dedicated file, e.g. `writing-style.md`, and load it with a read instruction in that canonical policy.
 
 A writing style file typically contains:
 - Banned words and phrases that produce generic AI-sounding output ("leverage", "delve into", "it's worth noting", "importantly")
 - Sentence structure preferences — e.g. short sentences, active voice, no padding phrases
 - Prose vs. list rules — when bullets are acceptable vs. when they fragment ideas that flow better as prose
 
-This keeps the writing style evolvable — add new patterns as you notice them without touching CLAUDE.md. The read instruction is one line:
+This keeps the writing style evolvable — add new patterns as you notice them without changing the policy or native adapter. The read instruction is one line:
 
 ```
 Read `writing-style.md` at the start of every session.
@@ -74,9 +85,7 @@ Keep the file under 60 lines. If it grows beyond that, you are likely cataloguin
 
 ### 3. Critical Rules (the safety boundary)
 
-The most important section. State what the assistant must never do without explicit confirmation. For a personal assistant with access to email, calendar, and files, the rule is almost always:
-
-**Never take real-world actions autonomously.**
+State the scope of action authority: what the assistant may do now, what has standing approval, and what requires a new decision. [Guide 32](./32_ACTION_AUTHORITY.md) provides the consequence classes and proposal contract. The draft-only example below is one conservative personal policy, not a requirement to reconfirm every reversible edit.
 
 Write this section as a hard rule, not a preference. Use "NEVER" intentionally — it signals a constraint, not a style suggestion.
 
@@ -99,21 +108,23 @@ For data projects, add an epistemic rule alongside the action rules: if the proj
 
 ## Layering: CLAUDE.md vs. Task-Level Instructions
 
-CLAUDE.md contains standing rules that apply to every interaction. Task-specific instructions (how to run a weekly status digest, how to track contracts) belong in dedicated task files, which the assistant reads on demand.
+The canonical instruction file (`AGENTS.md` in the shared pattern, `CLAUDE.md` in a Claude-only project) contains standing rules within its scope. Task-specific instructions (how to run a weekly status digest, how to track contracts) belong in dedicated task files, which the assistant reads on demand.
 
-The test for each rule: "Does this apply to every conversation, regardless of what I'm doing?" If yes, CLAUDE.md. If it is specific to a workflow, the relevant task file.
+The test for each rule: "Does this apply to every conversation, regardless of what I'm doing?" If yes, the canonical policy. If it is specific to a workflow, the relevant task file.
 
-**Keep CLAUDE.md short.** Aim for under 30 lines. If it grows beyond that, you are likely adding task-specific instructions that belong elsewhere. The 30-line target applies to the personal assistant CLAUDE.md; project CLAUDE.md files that carry cross-reference checklists (see below) may legitimately run longer.
+**Keep the canonical policy short.** Aim for under 30 lines for a personal policy. If it grows beyond that, check for task-specific instructions that belong elsewhere. Project policies carrying cross-reference checklists may legitimately run longer. In a shared setup, keep `CLAUDE.md` as the thin adapter; do not move shared rules into it to meet an `AGENTS.md` length target.
 
 ---
 
 ## File Access Tiers
 
+These tiers describe project policy. Enforce sensitive boundaries with the actual runtime or connector permissions in [Guide 12](./12_SECURITY.md); neither a filename nor a prose rule denies access. In the examples below, put shared read instructions in `AGENTS.md` for dual-platform repositories, or in the project instructions for uploaded-source use.
+
 Not every file in a project warrants the same access. Four tiers cover most cases:
 
-- **Auto-read:** files Claude loads at the start of every session — personal profile, writing style, active context. List these as explicit read instructions in CLAUDE.md.
-- **Reference-only:** folders Claude knows about but reads on demand — knowledge bases, output archives, templates. Name them in CLAUDE.md so Claude knows where to look, but don't auto-load them.
-- **Read-only:** files Claude can read but must not modify — master data, shared reference files, historical records. State this explicitly in CLAUDE.md: "The `masterdata/` folder is read-only — never edit files in it."
+- **Auto-read:** files the policy asks the assistant to read at session start — personal profile, writing style, active context. List these as explicit read instructions in the canonical policy.
+- **Reference-only:** folders the assistant can access but reads on demand — knowledge bases, output archives, templates. Name them in the canonical policy so the assistant knows where to look, but don't auto-load them.
+- **Read-only:** files the assistant can read but must not modify — master data, shared reference files, historical records. State this explicitly in the canonical policy: "The `masterdata/` folder is read-only — never edit files in it."
 - **Ignored:** files Claude should not read. `.claudeignore` support for excluding files from context varies by product and version — treat it as hygiene, not a security boundary; for genuinely sensitive files pair it with `permissions.deny` rules (see [Guide 12](./12_SECURITY.md)). In Cowork or when the directory structure should be self-documenting, use a name prefix: `[IGNORE]` for folders to skip entirely, `[ARCHIVE]` for old versions stored for reference. The two approaches are complementary — `.claudeignore` handles patterns, name prefixes communicate intent visibly in the folder tree.
 
 The token cost of auto-reading compounds across every session. Keep the auto-read tier small. Everything else earns its place by being referenced in a task, not by being loaded by default.
@@ -150,16 +161,18 @@ This pattern applies whenever a project manages two or more linked registers. Th
 ## When CLAUDE.md Cannot Be Short: the reference companion
 
 The section above removes what does not belong. It does not help with the harder case: rules that
-genuinely belong in CLAUDE.md, apply rarely, and are expensive to get wrong. "Never cite a section
+genuinely belong in the canonical policy, apply rarely, and are expensive to get wrong. "Never cite a section
 number from memory — use the verified map" is not clutter, and deleting it is not an option, but it
 earns its always-loaded cost only in the sessions that cite one.
 
-Split the file rather than choosing between a bloated CLAUDE.md and a missing rule. Standing rules and
-the working set stay in `CLAUDE.md`; situational material moves to a `CLAUDE_REFERENCE.md` beside it;
-and the parent keeps a pointer at the exact place the rule would have been, naming the trigger rather
+Split the file rather than choosing between a bloated policy and a missing rule. Standing rules and
+the working set stay in `AGENTS.md` for a shared setup; situational material moves to
+`PROJECT_REFERENCE.md` beside it. A Claude-only setup may retain `CLAUDE.md` and
+`CLAUDE_REFERENCE.md`.
+The parent keeps a pointer at the exact place the rule would have been, naming the trigger rather
 than the topic:
 
-> **Before citing any section number, read `CLAUDE_REFERENCE.md` § Citation Map.** Do not cite from
+> **Before citing any section number, read `PROJECT_REFERENCE.md` § Citation Map.** Do not cite from
 > memory.
 
 The pointer is what makes this work. A companion file with no triggers in the parent is a file nobody
@@ -169,20 +182,20 @@ the condition under which reading is mandatory.
 This is the project layer of progressive disclosure ([Guide 02](./02_PROMPTING_BASICS.md) §
 Progressive disclosure) — the same split as `SKILL.md` → `references/` and `TASK.md` →
 `TASK_REFERENCE.md`. Use it where a project is genuinely complex: a long-running case file, a
-regulated domain, a codebase with real invariants. Do not use it to avoid pruning. A CLAUDE.md that is
+regulated domain, a codebase with real invariants. Do not use it to avoid pruning. A policy that is
 long because nobody maintained it needs the *Maintenance* section below, not a second file.
 
 ---
 
 ## Maintenance
 
-CLAUDE.md should evolve. When you correct the assistant on a behaviour repeatedly, that correction belongs in CLAUDE.md. Common triggers:
+The canonical policy should evolve. When you repeatedly correct a shared behaviour, update `AGENTS.md` in a dual-platform setup, or `CLAUDE.md` in a Claude-only setup. Keep product-specific changes in their native adapter or setup section, then reload or refresh each supported surface. Common triggers:
 
 - The assistant keeps doing something you don't like (add a rule)
 - You keep explaining the same context at the start of sessions (add it to the identity section)
 - A rule has never mattered (remove it — dead rules dilute the live ones)
 
-A good CLAUDE.md is a living document that reflects a few months of real use, not a first draft from day one.
+A good canonical policy is a living document that reflects a few months of real use, not a first draft from day one.
 
 ---
 
@@ -205,7 +218,7 @@ That is usually enough. Add sections only when they solve a real behavioural pro
 
 ## Real-World Example
 
-Below is a complete, working CLAUDE.md for a personal setup. It is intentionally short — 18 lines of real content — and every line changes behaviour.
+Below is a personal policy example. Put its shared content in `AGENTS.md` for a dual-platform setup, or `CLAUDE.md` for Claude-only use. It is intentionally short — 18 lines of real content — and every line changes behaviour.
 
 ```markdown
 # About User
@@ -235,18 +248,18 @@ Below is a complete, working CLAUDE.md for a personal setup. It is intentionally
 - The "make a reasonable assumption" instruction prevents the assistant from stalling on every slightly ambiguous request.
 - The Finnish message rule pairs the "don't act autonomously" constraint with a clear positive: produce something I can send immediately.
 
-**Giving this to Claude:**
-> "Read 01_CLAUDE_MD.md and help me write my own CLAUDE.md. Ask me the key questions you need answered."
+**Giving this to an assistant:**
+> "Read 01_CLAUDE_MD.md and help me write my canonical policy and native entry point for my chosen surface. Ask me the key questions you need answered."
 
 Claude will walk you through identity, style, and rules — and produce a draft in the format above.
 
-**Faster alternative:** `tasks/setup-claude-md.md` does this end-to-end without reading the guide first. `tasks/audit-claude-md.md` reviews an existing CLAUDE.md against this guide's checklist.
+**Faster alternative:** `tasks/setup-claude-md.md` does this end-to-end without reading the guide first. `tasks/audit-claude-md.md` reviews the existing instruction setup against this guide's checklist.
 
 ---
 
 ## Second Example: Developer Setup
 
-For comparison — a CLAUDE.md for a software engineer who uses Claude for code review, meeting prep, and async communication. Same three sections, different rules.
+For comparison — a canonical policy for a software engineer using an assistant for code review, meeting prep and async communication. Apply the same shared-policy/native-adapter placement rule. Same three sections, different rules.
 
 ```markdown
 # About Alex

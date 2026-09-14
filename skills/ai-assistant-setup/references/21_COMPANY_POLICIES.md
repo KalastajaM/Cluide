@@ -1,10 +1,10 @@
 # Company Policies Guide: Embedding Existing Policies as Guardrails
 
-> How to make Claude honour your organisation's existing policies — AI use policy, Code of Conduct, data classification, and similar — without copying the policy content into Cluide. Policies stay where they already live; Cluide holds only the pointers and the enforcement logic.
+> How to make either assistant apply your organisation's existing policies — AI use policy, Code of Conduct, data classification, and similar — without copying the policy content into Cluide. Policies stay where they already live; Cluide holds only the pointers and the enforcement logic.
 
 > **Companion guides:** [Guide 03](./03_SKILLS.md) covers skill design — the `policies-validator` skill follows its conventions. [Guide 05](./05_MCP_SERVERS.md) covers MCP server setup, needed when policies live in SharePoint or Confluence. [Guide 12](./12_SECURITY.md) covers operational security; this guide covers *policy* enforcement. [Guide 30](./30_CONTROLLED_DOCUMENTS.md) covers maintaining the policy documents themselves — review, versioning and approval — where this guide covers applying them.
 
-> **Giving this guide to Claude:**
+> **Giving this guide to an assistant:**
 > "Read 21_COMPANY_POLICIES.md and help me wire up the company policies I care about."
 >
 > **Faster alternative:** `tasks/setup-policies.md` runs the full interview, classifies each policy, and generates the skill end-to-end without reading the guide first.
@@ -19,10 +19,10 @@ The problem: Claude does not automatically know about any of this. Without expli
 
 The goal of this pattern:
 
-- Claude's output conforms to policy automatically — no human has to remember to check
+- Relevant policies are checked as part of the workflow, with evidence and human review where required
 - Policy *content* stays in its authoritative location (SharePoint, Confluence, or a private local folder) — Cluide contains only pointers
 - The enforcement strength scales with the policy: a data classification rule blocks hard, a style-guide nudges softly
-- When a policy changes, updating the source document is enough — nothing in Cluide has to change
+- Policy changes flow through a freshness check; uploaded or cached copies must be refreshed before use
 
 **Why not just put the policies in `CLAUDE.md`?**
 
@@ -205,6 +205,16 @@ Or, on a passing response:
 - If the policy is about *how* rather than *whether* → **T3**
 
 When in doubt, a policy can start at T2 and move to T1 later if experience shows violations are happening.
+
+---
+
+## Bind Policy to Each Platform's Actual Controls
+
+Keep policy ownership, source links, revision dates and consequence classes shared. Put native enforcement in the appropriate configuration: Claude Code permissions/hooks, Codex sandbox/approvals, and each conversational product's app grants. A policy-validation skill is an advisory/review mechanism unless an actual permission denies the prohibited action.
+
+For ChatGPT uploaded sources, a new policy version in SharePoint or the repository does not update the uploaded copy. Record the source revision and retrieval date, refresh it before policy-sensitive work, and report when it cannot be verified. For a connector-based read, validate the document's authority and revision rather than trusting the first similarly named result.
+
+Test one permitted and one prohibited fixture on every supported surface. Record the observed enforcement mechanism and result separately; if a control exists only in Claude Code, mark OpenAI's status as untested or unavailable and choose a narrower workflow. Do not describe a prose-only instruction as a hard block. [Guide 12](./12_SECURITY.md) owns the native security procedures and Guide 35 (in the Cluide guide set) the capability-gap record.
 
 ---
 

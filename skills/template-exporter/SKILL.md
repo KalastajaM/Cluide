@@ -1,31 +1,37 @@
 ---
 name: template-exporter
-description: Use this skill whenever the user wants to create a reusable template from an existing Claude artifact or setup — including chat system prompts, Cowork tasks, Cowork projects, or skills. Trigger when the user says things like "turn this into a template", "create a template I can share", "make this reusable", "export this as a template", "I want to share this setup with someone", or "create a template for [task/project/skill/chat]". Also trigger when a conversation contains a full Cowork task, project, or skill definition and the user seems to want to preserve or share it. Do NOT use it for the word "template" alone: a Word or PowerPoint template (.dotx, .potx) belongs to the docx/pptx skills, and a folder scaffold under Cluide's own templates/ is not an export. The object here is an existing Claude artifact being turned into something shareable.
+description: Use this skill whenever the user wants to create a reusable template from an existing Claude artifact or setup — including chat system prompts, Assistant tasks, Assistant projects, or skills. Trigger when the user says things like "turn this into a template", "create a template I can share", "make this reusable", "export this as a template", "I want to share this setup with someone", or "create a template for [task/project/skill/chat]". Also trigger when a conversation contains a full Assistant task, project, or skill definition and the user seems to want to preserve or share it. Do NOT use it for the word "template" alone: a Word or PowerPoint template (.dotx, .potx) belongs to the docx/pptx skills, and a folder scaffold under Cluide's own templates/ is not an export. The object here is an existing Claude artifact being turned into something shareable.
 ---
 
 # Template Exporter
 
-Turns an existing Claude setup (chat system prompt, Cowork task, Cowork project, or skill) into a clean, shareable template — stripped of personal/business/identifying content, with placeholder annotations and dual-audience instructions (human guide + Claude setup prompt).
+Turns an existing Claude setup (chat system prompt, Assistant task, Assistant project, or skill) into a clean, shareable template — stripped of personal/business/identifying content, with placeholder annotations and dual-audience instructions (human guide + Assistant setup prompt).
 
 ---
 
+## Platform preservation
+
+Before export, identify the source and intended destination surfaces. Preserve one shared `AGENTS.md` and thin `CLAUDE.md` adapters, including nested scopes. Keep relative imports valid. Export per-surface setup and bootstrap drafts with capability gaps; never claim app fields were applied. For uploaded-source projects, include revision/refresh instructions. Exclude credentials, connector grants, native memory, session history, live registration IDs, and actual runtime logs. Clean empty state templates may be supplied as bootstrap definitions.
+
+For recurring tasks, export the procedure and a blank scheduler-owner table, not active registrations. Installation must select one owner per job and verify permissions and duplicate-run protection. A Claude-only hook or subagent definition remains labelled Claude-only. Native skill installation follows the target surface's documented path; do not convert paths by analogy.
+
 ## Step 1: Determine the Template Type
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+> **Clarifying questions:** For any step with a fixed set of options, use the current surface’s question tool when available, otherwise ask a concise question in chat.
 
 Identify which type to export. Use context first; ask only if ambiguous.
 
 | Type | Signals |
 |------|---------|
-| **Chat system prompt** | User shares a system prompt, persona, or instruction block for a Claude chat |
-| **Cowork task** | User shares a task definition, step list, or automation workflow from Cowork |
-| **Cowork project** | User shares a project config, folder structure, or multi-task Cowork setup |
+| **Chat system prompt** | User shares a system prompt, persona, or instruction block for an assistant chat |
+| **Assistant task** | User shares a task definition, step list, or automation workflow from a supported surface |
+| **Assistant project** | User shares a project config, folder structure, or multi-task assistant setup |
 | **Skill** | User shares a SKILL.md or skill folder |
 
-If ambiguous, use `AskUserQuestion` with buttons:
-> Buttons: `Chat system prompt` / `Cowork task` / `Cowork project` / `Skill`
+If ambiguous, use the current surface’s question tool (or chat if unavailable):
+> Buttons: `Chat system prompt` / `Assistant task` / `Assistant project` / `Skill`
 
-If multiple types apply, ask the user to confirm or export one per type using `AskUserQuestion`.
+If multiple types apply, ask the user to confirm or export one per type using the available question tool or chat.
 
 ---
 
@@ -51,7 +57,7 @@ Preserve the **structure, logic, and intent** of the original. Do not simplify o
 |-----------|--------|
 | Source already partially sanitized | Note which placeholders were pre-existing; preserve them as-is |
 | Source is already a template | Export as-is; flag to user that sanitization may be minimal |
-| Source is very large (>400 lines) | Use `AskUserQuestion`: `Split into multi-file template` / `Export as single file` |
+| Source is very large (>400 lines) | Ask with the available question tool or chat: `Split into multi-file template` / `Export as single file` |
 
 ---
 
@@ -75,7 +81,7 @@ Good sample vocabulary to draw from:
 **Placeholder format — when to use each:**
 
 - `[PLACEHOLDER: ...]` — use in any file the **human will read and edit**: the exported template itself, README.md
-- `<<<PLACEHOLDER: ... >>>` — use only inside **SETUP.md**, where Claude needs to collect values interactively
+- `<<<PLACEHOLDER: ... >>>` — use only inside **SETUP.md**, where the assistant needs to collect values interactively
 
 > For templates larger than ~300 lines: break SETUP.md into two steps — collect all placeholder values first, then apply them to the template file passed as an attachment. Do not embed very large templates inline.
 
@@ -88,14 +94,14 @@ See `references/output-formats.md` for the exact file structure per template typ
 ```
 template-[name]/
 ├── README.md              ← Human guide
-├── SETUP.md               ← Claude setup prompt
+├── SETUP.md               ← Assistant setup prompt
 └── [type-specific files]  ← The actual template content
 ```
 
 Type-specific content files:
 - **Chat system prompt** → `system-prompt.md`
-- **Cowork task** → `task.md`
-- **Cowork project** → `project.md` + `tasks/` subfolder with one file per task
+- **Assistant task** → `task.md`
+- **Assistant project** → `project.md` + `tasks/` subfolder with one file per task
 - **Skill** → `SKILL.md` + any reference files, preserving the original folder structure
 
 Read `references/output-formats.md` for detailed specs on each type before writing files.
@@ -108,9 +114,9 @@ The README is for a person who receives the template and wants to use it.
 
 Structure:
 1. **What this is** — one sentence describing the template's purpose
-2. **What you'll need** — prerequisites (e.g. Cowork access, a Claude Pro account)
+2. **What you'll need** — prerequisites for each supported surface and required tools
 3. **How to customize** — list every `[PLACEHOLDER: ...]` and what to fill in
-4. **How to use it** — step-by-step instructions to deploy (install in Claude.ai, paste into Cowork, etc.)
+4. **How to use it** — step-by-step instructions to deploy on each supported surface, with a manual/source route where native installation is unavailable
 5. **Notes** — any caveats, optional elements, or versioning info
 
 Keep it plain Markdown. Write for a non-technical reader unless the source content signals otherwise.

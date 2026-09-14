@@ -4,5 +4,5 @@
 >
 > The template itself lives at [`templates/TASK_TEMPLATE/IMPROVEMENTS.md`](./templates/TASK_TEMPLATE/IMPROVEMENTS.md). This file remains as a stable address so existing references keep resolving.
 
-> **Giving this to Claude:**
+> **Giving this to an assistant:**
 > "Read 07_TASK_LEARNING_GUIDE.md Part 9 and set up the self-improvement system for my task at [path/to/task-folder/]."

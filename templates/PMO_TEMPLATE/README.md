@@ -1,8 +1,13 @@
-# Template: PMO Initiative — Claude Workspace
+# Template: PMO Initiative — Shared Assistant Workspace
 
-This template sets up a Claude-assisted project workspace for managing a **PMO project**. It includes a CLAUDE.md with project rules, a project guide, an initiative charter, and a full PMO register suite (risks, actions, dependencies, decisions, and a knowledge base).
+Start with `PLATFORM_SETUP.md`: choose Claude or OpenAI and verify source access. `AGENTS.md`
+is shared policy; `CLAUDE.md` is its thin Claude adapter. ChatGPT needs the explicit project-source
+bootstrap; Codex uses the repository workspace. No surface is verified merely by copying files.
 
-The template is structured as a Cowork project folder. When customized and dropped into a Cowork workspace, Claude will automatically load and apply all project rules and context.
+
+This template sets up a assistant-supported project workspace for managing a **PMO project**. It includes a AGENTS.md with project rules, a project guide, an initiative charter, and a full PMO register suite (risks, actions, dependencies, decisions, and a knowledge base).
+
+The template is a shared project folder. Configure the chosen surface and verify instruction loading using `PLATFORM_SETUP.md` before relying on its rules.
 
 > **Companion guides:** [09 Multi-Task Orchestration](../../09_MULTI_TASK_ORCHESTRATION.md) · [11 Git Integration](../../11_GIT_INTEGRATION.md) · [12 Security](../../12_SECURITY.md)
 
@@ -10,8 +15,8 @@ The template is structured as a Cowork project folder. When customized and dropp
 
 ## What you'll need
 
-- A Cowork workspace folder (or any folder you use with Claude)
-- Access to Claude (via Claude.ai, Cowork, or Claude Code)
+- A project folder or a dated set of uploaded project sources
+- Access to the selected Claude or OpenAI surface and the tools needed for the task
 - Basic familiarity with Markdown files
 - Placeholder values for your initiative (see "How to customize" below)
 
@@ -21,19 +26,19 @@ The template is structured as a Cowork project folder. When customized and dropp
 
 ```
 PMO_TEMPLATE/
-├── CLAUDE.md                          ← Claude project instructions (rules + routing)
+├── AGENTS.md                          ← assistant project instructions (rules + routing)
 ├── project.md                         ← App-side description/instructions text (Guide 25 fields — paste into the app)
 ├── PROJECT_GUIDE.md                   ← Folder map: what every file is, what to update
 ├── Charter/
 │   └── Initiative_Charter.md          ← Initiative charter (scope, objectives, team, KPIs)
 ├── Financial Model/
-│   └── Model_Summary.md              ← Claude-readable summary of the financial model
+│   └── Model_Summary.md              ← assistant-readable summary of the financial model
 ├── Project Plan/
 │   └── Project_Plan.md               ← Project plan (scope, milestones, timeline)
 ├── Data/                              ← Raw data exports (do not modify)
 ├── Incoming/                          ← Intake queue for material arriving outside chat (delete if unused)
 ├── PMO/
-│   ├── Guardrails.md                  ← Claude skill: PMO validation guardrails
+│   ├── Guardrails.md                  ← Policy: PMO validation guardrails
 │   ├── Knowledge_Base.md              ← Running knowledge base / institutional memory
 │   ├── Risk_Register.md               ← Risk register (rated + linked to dependencies)
 │   ├── Action_Tracker.md              ← Open action items (non-milestone tasks)
@@ -61,20 +66,20 @@ Replace every `[PLACEHOLDER: ...]` value with your own content. The table below 
 
 ## How to use it
 
-1. Copy this entire folder into the workspace folder you use with Claude (Cowork, Claude Code working directory, etc.).
+1. Copy this folder to the chosen workspace; follow `PLATFORM_SETUP.md` for ChatGPT source uploads.
 2. Replace all `[PLACEHOLDER: ...]` values across all files.
 3. Fill in the Charter with your actual initiative scope, team, KPIs, and financial figures.
 4. Clear or reset the PMO registers (Risk, Action, Dependency, Decision) — the current entries are illustrative examples. Keep the schema and format.
 5. Add your own risks, actions, and dependencies as you work.
-6. Claude will read `CLAUDE.md` and `PROJECT_GUIDE.md` automatically and apply all project rules in every conversation.
-7. **(Optional) Install the Guardrails skill:** To have Claude automatically validate recommendations against the charter, copy `PMO/Guardrails.md` to `.claude/skills/pmo-guardrails/SKILL.md`.
-8. **(Optional) Run the Updater-Task periodically:** After a heavy editing session — or on a cadence (e.g. weekly) — open `Updater-Task/Task.md` in Claude and follow its steps. It audits cross-references across the four registers + KB, fixes what it can, and appends a change-log entry.
+6. Configure the bootstrap and run a fresh-session check for `AGENTS.md` and `PROJECT_GUIDE.md` on every selected surface.
+7. **Guardrails:** read `PMO/Guardrails.md` as project policy. Optional native skill packaging is product-specific: use Cluide’s `tasks/setup-skill.md`, preserve the domain checks, and test discovery on the chosen surface. Copying a policy file alone does not prove a skill is valid or loaded.
+8. **(Optional) Run the Updater-Task periodically:** After a heavy editing session — or on a cadence (e.g. weekly) — open `Updater-Task/Task.md` with your assistant and follow its steps. It audits cross-references across the four registers + KB, fixes what it can, and appends a change-log entry.
 
 ---
 
 ## Conventions
 
-- **`[ARCHIVE]` folders** — any folder whose name starts with `[ARCHIVE]` (e.g. `[ARCHIVE] Previous Plans/`) is a read-only backup. Claude is instructed never to read from or write to them (see `CLAUDE.md`). Use this prefix when you retire old material but want to keep it on disk.
+- **`[ARCHIVE]` folders** — any folder whose name starts with `[ARCHIVE]` (e.g. `[ARCHIVE] Previous Plans/`) is a read-only backup. The assistant is instructed never to read from or write to them (see `AGENTS.md`). Use this prefix when you retire old material but want to keep it on disk.
 - **`_LATEST` filename suffix (optional)** — when a file starts going through versioned iterations (common for the project plan), rename the active copy to `<name>_LATEST.md` and move older revisions into an `[ARCHIVE]` subfolder. Don't adopt this until versioning actually starts — the unsuffixed name shipped with the template is fine while there's only one.
 - **Register ID format** — `R-##` (risks), `D-##` (dependencies), `ACT-<Cat>-##` (actions, where `Cat` is one of P/C/F/O/D/PJ), `DEC-##` (decisions), `KB §#` (knowledge-base sections). Don't mix in legacy prefixes — the Updater-Task will flag them.
 

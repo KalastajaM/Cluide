@@ -1,8 +1,8 @@
 # Contributing to Cluide
 
-Cluide is a guide set, not a codebase. There is no build, no test suite, and no runtime — the deliverable is a body of interlocking documentation plus the tasks, skills, and templates that install it. That shapes what a good contribution looks like: the bar is whether a change makes the set more correct, more coherent, or more runnable, not whether it compiles.
+Cluide is a guide set, not a codebase. There is no application build or runtime; the project includes behavior fixtures and structural checks — the deliverable is a body of interlocking documentation plus the tasks, skills, and templates that install it. That shapes what a good contribution looks like: the bar is whether a change makes the set more correct, more coherent, or more runnable, not whether it compiles.
 
-Read `CLAUDE.md` before opening a pull request. It is the operating contract for this repository, and everything below is downstream of it.
+Read `AGENTS.md` before opening a pull request. It is the operating contract for this repository, and everything below is downstream of it.
 
 ---
 
@@ -10,7 +10,7 @@ Read `CLAUDE.md` before opening a pull request. It is the operating contract for
 
 **Corrections.** A guide that describes a tool behaviour inaccurately, a task step that no longer works, a stale model name or price, a broken cross-reference, a claim that was true once and quietly stopped being true. These are the most valuable contributions and the easiest to accept.
 
-**Patterns from real use.** If you run a Claude assistant and have a pattern that works in production and Cluide does not teach, describe it with the evidence: what problem it solves, how long you have run it, what it replaced. Cluide prefers one pattern proven across two independent setups to five plausible ideas.
+**Patterns from real use.** If you run a Claude or ChatGPT assistant and have a pattern that works in production and Cluide does not teach, describe it with the evidence: what problem it solves, how long you have run it, what it replaced. Cluide prefers one pattern proven across two independent setups to five plausible ideas.
 
 **New guides.** The bar is high, and a new guide is a structural change rather than an addition — see *Adding a guide* below. Open an issue first and get agreement on the number and scope before writing.
 
@@ -95,3 +95,7 @@ Releases are content events rather than a calendar. Do not propose a version bum
 ## Questions
 
 Open an issue. For anything about how to *use* Cluide rather than change it, start with `00_QUICKSTART.md` and `17_TROUBLESHOOTING.md` — between them they cover most of what gets asked.
+
+## Platform coverage
+
+State which surfaces a change applies to. Keep shared principles separate from native steps; cite and date product-specific claims. A new policy must reach its Claude adapter and its OpenAI entry point, and uploaded-source instructions must explain refresh. Record actual fixture results separately from untested surfaces. Update dependent tasks, templates and every bundled guide copy in the same change.

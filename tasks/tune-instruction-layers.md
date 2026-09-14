@@ -1,8 +1,20 @@
 # Task: Tune Instruction Layers
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Claude, run tasks/tune-instruction-layers.md`
+> `Assistant, run tasks/tune-instruction-layers.md`
 > **Source guides:** `25_PROJECT_INSTRUCTION_LAYERS.md` (the layer split), `01_CLAUDE_MD.md` (the CLAUDE.md body).
+
+## Runtime route
+
+Name the target surface and available tools before running steps. Claude-only policy lives in `CLAUDE.md`; Codex uses `AGENTS.md`; dual-platform shares `AGENTS.md` through a thin Claude adapter. References below to editing project rules mean that selected policy, not duplicated adapters. ChatGPT source projects use project instructions and dated sources; without write access, return replacement artifacts and record refresh as pending.
+
+Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
+
+## Native implementation
+
+Select layers per surface before Step 0. Codex local has effective ancestor/project `AGENTS.md` and overrides; app fields are N/A unless an actual product field exists. ChatGPT has project instructions and uploaded/linked sources: read through exposed tools/UI or request the current text, record source revisions and produce replacements when no write path exists. Claude Code uses its native instruction chain; Cowork uses app fields plus the folder bootstrap. In mixed projects compare every surface with the same shared policy and keep a dated mirror per product.
+
+`spaces.json`, session-history paths and account-field diagnostics below apply only to Cowork/Claude. They are app-internal and must be re-verified before use; never use them as evidence about ChatGPT/Codex. For OpenAI, replace Step 1 with the native inspection above and apply Steps 2–5 to those layers. Missing access yields a partial review with named gaps. Do not require a mounted local folder for a source-only project. Finish with a fresh-session loading check per surface and report unapplied field/source changes separately.
 
 ## Purpose
 
@@ -16,7 +28,7 @@ The asymmetry that shapes this task: the app-side fields are **readable but unve
 
 ## Instructions
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+> **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
 ### Step 0 — Preconditions
 

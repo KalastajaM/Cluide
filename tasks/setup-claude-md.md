@@ -1,8 +1,25 @@
 # Task: Setup CLAUDE.md
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Claude, run tasks/setup-claude-md.md`
+> `Assistant, run tasks/setup-claude-md.md`
 > **Source guide:** `01_CLAUDE_MD.md`
+
+## Runtime route
+
+Name the target surface and available tools before running steps. Claude-only policy lives in `CLAUDE.md`; Codex uses `AGENTS.md`; dual-platform shares `AGENTS.md` through a thin Claude adapter. References below to editing project rules mean that selected policy, not duplicated adapters. ChatGPT source projects use project instructions and dated sources; without write access, return replacement artifacts and record refresh as pending.
+
+Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
+
+## Native implementation
+
+The filename is retained for existing callers; this task creates the instruction entry point for the selected surface. Before Step 1 choose the target:
+
+- **Codex local:** inspect ancestor instructions and `AGENTS.override.md` before creating or editing project `AGENTS.md`. Use Steps 2–4 to draft the shared policy; Step 5 writes `AGENTS.md`, not a pointer relying on Claude import syntax. Add nested files only where their scope is needed, then verify from that working directory in a fresh Codex session.
+- **Dual-platform:** move shared rules into `AGENTS.md`, retaining one copy. Write `CLAUDE.md` with `@AGENTS.md`, an explicit read fallback for surfaces without imports, and only Claude-specific rules. Follow `setup-dual-platform.md` for the capability list and app mirrors.
+- **ChatGPT source project:** draft the policy using Steps 2–4, produce it as a source artifact, and provide this project-instructions bootstrap: “Read the current project policy source before work. Identify missing sources. Use only available tools and say whether an edit was saved or drafted.” Record the supplied source revision and confirmation that the bootstrap was applied; start a fresh project chat and test a rule whose answer is predetermined.
+- **Claude-only:** use the `CLAUDE.md` procedure below. Cowork/conversational Claude also needs a confirmed app bootstrap; do not promise auto-loading from the filename alone.
+
+The 30-line draft target is a brevity heuristic for a small personal policy, not grounds to delete required repository safety or workflow rules. Report which policy was actually loaded after the fresh-session check.
 
 ## Purpose
 Create a well-structured `CLAUDE.md` for this project by interviewing the user and generating a file that changes Claude's behaviour in every session. Follows the conventions in Guide 01.
@@ -15,9 +32,11 @@ This task is designed to be portable. Do not assume any files already exist — 
 
 ## Instructions
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+> **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
 ### Step 1 — Check current state
+
+Inspect the policy selected above. The shell block and missing-file messages below apply to the **Claude-only branch**; on Codex check `AGENTS.md` and effective overrides, and on ChatGPT inspect the instructions/source inventory.
 
 ```bash
 ls CLAUDE.md 2>/dev/null && echo "exists" || echo "missing"
@@ -107,7 +126,7 @@ Make requested changes.
 
 ### Step 5 — Write the file
 
-Write the approved content to `CLAUDE.md`.
+Write the approved content to the selected native target. Only the Claude-only branch writes its full policy to `CLAUDE.md`; dual-platform writes shared rules to `AGENTS.md` and the thin Claude adapter.
 
 If a `CLAUDE.md` already existed (from Step 1): show a diff of what changed and explain each change briefly.
 
@@ -116,4 +135,4 @@ If a `CLAUDE.md` already existed (from Step 1): show a diff of what changed and 
 Tell the user:
 - Where the file was written
 - How many lines of real content it has
-- "Going forward, these rules apply to every Claude session in this project. Update `CLAUDE.md` whenever you correct Claude on something repeatedly — that correction belongs here."
+- "Record the fresh-session result for the selected surface. Until it passes, the policy is written but loading remains unverified."

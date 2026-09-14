@@ -1,17 +1,22 @@
 # Tasks
 
-Runnable procedures Claude executes on request against a Claude project. A task is the "how": a repeatable, ordered set of steps. It is distinct from a **guide** (the "why" and "what", the knowledge a task draws on) and from a **template** (a copy-paste folder scaffold). A task usually implements one guide.
+Runnable procedures an assistant executes on request against a Claude, ChatGPT or Codex project. A task is the "how": a repeatable, ordered set of steps. It is distinct from a **guide** (the "why" and "what", the knowledge a task draws on) and from a **template** (a copy-paste folder scaffold). A task usually implements one guide.
 
-Run one with, for example: `Claude, run tasks/audit-skill.md`.
+Run one with, for example: `Assistant, run tasks/audit-skill.md`.
+
+## Surface selection
+
+Run tasks with Claude or OpenAI on the surface that has the required access. Each entry task starts with a runtime route. Codex local uses `AGENTS.md`, native skills and actual sandbox/approval tools; ChatGPT source projects use explicit project instructions and versioned sources and may return artifacts for manual refresh. Claude commands/settings remain labelled native branches. Dual-platform projects use `setup-dual-platform.md`; supported means a fresh-session check was recorded for that surface. Task filenames such as `setup-claude-md.md` and dimension numbers are preserved for existing callers, even where the task now operates on another native instruction target.
+
 
 ## Categories
 
-- **`setup-*`**: interactive. Interview the user, then create or configure something (a CLAUDE.md, skill, memory, MCP server, scheduled task, or data layer).
+- **`setup-*`**: interactive. Interview the user, then create or configure something (project instructions, a skill, memory, MCP server, scheduled task, or data layer).
 - **`audit-*`**: inspect one component read-only against its guide, report findings, then optionally apply approved fixes.
 - **Structural change** (`reorganize-project`, `relocate-project`, `retire-project`, `tune-instruction-layers`): move, rewrite or end something that other things point at. Each takes a restore point before its apply step and rewires references in the same unit of work.
 - **`analyze-project`**: sweep a whole project against the full guide set and write an improvement plan (criteria in `analyze-project-reference.md`).
 - **`onboard-project`**: set up a new project end-to-end — installs the default layout from `templates/PROJECT_TEMPLATE/`, sets all three instruction layers, offers the optional blocks in `templates/BLOCKS.md`, then orchestrates the remaining setup tasks (ignore hygiene, git, security, MCP).
-- **Framework maintenance** (`harvest-from-projects`, `review-tasks`, `review-platform-changes`): keep Cluide itself consistent — with its own guides, with your live projects, and with what Anthropic has shipped. These operate on the framework, not on a user project.
+- **Framework maintenance** (`harvest-from-projects`, `review-tasks`, `review-platform-changes`): keep Cluide itself consistent — with its own guides, with your live projects, and with what Anthropic and OpenAI have shipped. These operate on the framework, not on a user project.
 
 ## Standard format
 

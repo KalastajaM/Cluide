@@ -1,5 +1,10 @@
 # AI Assistant Template — Setup Instructions
 
+Start with `PLATFORM_SETUP.md`: choose Claude or OpenAI and verify source access. `AGENTS.md`
+is shared policy; `CLAUDE.md` is its thin Claude adapter. ChatGPT needs the explicit project-source
+bootstrap; Codex uses the repository workspace. No surface is verified merely by copying files.
+
+
 > A turn-key personal business assistant: monitors work email, Teams, and calendar via the Microsoft 365 connector, produces a daily briefing with action items and draft messages, and maintains its own profile and knowledge base over time.
 > Based on the patterns in Guides 04 (Memory & Profile), 06 (Task Efficiency), and 07 (Self-Improvement).
 
@@ -9,7 +14,7 @@
 
 ```
 AI-ASSISTANT_TEMPLATE/
-├── CLAUDE.md                    ← Project instructions: identity, rules, file map
+├── AGENTS.md                    ← Project instructions: identity, rules, file map
 ├── SYSTEM_STATUS.md             ← Health monitor for all scheduled tasks
 ├── bootstrap/
 │   ├── SETUP.md                 ← START HERE — one-time setup guide
@@ -34,7 +39,7 @@ Profile/                         ← Populated by the daily task's first run —
 
 ## How to Set Up
 
-The setup entry point is **`bootstrap/SETUP.md`**. It covers the prerequisites (Cowork or Claude Code with scheduled tasks, the Microsoft 365 connector, optionally Atlassian), the `[YOUR_*]` placeholders to fill in, the state-file copy commands, and registering the scheduled tasks.
+The setup entry point is **`bootstrap/SETUP.md`**. It covers the prerequisites (a selected runner with filesystem/script access and verified Microsoft 365 tools, optionally Atlassian), the `[YOUR_*]` placeholders to fill in, the state-file copy commands, and registering the scheduled tasks.
 
 ## The Four Scheduled Tasks
 
@@ -49,6 +54,6 @@ A fifth, on-demand procedure (`tasks/maintenance/`) analyzes any of the four tas
 
 ---
 
-## Giving This Template to Claude
+## Giving This Template to your assistant
 
-> "Read `AI-ASSISTANT_TEMPLATE/README.md` and `bootstrap/SETUP.md`, copy the template to [destination], and walk me through the setup: ask me for the `[YOUR_*]` placeholder values, run the bootstrap copy commands, and tell me which four tasks to register in Cowork."
+> "Read `AI-ASSISTANT_TEMPLATE/README.md` and `bootstrap/SETUP.md`, copy the template to [destination], and walk me through the setup: ask me for the `[YOUR_*]` placeholder values, run the bootstrap copy commands, and verify the four tasks and their single scheduler owner before registering anything."

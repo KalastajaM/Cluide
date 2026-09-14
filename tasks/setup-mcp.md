@@ -1,8 +1,24 @@
 # Task: Setup MCP Servers
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Claude, run tasks/setup-mcp.md`
+> `Assistant, run tasks/setup-mcp.md`
 > **Source guide:** `05_MCP_SERVERS.md`
+
+## Runtime route
+
+Name the target surface and available tools before running steps. Claude-only policy lives in `CLAUDE.md`; Codex uses `AGENTS.md`; dual-platform shares `AGENTS.md` through a thin Claude adapter. References below to editing project rules mean that selected policy, not duplicated adapters. ChatGPT source projects use project instructions and dated sources; without write access, return replacement artifacts and record refresh as pending.
+
+Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
+
+## Native implementation
+
+Inventory the tools actually exposed in this session before installing anything; existing connectors may already meet the need. Never print credential-bearing configuration values.
+
+**Codex route (replaces Claude commands in Steps 1 and 3):** inspect the runtime's MCP tools and configured server names; verify `codex mcp --help` if the CLI is available. Select documented user/project scope, then add the server through the available native integration tool or the documented `mcp_servers` table in Codex configuration. Preserve unrelated settings, use environment/secret references instead of inline credentials, and follow the server's actual transport/auth documentation. Reconnect as needed, list discovered tools, and run one harmless read test. Record config scope, authentication status and result. The specific CLI syntax and config keys must be re-checked against [Codex MCP](https://learn.chatgpt.com/docs/mcp); if that source cannot be fetched, use CLI help or mark configuration unverified and stop before writing it.
+
+**ChatGPT route:** find the requested app in the available app/connector catalog and use its supported connection flow; for custom MCP, verify the plan/admin permissions and currently documented connection UI first. Complete OAuth in the native flow. Inspect exposed tools and perform a harmless read. Do not edit local Claude JSON or claim an upload connects a server. If the connector is unavailable, identify the missing grant/feature and return the setup instructions for that surface.
+
+**Claude Code/Cowork:** use the labelled native branches below. Node is needed only for a server whose launch command requires it; remote HTTP/OAuth connectors do not require a local Node installation. Tool names in examples are illustrative until matched to actual discovery.
 
 ## Purpose
 Audit the current MCP server configuration, identify what's connected and working, and guide setup of additional servers the user wants. MCP servers are what give Claude access to external tools — Gmail, Calendar, GitHub, filesystem, and more.
@@ -11,11 +27,11 @@ Audit the current MCP server configuration, identify what's connected and workin
 
 ## Instructions
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+> **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
 ### Step 1 — Audit current state
 
-First determine the environment — Cowork or Claude Code — since MCP servers are configured differently in each (note: `settings.json` holds permissions/hooks/env in Claude Code, never `mcpServers`).
+For the Claude branch, determine the environment — Cowork or Claude Code — since MCP servers are configured differently in each (note: `settings.json` holds permissions/hooks/env in Claude Code, never `mcpServers`).
 
 **In Claude Code:**
 
@@ -24,7 +40,7 @@ First determine the environment — Cowork or Claude Code — since MCP servers 
 claude mcp list
 
 # Project-scoped servers, if any
-cat .mcp.json 2>/dev/null | python3 -m json.tool || echo "no project .mcp.json"
+python3 -c 'import json,pathlib; p=pathlib.Path(".mcp.json"); print(list(json.loads(p.read_text()).get("mcpServers",{})) if p.exists() else "no project .mcp.json")'
 ```
 
 **In Cowork:** remote connectors are managed in Settings → Connectors; local servers live in `claude_desktop_config.json` (macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`). Check the local config if accessible, and otherwise rely on the tool listing below.
@@ -69,9 +85,11 @@ For each server the user wants, also ask:
 
 ### Step 3 — Set up each server
 
+**Codex/ChatGPT:** execute the native implementation above, then continue at Step 4 using that surface’s reconnect/discovery process. The commands and JSON templates below are **Claude Code/Cowork only**.
+
 For each server the user wants to add:
 
-**a) Check if `npx` / `node` is available** (required for most servers):
+**a) For a local server launched with Node only, check `npx` / `node`:
 ```bash
 node --version && npx --version || echo "Node.js not installed — required for most MCP servers"
 ```
@@ -109,6 +127,8 @@ Guide the relevant setup steps based on their choice.
 > "Credentials are now in `[config file]`. If this file lives in a git repo (e.g. `.mcp.json`), make sure it's in `.gitignore`, or keep tokens out of it and export them from your shell profile instead."
 
 ### Step 4 — Verify
+
+For Codex/ChatGPT use native reconnection and verify one harmless read. The following restart instructions apply to Claude.
 
 After adding each server:
 Remind the user: restart the Claude Code session (or the desktop app, for Cowork) to pick up the new server configuration.

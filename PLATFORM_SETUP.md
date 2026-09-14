@@ -1,6 +1,6 @@
 # Working on Cluide with Claude and ChatGPT
 
-This page configures **this documentation project** for both platforms. The guide, tasks, skills, and starter templates are still undergoing a separate content review. Existing Claude-specific examples are not yet verified OpenAI setup instructions.
+This page configures **this documentation project** for both platforms. The guide now separates shared principles from surface-specific routes. Existing Claude hooks and agent definitions remain explicitly Claude-specific. Verify the relevant route in your own runtime before relying on it.
 
 ## Shared instructions, separate entry points
 
@@ -19,7 +19,7 @@ OpenAI documents [Codex instruction discovery](https://learn.chatgpt.com/docs/ag
 
 Suggested description:
 
-> Cluide: guides, tasks, skills, and templates for persistent AI assistants, being extended to cover Claude and ChatGPT, including dual-platform project design.
+> Cluide: guides, tasks, skills, and templates for persistent AI assistants, covering Claude and ChatGPT, including dual-platform project design.
 
 Suggested project instructions for either conversational platform:
 
@@ -31,7 +31,7 @@ These texts are ready to apply; their presence here does not configure an app. R
 
 Ask: “Which project instruction files did you load? Where should review notes go, what is the merge gate, and which parts of the guide are still Claude-specific?”
 
-The answer should identify `AGENTS.md`, `development/`, the shared merge gate, and the content migration boundary. In Claude Code, check `/memory` to confirm the imported file. For an uploaded-source project, also check the source revision; replace stale uploads explicitly. A successful answer verifies that session, not every product or future session.
+The answer should identify `AGENTS.md`, `development/`, the shared merge gate, and which native mechanisms remain platform-specific. In Claude Code, check `/memory` to confirm the imported file. For an uploaded-source project, also check the source revision; replace stale uploads explicitly. A successful answer verifies that session, not every product or future session.
 
 ## Keeping the project dual-platform
 

@@ -4,7 +4,7 @@
 
 > **Companion guides:** [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) covers how to reduce costs once you've found the expensive parts. This guide covers how to find them.
 
-> **Giving this guide to Claude:**
+> **Giving this guide to an assistant:**
 > "Read 10_COST_PERFORMANCE.md and add run metrics tracking to my task at [path/to/TASK.md]. Set up a budget check and alerting."
 
 ---
@@ -18,95 +18,47 @@ Track these four metrics at the end of every task run:
 | **Input tokens** | What the task reads — instructions, files, API responses | Estimated from file sizes and tool responses |
 | **Output tokens** | What the task generates — output files, tool calls, reasoning | Estimated from generated content length |
 | **Wall-clock time** | How long the run takes end-to-end | Timestamp at start and end |
-| **API calls** | Number of MCP tool calls made | Count each tool invocation |
+| **Tool calls** | Calls to connectors, MCP and native tools | Count calls separately from billable model API requests |
 
-You don't need exact numbers. Rough estimates are enough to spot trends and catch regressions.
+Prefer measured counters. Label estimates and compare like workloads on the same surface and model; rough estimates are useful for trends, not invoices.
 
 ---
 
 ## What Things Actually Cost
 
-Claude pricing (as of September 2026) uses per-token rates that differ by model tier. Rough reference:
+Separate three ledgers: **API spend**, **subscription allowance**, and **runtime effort**. A token estimate helps compare runs; it does not tell you how much of a ChatGPT or Claude subscription remains.
 
-| Model | Input (per 1M tokens) | Output (per 1M tokens) |
+| Ledger | Record | Use it for |
 |---|---|---|
-| **Haiku 4.5** | ~$1 | ~$5 |
-| **Sonnet 4.6** | ~$3 | ~$15 |
-| **Sonnet 5** | ~$2 | ~$10 |
-| **Opus 4.8** | ~$5 | ~$25 |
-| **Opus 5** | ~$5 | ~$25 |
-| **Fable 5.1** | ~$10 | ~$50 |
-| **Fable 5** (superseded by 5.1) | ~$10 | ~$50 |
+| Anthropic or OpenAI API | Exact model identifier, provider, pricing date, uncached/cached input, output, extra tool charges | Money budgets and invoice reconciliation |
+| Claude / ChatGPT subscription | Plan and actual account usage windows, reset times and available usage display | Capacity planning; do not convert dollars from API list prices into subscription credits |
+| Task execution | Duration, processed items, retries, tool calls, measured tokens when exposed | Detecting regressions across comparable runs |
 
-> Cache reads are the one place the tiers don't scale together: Fable 5.1 reads cost $0.25/MTok — a 0.025x multiplier on input price, against 0.1x for every other model, Fable 5 included.
+For an API estimate, use `(uncached input × input rate + cached input × cache rate + output × output rate) / 1,000,000`, then add applicable tool charges. Record cache writes separately where priced. Missing counters are **unavailable**, not zero. File-length estimates omit repeated prompts, reasoning, images and provider tokenization effects.
 
-> This table is the canonical pricing reference for the guide set — other guides point here. Last verified September 2026; check [platform.claude.com/docs/en/about-claude/pricing](https://platform.claude.com/docs/en/about-claude/pricing) or [anthropic.com/pricing](https://www.anthropic.com/pricing) before budgeting.
+The pricing source of truth is the provider's current table, not a model-tier alias. Checked source locations 2026-09-14: [Anthropic API pricing](https://platform.claude.com/docs/en/about-claude/pricing) and [OpenAI API pricing](https://developers.openai.com/api/docs/pricing). Select the actual API model before copying a rate; do not use a subscription price as a token rate. This guide deliberately carries no static price catalogue.
 
-These are API list prices. Batch API pricing is typically 50% cheaper (see "Batch vs. Interactive" below). Prompt caching drops input costs further when the same context is reused across calls (see "Prompt Caching" below).
-
-**Typical task costs per run (Sonnet 5, at ~$2/~$10):**
-
-| Task type | Input tokens | Output tokens | Estimated cost |
-|---|---|---|---|
-| Email digest (triage 20 emails, write summary) | ~12K | ~3K | ~$0.05 |
-| Weekly planner (read calendar + profile, write plan) | ~8K | ~2K | ~$0.04 |
-| Data ingestion (parse 5 pages, update wiki) | ~20K | ~5K | ~$0.09 |
-| Full morning briefing (email + calendar + profile + output) | ~25K | ~6K | ~$0.11 |
-| Complex research task (multi-step, 50K context) | ~50K | ~10K | ~$0.20 |
-
-> The token counts in this table were measured before Sonnet 5's tokenizer, which uses roughly 30% more tokens for the same text (Sonnet 5 launch post). Treat them as a lower bound on Sonnet 5 and as approximate on every other model.
-
-At one run per day, the morning briefing costs roughly $3.30/month on Sonnet 5 (~$0.11/run × 30). The same token volume costs roughly $8.25/month on Opus 5 (~$0.28/run — about 2.5x Sonnet), $16.50/month on Fable (~$0.55/run — about 5x), and $1.65/month on Haiku (~$0.06/run — about half of Sonnet). The tiers compound across many tasks and many runs.
+**Illustrative arithmetic, not a vendor quote:** 12K input at $2/M and 3K output at $10/M would cost $0.054 before tools and caching. Thirty such runs would cost $1.62. Replace both rates with checked prices before budgeting.
 
 ---
 
 ## Model Tier Selection
 
-Not every task needs the most capable model. Four tiers, four jobs:
+Choose a model from the actual host inventory, then compare quality and cost on representative fixtures. Extraction, triage, synthesis and review are different workloads; a cheap first pass is useful only if its errors do not make the later pass more expensive.
 
-**Use Haiku for:**
-- Vision and OCR — reading screenshots, extracting text from images, parsing receipts (see [Guide 14](./14_PERSONAL_DATA_LAYER.md) for concrete patterns)
-- Triage and classification (which emails need action, which pages changed)
-- Bulk extraction (parsing structured data from emails, screenshots, API responses)
-- Any high-volume step where the output is a label, a field, or a short structured record
+For Claude, the repository's `dispatch` policy assigns available Claude tiers; it is a Claude routing policy, not a cross-vendor equivalence table. For OpenAI, retain the configured model unless the user or host policy authorizes another supported identifier. Never translate Haiku, Sonnet or Opus into a guessed OpenAI model.
 
-**Use Sonnet (the default) for:**
-- Template-driven output (briefings, digests, status updates)
-- Structured extraction that needs some interpretation
-- Any task where the instructions are clear and the output format is fixed
+Use three checks before changing a recurring task's model: the candidate is available to that execution surface, the fixture output passes the same graders, and measured allowance/spend or latency improves. Record the exact model returned by the run. A task prompt can request routing only where the host exposes that control; changing prose does not change the running session's model.
 
-**Use Opus for:**
-- Tasks requiring nuanced judgment (prioritizing ambiguous items, drafting sensitive replies)
-- Complex multi-step reasoning with large context
-- Tasks where output quality directly affects decisions
-- Self-improvement proposal generation (the review step in Guide 07)
-
-**Use Fable for:**
-- The hardest long-horizon synthesis: multi-source research reports, large refactors, planning across an entire project's state
-- Not for context size: Opus 5 and Sonnet 5 also run a native 1M window on the API, so a task that only needs to hold a lot at once belongs on a cheaper tier
-- Its advantage over Opus grows with task length; for short tasks the gap is small and the 2x price rarely pays off
-
-**The hybrid approach:** Run the data-gathering and triage steps on Haiku or Sonnet and the synthesis/judgment step on Opus. A morning briefing that fetches and triages on Haiku, then drafts the narrative on Opus, costs far less than running everything on Opus while keeping output quality high.
-
-In practice, most scheduled tasks work well on Sonnet. Drop feeder steps to Haiku once the procedure is stable, and reserve Opus or Fable for the tasks where you've noticed Sonnet's output isn't good enough.
-
-Standing instructions can route model choice only where the session controls it: subagents, workflow stages, and the model proposed when creating a scheduled task. A session cannot switch its own model — that is set in the UI, or in the scheduled task's configuration. The working pattern: instruct Claude to use the cheapest tier that does the job reliably wherever it chooses a model, and to flag a clearly mismatched session model once and continue, leaving the switch to the user.
-
-This tier logic is developed into a full routing policy — archetype table, escalation ladder, verification economics, per-project overrides — in [Guide 09 §Model-Aware Dispatch](./09_MULTI_TASK_ORCHESTRATION.md), packaged as the installable `dispatch` skill (`skills/dispatch/`).
-
-<!-- harvested: 2026-08-09 from a multi-project maintenance setup -->
+[Guide 09](./09_MULTI_TASK_ORCHESTRATION.md#model-aware-dispatch) covers workload routing and [Guide 31](./31_BEHAVIOUR_TESTS.md) the acceptance tests.
 
 ---
 
 ## Prompt Caching
 
-Cached input tokens cost roughly 90% less than fresh ones. When the same prefix (system prompt, TASK.md, PROFILE_SUMMARY.md) is sent repeatedly within the cache window, only the first read pays full price — so the naive per-run math in this guide overstates the cost of always-loaded files for anything that runs back-to-back or makes many calls in one session. Note that cache *writes* cost a premium (~1.25x–2x base input, depending on cache duration), so a single-pass run that never re-reads the prefix doesn't benefit.
+Caching can reduce repeated-input costs, but eligibility, rates, retention and counters depend on the API and model. Keep a stable reusable prefix, avoid unnecessary repetition, and inspect the actual cache usage returned by the provider before assigning savings. Do not assume a daily task reuses yesterday's cache.
 
-The catch for scheduled tasks: the cache expires between runs spaced hours apart. A daily 7 AM task pays full price for its always-loaded files every run — caching helps *within* a run (a multi-step task re-sending the same context across calls) but not *across* daily runs. So the advice stands: trim always-loaded files anyway. A lean TASK.md is cheap on every run; a bloated one is only cheap when the cache happens to be warm.
-
-Claude Code exposes the cache directly. `promptCacheTtl` and `subagentPromptCacheTtl` (v2.1.243) set how long the main conversation's and subagents' caches live; per-agent `experimental.cacheTtl` frontmatter (v2.1.248) overrides it for one agent; and `/cost` carries a per-session cache line (v2.1.251) showing hit ratio, misses, TTL and whether the cache was warm — which is how you tell whether a long session is actually reusing its prefix. On Fable 5.1 the read discount is steeper than elsewhere (0.025x base input, $0.25/MTok), so a long Fable session that keeps re-reading the same context is cheaper than its headline price suggests.
-
-When you want to see where money actually goes, `/usage` now itemizes cost by skill, subagent, plugin, and per-MCP-server — far more precise than the estimates in this guide. Use it to confirm which component of a task is the expensive one before optimizing.
+Subscription usage displays are not API cache invoices. For Claude Code, use the usage and cost controls present in the installed version; for Codex or ChatGPT, use the host's account usage display or exposed usage tool. If only elapsed time and item counts are available, record those. A cache hit or exact token count cannot be reconstructed reliably from the length of the final answer.
 
 ---
 
@@ -117,9 +69,10 @@ At the end of every task run, append a metrics block to `RUN_LOG.md`:
 ```markdown
 ## [2026-04-10] Run #47
 
+**Surface/model/source:** [product, exact model, measured or estimated]
 **Duration:** ~3 min
 **Tokens (est.):** ~8K input, ~2K output
-**API calls:** 12 (gmail_search: 1, gmail_read: 8, gcal_list: 1, write_file: 2)
+**Tool calls:** 12 (gmail_search: 1, gmail_read: 8, gcal_list: 1, write_file: 2)
 **Notes:** Normal run. 8 emails processed, 2 action items found.
 ```
 
@@ -159,7 +112,7 @@ Monthly budget = (average cost per run) × (runs per month) × 1.5
 
 The 1.5x multiplier gives headroom for occasional expensive runs (more emails than usual, larger API responses).
 
-**Example:** A daily email digest averaging $0.05/run on Sonnet: $0.05 × 30 × 1.5 = **$2.25/month budget**. If actual spend crosses $2.25, something changed.
+**Illustrative API example:** A daily email digest averaging $0.05/run: $0.05 × 30 × 1.5 = **$2.25/month budget**. If actual spend crosses $2.25, something changed.
 
 **Adding a budget check to your task:**
 
@@ -177,15 +130,11 @@ This catches gradual drift before it becomes expensive. It costs almost nothing 
 
 ## Non-Interactive Usage and Your Plan
 
-The policy for non-interactive usage — Agent SDK calls, `claude -p`, scheduled and automated runs, GitHub Actions — has changed during 2026. An earlier formulation gave it a separate monthly usage-credit pool; as of September 2026, and unverified against a primary source, scheduled and automated runs draw from **the same usage allowance as your interactive use**. Check the current policy and your balance (`/usage`, support.claude.com) before budgeting. Cowork tasks show `/usage` and `/cost` as inline cards in the task itself (desktop app, July 2026), so per-task spend is visible without leaving the run.
+Scheduled runs, CLI automation and direct API calls may use different authentication and billing arrangements. Record the identity and execution surface before estimating capacity. Check current plan controls and actual usage; do not infer a dollar-denominated allowance from the monthly subscription price.
 
-This matters more for this project than any pricing change, because everything in these guides runs on schedules. Practical implications:
+For Claude, inspect the account and authentication mode used by the scheduled task or CLI. For OpenAI, distinguish a subscription-authenticated Codex/ChatGPT run from an API-key application. Both need headroom for retries and interactive work, but their accounting is not interchangeable. A missing usage display is a reporting limitation, not unlimited capacity.
 
-- **Budget scheduled tasks against your plan's usage allowance — which interactive use also draws from.** A $20 Pro plan covers several daily-briefing-sized tasks at Sonnet prices (~$3.30/month each) with headroom — and far more if feeder steps run on Haiku.
-- **The per-run cost estimates in this guide are what each run draws from that allowance.** The budgeting formula above has a hard ceiling: the sum of all your tasks' monthly budgets should stay under your plan's allowance, with headroom left for interactive sessions.
-- **Model tier choice has direct monthly consequences.** Moving one daily task from Opus to Sonnet frees ~$5/month; from Sonnet to Haiku, another ~$1.65.
-
-Source: support.claude.com/en/articles/12429409.
+Use [Guide 35's scheduler-owner record](./35_DUAL_PLATFORM_PROJECTS.md#7-state-schedules-and-handoffs) to associate every recurring job with the account whose usage it consumes.
 
 ---
 
@@ -221,13 +170,15 @@ Step 4 is 40% of the total. That's where optimisation effort should go.
 
 ## Optimization Case Studies
 
+These examples illustrate the measurement method. Their token estimates and dollar figures are not current model quotes or subscription usage conversions.
+
 ### Case 1: Email digest — triage before fetch
 
 **Before:** Read all 25 email bodies, then summarize. ~12,500 input tokens from email alone.
 
 **After:** Fetch subjects and senders only (~500 tokens). Triage to 6 actionable emails. Fetch those 6 bodies (~2,400 tokens). Total email tokens: ~2,900.
 
-**Saving:** ~77% reduction in email-related tokens. Per-run cost dropped by roughly half on Sonnet.
+**Saving:** ~77% reduction in email-related tokens. Measure the full run to determine the cost reduction.
 
 ### Case 2: Weekly planner — stop re-reading static context
 
@@ -235,7 +186,7 @@ Step 4 is 40% of the total. That's where optimisation effort should go.
 
 **After:** Split TASK.md into a slim procedure file (800 tokens) and a reference file read only when the procedure says to. Profile summary trimmed to essentials (300 tokens). Knowledge summary accessed by section.
 
-**Saving:** Fixed overhead dropped from ~4,800 to ~1,100 tokens per run. Over 52 weekly runs: ~192K tokens saved/year, roughly $0.60/year on Sonnet. Small per-run, but it compounds and keeps the task fast.
+**Saving:** Fixed overhead dropped from ~4,800 to ~1,100 tokens per run. Over 52 weekly runs: ~192K tokens saved/year, an input-token saving whose dollar value depends on the checked rate. Small per-run, but it compounds and keeps the task fast.
 
 ### Case 3: Data ingestion — batch similar operations
 
@@ -270,22 +221,9 @@ exceeds the older average by more than 50%, flag in IMPROVEMENTS.md:
 
 ## Batch vs. Interactive Cost Profiles
 
-Claude's Batch API processes requests asynchronously (results within 24 hours) at roughly half the per-token cost. This matters for tasks that don't need immediate results.
+Batch processing is an API execution choice, separate from scheduling a conversational task. For either provider, check the supported model, discount, completion window and retry semantics in current API documentation before using it. A scheduler does not automatically submit requests to a Batch API.
 
-**Good candidates for batch:**
-- Weekly reports and planners (not time-sensitive)
-- Bulk data ingestion or wiki updates
-- Periodic audits and reviews
-- Any task scheduled to run overnight
-
-**Keep interactive:**
-- Morning briefings needed before a specific time
-- Urgent email scans
-- Anything triggered by a real-time event
-
-If a task runs daily at 3 AM and you read the output at 8 AM, batch processing saves ~50% with no practical impact on your workflow.
-
-Note: Cowork scheduled tasks currently run interactively. Batch API applies when you're calling Claude programmatically via the API. If you use the API for some tasks, the cost difference is worth structuring around.
+Bulk ingestion and non-urgent audits can tolerate delayed results. A morning briefing with a strict deadline usually needs a different path. Test the whole completion window: an overnight submission whose service allows a day to finish cannot promise delivery five hours later. Budget duplicate submissions and retries, and use stable request identities.
 
 ---
 
@@ -350,6 +288,6 @@ When setting up cost monitoring for a task:
 - [ ] Annotate each task step with its rough token cost (token heat map)
 - [ ] Add the 2x alerting rule to the metrics step
 - [ ] Add the gradual drift check (compare against 20 runs ago)
-- [ ] Set a monthly budget based on the first 3–5 runs — and check the sum of all task budgets against your plan's usage allowance
-- [ ] Choose the right model tier for each task (Haiku / Sonnet / Opus / Fable)
+- [ ] Set a monthly budget based on the first 3–5 runs — and keep API money budgets separate from subscription usage headroom
+- [ ] Choose an available model using the same acceptance fixtures; record provider and exact identifier
 - [ ] Archive old `RUN_LOG.md` entries after 30 runs

@@ -8,7 +8,7 @@
 
 ## 1. What This Guide Is, and Is Not
 
-It is a routing guide with one mechanism and four rules. It is not a migration manual. There are no steps for any vendor's settings page, no notes on any export file format, and no table of what the other tools can and cannot do. Those would be the most useful part of the guide for about a month and wrong thereafter, and a guide set that is already keeping itself current against one platform (`tasks/review-platform-changes.md`) should not take on every other platform as well.
+It is a routing guide with one mechanism and four rules. It is not a migration manual. There are no steps for any vendor's settings page, no notes on any export file format, and no table of what the other tools can and cannot do. Cluide maintains Claude and OpenAI setup in the native procedure guides and in Guide 35's dated facts. Keeping vendor steps there avoids a second settings catalogue in this import guide; `tasks/review-platform-changes.md` checks both providers.
 
 The rule that keeps it this way, for anyone editing it later: **a paragraph that would need re-verifying when another vendor ships a release does not belong in this guide.** Name the other assistants as a category, route their categories of content, and stop. A project that stays on two assistants at once is a different problem with its own guide: [Guide 35](./35_DUAL_PLATFORM_PROJECTS.md) keeps its product facts in one dated table, so this guide does not have to.
 
@@ -16,9 +16,9 @@ The rule that keeps it this way, for anyone editing it later: **a paragraph that
 
 ## 2. Ask the Assistant, Not the Product
 
-Every assistant with memory, standing instructions or custom personas can be asked, in chat, to write those out. Some will decline part of it — memories yes, persona bodies no — and a partial export is still the right starting point: take what you get and rebuild the rest from what the persona produced. That is the whole mechanism, and the reason it survives vendor churn is that the prompt addresses the assistant rather than the product: it does not care where the export button moved or what shape the download takes. Cowork's built-in `import-memory` skill already works this way for the memory category, and the prompt below is that skill's prompt widened to the whole setup.
+Ask the source assistant to export the user-authored instructions, memories and custom personas it can access. It may not be able to inspect every native setting; inaccessible state must be reported rather than reconstructed as fact. Some will decline part of it — memories yes, persona bodies no — and a partial export is still the right starting point: take what you get and rebuild the rest from what the persona produced. That is the whole mechanism, and the reason it survives vendor churn is that the prompt addresses the assistant rather than the product: it does not care where the export button moved or what shape the download takes. Cowork's built-in `import-memory` skill already works this way for the memory category, and the prompt below is that skill's prompt widened to the whole setup.
 
-Create the destination project and its [Guide 24](./24_PROJECT_FOLDER_STRUCTURE.md) homes first; an import into a bare folder lands everything at the root. Then run this in the other assistant and paste the result into a Claude session in that project:
+Create the destination project and its [Guide 24](./24_PROJECT_FOLDER_STRUCTURE.md) homes first; an import into a bare folder lands everything at the root. Then run this in the other assistant and supply the result to the destination assistant in that project:
 
 ```
 Export everything you have stored about me and every standing configuration
@@ -66,14 +66,14 @@ The table is the guide. Its left column is broader than the export: the paste's 
 
 | What the other assistant held | Cluide home | Guide | Note |
 |---|---|---|---|
-| Standing instructions | `CLAUDE.md` | [01](./01_CLAUDE_MD.md) | The 30-line target is the triage tool. Most of a year's accumulated instructions fail the "does this apply to every conversation?" test and go to a skill, a task, or nowhere |
-| Memories, saved facts — the paste's Identity, Career, Projects and Preferences sections | Account memory, via the `import-memory` skill; `.auto-memory/` or profile files if a scheduled task must see them | [04](./04_MEMORY_AND_PROFILE.md) | Hand those sections of the paste to the skill and keep the rest for this table. Its ground rules are the rules in §4, and it applies its own privacy filter; Guide 04's still applies on top |
+| Standing instructions | Shared `AGENTS.md` policy or the destination's instruction field | [01](./01_CLAUDE_MD.md) | The 30-line target is the triage tool. Most of a year's accumulated instructions fail the "does this apply to every conversation?" test and go to a skill, a task, or nowhere |
+| Memories, saved facts — the paste's Identity, Career, Projects and Preferences sections | Destination native memory through a supported import workflow, or explicit `.auto-memory/` / profile sources for shared tasks | [04](./04_MEMORY_AND_PROFILE.md) | Hand those sections of the paste to the skill and keep the rest for this table. Its ground rules are the rules in §4, and it applies its own privacy filter; Guide 04's still applies on top |
 | Custom assistant with a procedure | Skill | [03](./03_SKILLS.md) | A persona you trigger by asking, that needs consistent detailed behaviour, is a skill by Guide 03's own test |
 | Custom assistant with files or ongoing state | Project | [24](./24_PROJECT_FOLDER_STRUCTURE.md), [25](./25_PROJECT_INSTRUCTION_LAYERS.md) | Its files go to the project's homes; its instructions become the project `CLAUDE.md` or the instructions field, split by Guide 25's layer test |
 | Uploaded documents, reference material | Project folder homes; a wiki if the material is about a subject rather than about you | [24](./24_PROJECT_FOLDER_STRUCTURE.md), [15](./15_LLM_WIKI.md) | Files move as files. Nothing else is needed, and nothing else should be done to them |
 | Conversation history | **Not imported.** Mined once, with the periodic knowledge sweep | [04](./04_MEMORY_AND_PROFILE.md) | A history dump is the corpus for a sweep, not memory. Pasting it into memory is the failure this row exists to prevent |
 | Scheduled or recurring prompts | Task file, written fresh | [06](./06_TASK_EFFICIENCY_GUIDE.md), [07](./07_TASK_LEARNING_GUIDE.md) | Nothing ports. The old prompt is the requirement; the task is built against Guide 06 from scratch |
-| Instruction files from other coding agents | `CLAUDE.md` | [01](./01_CLAUDE_MD.md) | Any repo-level file another coding agent reads as standing instructions. The closest thing to a straight copy in the table — and still triaged, because those files accrete the same way. If that agent will keep working on the project, do not fold its file into `CLAUDE.md`: keep it as the shared policy and have `CLAUDE.md` import it ([Guide 35](./35_DUAL_PLATFORM_PROJECTS.md) §4) |
+| Instruction files from other coding agents | Shared policy plus native adapters | [01](./01_CLAUDE_MD.md) | Any repo-level file another coding agent reads as standing instructions. The closest thing to a straight copy in the table — and still triaged, because those files accrete the same way. If that agent will keep working on the project, do not fold its file into `CLAUDE.md`: keep it as the shared policy and have `CLAUDE.md` import it ([Guide 35](./35_DUAL_PLATFORM_PROJECTS.md) §4) |
 | Response-style preferences | Account preferences, set by you; or `CLAUDE.md`'s Communication Style section | [01](./01_CLAUDE_MD.md) | Never filed into memory. The `import-memory` skill refuses them for the same reason |
 
 Three categories need more than a note.
@@ -104,7 +104,7 @@ Two privacy filters already exist and both apply. The `import-memory` skill carr
 
 ## 5. Getting a Setup Out
 
-Everything this repo asks you to build is a markdown file or a folder of them, and that is the export strategy. Your `CLAUDE.md`, skills, task files, memory files, profile files, wiki and project folders are readable by any assistant that can read a file. When the destination is another person rather than another tool, the `template-exporter` skill strips the personal content out first. What does not move is runtime: scheduled execution, MCP wiring, skill triggering and the instruction-layer model are Claude's, and a destination tool rebuilds its own equivalents from the files. If a destination wants a specific shape, the move in §2 works in reverse — ask Claude to write the setup out in the structure the destination expects (here the destination's shape is known and fixed, so targeting it is safe), and treat that output as a draft to triage there. [Guide 33](./33_RETIRING_AND_LEAVING.md) §5 is the full version of this, including the layers that have no file form and what to do about them before access ends.
+Everything this repo asks you to build is a markdown file or a folder of them, and that is the export strategy. Your shared policy, native adapters, skills, task files, explicit memory/profile files, wiki and project folders are readable by any assistant that can read a file. When the destination is another person rather than another tool, the `template-exporter` skill strips the personal content out first. What does not move is runtime: scheduled execution, MCP wiring, native memory, app grants and skill discovery belong to each platform, and the destination configures its own verified mechanisms from the shared requirements. If a destination wants a specific shape, the move in §2 works in reverse — ask the source assistant to write the setup out in the structure the destination expects (here the destination's shape is known and fixed, so targeting it is safe), and treat that output as a draft to triage there. [Guide 33](./33_RETIRING_AND_LEAVING.md) §5 is the full version of this, including the layers that have no file form and what to do about them before access ends.
 
 ---
 
@@ -139,6 +139,6 @@ Everything this repo asks you to build is a markdown file or a folder of them, a
 
 ---
 
-## Giving This to Claude
+## Giving This to an Assistant
 
 > "I am moving my setup from another assistant. Here is the export [paste]. Read this guide, sort every entry into a row of the §3 table, show me the plan before writing anything, and tell me what you dropped and why."

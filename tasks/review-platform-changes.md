@@ -1,11 +1,17 @@
 # Task: Review Platform Changes Against the Guides
 
 > **Cluide maintenance task** — run this after every model launch, or monthly, whichever comes first.
-> `Claude, run tasks/review-platform-changes.md`
+> `Assistant, run tasks/review-platform-changes.md`
+
+## Runtime route
+
+Name the target surface and available tools before running steps. Claude-only policy lives in `CLAUDE.md`; Codex uses `AGENTS.md`; dual-platform shares `AGENTS.md` through a thin Claude adapter. References below to editing project rules mean that selected policy, not duplicated adapters. ChatGPT source projects use project instructions and dated sources; without write access, return replacement artifacts and record refresh as pending.
+
+Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
 
 ## Purpose
-Detect what Anthropic has shipped since Cluide's last sweep — in Claude Code, Cowork, claude.ai, the
-Claude API and the MCP specification — and turn it into findings against the guides, tasks, skills and
+Detect what Anthropic and OpenAI have shipped since Cluide's last sweep — in Claude Code, Cowork, claude.ai, the
+Claude API, ChatGPT projects/apps/tasks, Codex, the OpenAI API and the MCP specification — and turn it into findings against the guides, tasks, skills and
 templates. Every "as of <month>" in this repo was placed by hand and has no owner; a price, a default
 mode or a "not supported" statement goes stale silently, and nothing internal to Cluide can catch it.
 
@@ -21,7 +27,7 @@ This is the outward-facing leg of a three-way maintenance loop:
 
 - **Read-only until Step 6.** Steps 1–5 change nothing; the findings report is the deliverable.
 - **Primary sources only** for anything that lands in a guide. A blog summary can point you at a change;
-  the sentence you write cites the Anthropic page that states it.
+  the sentence you write cites the relevant vendor’s official page that states it.
 - **A claim you cannot re-verify is a C finding, not an edit.** Write "re-verify" with the date, never a
   plausible replacement value.
 - **Consumed surface stays append-only** (see `CLAUDE.md`). A platform rename never renumbers a guide,
@@ -31,8 +37,7 @@ This is the outward-facing leg of a three-way maintenance loop:
 
 ## Instructions
 
-> **Clarifying questions:** for any step with a fixed set of options, use `AskUserQuestion` with buttons
-> rather than plain text.
+> **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
 ### Step 1 — Fix the boundary
 
@@ -43,8 +48,7 @@ git log -1 --format='%ad %s' --date=short "$(git describe --tags --abbrev=0)"   
 git log -1 --format='%ad %s' --date=short --grep='Platform sweep'                 # last sweep commit
 ```
 
-Record the boundary date and the platform versions at the boundary (Claude Code version, desktop app
-version, model lineup) from the previous sweep's report if one exists under `development/reviews/`.
+Record the boundary date and the versions separately for each platform at the boundary (product/app versions and available models) from the previous sweep's report if one exists under `development/reviews/`.
 
 ### Step 2 — Read the sources, boundary forward
 
@@ -56,13 +60,18 @@ Fixed list. Read each page from the boundary date to today; do not sample.
 | https://claude.com/docs/cowork/changelog and the pages under https://claude.com/docs/cowork/ | Cowork: projects, scheduled tasks, Dispatch, plugins, folder access, permission prompts |
 | https://support.claude.com/en/articles/12138966-release-notes | claude.ai and the apps: memory, artifacts, connectors, Claude in Chrome, plan changes |
 | https://platform.claude.com/docs/en/release-notes/overview and https://platform.claude.com/docs/en/about-claude/pricing | Model launches, retirements, prices, context windows, effort levels, API features |
+| https://learn.chatgpt.com/docs and https://help.openai.com/en/articles/6825453-chatgpt-release-notes | OpenAI product documentation and ChatGPT releases; follow current links to Codex and project-source behavior |
+| https://learn.chatgpt.com/docs/agent-configuration/agents-md and https://learn.chatgpt.com/docs/build-skills | Codex instructions, nested discovery, limits and native skill metadata |
+| https://learn.chatgpt.com/docs/mcp and https://learn.chatgpt.com/docs/agent-approvals-security | Codex MCP configuration, effective sandbox and approval controls |
+| https://learn.chatgpt.com/docs/automations and https://help.openai.com/en/articles/10169521-projects-in-chatgpt | Codex/ChatGPT scheduling, project instructions, sources, memory and refresh behavior; verify each surface separately |
+| https://developers.openai.com/api/docs/changelog and https://developers.openai.com/api/docs/pricing | OpenAI API changes, current model identifiers, deprecations and API pricing; not subscription allowance |
 | https://modelcontextprotocol.io/specification (latest changelog) | MCP transports, deprecations, auth |
 
 The desktop changelog groups entries under General, Code, Cowork and 3P. **3P entries describe
 organisation-managed third-party-platform deployments**, not consumer accounts; say so when citing one.
 
 Write a dated change list to `development/reviews/YYYY-MM-DD-platform-changes.md`: date, product, change,
-one-sentence meaning, source URL. This is bulk reading — dispatch it per source to the cheap tier (see
+one-sentence meaning, source URL, checked date, affected surfaces and verification result. This is bulk reading — dispatch it per source to the cheap tier (see
 Dispatch below) and keep the judgement for later steps.
 
 ### Step 3 — Build the claim register
@@ -75,7 +84,7 @@ grep -rniE "as of (january|february|march|april|may|june|july|august|september|o
 ```
 
 Add every statement of limitation ("cannot", "no way to", "only in Claude Code", "manual-only"): these
-are the claims most often superseded. Each hit is one row: file, line, claim, category (model/pricing,
+are the claims most often superseded. Each hit is one row: file, line, claim, product/surface, source URL, source date, checked date, verification result, category (model/pricing,
 CLI, settings, hooks, permissions, memory, skills, agents, Cowork, MCP, API).
 
 ### Step 4 — Extract the reference facts
@@ -97,8 +106,7 @@ against the guide that carries it:
 | Print mode flags (`claude -p`), `claude plugin eval` availability and case format, `/skill-doctor` | `31`, `tasks/setup-behaviour-tests.md` |
 | `CLAUDE.md` locations, imports and the loaded-files view | `01`, `25`, `35`, `tasks/setup-dual-platform.md` |
 
-Guide 35 §9 also carries OpenAI facts. They fall outside this task's fixed source list, so re-check them
-against the OpenAI page each row cites. A row not re-checked is a C finding, never a silent pass.
+Re-check **every** Guide 35 §9 row for both platforms using its current official source. Follow official redirects; an inaccessible page or absent product detail is a C finding, never a silent pass. Search all root guides, tasks, skill entry points and nested templates for dependent claims, not just Guide 35. Distinguish API billing, subscription allowances and measured runtime usage.
 
 ### Step 5 — Findings report
 
@@ -137,16 +145,8 @@ edited skill (`dispatch`, `security-review`, `git-guru`) must be reinstalled fro
 
 ## Dispatch
 
-Load the `dispatch` skill. Step 2 (reading sources) and Step 3 (grepping and tabulating claims) are
-bulk extraction: sonnet at low or medium effort, one worker per source or per ten guides, returning file
-paths and counts rather than content. Step 4's diff and Step 5's findings are judgement and stay with the
-session. Step 6 writes prose that ships, so Cluide's Dispatch Overrides apply: opus or above, and every
-edit is re-read by the session against the cited page before commit. Log the routing to
-`development/ROUTING_LOG.md`.
+Use the current runtime's supported delegation policy. On Claude, apply the repository's Claude dispatch rules; on OpenAI, retain the configured model unless the user requested a supported alternative. Source extraction may be delegated only when the host permits it; every shipped claim is checked against its cited primary source by the reviewer. Record routing under `development/` without inventing cross-vendor model equivalents.
 
 ## Scheduled-task variant
 
-The same task runs unattended as a Cowork scheduled task that stops at Step 5: read the sources, build
-the register, write the report, and post its A/B/C/D counts. Requirements: the Cluide folder connected,
-web fetch enabled, model sonnet for Steps 2–3 with the report paragraphs on opus. Monthly is the right
-cadence; a model launch is the right trigger to run it by hand in between.
+Run read-only through Step 5 under one named scheduler owner (Cowork or Codex app when available), with explicit folder/source and web access, timezone, stable job ID and run deduplication. Record findings and notify only on a meaningful change or required action. Do not edit published content unattended. Inventory both platforms before registration; use `setup-scheduled-task.md` for registration and handoff. Model launches trigger an extra review; cadence alone does not justify a release.

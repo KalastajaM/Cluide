@@ -23,16 +23,36 @@ Supporting guides that apply throughout: [13 — Dev Execution Workflow](./13_DE
 
 ---
 
+## Choose a Route and a Shared Starter
+
+Use a small, connector-free planner before adding live email or schedules. The outcome is the same on each surface: a dated plan from supplied task notes, no outbound actions, and one accepted place to save the result.
+
+**Claude local route:** open a project folder in Claude Code or connect it in Cowork. Create root `AGENTS.md` with purpose, timezone, draft-only action rule and `outputs/` as the output home; create `CLAUDE.md` with `@AGENTS.md` and an explicit read fallback. For Cowork, add the project-instructions bootstrap from [Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md).
+
+**Codex local route:** open the same folder as the workspace. Codex reads the native `AGENTS.md` chain. Inspect any override, then ask it to read a small `tasks/planner/TASK.md` and `tasks/planner/INPUT.md` and save `outputs/plan.md`. The task can simply group the supplied items into must-do, focus blocks and defer; it needs no external app.
+
+**ChatGPT uploaded-source route:** create a project, add the shared policy, task and input as sources, and put a short instruction in project settings to read them first. Record their revision. Ask for the same plan as a downloadable Markdown file or reusable text; incorporate that result into the authored project explicitly. Do not ask this route to write to a laptop path it cannot access.
+
+**Acceptance prompt for every route:** "Use the supplied planner task and input. State the input revision, apply the project's timezone, and produce the plan in the requested format. Report whether it was saved to the project or delivered for incorporation. Do not send anything."
+
+Check against an expected plan written before running: every input item accounted for, correct timezone, correct output home/delivery, no external actions. Start a fresh session to test policy loading. Then change one source item and repeat after reloading or refreshing sources. These are documented starter procedures, not claims that your account has passed them. Record each result as passed, failed or untested.
+
+The stages below develop this starter. Claude-only paths are labelled; choose the equivalent native path explicitly for OpenAI rather than copying a dot-directory.
+
+---
+
 ## Stage 1: Foundation (Day 1)
 
-**What you are building:** The instruction file that shapes every conversation — your CLAUDE.md.
+**What you are building:** The shared operating contract and its native entry point: `AGENTS.md`, with `CLAUDE.md` as the Claude adapter or project instructions for source-only use.
 
 **Read first:** [Guide 01](./01_CLAUDE_MD.md) (10 min), then [Guide 02](./02_PROMPTING_BASICS.md) (15 min).
 
-**Action — create your CLAUDE.md:**
+**Action — create the shared policy and native entry point:**
 
 ```
-"Read 01_CLAUDE_MD.md and help me write my CLAUDE.md. Ask me what you need to know."
+"Read 01_CLAUDE_MD.md and help me write the shared policy for my chosen surface.
+Create AGENTS.md and the appropriate adapter or project bootstrap. Ask only for
+identity, timezone, style and action rules that are not already known."
 ```
 
 Or run the setup task directly:
@@ -41,12 +61,12 @@ Or run the setup task directly:
 "Run tasks/setup-claude-md.md"
 ```
 
-Claude will interview you about your identity, timezone, communication preferences, and standing rules. The result is a file under 30 lines ([Guide 01](./01_CLAUDE_MD.md)) at `.claude/CLAUDE.md`.
+The assistant establishes your identity, timezone, communication preferences and standing rules. Keep the personal policy compact ([Guide 01](./01_CLAUDE_MD.md)); the selected route above determines its entry point. Use root `AGENTS.md` for the shared starter.
 
-**What the result looks like:** A short file with sections for identity, communication style, and standing rules. Every line changes how Claude behaves — no filler.
+**What the result looks like:** A short file with sections for identity, communication style, and standing rules. Every line changes the intended behaviour — no filler.
 
 **Check before moving on:**
-- Open a fresh conversation and give a simple instruction. Does Claude apply your timezone, language preference, and style rules without being asked?
+- Open a fresh conversation and give a simple instruction. Does the assistant apply your timezone, language preference, and style rules without being asked?
 - If something feels off, edit the line that governs it and test again. Guide 02 explains why phrasing matters.
 
 ---
@@ -72,7 +92,7 @@ Or run the setup task directly:
 
 Good first skills: planning your day, drafting emails in a second language, summarising meeting notes, building a weekly shopping list.
 
-If the skill needs MCP tools (e.g., reading email requires the Gmail MCP server), connect those first:
+If the skill needs external data, inspect existing tools first. Reading email may use a native app connector or MCP; connect only the missing capability:
 
 ```
 "Read 05_MCP_SERVERS.md and help me set up the MCP servers I need for this skill."
@@ -80,7 +100,7 @@ If the skill needs MCP tools (e.g., reading email requires the Gmail MCP server)
 
 (or run `tasks/setup-mcp.md` directly).
 
-**What the result looks like:** A `SKILL.md` file at `.claude/skills/[skill-name]/SKILL.md` with frontmatter (name, description), a workflow section, an output format template, and edge case handling.
+**What the result looks like:** A `SKILL.md` file at `.claude/skills/[skill-name]/SKILL.md` for Claude Code, `.agents/skills/[skill-name]/SKILL.md` for Codex, or the available app installation surface, with frontmatter (name, description), a workflow section, an output format template, and edge case handling.
 
 **Check before moving on:**
 - Start a fresh conversation and trigger the skill using natural phrasing — not the exact description text
@@ -91,7 +111,7 @@ If the skill needs MCP tools (e.g., reading email requires the Gmail MCP server)
 
 ## Stage 3: Memory (Day 2-3)
 
-**What you are building:** A persistence layer so Claude remembers corrections, preferences, and key facts across sessions.
+**What you are building:** A persistence layer so the assistant can recover corrections, preferences, and key facts across sessions.
 
 **Read first:** [Guide 04](./04_MEMORY_AND_PROFILE.md) (15 min).
 
@@ -108,13 +128,13 @@ Or run the setup task directly:
 "Run tasks/setup-memory.md"
 ```
 
-This creates the `.auto-memory/` folder with structured memory files. Claude will ask about contacts, ongoing projects, and preferences worth persisting.
+This creates the `.auto-memory/` folder with structured memory files. The assistant will ask about contacts, ongoing projects, and preferences worth persisting.
 
 **What the result looks like:** A small set of memory files — typically an index, a preferences file, and one or two topic files (contacts, projects). Each file is compact and specific.
 
 **Check before moving on:**
 - Start a fresh conversation and reference something stored in memory (a contact name, a project abbreviation, a preference)
-- Claude should recall it without you re-explaining
+- The assistant should retrieve the recorded fact without you re-explaining
 - If memory is not loading, confirm the files are in the right location. Guide 04 covers the folder structure
 
 ---
@@ -145,7 +165,7 @@ If you chose self-improvement in the setup interview (or started from the task t
 
 **Action — schedule it:**
 
-Set up the task to run on a schedule through Cowork's scheduled-tasks feature: ask Claude in natural language (e.g. "run this every weekday at 7am"). Start with a low frequency (daily or weekly) so you can review the output before it runs unattended.
+Choose one scheduler owner: Cowork for the Claude route, or OpenAI Scheduled for a supported local/web task. Give it a stable job ID, timezone, source revision and output contract. Test manually first, then review the first scheduled run. Keep local hosts awake where required. Do not register the same job on both platforms; [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) explains the native paths.
 
 **What the result looks like:** A task folder containing the instruction file, an improvements log, a task reference, and a run log. After a few runs, the improvements log will contain observations and proposals the task has generated from its own output.
 
@@ -169,7 +189,7 @@ Set up the task to run on a schedule through Cowork's scheduled-tasks feature: a
 "Run tasks/setup-security.md"
 ```
 
-This scans for exposed credentials, audits MCP server permissions, and optionally installs a PreToolUse execution guard hook.
+This reviews credentials and actual runtime permissions. Claude Code may use a tested PreToolUse hook; Codex uses its native sandbox/approval controls. ChatGPT uses its source access and app grants. Do not install a Claude hook as an OpenAI safeguard.
 
 **Action — set up git and file hygiene:**
 
@@ -183,15 +203,15 @@ Then:
 "Run tasks/setup-ignore-hygiene.md"
 ```
 
-This initialises version control, creates a GitHub repo if you want one, and audits `.gitignore` and `.claudeignore` to ensure sensitive and large files are excluded.
+This initializes version control, creates a GitHub repository if wanted, and audits `.gitignore` plus the selected runtime's actual context and permission controls. Review `.claudeignore` only for a Claude surface that supports it; do not create it as a Codex requirement or treat it as a security boundary.
 
-**What the result looks like:** A clean git repository with proper ignore rules. No credentials in tracked files. A PreToolUse hook that blocks dangerous operations if you chose to install one.
+**What the result looks like:** A clean git repository with proper ignore rules. No credentials in tracked files. A harmless fixture demonstrating the chosen native access boundary.
 
 **Check before moving on:**
-- Run `git status` — no sensitive files should appear in the tracked list
-- Check `.gitignore` includes run logs, output files, and anything containing personal data
-- Check `.claudeignore` includes large generated files that do not need to be loaded as context
-- If you installed a PreToolUse hook, test it by asking Claude to perform an action the hook should block
+- For a local versioned project, inspect tracked files and `git status` for sensitive material; a source-only project instead checks its supplied source package
+- For a local versioned project, check `.gitignore` covers private run logs, generated outputs and personal data. For a source-only project, exclude that material from the uploaded/connected package unless explicitly needed
+- For Claude only, check supported `.claudeignore` patterns for large generated context. For Codex, verify native permissions and explicit source-scoping instructions; for ChatGPT, inspect the uploaded/connected source set
+- Test an intended denial with harmless fixture data on each enabled surface; never use a real destructive operation as the test
 
 ---
 
@@ -246,42 +266,36 @@ When you need Claude to reason about data from apps without APIs — bank transa
 
 **Read:** [Guide 13](./13_DEV_EXECUTION_WORKFLOW.md) (15 min).
 
-As your system grows, having a clear workflow for building vs. running matters. Guide 13 covers the Claude Code / Cowork split, Plan Mode, and debugging broken runs.
+As your system grows, having a clear workflow for building vs. running matters. Guide 13 covers development/execution roles across Claude and OpenAI, plan mode and evidence-based debugging.
 
 ---
 
 ## The Full Picture
 
-After completing all stages, your system looks like this:
+After completing the applicable stages, the authored project has these homes:
 
-```
+```text
 [project]/
-  CLAUDE.md                          # Standing rules (Stage 1) — or .claude/CLAUDE.md
-  .auto-memory/                      # Cross-session persistence (Stage 3)
-  tasks/
-    [task-name]/
-      TASK.md                        # Task instructions (Stage 4)
-      TASK_REFERENCE.md              # Reference material (Stage 4)
-      IMPROVEMENTS.md                # Self-improvement log (Stage 4)
-      RUN_LOG.md                     # Run history (Stage 4)
-  .gitignore                         # File hygiene (Stage 5)
-  .claudeignore                      # Context hygiene (Stage 5)
+  AGENTS.md                         # Shared standing rules
+  CLAUDE.md                         # Claude adapter
+  PLATFORM_SETUP.md                 # Source revisions, native setup and test results
+  .auto-memory/                     # Explicit private project memory
+  tasks/[task-name]/
+    TASK.md                         # Task instructions
+    TASK_REFERENCE.md               # On-demand reference
+    IMPROVEMENTS.md                  # Accepted/proposed learning
+    RUN_LOG.md                      # Run history, private when personal
+  outputs/                          # Deliverables
+  .gitignore                        # Version-control hygiene
 ```
 
-Plus a small user-level layer that applies across projects:
+Install skill entry points and configure permissions separately: Claude Code uses its `.claude` locations, Codex uses `.agents/skills` and its own configuration, and conversational projects use their available installation and source controls. Guide 03 and Guide 12 give those paths. Do not copy native runtime state into the shared project.
 
-```
-~/.claude/
-  skills/
-    [skill-name]/SKILL.md            # Reusable skills (Stage 2)
-  settings.json                      # Hooks and permissions (Stage 5)
-```
-
-Each piece reinforces the others: CLAUDE.md sets the baseline, skills handle recurring work, memory accumulates knowledge, tasks automate what skills cannot, and git preserves the history of it all.
+Keep a fresh-session result for every supported surface and a single owner for each recurring job. A source-only route additionally records upload revision and delivery status. The project is ready for unattended use only after the actual scheduled environment has passed the required checks.
 
 ---
 
-## Giving This Guide to Claude
+## Giving This Guide to an Assistant
 
 You can hand this guide to Claude and ask it to walk you through any stage:
 

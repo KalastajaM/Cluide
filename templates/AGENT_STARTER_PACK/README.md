@@ -1,5 +1,11 @@
 # Agent Starter Pack — model-pinned subagents for Claude Code
 
+**Claude Code only.** These native definitions are not an OpenAI agent configuration.
+For Codex, keep the configured model and use only delegation controls the current host exposes;
+pass the required task context explicitly. Do not install these files into a guessed OpenAI
+folder or translate their model names. An OpenAI counterpart remains untested.
+
+
 > Four subagent definitions with the model tier pinned in frontmatter, so routing is structural
 > rather than re-decided per prompt. Companion to the `dispatch` skill (`skills/dispatch/`),
 > which carries the routing policy itself; these files are the Claude Code binding for it.

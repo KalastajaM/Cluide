@@ -1,8 +1,18 @@
 # Task: Audit Skill
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Claude, run tasks/audit-skill.md`
+> `Assistant, run tasks/audit-skill.md`
 > **Source guides:** `03_SKILLS.md`, `02_PROMPTING_BASICS.md`
+
+## Runtime route
+
+Name the target surface and available tools before running steps. Claude-only policy lives in `CLAUDE.md`; Codex uses `AGENTS.md`; dual-platform shares `AGENTS.md` through a thin Claude adapter. References below to editing project rules mean that selected policy, not duplicated adapters. ChatGPT source projects use project instructions and dated sources; without write access, return replacement artifacts and record refresh as pending.
+
+Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
+
+## Native implementation
+
+First identify the skill's intended surface and how it is discovered. Codex project skills use `.agents/skills/`; Claude Code skills use its project/personal locations; source-only ChatGPT tasks are manually invoked unless native discovery was separately verified. Audit the common workflow on every surface, but validate metadata against that surface's documentation. Run positive/negative trigger cases and an inert forbidden-action case; record pass/fail/untested per surface. Never report an omitted Claude frontmatter field as a Codex defect.
 
 ## Purpose
 Review an existing skill against the Guide 03 quality checklist: reliable triggering, complete workflow, explicit output format, named tools, and edge case coverage. Returns a prioritised list of issues and applies fixes after approval.
@@ -11,7 +21,7 @@ Review an existing skill against the Guide 03 quality checklist: reliable trigge
 
 ## Instructions
 
-> **Clarifying questions:** For any step with a fixed set of options, use `AskUserQuestion` with buttons instead of plain text.
+> **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
 ### Step 1 — Identify the skill to audit
 
@@ -60,9 +70,9 @@ Flag weak descriptions with: "A user saying '[phrase]' would not trigger this sk
 
 - [ ] Hard limits are stated with "NEVER" (e.g. "NEVER send — always draft")
 - [ ] Each prohibition has a positive counterpart (what to do instead)
-- [ ] Any prohibition that maps onto a tool is **enforced** in the frontmatter, not left to prose: `allowed-tools` for the tools the skill may use, and — for a skill that runs autonomously or in the background — `disallowed-tools` for the tools it must never call
+- [ ] Every hard prohibition has evidence of effective runtime permissions, sandbox restrictions or connector scopes; prose-only restrictions are identified as such.
 
-On the last point: `allowed-tools` pre-approves tools for the skill's turn, so anything omitted is not pre-approved; `disallowed-tools` removes tools from Claude's available pool while the skill is active, which is the harder guarantee an unattended skill needs (e.g. never calling `AskUserQuestion` in a background loop). Flag with: "This skill says NEVER [X] but has no `allowed-tools` line — a session under pressure can still do it. Add `allowed-tools: [list]`, or `disallowed-tools: [tool]` if the skill runs unattended, to make the constraint real." Do not flag a general-purpose skill that legitimately needs the full toolset; the finding is for skills whose own constraints describe a restriction the frontmatter doesn't implement (Guide 03 optional frontmatter, Guide 12).
+Claude `allowed-tools` grants pre-approval and does not prove that omitted tools are denied. Check supported metadata in current official docs; do not assume `disallowed-tools` is a skill field. Codex constraints require its actual runtime controls. Report the forbidden action, effective grant and missing boundary; recommend a native fix or keep that action on a surface with verified enforcement.
 
 #### Check 5: Edge cases
 
@@ -75,7 +85,7 @@ On the last point: `allowed-tools` pre-approves tools for the skill's turn, so a
 - [ ] SKILL.md is under 500 lines
 - [ ] If over 500 lines: detailed reference content is moved (or should be moved) to `references/`
 - [ ] `references/` files are named from SKILL.md — not silently expected
-- [ ] Measured, not guessed: run `/skill-doctor` for what this skill costs in context and how often it actually gets used — a large skill that never fires is a stronger finding than line count alone
+- [ ] Measured, not guessed: where available on the Claude runtime, use `/skill-doctor` for what this skill costs in context and how often it actually gets used ; otherwise use observed invocation/usage records and mark unavailable metrics unknown — a large skill that never fires is a stronger finding than line count alone
 
 #### Check 7: Memory (if applicable)
 

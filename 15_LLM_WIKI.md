@@ -4,7 +4,7 @@
 
 > **Companion guides:** [Guide 11](./11_GIT_INTEGRATION.md) covers git — a wiki is just a folder of markdown files, and versioning it costs nothing. [Guide 14](./14_PERSONAL_DATA_LAYER.md) covers personal data — wikis and data layers are complementary, not alternatives. [Guide 04](./04_MEMORY_AND_PROFILE.md) covers `.auto-memory/` — which serves a different purpose (see below). [Guide 28](./28_SECOND_BRAIN.md) covers the other neighbour: a wiki is one curated subject, synthesised; a second brain is your whole working life, mostly triaged rather than synthesised. Run both in separate roots if you need both.
 
-> **Giving this guide to Claude:**
+> **Giving this guide to an assistant:**
 > "Read 15_LLM_WIKI.md and help me set up an LLM wiki for [topic]. Ask me what sources I have and what I want to be able to query."
 >
 > **Faster alternative:** `tasks/setup-wiki.md` interviews you and creates the full wiki structure and schema without reading the guide first.
@@ -13,7 +13,7 @@
 
 ## The Core Idea
 
-Standard RAG (NotebookLM, ChatGPT file uploads, most document Q&A tools) retrieves relevant chunks at query time and generates an answer from scratch. Ask something that requires synthesising five documents and the LLM has to find and piece together the fragments every time. Nothing accumulates.
+Retrieval answers questions from source material; a maintained wiki additionally saves accepted synthesis as explicit pages. Either Claude or OpenAI can contribute to that authored layer. Uploading documents by itself does not establish the ingest, citation and maintenance contract described here.
 
 The wiki pattern inverts this. When you add a new source, the LLM reads it, extracts key information, and integrates it into existing markdown pages — updating entities, revising summaries, flagging contradictions, strengthening the synthesis. Knowledge is compiled once and kept current. By the time you ask a question, the cross-references are already there. The contradictions have already been noted. The synthesis already reflects everything you've read.
 
@@ -53,9 +53,9 @@ Every LLM wiki has three layers:
 
 **Raw sources** — your curated collection of input documents. Articles, papers, PDFs, data files, images. These are immutable — Claude reads from them but never modifies them. This is your source of truth. Store them in a `sources/` folder.
 
-**The wiki** — a directory of Claude-maintained markdown files. Summaries, entity pages, concept pages, comparisons, an overview, a synthesis. Claude owns this layer entirely. It creates pages, updates them when new sources arrive, maintains cross-references, and keeps everything consistent. You read it; Claude writes it. Store it in a `wiki/` folder.
+**The wiki** — a directory of Claude-maintained markdown files. Summaries, entity pages, concept pages, comparisons, an overview, a synthesis. The designated assistant maintains this layer under your review. It creates pages, updates cross-references and checks consistency; the project owns the accepted content and records who may write it. Store it in a `wiki/` folder.
 
-**The schema** — a `CLAUDE.md` file (or `SCHEMA.md` if you prefer to keep it separate) that tells Claude how the wiki is structured, what the conventions are, and what workflows to follow when ingesting sources, answering questions, or running a health-check. This is the key configuration file — it's what makes Claude a disciplined wiki maintainer rather than a generic chatbot. You and Claude co-evolve this over time as you figure out what works for your domain.
+**The schema** — a `SCHEMA.md` referenced from the shared `AGENTS.md` policy (or from `CLAUDE.md` in a Claude-only project) that tells Claude how the wiki is structured, what the conventions are, and what workflows to follow when ingesting sources, answering questions, or running a health-check. This is the key configuration file — it's what makes Claude a disciplined wiki maintainer rather than a generic chatbot. You and Claude co-evolve this over time as you figure out what works for your domain.
 
 A minimal directory layout:
 
@@ -72,6 +72,16 @@ my-wiki/
 │   └── entities/      ← one page per entity, concept, actor, etc.
 │       └── ...
 ```
+
+---
+
+## Maintaining the Wiki from Either Platform
+
+For local Claude Code or Codex work, load `wiki/index.md`, then only the pages relevant to the operation. Keep source files immutable and stage edits to the wiki, index and log as one reviewed change. One writer owns the ingest at a time; parallel researchers return notes for integration rather than editing the same entity page.
+
+For a ChatGPT source project, upload the index and required pages or connect their authoritative store. Record the source revision. The result is a proposed page/update until it is saved back to the wiki and the index/log are updated. Refresh the project sources afterward. A citation to a filename whose content was never supplied is a missing source, not evidence.
+
+Use the same ingest/query/lint acceptance checks on both: claims cite the original source, links resolve, existing pages are updated rather than duplicated, and the log states what changed. Tool configuration remains native; the qmd `.mcp.json` example later is Claude Code configuration, while Codex uses [Guide 05's MCP route](./05_MCP_SERVERS.md).
 
 ---
 

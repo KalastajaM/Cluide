@@ -1,6 +1,6 @@
-# Connecting Claude to Your Personal Data
+# Connecting Assistants to Your Personal Data
 
-> Five patterns for getting personal data — investments, finances, transactions — into Claude tasks without exposing raw files, building fragile pipelines, or paying excessive token costs.
+> Five patterns for getting personal data — investments, finances, transactions — into Claude or OpenAI tasks without exposing raw files, building fragile pipelines, or paying excessive token costs.
 
 > **Companion guides:** [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) covers token efficiency — Python data feeders (Pattern 1) are one of the highest-leverage efficiency moves you can make. [Guide 07](./07_TASK_LEARNING_GUIDE.md) covers self-improvement — once your data layer is stable, the task can start learning from it. [Guide 11](./11_GIT_INTEGRATION.md) covers git tracking — your JSON data files are prime candidates for pre-run snapshots.
 
@@ -19,7 +19,19 @@ This is an advanced guide. The patterns here require writing Python scripts, run
 - You have local files (CSV, JSON) that are too large or raw to paste into Claude directly
 - A task needs computed values (P&L, totals, averages) rather than raw records
 
-**If you just want Claude to remember things about you:** that's [Guide 04 — Memory](./04_MEMORY_AND_PROFILE.md), not this guide. The account memory behind claude.ai and Cowork is the right home for conversational preferences that should follow you across surfaces; profile files remain the home for facts a scheduled task must load deterministically — Guide 04's table compares the layers.
+**If you just want Claude to remember things about you:** that's [Guide 04 — Memory](./04_MEMORY_AND_PROFILE.md), not this guide. Use the current platform's native memory for conversational continuity, and explicit profile sources for facts a task must load deterministically. Guide 04 separates those stores and their access checks.
+
+---
+
+## Choose an Ingestion Path the Surface Can Run
+
+The data contract is shared: source, extraction time, schema, validation totals and known gaps. Execution is native. Claude Code and Codex can run a checked local feeder when their sandbox permits it; a ChatGPT source project can analyze an uploaded CSV/JSON export or use an authorized connector. Never claim a local data file was refreshed by a chat that could only produce a replacement for download.
+
+Prefer a service's export or read-only connector before browser extraction. Browser and computer-use tools have their own rules and may prohibit scripts or access methods available in a manual developer console. The manual JavaScript example below is a user-run extraction pattern, not permission for an assistant to inject it through any browser tool.
+
+For image inputs, use the vision capability actually available on the chosen surface. The Anthropic SDK example in §4 is Claude API code; an OpenAI implementation needs its documented image-input API and a supported model. Keep both behind the same output schema and validate dates, currencies, decimal separators, duplicate rows and totals against a small known fixture. Do not infer accuracy or price from a model tier name.
+
+When both platforms use the data, designate one writer for each accepted JSON file. Derived rows remain hypotheses, raw observations retain provenance, and uploaded copies carry the accepted revision. Native credentials and grant settings never accompany the data export.
 
 ---
 
@@ -240,7 +252,7 @@ Input:  screenshots/  directory of bank app screenshots (PNG/JPG)
 Output: data/bank_transactions_raw.json
 Usage:  python3 scripts/extract_transactions.py
 Requires: ANTHROPIC_API_KEY set in environment
-Cost:   ~$0.001 per screenshot (Haiku tier — cheapest Claude model; more than enough for structured OCR)
+Cost:   measure on a representative fixture; check current API rates (Guide 10)
 ```
 
 Core script structure:
@@ -259,9 +271,8 @@ def extract_from_screenshot(image_path: Path) -> list[dict]:
         image_data = base64.b64encode(f.read()).decode()
 
     response = client.messages.create(
-        # Haiku is the right tier for bulk vision extraction — ~5x cheaper
-        # than the current Opus tier (check current pricing) and accurate on
-        # clean screenshots. Re-check the current model id when reusing this script.
+        # Claude API example: re-check model availability and benchmark extraction
+        # on your own fixtures before using it with live data.
         model="claude-haiku-4-5-20251001",
         max_tokens=4096,  # headroom: a truncated response is unparseable JSON
         messages=[{
@@ -495,6 +506,5 @@ reads:           the budget app's full page DOM
 
 ---
 
-> **Giving this guide to Claude:**
+> **Giving this guide to an assistant:**
 > "Read 14_PERSONAL_DATA_LAYER.md and help me build a data layer for [describe your use case]. Ask me what data sources I have and which patterns apply."
-
