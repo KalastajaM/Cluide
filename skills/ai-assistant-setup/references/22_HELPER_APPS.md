@@ -2,7 +2,7 @@
 
 > Most of Cluide is about co-work — how Claude drafts your emails, runs your briefings, files your actions. This guide is about an adjacent use-case: the small locally-run tool you build *for yourself* with Claude's help. A budget tracker, a reading log, a data dashboard, a CLI wrapper around an API. Not a product. Not a team deliverable. One user, local data, evolves feature-by-feature over many short sessions.
 
-> **Companion guides:** [Guide 01](./01_CLAUDE_MD.md) covers CLAUDE.md structure — this guide adds four patterns that are specific to helper apps. [Guide 05](./05_MCP_SERVERS.md) covers MCP servers, including Claude in Chrome, which this guide leans on for verification. [Guide 12](./12_SECURITY.md) covers permission hygiene. [Guide 13](./13_DEV_EXECUTION_WORKFLOW.md) covers the build-vs-run split. [Guide 20](./20_INTERACTIVE_PROMPTING.md) covers plan mode, which underpins the iteration loop described here.
+> **Companion guides:** [Guide 01](./01_PROJECT_INSTRUCTIONS.md) covers project instruction structure — this guide adds four patterns that are specific to helper apps. [Guide 05](./05_MCP_SERVERS.md) covers MCP servers, including Claude in Chrome, which this guide leans on for verification. [Guide 12](./12_SECURITY.md) covers permission hygiene. [Guide 13](./13_DEV_EXECUTION_WORKFLOW.md) covers the build-vs-run split. [Guide 20](./20_INTERACTIVE_PROMPTING.md) covers plan mode, which underpins the iteration loop described here.
 
 > **Giving this guide to an assistant:**
 > "Read 22_HELPER_APPS.md and help me set up the CLAUDE.md for this helper app — interview me about the app's one invariant, the helpers I already have, and what 'done' looks like for each class of change."
@@ -42,7 +42,7 @@ For a UI change, exercise the user action and inspect the rendered result. For a
 
 ## 3. Four CLAUDE.md Patterns for Helper Apps
 
-These layer on top of the general CLAUDE.md advice in [Guide 01](./01_CLAUDE_MD.md). Each is one short block. Together they prevent the drift and false-done failure modes from Section 1.
+These layer on top of the general project instruction advice in [Guide 01](./01_PROJECT_INSTRUCTIONS.md). Each is one short block. Together they prevent the drift and false-done failure modes from Section 1.
 
 **All four are checks, and it is worth knowing which layer you are on.** A rule in CLAUDE.md catches a mistake after Claude has made it, and it fails quietly when the file is long or the context is tight. *Structure* — one canonical helper rather than a list of five, a file format with nowhere to put the wrong thing, a layout where the bad state cannot be written — makes the mistake unconstructible instead. Checks are the cheap layer and for a helper app they are usually enough. When you notice yourself adding a rule to suppress what another rule causes, or stating the same convention in a third place, the cheap layer has stopped working and the fix is structural; [Guide 29](./29_SPEC_BEFORE_REBUILD.md) is what to do at that point.
 

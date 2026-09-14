@@ -2,10 +2,10 @@
 
 > Clear instructions improve either assistant's output, alongside source quality, model capability and tool access. This guide applies to shared `AGENTS.md` policy, Claude's `CLAUDE.md`, ChatGPT project instructions, skills, tasks and chat messages. Test the intended result on each surface; the same wording does not guarantee the same behaviour.
 
-> **Companion guides:** [Guide 01 — CLAUDE.md](./01_CLAUDE_MD.md) for applying these principles to your standing instructions. [Guide 03 — Skills](./03_SKILLS.md) for skill descriptions and trigger phrases. [Guide 26 — Context Scoping](./26_CONTEXT_SCOPING.md) for the layer above this one: deciding what a session should be allowed to see, and having Claude build a high-stakes prompt for you rather than writing it yourself. [Guide 27 — Independent Judgment](./27_INDEPENDENT_JUDGMENT.md) covers a failure that better instructions can make worse: a precisely specified prompt that tells Claude what you already think will return your own view, well formatted.
+> **Companion guides:** [Guide 01 — Project Instructions](./01_PROJECT_INSTRUCTIONS.md) for applying these principles to your standing instructions. [Guide 03 — Skills](./03_SKILLS.md) for skill descriptions and trigger phrases. [Guide 26 — Context Scoping](./26_CONTEXT_SCOPING.md) for the layer above this one: deciding what a session should be allowed to see, and having the assistant build a high-stakes prompt for you rather than writing it yourself. [Guide 27 — Independent Judgment](./27_INDEPENDENT_JUDGMENT.md) covers a failure that better instructions can make worse: a precisely specified prompt that tells the assistant what you already think will return your own view, well formatted.
 
 > **Giving this guide to an assistant:**
-> "Read 02_PROMPTING_BASICS.md and help me improve my [CLAUDE.md / SKILL.md / task instructions]. Read the file I want to improve and apply the principles from the guide."
+> "Read 02_PROMPTING_BASICS.md and help me improve my [AGENTS.md / project instructions / SKILL.md / task instructions]. Read the file I want to improve and apply the principles from the guide."
 
 ---
 
@@ -14,19 +14,19 @@
 Every strong instruction has four parts. You don't always need all four, but knowing what's missing explains why output is off.
 
 **1. Context** — who, what, why
-What Claude needs to know about the situation to produce a relevant response. Without this, Claude fills in the gaps with generic assumptions.
+What the assistant needs to know about the situation to produce a relevant response. Without this, the assistant fills in the gaps with generic assumptions.
 
 > Weak: *"Write a summary."*
 > Strong: *"You are summarising a security incident report for a non-technical manager. The audience has no IT background. Focus on business impact, not technical details."*
 
 **2. Task** — what to produce
-The specific output Claude should create. Be precise — "analyse" can mean anything; "list the top 3 risks and recommend one mitigation per risk" is specific.
+The specific output the assistant should create. Be precise — "analyse" can mean anything; "list the top 3 risks and recommend one mitigation per risk" is specific.
 
 > Weak: *"Analyse the email."*
 > Strong: *"Read the email and identify: (a) any action item addressed to me, (b) any deadline mentioned, (c) the sender's tone. Then draft a brief reply acknowledging receipt."*
 
 **3. Constraints** — what not to do, limits, format rules
-What Claude should avoid, the length target, the format, the tone. Constraints are as important as the task itself — they prevent the default responses that don't fit your needs.
+What the assistant should avoid, the length target, the format, the tone. Constraints are as important as the task itself — they prevent the default responses that don't fit your needs.
 
 > Weak: *"Keep it professional."*
 > Strong: *"Keep the response under 5 sentences. Do not use bullet points. Do not start with 'Certainly' or 'Of course'. Match the formality level of the original message."*
@@ -43,21 +43,21 @@ Show a template or example of the expected output. This single addition more tha
 
 **Context engineering** means treating the assistant's attention as a finite budget, and curate the smallest set of high-signal tokens that gets the job done. Every token in the context — instructions, files, history — competes for that attention; low-signal content doesn't just cost money, it dilutes the instructions that matter.
 
-This guide's advice is context engineering in practice: precise tasks instead of vague ones (fewer tokens, higher signal), templates instead of descriptions (one example outperforms paragraphs of explanation), and putting rules where they're needed (Mistake 2 below — a bloated CLAUDE.md is an attention-budget failure, not just a style problem).
+This guide's advice is context engineering in practice: precise tasks instead of vague ones (fewer tokens, higher signal), templates instead of descriptions (one example outperforms paragraphs of explanation), and putting rules where they're needed (Mistake 2 below — a bloated standing policy is an attention-budget failure, not just a style problem).
 
 ### Progressive disclosure
 
-The structural half of context engineering has a name: **progressive disclosure**. Split what Claude might need into layers, put a cheap always-loaded pointer at the top, and let each deeper layer load only when a step actually reaches it. Anthropic names it as the core design principle for skills; it is not specific to skills, and almost every recurring cost problem in this repo is solved by the same move.
+The structural half of context engineering has a name: **progressive disclosure**. Split what the assistant might need into layers, put a cheap always-loaded pointer at the top, and let each deeper layer load only when a step actually reaches it. Anthropic names it as the core design principle for skills; it is not specific to skills, and almost every recurring cost problem in this repo is solved by the same move.
 
 | Layer | Always in context | Loaded on demand |
 |---|---|---|
 | Skill ([03](./03_SKILLS.md)) | the `description` | `SKILL.md`, then `references/` |
 | Scheduled task ([06](./06_TASK_EFFICIENCY_GUIDE.md)) | `TASK.md` | `TASK_REFERENCE.md`, `LESSONS.md` |
-| Project ([24](./24_PROJECT_FOLDER_STRUCTURE.md)) | `CLAUDE.md` | `CLAUDE_REFERENCE.md` ([01](./01_CLAUDE_MD.md)), then the files it points at |
+| Project ([24](./24_PROJECT_FOLDER_STRUCTURE.md)) | Shared `AGENTS.md` policy | `PROJECT_REFERENCE.md` ([01](./01_PROJECT_INSTRUCTIONS.md)), then the files it points at |
 | Notes ([28](./28_SECOND_BRAIN.md)) | `index.md` | the individual notes |
 | Data ([14](./14_PERSONAL_DATA_LAYER.md)) | a feeder script's compact output | the raw source, never directly |
 
-Two tests tell you a layer is wrong. If a file is always loaded and is usually not needed, it belongs one layer down. If Claude routinely has to open three files to answer a question the pointer should have answered, the pointer is too thin. Related levers: [Guide 05](./05_MCP_SERVERS.md) on the tools you leave enabled, [Guide 20](./20_INTERACTIVE_PROMPTING.md) on clearing what a session has already accumulated, and [Guide 26](./26_CONTEXT_SCOPING.md) on withholding context for quality rather than for cost.
+Two tests tell you a layer is wrong. If a file is always loaded and is usually not needed, it belongs one layer down. If the assistant routinely has to open three files to answer a question the pointer should have answered, the pointer is too thin. Related levers: [Guide 05](./05_MCP_SERVERS.md) on the tools you leave enabled, [Guide 20](./20_INTERACTIVE_PROMPTING.md) on clearing what a session has already accumulated, and [Guide 26](./26_CONTEXT_SCOPING.md) on withholding context for quality rather than for cost.
 
 Full treatment: [anthropic.com/engineering/effective-context-engineering-for-ai-agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents).
 
@@ -65,7 +65,7 @@ Full treatment: [anthropic.com/engineering/effective-context-engineering-for-ai-
 
 ## Show an Example, Not a Description
 
-Descriptions of what you want are weaker than examples of what you want. Claude matches the shape of a real output far more reliably than an abstract instruction.
+Descriptions of what you want are weaker than examples of what you want. The assistant matches the shape of a real output far more reliably than an abstract instruction.
 
 **Instead of:**
 > "Produce a concise action-oriented email summary."
@@ -90,13 +90,13 @@ Produce the output in exactly this structure:
 ```
 ````
 
-When Claude sees the exact structure, headers, and field names you expect, it produces the same shape every time. When it only reads a description, it invents a structure each run.
+When the assistant sees the exact structure, headers, and field names you expect, it has a concrete structure to follow. Check repeated outputs: a template improves consistency but does not guarantee it.
 
 ---
 
 ## Specify What NOT to Do
 
-Negative constraints are as useful as positive ones. If you've corrected Claude on the same thing three times, it belongs in your instructions as a "not" rule.
+Negative constraints are as useful as positive ones. If you've corrected the assistant on the same thing three times, it belongs in your instructions as a "not" rule.
 
 **Common negatives worth including:**
 
@@ -109,7 +109,7 @@ Negative constraints are as useful as positive ones. If you've corrected Claude 
 | Over-explains simple tasks | "For routine requests, produce the output directly without explaining your approach." |
 | Invents information | "If you don't have enough information to answer accurately, ask me rather than guessing." |
 
-These belong in your `CLAUDE.md` if they apply to all interactions, or in `SKILL.md` if they apply to one specific workflow.
+These belong in your shared policy (`AGENTS.md` in the dual-platform pattern) or app project instructions if they apply throughout that scope, or in `SKILL.md` if they apply to one specific workflow.
 
 ---
 
@@ -118,7 +118,7 @@ These belong in your `CLAUDE.md` if they apply to all interactions, or in `SKILL
 Three levels of format specificity, from weakest to strongest:
 
 **Level 1 — No format (weakest):** "Write a report."
-Claude invents the structure, length, and style. Different every time.
+The assistant invents the structure, length, and style. Different every time.
 
 **Level 2 — Description:** "Write a concise report with a summary and action items."
 Better, but "concise" is subjective and "action items" is ambiguous.
@@ -144,17 +144,17 @@ Produce output in this exact format:
 ```
 ````
 
-Use Level 3 for anything that runs repeatedly — skills, tasks, any instruction you've set up in CLAUDE.md. Reserve Level 2 for one-off chat requests.
+Use Level 3 for anything that runs repeatedly — skills, tasks, standing project instructions. Reserve Level 2 for one-off chat requests.
 
 ---
 
 ## Asking Clarifying Questions
 
-When a clarifying question has a **bounded set of options**, use the `AskUserQuestion` tool with buttons. Fall back to plain text only when the question is genuinely open-ended. `AskUserQuestion` is available in both Claude Code and Cowork.
+When a clarifying question has a **bounded set of options**, use a question tool with buttons if the current surface exposes one and permits it for that question. Otherwise ask in plain text. `AskUserQuestion` is a Claude-specific tool name, not a requirement for ChatGPT or Codex. Follow the current host's rules for approval questions; a choice dialog does not replace its permission controls.
 
 | Question type | Approach |
 |---|---|
-| Bounded: tone, format, priority, approve/reject, yes/no | `AskUserQuestion` with buttons |
+| Bounded: tone, format, priority, approve/reject, yes/no | Available, permitted question tool; otherwise plain text |
 | Open-ended: situation description, name, intent, freeform input | Plain text |
 
 **Examples — use buttons:**
@@ -180,7 +180,7 @@ Two rules make standing instructions about questions work:
 
 ## Writing Skill Descriptions: Triggers, Not Titles
 
-The `description:` field in a SKILL.md file is not a title. It is a **trigger pattern** — the phrases and situations that tell Claude "activate this skill now."
+The `description:` field in a SKILL.md file is not a title. It is a **trigger pattern** — the phrases and situations that tell the assistant "activate this skill now."
 
 Most skill descriptions fail because they are too short and too formal.
 
@@ -188,7 +188,7 @@ Most skill descriptions fail because they are too short and too formal.
 ```yaml
 description: Email summarisation and action tracking skill.
 ```
-This will only trigger if the user literally says something very close to those words.
+This gives the host little context for deciding when the skill applies; test realistic requests and neighbouring cases that should not trigger it.
 
 **Strong description (natural phrases, multiple triggers):**
 ```yaml
@@ -209,7 +209,7 @@ description: >
 When output is consistently wrong, use this process:
 
 **Step 1: Strip it down.**
-Remove all constraints and special instructions. Run the bare minimum: context + task only. Does Claude produce the right kind of output (even if imperfect)?
+Remove all constraints and special instructions. Run the bare minimum: context + task only. Does the assistant produce the right kind of output (even if imperfect)?
 
 If yes → the constraints were the problem. Add them back one at a time.
 If no → the task description itself is unclear. Rewrite it.
@@ -219,9 +219,9 @@ Each constraint you add should make the output better. If adding a constraint ma
 
 **Step 3: Look for contradictions.**
 Common contradictions:
-- "Be brief" + "Include all relevant details" → Claude will flip between interpretations
-- "Always suggest options" + "Give me one recommendation" → Claude won't know which to follow
-- "Respond formally" in CLAUDE.md + "Use casual language" in skill → in practice the more specific instruction (the skill) usually wins, but precedence isn't guaranteed — resolve the conflict rather than relying on it
+- "Be brief" + "Include all relevant details" → the assistant will flip between interpretations
+- "Always suggest options" + "Give me one recommendation" → the assistant won't know which to follow
+- "Respond formally" in the shared policy + "Use casual language" in skill → in practice the more specific instruction (the skill) usually wins, but precedence isn't guaranteed — resolve the conflict rather than relying on it
 
 Pick one. Remove the other.
 
@@ -243,13 +243,15 @@ Pick one. Remove the other.
 
 ---
 
-### Mistake 2: Everything in CLAUDE.md
+<a id="mistake-2-everything-in-claudemd"></a>
 
-CLAUDE.md should contain only rules that apply to **every interaction**. Workflow steps, output templates, and task-specific rules belong in `SKILL.md` or `TASK.md` (TASK.md is a scheduled task's instruction file — see [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md)).
+### Mistake 2: Everything in the Standing Instructions
 
-**In CLAUDE.md:**
+The standing policy should contain rules that apply **throughout its scope**. In a dual-platform repository, put shared rules in `AGENTS.md` and keep `CLAUDE.md` as a thin Claude adapter. For app projects, connect the shared policy through project instructions; a Claude-only project can keep its policy in `CLAUDE.md`. Workflow steps, output templates, and task-specific rules belong in `SKILL.md` or `TASK.md` (TASK.md is a scheduled task's instruction file — see [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md)).
+
+**In the standing policy (`AGENTS.md` for a shared setup):**
 - Communication style, tone, language
-- Standing rules that override Claude's defaults
+- Standing rules that override the assistant's defaults
 - Who you are (2–3 lines)
 
 **In SKILL.md:**
@@ -266,7 +268,7 @@ CLAUDE.md should contain only rules that apply to **every interaction**. Workflo
 
 ### Mistake 3: Describing Intent, Not Behaviour
 
-Instructions that describe what you want Claude to achieve — rather than what to do — produce inconsistent results because Claude has to infer the behaviour.
+Instructions that describe what you want the assistant to achieve — rather than what to do — produce inconsistent results because the assistant has to infer the behaviour.
 
 | Describes intent | Describes behaviour |
 |---|---|
@@ -278,7 +280,7 @@ Instructions that describe what you want Claude to achieve — rather than what 
 
 ### Mistake 4: Forgetting the Output Format
 
-If you don't specify a format, Claude picks one. It will be:
+If you don't specify a format, the assistant picks one. It will be:
 - Different each run
 - Not quite what you expected
 - Hard to use downstream (e.g. in another task or a template)
@@ -289,8 +291,8 @@ If you don't specify a format, Claude picks one. It will be:
 
 ## Applying These Principles to Your Setup
 
-**To improve CLAUDE.md:**
-> "Read 02_PROMPTING_BASICS.md and then read my current CLAUDE.md. Here is the behaviour I keep having to correct: [what you keep re-explaining]. Write the rules that would fix it, then tell me which of my existing rules they replace and which of mine are already doing their job."
+**To improve shared project instructions:**
+> "Read 02_PROMPTING_BASICS.md and then read my current shared policy (`AGENTS.md`, or the project instructions I provide). Here is the behaviour I keep having to correct: [what you keep re-explaining]. Write the rules that would fix it, then tell me which of my existing rules they replace and which of mine are already doing their job."
 
 **To improve a skill description:**
 > "Read 02_PROMPTING_BASICS.md and then read my [skill-name] SKILL.md. Here is when I want this skill to fire, in my own words: [situations]. Write the description that triggers on those, then compare it to mine and say what mine misses."

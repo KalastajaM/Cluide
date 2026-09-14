@@ -24,7 +24,7 @@ Detect which guides have changed since each task was last reviewed, then check w
 
 | Task file | Source guides |
 |-----------|--------------|
-| `setup-claude-md.md` | `01_CLAUDE_MD.md` |
+| `setup-claude-md.md` | `01_PROJECT_INSTRUCTIONS.md` |
 | `setup-memory.md` | `04_MEMORY_AND_PROFILE.md`, `14_PERSONAL_DATA_LAYER.md` |
 | `setup-mcp.md` | `05_MCP_SERVERS.md` |
 | `setup-security.md` | `12_SECURITY.md` |
@@ -34,7 +34,7 @@ Detect which guides have changed since each task was last reviewed, then check w
 | `setup-wiki.md` | `15_LLM_WIKI.md` |
 | `setup-second-brain.md` | `28_SECOND_BRAIN.md`, `15_LLM_WIKI.md` (the boundary) |
 | `setup-bootstrap-folder.md` | `11_GIT_INTEGRATION.md` |
-| `audit-claude-md.md` | `01_CLAUDE_MD.md`, `16_BEST_PRACTICES.md` |
+| `audit-claude-md.md` | `01_PROJECT_INSTRUCTIONS.md`, `16_BEST_PRACTICES.md` |
 | `audit-task-efficiency.md` | `06_TASK_EFFICIENCY_GUIDE.md` |
 | `audit-memory.md` | `04_MEMORY_AND_PROFILE.md` |
 | `setup-skill.md` | `03_SKILLS.md` |
@@ -42,17 +42,17 @@ Detect which guides have changed since each task was last reviewed, then check w
 | `setup-scheduled-task.md` | `06_TASK_EFFICIENCY_GUIDE.md`, `07_TASK_LEARNING_GUIDE.md` (incl. Part 9) |
 | `setup-orchestration.md` | `09_MULTI_TASK_ORCHESTRATION.md` |
 | `audit-cost.md` | `10_COST_PERFORMANCE.md` |
-| `onboard-project.md` | `01_CLAUDE_MD.md`, `04_MEMORY_AND_PROFILE.md`, `05_MCP_SERVERS.md`, `11_GIT_INTEGRATION.md`, `12_SECURITY.md`, `24_PROJECT_FOLDER_STRUCTURE.md`, `25_PROJECT_INSTRUCTION_LAYERS.md` |
+| `onboard-project.md` | `01_PROJECT_INSTRUCTIONS.md`, `04_MEMORY_AND_PROFILE.md`, `05_MCP_SERVERS.md`, `11_GIT_INTEGRATION.md`, `12_SECURITY.md`, `24_PROJECT_FOLDER_STRUCTURE.md`, `25_PROJECT_INSTRUCTION_LAYERS.md` |
 | `setup-data-layer.md` | `14_PERSONAL_DATA_LAYER.md` |
 | `setup-policies.md` | `21_COMPANY_POLICIES.md`, `03_SKILLS.md`, `05_MCP_SERVERS.md` |
 | `reorganize-project.md` | `24_PROJECT_FOLDER_STRUCTURE.md` |
 | `relocate-project.md` (+ `relocate-project-reference.md`) | `11_GIT_INTEGRATION.md`, `24_PROJECT_FOLDER_STRUCTURE.md`, `05_MCP_SERVERS.md`, `25_PROJECT_INSTRUCTION_LAYERS.md` |
 | `audit-file-hygiene.md` | `11_GIT_INTEGRATION.md`, `24_PROJECT_FOLDER_STRUCTURE.md` |
-| `tune-instruction-layers.md` | `25_PROJECT_INSTRUCTION_LAYERS.md`, `01_CLAUDE_MD.md` |
+| `tune-instruction-layers.md` | `25_PROJECT_INSTRUCTION_LAYERS.md`, `01_PROJECT_INSTRUCTIONS.md` |
 | `setup-behaviour-tests.md` | `31_BEHAVIOUR_TESTS.md` (see also `27_INDEPENDENT_JUDGMENT.md`, `26_CONTEXT_SCOPING.md`) |
 | `setup-action-authority.md` | `32_ACTION_AUTHORITY.md`, `12_SECURITY.md` (§8 and the security-properties table), `07_TASK_LEARNING_GUIDE.md` (Part 3) |
 | `retire-project.md` | `33_RETIRING_AND_LEAVING.md`, `23_MULTI_PROJECT_SETUPS.md`, `24_PROJECT_FOLDER_STRUCTURE.md` |
-| `setup-dual-platform.md` | `35_DUAL_PLATFORM_PROJECTS.md`, `25_PROJECT_INSTRUCTION_LAYERS.md`, `01_CLAUDE_MD.md`, `24_PROJECT_FOLDER_STRUCTURE.md`, `11_GIT_INTEGRATION.md` (see also `09_MULTI_TASK_ORCHESTRATION.md`, `34_IMPORTING_FROM_OTHER_ASSISTANTS.md`); also review when the platform facts it names change (`review-platform-changes.md`) |
+| `setup-dual-platform.md` | `35_DUAL_PLATFORM_PROJECTS.md`, `25_PROJECT_INSTRUCTION_LAYERS.md`, `01_PROJECT_INSTRUCTIONS.md`, `24_PROJECT_FOLDER_STRUCTURE.md`, `11_GIT_INTEGRATION.md` (see also `09_MULTI_TASK_ORCHESTRATION.md`, `34_IMPORTING_FROM_OTHER_ASSISTANTS.md`); also review when the platform facts it names change (`review-platform-changes.md`) |
 | `analyze-project.md` (+ `analyze-project-reference.md`) | All guides (`01`–`35`) — its dimension criteria summarise the full set; review after any guide change |
 | `review-platform-changes.md` | All guides — its Step 4 table names which reference page each guide must agree with; review when a guide gains or loses a platform-facing claim |
 
@@ -158,7 +158,7 @@ The IMPROVEMENTS template must exist in **exactly one canonical place** — `tem
 The checks above compare copies against copies. This one checks that the *set* is complete — it is what
 catches a new guide landing without ever being wired into the audit engine or the mapping table.
 
-Run all four assertions:
+Run all four assertions. `01_CLAUDE_MD.md` is a compatibility page for `01_PROJECT_INSTRUCTIONS.md`: both resolve to Guide 01, so count that number once, not as two guides.
 
 1. **Every guide is either scored or explicitly not scored.** For each root `NN_*.md`, confirm its number
    is cited by a dimension heading in `analyze-project-reference.md`, or that the guide appears in the

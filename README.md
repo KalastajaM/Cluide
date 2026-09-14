@@ -39,7 +39,7 @@ Cluide began as a Claude-built guide, drawing on the maintainer’s hands-on exp
 ## Three Ways to Use This
 
 1. **Read the guides yourself** and set things up manually — useful if you want full control.
-2. **Give a guide to your assistant** — `"Read 01_CLAUDE_MD.md and set up project instructions for the surface I use."` The assistant follows the applicable route.
+2. **Give a guide to your assistant** — `"Read 01_PROJECT_INSTRUCTIONS.md and set up project instructions for the surface I use."` The assistant follows the applicable route.
 3. **Run a task** — faster, guided, no reading required. Say `"Run tasks/onboard-project.md"` to start a full interactive setup.
 
 ---
@@ -67,7 +67,7 @@ Cluide began as a Claude-built guide, drawing on the maintainer’s hands-on exp
 | # | Guide | Audience | Topic |
 |---|-------|----------|-------|
 | — | [Quickstart](./00_QUICKSTART.md) | New users | Build and check a small planning setup |
-| 01 | [Project Instructions](./01_CLAUDE_MD.md) | All | Writing effective always-loaded instructions |
+| 01 | [Project Instructions](./01_PROJECT_INSTRUCTIONS.md) | All | Writing effective always-loaded instructions |
 | 02 | [Prompting Basics](./02_PROMPTING_BASICS.md) | All | Writing instructions that produce consistent output |
 | 03 | [Skills](./03_SKILLS.md) | All | Designing skills for recurring tasks |
 | 04 | [Memory & Profile](./04_MEMORY_AND_PROFILE.md) | All | Persistence across sessions |
@@ -199,7 +199,7 @@ The copy-paste starting points in `templates/`:
 /
 ├── 00_INDEX.md               # Full annotated guide index
 ├── 00_QUICKSTART.md          # Start here if you're new
-├── 01_CLAUDE_MD.md – 35_DUAL_PLATFORM_PROJECTS.md
+├── 01_PROJECT_INSTRUCTIONS.md – 35_DUAL_PLATFORM_PROJECTS.md
 ├── CHEATSHEET.md             # One-page quick reference
 ├── tasks/                    # Setup and audit task files
 ├── skills/                   # Bundled installable skills

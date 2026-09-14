@@ -36,7 +36,7 @@ Each thing worth harvesting maps to where it belongs in Cluide. Use this table i
 
 | Dimension | What to look for in the project | Lands in Cluide |
 |-----------|--------------------------------|-----------------|
-| CLAUDE.md patterns | Standing rules / file-map structures that work in production but Cluide doesn't teach | `01_CLAUDE_MD.md`, `16_BEST_PRACTICES.md`, templates |
+| CLAUDE.md patterns | Standing rules / file-map structures that work in production but Cluide doesn't teach | `01_PROJECT_INSTRUCTIONS.md`, `16_BEST_PRACTICES.md`, templates |
 | Skills | Skills the project relies on that Cluide doesn't ship or teach | `03_SKILLS.md`, `skills/` |
 | Scheduled-task structure | Efficiency tricks, self-improvement loops, run-log conventions proven across real runs | `06`, `07`, `08`, `templates/TASK_TEMPLATE/` |
 | Memory / profile schema | Profile and knowledge file shapes that earned their keep | `04_MEMORY_AND_PROFILE.md`, `14_PERSONAL_DATA_LAYER.md`, templates |

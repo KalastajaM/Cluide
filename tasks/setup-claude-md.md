@@ -2,7 +2,7 @@
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
 > `Assistant, run tasks/setup-claude-md.md`
-> **Source guide:** `01_CLAUDE_MD.md`
+> **Source guide:** `01_PROJECT_INSTRUCTIONS.md`
 
 ## Runtime route
 

@@ -2,7 +2,7 @@
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
 > `Assistant, run tasks/tune-instruction-layers.md`
-> **Source guides:** `25_PROJECT_INSTRUCTION_LAYERS.md` (the layer split), `01_CLAUDE_MD.md` (the CLAUDE.md body).
+> **Source guides:** `25_PROJECT_INSTRUCTION_LAYERS.md` (the layer split), `01_PROJECT_INSTRUCTIONS.md` (the CLAUDE.md body).
 
 ## Runtime route
 

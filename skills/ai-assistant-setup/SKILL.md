@@ -35,7 +35,7 @@ All guides are in the `references/` directory next to this file.
 
 | File | What it covers | Load when... |
 |------|---------------|-------------|
-| `01_CLAUDE_MD.md` | What to put in CLAUDE.md, structure, examples | User wants to write/improve their CLAUDE.md, or Claude keeps misbehaving session-to-session |
+| `01_PROJECT_INSTRUCTIONS.md` | What to put in CLAUDE.md, structure, examples | User wants to write/improve their CLAUDE.md, or Claude keeps misbehaving session-to-session |
 | `02_PROMPTING_BASICS.md` | Writing instructions that produce consistent output: specificity, examples, constraints, structure | User is drafting instructions for a skill, task, or CLAUDE.md and wants them to be followed reliably |
 | `03_SKILLS.md` | Anatomy of a skill, writing descriptions, workflow steps, output formats | User wants to create or improve a skill for a recurring task |
 | `04_MEMORY_AND_PROFILE.md` | Auto-memory system, profile files, what to store, hypothesis system | User wants Claude to remember things across sessions |

@@ -41,7 +41,7 @@ Not sure where to start? Use this table:
 
 | You want to... | Build | Guide |
 |---|---|---|
-| An assistant follows standing rules | Shared policy + native entry point | [01](./01_CLAUDE_MD.md) |
+| An assistant follows standing rules | Shared policy + native entry point | [01](./01_PROJECT_INSTRUCTIONS.md) |
 | Do the same task when you ask for it | Skill | [03](./03_SKILLS.md) |
 | Run something automatically on a schedule | Scheduled Task | `tasks/setup-scheduled-task.md` → then [06](./06_TASK_EFFICIENCY_GUIDE.md) |
 | An assistant remembers things across sessions | Memory | [04](./04_MEMORY_AND_PROFILE.md) |
@@ -63,8 +63,8 @@ The guide numbers are stable addresses, not a reading order — new guides get t
 
 | Track | Read in this order | For |
 |---|---|---|
-| **Foundation** | [Quickstart](./00_QUICKSTART.md) → [01](./01_CLAUDE_MD.md) → [02](./02_PROMPTING_BASICS.md) → [20](./20_INTERACTIVE_PROMPTING.md) → [27](./27_INDEPENDENT_JUDGMENT.md) → [03](./03_SKILLS.md) → [04](./04_MEMORY_AND_PROFILE.md) → [34](./34_IMPORTING_FROM_OTHER_ASSISTANTS.md) → [05](./05_MCP_SERVERS.md) | Everyone — start here |
-| **Dual-platform setup** | [Quickstart](./00_QUICKSTART.md) → [01](./01_CLAUDE_MD.md) → [25](./25_PROJECT_INSTRUCTION_LAYERS.md) → [35](./35_DUAL_PLATFORM_PROJECTS.md) → [31](./31_BEHAVIOUR_TESTS.md) | Shared policy, native adapters, and per-surface verification |
+| **Foundation** | [Quickstart](./00_QUICKSTART.md) → [01](./01_PROJECT_INSTRUCTIONS.md) → [02](./02_PROMPTING_BASICS.md) → [20](./20_INTERACTIVE_PROMPTING.md) → [27](./27_INDEPENDENT_JUDGMENT.md) → [03](./03_SKILLS.md) → [04](./04_MEMORY_AND_PROFILE.md) → [34](./34_IMPORTING_FROM_OTHER_ASSISTANTS.md) → [05](./05_MCP_SERVERS.md) | Everyone — start here |
+| **Dual-platform setup** | [Quickstart](./00_QUICKSTART.md) → [01](./01_PROJECT_INSTRUCTIONS.md) → [25](./25_PROJECT_INSTRUCTION_LAYERS.md) → [35](./35_DUAL_PLATFORM_PROJECTS.md) → [31](./31_BEHAVIOUR_TESTS.md) | Shared policy, native adapters, and per-surface verification |
 | **Scheduled tasks** | [06](./06_TASK_EFFICIENCY_GUIDE.md) → [07](./07_TASK_LEARNING_GUIDE.md) (incl. Part 9: the template) → [09](./09_MULTI_TASK_ORCHESTRATION.md) → [10](./10_COST_PERFORMANCE.md) | Once you automate anything |
 | **Operations & safety** | [12](./12_SECURITY.md) → [32](./32_ACTION_AUTHORITY.md) → [11](./11_GIT_INTEGRATION.md) → [13](./13_DEV_EXECUTION_WORKFLOW.md) → [31](./31_BEHAVIOUR_TESTS.md) → [17](./17_TROUBLESHOOTING.md) | Securing and maintaining your setup |
 | **Data & knowledge** | [14](./14_PERSONAL_DATA_LAYER.md) → [15](./15_LLM_WIKI.md) → [28](./28_SECOND_BRAIN.md) | Working with personal data, knowledge bases, and your own notes |
@@ -84,14 +84,14 @@ A hands-on walkthrough: build shared instructions and a planning workflow on you
 
 ---
 
-### [01 — CLAUDE.md](./01_CLAUDE_MD.md)
+### [01 — Project Instructions](./01_PROJECT_INSTRUCTIONS.md)
 `[All users]` · `~10 min`
 
 *The foundation: what goes in your always-loaded instruction file.*
 
-Covers: what to put in CLAUDE.md, how to structure it, what not to include, and how to keep it lean and effective. Includes a real-world example.
+Covers: shared policy content and structure, AGENTS.md, the CLAUDE.md adapter, and app project instructions. Includes examples and checks for each supported surface.
 
-**Use this when:** you're setting up Claude for the first time, or the assistant keeps behaving in ways you have to correct session after session.
+**Use this when:** you're setting up an assistant for the first time, or the assistant keeps behaving in ways you have to correct session after session.
 
 ---
 
@@ -531,7 +531,7 @@ Tasks are standalone instruction files you run by saying `Claude, run tasks/[tas
 
 **Three ways to use the guides in this project:**
 1. **Read them yourself** and set things up manually
-2. **Give a guide to your assistant** — `"Read 01_CLAUDE_MD.md and help me write my CLAUDE.md"`
+2. **Give a guide to your assistant** — `"Read 01_PROJECT_INSTRUCTIONS.md and help me write shared project instructions for my chosen surface"`
 3. **Run a task** — faster, guided, no reading required
 
 Tasks are designed to be portable: copy any task file to another project's `tasks/` directory and run it there. Each task includes a `Source guide:` reference so you can trace it back here. Every task follows the standard format documented in [`tasks/README.md`](./tasks/README.md).
@@ -786,13 +786,13 @@ Full-lifecycle git and GitHub management. Diagnoses the repo's real state before
 
 Prefer to do it manually? Start here:
 
-1. Follow **[00_QUICKSTART.md](./00_QUICKSTART.md)** — build your first CLAUDE.md and skill in 20 minutes with exact file templates.
+1. Follow **[00_QUICKSTART.md](./00_QUICKSTART.md)** — build your first shared policy and planning workflow with exact file templates.
 2. Come back for the rest when you've used it a few times and know what you want next.
 
 Or for just the minimum:
 1. Read **Guide 01** — takes 5 minutes.
-2. Ask Claude: *"Read 01_CLAUDE_MD.md and help me write my CLAUDE.md. Ask me what you need to know."*
-3. Save the result to `.claude/CLAUDE.md`.
+2. Ask your assistant: *"Read 01_PROJECT_INSTRUCTIONS.md and help me write shared project instructions for my chosen surface. Ask me what you need to know."*
+3. Save shared rules in `AGENTS.md`; connect them through the native adapter or app instructions described in Guide 01.
 
 ---
 
@@ -801,7 +801,7 @@ Or for just the minimum:
 If you're new to this, go in this order:
 
 1. **Start with [00_QUICKSTART.md](./00_QUICKSTART.md)** — get something working first.
-2. **Then 01** — refine your CLAUDE.md once you've seen how it behaves.
+2. **Then 01** — refine your project instructions once you've seen how it behaves.
 3. **Then 02 + 20** — learn prompting basics and Claude Code's interactive features (`@` references, plan mode, context hygiene). These apply from your very first skill onwards.
 4. **Then 03** — create your first real skill.
 5. **Then 04 + 05** — enable memory and connect MCP tools.
@@ -812,12 +812,12 @@ If you're new to this, go in this order:
 
 ---
 
-## Giving a Guide to Claude Directly
+## Giving a Guide to Your Assistant Directly
 
-Each guide is also written so Claude can read it and act on it without the skill installed:
+Each guide is also written so either assistant can read it and act on it without the skill installed:
 
 > "Read 03_SKILLS.md and then create a skill for drafting project status updates."
 
-> "Read 01_CLAUDE_MD.md and help me write my own CLAUDE.md based on what you know about me."
+> "Read 01_PROJECT_INSTRUCTIONS.md and help me write my shared project instructions based on what you know about me."
 
 > "Read 06_TASK_EFFICIENCY_GUIDE.md and audit my existing email digest task for token efficiency."

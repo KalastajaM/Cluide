@@ -13,7 +13,7 @@
 
 The invariant is one authored policy, not one universal loader. App fields can provide a bootstrap when files are unavailable; repository files provide reviewable history. Never assume a project description is injected into another product's prompt or that every app has the same fields.
 
-The Cowork-specific examples below illustrate the pattern. For ChatGPT, use its project instructions and accessible sources; for Codex, use the native instruction chain. See [Guide 01](./01_CLAUDE_MD.md) for the contract's contents and [Guide 35](./35_DUAL_PLATFORM_PROJECTS.md) for current product facts. Official loading/source documentation checked 2026-09-14: [OpenAI projects](https://learn.chatgpt.com/docs/projects), [Codex instructions](https://learn.chatgpt.com/docs/agent-configuration/agents-md), [Claude memory and instructions](https://code.claude.com/docs/en/memory).
+The Cowork-specific examples below illustrate the pattern. For ChatGPT, use its project instructions and accessible sources; for Codex, use the native instruction chain. See [Guide 01](./01_PROJECT_INSTRUCTIONS.md) for the contract's contents and [Guide 35](./35_DUAL_PLATFORM_PROJECTS.md) for current product facts. Official loading/source documentation checked 2026-09-14: [OpenAI projects](https://learn.chatgpt.com/docs/projects), [Codex instructions](https://learn.chatgpt.com/docs/agent-configuration/agents-md), [Claude memory and instructions](https://code.claude.com/docs/en/memory).
 
 ---
 

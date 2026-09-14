@@ -253,7 +253,7 @@ financial/
 ```
 
 - Copy the file to a `backup/` folder under a `<name>_pre-<operation>_<timestamp>` name *before* running the script that mutates the original.
-- Treat `backup/` as a rollback source only — never an input. Mark it read-only or `[IGNORE]` so Claude never reads a stale snapshot back as live data (see the file-access tiers in [Guide 01](./01_CLAUDE_MD.md)).
+- Treat `backup/` as a rollback source only — never an input. Mark it read-only or `[IGNORE]` so Claude never reads a stale snapshot back as live data (see the file-access tiers in Guide 01 (in the Cluide guide set)).
 - Keep a rolling window — prune old snapshots so the folder doesn't grow unbounded.
 
 This complements git rather than replacing it: commit the *script* and its text inputs/outputs to git; snapshot the *binary* file it rewrites to `backup/`.

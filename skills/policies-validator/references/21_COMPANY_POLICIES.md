@@ -297,7 +297,7 @@ A T3 policy should silently shape tone — test by asking for a draft and checki
 
 ## 9. Related Guides
 
-- [Guide 01](./01_CLAUDE_MD.md) — where the one-line CLAUDE.md reference lives
+- Guide 01 (in the Cluide guide set) — where the shared policy reference lives
 - [Guide 03](./03_SKILLS.md) — skill design conventions; `policies-validator` follows them
 - [Guide 05](./05_MCP_SERVERS.md) — needed for Pattern B (policies fetched via MCP)
 - [Guide 11](./11_GIT_INTEGRATION.md) — `.gitignore` / `.claudeignore` hygiene
