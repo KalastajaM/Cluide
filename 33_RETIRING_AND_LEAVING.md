@@ -11,7 +11,7 @@
 
 ## 1. Stopping Is Not Ending
 
-A project you have stopped using still has a scheduled task registered against it, which fails quietly on a schedule or, worse, keeps running against stale data and producing output nobody reads. It still holds a row in an ownership registry, so the facts it owned have an owner who will never update them. Other projects still link to it. Memory — every layer [Guide 04](./04_MEMORY_AND_PROFILE.md) lists, plus the per-project store a Cowork project keeps — still describes it in the present tense and shapes how requests are read. Its app-side description still loads into any session that opens it. Connectors it was granted still hold their tokens. Its Claude Code state still sits under a path name.
+A project you have stopped using still has a scheduled task registered against it, which fails quietly on a schedule or, worse, keeps running against stale data and producing output nobody reads. It still holds a row in an ownership registry, so the facts it owned have an owner who will never update them. Other projects still link to it. Memory — every layer [Guide 04](./04_MEMORY_AND_PROFILE.md) lists, plus the per-project store a Cowork project keeps — still describes it in the present tense and shapes how requests are read. Its app-side description still loads into any session that opens it. Connectors it was granted still hold their tokens. Its native coding-agent state still sits under a platform-local location.
 
 None of this breaks visibly. That is the problem. A broken reference to a *moved* project fails loudly the first time something follows it; a reference to a *stopped* project resolves fine, to a folder that is simply no longer true. The stale fact propagates, the disabled task gets re-enabled by a well-meaning cleanup, the memory line about an "ongoing" project steers a session six months later.
 
@@ -105,7 +105,7 @@ An organisation account, a change of employer, a personal account that accumulat
 |---|---|---|
 | **The account** | Account memory; each Cowork project's per-project memory store; account-level instruction fields; account-installed skills; Cowork projects' app-side fields; scheduled tasks and Routines; published artifacts; chat and session history; connector authorisations and their tokens | Goes with the account. In an organisation account it belongs to the organisation and may be visible to its administrators; in a personal account it is yours and is lost only if you close it |
 | **The folder** | Project folders, `CLAUDE.md`, skills in the project, `.auto-memory/`, profile files, task definitions, outputs, git history | Yours if the disk and the repo are yours; the employer's if they are on employer equipment or in an employer repo |
-| **The machine** | Claude Code auto memory under `~/.claude/projects/`, `~/.claude/settings.json`, hooks, agents, `~/.claude.json`, the desktop app's state | Stays on the machine. On employer equipment it leaves with the laptop |
+| **The machine** | Codex configuration and locally stored session state; Claude Code auto memory under `~/.claude/projects/`, `~/.claude/settings.json`, hooks, agents, `~/.claude.json`, the desktop app's state | Stays on the machine. On employer equipment it leaves with the laptop |
 
 Two things follow from the table that people find out late.
 

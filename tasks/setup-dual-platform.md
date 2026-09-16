@@ -37,7 +37,7 @@ List every artefact that carries instructions or binds the project to one platfo
 | Kind | Look for |
 |---|---|
 | Instruction files | root and nested `CLAUDE.md`, `AGENTS.md`, any override variants the Step 0 sources name, and the imports between them |
-| App-side fields | Claude project description and instructions (read them as `tune-instruction-layers.md` Step 1 does); ChatGPT project instructions (a session cannot read these, so ask the user to paste them) |
+| App-side fields | Claude project description and instructions (read them as `tune-instruction-layers.md` Step 1 does); ChatGPT project instructions (inspect through a supported tool or UI; if unavailable, ask the user for the current text) |
 | Platform configuration | `.claude/` settings, hooks, agents and skills; `.mcp.json`; `.claudeignore`; any OpenAI-side configuration the sources name |
 | Skills and tasks | skill folders, `tasks/`, scheduled-task definitions, and the platform each one is registered on |
 | State | native memory on each platform, `.auto-memory/` and profile files, run logs, scheduler registrations |
@@ -56,7 +56,7 @@ Read the instruction files rule by rule and assign each one home:
 
 Then produce three lists that change the plan:
 
-- **Capability gaps.** Each Claude-only mechanism the project relies on (a hook, an `allowed-tools` allowlist, `.claudeignore`, a skill loader, a scheduled task, a subagent definition), with a verified OpenAI counterpart and its source, or **no verified counterpart**, or **untested**. Where Claude enforces something structurally, say plainly that a prose rule on the other platform is not the same guarantee (`12_SECURITY.md`). The same goes the other way for OpenAI sandbox or approval controls.
+- **Capability gaps.** Each platform-specific mechanism the project relies on (a hook, an `allowed-tools` allowlist, `.claudeignore`, a skill loader, a scheduled task, a subagent definition), with a verified counterpart on the other platform and its source, or **no verified counterpart**, or **untested**. Where Claude enforces something structurally, say plainly that a prose rule on the other platform is not the same guarantee (`12_SECURITY.md`). The same goes the other way for OpenAI sandbox or approval controls.
 - **Scheduler ownership.** Each recurring job gets exactly one owning platform, its timezone, stable identity and duplicate-run key. To transfer it: suspend the old trigger and drain runs, register/test the new owner in isolation, delete the old registration, then activate one owner and record cutover/rollback. Use the native routes in `setup-scheduled-task.md`. A job registered on both is a duplicate-run finding, and copying `TASK.md` does not move a registration.
 - **Concurrent writers.** Files both assistants may write, and the rule that prevents conflicting edits: separate branches or worktrees reconciled through git, or one named writer (`11_GIT_INTEGRATION.md`).
 

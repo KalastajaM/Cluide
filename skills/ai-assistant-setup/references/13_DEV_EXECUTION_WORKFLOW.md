@@ -112,11 +112,11 @@ Open a new Cowork conversation and share the proposals:
 
 > "Here is my IMPROVEMENTS.md: [paste contents]. For each pending proposal, explain what it does and ask me whether to apply it, reject it, or modify it."
 
-Work through them one at a time. Claude will make the change in the TASK.md once you confirm.
+Work through them one at a time. The assistant will make the change in the TASK.md once you confirm.
 
 ### What You Miss Without Claude Code
 
-Cowork has plan mode and subagents of its own, so the main thing you give up by staying out of Claude Code is **git integration** — rollback, history, pre-run snapshots ([Guide 11](./11_GIT_INTEGRATION.md)). You can work effectively without it, but it is worth setting up even if you are not a developer: it is the single best protection against "I broke something and don't know what".
+The practical gap is access to version control and reproducible checks. Claude Code and Codex are local repository routes; another session may also expose Git through its tools. If the chosen surface cannot inspect history or commit, hand the proposed files to a repository-capable session or use a manual Git workflow ([Guide 11](./11_GIT_INTEGRATION.md)). Do not infer missing Git support from the assistant brand.
 
 ---
 
@@ -201,25 +201,25 @@ The self-improvement system (Guide 07) generates proposals in IMPROVEMENTS.md th
 
 This separates review from execution and leaves a diff and validation record.
 
-The proposals were written by Claude, so asking Claude whether to apply them is not an independent check — the reviewer and the author share their priors about what a good change looks like. Ask what would go wrong if you applied it, and what would have to be true for the proposal to be a mistake, rather than for a recommendation ([Guide 27](./27_INDEPENDENT_JUDGMENT.md)).
+The proposals were written by the assistant, so asking the assistant whether to apply them is not an independent check — the reviewer and the author share their priors about what a good change looks like. Ask what would go wrong if you applied it, and what would have to be true for the proposal to be a mistake, rather than for a recommendation ([Guide 27](./27_INDEPENDENT_JUDGMENT.md)).
 
 ---
 
 ## Plan Mode: Review Before Executing
 
-For any change that is structural, multi-file, or hard to undo — ask Claude to plan before editing. This separates the "figure out what to do" step from the "do it" step.
+For any change that is structural, multi-file, or hard to undo — ask the assistant to plan before editing. This separates the "figure out what to do" step from the "do it" step.
 
 **How it works:**
-1. Ask Claude to plan only — no edits yet (use Shift+Tab to toggle plan mode, or state it in your prompt)
-2. Claude reads relevant files and describes the proposed changes
+1. Ask the assistant to plan only — no edits yet (use Shift+Tab to toggle plan mode, or state it in your prompt)
+2. The assistant reads relevant files and describes the proposed changes
 3. You review and approve, reject, or amend the plan
-4. Claude executes only what was approved
+4. The assistant executes only what was approved
 
 **When to use Plan Mode:**
 - Adding a new feature to a task or skill (multi-step, multiple files)
 - Restructuring a TASK.md or SKILL.md
 - Making changes whose impact is non-obvious
-- Any time you want to review before Claude acts, not after
+- Any time you want to review before the assistant acts, not after
 
 **When to skip it:**
 - Single-line fixes, typo corrections, adding one entry to a table

@@ -2,13 +2,13 @@
 
 > How to design and maintain several linked projects across Claude and OpenAI so shared facts stay consistent and each one stays focused. This is the cross-*project* extension of Guide 09 (which handles shared state and ownership across multiple *tasks* inside one assistant).
 
-Most setups start as one project and should stay that way. You reach for multiple projects when a single `CLAUDE.md` and folder start pulling in two directions at once: different purposes, different lifecycles, or data that keeps colliding. This guide covers when that moment has arrived, how to split cleanly when it has, what to do when two independent projects grow an overlap instead, and how to keep linked projects consistent and change them without breaking each other afterward.
+Most setups start as one project and should stay that way. You reach for multiple projects when a single shared policy and folder start pulling in two directions at once: different purposes, different lifecycles, or data that keeps colliding. This guide covers when that moment has arrived, how to split cleanly when it has, what to do when two independent projects grow an overlap instead, and how to keep linked projects consistent and change them without breaking each other afterward.
 
 ## When to split
 
 Prefer one project until it actively hurts. A single project is cheaper to reason about, mount, and audit. ("Mounting" throughout this guide means connecting a folder to a Cowork session; Guide 25 calls this a connected folder — the terms are interchangeable in these guides.) Split only when at least one of these is clearly true:
 
-- **Two purposes, one folder.** The project serves two audiences or two jobs that share almost no files, and the `CLAUDE.md` has to context-switch to describe both.
+- **Two purposes, one folder.** The project serves two audiences or two jobs that share almost no files, and the shared policy has to context-switch to describe both.
 - **Different lifecycles.** One part changes daily while another is a stable archive; one is active work while another is finished and kept for reference.
 - **Data that keeps colliding.** The same fact is being restated in several places and drifting, or two workflows keep editing the same file for different reasons.
 - **Access boundaries.** Part of the work needs to be mounted, shared, or scoped separately (for example, something you want to share without exposing the rest).
@@ -23,9 +23,9 @@ Splitting is a move-and-rewire operation, not a copy. The failure modes are all 
 
 1. **Name the seam and the owner.** State in one sentence what the new project is for, and which shared facts it will own after the split. Everything else stays put. If facts do not cleanly land on one side, stop and re-cut the seam.
 
-2. **Inventory what moves.** List every file, folder, skill, task, memory entry, and `CLAUDE.md` rule that belongs to the new project. Separately list the shared facts that will now cross the boundary; these become entries in the ownership registry (below). Do this before touching anything.
+2. **Inventory what moves.** List every file, folder, skill, task, memory entry, and shared-policy rule that belongs to the new project. Separately list the shared facts that will now cross the boundary; these become entries in the ownership registry (below). Do this before touching anything.
 
-3. **Scaffold the new project.** Create the new folder with its own `CLAUDE.md` (purpose + local rules), a `README`, and a layout consistent with your other projects (see the `PROJECT_TEMPLATE`). If the project is under git and history matters, preserve it (for example with `git subtree split` or `git filter-repo`) rather than starting fresh; if history does not matter, a clean copy of just the moved files is fine.
+3. **Scaffold the new project.** Create the new folder with its own shared policy (purpose + local rules), a `README`, and a layout consistent with your other projects (see the `PROJECT_TEMPLATE`). If the project is under git and history matters, preserve it (for example with `git subtree split` or `git filter-repo`) rather than starting fresh; if history does not matter, a clean copy of just the moved files is fine.
 
 4. **Move, do not copy.** Move the owned content into the new project. In the old project, replace what you moved with a **pointer** to the new owner, never a duplicate. A duplicated fact is a second owner waiting to drift.
 
@@ -33,7 +33,7 @@ Splitting is a move-and-rewire operation, not a copy. The failure modes are all 
 
 6. **Re-scope memory and tasks.** Split memory files along the seam so each project's memory describes only its own facts. A scheduled task that spanned the old project may need to be split or re-pointed; if a task now depends on data owned by the other project, give it an explicit link and a freshness check rather than a silent assumption.
 
-7. **Verify both sides.** Audit each project: no dead references, `CLAUDE.md` matches the folder contents, each shared fact has exactly one owner. Mount both projects together and confirm the cross-project references actually resolve and the workflows still run end to end.
+7. **Verify both sides.** Audit each project: no dead references, the shared policy matches the folder contents, each shared fact has exactly one owner. Mount both projects together and confirm the cross-project references actually resolve and the workflows still run end to end.
 
 8. **Decommission the old copy.** Archive what was moved (prefer archiving over deleting) and record the split. Do not leave a stale duplicate behind "just in case"; that is the drift you just paid to remove.
 
@@ -84,6 +84,8 @@ For source-only projects, record the owning source's revision and refresh rule a
 
 Splitting a project requires separate native setup on each supported surface: instructions/bootstrap, source grants and scheduler ownership. Update those records with the file links. A move is incomplete while a schedule or uploaded policy still points at the old home; [Guide 33](./33_RETIRING_AND_LEAVING.md) gives the retirement inventory.
 
+**Policy placement:** Put the shared rules below in `AGENTS.md` for Codex or a dual-platform repository, with a thin `CLAUDE.md` adapter for Claude. App projects bootstrap the same policy through their instructions and accessible sources (Guides 01 and 25). A Claude-only setup may keep its policy in `CLAUDE.md`.
+
 ---
 
 ## Cross-project linking conventions
@@ -96,7 +98,7 @@ Splitting a project requires separate native setup on each supported surface: in
 
 - **Detect drift** by scanning for the same fact stated in more than one project and comparing values, and by checking that each referencing pointer still resolves.
 - **Reconcile to the owner.** When a referencing copy disagrees, the owner wins unless the owner is the one that is stale; either way, one value survives and the rest become pointers.
-- **Respect each project's own rules.** A project's local `CLAUDE.md` is authoritative for that project. Never silently edit another project's data to enforce consistency; surface the conflict and let the owner decide.
+- **Respect each project's own rules.** A project's local the shared policy is authoritative for that project. Never silently edit another project's data to enforce consistency; surface the conflict and let the owner decide.
 - **Freshness over cleverness.** Prefer an explicit "last verified" date and a periodic recheck to any scheme that assumes references stay correct on their own.
 
 ## Changing a linked project without breaking the other

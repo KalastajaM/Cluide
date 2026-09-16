@@ -1,17 +1,19 @@
 # Behaviour Tests: Checking That the Setup Still Does What You Built
 
-> Every audit task in this repo reads a file and judges it. None of them asks the only question that matters: when you type the sentence you actually type, does the thing you built still happen? A CLAUDE.md rule can be perfectly written and silently stop holding — because a model changed, because a new skill now wins the trigger, because account memory accumulated a fact that reframes the request. Nothing in the file moved, so no audit notices. This guide is about testing behaviour rather than text: what a case looks like, how to run one, when to run the set, and what a failure means.
+> Every audit task in this repo reads a file and judges it. None of them asks the only question that matters: when you type the sentence you actually type, does the thing you built still happen? A shared policy rule can be perfectly written and silently stop holding — because a model changed, because a new skill now wins the trigger, because account memory accumulated a fact that reframes the request. Nothing in the file moved, so no audit notices. This guide is about testing behaviour rather than text: what a case looks like, how to run one, when to run the set, and what a failure means.
 
 > **Companion guides:** [Guide 29](./29_SPEC_BEFORE_REBUILD.md) proves a *rebuild* against the old version as an oracle; this guide is the standing version of that proof, run against the setup you already have. [Guide 27](./27_INDEPENDENT_JUDGMENT.md) is why a model grading a model needs care (§6). [Guide 26](./26_CONTEXT_SCOPING.md) is why a test runs in a fresh session and never in the one you edited from. [Guide 07](./07_TASK_LEARNING_GUIDE.md) catches behaviour drift *inside* a scheduled task from its own feedback signals; this guide catches it from outside, on demand. [Guide 03](./03_SKILLS.md) and [Guide 01](./01_PROJECT_INSTRUCTIONS.md) are what the tests protect. `tasks/review-platform-changes.md` checks whether Cluide's *guides* still match the platform; `tasks/setup-behaviour-tests.md` builds the suite that checks whether *your setup* does.
 
 > **Giving this guide to an assistant:**
-> "Read 31_BEHAVIOUR_TESTS.md. List the rules in my CLAUDE.md and the skills in this project that would be embarrassing to lose silently, then propose a case for each in the §3 shape. Do not run anything yet."
+> "Read 31_BEHAVIOUR_TESTS.md. List the rules in my shared policy and the skills in this project that would be embarrassing to lose silently, then propose a case for each in the §3 shape. Do not run anything yet."
+
+**Policy placement:** Put the shared rules below in `AGENTS.md` for Codex or a dual-platform repository, with a thin `CLAUDE.md` adapter for Claude. App projects bootstrap the same policy through their instructions and accessible sources (Guides 01 and 25). A Claude-only setup may keep its policy in `CLAUDE.md`.
 
 ---
 
 ## 1. Why the Audits Are Not Enough
 
-An audit is a review of a definition. `audit-skill.md` reads a SKILL.md and judges whether its description would trigger; `audit-claude-md.md` reads CLAUDE.md and judges whether its rules are dead or over-long. Both are useful and both share a blind spot: they assume that a well-written definition produces the behaviour it describes. That was true the day you wrote it. It stops being true without any file changing, and there are four ways it stops.
+An audit is a review of a definition. `audit-skill.md` reads a SKILL.md and judges whether its description would trigger; `audit-claude-md.md` reads shared policy and judges whether its rules are dead or over-long. Both are useful and both share a blind spot: they assume that a well-written definition produces the behaviour it describes. That was true the day you wrote it. It stops being true without any file changing, and there are four ways it stops.
 
 **The model moved.** A model launch changes what a given instruction produces — longer or shorter replies, a different reading of "concise", a different threshold for asking versus acting. Anthropic's own [model migration guidance](https://platform.claude.com/docs/en/models/opus-5/migration-guide) for API users says to re-test prompt parsing, tool-use loops and refusal handling on each new model; there is no equivalent page for a Claude Code or Cowork setup, which is why this one exists.
 
@@ -87,6 +89,8 @@ The suite is the same whichever way you run it. Pick by what you have.
 
 ## Per-Surface Runners and Shared Outcomes
 
+For the OpenAI CLI route, `codex exec --json "<fixture prompt>"` emits an event stream; `--output-schema <schema.json>` constrains the final response shape. Run it from the isolated fixture project and assert on the final result, not progress text. Schema validity alone is not a behavioural pass. This documented route is not a live test; see [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts).
+
 Keep the prompt, frozen inputs and behavioural graders shared. Bind tool names, instruction loading and output collection in a small runner for each surface. A Claude CLI command is not a Codex runner, and neither proves what an uploaded-source ChatGPT project does.
 
 | Case | Shared expectation | Native setup to record |
@@ -108,7 +112,7 @@ Record product/surface, app or CLI version where visible, model, policy/skill re
 
 Four triggers, and not "every session".
 
-**After you change a rule or a description.** The regression run. You edited the phrasing of a CLAUDE.md rule or a skill description; run the cases that touch it and the negative cases of its neighbours. This is also the moment to update the case if the change was deliberate — a test that encodes the old behaviour after you changed the rule on purpose is a spec that has fallen behind, and [Guide 29](./29_SPEC_BEFORE_REBUILD.md)'s rule applies: change the statement first, then the artefact, then check one against the other.
+**After you change a rule or a description.** The regression run. You edited the phrasing of a shared policy rule or a skill description; run the cases that touch it and the negative cases of its neighbours. This is also the moment to update the case if the change was deliberate — a test that encodes the old behaviour after you changed the rule on purpose is a spec that has fallen behind, and [Guide 29](./29_SPEC_BEFORE_REBUILD.md)'s rule applies: change the statement first, then the artefact, then check one against the other.
 
 **After a model launch, or when a model changes underneath a task.** The full suite, once, with the results recorded against the model name. `PreModelSwitch` and `PostModelSwitch` hooks fire in-session when the model changes and can log it, but a scheduled task that silently picked up a new default model has no such moment; the results file is how you notice.
 
@@ -147,7 +151,7 @@ A failed case is a fact, not yet a diagnosis. Sort it into one of four before to
 
 ## 8. Keeping the Suite Honest
 
-A suite rots in the same two directions a CLAUDE.md does: cases nobody remembers the reason for, and cases that encode a rule you already changed.
+A suite rots in the same two directions a shared policy does: cases nobody remembers the reason for, and cases that encode a rule you already changed.
 
 - **A case that cannot say what it protects is pruned**, the same as a rule ([Guide 16](./16_BEST_PRACTICES.md)).
 - **A deleted rule takes its cases with it.** In the same commit.
@@ -169,9 +173,11 @@ After the next model launch, the full six again. The em-dash rule now fails one 
 
 ---
 
-## 10. The CLAUDE.md Block
+<a id="10-the-claudemd-block"></a>
 
-Short, because most of this is a procedure and lives in the suite's README rather than in standing instruction. What belongs in CLAUDE.md is the rule that changes to protected things come with a test run.
+## 10. The Shared Policy Block
+
+Short, because most of this is a procedure and lives in the suite's README rather than in standing instruction. What belongs in the shared policy is the rule that changes to protected things come with a test run.
 
 ```markdown
 ## Behaviour tests
@@ -179,7 +185,7 @@ Short, because most of this is a procedure and lives in the suite's README rathe
 The suite lives in `tests/behaviour/`. Each case is a `prompt.md` plus `graders/`,
 and its frontmatter names the failure or rule it protects.
 
-- After editing a CLAUDE.md rule or a skill description, run the cases that touch
+- After editing a shared policy rule or a skill description, run the cases that touch
   it and the negative cases of neighbouring skills. Report pass rates, not verdicts.
 - Run tests in a fresh session, never in the one the edit was made in.
 - Test inputs are fixtures under `tests/behaviour/fixtures/`. Never point a test at

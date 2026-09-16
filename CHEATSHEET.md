@@ -71,7 +71,7 @@ description: >
 ## Workflow
 1. [First step — be specific about what to read/check]
 2. [Second step]
-3. [Third step — name the MCP tool if one is used, e.g. use gmail_list_emails]
+3. [Third step — identify the required operation and bind the actual tool exposed by this host]
 4. [Final step — produce the output]
 
 ## Output Format

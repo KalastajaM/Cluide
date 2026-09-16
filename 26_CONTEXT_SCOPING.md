@@ -13,13 +13,13 @@
 
 | # | Failure | What happens | Usual fix |
 |---|---|---|---|
-| 1 | **Too little** | Claude fills gaps with plausible invention. Generic output that doesn't fit your situation. | Add context. [Guide 02](./02_PROMPTING_BASICS.md). |
+| 1 | **Too little** | the assistant fills gaps with plausible invention. Generic output that doesn't fit your situation. | Add context. [Guide 02](./02_PROMPTING_BASICS.md). |
 | 2 | **Too much** | Instructions compete for attention. Rules get dropped. Cost rises. | Trim. [Guide 02](./02_PROMPTING_BASICS.md) on context engineering, [Guide 06 — Task Efficiency](./06_TASK_EFFICIENCY_GUIDE.md). |
-| 3 | **Wrong kind** | Claude resolves an ambiguity the real reader cannot resolve, so the defect never surfaces at all. | Withhold. This guide. |
+| 3 | **Wrong kind** | the assistant resolves an ambiguity the real reader cannot resolve, so the defect never surfaces at all. | Withhold. This guide. |
 
 Failures 1 and 2 are well covered elsewhere. Failure 3 is the one nobody plans for, because it does not look like a failure. The output is confident, coherent, and wrong in a way you cannot see from inside.
 
-**A concrete case.** You ask Claude to review the onboarding doc for a new hire. Claude has the whole repo in context. The doc says "run the usual setup script." Claude knows which script, sees no problem, reports the doc as clear. The new hire, who has none of that context, is stuck on line one.
+**A concrete case.** You ask the assistant to review the onboarding doc for a new hire. The assistant has the whole repo in context. The doc says "run the usual setup script." the assistant knows which script, sees no problem, reports the doc as clear. The new hire, who has none of that context, is stuck on line one.
 
 The same mechanism bites every time an output leaves the environment that produced it: a proposal to a client, a spec handed to a contractor, a contract sent to a counterparty, a guide published for strangers, an API doc. The reviewer's context is precisely what makes them unable to review it.
 
@@ -161,7 +161,7 @@ For a task that is high stakes and roughly one-shot, the prompt is worth treatin
 
 ### Stage 1 — Design session
 
-Bring the mess. Constraints, prior mistakes, things that must not be touched and why, what the output has to look like, who reads it. Ask Claude to interview you, then produce the prompt as a standalone file.
+Bring the mess. Constraints, prior mistakes, things that must not be touched and why, what the output has to look like, who reads it. Ask the assistant to interview you, then produce the prompt as a standalone file.
 
 The bundled `review-protocol` skill can do this; [Guide 03](./03_SKILLS.md) covers installing it. Otherwise use the fallback prompt below:
 
@@ -209,7 +209,7 @@ A skeleton, as slots. Fill each with real decisions from your case; do not keep 
 # [What this run produces]
 
 ## Role and stake
-Who Claude is acting as, what expertise applies, who the audience is, and what
+Who the assistant is acting as, what expertise applies, who the audience is, and what
 happens if this is wrong. One paragraph. This calibrates severity judgments.
 
 ## Scope
@@ -255,7 +255,7 @@ keep — pointed at the exact spot rather than stated as a general principle.
 Which claims must be checked against a primary source, and where.
 Require the source to be quoted, and require anything unconfirmed to be marked
 UNVERIFIED rather than dropped. Silent omission hides the boundary of what
-Claude actually knows.
+The assistant actually knows.
 
 ## Output
 The exact file path and format.
@@ -281,12 +281,12 @@ Blocker (do not send) · Material (send only after fixing) · Minor · Nit.
 
 ## Discipline
 Distinguish throughout between what the artefact says, what the project file
-says, and what Claude concludes.
+says, and what the assistant concludes.
 Do not pad with findings that would not change the outcome.
 Where you do not know, say so.
 ```
 
-Two of these slots do most of the work. **Rules that carry their price** are what let Claude reason at the edges instead of guessing which way to fail. **Verified clean** is what makes the report trustworthy, because it converts silence from ambiguous to meaningful.
+Two of these slots do most of the work. **Rules that carry their price** are what let the assistant reason at the edges instead of guessing which way to fail. **Verified clean** is what makes the report trustworthy, because it converts silence from ambiguous to meaningful.
 
 ---
 

@@ -47,11 +47,11 @@ my-skill/
 └── assets/           (templates, icons, fonts)
 ```
 
-**`references/`** — detailed content the skill needs occasionally but not every activation (schemas, full format specs, domain guides). SKILL.md references these by name; Claude loads them only when needed. Keep SKILL.md itself under ~500 lines and offload the rest here.
+**`references/`** — detailed content the skill needs occasionally but not every activation (schemas, full format specs, domain guides). SKILL.md references these by name; the assistant loads them only when needed. Keep SKILL.md itself under ~500 lines and offload the rest here.
 
-**`scripts/`** — Python or shell scripts the skill can execute when the host exposes an appropriate execution tool. Good for fixed-format artifact generation, data transformation, or any repeatable computation that doesn't need Claude to reason about it.
+**`scripts/`** — Python or shell scripts the skill can execute when the host exposes an appropriate execution tool. Good for fixed-format artifact generation, data transformation, or any repeatable computation that doesn't need the assistant to reason about it.
 
-**Context note:** Files in `references/` and `scripts/` are not loaded into Claude's context automatically — the host initially discovers metadata and loads the skill body when invoked. To discourage Claude from loading them even when exploring the project, add the patterns to `.claudeignore` — but note that `.claudeignore` support varies by product and version; treat it as hygiene, not a security boundary, and pair it with `permissions.deny` rules for genuinely sensitive files (see [Guide 12](./12_SECURITY.md)). See [Guide 11 — Git Integration](./11_GIT_INTEGRATION.md) for `.claudeignore` setup.
+**Context note (Claude-specific exclusion example):** Files in `references/` and `scripts/` are not loaded into Claude's context automatically — the host initially discovers metadata and loads the skill body when invoked. To discourage Claude from loading them even when exploring the project, add the patterns to `.claudeignore` — but note that `.claudeignore` support varies by product and version; treat it as hygiene, not a security boundary, and pair it with `permissions.deny` rules for genuinely sensitive files (see [Guide 12](./12_SECURITY.md)). See [Guide 11 — Git Integration](./11_GIT_INTEGRATION.md) for `.claudeignore` setup.
 
 The SKILL.md file has two parts: a YAML frontmatter block, and the instruction body.
 
@@ -124,10 +124,10 @@ If the skill produces a structured output (a task list, a briefing document, a f
 
 ### 4. What the Assistant Can and Cannot Do
 
-If there is a constraint (e.g., "Claude can create email drafts but cannot send them"), state it clearly in the skill. This prevents the assistant from either overstepping or under-delivering:
+If there is a constraint (e.g., "the assistant can create email drafts but cannot send them"), state it clearly in the skill. This prevents the assistant from either overstepping or under-delivering:
 
 ```
-> Note: Claude can create drafts but cannot send emails directly.
+> This workflow is draft-only. Use a draft-creation tool if available; otherwise return the draft text. Do not send it. Tool availability and permission are separate checks.
 > The user sends from Gmail.
 ```
 
@@ -192,7 +192,9 @@ Without explicit memory instructions, the skill will re-learn the same things fr
 
 ---
 
-## Skill vs. CLAUDE.md vs. Task File
+<a id="skill-vs-claudemd-vs-task-file"></a>
+
+## Skill vs. Shared Policy vs. Task File
 
 | What | Where |
 |------|-------|
@@ -247,9 +249,9 @@ Four skills that illustrate different patterns. None of them ships in this repo'
 
 **Key design choices:**
 - **Description lists implicit triggers** — "what's pending?", "catch me up", "any follow-ups?" — so the skill activates from natural phrasing, not just a precise command.
-- **Scanning strategy is explicit** — specific Gmail search queries (`is:unread newer_than:7d`) are written into the workflow, not left to Claude to figure out.
+- **Scanning strategy is explicit** — specific Gmail search queries (`is:unread newer_than:7d`) are written into the workflow, not left to the assistant to figure out.
 - **Output format is shown with an example** — the 🔴🟡🟢 priority structure is defined once and reused every run.
-- **"Claude can create drafts but cannot send"** — the constraint is stated clearly, with native permissions enforcing the boundary where required.
+- **"the assistant can create drafts but cannot send"** — the constraint is stated clearly, with native permissions enforcing the boundary where required.
 - **Edge cases are named** — too many emails (15+), Finnish-language emails, long threads — each has a defined handling rule.
 
 **What makes the description work:**
@@ -274,7 +276,7 @@ This is a strong description: it names the implicit trigger phrases, is specific
 **What it does:** Builds shopping lists for the user's regular supermarkets, learns from habits, suggests items proactively, and can email the finished list to the user.
 
 **Key design choices:**
-- **Memory is built into the skill** — the skill maintains a running model of staples, brand preferences, and run-out items using Claude's persistent memory.
+- **Memory is built into the skill** — the skill maintains a running model of staples, brand preferences, and run-out items using explicit project memory files (Guide 04), or native memory when that is the intended store.
 - **Proactive suggestion on session start** — the skill doesn't wait to be told what to add; it surfaces what you probably need based on past behaviour.
 - **Output format is grouped by store section** — produce/dairy/bread etc. — which mirrors how a real store is laid out.
 - **Recipe-based ingredient extraction** — "I want to make risotto" maps to a specific ingredient list, cross-checked against likely in-stock items.
@@ -299,13 +301,13 @@ This is a strong description: it names the implicit trigger phrases, is specific
 
 **What it does:** Manages a project backlog across sessions using two files: `BACKLOG.md` (living idea list) and `DECISIONS.md` (architectural decision log). Runs standard sessions (`/backlog`) and grooming sessions (`/backlog groom`), handles initialization automatically, and guards against re-litigating closed decisions.
 
-**Where to use it:** Any project where you want to track ideas, improvements, and architecture decisions across Claude sessions — regardless of language or domain. Install the skill through the native route and verify that it reads the two files from the intended project.
+**Where to use it:** Any project where you want to track ideas, improvements, and architecture decisions across assistant sessions — regardless of language or domain. Install the skill through the native route and verify that it reads the two files from the intended project.
 
 **Key design choices:**
-- **Files are the persistence layer, not Claude memory** — `DECISIONS.md` plays the role that memory would in other skills. The skill explicitly states that Claude memory should not be used, so state never ends up in two places.
+- **Files are the persistence layer, not native memory** — `DECISIONS.md` plays the role that memory would in other skills. The skill explicitly states that native memory should not be used, so state never ends up in two places.
 - **Two session modes with different scopes** — the standard session runs a focused orient → prioritize → pick → write loop; the grooming session inserts a full architecture review. Separating them prevents grooming overhead from slowing down everyday sessions.
 - **Conflicts and dependencies block selection** — items with unresolved `Conflicts-with` or unsatisfied `Dependencies` cannot be picked. This is enforced as a rule, not a suggestion.
-- **Constraint is explicit** — "Claude writes the files but does not commit." The user commits. Stating this prevents Claude from attempting git operations.
+- **Constraint is explicit** — "the assistant writes the files but does not commit." The user commits. Stating this prevents the assistant from attempting git operations.
 - **Orient output format is shown** — a concrete table + flagged-items block, so the expected layout is checkable across sessions.
 
 **The backlog skill is a good model for any skill where the data outlives the conversation** — the pattern of "two files, one for state and one for decisions" can be adapted to support tickets, product specs, hiring pipelines, or any domain where you need both a working list and an immutable audit trail.

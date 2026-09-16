@@ -10,10 +10,29 @@ This page configures **this documentation project** for both platforms. The guid
 |---|---|
 | Codex working in the repository | Open this folder as the project, or start the CLI from its root. Codex discovers the root `AGENTS.md`; check for user-level or nested overrides if behavior differs. |
 | Claude Code working in the repository | Open this folder. The root `CLAUDE.md` imports `AGENTS.md`. |
-| ChatGPT project using uploaded or connected sources | Supply `AGENTS.md`, `00_INDEX.md`, and the guides needed for the work as sources. Put the bootstrap below in project instructions. A GitHub merge does not refresh uploaded copies. |
+| ChatGPT project — local project (filesystem access) | Reads `AGENTS.md` natively, same discovery as Codex. Open this folder as the local project. |
+| ChatGPT project — uploaded or connected sources | No native `AGENTS.md` read. Supply `AGENTS.md`, `00_INDEX.md`, and the guides needed for the work as sources. Put the bootstrap below in project instructions. A GitHub merge does not refresh uploaded copies. |
 | Conversational Claude / Cowork | Make the repository files available through the supported project or folder interface and use the bootstrap below. Explicitly read `AGENTS.md` when file imports are not supported. |
 
 OpenAI documents [Codex instruction discovery](https://learn.chatgpt.com/docs/agent-configuration/agents-md) and [ChatGPT project sources and instructions](https://learn.chatgpt.com/docs/projects). Anthropic documents [CLAUDE.md imports](https://code.claude.com/docs/en/memory). Checked 2026-09-13. File access and tools depend on the selected surface, not merely on which model answers.
+
+## Delegation
+
+OpenAI delegation: retain the configured model unless the user requests a supported alternative. Follow the host's delegation rules. (Claude-specific delegation routing is in `CLAUDE.md`.)
+
+## Capability Gaps
+
+| Capability | Claude route | OpenAI/Codex route | Status |
+|---|---|---|---|
+| Permission allowlisting | `.claude/settings.local.json` (`permissions.allow`) | Codex `sandbox_mode` / `approval_policy` in `.codex/config.toml` | No verified counterpart — different mechanisms, not checked side by side |
+| Security-review hooks | `skills/security-review/references/hook-*.sh` (Claude Code hooks) | `skills/security-review/references/openai-review.md` (separate documented route) | Verified — two intentionally separate routes, not a translation of one into the other |
+| Skill loading | `SKILL.md` folders under `.claude/skills/` or project `skills/` | `SKILL.md` folders under `.agents/skills`, optional `agents/openai.yaml` metadata | Untested — not yet installed or run on a Codex or ChatGPT surface |
+| Model routing | Claude model identifiers (`CLAUDE.md`) | Configured OpenAI model, no name translation (this file) | Verified — kept as two separate, unlabelled-model prose rules |
+| Scheduled tasks | Cowork scheduled tasks | OpenAI Scheduled | N/A — see Recurring Jobs below |
+
+## Recurring Jobs
+
+Cluide (the guide repository) has no recurring or scheduled jobs of its own. The scheduler-owner table in Guide 35 §7 applies to *projects built using* these patterns, not to this repository.
 
 ## App-side bootstrap
 
@@ -26,6 +45,16 @@ Suggested project instructions for either conversational platform:
 > Before working on Cluide, read the supplied AGENTS.md as the shared repository policy, then the relevant guides from 00_INDEX.md. If those sources are unavailable, report what is missing before making repository changes. Distinguish Claude, ChatGPT, and Codex capabilities; use only tools available in this session. Treat templates as reference material until asked to instantiate them. Report whether changes were saved to the repository or only drafted in chat.
 
 These texts are ready to apply; their presence here does not configure an app. Record the platform, date, and actual field values after applying them. Retain historical mirrors until the corresponding live fields are verified.
+
+## Fresh-Session Check Results
+
+| Surface | Result | Notes |
+|---|---|---|
+| Claude Code | Untested | Not yet run against current `AGENTS.md` / `CLAUDE.md` |
+| Conversational Claude / Cowork | Untested | A conversational session with filesystem access but no native project binding is not a valid check (Guide 35 §8) |
+| ChatGPT project (local) | Untested | Not yet run |
+| ChatGPT project (uploaded/connected sources) | Untested | Uploaded-source revision not recorded; unclear whether ever bootstrapped |
+| Codex | Untested | Not yet run |
 
 ## Check a new session
 

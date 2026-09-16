@@ -1,8 +1,8 @@
 # Independent Judgment: Getting an Answer Instead of Your Own View Reflected Back
 
-> Claude is disposed to agree with you, and you are constantly telling it what you think without meaning to. Every framing, every "I have some concerns", every question phrased as *would this work?* moves the answer toward the one you already hold. This guide is about the prompts and protocols that get you a judgment Claude reached on its own — and about how much independence those protocols actually buy, which is less than it feels like.
+> The assistant is disposed to agree with you, and you are constantly telling it what you think without meaning to. Every framing, every "I have some concerns", every question phrased as *would this work?* moves the answer toward the one you already hold. This guide is about the prompts and protocols that get you a judgment the assistant reached on its own — and about how much independence those protocols actually buy, which is less than it feels like.
 
-> **Companion guides:** [Guide 26](./26_CONTEXT_SCOPING.md) is the closest neighbour and the boundary matters. Guide 26 covers contamination from the *environment* — Claude knows something your reader will not, so the defect never surfaces. This guide covers contamination from *you* — Claude knows what you think, and converges on it. Guide 26 owns the artefact-review workflow (deny-lists, staged copies, the blind → in-context → reconcile passes); this guide owns why your own input biases an answer and what to do about it, in review and in ordinary conversation alike. [Guide 02](./02_PROMPTING_BASICS.md) covers instruction quality. [Guide 20](./20_INTERACTIVE_PROMPTING.md) covers session mechanics. [Guide 04](./04_MEMORY_AND_PROFILE.md) matters here too: a saved preference is a standing opinion Claude reads before it answers. [Guide 30](./30_CONTROLLED_DOCUMENTS.md) is this boundary in its most concrete form: on a document with an approver, accepting a change *is* the verdict, and Claude never performs it.
+> **Companion guides:** [Guide 26](./26_CONTEXT_SCOPING.md) is the closest neighbour and the boundary matters. Guide 26 covers contamination from the *environment* — the assistant knows something your reader will not, so the defect never surfaces. This guide covers contamination from *you* — the assistant knows what you think, and converges on it. Guide 26 owns the artefact-review workflow (deny-lists, staged copies, the blind → in-context → reconcile passes); this guide owns why your own input biases an answer and what to do about it, in review and in ordinary conversation alike. [Guide 02](./02_PROMPTING_BASICS.md) covers instruction quality. [Guide 20](./20_INTERACTIVE_PROMPTING.md) covers session mechanics. [Guide 04](./04_MEMORY_AND_PROFILE.md) matters here too: a saved preference is a standing opinion the assistant reads before it answers. [Guide 30](./30_CONTROLLED_DOCUMENTS.md) is this boundary in its most concrete form: on a document with an approver, accepting a change *is* the verdict, and the assistant never performs it.
 
 > **Giving this guide to an assistant:**
 > "Read 27_INDEPENDENT_JUDGMENT.md. I want an independent read on [decision / document / plan] and I have already formed a view. Set up the protocol — tell me what to withhold, what to ask for, and in what order."
@@ -15,12 +15,12 @@ Two separate things go wrong and they need different fixes.
 
 | # | Mechanism | What it looks like | Fix |
 |---|---|---|---|
-| 1 | **Anchoring** | You state or imply a view. Claude's answer lands near it. You read the agreement as corroboration. | Withhold the view until Claude has committed. |
-| 2 | **Agreement pressure** | You ask Claude to evaluate *your* proposal. It grades your work rather than solving the problem, and grades generously. | Change the task: ask for the answer, not a verdict on yours. |
+| 1 | **Anchoring** | You state or imply a view. The assistant's answer lands near it. You read the agreement as corroboration. | Withhold the view until the assistant has committed. |
+| 2 | **Agreement pressure** | You ask the assistant to evaluate *your* proposal. It grades your work rather than solving the problem, and grades generously. | Change the task: ask for the answer, not a verdict on yours. |
 
 They compound. Ask "I'm planning to do X, would that work?" and you have done both at once: anchored on X, and set the task to *assess X* rather than *find the best approach*. The reply will be a qualified yes with two improvements attached. That reply is nearly content-free, and it is the single most common shape of exchange people mistake for validation.
 
-**The tell that you have done it:** your prompt contains your answer. If Claude can extract a proposal from your message, you are asking for a grade.
+**The tell that you have done it:** your prompt contains your answer. If the assistant can extract a proposal from your message, you are asking for a grade.
 
 ---
 
@@ -28,7 +28,7 @@ They compound. Ask "I'm planning to do X, would that work?" and you have done bo
 
 Withholding your conclusion is not the same as withholding your view. Most leaks are structural rather than stated.
 
-| What you say | What Claude infers |
+| What you say | What the assistant infers |
 |---|---|
 | "I've read it and have some observations." | Findings exist and are findable. Raises the hit rate on invented ones. |
 | "What's wrong with this?" | Something is wrong. Finding nothing is a failed answer. |
@@ -37,7 +37,7 @@ Withholding your conclusion is not the same as withholding your view. Most leaks
 | "We already decided on X, but review the doc." | X is out of scope for criticism, including where the doc's problems come from X. |
 | "Review this before it goes to the client." | Stakes are high; the audience is external. **This one is useful and should stay.** |
 
-The last row is the distinction to hold on to. Context about *stakes and audience* calibrates severity and belongs in the prompt. Context about *your conclusions* biases the finding and does not. Guide 26's failure mode 1 applies here as sharply as anywhere: strip too much and you get a generic review of a document Claude does not understand the purpose of.
+The last row is the distinction to hold on to. Context about *stakes and audience* calibrates severity and belongs in the prompt. Context about *your conclusions* biases the finding and does not. Guide 26's failure mode 1 applies here as sharply as anywhere: strip too much and you get a generic review of a document the assistant does not understand the purpose of.
 
 **Existence priming is the underrated one.** A reviewer told that problems exist will produce problems. Say nothing about whether you have read the thing. "Review this document; it goes to a regulator on Friday" is complete. Adding "I spotted a few issues but want your read first" costs you the independence you were trying to buy, in the very sentence where you were trying to buy it.
 
@@ -59,16 +59,16 @@ This is the everyday fix and it costs nothing. Rather than presenting your answe
 |---|---|
 | "I'm thinking of doing X. Would that work?" | "I need to achieve [goal] under [constraints]. Propose two or three approaches, rank them, and give the failure mode of each." |
 | "Is this the right structure for the doc?" | "Here's the audience and what they need to decide. What structure serves that? Then tell me what my current structure costs." |
-| "Does this rule make sense in my CLAUDE.md?" | "Here's the behaviour I keep having to correct. Write the rule." |
+| "Does this rule make sense in my shared policy?" | "Here's the behaviour I keep having to correct. Write the rule." |
 | "I think we should use approach A over B." | "Here are the constraints. Which of A or B, and what would change the answer?" |
 
-Then reveal. Once Claude's proposal is on the table, compare:
+Then reveal. Once the assistant's proposal is on the table, compare:
 
 > "Here's what I was planning: [your approach]. Where does it sit against what you proposed? Name anything mine handles better and anything it misses. If yours is better, say so plainly."
 
-You lose nothing by ordering it this way. You still get your idea evaluated. You just get it evaluated against something rather than against nothing, and by a Claude that had to think before it knew what you wanted to hear.
+You lose nothing by ordering it this way. You still get your idea evaluated. You just get it evaluated against something rather than against nothing, and by an assistant that had to think before it knew what you wanted to hear.
 
-**When to skip this.** Most conversation. Routine work. Anything where you want help executing a decision that is already made and not up for debate — asking for three alternative approaches to a settled question wastes a round trip and invites Claude to relitigate it. The protocol is for decisions that are still open and expensive to get wrong.
+**When to skip this.** Most conversation. Routine work. Anything where you want help executing a decision that is already made and not up for debate — asking for three alternative approaches to a settled question wastes a round trip and invites the assistant to relitigate it. The protocol is for decisions that are still open and expensive to get wrong.
 
 ---
 
@@ -76,13 +76,13 @@ You lose nothing by ordering it this way. You still get your idea evaluated. You
 
 For anything where you have a formed view and want a real second opinion, the ordering has to be enforced rather than intended.
 
-**1. Claude commits in writing, before you say anything.** Not "let me hear your take first" — an actual artefact: a file, or a message that names findings with locations and severities. A verbal answer in an open conversation is cheap to walk back and the walk-back is invisible. A written list has to be visibly contradicted.
+**1. The assistant commits in writing, before you say anything.** Not "let me hear your take first" — an actual artefact: a file, or a message that names findings with locations and severities. A verbal answer in an open conversation is cheap to walk back and the walk-back is invisible. A written list has to be visibly contradicted.
 
 **2. You reveal.** Your findings, your view, in full.
 
 **3. You reconcile.** Covered below.
 
-The commitment step is where people cut the corner, and cutting it dissolves the whole protocol, because a Claude that has not committed will not disagree — it will incorporate. Requiring locations and severities is part of the commitment: a finding pinned to a section and rated *Material* is much harder to quietly soften than "yes, the structure could be tighter".
+The commitment step is where people cut the corner, and cutting it dissolves the whole protocol, because an assistant that has not committed will not disagree — it will incorporate. Requiring locations and severities is part of the commitment: a finding pinned to a section and rated *Material* is much harder to quietly soften than "yes, the structure could be tighter".
 
 ### A reusable review prompt
 
@@ -126,7 +126,7 @@ Guide 26's reconcile pass has the main session arbitrate between a blind report 
 **The arbiter must not know which list is yours.** In the usual setup it does: the reconcile happens in the session where you stated your view, so authorship is obvious and the finding you argued for gets deference. Fix it in two moves, both cheap:
 
 1. **Run the reconcile in a fresh session.** Not the one that produced either list.
-2. **Anonymise and shuffle.** Label them A and B. Do not say which is which. Do not mention that one is human and one is Claude — that alone shifts the treatment.
+2. **Anonymise and shuffle.** Label them A and B. Do not say which is which. Do not mention that one is human and one is the assistant — that alone shifts the treatment.
 
 Then ask symmetrically:
 
@@ -152,7 +152,7 @@ If a local Codex reviewer sees the whole repository while a ChatGPT reviewer see
 
 This is the part that changes what you should conclude, and it is the reason a two-reviewer setup can leave you more confident and no better informed.
 
-**Two Claude instances are not two opinions.** They share weights, training, and priors. When they agree, the agreement is largely *correlated error*: they are wrong in the same places for the same reasons. Running the same prompt twice and getting the same answer tells you the answer is stable, not that it is right, and stability is very easy to mistake for corroboration once you have two documents in front of you saying the same thing.
+**Two runs of the same model are not independent opinions.** They share weights, training, and priors. When they agree, the agreement is largely *correlated error*: they are wrong in the same places for the same reasons. Running the same prompt twice and getting the same answer tells you the answer is stable, not that it is right, and stability is very easy to mistake for corroboration once you have two documents in front of you saying the same thing.
 
 Independence levers, ordered by how much they actually buy:
 
@@ -169,7 +169,7 @@ Two practical consequences.
 
 **Better still, ask for claims checked against the source.** The strongest version of a review is not a judgement at all: give the reviewer the artefact and the primary evidence it rests on, and ask which of its load-bearing claims hold. A report saying *ten of twelve confirmed, two wrong, here is the wording* is worth more than any verdict, because every line of it is checkable and none of it depends on the reviewer's taste — which also makes it the one review format your own framing cannot bias. [Guide 29](./29_SPEC_BEFORE_REBUILD.md) applies this pass to a specification before anything gets built on it.
 
-**A subagent briefed after you spoke is not blind.** Guide 26 covers the subagent trap on the file-access side: a subagent inherits CLAUDE.md and can read the whole folder. There is a second channel on this side. If Claude writes the subagent's brief *after* hearing your view, your framing gets encoded into that brief — the subagent is uninformed about the project and perfectly informed about your opinion, which is the worst of both. Two defences: write the brief before you say anything, or keep it as a fixed file you reuse verbatim. If Claude drafts a brief for you, read it for your own fingerprints before it runs. And pin the subagent type: a `fork` subagent inherits the whole conversation and the parent's memory, and fork mode is on by default in Claude Code interactive sessions, so a blind pass must name a non-fork type ([Guide 26](./26_CONTEXT_SCOPING.md)).
+**A subagent briefed after you spoke is not blind.** Guide 26 covers the subagent trap on the file-access side: a subagent inherits shared policy and can read the whole folder. There is a second channel on this side. If Claude writes the subagent's brief *after* hearing your view, your framing gets encoded into that brief — the subagent is uninformed about the project and perfectly informed about your opinion, which is the worst of both. Two defences: write the brief before you say anything, or keep it as a fixed file you reuse verbatim. If Claude drafts a brief for you, read it for your own fingerprints before it runs. And pin the subagent type: a `fork` subagent inherits the whole conversation and the parent's memory, and fork mode is on by default in Claude Code interactive sessions, so a blind pass must name a non-fork type ([Guide 26](./26_CONTEXT_SCOPING.md)).
 
 **And memory leaks too.** A saved preference or a past correction ([Guide 04](./04_MEMORY_AND_PROFILE.md)) is a standing statement of your view that loads before the conversation starts. Mostly that is the point. But if you are asking for an independent read on a question your memory files have an opinion about, the blind pass is not blind, and no deny-list in the prompt changes what already loaded.
 
@@ -177,7 +177,7 @@ Two practical consequences.
 
 ## Making It Standing
 
-The temptation is a CLAUDE.md line saying "be objective" or "don't just agree with me". It does very little, for the reason [Guide 02](./02_PROMPTING_BASICS.md) gives in Mistake 3: it describes a disposition, not a behaviour, so Claude has to infer what to actually do. It also tends to produce theatre — a token disagreement offered to satisfy the rule.
+The temptation is a shared policy line saying "be objective" or "don't just agree with me". It does very little, for the reason [Guide 02](./02_PROMPTING_BASICS.md) gives in Mistake 3: it describes a disposition, not a behaviour, so the assistant has to infer what to actually do. It also tends to produce theatre — a token disagreement offered to satisfy the rule.
 
 Standing rules that specify a behaviour work better:
 
@@ -192,17 +192,17 @@ If I ask you to review something and tell you I have already formed a
 view, do not ask what it is. Review it, then ask.
 ```
 
-Each of these names an action, and the third is the load-bearing one: it makes Claude decline the leak rather than relying on you never offering it. Note the honest limit — these are requests, not boundaries, the same limitation Guide 26 names for deny-lists. They raise the floor; they do not guarantee the behaviour. The protocol steps above (a written commitment, a fresh session, anonymised lists) are what actually enforce anything, because they change what Claude *can* see rather than what it is asked to ignore.
+Each of these names an action, and the third is the load-bearing one: it makes the assistant decline the leak rather than relying on you never offering it. Note the honest limit — these are requests, not boundaries, the same limitation Guide 26 names for deny-lists. They raise the floor; they do not guarantee the behaviour. The protocol steps above (a written commitment, a fresh session, anonymised lists) are what actually enforce anything, because they change what the assistant *can* see rather than what it is asked to ignore.
 
-Put the review protocol in a skill rather than in CLAUDE.md. It applies to one workflow, not every interaction, and a skill can carry the whole prompt including the finding schema. Cluide ships one: `skills/review-protocol/`, which carries the prompt above, the finding schema, and the blinded reconciliation step.
+Put the review protocol in a skill rather than in the shared policy. It applies to one workflow, not every interaction, and a skill can carry the whole prompt including the finding schema. Cluide ships one: `skills/review-protocol/`, which carries the prompt above, the finding schema, and the blinded reconciliation step.
 
 ---
 
 ## Anti-Patterns
 
-**"I have some thoughts but you go first."** Feels neutral, is not. It tells Claude that findings exist, which is most of what it needed to manufacture some.
+**"I have some thoughts but you go first."** Feels neutral, is not. It tells the assistant that findings exist, which is most of what it needed to manufacture some.
 
-**Treating agreement between two Claude runs as corroboration.** Correlated error reads exactly like consensus and is the most confidence-inflating mistake in this guide.
+**Treating agreement between two assistant runs as corroboration.** Correlated error reads exactly like consensus and is the most confidence-inflating mistake in this guide.
 
 **Reconciling in the contaminated session.** The arbiter knows which findings are yours and defers to them. The whole comparison is then a formality.
 

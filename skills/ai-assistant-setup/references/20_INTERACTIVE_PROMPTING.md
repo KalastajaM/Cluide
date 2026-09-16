@@ -1,6 +1,6 @@
 # Guide 20: Interactive Prompting — Features and Patterns by Surface
 
-> Claude Code has interactive features that go beyond writing instructions well. This guide covers the tools and patterns that shape *how you work with Claude in a session* — file references, plan mode, question dialogs, and keeping the context window clean.
+> Interactive work needs resolved file references, a way to make decisions, and deliberate context boundaries. This guide gives shared patterns with separate Claude and OpenAI controls.
 
 > **Companion guides:** [Guide 02](./02_PROMPTING_BASICS.md) covers instruction quality — context, task, constraints, and output format. [Guide 13](./13_DEV_EXECUTION_WORKFLOW.md) covers Claude Code vs. Cowork — when to use each. This guide covers what to do *during* a Claude Code session.
 
@@ -28,21 +28,21 @@ In Claude Code, `@filepath` is the file-reference example used here. Verify that
 **Without `@` reference:**
 > "I have a config file in the auth module — it sets up the JWT token lifetime. Can you make the timeout configurable?"
 
-Claude has to guess where the file is, what it contains, and what "configurable" means in context.
+The assistant has to guess where the file is, what it contains, and what "configurable" means in context.
 
 **With `@` reference:**
 > "Read `@src/auth/config.ts` and make the JWT timeout configurable via an environment variable."
 
-Claude opens the file, sees the exact structure, and makes a targeted edit.
+The assistant opens the file, sees the exact structure, and makes a targeted edit.
 
 ### When to use it
 
 | Situation | Use `@` reference? |
 |---|---|
-| You want Claude to edit a specific file | Yes — always |
-| You want Claude to follow an existing pattern | Yes — point to the example file |
+| You want the assistant to edit a specific file | Yes — always |
+| You want the assistant to follow an existing pattern | Yes — point to the example file |
 | You're asking a general question not tied to a file | No |
-| You're describing a problem but don't know which file | No — ask Claude to find it first |
+| You're describing a problem but don't know which file | No — ask the assistant to find it first |
 
 ### Where `@` references work
 
@@ -53,7 +53,9 @@ Claude opens the file, sees the exact structure, and makes a targeted edit.
 
 ---
 
-## AskUserQuestion: Input Types and Options
+<a id="askuserquestion-input-types-and-options"></a>
+
+## Claude AskUserQuestion: Input Types and Options
 
 When Claude needs a decision from you mid-task, it uses the `AskUserQuestion` tool to present a structured choice rather than a wall of prose. Understanding the options helps you write skills and tasks that make good use of it.
 
@@ -124,11 +126,11 @@ Don't add an "Other" option — it's always provided automatically as a free-tex
 
 ## Plan Mode as a Workflow Pattern
 
-Plan mode separates *understanding the problem* from *solving it*. When Claude is in plan mode, it reads files and asks questions without making any changes. You review the plan, adjust it if needed, then approve it.
+Plan mode separates *understanding the problem* from *solving it*. When the assistant is in plan mode, it reads files and asks questions without making any changes. You review the plan, adjust it if needed, then approve it.
 
 ### What it prevents
 
-The most common cause of wasted effort is Claude solving the wrong problem — implementing X when you meant Y, or touching the wrong files. Plan mode forces a checkpoint before code is written.
+The most common cause of wasted effort is the assistant solving the wrong problem — implementing X when you meant Y, or touching the wrong files. Plan mode forces a checkpoint before code is written.
 
 ### When to use it
 
@@ -137,11 +139,11 @@ The most common cause of wasted effort is Claude solving the wrong problem — i
 | Adding a feature across multiple files | Yes |
 | Fixing a bug with an unclear root cause | Yes | 
 | A one-line change in a known location | No |
-| You're not sure what approach to take | Yes — let Claude propose one |
+| You're not sure what approach to take | Yes — let the assistant propose one |
 
 ### How to trigger it
 
-Ask Claude to plan before acting:
+Ask the assistant to plan before acting:
 
 > "Before you make any changes, read the relevant files and tell me your approach."
 
@@ -157,20 +159,20 @@ In Claude Code, plan mode is also available as a built-in mode (toggle with Shif
 
 ### The interview pattern
 
-For large or ambiguous features, ask Claude to interview you before starting:
+For large or ambiguous features, ask the assistant to interview you before starting:
 
 > "Before you implement anything, ask me the questions you need answered to do this well. I'll answer them, then you can proceed."
 
-This surfaces assumptions you didn't know you were making. Claude will ask things like: "Should this work for unauthenticated users?", "Is there an existing error format I should match?", "Do you want this to be reversible?" — questions you'd otherwise discover mid-implementation.
+This surfaces assumptions you didn't know you were making. The assistant will ask things like: "Should this work for unauthenticated users?", "Is there an existing error format I should match?", "Do you want this to be reversible?" — questions you'd otherwise discover mid-implementation.
 
 ### Explore → Plan → Implement → Verify
 
 For non-trivial tasks, four phases produce better results than jumping straight to implementation:
 
-1. **Explore** — Claude reads relevant files, searches the codebase, understands existing patterns
-2. **Plan** — Claude proposes an approach; you review and adjust
-3. **Implement** — Claude writes the code
-4. **Verify** — Claude (or you) confirms the result against the original requirement
+1. **Explore** — the assistant reads relevant files, searches the codebase, understands existing patterns
+2. **Plan** — the assistant proposes an approach; you review and adjust
+3. **Implement** — the assistant writes the code
+4. **Verify** — the assistant (or you) confirms the result against the original requirement
 
 You can enforce this explicitly:
 
@@ -186,11 +188,11 @@ Describing what you want is weaker than showing it:
 **Strong:**
 > "Add error handling following the pattern in `@src/api/users.ts`. Match the structure exactly — same error types, same logging call, same response shape."
 
-When Claude can see a real example, it replicates it precisely. When it's working from a description, it invents something plausible.
+When the assistant can see a real example, it replicates it precisely. When it's working from a description, it invents something plausible.
 
 ### Include verification criteria
 
-Tell Claude what "done" looks like. This gives it a stopping condition and makes it easier to check its own work.
+Tell the assistant what "done" looks like. This gives it a stopping condition and makes it easier to check its own work.
 
 **Without criteria:**
 > "Add rate limiting to the API."
@@ -198,7 +200,7 @@ Tell Claude what "done" looks like. This gives it a stopping condition and makes
 **With criteria:**
 > "Add rate limiting to the API. Done when: (1) the test in `tests/test_rate_limit.py` passes, (2) requests over the limit return HTTP 429, (3) the limit resets after 60 seconds."
 
-Claude will check these conditions before declaring the task complete.
+The assistant will check these conditions before declaring the task complete.
 
 ---
 
@@ -236,7 +238,7 @@ A long CLAUDE.md file causes instructions to be ignored. The more rules you add,
 
 **What to do:**
 - Move task-specific rules to the relevant `SKILL.md` or `TASK.md`
-- Remove rules that describe Claude's default behaviour (they're redundant)
+- Remove rules that describe the assistant's default behaviour (they're redundant)
 - Merge rules that say the same thing
 
 Aim for [Guide 01](./01_PROJECT_INSTRUCTIONS.md)'s canonical target: under 30 lines. "Takes under two minutes to read" is the same rule of thumb stated differently.
@@ -257,11 +259,13 @@ Use these sparingly. If everything is `IMPORTANT`, nothing is.
 
 ## Context Hygiene
 
-Claude's context window holds the full conversation. As a session grows, earlier content competes with newer content for attention — and older instructions can subtly influence responses in ways you don't expect.
+The assistant's context window holds the full conversation. As a session grows, earlier content competes with newer content for attention — and older instructions can subtly influence responses in ways you don't expect.
 
-### Use `/clear` between unrelated tasks
+<a id="use-clear-between-unrelated-tasks"></a>
 
-When you finish one task and start a completely different one, clear the context:
+### Start a Fresh Session Between Unrelated Tasks
+
+When switching to unrelated work, save the handoff and start a new task or chat. In Claude Code, `/clear` is the native example:
 
 ```
 /clear
@@ -271,7 +275,7 @@ This prevents the first task's files, decisions, and constraints from leaking in
 
 ### Use subagents for research-heavy subtasks
 
-When Claude needs to explore a large codebase, search many files, or fetch external documentation, that work fills the context window with results you may not need to keep.
+When the assistant needs to explore a large codebase, search many files, or fetch external documentation, that work fills the context window with results you may not need to keep.
 
 Instead of doing it all in the main conversation:
 
@@ -291,9 +295,11 @@ Some clients drop old tool results automatically. You can also do it deliberatel
 
 When the dump has already happened, name it and move on: *"You've got what you need from that log; work from the three errors you listed, not the full output."* This is the lightest-touch form of compaction — you lose raw material you were never going to re-read, and keep everything the session actually concluded.
 
-### Let Claude write notes outside the session
+<a id="let-claude-write-notes-outside-the-session"></a>
 
-On a long task, ask Claude to keep a working file — decisions made, what's done, what's left — and update it as it goes. The context window holds a conversation; the file holds the state.
+### Let the Assistant write notes outside the session
+
+On a long task, ask the assistant to keep a working file — decisions made, what's done, what's left — and update it as it goes. The context window holds a conversation; the file holds the state.
 
 > "Keep `notes/migration-progress.md` updated as we go: what's converted, what broke, what's still open. Update it after each file."
 
@@ -301,7 +307,7 @@ Two payoffs. The session can be compacted or restarted without losing the thread
 
 ### When context is near its limit
 
-Signs you're approaching the limit: responses start omitting details they'd normally include, or Claude seems to "forget" instructions from earlier in the session.
+Signs you're approaching the limit: responses start omitting details they'd normally include, or the assistant seems to "forget" instructions from earlier in the session.
 
 The first-line answer is `/compact` — it summarises the conversation in place, freeing context while keeping the session going.
 

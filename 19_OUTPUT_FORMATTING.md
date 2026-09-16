@@ -3,7 +3,7 @@
 > How to make generated output look good — whether Claude or OpenAI is producing a Markdown summary or a full HTML report.
 > Covers Markdown basics with Claude-specific tips, and a practical HTML layout pattern for polished, self-contained reports.
 
-> **Companion guides:** [Guide 02](./02_PROMPTING_BASICS.md) covers how to prompt Claude to use a specific output format. [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) explains when to script fixed-format artifact generation instead of having Claude compose it fresh each run.
+> **Companion guides:** [Guide 02](./02_PROMPTING_BASICS.md) covers how to prompt the assistant to use a specific output format. [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) explains when to script fixed-format artifact generation instead of having the assistant compose it fresh each run.
 
 > **Giving this guide to an assistant:**
 > "Read 19_OUTPUT_FORMATTING.md and help me format the output of my [task/skill] as [Markdown / a styled HTML report]."
@@ -15,7 +15,7 @@
 A task that produces a wall of unformatted text is a task nobody reads. A small amount of structure — clear headings, a summary table, status colours — turns output from something that requires effort to parse into something that communicates at a glance.
 
 This guide covers two formats:
-- **Markdown** — best for output read in Claude's chat UI, GitHub, or a Markdown editor
+- **Markdown** — best for output read in the assistant's chat UI, GitHub, or a Markdown editor
 - **HTML** — best for standalone reports, dashboards, or anything that needs custom styling or status colours
 
 ---
@@ -34,7 +34,7 @@ Test the real renderer for tables, checkboxes, internal links and embedded asset
 
 ### What Markdown Is
 
-Markdown is a lightweight text format that renders as formatted content in most modern tools. You write plain text with simple syntax (e.g. `## Heading`, `**bold**`, `- bullet`) and the tool renders it visually. Claude uses Markdown natively in its responses.
+Markdown is a lightweight text format that renders as formatted content in most modern tools. You write plain text with simple syntax (e.g. `## Heading`, `**bold**`, `- bullet`) and the tool renders it visually. The assistant uses Markdown natively in its responses.
 
 ### Where Markdown Renders (and Where It Doesn't)
 
@@ -42,7 +42,7 @@ Before using Markdown in task output, check whether the output will actually be 
 
 | Context | Renders? |
 |---------|---------|
-| Claude chat UI | ✓ Yes |
+| Claude, ChatGPT and Codex chat UI | Basic Markdown; preview and extensions vary by surface |
 | GitHub (README, issues, PRs) | ✓ Yes |
 | VS Code (preview mode) | ✓ Yes |
 | Obsidian, Notion, Bear | ✓ Yes |
@@ -77,7 +77,7 @@ The more specific you are about which elements to use, the more consistent the o
 
 **Include an example in your prompt**
 
-The single most effective way to get consistent Markdown output is to show Claude an example of what you want:
+The single most effective way to get consistent Markdown output is to show the assistant an example of what you want:
 
 ```
 Format the output like this:
@@ -93,7 +93,7 @@ Format the output like this:
 - [ ] [action item]
 ```
 
-This works because Claude pattern-matches from examples better than it follows abstract instructions.
+This works because the assistant pattern-matches from examples better than it follows abstract instructions.
 
 **When to skip Markdown entirely**
 
@@ -117,9 +117,9 @@ Use HTML when:
 
 ### The Self-Contained File Pattern
 
-The most practical HTML output pattern for Claude-generated reports is a **single `.html` file with all CSS embedded**. No external stylesheets, no frameworks, no dependencies. The file works offline, can be emailed or shared as an attachment, and opens correctly anywhere.
+The most practical HTML output pattern for assistant-generated reports is a **single `.html` file with all CSS embedded**. No external stylesheets, no frameworks, no dependencies. The file works offline, can be emailed or shared as an attachment, and opens correctly anywhere.
 
-Ask Claude to produce output in this format:
+Ask the assistant to produce output in this format:
 
 ```
 Generate a self-contained HTML file with embedded CSS.
@@ -191,7 +191,9 @@ Use these for at-a-glance status on rows, cards, or metrics.
 **Geographic data: single-file maps + a machine-readable side output**
 Maps are the one deliberate exception to the self-contained pattern: still a single file, but with Leaflet loaded from a CDN `<script>` tag — so a network connection is required at view time. Bundling a map library inline isn't practical, making this the one case where a CDN dependency is accepted. The data is still inlined as GeoJSON, with a small legend div, and the file opens in any browser with no build step. Emit the GeoJSON as a separate file too — a standard interchange format lets the same data open in external map tools (national map portals, Google Earth) without regenerating anything. The HTML is for reading; the side file is for reuse.
 
-### Prompting Claude for HTML Output
+<a id="prompting-claude-for-html-output"></a>
+
+### Prompting the Assistant for HTML Output
 
 A reusable prompt snippet to paste into a task or skill:
 
@@ -210,7 +212,7 @@ Adjust the bullet points to match your specific report structure.
 
 ### Minimal Styled HTML Skeleton
 
-This skeleton is the canonical one. Hand it to Claude with the prompt above rather than keeping a second copy of it in a skill — a duplicated skeleton is a duplicated maintenance point, and the guide is where it stays current.
+This skeleton is the canonical one. Hand it to the assistant with the prompt above rather than keeping a second copy of it in a skill — a duplicated skeleton is a duplicated maintenance point, and the guide is where it stays current.
 
 ```html
 <!DOCTYPE html>
@@ -310,11 +312,13 @@ This skeleton is the canonical one. Hand it to Claude with the prompt above rath
 </html>
 ```
 
-Copy this skeleton into a task's `TASK_REFERENCE.md` or a skill's reference section as the output template. Claude can then populate the data fields without redesigning the layout each run.
+Copy this skeleton into a task's `TASK_REFERENCE.md` or a skill's reference section as the output template. The assistant can then populate the data fields without redesigning the layout each run.
 
-**Alternative for connector-backed dashboards: artifacts.** Where this guide recommends regenerating an HTML report each run, an artifact offers a different model: it persists to your account, carries version history you can compare and restore from, and pulls live data through the connectors you approve for that specific artifact — so a dashboard refreshes from its source instead of going stale. Sharing is per artifact too: only you or anyone with the link on Pro and Max, plus specific people or the whole organisation on Team and Enterprise, and a share link can point at the latest version or a frozen one. The account setting "Code execution and file creation" must be on for any of it to work. Note that artifacts published before the August 2026 relaunch keep running but cannot be edited in place until they are republished ([using artifacts](https://support.claude.com/en/articles/14729249-use-artifacts-in-claude-cowork), [publishing and sharing](https://support.claude.com/en/articles/9547008-publish-and-share-artifacts)). The static-HTML pattern remains the right choice for file-based data, archival snapshots, and anything that must be readable outside Claude.
+**Claude-specific alternative for connector-backed dashboards: artifacts.** Where this guide recommends regenerating an HTML report each run, an artifact offers a different model: it persists to your account, carries version history you can compare and restore from, and pulls live data through the connectors you approve for that specific artifact — so a dashboard refreshes from its source instead of going stale. Sharing is per artifact too: only you or anyone with the link on Pro and Max, plus specific people or the whole organisation on Team and Enterprise, and a share link can point at the latest version or a frozen one. The account setting "Code execution and file creation" must be on for any of it to work. Note that artifacts published before the August 2026 relaunch keep running but cannot be edited in place until they are republished ([using artifacts](https://support.claude.com/en/articles/14729249-use-artifacts-in-claude-cowork), [publishing and sharing](https://support.claude.com/en/articles/9547008-publish-and-share-artifacts)). The static-HTML pattern remains the right choice for file-based data, archival snapshots, and anything that must be readable outside Claude.
 
 ---
+
+For OpenAI, use the available file, visualization or site tools and verify the delivered result. No equivalent to the entire Claude artifact persistence, connector-grant and sharing lifecycle has been verified here. A standalone HTML file is the shared fallback; it does not inherit either product's account permissions or live refresh.
 
 ## Anti-Patterns to Avoid
 
@@ -326,6 +330,6 @@ Copy this skeleton into a task's `TASK_REFERENCE.md` or a skill's reference sect
 
 **External CSS frameworks for one-off reports.** Pulling in Bootstrap or Tailwind via a CDN adds a network dependency, increases file weight, and requires knowing the framework's class names. For a self-contained report, 50 lines of embedded CSS does everything you need.
 
-**Composing the HTML layout fresh every run.** If the report structure doesn't change between runs — only the data does — store the skeleton in `TASK_REFERENCE.md` and have Claude fill in values, not redesign the page. See [Guide 06 §Script fixed-format artifact generation](./06_TASK_EFFICIENCY_GUIDE.md).
+**Composing the HTML layout fresh every run.** If the report structure doesn't change between runs — only the data does — store the skeleton in `TASK_REFERENCE.md` and have the assistant fill in values, not redesign the page. See [Guide 06 §Script fixed-format artifact generation](./06_TASK_EFFICIENCY_GUIDE.md).
 
 **Mixing Markdown and raw HTML without a reason.** GitHub's Markdown renderer, for example, renders most block-level HTML but sanitizes disallowed tags and attributes, and rendering inside lists or blockquotes can be inconsistent. The reliable rule stands: stick to one format per output file.

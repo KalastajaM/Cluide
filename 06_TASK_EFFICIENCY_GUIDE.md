@@ -1,6 +1,6 @@
 # Assistant Task Efficiency Guide
 
-> How to design and optimize Claude tasks for minimal token consumption.
+> How to design and optimize the assistant tasks for minimal token consumption.
 > Use as a one-time audit checklist when setting up a new task, or as a periodic optimization pass on an existing one.
 
 > **Companion guides:** This guide covers efficiency (keeping token use low). [Guide 07](./07_TASK_LEARNING_GUIDE.md) covers self-improvement (making the task smarter over time). The ready-to-use template that implements Guide 07 is installed via Guide 07 Part 9.
@@ -14,11 +14,11 @@
 
 ## Core Principle
 
-Every token Claude reads or writes costs usage. The goal: Claude only loads what it needs for the current run and only generates what it cannot delegate to a script.
+Every token the assistant reads or writes costs usage. The goal: the assistant only loads what it needs for the current run and only generates what it cannot delegate to a script.
 
 The four main levers:
-1. **Reduce what Claude reads** — smaller instruction files, partial file reads
-2. **Reduce what Claude writes** — skip unchanged outputs, delegate fixed-format generation to scripts
+1. **Reduce what the assistant reads** — smaller instruction files, partial file reads
+2. **Reduce what the assistant writes** — skip unchanged outputs, delegate fixed-format generation to scripts
 3. **Reduce API calls** — triage before fetching full content
 4. **Keep frequently-read files compact** — hard size limits on files loaded every run
 
@@ -28,7 +28,7 @@ The four main levers:
 
 ### 1. Split the instruction file (TASK.md)
 
-The task instruction file is loaded on every run. Keep it to **~200 lines / ~3K tokens** of core procedure (target ~200 lines; hard cap 250). Move everything else to a `TASK_REFERENCE.md` that Claude reads only when needed.
+The task instruction file is loaded on every run. Keep it to **~200 lines / ~3K tokens** of core procedure (target ~200 lines; hard cap 250). Move everything else to a `TASK_REFERENCE.md` that the assistant reads only when needed.
 
 **Extract to TASK_REFERENCE.md:**
 - JSON schemas and data formats
@@ -54,11 +54,11 @@ These figures carry a tolerance band. See §6, *Tolerance: enforce the band, not
 
 ### 2. Script fixed-format artifact generation
 
-If the task generates a structured output file (HTML report, PDF, formatted document) from structured input (markdown, JSON), Claude should not compose it from scratch every run. Write a script once; Claude runs it.
+If the task generates a structured output file (HTML report, PDF, formatted document) from structured input (markdown, JSON), the assistant should not compose it from scratch every run. Write a script once; the assistant runs it.
 
 Ask: *does the output format change between runs, or just the data?*
 - Format is fixed, data varies → write a script
-- Format varies based on run content → Claude composes it
+- Format varies based on run content → the assistant composes it
 
 **Common candidates:**
 - HTML reports from markdown briefings → Python script with fixed CSS
@@ -73,13 +73,13 @@ output: rendered artifact file + optional archive copy
 usage:  python3 render.py [project_folder]
 ```
 
-Claude's step becomes: run the script, report the output path. On failure, fall back to composing directly and log the error.
+The assistant's step becomes: run the script, report the output path. On failure, fall back to composing directly and log the error.
 
 ---
 
 ### 3. Apply targeted edit policy for file updates
 
-When Claude updates a file it reads every run, it should use partial reads and targeted edits rather than full read + full write.
+When the assistant updates a file it reads every run, it should use partial reads and targeted edits rather than full read + full write.
 
 **Policy:**
 - Use `Grep` to find the relevant section
@@ -186,7 +186,7 @@ Run this every 20–30 task executions, or whenever you notice usage spikes.
 
 **Output generation**
 - [ ] Are there new structured output files that could be scripted? (Apply checklist item 2.)
-- [ ] Is any existing script producing errors and falling back to Claude generation? Fix the script.
+- [ ] Is any existing script producing errors and falling back to the assistant generation? Fix the script.
 
 **Fetch efficiency**
 - [ ] Are there new high-frequency senders that are always noise? Add them to the Noise Filters list (see `templates/TASK_TEMPLATE/IMPROVEMENTS.md` and [Guide 07 Part 9](./07_TASK_LEARNING_GUIDE.md)).
@@ -216,6 +216,8 @@ Use this to roughly estimate per-run cost and identify the highest-leverage impr
 
 ## How Scheduled Tasks Are Triggered
 
+Choose by trigger: a recurring schedule needs a scheduler, session initialization needs a lifecycle hook, and a temporary watch needs a task that stays active or a supported follow-up mechanism. These are different lifetimes. Codex also documents lifecycle hooks; see [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts). Use the selected host's configuration and test the event; the Claude hook JSON below is not an OpenAI installation recipe.
+
 Choose the owning execution surface before registering anything. The procedure can be shared, but one job has one active scheduler owner, stable identity, timezone, input revision and output destination. Native registrations stay on that platform. An interval is not a lock: overlapping runs need an atomic claim or an execution service that prevents concurrent writes.
 
 ---
@@ -234,10 +236,10 @@ For a transfer, pause the old schedule and confirm no run is in flight, test the
 
 Cowork's scheduled tasks are a built-in feature: they run on a schedule **independently of any open Claude session** — no session needed, no manual trigger. Since July 2026 they run cloud-side, so they fire even with your computer asleep — except a task that needs local files or apps, which still runs on your computer and needs it awake. When the model is unreachable a run is retried automatically after 5, 15 and 30 minutes. The task form also carries a 1M-context model row for tasks that need one. This is the proper approach for daily digests, automated monitoring tasks, and anything that should run reliably on a fixed schedule.
 
-**To set up a scheduled task, just ask Claude in natural language:**
+**To set up a scheduled task, just ask the assistant in natural language:**
 > "Run this task every weekday at 7am."
 
-Claude will configure the task and set the schedule. You can also ask Claude to list, update, or stop your scheduled tasks.
+The assistant will configure the task and set the schedule. You can also ask the assistant to list, update, or stop your scheduled tasks.
 
 This approach avoids the main problem with SessionStart hooks: tasks running multiple times if you open several sessions in a day.
 
@@ -249,13 +251,17 @@ Routines are Claude Code's own cloud scheduled tasks, set up on the web. They ru
 
 ---
 
-### Option C: `/loop` (session-scoped, for work you are watching)
+<a id="option-c-loop-session-scoped-for-work-you-are-watching"></a>
+
+### Option C: Claude Code `/loop` (session-scoped, for work you are watching)
 
 `/loop` sets up a recurring task inside the current CLI session: `/loop 5m <prompt>` for a fixed interval, `/loop <prompt>` to let Claude pace itself, `/loop` alone for the built-in maintenance prompt (replaceable via `.claude/loop.md`). It dies with the session, so it is the wrong tool for a daily digest and the right one for "keep checking this while I work".
 
 ---
 
-### Option D: SessionStart Hooks (simpler, for session-triggered automation)
+<a id="option-d-sessionstart-hooks-simpler-for-session-triggered-automation"></a>
+
+### Option D: Claude Code SessionStart Hooks (simpler, for session-triggered automation)
 
 Hooks are shell commands that fire automatically in response to Claude Code events. Configure them in `~/.claude/settings.json` (global) or `.claude/settings.json` (project-level).
 
@@ -283,15 +289,15 @@ Hooks are shell commands that fire automatically in response to Claude Code even
 - **PreToolUse** — fires before a tool runs. Useful for validation or logging. Unlike CLAUDE.md instructions (guidance Claude can overlook), a PreToolUse hook is an enforcement layer — it can hard-block a tool call.
 - **PostToolUse** — fires after a tool completes. Useful for follow-up actions (e.g., after a file write, trigger a view regeneration).
 - **PostToolUseFailure** — fires when a tool call fails. Useful for logging what actually breaks in autonomous runs.
-- **UserPromptSubmit** — fires when a prompt is submitted, before Claude processes it. Useful for injecting context or validating input.
-- **Stop** — fires when Claude ends a response. A Stop hook can return `additionalContext`, which pushes text back into the session rather than only blocking or logging.
+- **UserPromptSubmit** — fires when a prompt is submitted, before the assistant processes it. Useful for injecting context or validating input.
+- **Stop** — fires when the assistant ends a response. A Stop hook can return `additionalContext`, which pushes text back into the session rather than only blocking or logging.
 - **SubagentStart / SubagentStop** — fire around each delegated subagent. Useful for tracking fan-out cost and for logging what workers returned.
 - **SessionEnd** — fires when a session closes. Useful for cleanup or end-of-session logging.
 - **Setup** — fires for `claude -p --init` and `--maintenance` runs, which is where scheduled and headless work starts.
 - **InstructionsLoaded** — fires once the instruction files are in. It logs which files loaded and why, which is the fastest way to answer "did my CLAUDE.md actually load?" ([Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md)).
 - **PreModelSwitch / PostModelSwitch** — fire around a model change within a session.
 - **PreCompact** — fires before context compaction. Useful for saving state that would otherwise be summarized away.
-- **Notification** — fires when Claude sends a notification.
+- **Notification** — fires when the assistant sends a notification.
 
 **Hook practical notes:**
 - SessionStart fires once per session. Multiple sessions per day = multiple hook runs. Add deduplication (checklist item 7) if running full tasks via hooks.

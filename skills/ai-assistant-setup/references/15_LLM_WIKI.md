@@ -17,9 +17,9 @@ Retrieval answers questions from source material; a maintained wiki additionally
 
 The wiki pattern inverts this. When you add a new source, the LLM reads it, extracts key information, and integrates it into existing markdown pages — updating entities, revising summaries, flagging contradictions, strengthening the synthesis. Knowledge is compiled once and kept current. By the time you ask a question, the cross-references are already there. The contradictions have already been noted. The synthesis already reflects everything you've read.
 
-The wiki is a **persistent, compounding artifact**. You rarely write it yourself — Claude writes and maintains all of it. Your job is sourcing, exploration, and asking the right questions. Claude does the summarising, cross-referencing, filing, and bookkeeping.
+The wiki is a **persistent, compounding artifact**. You rarely write it yourself — the assistant writes and maintains all of it. Your job is sourcing, exploration, and asking the right questions. The assistant does the summarising, cross-referencing, filing, and bookkeeping.
 
-A useful mental model: Obsidian is the IDE; Claude is the programmer; the wiki is the codebase.
+A useful mental model: Obsidian is the IDE; the assistant is the programmer; the wiki is the codebase.
 
 ---
 
@@ -27,8 +27,8 @@ A useful mental model: Obsidian is the IDE; Claude is the programmer; the wiki i
 
 | If you want to... | Use |
 |---|---|
-| Claude to remember your preferences, corrections, and working style | `.auto-memory/` → [Guide 04](./04_MEMORY_AND_PROFILE.md) |
-| Claude to remember facts about ongoing projects and contacts | `.auto-memory/` → [Guide 04](./04_MEMORY_AND_PROFILE.md) |
+| the assistant to remember your preferences, corrections, and working style | `.auto-memory/` → [Guide 04](./04_MEMORY_AND_PROFILE.md) |
+| the assistant to remember facts about ongoing projects and contacts | `.auto-memory/` → [Guide 04](./04_MEMORY_AND_PROFILE.md) |
 | Build a knowledge base about a subject domain (threat intel, research, competitors) | **LLM Wiki — this guide** |
 | Have synthesised answers waiting before you ask the question | **LLM Wiki — this guide** |
 | Compound knowledge across many sources over weeks or months | **LLM Wiki — this guide** |
@@ -39,11 +39,11 @@ If you're unsure: start with Guide 04. Come back here when you have a domain you
 
 ## How This Differs from `.auto-memory/`
 
-`.auto-memory/` is about **you** — your working style, your preferences, your project context. It helps Claude collaborate with you more effectively across sessions.
+`.auto-memory/` is about **you** — your working style, your preferences, your project context. It helps the assistant collaborate with you more effectively across sessions.
 
 An LLM wiki is about **a subject domain** — a topic you're researching, a competitive landscape, a threat intelligence area, a book you're reading. It accumulates knowledge about that domain, not about you.
 
-They complement each other: `.auto-memory/` shapes how Claude works with you; the wiki is what you're building together.
+They complement each other: `.auto-memory/` shapes how the assistant works with you; the wiki is what you're building together.
 
 ---
 
@@ -51,9 +51,9 @@ They complement each other: `.auto-memory/` shapes how Claude works with you; th
 
 Every LLM wiki has three layers:
 
-**Raw sources** — your curated collection of input documents. Articles, papers, PDFs, data files, images. These are immutable — Claude reads from them but never modifies them. This is your source of truth. Store them in a `sources/` folder.
+**Raw sources** — your curated collection of input documents. Articles, papers, PDFs, data files, images. These are immutable — the assistant reads from them but never modifies them. This is your source of truth. Store them in a `sources/` folder.
 
-**The wiki** — a directory of Claude-maintained markdown files. Summaries, entity pages, concept pages, comparisons, an overview, a synthesis. The designated assistant maintains this layer under your review. It creates pages, updates cross-references and checks consistency; the project owns the accepted content and records who may write it. Store it in a `wiki/` folder.
+**The wiki** — a directory of assistant-maintained markdown files. Summaries, entity pages, concept pages, comparisons, an overview, a synthesis. The designated assistant maintains this layer under your review. It creates pages, updates cross-references and checks consistency; the project owns the accepted content and records who may write it. Store it in a `wiki/` folder.
 
 **The schema** — a `SCHEMA.md` referenced from the shared `AGENTS.md` policy (or from `CLAUDE.md` in a Claude-only project) that tells Claude how the wiki is structured, what the conventions are, and what workflows to follow when ingesting sources, answering questions, or running a health-check. This is the key configuration file — it's what makes Claude a disciplined wiki maintainer rather than a generic chatbot. You and Claude co-evolve this over time as you figure out what works for your domain.
 
@@ -61,11 +61,13 @@ A minimal directory layout:
 
 ```
 my-wiki/
-├── CLAUDE.md          ← schema and instructions for Claude
+├── AGENTS.md          ← shared policy; requires reading SCHEMA.md
+├── CLAUDE.md          ← thin Claude adapter
+├── SCHEMA.md          ← page types and wiki workflows
 ├── sources/           ← raw inputs, immutable
 │   ├── article-1.md
 │   └── report-2.pdf
-├── wiki/              ← Claude-maintained pages
+├── wiki/              ← assistant-maintained pages
 │   ├── index.md       ← catalog of all pages
 │   ├── log.md         ← append-only history
 │   ├── overview.md    ← evolving synthesis
@@ -89,31 +91,31 @@ Use the same ingest/query/lint acceptance checks on both: claims cite the origin
 
 ### Ingest
 
-You drop a new source into `sources/` and ask Claude to process it. A typical flow:
+You drop a new source into `sources/` and ask the assistant to process it. A typical flow:
 
-1. Claude reads the source and discusses key takeaways with you
-2. Claude writes a summary page in `wiki/`
-3. Claude updates `wiki/index.md` with a new entry
-4. Claude updates relevant entity and concept pages across the wiki
-5. Claude appends an entry to `wiki/log.md`
+1. The assistant reads the source and discusses key takeaways with you
+2. The assistant writes a summary page in `wiki/`
+3. The assistant updates `wiki/index.md` with a new entry
+4. The assistant updates relevant entity and concept pages across the wiki
+5. The assistant appends an entry to `wiki/log.md`
 
-A single source might touch 10–15 wiki pages. You can stay closely involved — reading summaries, checking updates, guiding emphasis — or batch-ingest with less supervision. Document the workflow you prefer in `CLAUDE.md` so it's consistent across sessions.
+A single source might touch 10–15 wiki pages. You can stay closely involved — reading summaries, checking updates, guiding emphasis — or batch-ingest with less supervision. Document the workflow you prefer in the shared policy so it's consistent across sessions.
 
 **Prompt to start an ingest:**
-> "Read 15_LLM_WIKI.md, then ingest `sources/[filename]` into the wiki. Follow the schema in CLAUDE.md. Talk me through the key takeaways before making any changes."
+> "Read 15_LLM_WIKI.md, then ingest `sources/[filename]` into the wiki. Follow SCHEMA.md. Talk me through the key takeaways before making any changes."
 
 ### Query
 
-You ask questions against the wiki rather than against raw sources. Claude reads `wiki/index.md` to find relevant pages, reads those pages, and synthesises an answer with citations.
+You ask questions against the wiki rather than against raw sources. The assistant reads `wiki/index.md` to find relevant pages, reads those pages, and synthesises an answer with citations.
 
-The critical insight: **good answers should be filed back into the wiki as new pages.** A comparison you asked for, an analysis, a connection you discovered — these are valuable and shouldn't disappear into chat history. Tell Claude to save the answer as a wiki page when the result is worth keeping.
+The critical insight: **good answers should be filed back into the wiki as new pages.** A comparison you asked for, an analysis, a connection you discovered — these are valuable and shouldn't disappear into chat history. Tell the assistant to save the answer as a wiki page when the result is worth keeping.
 
 **Prompt for a query:**
 > "Search the wiki and answer: [question]. If the answer is a useful synthesis that isn't already captured, save it as a new wiki page."
 
 ### Lint
 
-Periodically ask Claude to health-check the wiki. Look for:
+Periodically ask the assistant to health-check the wiki. Look for:
 
 - Contradictions between pages
 - Stale claims that newer sources have superseded
@@ -122,7 +124,7 @@ Periodically ask Claude to health-check the wiki. Look for:
 - Missing cross-references
 - Data gaps that could be filled with a web search
 
-Claude is good at surfacing new questions to investigate and new sources to look for. This keeps the wiki healthy as it grows.
+The assistant is good at surfacing new questions to investigate and new sources to look for. This keeps the wiki healthy as it grows.
 
 **Prompt for a lint pass:**
 > "Read 15_LLM_WIKI.md and run a lint pass on the wiki. Check for contradictions, orphan pages, missing cross-references, and stale claims. Give me a prioritised list of issues and suggested fixes before making any changes."
@@ -131,9 +133,9 @@ Claude is good at surfacing new questions to investigate and new sources to look
 
 ## Index and Log
 
-Two files help Claude (and you) navigate the wiki as it grows.
+Two files help the assistant (and you) navigate the wiki as it grows.
 
-**`wiki/index.md`** is content-oriented — a catalog of every page, each with a link, a one-line summary, and optional metadata (date added, source count). Organised by category (entities, concepts, summaries, queries, etc.). Claude updates it on every ingest. When answering a query, Claude reads the index first to find relevant pages, then drills into them. This works well at moderate scale — roughly 100–150 pages — without needing embedding-based search infrastructure.
+**`wiki/index.md`** is content-oriented — a catalog of every page, each with a link, a one-line summary, and optional metadata (date added, source count). Organised by category (entities, concepts, summaries, queries, etc.). The assistant updates it on every ingest. When answering a query, the assistant reads the index first to find relevant pages, then drills into them. This works well at moderate scale — roughly 100–150 pages — without needing embedding-based search infrastructure.
 
 **`wiki/log.md`** is chronological — an append-only record of what happened and when: ingests, queries, lint passes. Use a consistent prefix for each entry so the log is scannable:
 
@@ -143,13 +145,15 @@ Two files help Claude (and you) navigate the wiki as it grows.
 ## [2026-04-10] lint   | Pass 3 — 2 contradictions resolved
 ```
 
-This makes the log parseable with simple tools and gives Claude a clear picture of what's been done recently when starting a new session.
+This makes the log parseable with simple tools and gives the assistant a clear picture of what's been done recently when starting a new session.
 
 ---
 
-## Writing a Schema (CLAUDE.md)
+<a id="writing-a-schema-claudemd"></a>
 
-The schema is what separates a disciplined wiki from a pile of markdown files. It tells Claude:
+## Writing a Schema (SCHEMA.md)
+
+The schema is what separates a disciplined wiki from a pile of markdown files. It tells the assistant:
 
 - What page types exist and what each one contains
 - How pages are named and linked
@@ -165,7 +169,7 @@ A minimal starting schema for a research wiki:
 ## Page types
 - `wiki/overview.md` — evolving synthesis of everything ingested so far. Update after every ingest.
 - `wiki/entities/[name].md` — one page per named entity (person, organisation, tool, concept). Create when first mentioned; update as more sources arrive.
-- `wiki/source-notes/[slug].md` — Claude-written summary of a single raw source. Create on ingest; never modify after. (Named `source-notes` to keep it distinct from the top-level `sources/` folder, which holds the raw immutable inputs themselves.)
+- `wiki/source-notes/[slug].md` — assistant-written summary of a single raw source. Create on ingest; never modify after. (Named `source-notes` to keep it distinct from the top-level `sources/` folder, which holds the raw immutable inputs themselves.)
 - `wiki/queries/[slug].md` — saved answer to a query. Create when the answer is worth keeping.
 - `wiki/index.md` — catalog. Update on every ingest or new page.
 - `wiki/log.md` — append-only. Add one entry per operation.
@@ -215,15 +219,15 @@ Some uses that fit naturally with this setup:
 
 ## Tooling Tips
 
-**Obsidian** works well as a reader alongside Claude. Claude edits the files; you browse the results in Obsidian — following links, checking the graph view, reading updated pages. Install the **Obsidian Web Clipper** browser extension to convert web articles to markdown for your `sources/` folder quickly.
+**Obsidian** works well as a reader alongside the assistant. The assistant edits the files; you browse the results in Obsidian — following links, checking the graph view, reading updated pages. Install the **Obsidian Web Clipper** browser extension to convert web articles to markdown for your `sources/` folder quickly.
 
 **Obsidian's graph view** shows the shape of the wiki — which pages are hubs, which are orphans. Useful for spotting gaps the lint pass might miss visually.
 
-**Marp** is a markdown-based slide format with an Obsidian plugin. Useful if you want Claude to generate a presentation from wiki content.
+**Marp** is a markdown-based slide format with an Obsidian plugin. Useful if you want the assistant to generate a presentation from wiki content.
 
-**Dataview** (Obsidian plugin) runs queries over page frontmatter. If Claude adds YAML frontmatter to pages (tags, dates, source counts), Dataview can generate dynamic tables and dashboards.
+**Dataview** (Obsidian plugin) runs queries over page frontmatter. If the assistant adds YAML frontmatter to pages (tags, dates, source counts), Dataview can generate dynamic tables and dashboards.
 
-**Search at scale**: at small scale the `index.md` approach is sufficient. As the wiki grows into hundreds of pages, consider [qmd](https://github.com/tobi/qmd) — a local search engine for markdown with hybrid BM25/vector search that has both a CLI (Claude can shell out to it) and an MCP server.
+**Search at scale**: at small scale the `index.md` approach is sufficient. As the wiki grows into hundreds of pages, consider [qmd](https://github.com/tobi/qmd) — a local search engine for markdown with hybrid BM25/vector search that has both a CLI (the assistant can shell out to it) and an MCP server.
 
 ---
 
@@ -251,7 +255,7 @@ See: entities/ttps section in index.md
 See: source-notes/ section in index.md
 ```
 
-Claude reads `categories.md` first (5–10 lines), identifies the relevant category, then reads only that slice of `index.md`. This cuts index-reading cost by 70–80% for focused queries.
+The assistant reads `categories.md` first (5–10 lines), identifies the relevant category, then reads only that slice of `index.md`. This cuts index-reading cost by 70–80% for focused queries.
 
 ### Pagination
 
@@ -270,7 +274,7 @@ When a query matches many pages, don't read them all. Read the top 5–10 most r
 
 **Rule of thumb:** if you have 150+ entity pages or find yourself waiting noticeably for index-based queries, add qmd.
 
-**CLI usage** (Claude can shell out to this; flags are illustrative of the version documented at the repo — check `qmd --help`):
+**CLI usage** (the assistant can shell out to this; flags are illustrative of the version documented at the repo — check `qmd --help`):
 ```bash
 qmd search "lateral movement techniques" --top 10 --path wiki/
 ```
@@ -288,11 +292,11 @@ qmd search "lateral movement techniques" --top 10 --path wiki/
 ```
 In Cowork, use `claude_desktop_config.json`.
 
-With the MCP server running, Claude can call the qmd search tool directly instead of reading the index — the actual tool name will be namespaced (e.g. `mcp__qmd__search`; confirm by asking Claude "what tools do you have?"). The hybrid BM25/vector search handles disambiguation and fuzzy matching that index scanning misses.
+With the MCP server running, the assistant can call the qmd search tool directly instead of reading the index — the actual tool name will be namespaced (e.g. `mcp__qmd__search`; confirm by asking the assistant "what tools do you have?"). The hybrid BM25/vector search handles disambiguation and fuzzy matching that index scanning misses.
 
 ### Structured Queries with Dataview
 
-For "list all X where Y" questions (e.g., "all threat actors targeting healthcare"), consider Dataview (Obsidian plugin) over having Claude read pages. If Claude adds YAML frontmatter to entity pages:
+For "list all X where Y" questions (e.g., "all threat actors targeting healthcare"), consider Dataview (Obsidian plugin) over having the assistant read pages. If the assistant adds YAML frontmatter to entity pages:
 
 ```yaml
 ---
@@ -302,7 +306,7 @@ first_seen: 2025-03
 ---
 ```
 
-Then Dataview can answer structured queries instantly without Claude reading dozens of pages. Claude writes the Dataview query; Obsidian runs it.
+Then Dataview can answer structured queries instantly without the assistant reading dozens of pages. The assistant writes the Dataview query; Obsidian runs it.
 
 ### Anti-patterns
 
@@ -316,9 +320,9 @@ Then Dataview can answer structured queries instantly without Claude reading doz
 
 The wiki is just a folder of markdown files — version it with git and you get the full pre/post-run commit pattern from [Guide 11](./11_GIT_INTEGRATION.md) for free.
 
-`wiki/log.md` is append-only, which produces an unusually clean git history: each commit adds exactly one entry, so `git log` on that file reads like a timeline of the wiki's evolution. `git diff HEAD~1 HEAD -- wiki/` shows exactly what a single ingest changed across all pages — useful for reviewing Claude's work before pushing.
+`wiki/log.md` is append-only, which produces an unusually clean git history: each commit adds exactly one entry, so `git log` on that file reads like a timeline of the wiki's evolution. `git diff HEAD~1 HEAD -- wiki/` shows exactly what a single ingest changed across all pages — useful for reviewing the assistant's work before pushing.
 
-Track the `wiki/` folder. Track `CLAUDE.md`. Do not track anything in `sources/` that contains sensitive data.
+Track the `wiki/` folder. Track `SCHEMA.md`, `AGENTS.md` and the Claude adapter when used. Do not track anything in `sources/` that contains sensitive data.
 
 ---
 
@@ -342,24 +346,24 @@ The git log on `wiki/log.md` shows the exact date of every ingest, every saved q
 
 ## Anti-Patterns
 
-**Using the wiki as a dump of raw sources.** The wiki layer is for synthesis, not storage. If Claude copies source text verbatim into wiki pages without summarising, cross-referencing, or integrating, you have a mirror of `sources/` with extra steps. The value comes from the transformation — distill, connect, and compress.
+**Using the wiki as a dump of raw sources.** The wiki layer is for synthesis, not storage. If the assistant copies source text verbatim into wiki pages without summarising, cross-referencing, or integrating, you have a mirror of `sources/` with extra steps. The value comes from the transformation — distill, connect, and compress.
 
-**One massive file instead of topic pages.** A single `wiki/everything.md` defeats the purpose. Claude can't selectively read relevant pages on query; every question loads the entire wiki into context. Split by entity, concept, or source — many small pages with links between them.
+**One massive file instead of topic pages.** A single `wiki/everything.md` defeats the purpose. The assistant can't selectively read relevant pages on query; every question loads the entire wiki into context. Split by entity, concept, or source — many small pages with links between them.
 
-**Skipping the schema.** Without a `CLAUDE.md` defining page types, naming conventions, and workflows, Claude improvises. Pages drift in structure across sessions: some have frontmatter, some don't; naming varies; the ingest workflow changes. The schema is cheap to write and prevents entropy.
+**Skipping the schema.** Without a `SCHEMA.md` defining page types, naming conventions, and workflows and a shared-policy instruction to read it, the assistant improvises. Pages drift in structure across sessions: some have frontmatter, some don't; naming varies; the ingest workflow changes. The schema is cheap to write and prevents entropy.
 
 **Ingesting without deduplication.** Adding the same source twice (or two versions of the same report) creates contradictions and bloat. Before ingesting, check `wiki/log.md` and `wiki/index.md` for the source. If it's already there, update rather than re-ingest. Add a dedup check to your schema's ingest workflow.
 
-**Treating the wiki as append-only.** Wikis need pruning. Sources get superseded, entities merge, early summaries become stale as better sources arrive. The lint operation exists for this reason — run it regularly and let Claude remove or consolidate pages that no longer earn their keep.
+**Treating the wiki as append-only.** Wikis need pruning. Sources get superseded, entities merge, early summaries become stale as better sources arrive. The lint operation exists for this reason — run it regularly and let the assistant remove or consolidate pages that no longer earn their keep.
 
-**Confusing wiki with auto-memory.** `.auto-memory/` stores facts about you — preferences, corrections, project context. It updates implicitly during normal conversation and shapes how Claude collaborates with you. A wiki stores domain knowledge — it updates explicitly through ingest/query/lint operations and compounds research about a subject. Mixing the two (putting research into memory, or preferences into wiki pages) weakens both.
+**Confusing wiki with auto-memory.** `.auto-memory/` stores facts about you — preferences, corrections, project context. It updates implicitly during normal conversation and shapes how the assistant collaborates with you. A wiki stores domain knowledge — it updates explicitly through ingest/query/lint operations and compounds research about a subject. Mixing the two (putting research into memory, or preferences into wiki pages) weakens both.
 
 ---
 
 ## Starting a New Wiki
 
-Share this with Claude and say:
+Share this with the assistant and say:
 
-> "Read 15_LLM_WIKI.md. I want to build a wiki about [topic]. My sources will be [describe what you have]. Help me set up the directory structure and write an initial CLAUDE.md schema. Ask me questions to understand the domain before writing anything."
+> "Read 15_LLM_WIKI.md. I want to build a wiki about [topic]. My sources will be [describe what you have]. Help me set up the directory structure and write an initial SCHEMA.md and shared-policy loading rule. Ask me questions to understand the domain before writing anything."
 
-Claude will ask about your domain, your sources, and what you want to be able to query — then build the scaffold to match.
+The assistant will ask about your domain, your sources, and what you want to be able to query — then build the scaffold to match.

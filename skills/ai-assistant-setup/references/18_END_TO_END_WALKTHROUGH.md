@@ -43,7 +43,7 @@ The stages below develop this starter. Claude-only paths are labelled; choose th
 
 ## Stage 1: Foundation (Day 1)
 
-**What you are building:** The shared operating contract and its native entry point: `AGENTS.md`, with `CLAUDE.md` as the Claude adapter or project instructions for source-only use.
+**What you are building:** The shared operating contract and its native entry point: `AGENTS.md`, with `CLAUDE.md` as Claude adapter or project instructions for source-only use.
 
 **Read first:** [Guide 01](./01_PROJECT_INSTRUCTIONS.md) (10 min), then [Guide 02](./02_PROMPTING_BASICS.md) (15 min).
 
@@ -256,7 +256,7 @@ Good first wikis: competitive intelligence, personal finance research, technical
 
 **Read:** [Guide 14](./14_PERSONAL_DATA_LAYER.md) (20 min).
 
-When you need Claude to reason about data from apps without APIs — bank transactions, investment portfolios, spending reports — Guide 14 covers five patterns for getting that data in.
+When you need the assistant to reason about data from apps without APIs — bank transactions, investment portfolios, spending reports — Guide 14 covers five patterns for getting that data in.
 
 ```
 "Read 14_PERSONAL_DATA_LAYER.md and help me set up a data feeder for [your data source]."
@@ -297,7 +297,7 @@ Keep a fresh-session result for every supported surface and a single owner for e
 
 ## Giving This Guide to an Assistant
 
-You can hand this guide to Claude and ask it to walk you through any stage:
+You can hand this guide to the assistant and ask it to walk you through any stage:
 
 > "Read 18_END_TO_END_WALKTHROUGH.md and help me complete Stage 1. I'm starting from scratch."
 

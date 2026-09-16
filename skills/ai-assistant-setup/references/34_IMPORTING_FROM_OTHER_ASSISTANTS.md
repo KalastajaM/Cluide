@@ -54,7 +54,7 @@ Two properties of the prompt carry weight and are worth understanding before you
 
 **Verbatim, one line per entry, dated.** Verbatim because the next step is triage, and a paraphrase hides what the other assistant was actually doing. One line per entry because the step after that is a table — the two exceptions are the persona instructions and the automation prompts, which are the entries you least want truncated. Dated because the oldest instructions are the ones most likely to be describing a problem you no longer have.
 
-**A completeness statement at the end.** Exports get truncated, and a truncated export that does not say so is imported as if it were whole. If the assistant says more remains, ask for the rest before you triage anything. Paste the reply as it comes; the code block is there so it copies cleanly out of the other tool, not for Claude's benefit.
+**A completeness statement at the end.** Exports get truncated, and a truncated export that does not say so is imported as if it were whole. If the assistant says more remains, ask for the rest before you triage anything. Paste the reply as it comes; the code block is there so it copies cleanly out of the other tool, not for the assistant's benefit.
 
 If the other assistant says it has no memory of you, or declines outright, take that at face value. Do not improvise a workaround; a reconstruction from conversation history is a different, larger job (§3, *Conversation history*).
 
@@ -69,7 +69,7 @@ The table is the guide. Its left column is broader than the export: the paste's 
 | Standing instructions | Shared `AGENTS.md` policy or the destination's instruction field | [01](./01_PROJECT_INSTRUCTIONS.md) | The 30-line target is the triage tool. Most of a year's accumulated instructions fail the "does this apply to every conversation?" test and go to a skill, a task, or nowhere |
 | Memories, saved facts — the paste's Identity, Career, Projects and Preferences sections | Destination native memory through a supported import workflow, or explicit `.auto-memory/` / profile sources for shared tasks | [04](./04_MEMORY_AND_PROFILE.md) | Hand those sections of the paste to the skill and keep the rest for this table. Its ground rules are the rules in §4, and it applies its own privacy filter; Guide 04's still applies on top |
 | Custom assistant with a procedure | Skill | [03](./03_SKILLS.md) | A persona you trigger by asking, that needs consistent detailed behaviour, is a skill by Guide 03's own test |
-| Custom assistant with files or ongoing state | Project | [24](./24_PROJECT_FOLDER_STRUCTURE.md), [25](./25_PROJECT_INSTRUCTION_LAYERS.md) | Its files go to the project's homes; its instructions become the project `CLAUDE.md` or the instructions field, split by Guide 25's layer test |
+| Custom assistant with files or ongoing state | Project | [24](./24_PROJECT_FOLDER_STRUCTURE.md), [25](./25_PROJECT_INSTRUCTION_LAYERS.md) | Its files go to the project's homes; its instructions become the shared `AGENTS.md` policy with native adapters or the destination instructions field, split by Guide 25's layer test |
 | Uploaded documents, reference material | Project folder homes; a wiki if the material is about a subject rather than about you | [24](./24_PROJECT_FOLDER_STRUCTURE.md), [15](./15_LLM_WIKI.md) | Files move as files. Nothing else is needed, and nothing else should be done to them |
 | Conversation history | **Not imported.** Mined once, with the periodic knowledge sweep | [04](./04_MEMORY_AND_PROFILE.md) | A history dump is the corpus for a sweep, not memory. Pasting it into memory is the failure this row exists to prevent |
 | Scheduled or recurring prompts | Task file, written fresh | [06](./06_TASK_EFFICIENCY_GUIDE.md), [07](./07_TASK_LEARNING_GUIDE.md) | Nothing ports. The old prompt is the requirement; the task is built against Guide 06 from scratch |
@@ -78,7 +78,7 @@ The table is the guide. Its left column is broader than the export: the paste's 
 
 Three categories need more than a note.
 
-**Custom assistants (both rows)** are where people most often pick the wrong home, because the other tool gave one container to two different things. Ask what the persona *is*. If it is a procedure — "draft my weekly status in this shape", "review a contract against these points" — it is a skill, and its instructions become the skill body more or less directly. If it carries knowledge files, remembers state between uses, or is really a workspace for one ongoing matter, it is a project: the files land in [Guide 24](./24_PROJECT_FOLDER_STRUCTURE.md)'s homes, and the instructions are split between the project's `CLAUDE.md` and its app-side fields by [Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md)'s test. A persona that turns out to be both is a project with a skill in it.
+**Custom assistants (both rows)** are where people most often pick the wrong home, because the other tool gave one container to two different things. Ask what the persona *is*. If it is a procedure — "draft my weekly status in this shape", "review a contract against these points" — it is a skill, and its instructions become the skill body more or less directly. If it carries knowledge files, remembers state between uses, or is really a workspace for one ongoing matter, it is a project: the files land in [Guide 24](./24_PROJECT_FOLDER_STRUCTURE.md)'s homes, and the instructions are split between the project's shared policy and its app-side fields by [Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md)'s test. A persona that turns out to be both is a project with a skill in it.
 
 **Conversation history** is not memory and does not become memory by being pasted into it. A year of chat is a corpus, and [Guide 04](./04_MEMORY_AND_PROFILE.md)'s periodic knowledge sweep is the motion built for corpora: sweep into a dated file, validate against what is already known, merge the confirmed facts with the targeted-edit discipline, archive the raw sweep. Sweep the imported corpus once; the periodic sweep then continues on its own schedule over your own history. If the other assistant's own memory export was thin, the sweep is how you make up the difference — and it is a separate, deliberate job, not an extension of the paste.
 
@@ -129,7 +129,7 @@ Everything this repo asks you to build is a markdown file or a folder of them, a
 - [ ] Export obtained from the assistant with the §2 prompt, and it says it is complete
 - [ ] Every entry placed in a row of the §3 table before anything is written
 - [ ] Instruction-shaped content dropped and reported
-- [ ] Standing instructions triaged line by line; the `CLAUDE.md` that results is near the 30-line target
+- [ ] Standing instructions triaged line by line; the shared policy that results is near the 30-line target
 - [ ] Custom assistants sorted into skill or project by what each one *is*
 - [ ] Reference material sorted: about you, project homes; about a subject, wiki
 - [ ] Conversation history, if used at all, handled by a knowledge sweep and not by paste
