@@ -165,7 +165,7 @@ Guardrails are cheap on day 1 and painful to retrofit. Before the app has any re
 - **Secret handling.** If the app ever calls an external API, decide where the key lives (env var, local file outside the repo) and write that in CLAUDE.md. Never let the first version hardcode a key "temporarily".
 - **Input validation at the boundary.** Any data read from disk, URL, or user input gets validated once at the boundary. The assistant will follow this if it is stated; it will not invent it unprompted.
 - **Data backup.** If the app writes to local files that matter to you, decide a backup strategy (git commit of the data, periodic copy) before the first real entry goes in.
-- **API version awareness.** Record the provider, endpoint and supported model in the app contract. Check current official documentation before changing model-specific parameters. Anthropic Messages and OpenAI Responses are separate APIs; neither thinking controls nor assistant-prefill behavior should be transferred by renaming fields.
+- **API version awareness.** Record the provider, endpoint and supported model in the app contract. Check current official documentation before changing model-specific parameters. Anthropic Messages and OpenAI Responses are separate APIs; neither thinking controls nor assistant-prefill behavior should be transferred by renaming fields. The dated parameter facts and their sources are in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts).
 
 Five lines in CLAUDE.md. Five minutes on day 1. Many hours not spent later.
 
