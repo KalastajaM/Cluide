@@ -2,26 +2,28 @@
 
 > Every session decides, many times, whether to do something or to propose it — and in most setups that decision is made per request, from the wording, by a model disposed to be helpful. The rules that should govern it are already in this repo, scattered: read-draft-confirm in [Guide 12](./12_SECURITY.md), tiered enforcement in [Guide 21](./21_COMPANY_POLICIES.md), acceptance as a human act in [Guide 30](./30_CONTROLLED_DOCUMENTS.md), apply-versus-propose in [Guide 07](./07_TASK_LEARNING_GUIDE.md). Each was written for its own case. This guide is the general layer they are instances of: a way of classifying actions that does not depend on which tool performs them, a form for standing approvals so an unattended task can act without you and without guessing, and the outbox and log that let you see afterwards what happened while you were away.
 
-> **Companion guides:** [Guide 12](./12_SECURITY.md) §8 is the safety floor this builds on and its *Recording What a Refactor Must Not Weaken* section is where the structural half lives. [Guide 30](./30_CONTROLLED_DOCUMENTS.md) is the document-shaped instance; [Guide 07](./07_TASK_LEARNING_GUIDE.md) Part 3 is the instruction-shaped one. [Guide 27](./27_INDEPENDENT_JUDGMENT.md) is the boundary between Claude's judgment and yours; this guide is the boundary between Claude's *actions* and yours. [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) and the `TASK_TEMPLATE` carry the run log this guide's action log extends. [Guide 31](./31_BEHAVIOUR_TESTS.md) is how you check the boundary still holds.
+> **Companion guides:** [Guide 12](./12_SECURITY.md) §8 is the safety floor this builds on and its *Recording What a Refactor Must Not Weaken* section is where the structural half lives. [Guide 30](./30_CONTROLLED_DOCUMENTS.md) is the document-shaped instance; [Guide 07](./07_TASK_LEARNING_GUIDE.md) Part 3 is the instruction-shaped one. [Guide 27](./27_INDEPENDENT_JUDGMENT.md) is the boundary between the assistant's judgment and yours; this guide is the boundary between the assistant's *actions* and yours. [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) and the `TASK_TEMPLATE` carry the run log this guide's action log extends. [Guide 31](./31_BEHAVIOUR_TESTS.md) is how you check the boundary still holds.
 
 > **Giving this guide to an assistant:**
-> "Read 32_ACTION_AUTHORITY.md. Inventory every action this project's tasks and skills can take — connectors, scopes, file operations — classify each under §2, and propose the CLAUDE.md block from §8. Do not grant yourself anything."
+> "Read 32_ACTION_AUTHORITY.md. Inventory every action this project's tasks and skills can take — connectors, scopes, file operations — classify each under §2, and propose the shared policy block from §8. Do not grant yourself anything."
+
+**Policy placement:** Put the shared rules below in `AGENTS.md` for Codex or a dual-platform repository, with a thin `CLAUDE.md` adapter for Claude. App projects bootstrap the same policy through their instructions and accessible sources (Guides 01 and 25). A Claude-only setup may keep its policy in `CLAUDE.md`.
 
 ---
 
 ## 1. Authority Is Decided by Accident
 
-The request that gets a Claude session into trouble rarely looks like an action. "Tidy up the policy folder." "Finalise it." "Send it." "Clean up the old drafts." "Just apply your suggestions." Each is ordinary, each is reasonable, and each contains an action whose consequences the wording does not carry: a deletion nobody can reverse, an approval nobody gave, an email that left. The model reads intent from the sentence, the sentence does not mention the consequence, and the default disposition is to help.
+The request that gets an assistant session into trouble rarely looks like an action. "Tidy up the policy folder." "Finalise it." "Send it." "Clean up the old drafts." "Just apply your suggestions." Each is ordinary, each is reasonable, and each contains an action whose consequences the wording does not carry: a deletion nobody can reverse, an approval nobody gave, an email that left. The model reads intent from the sentence, the sentence does not mention the consequence, and the default disposition is to help.
 
 The scattered rules cover the cases their authors met. What is missing is the classification underneath them, so that a request nobody anticipated lands in the right class anyway. That is what §2 is. Everything after it is machinery for living with the classification: how an approval is written so it can be relied on, how a proposal is shaped so you can decide in ten seconds, and how an unattended run prepares actions without taking them.
 
-One principle runs through it: **classify by consequence, not by tool.** "Claude may use the Gmail connector" is not an authority rule. Reading mail, filing mail, drafting a reply and sending one are four actions with four different consequences, and the connector performs all of them.
+One principle runs through it: **classify by consequence, not by tool.** "the assistant may use the Gmail connector" is not an authority rule. Reading mail, filing mail, drafting a reply and sending one are four actions with four different consequences, and the connector performs all of them.
 
 ---
 
 ## 2. Four Classes, by Who Can Undo It and Who Sees It
 
-Two questions sort any action. Can it be undone, and by whom? Does anyone other than you see it? The answers give four classes, and the class — not the tool, not the request — decides whether Claude acts, prepares, or hands back.
+Two questions sort any action. Can it be undone, and by whom? Does anyone other than you see it? The answers give four classes, and the class — not the tool, not the request — decides whether the assistant acts, prepares, or hands back.
 
 | Class | The action | Examples | Default |
 |---|---|---|---|
@@ -52,7 +54,7 @@ A standing approval is what moves a Class B action, or a narrowly named Class C 
 
 **It records why it was granted.** The evidence: "proposed and approved unchanged on twelve consecutive runs, 2026-06 to 2026-08". [Guide 07](./07_TASK_LEARNING_GUIDE.md) Part 3 lets a task auto-apply a low-stakes change only after several consistent observations; this is the same logic with a longer fuse, because the consequence is larger and the observation that counts is your unchanged yes. An approval that was never proposed first is a guess about what you would have said.
 
-**It lives in CLAUDE.md, and nowhere else — with one restatement.** A skill's instructions are not a place to grant authority, because the dangerous request is the one that does not trigger the skill ([Guide 30](./30_CONTROLLED_DOCUMENTS.md) §8 makes this point for documents and it holds generally). A chat message is not a place either: "you can do that from now on" said in a session is an approval for that session. The default is that *a new session starts with no standing approvals*, and the CLAUDE.md block is the only exception, because it is versioned, visible, and revocable by deleting a line. The restatement runs the other way: for a project with real-world stakes, [Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md) says to repeat the one hard rule in the app's instructions field so a session whose folder failed to mount still has it. The Class D line is that rule. Approvals never go there; the "never" does.
+**It lives in the shared policy, and nowhere else — with one restatement.** A skill's instructions are not a place to grant authority, because the dangerous request is the one that does not trigger the skill ([Guide 30](./30_CONTROLLED_DOCUMENTS.md) §8 makes this point for documents and it holds generally). A chat message is not a place either: "you can do that from now on" said in a session is an approval for that session. The default is that *a new session starts with no standing approvals*, and the shared policy block is the only exception, because it is versioned, visible, and revocable by deleting a line. The restatement runs the other way: for a project with real-world stakes, [Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md) says to repeat the one hard rule in the app's instructions field so a session whose folder failed to mount still has it. The Class D line is that rule. Approvals never go there; the "never" does.
 
 **Default-deny.** Anything the block does not name is proposed. Silence is not permission.
 
@@ -107,11 +109,11 @@ An outbox is not a weaker form of doing the task. For most tasks it is the whole
 
 ## 6. Enforce Structurally Where You Can
 
-A rule in CLAUDE.md is guidance. It holds most of the time, and "most of the time" is the wrong standard for Class C and D. The strongest authority rule is a capability that does not exist, and the order of preference is fixed:
+A rule in the shared policy is guidance. It holds most of the time, and "most of the time" is the wrong standard for Class C and D. The strongest authority rule is a capability that does not exist, and the order of preference is fixed:
 
 1. **The capability is absent.** A Gmail connector with read and draft scopes and no send scope cannot send, whatever the task is told or whatever an injected email says ([Guide 12](./12_SECURITY.md) §6). A scheduled task with no payment app granted cannot pay; in Cowork, the per-app and per-folder grants are this tier, and withholding a grant from a task is the strongest rule it can have. This is the only enforcement that survives prompt injection, and it is why the security-properties table in [Guide 12](./12_SECURITY.md) exists: write the absent capability down as a property, with the change that would break it, so that a future session widening the scope "to unblock a draft step" knows it is making a security decision.
-2. **A hook blocks it.** In Claude Code, a `PreToolUse` hook can refuse a tool call on a pattern. It catches the mechanical shape of an action, not its intent, and is a speed bump rather than a boundary — but a speed bump on `git push` to a public remote or on a delete outside `_archive/` catches the accident that CLAUDE.md would have talked itself past. Do not assume this hook exists on Cowork or OpenAI; inspect the native enforcement available there and record any gap.
-3. **The instructions field and CLAUDE.md state it.** The Class D line in the app's instructions field for a project with stakes, because it survives a failed mount ([Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md)); the classes, the standing approvals and the outbox rule in CLAUDE.md. Guidance, always loaded, versioned.
+2. **A hook blocks it.** In Claude Code, a `PreToolUse` hook can refuse a tool call on a pattern. It catches the mechanical shape of an action, not its intent, and is a speed bump rather than a boundary — but a speed bump on `git push` to a public remote or on a delete outside `_archive/` catches the accident that shared policy would have talked itself past. Codex also documents tool hooks (Guide 35 §9), with its own configuration and coverage limits. Check the actual host before relying on either implementation; no hook is a universal boundary.
+3. **The instructions field and shared policy state it.** The Class D line in the app's instructions field for a project with stakes, because it survives a failed mount ([Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md)); the classes, the standing approvals and the outbox rule in the shared policy. Guidance, always loaded, versioned.
 4. **A skill states it.** Weakest, because it only exists for requests that trigger the skill. Fine for a skill's *own* actions; never the place a project-wide boundary lives.
 
 Move each Class C and D action as far up this list as your setup allows. Where the only enforcement available is a line of prose, say so in the security-properties table, so the gap is known rather than assumed closed.
@@ -134,7 +136,7 @@ The boundary is never removed by a decision. It is worn down by reasonable reque
 
 **"Just do it this time."** The correct response does everything up to the boundary — the draft written, the files staged, the plan itemised — and asks once, specifically, for the act. Not a lecture, and not a refusal: the work is done, the act is yours.
 
-**"You have my permission for today."** A session-scoped approval, which is what it is: honour it in the session, do not write it into memory or CLAUDE.md, and say that it lapses with the session. Recurring permission goes through §3.
+**"You have my permission for today."** A session-scoped approval, which is what it is: honour it in the session, do not write it into memory or shared policy, and say that it lapses with the session. Recurring permission goes through §3.
 
 **"Finalise", "clean up", "apply your suggestions".** Each hides an accept-all or a delete-all. Name what the phrase would do in this context and ask for the rows.
 
@@ -144,7 +146,9 @@ The boundary is never removed by a decision. It is worn down by reasonable reque
 
 ---
 
-## 8. The CLAUDE.md Block
+<a id="8-the-claudemd-block"></a>
+
+## 8. The Shared Policy Block
 
 The classes belong at the account level, because they are true of everything. Standing approvals belong in the project, because they are about that project's tasks. The block below is the project form; the first four lines are what to lift into your account-level instructions ([Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md), *The account layers above the project*), and the Class D line alone is what to restate in the project's instructions field when the project has real-world stakes.
 
@@ -222,7 +226,7 @@ Setting up:
 
 - [ ] Every action a task or skill can take is classified A–D by consequence, not tool
 - [ ] Class C and D capabilities are absent from unattended tasks where the connector allows it, and the absence is a row in the security-properties table
-- [ ] The action-authority block is in CLAUDE.md; the classes are also in the account-level instructions
+- [ ] The action-authority block is in the shared policy; the classes are also in the account-level instructions
 - [ ] Standing approvals each carry shape, scope, limit, grant date, evidence, expiry
 
 Every proposal:

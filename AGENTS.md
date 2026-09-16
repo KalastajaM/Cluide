@@ -73,7 +73,7 @@ If a newly created file should be ignored but is already tracked by git, run `gi
 - This file is the canonical repository policy. `CLAUDE.md` imports it for Claude Code. See `PLATFORM_SETUP.md` for ChatGPT and other conversational surfaces.
 - Repository examples under `templates/` and `skills/` are distribution content, not instructions to install or run a personal assistant while maintaining this repository.
 - Use only tools, models, skills, and permissions actually available in the current session. Never translate Claude model names into guessed OpenAI equivalents.
-- For Claude delegation, consult `skills/dispatch/SKILL.md`: default sonnet, opus or above for published prose and review verdicts, haiku only for mechanical checks. For OpenAI delegation, retain the configured model unless the user requests a supported alternative. Follow the host's delegation rules.
+- For delegation, consult `skills/dispatch/SKILL.md` and use the model configured for the current session. Claude-specific routing lives in `CLAUDE.md`; OpenAI-specific routing lives in `PLATFORM_SETUP.md`. Follow the host's delegation rules.
 - Keep working notes and routing logs under `development/`. Read root guides on demand; bundled references are distribution copies and should only be read for bundle checks.
 - `.claudeignore` is not an OpenAI configuration file or a security boundary. Respect actual sandbox and connector permissions; do not infer access restrictions from ignore files.
 - Share versioned definitions; keep credentials, app settings, native memory, scheduler registrations, and session history platform-local. Coordinate edits through branches or worktrees rather than concurrent writes to the same checkout.

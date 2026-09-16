@@ -113,27 +113,23 @@ Covers: the anatomy of a good instruction (context + task + constraints + output
 
 Covers: the anatomy of a SKILL.md file, writing descriptions that trigger reliably, structuring workflow steps, output formats, and edge cases. Includes real examples from a working setup.
 
-**Use this when:** there's a task you do repeatedly (checking email for actions, drafting messages in a second language, building a shopping list) and you want Claude to handle it consistently every time.
+**Use this when:** there's a task you do repeatedly (checking email for actions, drafting messages in a second language, building a shopping list) and you want the assistant to handle it consistently every time.
 
 ---
 
 ### [04 — Memory & Profile](./04_MEMORY_AND_PROFILE.md)
 `[All users]` · `~15 min`
 
-*Four persistence layers: Claude Code auto memory, the account memory behind claude.ai and Cowork, `.auto-memory/`, and profile files.*
+Covers: Native memory versus authored project memory, explicit loading, source refresh, profiles, and hypothesis tracking across Claude and OpenAI.
 
-Covers: the two built-in memories — Claude Code auto memory (machine-local) and the cloud account memory shared by chat and Cowork since August 2026 — vs. the `.auto-memory/` folder system (structured, project-specific), profile files for complex recurring agents, what to store, how to keep files lean, and the hypothesis system.
-
-**Use this when:** you want Claude to remember things across sessions — your preferences, corrections, ongoing projects, and key contacts.
+**Use this when:** you want the assistant to remember things across sessions — your preferences, corrections, ongoing projects, and key contacts.
 
 ---
 
 ### [05 — MCP Servers](./05_MCP_SERVERS.md)
 `[All users]` · `~15 min`
 
-*How Claude connects to external tools — Gmail, Calendar, GitHub, and more.*
-
-Covers: what MCP servers are, global vs. project-level configuration, the most useful servers for personal assistants (including Claude in Chrome and Computer Use), how to reference tool names in skills, and credential security.
+Covers: Shared tool discovery and failure handling, separate Claude and OpenAI connection setup, browser and desktop routes, and credential hygiene.
 
 **Use this when:** you're setting up a skill that uses external tools (email, calendar, files, browser, desktop) and need to understand where those tools come from — or when a skill isn't finding the tools it needs.
 
@@ -142,9 +138,7 @@ Covers: what MCP servers are, global vs. project-level configuration, the most u
 ### [06 — Task Efficiency](./06_TASK_EFFICIENCY_GUIDE.md)
 `[Scheduled tasks]` · `~15 min`
 
-*How to design and optimize scheduled tasks for minimal token consumption.*
-
-Covers: splitting instruction files, scripting fixed-format output, targeted file edits, two-pass triage for external data, hard size limits, run deduplication, and the four scheduling mechanisms (Cowork's scheduled-tasks feature — set up by asking in natural language — Claude Code Routines, session-scoped `/loop`, and SessionStart hooks).
+Covers: Lean task definitions, deterministic scripts, targeted reads, deduplication, and native scheduling and lifecycle mechanisms.
 
 **Use this when:** you have a scheduled task running regularly and want to audit it for efficiency — or want to set one up correctly from the start.
 
@@ -193,9 +187,7 @@ Covers: per-run metrics, budget checks, identifying high-cost steps, the token h
 ### [11 — Git Integration](./11_GIT_INTEGRATION.md)
 `[Power user]` · `~20 min`
 
-*Version control for your assistant's state — pre-run snapshots, rollback, and history.*
-
-Covers: what to track in git, what belongs in `.gitignore` vs `.claudeignore`, automating file hygiene through `CLAUDE.md`, the pre-run commit pattern (snapshot before every task run), post-run commits, automating commits via hooks, useful git commands for assistant files, and meaningful commit message conventions.
+Covers: Versioning authored definitions and state, shared file hygiene, native context controls, snapshots, handoffs and rollback.
 
 **Use this when:** you have a scheduled task running regularly and want the ability to roll back bad runs, see what changed between runs, or track how your assistant's knowledge and instructions have evolved over time.
 
@@ -204,33 +196,27 @@ Covers: what to track in git, what belongs in `.gitignore` vs `.claudeignore`, a
 ### [12 — Security](./12_SECURITY.md)
 `[All users]` · `~15 min`
 
-*Operational security for using Claude Code and Cowork safely.*
+Covers: Credential protection, connector trust, native permissions and hooks, session hygiene and autonomous action boundaries across surfaces.
 
-Covers: credential hygiene (where secrets belong and where they must not go), MCP server trust evaluation, permission controls and PreToolUse execution guard hooks, session data hygiene (transcripts, shell snapshots), supply chain awareness when Claude installs packages, prompt injection risks in autonomous tasks, file hygiene (`.gitignore` and `.claudeignore` for sensitive materials and sharing), and autonomous task safety principles.
-
-**Use this when:** you're setting up a new Claude environment and want it secured from the start, auditing an existing setup, adding a new MCP server, or designing an autonomous task that handles sensitive data or takes consequential actions.
+**Use this when:** you're setting up a new assistant environment and want it secured from the start, auditing an existing setup, adding a new MCP server, or designing an autonomous task that handles sensitive data or takes consequential actions.
 
 ---
 
 ### [13 — Development and Execution Workflow](./13_DEV_EXECUTION_WORKFLOW.md)
 `[Power user]` · `~15 min`
 
-*Using Claude Code and Cowork as two distinct tools with two distinct roles — and how to work effectively with Cowork alone.*
+Covers: Development and execution roles chosen by access and tools, reproducible debugging, planning, proposal review and handoffs.
 
-Covers: the development/execution split (Claude Code for building and maintaining, Cowork for running), file architecture that works cleanly in both tools, a Cowork-only workflow for users without Claude Code, Plan Mode for reviewing changes before executing, subagents for parallel exploration and planning, the workflow for adding or changing something, debugging broken runs, reviewing and applying self-improvement proposals, and a new-features checklist.
-
-**Use this when:** you want a clear workflow for how to build, maintain, and iterate on your setup — whether you use Claude Code or work entirely within Cowork.
+**Use this when:** you want a clear workflow for how to build, maintain, and iterate on your setup — whether you use a repository-capable session or an app-source project.
 
 ---
 
 ### [14 — Personal Data Layer](./14_PERSONAL_DATA_LAYER.md)
 `[Power user]` · `~20 min`
 
-*Five patterns for getting personal data into the assistant's hands.*
+Covers: Scripts, structured stores, browser extraction, vision input and multi-step workflows with a shared validation contract and native implementations.
 
-Covers: Python scripts as data feeders, JSON as a personal database, browser JavaScript extraction for apps with no API, Claude Vision for screenshot ingestion, and multi-step instruction files for complex workflows.
-
-**Use this when:** you want Claude to reason about personal data (investments, spending, bank transactions) but the data lives in apps that have no API, in raw files too large to paste in directly, or in formats Claude can't parse without help.
+**Use this when:** you want the assistant to reason about personal data (investments, spending, bank transactions) but the data lives in apps that have no API, in raw files too large to paste in directly, or in formats the assistant can't parse without help.
 
 ---
 
@@ -250,7 +236,7 @@ Covers: the difference between RAG and a wiki, the three-layer architecture (sou
 
 *Lessons from real use — a shareable summary.*
 
-Covers: giving Claude good inputs, working effectively session-to-session, building a setup that compounds over time, and knowing when not to use Claude. Includes a 15-point short version for quick reference.
+Covers: giving the assistant good inputs, working effectively session-to-session, building a setup that compounds over time, and knowing when not to use the assistant. Includes a 15-point short version for quick reference.
 
 **Use this when:** you want a quick overview of what actually matters, or you want something to share with someone just getting started.
 
@@ -259,9 +245,7 @@ Covers: giving Claude good inputs, working effectively session-to-session, build
 ### [17 — Troubleshooting](./17_TROUBLESHOOTING.md)
 `[All users]` · `~10 min (reference)`
 
-*When things don't work — problem by problem.*
-
-Covers: skill not triggering, CLAUDE.md being ignored, memory not persisting, MCP tools failing, a cloud session losing its connection to your local folder mid-task, output format drifting, slow tasks, confusing improvement proposals, and recovering from broken changes.
+Covers: Surface-aware checks for instruction loading, skill revisions, memory, tool access, folder connections, output drift and run failures.
 
 **Use this when:** something isn't working and you want a structured guide to diagnosing and fixing it.
 
@@ -270,9 +254,7 @@ Covers: skill not triggering, CLAUDE.md being ignored, memory not persisting, MC
 ### [18 — End-to-End Walkthrough](./18_END_TO_END_WALKTHROUGH.md)
 `[All users]` · `~20 min`
 
-*Build a complete personal assistant from scratch, seeing how each guide contributes to the whole.*
-
-Covers: six stages from writing your first CLAUDE.md through to orchestrating multiple tasks and building knowledge bases. Each stage shows what to build, which guides to read, the exact prompt to use, and what to check before moving on. Goes deeper than the Quickstart — shows the full two-week journey.
+Covers: A shared starter with Claude local, Codex local and ChatGPT source routes, followed by skills, memory, schedules and verification.
 
 **Use this when:** you have finished the Quickstart and want a structured path through the rest of the system, or you want to understand how all the guides fit together in practice.
 
@@ -283,31 +265,33 @@ Covers: six stages from writing your first CLAUDE.md through to orchestrating mu
 
 *Make generated output look good — Markdown tips for chat and GitHub, HTML patterns for polished standalone reports.*
 
-Covers: where Markdown renders (and where it doesn't), how to prompt Claude for specific formatting elements, a reusable HTML skeleton with embedded CSS, CSS design hints (cards, status badges, typography), and a prompt snippet for generating styled HTML reports.
+Covers: where Markdown renders (and where it doesn't), how to prompt the assistant for specific formatting elements, a reusable HTML skeleton with embedded CSS, CSS design hints (cards, status badges, typography), and a prompt snippet for generating styled HTML reports.
 
 **Use this when:** a task or skill produces output that people need to read — and you want it to look clean rather than like a wall of text.
 
 ---
 
-### [20 — Interactive Prompting: Claude Code Features & Patterns](./20_INTERACTIVE_PROMPTING.md)
+<a id="20--interactive-prompting-claude-code-features--patterns20_interactive_promptingmd"></a>
+
+<a id="20--interactive-prompting-claude-code-features--patterns"></a>
+
+### [20 — Interactive Prompting: Features and Patterns by Surface](./20_INTERACTIVE_PROMPTING.md)
 `[All users]` · `~12 min`
 
-*Using Claude Code's interactive features effectively — file references, question dialogs, plan mode, and keeping the context window clean.*
+Covers: Shared in-session work patterns with native file references, decision controls, planning, imports and context management.
 
-Covers: `@filepath` references in messages and CLAUDE.md, AskUserQuestion input types (single/multi-select, description and preview fields), plan mode as a workflow pattern, in-session prompting patterns (interview pattern, explore→plan→implement→verify, pointing to existing code, verification criteria), CLAUDE.md structural tips (`@` imports, length discipline, emphasis markers), and context hygiene (`/clear`, subagents for research).
-
-**Use this when:** you want to work more effectively with Claude inside a session — not just write better instructions, but use the right interactive patterns and tools so Claude does less guessing and more of what you actually meant.
+**Use this when:** you want to work more effectively with the assistant inside a session — not just write better instructions, but use the right interactive patterns and tools so the assistant does less guessing and more of what you actually meant.
 
 ---
 
 ### [21 — Company Policies: Embedding Existing Policies as Guardrails](./21_COMPANY_POLICIES.md)
 `[All users]` · `~12 min`
 
-*Make Claude honour your organisation's AI use policy, Code of Conduct, data classification, and similar — without copying the policy content into Cluide.*
+*Make the assistant honour your organisation's AI use policy, Code of Conduct, data classification, and similar — without copying the policy content into Cluide.*
 
-Covers: the separation principle (generic Cluide vs. private policy content vs. the skill/CLAUDE.md bridge), two storage patterns (central user-level folder and external systems via MCP), a tiered enforcement model (T1 hard block, T2 required check, T3 soft guidance), worked examples for each tier, file hygiene so policies never leak into the repo, verification prompts, and maintenance.
+Covers: the separation principle (generic Cluide vs. private policy content vs. the skill/shared-policy bridge), two storage patterns (central user-level folder and external systems via MCP), a tiered enforcement model (T1 hard block, T2 required check, T3 soft guidance), worked examples for each tier, file hygiene so policies never leak into the repo, verification prompts, and maintenance.
 
-**Use this when:** your company has policies that Claude should respect across projects — and you want them enforced automatically, at the right strictness per policy, without retyping the policy text into CLAUDE.md or skills.
+**Use this when:** your company has policies that the assistant should respect across projects — and you want them enforced automatically, at the right strictness per policy, without retyping the policy text into the shared policy or skills.
 
 ---
 
@@ -316,9 +300,9 @@ Covers: the separation principle (generic Cluide vs. private policy content vs. 
 
 *Collaboration patterns for the small locally-run tool you build for yourself with the assistant's help — budget tracker, reading log, data dashboard, CLI wrapper. Not a product; one user, local data, vibe-coded feature-by-feature.*
 
-Covers: when the helper-app shape applies (and when it doesn't), four CLAUDE.md patterns (domain invariant, helper index, verification gates, convention normalisations) that prevent cross-session drift and false-done, tight permission whitelisting, the plan-as-checklist iteration loop, early hardening rules that are cheap on day 1 and painful to retrofit, anti-patterns, and the signals that tell you the app has outgrown this guide.
+Covers: when the helper-app shape applies (and when it doesn't), four shared-policy patterns (domain invariant, helper index, verification gates, convention normalisations) that prevent cross-session drift and false-done, tight permission whitelisting, the plan-as-checklist iteration loop, early hardening rules that are cheap on day 1 and painful to retrofit, anti-patterns, and the signals that tell you the app has outgrown this guide.
 
-**Use this when:** you are using Claude to build a small tool for your own use and want the collaboration to stay coherent across dozens of short sessions — without the app rotting into a tangle of duplicated helpers, silently broken invariants, and stale CLAUDE.md rules.
+**Use this when:** you are using the assistant to build a small tool for your own use and want the collaboration to stay coherent across dozens of short sessions — without the app rotting into a tangle of duplicated helpers, silently broken invariants, and stale standing rules.
 
 ---
 
@@ -369,11 +353,11 @@ Covers: the three ways context goes wrong (too little, too much, wrong kind), wh
 ### [27 — Independent Judgment](./27_INDEPENDENT_JUDGMENT.md)
 `[All users]` · `~10 min`
 
-*Claude is disposed to agree with you, and you leak your own view constantly without meaning to. How to get an independently formed judgment — and how much independence the usual protocols actually buy, which is less than it feels like.*
+*the assistant is disposed to agree with you, and you leak your own view constantly without meaning to. How to get an independently formed judgment — and how much independence the usual protocols actually buy, which is less than it feels like.*
 
-Covers: the two mechanisms (anchoring and agreement pressure) and why "would this work?" triggers both at once, a leak table separating context that calibrates severity from context that biases the finding, existence priming (a reviewer told that problems exist will produce problems), asking for the artefact rather than a verdict on yours, the commit-then-reveal protocol with a reusable review prompt, blinded reconciliation (fresh session, two lists labelled A and B), false independence — two Claude instances agreeing is correlated error rather than corroboration — with the independence levers ranked by what they actually buy, the second subagent leak channel (a brief written after you spoke carries your framing), and standing CLAUDE.md rules that name a behaviour instead of a disposition.
+Covers: the two mechanisms (anchoring and agreement pressure) and why "would this work?" triggers both at once, a leak table separating context that calibrates severity from context that biases the finding, existence priming (a reviewer told that problems exist will produce problems), asking for the artefact rather than a verdict on yours, the commit-then-reveal protocol with a reusable review prompt, blinded reconciliation (fresh session, two lists labelled A and B), false independence — two runs of the same model agreeing is correlated error rather than corroboration — with the independence levers ranked by what they actually buy, the second subagent leak channel (a brief written after you spoke carries your framing), and standing rules that name a behaviour instead of a disposition.
 
-**Use this when:** you have already formed a view and want a real second opinion, you suspect Claude is agreeing with you rather than assessing, or you are setting up a review workflow you intend to trust.
+**Use this when:** you have already formed a view and want a real second opinion, you suspect the assistant is agreeing with you rather than assessing, or you are setting up a review workflow you intend to trust.
 
 ---
 
@@ -382,9 +366,9 @@ Covers: the two mechanisms (anchoring and agreement pressure) and why "would thi
 
 *The personal knowledge layer above your projects: notes, clippings and decisions that belong to your working life rather than to any one piece of work. What survives from classic second-brain method once an LLM is the reader, and what stops being worth the effort.*
 
-Covers: the test for whether the layer is worth building at all (and the four things it should hold that no source system does), what changes when Claude reads your notes — tags stop earning their keep, distillation becomes a context lever rather than a re-reading aid, capture can be rawer, and app databases become a structural mistake — the four homes sorted by relevance decay rather than topic, the capture template and the rule that an inbox is emptied rather than managed, the four triage outcomes, distilling for a conclusion instead of a summary, index-first retrieval as progressive disclosure applied to your own notes, the weekly review split between what Claude can do mechanically and what only you can decide, a layer-boundary table against guides 04, 14, 15, 23 and 24, and the anti-patterns that kill these systems.
+Covers: the test for whether the layer is worth building at all (and the four things it should hold that no source system does), what changes when the assistant reads your notes — tags stop earning their keep, distillation becomes a context lever rather than a re-reading aid, capture can be rawer, and app databases become a structural mistake — the four homes sorted by relevance decay rather than topic, the capture template and the rule that an inbox is emptied rather than managed, the four triage outcomes, distilling for a conclusion instead of a summary, index-first retrieval as progressive disclosure applied to your own notes, the weekly review split between what the assistant can do mechanically and what only you can decide, a layer-boundary table against guides 04, 14, 15, 23 and 24, and the anti-patterns that kill these systems.
 
-**Use this when:** your notes, clippings and decisions are scattered across apps and none of it reaches your actual work — or you already keep notes and want Claude to be able to use them.
+**Use this when:** your notes, clippings and decisions are scattered across apps and none of it reaches your actual work — or you already keep notes and want the assistant to be able to use them.
 
 ---
 
@@ -395,18 +379,18 @@ Covers: the test for whether the layer is worth building at all (and the four th
 
 Covers: the compensating-machinery signals that say patching has stopped working and how to count them from history, auditing before specifying (orthogonal passes, every load-bearing claim verified first-hand, findings logged rather than fixed), writing a normative specification with every divergence from the current version marked inline, decisions that carry a status, a cost and a falsification condition, prevention versus detection and the ratio that justifies rebuilding at all, proving the result with the old version as an acceptance oracle and a three-way reconciliation that stops on anything unexplained, hand-computed fixtures, whole-output checks, sequencing by exit criteria, keeping the specification honest against itself, and a worked example on an assistant setup rather than on code.
 
-**Use this when:** something you built incrementally has reached the point where each fix costs more than the last — a small tool, a CLAUDE.md, a set of skills, a task and its learning log — and you are choosing between another patch and a restatement.
+**Use this when:** something you built incrementally has reached the point where each fix costs more than the last — a small tool, a shared policy, a set of skills, a task and its learning log — and you are choosing between another patch and a restatement.
 
 ---
 
 ### [30 — Controlled Documents](./30_CONTROLLED_DOCUMENTS.md)
 `[Power user]` · `~12 min`
 
-*Working on documents that have an owner, a version and an approver: Claude proposes and comments, you accept.*
+*Working on documents that have an owner, a version and an approver: the assistant proposes and comments, you accept.*
 
-Covers: the test that separates a controlled document from a draft, review as tracked changes plus explanatory comments under a non-human author name and never a silent edit, the two review directions (actioning someone else's comments, and reviewing against a named clause), what the docx toolchain actually does and the round trip it forces on a connected folder, acceptance and approval as human acts that Claude never performs, stable filenames with identity in the name and state inside the document, control-block templates retrofitted on touch rather than in bulk, one authored register with every other view generated and invariants enforced by the sync script rather than by prose, shared trackers merged on identifier and never on row position, human markers Claude must not clear, and the CLAUDE.md block that makes all of it standing instruction.
+Covers: the test that separates a controlled document from a draft, review as tracked changes plus explanatory comments under a non-human author name and never a silent edit, the two review directions (actioning someone else's comments, and reviewing against a named clause), what document tools must preserve and how to verify a returned revision, acceptance and approval as human acts that the assistant never performs, stable filenames with identity in the name and state inside the document, control-block templates retrofitted on touch rather than in bulk, one authored register with every other view generated and invariants enforced by the sync script rather than by prose, shared trackers merged on identifier and never on row position, human markers the assistant must not clear, and the shared-policy block that makes all of it standing instruction.
 
-**Use this when:** your project contains documents someone else owns or approves — policies, contracts, minutes, a management-system document set — and you want Claude reviewing and maintaining them without ever becoming the one who signed off.
+**Use this when:** your project contains documents someone else owns or approves — policies, contracts, minutes, a management-system document set — and you want the assistant reviewing and maintaining them without ever becoming the one who signed off.
 
 ---
 
@@ -426,7 +410,7 @@ Covers: the four ways behaviour drifts without any file changing (model, platfor
 
 *What an assistant may do without asking, classified by consequence rather than by tool, and how it hands back the rest.*
 
-Covers: why authority is decided by accident, four classes by who can undo an action and who sees it (act; restore point then act under a standing approval; prepare and propose; never), standing approvals with shape, scope, limit, evidence and expiry, the proposal contract (one row per action, irreversible first, then stop; partial approval is partial apply; a surprise stops the run), the outbox and action log for unattended runs and notifications that name actions rather than runs, enforcing structurally where a capability can simply be absent, the requests that erode the boundary, and the CLAUDE.md block.
+Covers: why authority is decided by accident, four classes by who can undo an action and who sees it (act; restore point then act under a standing approval; prepare and propose; never), standing approvals with shape, scope, limit, evidence and expiry, the proposal contract (one row per action, irreversible first, then stop; partial approval is partial apply; a surprise stops the run), the outbox and action log for unattended runs and notifications that name actions rather than runs, enforcing structurally where a capability can simply be absent, the requests that erode the boundary, and the shared-policy block.
 
 **Use this when:** a task can send, post, delete or move on your behalf, you keep answering the same permission question, a task did something you did not expect, or you are deciding what a scheduled task may do while you are asleep.
 
@@ -527,7 +511,7 @@ Four Claude Code subagent definitions with the model tier pinned in frontmatter 
 
 ## Tasks: One-Command Setup and Auditing
 
-Tasks are standalone instruction files you run by saying `Claude, run tasks/[task-name].md`. Each task handles a specific setup or audit job end-to-end — interviewing you, proposing changes, and applying them after approval.
+Tasks are standalone instruction files you run by saying `the assistant, run tasks/[task-name].md`. Each task handles a specific setup or audit job end-to-end — interviewing you, proposing changes, and applying them after approval.
 
 **Three ways to use the guides in this project:**
 1. **Read them yourself** and set things up manually
@@ -568,7 +552,7 @@ Tasks are designed to be portable: copy any task file to another project's `task
 | `tasks/audit-claude-md.md` | Review the selected project instruction source — dead rules, missing sections, over-length | 01, 16 |
 | `tasks/audit-task-efficiency.md` | Token efficiency checklist for any task file | 06 |
 | `tasks/audit-cost.md` | Audit a task's token economics — file budgets, model tier, run metrics | 10 |
-| `tasks/audit-memory.md` | Check memory for staleness, duplicates, misplaced content — across the three on-disk layers (Claude Code auto memory, `.auto-memory/`, profile files), with a check for untested reliance on the cloud account memory | 04 |
+| `tasks/audit-memory.md` | Check memory for staleness, duplicates, misplaced content — across the three on-disk layers (Claude Code auto memory, `.auto-memory/`, profile files), alongside native memory and source access on each selected platform | 04 |
 | `tasks/audit-skill.md` | Review a `SKILL.md` — trigger quality, workflow, output format, edge cases, runtime tool-permission verification | 03, 02 |
 | `tasks/audit-file-hygiene.md` | Sweep actual clutter: OS junk, lock/temp files, duplicate families, superseded outputs, and trees that are gitignored but still loading as context | 11, 24 |
 | `tasks/analyze-project.md` | Whole-project sweep of *another* assistant project (local or GitHub) against the full guide set → writes a `CLUIDE_IMPROVEMENT_PLAN.md` into it; read-only, plan-only (criteria in `analyze-project-reference.md`) | All (01–35) |
@@ -599,13 +583,13 @@ mkdir -p ~/.claude/skills
 cp -r /path/to/skill-folder ~/.claude/skills/
 ```
 
-In Claude Code, `/reload-skills` (or a SessionStart hook with `reloadSkills: true`) picks up skill changes without a restart; in Cowork — and for newly created skill folders — start a fresh session.
+After installation or edits, confirm the selected host sees the new revision. Use its documented reload controls or start a fresh session; do not assume a Claude reload command works in OpenAI (Guide 03).
 
 ### Installing in Claude.ai (Personal Skills)
 
 Claude.ai has a built-in Personal Skills feature that accepts skill uploads directly.
 
-The repo ships skill *folders*, not bundles. To create an uploadable bundle, zip the skill folder (or ask Claude: "bundle `skills/[name]/` as `[name].zip`"):
+The repo ships skill *folders*, not bundles. To create an uploadable bundle, zip the skill folder (or ask the assistant: "bundle `skills/[name]/` as `[name].zip`"):
 
 ```bash
 cd skills && zip -r [name].zip [name]/
@@ -619,12 +603,12 @@ Claude.ai reads the `name:` and `description:` frontmatter in `SKILL.md` to name
 
 ### ai-assistant-setup
 
-An interactive setup coach. All guides are bundled into this skill. Instead of reading guides and acting on them manually, install this skill once and describe what you want — Claude reads the relevant guides and does the work.
+An interactive setup coach. All guides are bundled into this skill. Instead of reading guides and acting on them manually, install this skill once and describe what you want — the assistant reads the relevant guides and does the work.
 
 **Install:** Follow [Guide 03](./03_SKILLS.md) for the selected surface, preserving the complete `ai-assistant-setup/` folder. Test the installed workflow; source-only projects can request it explicitly.
 
 **Use when:**
-- Setting up Claude as a personal assistant from scratch
+- Setting up the assistant as a personal assistant from scratch
 - Improving or auditing an existing setup
 - Adding a specific component (skill, memory system, data pattern)
 
@@ -639,14 +623,14 @@ An interactive setup coach. All guides are bundled into this skill. Instead of r
 
 ### template-exporter
 
-Turns any existing Claude setup — a chat system prompt, Cowork task, Cowork project, or skill — into a clean, shareable template. Strips personal and business identifiers, adds placeholder annotations, and produces a dual-audience output: a human-readable README and a Claude setup prompt.
+Turns an existing assistant setup — a chat system prompt, Cowork task, Cowork project, or skill — into a clean, shareable template. Strips personal and business identifiers, adds placeholder annotations, and produces a dual-audience output: a human-readable README and an assistant setup prompt.
 
 **Install:** Follow [Guide 03](./03_SKILLS.md) for the selected surface, preserving the complete `template-exporter/` folder. Test the installed workflow; source-only projects can request it explicitly.
 
 **Use when:**
 - You want to share a setup you've built (with someone else, or across projects)
 - You've refined a skill or task and want to preserve a clean, reusable copy
-- You want to turn a one-off Claude workflow into something repeatable
+- You want to turn a one-off assistant workflow into something repeatable
 
 **Example prompts:**
 > "Turn this skill into a shareable template."
@@ -716,7 +700,7 @@ A structured security audit with separate Claude and OpenAI routes for a target 
 **Example prompts:**
 > "Review my Claude Code setup for security issues."
 
-> "Set up security hooks for my Claude environment."
+> "Set up security hooks for my assistant environment."
 
 > "Audit this project for exposed credentials."
 
@@ -724,12 +708,12 @@ A structured security audit with separate Claude and OpenAI routes for a target 
 
 ### policies-validator
 
-Enforcement layer for company policies — AI use policy, Code of Conduct, data classification, Claude guidelines, and similar. Keeps policy *content* outside Cluide (stored centrally or fetched via MCP) and applies tiered enforcement: T1 hard block, T2 required check with `✅ POLICY ALIGNED` / `⚠️ POLICY ALERT` output, T3 soft guidance. Ships as a placeholder-filled template; `tasks/setup-policies.md` fills it in.
+Enforcement layer for company policies — AI use policy, Code of Conduct, data classification, the assistant guidelines, and similar. Keeps policy *content* outside Cluide (stored centrally or fetched via MCP) and applies tiered enforcement: T1 hard block, T2 required check with `✅ POLICY ALIGNED` / `⚠️ POLICY ALERT` output, T3 soft guidance. Ships as a placeholder-filled template; `tasks/setup-policies.md` fills it in.
 
-**Install:** Copy `policies-validator/` to `~/.claude/skills/` (Claude Code). Run `tasks/setup-policies.md` to populate the Policy Registry and wire the `CLAUDE.md` reference.
+**Install:** Copy `policies-validator/` to `~/.claude/skills/` (Claude Code). Run `tasks/setup-policies.md` to populate the Policy Registry and wire the shared-policy reference.
 
 **Use when:**
-- Your organisation has existing policies that Claude should respect across projects
+- Your organisation has existing policies that the assistant should respect across projects
 - You want different strictness for different policies (block vs. surface vs. nudge)
 - You want policy content to live in SharePoint / Confluence / a local folder — not in the repo
 

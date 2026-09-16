@@ -16,7 +16,7 @@ Inventory actual tool grants and effective permissions from each runtime, with C
 
 ## Purpose
 
-Give a project an explicit boundary between what Claude does, what it prepares and proposes, and what it never does — classified by consequence rather than by tool — and turn any recurring "yes" into a written standing approval with a scope, a limit, an expiry and the evidence that earned it. The task inventories the actions the project's tasks and skills can actually take by reading connector scopes and tool lists, classifies them under Guide 32 §2, drafts the CLAUDE.md block from §8, proposes standing approvals only where the run history supports them, and wires the outbox and action log for unattended runs.
+Give a project an explicit boundary between what the assistant does, what it prepares and proposes, and what it never does — classified by consequence rather than by tool — and turn any recurring "yes" into a written standing approval with a scope, a limit, an expiry and the evidence that earned it. The task inventories the actions the project's tasks and skills can actually take by reading connector scopes and tool lists, classifies them under Guide 32 §2, drafts the shared-policy block from §8, proposes standing approvals only where the run history supports them, and wires the outbox and action log for unattended runs.
 
 Use it when a project has scheduled tasks with connectors that can act (send, post, delete, move), when the user keeps being asked the same permission question, when a task has taken an action the user did not expect, or when `analyze-project.md` dimension 24 reports authority decided per request — actions not classified, approvals inferred from chat, a task that sends or deletes with no approval row to cite.
 
@@ -26,7 +26,7 @@ Use it when a project has scheduled tasks with connectors that can act (send, po
 
 ### Step 0 — Preconditions
 
-Confirm the project is mounted, and that you can read its `CLAUDE.md`, every task definition, every skill, and the project's MCP or connector configuration (`.mcp.json`, or the connector list the user reads out from Cowork's settings — a session cannot read the app's connector scopes itself; ask).
+Confirm the project is mounted, and that you can read its selected canonical policy, every task definition, every skill, and the project's MCP or connector configuration (`.mcp.json`, or the connector list the user reads out from Cowork's settings — a session cannot read the app's connector scopes itself; ask).
 
 If the project already has an action-authority block, this is a **review** run: Steps 1, 2, 4 and 6, comparing what the block says against what the inventory finds.
 
@@ -64,7 +64,7 @@ If nothing qualifies, say so. A project with no standing approvals and an honest
 Show, in this order:
 
 1. **Structural removals first.** Every Class C or D capability an unattended task holds that the connector or grant would let you remove — a send scope to drop, an app grant to withdraw, a token to narrow. Each becomes a row in the project's security-properties table (Guide 12, *Recording What a Refactor Must Not Weaken*), with the change that would break it. Where a capability cannot be removed, say so, so the gap is known.
-2. **The CLAUDE.md block** from Guide 32 §8, filled in: outbox path, log location, notification wording, and the four lines to lift into the account-level instructions if they are not already there.
+2. **The shared-policy block** from Guide 32 §8, filled in: outbox path, log location, notification wording, and the four lines to lift into the account-level instructions if they are not already there.
 3. **The standing-approvals table**, with the Step 3 candidates and their evidence. Each row is approved separately.
 4. **The outbox and log wiring** for each unattended task: where Class C actions will be written instead of taken, and the extra column in `RUN_LOG.md` naming the approval row for each Class B action.
 
@@ -72,16 +72,16 @@ Mark anything irreversible (withdrawing a grant that is hard to re-obtain, for i
 
 ### Step 5 — Take a restore point, then apply
 
-Step 5 rewrites `CLAUDE.md` and every unattended task's instruction file — Class B under the guide this task installs, so it obeys the guide's own rule first. Under git: commit or tag the current state and confirm it. Not under git: a dated copy of every file this step will touch, stored outside the working tree. Confirm the restore point exists before the first edit; retire it after Step 6 verifies.
+Step 5 rewrites the selected canonical policy and every unattended task's instruction file — Class B under the guide this task installs, so it obeys the guide's own rule first. Under git: commit or tag the current state and confirm it. Not under git: a dated copy of every file this step will touch, stored outside the working tree. Confirm the restore point exists before the first edit; retire it after Step 6 verifies.
 
 Then apply only the approved rows:
 
-- Add the block and the approved standing approvals to `CLAUDE.md`; add the four class lines to the account-level instructions template or ask the user to paste them into the account field (Guide 25 — a session cannot write the app-side fields).
+- Add the block and the approved standing approvals to the selected canonical policy; add the four class lines to the account-level instructions template or ask the user to paste them into the account field (Guide 25: apply through supported controls, or report the field update as pending).
 - Add the security-properties rows.
 - For each unattended task: add the outbox step to its `TASK.md` so Class C actions are written to `<outbox path>` with a reason and an identifier each, and never taken; add the approval-row column to its `RUN_LOG.md` template; change its notification text to counts of actions taken and queued, and to send nothing on a run that did nothing.
 - Add a one-line delegation rule if the project spawns subagents or workflow stages: they inherit the classes and approvals and gain none.
 
-Record the connector and grant changes the user made themselves (a session cannot make them) with the date, in the security-properties table's *Why it holds* column.
+Record the connector and grant changes applied through supported controls or by the user with the date, in the security-properties table's *Why it holds* column.
 
 ### Step 6 — Verify
 
@@ -95,7 +95,7 @@ Report what was classified, what was removed structurally, what was granted as s
 
 ## Output
 
-An action inventory by source and by task (Step 1); a classified table the user has confirmed (Step 2); standing-approval candidates with quoted evidence (Step 3); an approved plan (Step 4); a restore point, then the CLAUDE.md block, security-properties rows, and per-task outbox and log wiring applied (Step 5); and a verification report naming any boundary that is enforced only by prose (Step 6).
+An action inventory by source and by task (Step 1); a classified table the user has confirmed (Step 2); standing-approval candidates with quoted evidence (Step 3); an approved plan (Step 4); a restore point, then the shared-policy block, security-properties rows, and per-task outbox and log wiring applied (Step 5); and a verification report naming any boundary that is enforced only by prose (Step 6).
 
 ## Constraints
 

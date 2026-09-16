@@ -6,9 +6,9 @@
 
 ## What MCP Servers Are
 
-An MCP server is a local process or remote service exposing tools an assistant can call. When you ask Claude to "check your email" or "create a calendar event", it calls a tool provided by an MCP server. The server handles the actual API call and returns the result.
+An MCP server is a local process or remote service exposing tools an assistant can call. For example, an email or calendar integration may expose MCP tools; other hosts supply a native connector instead. The server handles the actual API call and returns the result.
 
-From Claude's perspective, MCP tools work like built-in capabilities — call `gmail_search_messages`, get a list of emails, then call `gmail_create_draft` to draft a reply. Claude doesn't need to know how the server works; it just knows what tools are available.
+From the assistant's perspective, MCP tools work like built-in capabilities — call `gmail_search_messages`, get a list of emails, then call `gmail_create_draft` to draft a reply. The assistant doesn't need to know how the server works; it just knows what tools are available.
 
 ---
 
@@ -78,7 +78,7 @@ Use project scope when a server is only relevant to one project; use user scope 
 
 Servers that need credentials take an `env` block alongside `command`/`args` (e.g. `"env": {"MY_API_TOKEN": "..."}`) — check each server's README for the exact variable names.
 
-At startup, each configured server is launched and its tools discovered. You can see which tools are available by asking Claude: *"What tools do you have available?"*
+At startup, each configured server is launched and its tools discovered. You can see which tools are available by asking the assistant: *"What tools do you have available?"*
 
 ---
 
@@ -156,7 +156,7 @@ Key tools: `list_issues`, `create_issue`, `get_pull_request`, `search_code`
 #### Memory
 **Package:** `@modelcontextprotocol/server-memory`
 
-A knowledge-graph memory server: Claude stores entities, relations, and observations it can read and query across sessions — an alternative to file-based memory for structured state.
+A knowledge-graph memory server: the assistant stores entities, relations, and observations it can read and query across sessions — an alternative to file-based memory for structured state.
 
 ---
 
@@ -169,7 +169,7 @@ Key tools: `navigate`, `read_page`, `get_page_text`, `find`, `left_click`, `form
 **When to use Claude in Chrome over other options:**
 - The target is a web app with no dedicated MCP and no API
 - You need to interact with a page (click, fill, navigate), not just read it
-- You want Claude to extract structured data from a live web interface
+- You want the assistant to extract structured data from a live web interface
 
 **Limitation:** Browsers are granted at "read" tier in computer use (see Computer Use below) — if you need to click or type in a browser, use the Claude in Chrome MCP rather than the computer use MCP.
 
@@ -227,13 +227,15 @@ This is progressive disclosure applied to your tool loadout ([Guide 02](./02_PRO
 
 Some surfaces load tool schemas on demand rather than up front, so the definitions cost nothing until something matches. Where that happens you will see it in the session (tools described as available but not yet loaded), and the curation argument weakens on cost while the wrong-tool argument still holds.
 
-**Symptoms of an overloaded loadout:** Claude reaches for a plausible-but-wrong tool, or narrates a search for the right one; simple sessions start expensive before any work happens; a skill that names its tools explicitly behaves noticeably better than one that does not. That last one is a workaround rather than a fix, and it is the next section.
+**Symptoms of an overloaded loadout:** the assistant reaches for a plausible-but-wrong tool, or narrates a search for the right one; simple sessions start expensive before any work happens; a skill that names its tools explicitly behaves noticeably better than one that does not. That last one is a workaround rather than a fix, and it is the next section.
 
 ---
 
 ## Naming Tools in Skills
 
-When writing a skill (see [Guide 03](./03_SKILLS.md)), name the exact MCP tool in the workflow steps. Do not just say "check the calendar" — say `gcal_list_events`. This prevents Claude from improvising a different approach each session.
+Keep the shared workflow phrased as an operation, such as “list calendar events for the specified interval.” Bind it to the exact tool name and schema exposed by each host in native setup notes. The names below are illustrative, not standard MCP names. If the tool is absent, report the gap; do not guess a name or treat missing results as an empty calendar.
+
+In a host-specific skill, name the verified tool and its required inputs (see [Guide 03](./03_SKILLS.md)). In a shared skill, require discovery of that operation and bind it before execution.
 
 **Weak (inconsistent behaviour):**
 ```markdown
@@ -250,13 +252,19 @@ Also state clearly what to do when a tool is unavailable or returns an error —
 
 ---
 
+## Browser and Desktop Counterparts
+
+Claude in Chrome and the Claude computer-use examples above are native Claude routes. OpenAI has its own browser and Computer Use routes; see [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts) for the dated sources. In a supported desktop session, request `@Browser` for the built-in browser or the enabled browser/app integration for an existing session. Inspect the page, perform the authorized operation, then verify its visible result. Use the exposed tool schema, not Claude MCP names or Claude app-tier rules.
+
+If browser or desktop control is unavailable, use an authorized connector, an export or a user-supplied screenshot. Those alternatives support reading or drafting; they do not prove that an interactive operation was performed. A cloud browser is not access to local desktop apps.
+
 ## Checking What Tools You Have
 
-Ask Claude directly:
+Ask the assistant directly:
 
 > *"What MCP tools do you have access to? List them by server."*
 
-Claude enumerates connected servers and their tools. Use this when writing skills — confirm the exact tool name before writing it into a workflow step.
+The assistant enumerates connected servers and their tools. Use this when writing skills — confirm the exact tool name before writing it into a workflow step.
 
 ---
 
@@ -290,7 +298,7 @@ When an MCP tool fails, the cause is usually one of a handful of known issues pe
 
 Run through this checklist for any server that appears dead:
 
-1. **Is the server process running?** Ask Claude: *"What MCP tools do you have available?"* If a server's tools are missing, it never started.
+1. **Is the server process running?** Ask the assistant: *"What MCP tools do you have available?"* If a server's tools are missing, it never started.
 2. **Check config syntax.** A trailing comma or missing quote kills the entire config. Validate the file your server lives in — Cowork: `cat ~/Library/Application\ Support/Claude/claude_desktop_config.json | python3 -m json.tool`; Claude Code: `.mcp.json` or run `claude mcp list`.
 3. **Check the launch command.** Run the server's `command` + `args` manually in a terminal. If it errors, you'll see the real failure (missing dependency, wrong Node version, etc.).
 4. **Node/npx version.** Most MCP servers require Node 18+. Run `node --version`. If outdated, update Node before anything else.
@@ -371,7 +379,7 @@ The ">10 MB" rule of thumb has a documented frame behind it: Claude Code warns a
 | Tools unavailable at session start | Extension disconnected or Chrome not running | Open Chrome. Click the Claude extension icon to reconnect. Restart Claude Code after reconnecting. |
 | `navigate` times out | Page load takes too long (heavy SPA, auth redirect) | Increase patience; if a page requires login, complete the login via extension tools first, then navigate. |
 | `read_page` returns empty or partial content | Page content loaded dynamically after initial render | Wait 2–3 seconds after navigate, or use `javascript_tool` to check for a specific element before reading. |
-| "Target closed" error | Tab was closed externally while Claude was using it | Call `tabs_create` to open a fresh tab and retry (confirm exact tool names by asking Claude "what tools do you have?"). |
+| "Target closed" error | Tab was closed externally while the assistant was using it | Call `tabs_create` to open a fresh tab and retry (confirm exact tool names by asking the assistant "what tools do you have?"). |
 | Extension version mismatch | Extension auto-updated, breaking protocol | Update Claude Code to the latest version. If still broken, uninstall and reinstall the extension. |
 
 ---
@@ -394,7 +402,7 @@ These mistakes cut across servers and cause silent failures:
 
 | Misconfiguration | Effect | Fix |
 |---|---|---|
-| Tool name in skill doesn't match actual tool | Claude improvises a different approach or errors | Ask *"What MCP tools do you have?"* and copy the exact name into your skill. Tool names change between server versions. |
+| Tool name in skill doesn't match actual tool | the assistant improvises a different approach or errors | Ask *"What MCP tools do you have?"* and copy the exact name into your skill. Tool names change between server versions. |
 | Expired OAuth token in MCP config | Server starts but every call returns 401 | Re-run the OAuth flow. Don't manually paste tokens that will expire — use refresh-token-based setups where possible. |
 | Wrong `env` variable name | Server launches but can't authenticate | Check the server's README for the exact variable names. `GITHUB_TOKEN` vs `GITHUB_PERSONAL_ACCESS_TOKEN` matters. |
 | Credentials in `CLAUDE.md` instead of the MCP config | Keys exposed in session output and potentially git | Move credentials to the server's `env` block or a `.env` file. Add `.env` (and `.mcp.json` if it holds secrets) to `.gitignore`. |
@@ -459,7 +467,7 @@ When an MCP tool fails, choose one of three responses based on the failure type:
 > *"What MCP servers do I have configured? List the tools each one exposes and flag any that seem misconfigured."*
 
 **To set up a new server:**
-> *"Read 05_MCP_SERVERS.md and help me set up the filesystem MCP server so Claude can read my Documents folder."*
+> *"Read 05_MCP_SERVERS.md and help me set up the filesystem MCP server so the assistant can read my Documents folder."*
 
 **Faster alternative:** `tasks/setup-mcp.md` audits your current setup and guides you through adding new servers end-to-end without reading the guide first.
 

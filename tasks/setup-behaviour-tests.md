@@ -29,7 +29,7 @@ Test assets are fixtures, never credentials or live accounts. Mark unavailable c
 
 ## Purpose
 
-Build a small behaviour-test suite for a project — or for an account-level setup — so that the rules and skills worth protecting can be re-checked after an instruction edit, a model launch, a new skill, or on a quarterly drift run. The suite is a folder of cases, each a prompt plus checkable graders, in the shape Guide 31 §3 describes. The task interviews for what earns a case, writes the first cases, runs them once by hand in a fresh session to establish the baseline, and installs the CLAUDE.md block that ties future edits to a test run.
+Build a small behaviour-test suite for a project — or for an account-level setup — so that the rules and skills worth protecting can be re-checked after an instruction edit, a model launch, a new skill, or on a quarterly drift run. The suite is a folder of cases, each a prompt plus checkable graders, in the shape Guide 31 §3 describes. The task interviews for what earns a case, writes the first cases, runs them once by hand in a fresh session to establish the baseline, and installs the shared-policy block that ties future edits to a test run.
 
 Use it when a project has rules or skills that would be embarrassing to lose silently, when a model launch has just happened and nobody knows what changed, when a new skill has been added beside older ones, or when `analyze-project.md` dimension 23 reports no behaviour tests for a project that carries standing rules or scheduled tasks.
 
@@ -41,9 +41,12 @@ This task is distinct from `audit-skill.md` and `audit-claude-md.md`: those read
 
 ### Step 0 — Preconditions and runner
 
-Confirm the project folder is mounted and writable, and that you can read its `CLAUDE.md`, skills, task definitions, and (if present) the account-level instructions the user pastes in.
+Confirm the project folder is mounted and writable, and that you can read its selected canonical policy, skills, task definitions, and (if present) the account-level instructions the user pastes in.
 
 Establish which runner the user has, because it shapes Step 5:
+
+- **Codex** — use an isolated fixture project with `codex exec --json`; if needed, constrain the final response with `--output-schema`. Verify native policy and skill loading before treating this as equivalent to an interactive run (Guide 31).
+- **ChatGPT source project** — use a fresh test project with the fixture sources and instruction bootstrap, run the prompts manually, and record the source revision. A missing CLI is not a defect.
 
 - **Cowork only** — cases are run by hand in a fresh session. This is a complete method, not a fallback; say so.
 - **Claude Code** — cases can be scripted with `claude -p --output-format json`. Confirm in the user's build that print mode loads the project's `CLAUDE.md` and skills the way an interactive session does (Guide 31 §4 says why this needs checking) before promising a scripted run.
@@ -53,10 +56,10 @@ Establish which runner the user has, because it shapes Step 5:
 
 Read, and list without judging yet:
 
-1. Every standing rule in `CLAUDE.md` and in the account-level instructions, one line each.
+1. Every standing rule in the selected canonical policy and in the account-level instructions, one line each.
 2. Every skill in the project and every account skill the project relies on, with its trigger description.
 3. Every scheduled task, with the actions it may take (its connectors and scopes — Guide 32 §2 classes if the project has an action-authority block).
-4. Any rule that lives in a skill rather than in `CLAUDE.md` (Guide 30 §8 and Guide 32 §6 both flag these as weak; they are also the ones most worth testing).
+4. Any rule that lives in a skill rather than in the selected canonical policy (Guide 30 §8 and Guide 32 §6 both flag these as weak; they are also the ones most worth testing).
 
 Present the list. Do not propose cases yet — the user has to say what matters.
 
@@ -114,15 +117,15 @@ Append the baseline block to `RESULTS.md`.
 
 A case that fails at baseline is a finding, not a bad test: either the setup does not do what the user believed (report it, with Guide 31 §7's table to sort it) or the case's prompt or grader is wrong (fix the case *only* with the user's agreement and say so in the results block). Do not edit a case to make the baseline pass.
 
-### Step 6 — Install the CLAUDE.md block
+### Step 6 — Install the shared-policy block
 
-Add Guide 31 §10's block to the project's `CLAUDE.md`, with the paths filled in. Add `tests/behaviour/` to the file map. A new hard rule in CLAUDE.md is one of Guide 25's update triggers, so check the app-side fields the same session; usually nothing there changes, and the mirror block records that it was checked.
+Add Guide 31 §10's block to the project's canonical policy, with the paths filled in. Add `tests/behaviour/` to the file map. A new hard rule in the canonical policy is one of Guide 25's update triggers, so check the app-side fields the same session; usually nothing there changes, and the mirror block records that it was checked.
 
 If the project has a `.gitignore`, confirm `tests/behaviour/` is tracked and `fixtures/` contains nothing that should not be — a fixture built from a real mailbox export is personal data, and belongs in the ignore list with a bootstrap stub (Guide 11 and `setup-bootstrap-folder.md`).
 
 ## Output
 
-An inventory of protectable rules, skills and tasks (Step 1); an approved case table (Step 3); the suite under `tests/behaviour/` with `README.md`, `RESULTS.md` and any fixtures (Step 4); a recorded baseline run with pass rates per case (Step 5); and the CLAUDE.md block installed (Step 6).
+An inventory of protectable rules, skills and tasks (Step 1); an approved case table (Step 3); the suite under `tests/behaviour/` with `README.md`, `RESULTS.md` and any fixtures (Step 4); a recorded baseline run with pass rates per case (Step 5); and the shared-policy block installed (Step 6).
 
 ## Constraints
 

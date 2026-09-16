@@ -1,6 +1,6 @@
 # Specify Before You Rebuild: Turning a Grown Artefact Into One With a Stated Contract
 
-> Anything built by asking Claude for one thing at a time eventually reaches a state where each new change costs more than the last, and the fixes start protecting each other. At that point another fix is the wrong move. This guide is the manoeuvre for that point: write down what the thing must do, keep the running version as the only evidence you have about whether the new one is right, and stay honest about which parts of that evidence are wrong.
+> Anything built by asking the assistant for one thing at a time eventually reaches a state where each new change costs more than the last, and the fixes start protecting each other. At that point another fix is the wrong move. This guide is the manoeuvre for that point: write down what the thing must do, keep the running version as the only evidence you have about whether the new one is right, and stay honest about which parts of that evidence are wrong.
 
 > **Companion guides:** [Guide 22](./22_HELPER_APPS.md) covers a small self-built tool while it is still healthy — invariants, a helper index, verification gates. This guide is what to do when those stop holding. [Guide 13](./13_DEV_EXECUTION_WORKFLOW.md) is the day-to-day loop this interrupts. [Guide 09](./09_MULTI_TASK_ORCHESTRATION.md) and the `dispatch` skill run the audit fan-out; [Guide 26](./26_CONTEXT_SCOPING.md) scopes each pass and [Guide 27](./27_INDEPENDENT_JUDGMENT.md) is how you get the spec checked without hearing your own view back. [Guide 07](./07_TASK_LEARNING_GUIDE.md) has the same pathology inside a task's learning log. [Guide 24](./24_PROJECT_FOLDER_STRUCTURE.md) is where most of the prevention in §5 actually lives.
 
@@ -18,7 +18,7 @@ Do not run this on a hunch that something feels messy. The signal is **compensat
 | Signal | What it looks like in a tool | What it looks like in an assistant setup |
 |---|---|---|
 | Repair shipped as a feature | A "fix links" button users are told to press | A rule whose job is to undo what another rule causes |
-| One rule, *n* implementations | The same date parsing in four files | The same convention stated in CLAUDE.md, two skills and a task |
+| One rule, *n* implementations | The same date parsing in four files | The same convention stated in shared policy, two skills and a task |
 | A fix that took several attempts across several surfaces | One bug chased through three screens | The same correction given four times in four sessions |
 | An invariant documented but unenforced | "callers must sort first" in a comment | "always check X before Y" with nothing that makes skipping it visible |
 | Volume grows, confidence does not | More tests, same fear of changing it | More rules, same rate of correction |
@@ -188,7 +188,7 @@ Both are a few lines of script, and they belong in whatever gate the project alr
 
 ## 9. Worked Example: Respecifying an Assistant Setup
 
-A setup grown over a year: one CLAUDE.md, eleven skills, four scheduled tasks. The complaint is that Claude behaves inconsistently and the fixes have stopped working.
+A Claude-only example grown over a year: one CLAUDE.md, eleven skills, four scheduled tasks. The complaint is that the assistant behaves inconsistently and the fixes have stopped working.
 
 **§1 — trigger.** Two skills whose descriptions both match "draft a message"; a CLAUDE.md rule added to suppress a behaviour a different rule causes; the same convention stated in CLAUDE.md, in two skills and in a task; eight corrections in the last month, five of them the same correction. That is compensating machinery, and it is counted rather than felt.
 

@@ -11,11 +11,13 @@
 
 ---
 
+Shared rules belong in `AGENTS.md` for Codex or a dual-platform repository, with a thin `CLAUDE.md` adapter; app projects bootstrap the same policy through accessible sources. Native skill installation follows Guide 03.
+
 ## 1. Why This Pattern
 
 Most organisations already publish the policies that should shape Claude's behaviour — AI use policy, Claude-specific guidelines, Code of Conduct, data / information classification, export control, acceptable use. These are authoritative documents owned by legal, security, or HR. They change on their own schedule, have formal approval workflows, and are sometimes confidential to the organisation.
 
-The problem: Claude does not automatically know about any of this. Without explicit wiring, a skill will happily help draft a customer email that breaches tone guidelines, a task will happily process data classified above what it should touch, and a chat session will happily cite sources the policy prohibits.
+The problem: the assistant does not automatically know about any of this. Without explicit wiring, a skill will happily help draft a customer email that breaches tone guidelines, a task will happily process data classified above what it should touch, and a chat session will happily cite sources the policy prohibits.
 
 The goal of this pattern:
 
@@ -24,12 +26,12 @@ The goal of this pattern:
 - The enforcement strength scales with the policy: a data classification rule blocks hard, a style-guide nudges softly
 - Policy changes flow through a freshness check; uploaded or cached copies must be refreshed before use
 
-**Why not just put the policies in `CLAUDE.md`?**
+**Why not just put the policies in the shared policy?**
 
-- CLAUDE.md is loaded into every session, which inflates context
+- The shared policy is loaded into every session, which inflates context
 - Copies drift from the authoritative source — and it is not obvious which copy is current
 - Cluide is designed to be shareable. Pasting confidential policies into it defeats that
-- CLAUDE.md has no enforcement mechanism — it is advisory. Policies often need a stronger surface
+- The shared policy has no enforcement mechanism — it is advisory. Policies often need a stronger surface
 
 ---
 
@@ -41,7 +43,7 @@ Three layers, cleanly separated:
 |---|---|---|---|
 | **Cluide** | Generic framework — guides, templates, skill scaffolding | This repo | Yes |
 | **Policy content** | The actual policy text (AI use, Code of Conduct, classification…) | Outside Cluide — central folder or external system | No (org-confidential) |
-| **The bridge** | A skill and one CLAUDE.md line that reference the policy content by path / URL | Inside the project (`.claude/skills/`, `CLAUDE.md`) | Yes — only pointers, no policy text |
+| **The bridge** | A skill and one shared policy line that reference the policy content by path / URL | Inside the project (shared policy plus the native skill location from Guide 03) | Yes — only pointers, no policy text |
 
 The bridge is the interesting layer. It is what lets a generic, shareable framework produce org-specific guardrails.
 
@@ -68,7 +70,7 @@ A single folder on your machine, outside any git-tracked project, holds the poli
 Every project's `policies-validator` skill references these via absolute paths.
 
 **Pros:**
-- One source of truth across all your Claude projects
+- One source of truth across all your assistant projects
 - Updating a policy once is enough
 - Never accidentally committed — the folder is not part of any repo
 - Works offline
@@ -129,9 +131,9 @@ Not every policy deserves the same treatment. A data classification rule should 
 |---|---|---|---|
 | **T1 — Hard block** | Refuse the action, escalate | Data classification, export control, information security, legal constraints | Pre-action check. On violation: stop, emit `🛑 POLICY BLOCK`, point to the policy and owner. Do not produce the requested output. |
 | **T2 — Required check** | Validate and surface the result | AI use policy, Claude-specific guidelines, Code of Conduct | Pre-response checklist. Emit `⚠️ POLICY ALERT` when the response drifts, or `✅ POLICY ALIGNED` when it passes. |
-| **T3 — Soft guidance** | Load into context; apply judgment | Style guides, preferred vendors, tone guidelines, branding rules | Content is loaded into context; Claude applies it while drafting. No required output block. |
+| **T3 — Soft guidance** | Load into context; apply judgment | Style guides, preferred vendors, tone guidelines, branding rules | Content is loaded into context; the assistant applies it while drafting. No required output block. |
 
-**An honest note on what "hard block" means.** T1 enforcement is best-effort model behaviour, not a technical control: a skill and a CLAUDE.md line are the same kind of mechanism — prompt-level instructions the model is asked to follow — and neither can guarantee the block fires every time. For hard guarantees, pair T1 policies with permission rules and hooks ([Guide 12](./12_SECURITY.md)), which are enforced by the tooling rather than the model. Compliance readers should not treat T1 as a technical boundary.
+**An honest note on what "hard block" means.** T1 enforcement is best-effort model behaviour, not a technical control: a skill and a shared policy line are the same kind of mechanism — prompt-level instructions the model is asked to follow — and neither can guarantee the block fires every time. For hard guarantees, pair T1 policies with permission rules and hooks ([Guide 12](./12_SECURITY.md)), which are enforced by the tooling rather than the model. Compliance readers should not treat T1 as a technical boundary.
 
 The emoji markers (🛑 / ⚠️ / ✅) are intentional signalling — they make policy outcomes scannable at a glance — and are a deliberate exception to any project-level no-emoji conventions.
 
@@ -234,9 +236,11 @@ The structure mirrors the existing PMO Guardrails skill at `templates/PMO_TEMPLA
 
 A generic, ready-to-install version is bundled at `skills/policies-validator/SKILL.md`.
 
-### 5.2 The CLAUDE.md line
+<a id="52-the-claudemd-line"></a>
 
-One line in the project's `CLAUDE.md` tells Claude to consult the skill on every turn:
+### 5.2 The Shared Policy Line
+
+One line in the project's shared policy tells the assistant to consult the skill on every turn:
 
 ```markdown
 ## Company policies
@@ -288,7 +292,7 @@ A T3 policy should silently shape tone — test by asking for a draft and checki
 
 ## 8. Maintenance
 
-- **When a policy is revised:** update the source (the local file or the SharePoint / Confluence page). No change to Cluide. No change to the skill. The next Claude turn sees the new text.
+- **When a policy is revised:** update the source (the local file or the SharePoint / Confluence page). No change to Cluide. No change to the skill. The next the assistant turn sees the new text.
 - **When a new policy is introduced:** re-run `tasks/setup-policies.md`. It will pick up the existing registry, ask about the new policy, and append it.
 - **When a policy is retired:** remove its row from the Policy Registry in the skill. Leaving stale entries causes broken-link behaviour and noisy false alerts.
 - **Periodic audit (quarterly suggested):** for each entry in the Policy Registry, confirm the path resolves or the MCP query returns a result. Flag broken references. Confirm the tier is still appropriate.

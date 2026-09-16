@@ -63,7 +63,7 @@ Save things that would change how the assistant responds in a future conversatio
 
 Auto-memory files are small markdown files stored in `.auto-memory/`. There is one index file (`MEMORY.md`) and one file per memory entry. Here is what they look like:
 
-**`.auto-memory/MEMORY.md`** (the index — Claude reads this every session):
+**`.auto-memory/MEMORY.md`** (the index, explicitly loaded by the project bootstrap below):
 
 ```markdown
 # Memory Index
@@ -252,7 +252,7 @@ Profile files grow over time. Apply these rules:
 
 A lean profile stays fast and useful. A 500-line dump of everything the assistant has ever learned is almost as bad as no profile at all.
 
-**System-level target:** keep all auto-read files combined under ~2,000 tokens (~100-150 lines total across everything Claude loads at session start). The per-file maxima elsewhere in this guide are ceilings, not targets — the combined session-start budget is what governs. Lightweight auto-read files mean Claude infers context without re-explanation and sessions start immediately useful. When they grow unchecked, token cost compounds across every run and important context gets diluted by stale detail. If you consistently hit context limits early, audit the auto-read set first.
+**System-level target:** keep all auto-read files combined under ~2,000 tokens (~100-150 lines total across everything the assistant loads at session start). The per-file maxima elsewhere in this guide are ceilings, not targets — the combined session-start budget is what governs. Lightweight auto-read files mean the assistant infers context without re-explanation and sessions start immediately useful. When they grow unchecked, token cost compounds across every run and important context gets diluted by stale detail. If you consistently hit context limits early, audit the auto-read set first.
 
 ---
 

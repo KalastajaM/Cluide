@@ -408,7 +408,7 @@ The template has two parts:
 cp templates/TASK_TEMPLATE/IMPROVEMENTS.md tasks/[task-name]/IMPROVEMENTS.md
 ```
 
-Run this in your assistant workspace (where your task folders live), not inside the Cluide repo — the repo's own `tasks/` folder holds Cluide's runnable prompts, not your tasks. Or ask Claude:
+Run this in your assistant workspace (where your task folders live), not inside the Cluide repo — the repo's own `tasks/` folder holds Cluide's runnable prompts, not your tasks. Or ask the assistant:
 
 > "Copy `templates/TASK_TEMPLATE/IMPROVEMENTS.md` into my task folder at [path/], rename it `IMPROVEMENTS.md`, and fill in the task name."
 

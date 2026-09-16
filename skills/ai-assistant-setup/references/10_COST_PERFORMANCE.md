@@ -148,7 +148,7 @@ When a task is costing more than expected, find where the tokens go. The most co
 
 **Regenerating unchanged output.** If the task generates the same output format every run and most of it doesn't change, check whether the previous output can be updated rather than rewritten from scratch.
 
-**Verbose MCP responses.** Some tools return large JSON objects. If you only need 2 fields from a 50-field response, note that in the skill so Claude knows to extract early and discard the rest.
+**Verbose MCP responses.** Some tools return large JSON objects. If you only need 2 fields from a 50-field response, note that in the skill so the assistant knows to extract early and discard the rest.
 
 **The token heat map:** annotate each step in your task with its rough token cost using the estimation table above. This makes the expensive steps obvious at a glance:
 

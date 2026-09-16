@@ -2,7 +2,7 @@
 
 > How to lay out a single project's folders so each assistant can find the right files, and how to keep that layout from rotting as the project grows. For structure *across* several projects, see Guide 23; for the note layer sitting above all of them, see Guide 28. This guide is about one project's internal shape.
 
-A project's folder layout is an interface Claude reads every session. When it is predictable, Claude finds the right file on the first try and puts new files where they belong. When it drifts (outputs piling at the root, three versions of the same document, a `notes` folder that became a junk drawer), Claude wastes context hunting and starts guessing. Structure is cheap to get right early and expensive to retrofit, so it is worth a small standard.
+A project's folder layout is an interface the assistant reads every session. When it is predictable, the assistant finds the right file on the first try and puts new files where they belong. When it drifts (outputs piling at the root, three versions of the same document, a `notes` folder that became a junk drawer), the assistant wastes context hunting and starts guessing. Structure is cheap to get right early and expensive to retrofit, so it is worth a small standard.
 
 ## The standard layout
 
@@ -29,16 +29,16 @@ Keep the native app fields, authentication, memory and scheduler registrations o
 
 ## Intake: the `incoming/` folder
 
-A project whose material only ever arrives through chat does not need this folder. You attach a file, Claude reads it and writes it to the right home in the same turn, and an intake folder is just a stop the file passes through. It earns its place when material arrives with no session attached to it: scans and downloads, photos from a phone, an email export, a family member or colleague dropping documents into a shared folder, a scheduled task fetching statements. Those files land somewhere. Without a named home, the somewhere is the project root.
+A project whose material only ever arrives through chat does not need this folder. You attach a file, the assistant reads it and writes it to the right home in the same turn, and an intake folder is just a stop the file passes through. It earns its place when material arrives with no session attached to it: scans and downloads, photos from a phone, an email export, a family member or colleague dropping documents into a shared folder, a scheduled task fetching statements. Those files land somewhere. Without a named home, the somewhere is the project root.
 
 Treat it as a queue rather than a home. Four rules keep it one:
 
 - **`incoming/` is emptied, not managed.** Permanent residents mean it has quietly become a `resources/` folder with a misleading name, and once that happens nobody trusts it enough to drop anything in. Clear it on a cadence you will actually keep — weekly for most projects, or at the start of the next session that opens the project.
-- **Filing is proposed, not silent.** Claude is moving *your* files, and a wrong destination is expensive to notice three months later. Have it list what it found and where each item would go before it moves anything, or let it move and leave a short manifest of source and destination. Either works; doing neither is how a document goes missing.
+- **Filing is proposed, not silent.** the assistant is moving *your* files, and a wrong destination is expensive to notice three months later. Have it list what it found and where each item would go before it moves anything, or let it move and leave a short manifest of source and destination. Either works; doing neither is how a document goes missing.
 - **Nothing is deleted out of `incoming/`.** Material that turns out not to belong goes to the archive like everything else in the project. Deletion is a decision to make later, with the file in front of you.
-- **File by content, not by filename.** Routing inbound material through Claude is worth doing precisely because `IMG_4821.pdf` and `Scan_2026-08-14.pdf` say nothing. Claude opens the file, works out what it is, and renames it to the project's convention on the way in. When it cannot tell, the item stays in `incoming/` with a question attached rather than being filed on a guess.
+- **File by content, not by filename.** Routing inbound material through the assistant is worth doing precisely because `IMG_4821.pdf` and `Scan_2026-08-14.pdf` say nothing. The assistant opens the file, works out what it is, and renames it to the project's convention on the way in. When it cannot tell, the item stays in `incoming/` with a question attached rather than being filed on a guess.
 
-Then say in the shared policy what should happen to the folder: which destinations are legal, whether Claude may file without asking or must propose first, and whether it checks the folder every session or only when told. An intake folder nobody has told Claude to look at is a folder that fills up.
+Then say in the shared policy what should happen to the folder: which destinations are legal, whether the assistant may file without asking or must propose first, and whether it checks the folder every session or only when told. An intake folder nobody has told the assistant to look at is a folder that fills up.
 
 Casing follows whatever convention the project already uses — `Incoming/` in a project whose folders are capitalised, `incoming/` in one whose folders are not. The Cluide project templates ship the capitalised form to match their existing layout.
 
@@ -49,12 +49,12 @@ Casing follows whatever convention the project already uses — `Incoming/` in a
 - **One obvious home per file kind.** Before creating a file, there should be no doubt where it goes. If there is doubt, the layout is missing a folder or you are about to make a junk drawer.
 - **Separate definitions from generated outputs.** The thing you edit and the thing you export are different categories. Keep them in different folders so a regenerated PDF never overwrites a source, and so cleanup can safely target outputs.
 - **One folder per tracked entity, same artifact set in each.** When a project tracks many like items (properties, cases, applications, deals), give each its own folder holding the same named files, created from a template and indexed by a central tracker. The tracker is the index; the folder is the workspace. See the "one folder per tracked entity, the same artifact set in each" practice in Guide 16 (item 21 of its Short Version).
-- **Document the layout in the shared policy as a file map.** List the folders and what each holds. The strongest version adds a "where to look / where to update" split so Claude knows which files are read-only inputs and which it may append to. `PMO_TEMPLATE/PROJECT_GUIDE.md` shows this pattern.
-- **Mark file-access tiers.** Note what Claude should auto-read every session, what it should read only on demand, and what it should never touch (raw source data, archives, secrets). Guide 01 covers the tiers.
+- **Document the layout in the shared policy as a file map.** List the folders and what each holds. The strongest version adds a "where to look / where to update" split so the assistant knows which files are read-only inputs and which it may append to. `PMO_TEMPLATE/PROJECT_GUIDE.md` shows this pattern.
+- **Mark file-access tiers.** Note what the assistant should auto-read every session, what it should read only on demand, and what it should never touch (raw source data, archives, secrets). Guide 01 covers the tiers.
 
 ## Standard formats for recurring files
 
-Folders give each file a predictable home; a standard format gives each recurring *kind* of file a predictable shape. When a project has a file type that recurs (task files, registers, per-entity briefs, meeting or decision logs, status reports), define one format for it and hold every instance to that format. The payoff mirrors consistent folders: Claude and any human can predict where a fact sits, produce a new instance without improvising, and see at a glance when one has drifted.
+Folders give each file a predictable home; a standard format gives each recurring *kind* of file a predictable shape. When a project has a file type that recurs (task files, registers, per-entity briefs, meeting or decision logs, status reports), define one format for it and hold every instance to that format. The payoff mirrors consistent folders: the assistant and any human can predict where a fact sits, produce a new instance without improvising, and see at a glance when one has drifted.
 
 Capture the format one of two ways:
 
@@ -68,7 +68,7 @@ Keep the format definition in one place and point to it; do not restate it insid
 Messiness is not one event; it is a slow accumulation of small "I will sort it later" decisions. These conventions stop it:
 
 - **Outputs never pile at the root.** Route them to a dedicated outputs home (or the relevant entity folder) the moment there is more than one.
-- **Archive, do not delete.** Move superseded material into an archive folder rather than deleting it, and never read from it. One archive is the default: a single `_archive/`, which is what `PROJECT_TEMPLATE` ships. Use `[ARCHIVE] <name>/` folders instead only when a project accumulates several distinct bodies of retired material worth keeping apart, as `PMO_TEMPLATE` does. Either way the underscore or the prefix is what makes both you and Claude skip them by default.
+- **Archive, do not delete.** Move superseded material into an archive folder rather than deleting it, and never read from it. One archive is the default: a single `_archive/`, which is what `PROJECT_TEMPLATE` ships. Use `[ARCHIVE] <name>/` folders instead only when a project accumulates several distinct bodies of retired material worth keeping apart, as `PMO_TEMPLATE` does. Either way the underscore or the prefix is what makes both you and the assistant skip them by default.
 - **Name versions consistently.** While there is one copy, use a plain name. Once a file goes through versioned iterations, mark the active one with a `_LATEST` suffix and move older revisions into an archive folder. Use dates (`YYYYMMDD`) for point-in-time snapshots. Pick one casing convention and hold it.
 - **Split a file when it grows.** A profile or knowledge file past roughly 150 lines should split into topic files, with the index updated. A folder holding dozens of mixed files should gain subfolders by kind or entity.
 - **No duplicated facts.** If the same fact would live in two files, keep it in one and link from the other. Duplication is how a project starts contradicting itself.

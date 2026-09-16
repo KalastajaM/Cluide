@@ -29,7 +29,7 @@ A ChatGPT source project sees its uploaded revision, not the current checkout. D
 
 ## What to Track
 
-Not everything in your Claude setup belongs in git. Use this as a guide:
+Not everything in your assistant setup belongs in git. Use this as a guide:
 
 **Track:**
 - `CLAUDE.md` — standing rules; changes should be reversible
@@ -99,7 +99,7 @@ __pycache__/
 
 ### What belongs in `.claudeignore`
 
-Claude loads files as context when reading a project. Excluding large or redundant files keeps context lean. (Remember: this is advisory — list things here to save tokens, not to protect secrets.)
+The assistant loads files as context when reading a project. Excluding large or redundant files keeps context lean. (Remember: this is advisory — list things here to save tokens, not to protect secrets.)
 
 | Category | Examples | Why |
 |---|---|---|
@@ -144,27 +144,25 @@ git rm --cached -r path/to/folder/
 
 ---
 
-## Automating File Hygiene Through CLAUDE.md
+<a id="automating-file-hygiene-through-claudemd"></a>
 
-Add this rule to your project's `CLAUDE.md` so Claude maintains ignore files automatically:
+## Automating File Hygiene Through Shared Policy
 
-**Add to your project's `CLAUDE.md`:**
+Put this rule in the canonical policy (`AGENTS.md` for a shared repository; `CLAUDE.md` for Claude-only use). App-source projects apply it when incorporating returned files into the authored store.
 
 ```markdown
 ## File Hygiene
 
-When creating new files, check whether they belong in `.gitignore` or `.claudeignore`:
-- **Add to `.gitignore`**: run logs, output files, auto-generated bundles,
-  any file containing personal data (paths, names, company names), local config
-- **Add to `.claudeignore`**: large generated files that don't need to be
-  loaded as context (compiled skill bundles, output archives, etc.)
-
-If a newly created file should be ignored but is already tracked by git,
-run `git rm --cached <file>` to untrack it.
+Keep credentials, personal data, local configuration and generated run output
+out of version control. Add the relevant paths to `.gitignore` before staging.
+Keep bulky generated files out of routine context through explicit source
+selection and the current host's supported context controls. Ignore patterns
+are not access controls; protect sensitive files with actual permissions.
+If an ignored file is already tracked, inspect it and use `git rm --cached`
+on that path to stop tracking it while retaining the local file.
 ```
 
-**To add this rule to an existing `CLAUDE.md`:**
-> "Read 11_GIT_INTEGRATION.md and add the File Hygiene section to my CLAUDE.md at [path]."
+For a Claude surface that supports `.claudeignore`, put its native patterns in that file. Do not create an OpenAI lookalike. For session-triggered snapshots, both coding agents document hooks, but install a native hook only after checking its coverage; an explicit task step remains the portable route (Guide 35 §9).
 
 ---
 
@@ -253,7 +251,7 @@ financial/
 ```
 
 - Copy the file to a `backup/` folder under a `<name>_pre-<operation>_<timestamp>` name *before* running the script that mutates the original.
-- Treat `backup/` as a rollback source only — never an input. Mark it read-only or `[IGNORE]` so Claude never reads a stale snapshot back as live data (see the file-access tiers in Guide 01 (in the Cluide guide set)).
+- Treat `backup/` as a rollback source only — never an input. Mark it read-only or `[IGNORE]` so the assistant never reads a stale snapshot back as live data (see the file-access tiers in Guide 01 (in the Cluide guide set)).
 - Keep a rolling window — prune old snapshots so the folder doesn't grow unbounded.
 
 This complements git rather than replacing it: commit the *script* and its text inputs/outputs to git; snapshot the *binary* file it rewrites to `backup/`.
@@ -314,7 +312,7 @@ update: gmail-skill — tighten trigger description
 fix: grocery-skill — add edge case for recipe requests
 ```
 
-Ask Claude to follow this convention when it updates files:
+Ask the assistant to follow this convention when it updates files:
 > "When updating any task file, commit after with the format: `run: [task-name] run N — [what changed]`."
 
 ---
@@ -336,10 +334,12 @@ The `--global` flag writes to `~/.gitconfig` (all repos on your machine). Use `-
 
 ## Setting Up a New Repository
 
-If your Claude assistant files are not yet in git:
+If your assistant assistant files are not yet in git:
 
 ```bash
-# Navigate to your .claude folder or wherever your assistant files live
+<a id="navigate-to-your-claude-folder-or-wherever-your-assistant-files-live"></a>
+
+# Open the authored project folder, not the native runtime-state directory
 cd /path/to/your/claude-setup
 
 # Initialise
@@ -383,12 +383,14 @@ Every run is bracketed: restore to any pre-run state in one command, or see what
 
 ---
 
-## Using VS Code with Claude and Git
+<a id="using-vs-code-with-claude-and-git"></a>
 
-VS Code's built-in Source Control panel (`Ctrl+Shift+G`, including on macOS) lets you review diffs, stage files, and commit without leaving the editor — useful for inspecting what Claude changed before committing.
+## Using VS Code with the Assistant and Git
+
+VS Code's built-in Source Control panel (`Ctrl+Shift+G`, including on macOS) lets you review diffs, stage files, and commit without leaving the editor — useful for inspecting what the assistant changed before committing.
 
 **Key workflow:**
-1. Ask Claude to update a task or skill file
+1. Ask the assistant to update a task or skill file
 2. Open Source Control to review the diff
 3. Stage and commit from the panel or the integrated terminal
 
@@ -443,7 +445,7 @@ git check-ignore -v bootstrap/LAST_RUN.md
 
 ### SETUP.md: copy commands for a fresh clone
 
-Commit a `bootstrap/SETUP.md` with the exact shell commands needed. Anyone (or Claude) cloning the repo for the first time can run these before starting:
+Commit a `bootstrap/SETUP.md` with the exact shell commands needed. Anyone (or the assistant) cloning the repo for the first time can run these before starting:
 
 ```bash
 # State files

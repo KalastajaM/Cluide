@@ -29,7 +29,7 @@ Two rules keep the guide durable, and they are the rules for anyone editing it l
 - **Principle before product.** Every section states what must hold whichever assistant is working, and names product mechanisms only as examples.
 - **Product facts live in §9 and nowhere else.** That covers which file a product discovers, whether it resolves imports, its size limits, and where its skills and schedules live. Each row carries its source and the date it was checked. A sentence elsewhere that would need re-verifying after a vendor release is in the wrong section.
 
-In this guide, *dual-platform* means at least one Claude surface and at least one OpenAI surface. Claude Code plus Cowork is two surfaces of one platform: they share `CLAUDE.md`, and [Guide 13](./13_DEV_EXECUTION_WORKFLOW.md) covers that split. A *surface* is the product a session actually runs in: Claude Code, conversational Claude or Cowork, a ChatGPT project, or Codex. File access, tools and loaders depend on the surface, not on which model answers.
+In this guide, *dual-platform* means at least one Claude surface and at least one OpenAI surface. Claude Code plus Cowork is two surfaces of one platform: they can use the same authored policy through different entry points, and [Guide 13](./13_DEV_EXECUTION_WORKFLOW.md) covers that split. A *surface* is the product a session actually runs in: Claude Code, conversational Claude or Cowork, a ChatGPT project, or Codex. File access, tools and loaders depend on the surface, not on which model answers.
 
 ---
 
@@ -117,7 +117,7 @@ Nested instruction files get the same treatment one folder at a time. The two pr
 
 ## 6. Capabilities Do Not Translate
 
-Both vendors have mechanisms in most of the same categories: skills, hooks, permission controls, ignore rules, subagents, MCP connections, schedulers. They are not the same mechanisms, and they rarely share a file format or a location. Record each capability the project relies on in a capability-gap list on the setup page, with one of three outcomes:
+Compare the capability a workflow needs, not just the feature name: reusable instructions, lifecycle actions, access controls, context selection, delegation, tool connections and scheduling. They are not the same mechanisms, and they rarely share a file format or a location. Record each capability the project relies on in a capability-gap list on the setup page, with one of three outcomes:
 
 | Outcome | Means | Records |
 |---|---|---|
@@ -175,7 +175,7 @@ Untested is an honest result. "Works on both" while one surface is untested is n
 
 ## 9. Platform Facts
 
-Checked on 2026-09-14 against official documentation. A row marked *re-verify* could not be confirmed cleanly on that date, so read the source before relying on its detail. This is the only section of the guide that goes stale. `tasks/setup-dual-platform.md` Step 0 re-checks the rows a project relies on each time it runs, and `tasks/review-platform-changes.md` re-checks the whole section.
+Checked on 2026-09-14 against official documentation. A row marked *re-verify* could not be confirmed cleanly on that date, so read the source before relying on its detail. This table is the reference for dated platform facts; examples elsewhere depend on these facts and must be reviewed when a row changes. `tasks/setup-dual-platform.md` Step 0 re-checks the rows a project relies on each time it runs, and `tasks/review-platform-changes.md` re-checks the whole section.
 
 | Fact | Claude | OpenAI | Sources |
 |---|---|---|---|
@@ -190,6 +190,22 @@ Checked on 2026-09-14 against official documentation. A row marked *re-verify* c
 | Conversational projects | Cowork projects hold a description, instructions, local folders, links, linked claude.ai knowledge and project memory, and live on one computer. The page checked does not say a folder's `CLAUDE.md` loads as the project's instructions, so bootstrap it ([Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md), pattern 1) | ChatGPT source projects hold instructions and uploaded/connected context, without direct laptop-folder access. Local projects are a separate access mode. Record source revision and refresh uploaded policy explicitly; do not infer native `AGENTS.md` loading from an upload | [Cowork projects](https://claude.com/docs/cowork/guide/projects); [Projects and sources](https://learn.chatgpt.com/docs/projects) |
 
 ---
+
+### Counterparts and gaps to carry into setup
+
+Documentation checks below are dated 2026-09-14. They establish a native route, not a live verification of this project. “No verified counterpart” means that equivalence has not been established, not that a vendor can never offer it.
+
+| Need | Claude route | ChatGPT / Codex route | Gap or fallback |
+|---|---|---|---|
+| Shared rules | Claude Code adapter imports `AGENTS.md`; app projects bootstrap it | Codex reads `AGENTS.md`; source projects use instructions plus accessible policy | No documented Codex `@` import equivalent. Put required rules in the native instruction chain or require an explicit source read. |
+| Lifecycle actions and tool checks | Claude Code hooks in native settings | Codex `hooks.json` or inline `[hooks]` in active config layers; review and trust changed hooks | Same event names do not prove identical coverage. Hosted tools and subsequent `write_stdin` input are outside Codex's pre-tool check described by the source. Keep sandbox and grants as separate controls. |
+| Browser and desktop operation | Claude in Chrome; Cowork computer use | OpenAI browser and Computer Use on supported surfaces | An API browser or cloud session is not control of local apps. If tools are absent, use a connector/export for data or a screenshot for review; report interactive verification as untested. |
+| Scripted behaviour tests | `claude -p` | `codex exec`; source-only chats can run fixture prompts manually | Native loader, skill and tool behaviour must be checked separately. A CLI test does not verify the chat product. |
+| Context exclusion | `.claudeignore` only where supported; explicit scoped reads | Explicit source selection and native access controls | No verified direct `.claudeignore` counterpart. Neither a prose exclusion nor a Git ignore pattern is a read-denial mechanism. |
+| Account-native state | Claude memory, registrations and artifact grants | OpenAI memory, registrations and native delivery tools | No shared native store or automatic grant transfer. Shared files, explicit refresh and one scheduler owner are the portable route. The full Claude artifact lifecycle has no verified equivalent here. |
+| Model routing and skill extensions | Claude model identifiers, native frontmatter and agent definitions | Available OpenAI models and supported skill/agent metadata | No model-name or optional-field equivalence. Keep the configured model unless an authorized supported alternative is selected. |
+
+Sources for the additional routes: [Codex hooks](https://learn.chatgpt.com/docs/hooks), [OpenAI browser](https://learn.chatgpt.com/docs/browser), [OpenAI Computer Use](https://learn.chatgpt.com/docs/computer-use), [Codex non-interactive mode](https://learn.chatgpt.com/docs/non-interactive-mode). Instruction, skill, memory/source and schedule sources are in the table above. Confirm availability in the target account before installation.
 
 ## Anti-Patterns
 

@@ -1,6 +1,6 @@
 # Personal Helper Apps Guide: Building Small Tools with Claude or Codex
 
-> Most of Cluide is about co-work — how Claude drafts your emails, runs your briefings, files your actions. This guide is about an adjacent use-case: the small locally-run tool you build *for yourself* with Claude's help. A budget tracker, a reading log, a data dashboard, a CLI wrapper around an API. Not a product. Not a team deliverable. One user, local data, evolves feature-by-feature over many short sessions.
+> Most of Cluide is about co-work — how the assistant drafts your emails, runs your briefings, files your actions. This guide is about an adjacent use-case: the small locally-run tool you build *for yourself* with the assistant's help. A budget tracker, a reading log, a data dashboard, a CLI wrapper around an API. Not a product. Not a team deliverable. One user, local data, evolves feature-by-feature over many short sessions.
 
 > **Companion guides:** [Guide 01](./01_PROJECT_INSTRUCTIONS.md) covers project instruction structure — this guide adds four patterns that are specific to helper apps. [Guide 05](./05_MCP_SERVERS.md) covers MCP servers, including Claude in Chrome, which this guide leans on for verification. [Guide 12](./12_SECURITY.md) covers permission hygiene. [Guide 13](./13_DEV_EXECUTION_WORKFLOW.md) covers the build-vs-run split. [Guide 20](./20_INTERACTIVE_PROMPTING.md) covers plan mode, which underpins the iteration loop described here.
 
@@ -11,12 +11,12 @@
 
 ## 1. Why This Pattern
 
-Small personal tools have a distinctive shape. There is one user (you), one machine, one dataset, and no deadline. The cost of a bug is annoyance, not revenue. The app will never be deployed, shared, or scaled. You are vibe-coding — improvising features as you notice you want them — and Claude is doing most of the typing.
+Small personal tools have a distinctive shape. There is one user (you), one machine, one dataset, and no deadline. The cost of a bug is annoyance, not revenue. The app will never be deployed, shared, or scaled. You are vibe-coding — improvising features as you notice you want them — and the assistant is doing most of the typing.
 
 That shape creates two failure modes Cluide's co-work guides don't directly address:
 
-- **Drift over sessions.** You add a feature this week, forget the conventions next week, and Claude — starting each session cold — reinvents helpers you already wrote, breaks invariants you never wrote down, and introduces a third way of formatting dates. The app slowly rots.
-- **False "done".** Claude writes code that compiles, runs the test, reports success, and the UI is visibly broken. Or the data file is silently corrupted. Without a hard verification gate, "done" means "the code ran" — not "the thing works".
+- **Drift over sessions.** You add a feature this week, forget the conventions next week, and the assistant — starting each session cold — reinvents helpers you already wrote, breaks invariants you never wrote down, and introduces a third way of formatting dates. The app slowly rots.
+- **False "done".** the assistant writes code that compiles, runs the test, reports success, and the UI is visibly broken. Or the data file is silently corrupted. Without a hard verification gate, "done" means "the code ran" — not "the thing works".
 
 This guide is about pushing both failure modes back into the CLAUDE.md layer, where they cost one line each to prevent.
 
@@ -24,7 +24,7 @@ This guide is about pushing both failure modes back into the CLAUDE.md layer, wh
 
 ## 2. What This Guide Is *Not*
 
-It is not a software-engineering guide. No stack recommendations, no test framework advice, no architecture opinions. Use whatever you want — vanilla JS, Python, a single Bash script. What this guide covers is the *Claude-facing layer*: what to put in CLAUDE.md, how to structure the iteration loop, what MCP tools to use for verification, and how to keep the permission surface tight. Everything here applies whether your helper app is 200 lines or 20,000.
+It is not a software-engineering guide. No stack recommendations, no test framework advice, no architecture opinions. Use whatever you want — vanilla JS, Python, a single Bash script. What this guide covers is the *assistant-facing layer*: what to put in the shared policy, how to structure the iteration loop, what MCP tools to use for verification, and how to keep the permission surface tight. Everything here applies whether your helper app is 200 lines or 20,000.
 
 It is also not a guide for anything larger. If the tool grows a second user, an auth system, or a production deployment, stop treating it as a helper app — it needs real engineering discipline, which is outside Cluide's scope entirely.
 
@@ -40,15 +40,17 @@ For a UI change, exercise the user action and inspect the rendered result. For a
 
 ---
 
-## 3. Four CLAUDE.md Patterns for Helper Apps
+<a id="3-four-claudemd-patterns-for-helper-apps"></a>
+
+## 3. Four Shared-Policy Patterns for Helper Apps
 
 These layer on top of the general project instruction advice in [Guide 01](./01_PROJECT_INSTRUCTIONS.md). Each is one short block. Together they prevent the drift and false-done failure modes from Section 1.
 
-**All four are checks, and it is worth knowing which layer you are on.** A rule in CLAUDE.md catches a mistake after Claude has made it, and it fails quietly when the file is long or the context is tight. *Structure* — one canonical helper rather than a list of five, a file format with nowhere to put the wrong thing, a layout where the bad state cannot be written — makes the mistake unconstructible instead. Checks are the cheap layer and for a helper app they are usually enough. When you notice yourself adding a rule to suppress what another rule causes, or stating the same convention in a third place, the cheap layer has stopped working and the fix is structural; [Guide 29](./29_SPEC_BEFORE_REBUILD.md) is what to do at that point.
+**All four are checks, and it is worth knowing which layer you are on.** A rule in the shared policy catches a mistake after the assistant has made it, and it fails quietly when the file is long or the context is tight. *Structure* — one canonical helper rather than a list of five, a file format with nowhere to put the wrong thing, a layout where the bad state cannot be written — makes the mistake unconstructible instead. Checks are the cheap layer and for a helper app they are usually enough. When you notice yourself adding a rule to suppress what another rule causes, or stating the same convention in a third place, the cheap layer has stopped working and the fix is structural; [Guide 29](./29_SPEC_BEFORE_REBUILD.md) is what to do at that point.
 
 ### Pattern A — The Domain Invariant
 
-Every helper app has one non-negotiable truth about its data. Money in = money out plus savings. Books read this year + books to read = total books. Sum of time tracked per project = total time tracked. Find yours, state it in one line, and tell Claude to preserve it through every change.
+Every helper app has one non-negotiable truth about its data. Money in = money out plus savings. Books read this year + books to read = total books. Sum of time tracked per project = total time tracked. Find yours, state it in one line, and tell the assistant to preserve it through every change.
 
 ```markdown
 ## Invariant
@@ -58,11 +60,11 @@ whole must recompute both and verify equality before writing to disk.
 Never compute this by hand — always call the canonical helper.
 ```
 
-The invariant is the thing a reviewer would catch in five seconds but Claude will happily introduce a regression for if it isn't written down. One line, one invariant. If you have two, you have two sections. If you have seven, your app is bigger than a helper app.
+The invariant is the thing a reviewer would catch in five seconds but the assistant will happily introduce a regression for if it isn't written down. One line, one invariant. If you have two, you have two sections. If you have seven, your app is bigger than a helper app.
 
 ### Pattern B — The Helper Index
 
-Every helper app accumulates a small library of utility functions that cover 90% of the common cases — a currency formatter, an ID generator, a DOM-escape helper, a toast popup, whatever. The drift failure mode is Claude writing a sixth variant of `formatMoney` in session twelve because it didn't know about the first five.
+Every helper app accumulates a small library of utility functions that cover 90% of the common cases — a currency formatter, an ID generator, a DOM-escape helper, a toast popup, whatever. The drift failure mode is the assistant writing a sixth variant of `formatMoney` in session twelve because it didn't know about the first five.
 
 Fix it with a named list at the top of CLAUDE.md:
 
@@ -82,12 +84,12 @@ Keep it to the 5–10 helpers that cover the common paths. Not a full API refere
 
 ### Pattern C — Verification Gates
 
-State, per class of change, what "done" requires. Not "run the tests" — specific, observable verification steps tied to the actual MCP tools Claude has.
+State, per class of change, what "done" requires. Not "run the tests" — specific, observable verification steps tied to the actual MCP tools the assistant has.
 
 ```markdown
 ## Verification — before reporting any change as done
 
-- UI / CSS change → take a screenshot via a browser MCP such as Claude in
+- UI / CSS change → take a screenshot via a browser MCP such as the assistant in
   Chrome (or another preview/screenshot MCP if you have one installed),
   confirm the element looks correct. Code review alone is not enough.
 - Data mutation → reload the app, re-read the affected file, confirm the
@@ -97,13 +99,13 @@ State, per class of change, what "done" requires. Not "run the tests" — specif
 - Refactor → run the smoke check above and confirm no user-visible change.
 ```
 
-The point is to deny Claude the move of writing code, noting the code compiles, and reporting success. The gate is a tool call, not a promise.
+The point is to deny the assistant the move of writing code, noting the code compiles, and reporting success. The gate is a tool call, not a promise.
 
 Two refinements are worth building into the gates from the start.
 
 **Check the whole output, not the part you changed.** The expensive bugs are the ones that leave the output *self-consistent while wrong* — a figure converted in one place and displayed in another, an invariant that holds because both sides are wrong in the same direction. A gate that looks only at the screen you touched passes straight over that class. Where the app has a few derived surfaces — a summary, a list, an export — have the gate capture all of them in one run, so a change that moves two of them in step is visible.
 
-**Compute the expected answer before you ask for it.** When a gate involves a number, work it out by hand from the invariant first and put it in the prompt. Asking Claude what the total should be and then checking that the app agrees tests only that two runs of the same reasoning agree, which is not evidence that either is right.
+**Compute the expected answer before you ask for it.** When a gate involves a number, work it out by hand from the invariant first and put it in the prompt. Asking the assistant what the total should be and then checking that the app agrees tests only that two runs of the same reasoning agree, which is not evidence that either is right.
 
 ### Pattern D — Convention Normalisations
 
@@ -127,6 +129,8 @@ Each line is there because you caught the same bug twice and don't want to catch
 
 ## 4. Keep the Permission Surface Tight
 
+For either platform, grant only the filesystem, execution and browser/app access needed to build and verify the helper. Codex uses its native sandbox, approvals and optional hooks (Guides 12 and 35); ChatGPT uses the grants on its chosen execution surface. The following settings paths are specifically for Claude Code.
+
 `.claude/settings.local.json` is the machine-local, uncommitted settings file where your personal permission allow-list for this project lives; the shared `.claude/settings.json` also carries permissions and is committed. For a helper app, the allow-list should contain the minimum set of tools Claude actually needs to build and verify the app — and nothing else. See [Guide 12](./12_SECURITY.md) for the broader threat model; the helper-app-specific guidance is:
 
 - The run command for your local preview (`python3 -m http.server 8081`, `npm run dev`, whatever) — one entry.
@@ -134,7 +138,7 @@ Each line is there because you caught the same bug twice and don't want to catch
 - The git/gh commands you use for committing and pushing.
 - Nothing else. No broad shell allow. No filesystem wildcards.
 
-A tight allow-list is cheap insurance against Claude deciding, mid-session, to install a dependency, delete a file, or run a script you didn't expect. You will feel a few extra permission prompts early on; you will stop feeling them once the list covers your real workflow.
+A tight allow-list is cheap insurance against the assistant deciding, mid-session, to install a dependency, delete a file, or run a script you didn't expect. You will feel a few extra permission prompts early on; you will stop feeling them once the list covers your real workflow.
 
 ---
 
@@ -143,10 +147,10 @@ A tight allow-list is cheap insurance against Claude deciding, mid-session, to i
 Helper apps are built feature-by-feature over dozens of short sessions. The loop that works:
 
 1. **You describe the next feature in one sentence.**
-2. **Claude drafts a plan as a checklist** — a short `.md` file in a `plans/` folder, with checkbox items, the exact file paths that will change, and inline sketches of the key changes. Plan mode ([Guide 20](./20_INTERACTIVE_PROMPTING.md)) is built for this.
+2. **the assistant drafts a plan as a checklist** — a short `.md` file in a `plans/` folder, with checkbox items, the exact file paths that will change, and inline sketches of the key changes. Plan mode ([Guide 20](./20_INTERACTIVE_PROMPTING.md)) is built for this.
 3. **You read the plan, push back on anything off-base, approve.**
-4. **Claude executes item by item, committing per logical chunk.** Small commits with conventional messages (`feat(scope): …`, `fix(scope): …`) — cheap to revert.
-5. **Verification gate runs** — per Pattern C. Screenshot, reload, smoke check. Claude reports "done" only after the gate passes.
+4. **the assistant executes item by item, committing per logical chunk.** Small commits with conventional messages (`feat(scope): …`, `fix(scope): …`) — cheap to revert.
+5. **Verification gate runs** — per Pattern C. Screenshot, reload, smoke check. The assistant reports "done" only after the gate passes.
 6. **Promote any lesson** — if the review surfaced a new convention, add one line to Pattern D. If a new helper landed, add it to Pattern B.
 
 Step 6 is the drift defence. Without it, the CLAUDE.md and the code diverge, and the app rots. With it, the CLAUDE.md *is* the collaboration memory and stays usable six months in.
@@ -159,9 +163,9 @@ Guardrails are cheap on day 1 and painful to retrofit. Before the app has any re
 
 - **Unsafe-HTML rule.** If the app renders any dynamic content, ban raw string interpolation into HTML in CLAUDE.md from the start. Retrofitting this once there are fifty `innerHTML` calls is a multi-day sweep.
 - **Secret handling.** If the app ever calls an external API, decide where the key lives (env var, local file outside the repo) and write that in CLAUDE.md. Never let the first version hardcode a key "temporarily".
-- **Input validation at the boundary.** Any data read from disk, URL, or user input gets validated once at the boundary. Claude will follow this if it is stated; it will not invent it unprompted.
+- **Input validation at the boundary.** Any data read from disk, URL, or user input gets validated once at the boundary. The assistant will follow this if it is stated; it will not invent it unprompted.
 - **Data backup.** If the app writes to local files that matter to you, decide a backup strategy (git commit of the data, periodic copy) before the first real entry goes in.
-- **API version awareness.** If the app calls the Anthropic Messages API directly, write in CLAUDE.md that this is a post-prefill, adaptive-thinking API: assistant message prefilling and manual `budget_tokens` thinking both return a 400 error on Claude Sonnet 4.6 and later, including Sonnet 5; use structured outputs or a system-prompt instruction instead of prefill, and `output_config.effort` instead of a token budget. Without this line Claude may write code against the older pattern from training.
+- **API version awareness.** Record the provider, endpoint and supported model in the app contract. Check current official documentation before changing model-specific parameters. Anthropic Messages and OpenAI Responses are separate APIs; neither thinking controls nor assistant-prefill behavior should be transferred by renaming fields.
 
 Five lines in CLAUDE.md. Five minutes on day 1. Many hours not spent later.
 
@@ -170,7 +174,7 @@ Five lines in CLAUDE.md. Five minutes on day 1. Many hours not spent later.
 ## 7. Anti-Patterns
 
 - **CLAUDE.md drift.** Rules in CLAUDE.md that no longer match the code. Fix by running [`tasks/audit-claude-md.md`](./tasks/audit-claude-md.md) every few weeks, or whenever the app has had a big reshuffle.
-- **Inventing new helpers.** Claude writes a sixth formatter because it didn't check Pattern B. Fix by making the helper index the first thing Claude sees in CLAUDE.md, and by making the miss cost something in review — add the missed helper to the index and note the miss in the plan review.
+- **Inventing new helpers.** the assistant writes a sixth formatter because it didn't check Pattern B. Fix by making the helper index the first thing the assistant sees in the shared policy, and by making the miss cost something in review — add the missed helper to the index and note the miss in the plan review.
 - **Declaring "done" before verification.** The most common false-done. Fix by making Pattern C specific enough that "done" requires a tool call with visible output, not a self-report.
 - **Broad permission grants.** "Allow all Bash" because a prompt was annoying. Fix by auditing `.claude/settings.local.json` back down to the real list the moment the session ends.
 - **Skipping the plan for "small" changes.** The change is never as small as it looks. A 60-second plan avoids a 20-minute cleanup.

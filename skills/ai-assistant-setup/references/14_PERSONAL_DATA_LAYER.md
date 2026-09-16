@@ -4,7 +4,7 @@
 
 > **Companion guides:** [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) covers token efficiency — Python data feeders (Pattern 1) are one of the highest-leverage efficiency moves you can make. [Guide 07](./07_TASK_LEARNING_GUIDE.md) covers self-improvement — once your data layer is stable, the task can start learning from it. [Guide 11](./11_GIT_INTEGRATION.md) covers git tracking — your JSON data files are prime candidates for pre-run snapshots.
 
-> **Use this when:** you want Claude to reason about personal data (portfolio performance, spending patterns, bank transactions) but the data lives in apps that have no API, in raw files too large to paste in directly, or in formats Claude can't parse without help.
+> **Use this when:** you want the assistant to reason about personal data (portfolio performance, spending patterns, bank transactions) but the data lives in apps that have no API, in raw files too large to paste in directly, or in formats the assistant can't parse without help.
 
 > **Faster alternative:** `tasks/setup-data-layer.md` interviews you about your data sources and sets up the right pattern(s) without reading the guide first.
 
@@ -15,11 +15,11 @@
 This is an advanced guide. The patterns here require writing Python scripts, running JavaScript in your browser, or setting up multi-step pipelines. If you're still in your first few weeks, you likely don't need this yet.
 
 **Come back here when:**
-- You want Claude to reason about data that lives in a web app with no API (banking, broker, expense tracker)
-- You have local files (CSV, JSON) that are too large or raw to paste into Claude directly
+- You want the assistant to reason about data that lives in a web app with no API (banking, broker, expense tracker)
+- You have local files (CSV, JSON) that are too large or raw to paste into the assistant directly
 - A task needs computed values (P&L, totals, averages) rather than raw records
 
-**If you just want Claude to remember things about you:** that's [Guide 04 — Memory](./04_MEMORY_AND_PROFILE.md), not this guide. Use the current platform's native memory for conversational continuity, and explicit profile sources for facts a task must load deterministically. Guide 04 separates those stores and their access checks.
+**If you just want the assistant to remember things about you:** that's [Guide 04 — Memory](./04_MEMORY_AND_PROFILE.md), not this guide. Use the current platform's native memory for conversational continuity, and explicit profile sources for facts a task must load deterministically. Guide 04 separates those stores and their access checks.
 
 ---
 
@@ -37,12 +37,12 @@ When both platforms use the data, designate one writer for each accepted JSON fi
 
 ## The Core Problem
 
-Claude reasons well over data but handles raw ingestion poorly. A 500-row transactions file costs thousands of tokens and gives more noise than signal. A bank app screenshot is unreadable without a vision model. A live web app has no way to hand data to Claude at all.
+The assistant reasons well over data but handles raw ingestion poorly. A 500-row transactions file costs thousands of tokens and gives more noise than signal. A bank app screenshot is unreadable without a vision model. A live web app has no way to hand data to the assistant at all.
 
-The solution is a thin data layer that transforms raw personal data into compact, Claude-readable context:
+The solution is a thin data layer that transforms raw personal data into compact, assistant-readable context:
 
 ```
-Raw data source  →  [data layer]  →  Compact context  →  Claude task
+Raw data source  →  [data layer]  →  Compact context  →  the assistant task
 (JSON / web app / screenshot)        (table / summary / structured JSON)
 ```
 
@@ -50,19 +50,19 @@ Three questions determine which pattern to use:
 
 1. **Where does the data come from?** — local files, a web app, or images
 2. **How often does it change?** — static reference data vs. daily transactions
-3. **What does Claude actually need to reason over?** — computed summaries vs. raw records
+3. **What does the assistant actually need to reason over?** — computed summaries vs. raw records
 
 ---
 
 ## 1. Python Scripts as Data Feeders
 
-**When to use this:** Data lives in local files (JSON, CSV). You need computed values — P&L, totals, ratios, averages — not raw records. The same computation runs every time Claude needs the data.
+**When to use this:** Data lives in local files (JSON, CSV). You need computed values — P&L, totals, ratios, averages — not raw records. The same computation runs every time the assistant needs the data.
 
-**The pattern:** Write a script that reads raw data, computes what Claude needs, and prints a compact summary to stdout. The task file tells Claude to run the script and use its output as context — never the raw file.
+**The pattern:** Write a script that reads raw data, computes what the assistant needs, and prints a compact summary to stdout. The task file tells the assistant to run the script and use its output as context — never the raw file.
 
 ### Example: investment portfolio advisor
 
-`investments.json` holds raw positions (ISIN, quantity, purchase price). A companion script reads it, computes P&L per position, and prints an ASCII table. Claude reads the table output as its context for writing an advice report.
+`investments.json` holds raw positions (ISIN, quantity, purchase price). A companion script reads it, computes P&L per position, and prints an ASCII table. The assistant reads the table output as its context for writing an advice report.
 
 ```
 Script: portfolio_advisor.py
@@ -71,7 +71,7 @@ Output: ASCII table to stdout — one row per position: ticker, qty, buy, now, P
 Usage:  python3 portfolio_advisor.py
 ```
 
-Example output (what Claude actually reads):
+Example output (what the assistant actually reads):
 
 ```
 Portfolio summary — 2026-04-06
@@ -97,31 +97,31 @@ Do not read investments.json directly.
 
 **Design rules:**
 
-- Scripts own the data transformation; Claude owns the reasoning. Never mix the two.
-- Output should be human-readable and Claude-readable simultaneously. ASCII tables work for both.
+- Scripts own the data transformation; the assistant owns the reasoning. Never mix the two.
+- Output should be human-readable and assistant-readable simultaneously. ASCII tables work for both.
 - Keep output under ~80 lines to stay token-efficient (see [Guide 06 §Core Principle](./06_TASK_EFFICIENCY_GUIDE.md)).
-- Print a timestamp in the header so Claude knows how current the data is.
-- If the script fails, Claude should log the failure and stop. It should not attempt to read the raw file directly — that would bypass all the effort to keep context compact.
+- Print a timestamp in the header so the assistant knows how current the data is.
+- If the script fails, the assistant should log the failure and stop. It should not attempt to read the raw file directly — that would bypass all the effort to keep context compact.
 
-**Feeders that call external APIs should degrade, not die.** A feeder that pulls from live sources (price APIs, open-data services) needs three things beyond the local-file version: a `--cache` flag that reuses the last pull, so re-runs while iterating are fast and free; per-source `--no-X` flags plus automatic fallback when a key or service is unavailable, so one dead source doesn't kill the whole run; and — critically — a line in the printed output naming any source that was skipped or substituted. That last line is what lets Claude reason with correct confidence: a degraded run must never be indistinguishable from a complete one.
+**Feeders that call external APIs should degrade, not die.** A feeder that pulls from live sources (price APIs, open-data services) needs three things beyond the local-file version: a `--cache` flag that reuses the last pull, so re-runs while iterating are fast and free; per-source `--no-X` flags plus automatic fallback when a key or service is unavailable, so one dead source doesn't kill the whole run; and — critically — a line in the printed output naming any source that was skipped or substituted. That last line is what lets the assistant reason with correct confidence: a degraded run must never be indistinguishable from a complete one.
 
 ---
 
 ## 2. JSON as Your Personal Database
 
-**When to use this:** You need a persistent, structured store of personal data that both you and Claude can read and update. Your data sets are small (hundreds of records, not millions). You want git-trackable history of every change.
+**When to use this:** You need a persistent, structured store of personal data that both you and the assistant can read and update. Your data sets are small (hundreds of records, not millions). You want git-trackable history of every change.
 
 **Why JSON over a real database:**
 
 - No setup, no running server, no schema migrations
 - Human-readable — you can spot errors with a text editor
 - Git-trackable — every change has history and is reversible (see [Guide 11](./11_GIT_INTEGRATION.md))
-- Claude can read, update, and query it directly
+- the assistant can read, update, and query it directly
 - Works as both the input to Pattern 1 scripts and the output of Pattern 3 and 4 extraction pipelines
 
 **7 design rules:**
 
-1. **Flat structures over nested ones.** A list of transaction objects with flat fields is easier to query than nested account → month → transaction hierarchies. Claude reads linearly; deep nesting makes it harder to reason over.
+1. **Flat structures over nested ones.** A list of transaction objects with flat fields is easier to query than nested account → month → transaction hierarchies. The assistant reads linearly; deep nesting makes it harder to reason over.
 
 2. **Use stable IDs as keys.** ISINs for securities, account IDs for accounts, ISO dates for time-series. Avoid sequence numbers that can shift. Stable keys make merges and updates safe.
 
@@ -129,11 +129,11 @@ Do not read investments.json directly.
 
 4. **Store what happened, not what was computed.** Raw purchase price, quantity, and date belong in the data store. P&L does not — that is computed at query time by the script. Storing computed values creates drift when inputs change.
 
-5. **Include a `last_updated` field at the root.** Claude and you both need to know how fresh the data is.
+5. **Include a `last_updated` field at the root.** the assistant and you both need to know how fresh the data is.
 
 6. **Make ingestion idempotent.** Every ingestion script keys records on the identity of the source (filename, transaction ID, message ID) and skips anything already present, so re-running after a partial failure is safe by construction. Have the script show what it found and confirm before writing — a preview costs nothing; a duplicate-riddled database costs an afternoon.
 
-7. **Separate observed from derived.** Data you logged and data a script generated (predictions, scores, candidate rankings) never share a file. Pair the file split with a critical rule in the project CLAUDE.md: derived records are hypotheses and are never presented as confirmed — the distinction stays explicit in every answer. Rule 4 keeps computed values out of the store to prevent drift; this rule keeps generated records from masquerading as ground truth.
+7. **Separate observed from derived.** Data you logged and data a script generated (predictions, scores, candidate rankings) never share a file. Pair the file split with a critical rule in the shared project policy: derived records are hypotheses and are never presented as confirmed — the distinction stays explicit in every answer. Rule 4 keeps computed values out of the store to prevent drift; this rule keeps generated records from masquerading as ground truth.
 
 **Recommended file layout:**
 
@@ -232,19 +232,23 @@ Steps:
 - Browser JS is fragile to UI changes. When the script stops working, inspect the page element and update the CSS selector — a 5-minute fix when you know what to look for.
 - Always include `extracted_at` in the output so the data file is self-documenting.
 - The `copy()` function works in modern browser developer consoles (Chrome, Edge, Firefox).
-- This is an intentionally manual step. The value is structured, normalized data that Claude can reliably read, not zero human effort.
+- This is an intentionally manual step. The value is structured, normalized data that the assistant can reliably read, not zero human effort.
 
 **When not to use this:** If the app has an official API or CSV export, use that instead. Browser JS extraction is a workaround for apps with no better option.
 
 ---
 
-## 4. Claude Vision for Data Ingestion
+<a id="4-claude-vision-for-data-ingestion"></a>
+
+## 4. Vision for Data Ingestion
+
+**OpenAI route:** attach the images to a supported ChatGPT or Codex task and request the same fields and validation checks. For repeatable API ingestion, use the documented OpenAI image-input API rather than the Anthropic SDK below. If image input is unavailable, provide a structured export or transcribe with verification; do not guess unreadable values. [OpenAI image inputs](https://learn.chatgpt.com/docs/image-inputs).
 
 **Check metadata before reaching for vision.** Image files often already carry what you need in their metadata: photos store GPS coordinates and capture time in EXIF, readable with `pillow`/`piexif` — deterministic, free, and with zero hallucination risk. Vision is for reading image *content*; metadata is for reading image *context*. A pipeline that ingests geotagged photos into a location database may need no vision call at all.
 
 **When to use this:** Data is only accessible as images — bank app screenshots, statements you photographed, scanned PDFs. Manual transcription would be tedious and error-prone. You want structured JSON out.
 
-**The pattern:** A Python script sends screenshots to the Claude API (vision), asks Claude to return structured JSON, and saves the result to a data file. This is typically one step in a larger pipeline, not a standalone workflow.
+**The pattern:** A script sends screenshots to a supported image-input model, requests structured data, validates it, and saves it to a data file. The implementation below is a Claude API example. This is typically one step in a larger pipeline, not a standalone workflow.
 
 ```
 Script: extract_transactions.py
@@ -336,7 +340,7 @@ For SDK setup and API key configuration, see Anthropic's SDK quickstart at [plat
 
 - The prompt must be precise about the output schema. Ask for exactly the fields you need; vague prompts produce inconsistent JSON structures.
 - **Reconcile against a control total, not just the schema.** If the source states a balance, a record count, or a subtotal, check that your extracted rows reproduce it before merging. This catches dropped, duplicated, or misread rows that field-level validation cannot — schema validation proves each row is well-formed, reconciliation proves the *set* is complete.
-- Better than prompt discipline: use the API's **structured outputs** feature — pass a JSON schema with the request and the output is schema-valid whenever the model completes normally. Truncation (`max_tokens`) and refusals still need handling, but this removes the malformed-JSON failure mode from ordinary runs (the one the anti-patterns section below warns about). The prompt-only fallback is "Return a JSON array only, no other text" — otherwise Claude may wrap the result in a prose explanation.
+- Better than prompt discipline: use the API's **structured outputs** feature — pass a JSON schema with the request and the output is schema-valid whenever the model completes normally. Truncation (`max_tokens`) and refusals still need handling, but this removes the malformed-JSON failure mode from ordinary runs (the one the anti-patterns section below warns about). The prompt-only fallback is "Return a JSON array only, no other text" — otherwise the assistant may wrap the result in a prose explanation.
 - Name the output file `_raw` and run a separate normalization/validation step before merging into your main data store.
 - Batch all screenshots from the same time period into one script run to minimize API calls.
 - Add `screenshots/` to `.gitignore` — they are large and may contain sensitive financial data.
@@ -359,7 +363,7 @@ tasks/bank-import/
   steps/
     01_take_screenshots.md         ← manual: capture bank app screens
     02_extract_transactions.md     ← automated: run vision extraction
-    03_review_and_normalize.md     ← Claude: validate and clean raw data
+    03_review_and_normalize.md     ← the assistant: validate and clean raw data
     04_import_to_budget_app.md     ← manual: browser JS import
 ```
 
@@ -369,7 +373,7 @@ Example step file (`02_extract_transactions.md`):
 # Step 2: Extract Transactions from Screenshots
 
 ## Purpose
-Convert bank screenshots into structured JSON using the Claude vision API.
+Convert bank screenshots into structured JSON using the assistant vision API.
 
 ## Inputs
 - `screenshots/` directory: PNG files captured in Step 1
@@ -399,7 +403,7 @@ Example master `TASK.md`:
 ## Steps
 1. Take screenshots (manual) → steps/01_take_screenshots.md
 2. Extract transactions (script) → steps/02_extract_transactions.md
-3. Review and normalize (Claude) → steps/03_review_and_normalize.md
+3. Review and normalize (the assistant) → steps/03_review_and_normalize.md
 4. Import to the budget app (manual) → steps/04_import_to_budget_app.md
 
 ## Partial runs
@@ -409,7 +413,7 @@ To re-run from normalization (extraction already done): start at Step 3.
 
 **Design rules:**
 
-- Each step file must be self-contained. Claude should be able to run step 3 without reading steps 1 and 2.
+- Each step file must be self-contained. The assistant should be able to run step 3 without reading steps 1 and 2.
 - Steps must have explicit outputs — a file created, a console message, a named dataset. No ambiguous "done" states.
 - Keep the master file short. It is an index and a sequencer, not a procedure manual. Details belong in step files.
 - Number steps with leading zeros (01, 02) so they sort correctly in directory listings.
@@ -433,22 +437,22 @@ Here is how all five patterns combine in a complete personal finance data layer.
 | Envelope-budgeting web app | 3 — Browser JS extraction | `envelope_balances.json` |
 | `investments.json` | 2 — JSON database | (maintained continuously) |
 
-**Analysis** (Claude reads script output, not raw files):
+**Analysis** (the assistant reads script output, not raw files):
 
-| Analysis | Pattern | What Claude produces |
+| Analysis | Pattern | What the assistant produces |
 |----------|---------|----------------------|
 | `portfolio_advisor.py` | 1 — Python feeder | Advice report (HTML) |
 | `spending_summary.py` | 1 — Python feeder | Monthly envelope review (Markdown) |
 
 **Orchestration:** 4-step TASK.md + step files (Pattern 5)
 
-**What Claude reads vs. never reads:**
+**What the assistant reads vs. never reads:**
 
 ```
-Claude reads:    script output tables (~200 tokens each)
+The assistant reads:    script output tables (~200 tokens each)
                  compact JSON summaries (~100 tokens)
 
-Claude never:    raw transactions JSON (500+ rows = thousands of tokens)
+The assistant never:    raw transactions JSON (500+ rows = thousands of tokens)
 reads:           the budget app's full page DOM
                  bank screenshot images directly
 ```
@@ -468,15 +472,15 @@ reads:           the budget app's full page DOM
 
 ## Anti-Patterns
 
-**Pasting raw CSV or JSON into prompts.** A 500-row bank export costs thousands of tokens and gives Claude noise, not signal. Use a Python script (Pattern 1) to compute the 50 tokens Claude actually needs.
+**Pasting raw CSV or JSON into prompts.** A 500-row bank export costs thousands of tokens and gives the assistant noise, not signal. Use a Python script (Pattern 1) to compute the 50 tokens the assistant actually needs.
 
-**Feeding data without a schema.** If Claude has to guess what columns mean — is "amount" gross or net? is the date DD/MM or MM/DD? — it will guess wrong silently. Always define the schema explicitly in your extraction prompt or script header.
+**Feeding data without a schema.** If the assistant has to guess what columns mean — is "amount" gross or net? is the date DD/MM or MM/DD? — it will guess wrong silently. Always define the schema explicitly in your extraction prompt or script header.
 
-**Computing values in Claude instead of in scripts.** Asking Claude to compute P&L from raw prices every run wastes tokens and introduces inconsistency. Deterministic computations belong in Python, run once.
+**Computing values in the assistant instead of in scripts.** Asking the assistant to compute P&L from raw prices every run wastes tokens and introduces inconsistency. Deterministic computations belong in Python, run once.
 
 **Storing computed values in your JSON database.** P&L, averages, and category totals belong in script output, not data files. When inputs change, stored computed values drift silently. Store raw facts; compute on demand.
 
-**Storing PII in memory files or CLAUDE.md.** Bank account numbers, national ID numbers, and full addresses do not belong in files that persist across sessions or get committed to git. Keep sensitive identifiers in local data files listed in `.gitignore`.
+**Storing PII in memory files or standing instructions.** Bank account numbers, national ID numbers, and full addresses do not belong in files that persist across sessions or get committed to git. Keep sensitive identifiers in local data files listed in `.gitignore`.
 
 **Hardcoding absolute paths.** `~/Documents/Finance/data.json` breaks the moment you move machines or share the project. Use paths relative to the project root, or resolve them in scripts via `Path(__file__).parent`.
 
@@ -501,7 +505,7 @@ reads:           the budget app's full page DOM
 | Data in local JSON/CSV, need computed values | 1 — Python script feeder |
 | Need a persistent, structured personal data store | 2 — JSON as database |
 | Data visible in a web app with no API | 3 — Browser JS extraction |
-| Data only accessible as screenshots or images | 4 — Claude Vision ingestion |
+| Data only accessible as screenshots or images | 4 — Vision ingestion |
 | Workflow has 3+ distinct phases with different inputs | 5 — Multi-step instruction files |
 
 ---
