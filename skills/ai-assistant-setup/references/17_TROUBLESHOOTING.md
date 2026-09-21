@@ -37,7 +37,7 @@ Before changing prompts, record the product, local/cloud execution, selected pro
 | Symptom | Codex / local workspace check | ChatGPT source-project check | Claude check |
 |---|---|---|---|
 | Standing rule missing | Correct workspace? `AGENTS.override.md` shadowing the policy? Fresh session after edit? | Correct project instructions and uploaded policy revision? Source actually accessible? | Loaded `CLAUDE.md`, imports, parent/local rules; Cowork bootstrap and folder access |
-| Skill missing | Native `.agents/skills` location, metadata and selector | Skill/plugin installed for this account, or workflow explicitly supplied | Native `.claude/skills` or app installation |
+| Skill missing | Native `.agents/skills` location, metadata and selector | Skill/plugin installed for this account, or workflow explicitly supplied | Native `.claude/skills` or app installation; account-synced skill (Code v2.1.275+); description ≤1024 and valid YAML frontmatter |
 | Memory stale | Explicit file read and correct writer/revision | Uploaded/connected fact refreshed; do not assume local-file synchronization | Distinguish native memory from `.auto-memory/` |
 | Connector absent | Effective MCP config, authentication, tool discovery | App grant and tools exposed in this chat | Correct Code/Cowork connector configuration |
 | Scheduled output absent | Actual registered owner, local host awake, app running, last run status | Source availability, task status, authorized output destination | Correct Cowork/Routine owner and execution environment |
@@ -79,7 +79,7 @@ description: >
 **2. You edited the skill during an active session**
 If you edited the file and retried in the same conversation, the assistant may still be using the old version.
 
-*Fix:* Start a fresh session and confirm which installed skill revision it sees. Use native reload controls only if the installed version documents them. Codex documents automatic skill discovery with restart as a fallback; ChatGPT and Cowork need the updated skill enabled in their own installation surface (Guide 03).
+*Fix:* Start a fresh session and confirm which installed skill revision it sees. Use native reload controls only if the installed version documents them. Codex documents automatic skill discovery with restart as a fallback; ChatGPT and Cowork need the updated skill enabled in their own installation surface (Guide 03). Claude Code v2.1.275+ also syncs skills enabled on your claude.ai account into terminal sessions signed in with it; a synced skill is downloaded from the account, so update it there, or opt out with `syncClaudeAiSkills: false` ([changelog](https://code.claude.com/docs/en/changelog)).
 
 **3. The file is in the wrong location**
 The skill must be at `.claude/skills/[skill-name]/SKILL.md`. A common mistake is `.claude/[skill-name]/SKILL.md` (missing the `skills/` subfolder) or a different filename.
@@ -90,6 +90,11 @@ The skill must be at `.claude/skills/[skill-name]/SKILL.md`. A common mistake is
 On Windows, Notepad may save as `.md.txt`. macOS TextEdit in rich-text mode can add hidden formatting.
 
 *Fix:* Open a terminal and check: `dir .claude\skills\` (Windows) or `ls .claude/skills/` (Mac). Confirm you see `SKILL.md`, not `SKILL.md.txt`.
+
+**5. The frontmatter was rejected or cut**
+A `description` over 1024 characters breaks the [Agent Skills spec](https://agentskills.io/specification) limit, and spec-enforcing paths (claude.ai upload, Skills API, `package_skill.py`) can refuse the skill; Claude Code instead truncates `description` plus `when_to_use` at 1,536 characters in the listing, which can cut off trigger phrases. Frontmatter that is not valid YAML — typically an unquoted one-line description containing ": " — also fails.
+
+*Fix:* Count the description's characters and shorten it to 1024 or fewer; use a folded `>` block or quotes; confirm `name` matches the folder (Guide 03).
 
 ---
 

@@ -43,7 +43,7 @@ List every artefact that carries instructions or binds the project to one platfo
 | State | native memory on each platform, `.auto-memory/` and profile files, run logs, scheduler registrations |
 | Generators | templates or tasks inside the project that write instruction files and would reinstall single-platform assumptions |
 
-Classify the starting point: **Claude-first** (`CLAUDE.md`, no shared file), **OpenAI-first** (`AGENTS.md`, no Claude adapter), **overlapping** (both exist and state the same rules twice), or **already structured** (review run).
+Classify the starting point: **Claude-first** (`CLAUDE.md`, no shared file), **OpenAI-first** (`AGENTS.md`, no Claude adapter; current Claude Code reads that `AGENTS.md` natively, but the task still installs the adapter because native reading is missing on some versions and deployments and the adapter holds Claude-only rules — Guide 35 §4), **overlapping** (both exist and state the same rules twice), or **already structured** (review run).
 
 ### Step 2 — Sort every rule into one home (read-only)
 

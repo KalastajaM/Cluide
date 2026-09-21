@@ -115,7 +115,9 @@ For an interactive inspection session, a documented CLI starting point is:
 codex --sandbox read-only --ask-for-approval on-request
 ```
 
-Use the host's supported permissions UI or configuration when work needs writes. Do not weaken the boundary just to make a check pass. The retired `untrusted` approval setting is not a current preset. An automatic approval reviewer is also a real boundary: report a rejection and its reason if a safer authorized path cannot complete the work.
+Use the host's supported permissions UI or configuration when work needs writes. Do not weaken the boundary just to make a check pass. The ChatGPT desktop app, Codex CLI and IDE name three permission modes: **Ask for approval** (reads, edits and routine local commands in the workspace; asks before internet access or going beyond the workspace — workspace-write with `on-request` and the user as reviewer), **Approve for me** (requests for more access go to auto-review, which "can make mistakes"), and **Full access** (edit any file and run networked commands without approval), plus Custom through `config.toml`. In `config.toml`, `approval_policy` now takes `on-request`, `never` or a `granular` table; `untrusted` and `on-failure` are retired and are not current presets. `default_permissions` selects a built-in profile (`:read-only`, `:workspace`, `:danger-full-access`) or a custom `[permissions.<name>]` profile and should not be combined with `sandbox_mode` or `[sandbox_workspace_write]`. `approvals_reviewer` is `user` (default) or `auto_review`; an automatic approval reviewer is also a real boundary: report a rejection and its reason if a safer authorized path cannot complete the work. A project's `.codex/config.toml` loads only when you trust the project, so a cloned repository cannot loosen these settings until you do.
+
+Scheduled runs are the unattended case. ChatGPT scheduled tasks and Codex automations on the desktop run "unattended with your default sandbox settings" and use `approval_policy = "never"` where organisational policy permits, so nothing is left to prompt: the sandbox and permission profile you set beforehand are the whole boundary for those runs.
 
 ChatGPT Apps and connected services have their own account grants; uploading a file does not authorize a connector to modify its source. Inspect read/write scope and confirm the actual destination account before testing. Keep credentials in the native secure authentication mechanism, outside shared policy and exports.
 
@@ -123,7 +125,7 @@ Validate controls with harmless fixtures: a permitted read, a denied write outsi
 
 Codex also documents `PreToolUse` hooks. Configure them through its native hook sources and test every relevant tool path; some paths can bypass hooks, so a hook is not a complete security boundary. The dated counterpart and its source are in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts). Do not copy Claude settings into Codex.
 
-Official controls checked 2026-09-14: [OpenAI approvals and sandbox](https://learn.chatgpt.com/docs/agent-approvals-security), [Claude Code security](https://code.claude.com/docs/en/security). The Claude settings and hook examples below apply only to Claude Code.
+Official controls checked 2026-09-21: [OpenAI approvals and sandbox](https://learn.chatgpt.com/docs/agent-approvals-security), [Codex permission modes](https://learn.chatgpt.com/codex/permission-modes), [Codex config reference](https://learn.chatgpt.com/docs/config-file/config-reference), [ChatGPT scheduled tasks and Codex automations](https://learn.chatgpt.com/codex/automations), [Claude Code security](https://code.claude.com/docs/en/security). The Claude settings and hook examples below apply only to Claude Code.
 
 ---
 
@@ -133,7 +135,7 @@ Claude Code offers several controls over what Claude can do without your approva
 
 **Permission modes** in Claude Code — which one you start in depends on your plan:
 - **Manual** (`default`, alias `manual`) — the assistant asks before edits and before any command not covered by your allow rules. This is the mode that asks about everything.
-- **auto** — the built-in starting mode on Pro, Max and Team since August 2026. A classifier reviews each action that edits a file, runs a command or reaches the network, instead of prompting you; it blocks destructive git commands, `rm -rf`, transcript tampering and cloud-metadata access. You see the denials, listed under "Recently denied" in `/permissions`. The `autoMode` settings hold your own allow and deny rules for the classifier, including hard denies it cannot override, and `disableAutoMode: "disable"` removes the mode for an organisation. One trap: `permissions.defaultMode: "auto"` has no effect in a project's `.claude/settings.json` or `settings.local.json` — set it in `~/.claude/settings.json` or in managed settings.
+- **auto** — the built-in starting mode on Pro, Max and Team since August 2026. A classifier reviews each action that edits a file, runs a command or reaches the network, instead of prompting you; it blocks destructive git commands, `rm -rf`, transcript tampering and cloud-metadata access. You see the denials, listed under "Recently denied" in `/permissions`. The `autoMode` settings hold your own allow and deny rules for the classifier, including hard denies it cannot override, and `disableAutoMode: "disable"` removes the mode for an organisation. Since v2.1.278, auto mode for Claude API and Enterprise users (and Bedrock, Vertex, Foundry and gateways) defaults to the server-side classifier, which does not charge for classifier overhead. One trap: `permissions.defaultMode: "auto"` has no effect in a project's `.claude/settings.json` or `settings.local.json` — set it in `~/.claude/settings.json` or in managed settings.
 - **acceptEdits** — file edits are auto-approved; commands still prompt.
 - **plan** — the assistant proposes a plan; nothing is written or executed until you approve. Use for reviewing changes to important files.
 - **dontAsk** — no prompts and no classifier. Meant for CI and unattended runs, not for a session you are sitting in front of.
@@ -317,7 +319,7 @@ output/
 
 **The enforced mechanisms:**
 
-- **Cowork** — folder selection. Claude can only reach the folders connected to the session. Keep sensitive data (financial exports, health records, contact lists) *outside* the folders you connect, in a separate folder you connect only when explicitly working with that data.
+- **Cowork** — folder selection. Claude can only reach the folders connected to the session. Keep sensitive data (financial exports, health records, contact lists) *outside* the folders you connect, in a separate folder you connect only when explicitly working with that data. Cowork desktop sessions also skip any import in a user-scope instruction file that resolves outside the session's working directory, and a `~/.claude/CLAUDE.md` that is itself a symlink or hard link, so account-level instructions kept elsewhere and linked in do not load there ([Claude Code memory](https://code.claude.com/docs/en/memory)).
 - **Claude Code** — `permissions.deny` rules in `.claude/settings.json` block file access at the tool layer:
 
 ```json

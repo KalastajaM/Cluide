@@ -13,7 +13,7 @@ The patterns apply across Claude and OpenAI, but controls are native to the surf
 
 In Codex, open the intended workspace and explicitly identify files to read or edit. Use the available file selector where supported, or give a plain path and ask the assistant to read it. In a ChatGPT project, select or upload the required source; naming a laptop path does not grant access. `@` can select a skill or app in some surfaces, so confirm what the selection actually references.
 
-For reusable OpenAI skills, current documentation describes `$skill-name` or `/skills` in Codex CLI/IDE, and a skill selection in ChatGPT. These are different from Claude `@path` instruction imports. [OpenAI skills](https://learn.chatgpt.com/docs/build-skills), checked 2026-09-14.
+For reusable OpenAI skills, current documentation describes `/skills` or typing `$` in Codex CLI/IDE, and typing `@` to select a skill in ChatGPT. These are different from Claude `@path` instruction imports. [OpenAI skills](https://learn.chatgpt.com/docs/build-skills), checked 2026-09-21.
 
 Use plan mode when the host provides it and the work needs a reviewable plan. Otherwise ask for a plan in ordinary text and specify what may proceed before review. Neither phrase changes the sandbox or confers action authority. Follow the host's actual question-tool availability; a missing dialog is handled with a concise text question, not an invented `AskUserQuestion` call.
 

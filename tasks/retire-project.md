@@ -53,7 +53,7 @@ Beyond the grep, read directly:
 | Scheduled tasks | Every task definition and registration on the surface(s) the user runs — Cowork's task registrations, Claude Code Routines, hooks with schedules. Read each; do not infer from folder names |
 | Orchestration | Shared-state and handoff files, and any chain that names this project's task as a stage |
 | Ownership registry | Every row naming this project as owner |
-| Memory | Account memory and the project's own per-project store (ask the user to search both in the app for the project's name and read out what is there — a session cannot); Claude Code auto memory for the project; `.auto-memory/` files in *other* projects; profile files in tasks |
+| Memory | Account memory and the project's own per-project store (ask the user to search both in the app for the project's name and read out what is there — a session cannot); Claude Code auto memory for the project; local Codex memory under `~/.codex/memories/` where enabled (separate from ChatGPT memory); `.auto-memory/` files in *other* projects; profile files in tasks |
 | Second brain | Index entries and notes linking into the project |
 | App-side fields | The project's description and instructions (from the mirror block, or pasted by the user); its `spaces.json` row where the Filesystem MCP reaches it |
 | Artifacts | Published pages fed by the project's tasks |

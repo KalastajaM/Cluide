@@ -26,7 +26,7 @@ For authenticated services, follow that server's documented OAuth or environment
 
 In ChatGPT, use the available Apps/plugin connection controls, authorize the intended account and inspect the tools exposed to that chat. An uploaded file is context, not a connector, and a connected remote service is not general access to a local folder. If the required app or custom MCP setup is unavailable to the account, record the gap and use an explicit export as input.
 
-Checked 2026-09-14: [OpenAI MCP configuration](https://learn.chatgpt.com/docs/extend/mcp), [ChatGPT project sources](https://learn.chatgpt.com/docs/projects). Claude setup below remains separately scoped; do not convert `mcpServers` JSON into OpenAI configuration by renaming a directory.
+The ChatGPT desktop app, Codex CLI and IDE extension share MCP configuration for the same Codex host: a server added in the desktop app under Settings → MCP servers, or as `[mcp_servers.<name>]` in `~/.codex/config.toml` or a project `.codex/config.toml`, is the same server for all three, so configure it once per host rather than per client. Checked 2026-09-21: [Codex MCP](https://learn.chatgpt.com/codex/extend/mcp). Checked 2026-09-14: [ChatGPT project sources](https://learn.chatgpt.com/docs/projects). Claude setup below remains separately scoped; do not convert `mcpServers` JSON into OpenAI configuration by renaming a directory.
 
 ---
 

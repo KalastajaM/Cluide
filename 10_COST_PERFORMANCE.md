@@ -46,7 +46,7 @@ The pricing source of truth is the provider's current table, not a model-tier al
 
 Choose a model from the actual host inventory, then compare quality and cost on representative fixtures. Extraction, triage, synthesis and review are different workloads; a cheap first pass is useful only if its errors do not make the later pass more expensive.
 
-For Claude, the repository's `dispatch` policy assigns available Claude tiers; it is a Claude routing policy, not a cross-vendor equivalence table. For OpenAI, retain the configured model unless the user or host policy authorizes another supported identifier. Never translate Haiku, Sonnet or Opus into a guessed OpenAI model.
+For Claude, the repository's `dispatch` policy assigns available Claude tiers; it is a Claude routing policy, not a cross-vendor equivalence table. Effort is the other Claude cost lever: the Claude Code `maxEffortLevel` setting caps effort on every provider, which bounds what a delegated or scheduled run can spend on reasoning regardless of what its prompt or agent definition asks for ([Claude Code changelog](https://code.claude.com/docs/en/changelog), v2.1.263–269). For OpenAI, retain the configured model unless the user or host policy authorizes another supported identifier. Never translate Haiku, Sonnet or Opus into a guessed OpenAI model.
 
 Use three checks before changing a recurring task's model: the candidate is available to that execution surface, the fixture output passes the same graders, and measured allowance/spend or latency improves. Record the exact model returned by the run. A task prompt can request routing only where the host exposes that control; changing prose does not change the running session's model.
 

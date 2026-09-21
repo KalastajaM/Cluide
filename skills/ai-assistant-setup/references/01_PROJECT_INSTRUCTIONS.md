@@ -14,7 +14,7 @@ For a dual-platform repository, keep shared rules in root `AGENTS.md`; make `CLA
 
 | Surface | Where the contract reaches the assistant | Check before relying on it |
 |---|---|---|
-| Claude Code | Native `CLAUDE.md` files and their imports | Inspect the loaded files, including parent and local instructions |
+| Claude Code | Native `CLAUDE.md` files and their imports; current versions also read `AGENTS.md` natively when no `CLAUDE.md` exists ([Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts)) | Inspect the loaded files, including parent and local instructions |
 | Cowork / conversational Claude | Project instructions bootstrap the accessible policy source | Confirm the connected folder or uploaded revision was actually read |
 | Codex repository session | Native `AGENTS.md` discovery; `AGENTS.override.md` can supersede it at a level | Start in the intended workspace and inspect overrides along the instruction chain |
 | ChatGPT uploaded-source project | Project instructions plus uploaded or connected policy source | Record source revision; a repository edit does not refresh an upload |

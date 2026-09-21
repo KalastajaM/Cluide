@@ -109,6 +109,8 @@ restart. This corrects the older claim in
 [Guide 17](./17_TROUBLESHOOTING.md#problem-claude-cant-reach-my-local-folder-mid-task)
 that folder access can only be granted when a task starts — that limit applies to the
 *first* folder a task is opened with, not to requesting an additional one afterward.
+The mid-session request is verified live only: it is not described in Anthropic's
+public docs as of 2026-09-21, so re-check it after a desktop app update.
 
 Because each request is a permission prompt for the person, do not request every
 sibling a project might ever need at session start. Name the trigger in the shared
@@ -128,6 +130,17 @@ mid-task, or whether every sibling must be attached up front through the UI. Unt
 this is checked directly, treat a ChatGPT side of a dual-platform project as needing
 every sibling folder attached at project setup, and record the actual behavior here
 once verified, with the date.
+
+Attaching a sibling is not the same as loading its rules. Only the primary folder is
+the discovery root: new chats start there, and Codex uses it for automatic discovery
+of `AGENTS.md`, skills and `config.toml`. A sibling attached as a secondary folder is
+available for file search, reading and editing, but its `AGENTS.md`, skills and
+`config.toml` are not discovered. This is documented for Codex; whether a ChatGPT Work
+chat in the same local project gets the same discovery is **untested**. So a
+dual-platform project should put the rules a sibling's files need into the primary
+folder's `AGENTS.md`, or tell the assistant there to read the sibling's `AGENTS.md`
+explicitly when the trigger fires. Source: [local projects](https://learn.chatgpt.com/codex/projects)
+(checked 2026-09-21).
 
 ## Keeping linked projects consistent
 

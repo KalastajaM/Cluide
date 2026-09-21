@@ -85,13 +85,24 @@ Claude `allowed-tools` grants pre-approval and does not prove that omitted tools
 - [ ] SKILL.md is under 500 lines
 - [ ] If over 500 lines: detailed reference content is moved (or should be moved) to `references/`
 - [ ] `references/` files are named from SKILL.md — not silently expected
-- [ ] Measured, not guessed: where available on the Claude runtime, use `/skill-doctor` for what this skill costs in context and how often it actually gets used ; otherwise use observed invocation/usage records and mark unavailable metrics unknown — a large skill that never fires is a stronger finding than line count alone
+- [ ] Measured, not guessed: where available on the Claude runtime, use `/skill-doctor` (verify it exists in your version) for what this skill costs in context and how often it actually gets used; otherwise use observed invocation/usage records and mark unavailable metrics unknown — a large skill that never fires is a stronger finding than line count alone
 
 #### Check 7: Memory (if applicable)
 
 If the skill involves recurring context (contacts, preferences, past decisions):
 - [ ] Memory section is present with explicit format for what to store
 - [ ] Without it: the skill re-learns the same things every session
+
+#### Check 8: Frontmatter validity (mechanical)
+
+- [ ] Frontmatter parses as YAML — a plain one-line `description` containing ": " breaks strict parsers; use a folded `>` block or quotes
+- [ ] `description` is 1–1024 characters (full value, not line count) — the [Agent Skills spec](https://agentskills.io/specification) limit that claude.ai uploads, the Skills API and `package_skill.py` enforce; Claude Code truncates `description` plus `when_to_use` at 1,536 characters in its listing, and Codex shortens descriptions first when the skill list exceeds its budget (Guide 03)
+- [ ] `name` is at most 64 lowercase letters, numbers and hyphens, and matches the skill's directory name
+
+Run it, do not eyeball it (needs Python with PyYAML; a parse error is itself the finding):
+```bash
+python3 -c "import sys,os,yaml; p=sys.argv[1]; m=yaml.safe_load(open(p).read().split('---')[1]); d=os.path.basename(os.path.dirname(os.path.abspath(p))); print('description chars:', len(m['description']), '| name matches dir:', m['name']==d)" "[path]/SKILL.md"
+```
 
 ### Step 3 — Present findings
 

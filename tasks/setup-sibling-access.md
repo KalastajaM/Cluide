@@ -15,7 +15,10 @@ already working inside the filesystem, no request step is needed — say so and 
 recording the paths for reference. On a ChatGPT project, this task can only produce
 the section text; whether the ChatGPT surface can request a folder mid-task is
 unverified (Guide 23), so record every sibling folder needed and tell the user each
-one must be attached through "Add folder" at project setup instead.
+one must be attached through "Add folder" at project setup instead. A sibling attached
+that way is a secondary folder: readable and editable, but its `AGENTS.md`, skills and
+`config.toml` are not discovered, because only the primary folder is (Guide 23), so put
+the rules the siblings need in the primary folder's `AGENTS.md`.
 
 ## Purpose
 

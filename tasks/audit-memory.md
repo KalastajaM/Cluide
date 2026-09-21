@@ -12,7 +12,7 @@ Execute only the selected native branch. Claude commands/settings/hooks are Clau
 
 ## Native implementation
 
-Inventory shared file memory/profile files, each surface's exposed native memory, and ChatGPT project-source revisions separately. A missing Claude native-memory path is N/A on OpenAI. Apply size/freshness/duplication checks to the relevant layer; do not infer native-memory contents from repository files. Validate explicit state loading in scheduled runs and record inaccessible native memory as unverified. Check one writer or branch isolation for shared state, and verify source refresh/recall separately on each supported surface.
+Inventory shared file memory/profile files, each surface's exposed native memory, and ChatGPT project-source revisions separately. On OpenAI, ChatGPT memory and the local Codex memory store (`~/.codex/memories/`, off by default, enabled per chat with `/memories`) are separate stores; audit each on its own. A missing Claude native-memory path is N/A on OpenAI. Apply size/freshness/duplication checks to the relevant layer; do not infer native-memory contents from repository files. Validate explicit state loading in scheduled runs and record inaccessible native memory as unverified. Check one writer or branch isolation for shared state, and verify source refresh/recall separately on each supported surface.
 
 ## Purpose
 Review the project's memory for stale entries, missing index pointers, duplicates, and entries that belong in `CLAUDE.md` instead. Keeps memory lean and current so it stays useful as sessions accumulate.
@@ -29,7 +29,7 @@ Target: index under 30 entries, each memory file under ~10 lines, no entries old
 
 ### Step 1 — Find which layers are in use
 
-Check all applicable layers before concluding anything is missing. Use the shared folder/profile checks below with a filesystem; inspect ChatGPT/native memory through exposed controls or operator-provided evidence. The Layer 2 shell commands are **Claude Code only**.
+Check all applicable layers before concluding anything is missing. Use the shared folder/profile checks below with a filesystem; inspect ChatGPT/native memory through exposed controls or operator-provided evidence (local Codex memory, where enabled, is under `~/.codex/memories/`). The Layer 2 shell commands are **Claude Code only**.
 
 ```bash
 # Layer 1 — .auto-memory/ folder (the explicit pattern)

@@ -134,6 +134,7 @@ These apply on top of my personal preferences; do not restate them.
 For OpenAI sessions, retain the configured model and only delegate when the host permits it;
 do not translate Claude tier names. Keep native memories, credentials and settings separate.
 Read `PROJECT_TEMPLATE/PLATFORM_SETUP.md` for source-loading checks and settings mirrors.
-Product references checked 2026-09-14: [Codex instruction discovery](https://learn.chatgpt.com/docs/agent-configuration/agents-md)
-and [ChatGPT projects](https://help.openai.com/en/articles/10169521-projects-in-chatgpt).
+Product references checked 2026-09-21: [Codex instruction discovery](https://learn.chatgpt.com/docs/agent-configuration/agents-md),
+[local projects](https://learn.chatgpt.com/codex/projects) (ChatGPT desktop app, folders on the computer)
+and [cloud ChatGPT projects](https://help.openai.com/en/articles/10169521-projects-in-chatgpt) (help article; uploaded files).
 No account field has been applied or tested by copying this template.
