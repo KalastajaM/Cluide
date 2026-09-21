@@ -4,6 +4,87 @@ Cluide is versioned by content event, not on a calendar: a tag marks guides bein
 
 The **consumed surface** — dimension numbers in `tasks/analyze-project-reference.md`, filenames in `tasks/`, and guide numbers — is append-only. Entries below note explicitly when it grows.
 
+## [1.7.0] — 2026-09-21
+
+Seven pull requests since v1.6.0 (#57–#63), plus the changelog PR that carries this section:
+
+- #57–#59 extend the whole guide set, tasks, skills and templates from Claude to Claude and ChatGPT or Codex.
+- #60 restores dated Anthropic API parameter facts, corrected.
+- #61 adds on-demand sibling-folder access and a dual-platform sanity check.
+- #62 fixes what #61 shipped.
+- #63 is the first platform sweep to cover OpenAI as well as Anthropic.
+
+**The consumed surface grew:** two `tasks/` filenames were added (`audit-dual-platform.md`,
+`setup-sibling-access.md`). Guide 01's canonical file is now `01_PROJECT_INSTRUCTIONS.md`; the number is
+unchanged and `01_CLAUDE_MD.md` stays as a compatibility page, so existing links resolve. Nothing was
+renumbered, renamed away or reused.
+
+### Added
+
+- **`tasks/setup-sibling-access.md`** (#61). Writes a "Sibling project access" section into a project's
+  shared policy, so the assistant asks for a sibling project's folder only when a task needs a specific
+  fact from it, never as a blanket step at session start. Guide 23 gains *Requesting the mount, on demand*:
+  a Cowork session can request an additional folder mid-task (verified live 2026-09-21; not described in
+  Anthropic's public docs), while the ChatGPT side stays untested.
+
+- **`tasks/audit-dual-platform.md`** (#61). A short, re-runnable check that an already dual-platform
+  project's required files, sibling folders and scheduler ownership still resolve, distinct from the
+  one-time `setup-dual-platform.md`.
+
+- **Dual-platform coverage across the set** (#57–#59). Guides, tasks, skills and templates now state
+  principles for any assistant and give Claude and OpenAI routes as separately verified native branches.
+  Every entry task opens with a runtime route. Templates gain `AGENTS.md` and `PLATFORM_SETUP.md` files, and
+  `PROJECT_TEMPLATE` gains a `tests/behaviour/` starter. `security-review` gains an OpenAI route
+  (`references/openai-review.md`) separate from its Claude hooks. Guide 35 §6 compares capabilities by what
+  a workflow needs and adds a dated counterparts-and-gaps table. This supersedes v1.6.0's note that the
+  guide content was still Claude-focused.
+
+- **`audit-skill.md` check 8** (#63). A mechanical frontmatter check: parses as YAML, `description` 1–1024
+  characters, `name` matches its folder. Appended; no check was renumbered.
+
+### Changed
+
+- **Platform sweep 2026-09b** (#63), boundary Claude Code v2.1.278, desktop v2.2553.1, Codex CLI 0.155.1:
+  - Claude Code reads `AGENTS.md` natively since v2.1.277. Guide 35 §4 and §9 now say so; the `CLAUDE.md`
+    adapter that imports `AGENTS.md` stays the recommendation, because native reading is missing on some
+    versions and deployments and the adapter holds Claude-only rules.
+  - `claude plugin eval` is generally available from v2.1.269 (Guide 31, `setup-behaviour-tests.md`).
+  - Skill description limits are spelled out per host: the Agent Skills spec's 1024 characters, Claude
+    Code's 1,536-character listing truncation, Codex's whole-list budget; Claude Code syncs claude.ai account
+    skills from v2.1.275 (Guides 03, 17).
+  - `omitClaudeMd` subagents and labelled subagent output (Guides 26, 27); Cowork desktop import limits,
+    auto mode's server-side classifier, `maxEffortLevel`, workflow concurrency (Guides 12, 10, 09).
+  - ChatGPT scheduled tasks and Codex automations replace the unofficial name "OpenAI Scheduled"; a task
+    created in a ChatGPT project cannot read that project's uploads; unattended runs use
+    `approval_policy = "never"` where policy allows (Guides 06, 12, 18, 32, 33, 35).
+  - ChatGPT local projects: only the primary folder is discovered for `AGENTS.md`, skills and
+    `config.toml`; secondary folders are readable but not discovered; discovery in a Work chat is untested
+    (Guides 23, 35, `PLATFORM_SETUP.md`, templates).
+  - Local Codex memory is a separate store from ChatGPT memory (Guides 04, 33, memory tasks); Codex
+    `approval_policy`, `default_permissions`, `approvals_reviewer` and the desktop permission modes (Guide
+    12, Guide 35 §9).
+  - `review-platform-changes.md` fixes its boundary per platform and updates its source table.
+
+- **Guide 01 renamed in place** (#58). `01_PROJECT_INSTRUCTIONS.md` is canonical; the old path is a
+  section-linked compatibility page. Guide 02's standing-policy examples are platform-neutral.
+
+- **Routing moved into native adapters** (#59). `AGENTS.md` no longer names Claude model tiers;
+  `CLAUDE.md` carries the Claude routing rule and `PLATFORM_SETUP.md` the OpenAI one.
+
+### Fixed
+
+- **API parameter facts** (#60). v1.6.0 recorded that manual `budget_tokens` thinking returns a 400 on
+  Sonnet 4.6 and later. That holds for assistant prefill, not for `budget_tokens`: it is deprecated but
+  functional on Opus 4.6 and Sonnet 4.6, returns a 400 from Sonnet 5 and Opus 4.7 onward, and Haiku 4.5
+  and pre-4.6 models still take it. The corrected facts are a dated row in Guide 35 §9.
+
+- **#61 follow-ups** (#62). Two example references to private projects were replaced with generic
+  wording. The `ai-assistant-setup` copies of Guides 03, 17, 23 and 35 were re-synced (the bundled 17 had
+  still said a task cannot add a folder mid-session). The two new tasks were registered in the
+  `review-tasks.md` mapping table and the README. `ai-assistant-setup` and `dispatch` descriptions were
+  brought under 1024 characters, and `git-guru` and `template-exporter` frontmatter now parses as YAML.
+  Reinstall account copies of `ai-assistant-setup`, `dispatch` and `git-guru` from the repo.
+
 ## [1.6.0] — 2026-09-13
 
 Three pull requests since v1.5.0 (#53–#55), plus the changelog PR that carries this section:
