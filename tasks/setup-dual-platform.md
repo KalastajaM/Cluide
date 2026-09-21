@@ -15,7 +15,7 @@ Execute only the selected native branch. Claude commands/settings/hooks are Clau
 
 Make one project usable from both Claude and ChatGPT — including Codex for repository work — through a single shared policy, without duplicating rules and without pretending that one product's mechanisms exist in the other. The task inventories every instruction-bearing and platform-bound file, sorts each rule into one home (shared policy, Claude adapter, OpenAI-specific, or platform-local state), lists every capability that has no verified counterpart, and installs the shared file, the thin adapter, a per-surface setup page and ready-to-paste app-side text. It finishes with a fresh-session check on each surface, and reports any surface it could not test as untested rather than working.
 
-Use it when a Claude project should also be worked on from ChatGPT or Codex (or the reverse), when a project already has both `CLAUDE.md` and `AGENTS.md` and they have started to disagree, or when switching assistants has lost state or run a scheduled job twice.
+Use it when a Claude project should also be worked on from ChatGPT or Codex (or the reverse), when a project already has both `CLAUDE.md` and `AGENTS.md` and they have started to disagree, or when switching assistants has lost state or run a scheduled job twice. Once set up, run `tasks/audit-dual-platform.md` on a cadence to catch drift — a stale reference, a sibling folder that stopped being reachable, a scheduler row that no longer matches reality — without repeating this task's full interview.
 
 ## Instructions
 

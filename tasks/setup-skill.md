@@ -83,7 +83,11 @@ description: >
    1. What it does
    2. Specific trigger phrases including casual ones
    3. What to do proactively if unclear (e.g. "confirm tone unless already clear")
-   Aim for 4–8 lines. Vague descriptions cause the skill to never trigger.]
+   Aim for 4–8 lines. Vague descriptions cause the skill to never trigger.
+   Hard cap: a save/install path has been observed rejecting a description over
+   1024 characters (full field value, not line count) — check the actual
+   character count before writing the file, and keep well under the cap
+   (Guide 03).]
 ---
 
 > Add optional metadata only for the selected runtime and only when its current documentation supports it. State tool requirements in the workflow and record enforced restrictions in the runtime configuration, not just prose.

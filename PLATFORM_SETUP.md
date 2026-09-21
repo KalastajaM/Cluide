@@ -29,6 +29,7 @@ OpenAI delegation: retain the configured model unless the user requests a suppor
 | Skill loading | `SKILL.md` folders under `.claude/skills/` or project `skills/` | `SKILL.md` folders under `.agents/skills`, optional `agents/openai.yaml` metadata | Untested — not yet installed or run on a Codex or ChatGPT surface |
 | Model routing | Claude model identifiers (`CLAUDE.md`) | Configured OpenAI model, no name translation (this file) | Verified — kept as two separate, unlabelled-model prose rules |
 | Scheduled tasks | Cowork scheduled tasks | OpenAI Scheduled | N/A — see Recurring Jobs below |
+| Assistant-triggered mid-session folder access | `device_request_folder_access` (Cowork device bridge) — verified 2026-09-21, no task restart needed; see [Guide 23 §"Requesting the mount, on demand"](./23_MULTI_PROJECT_SETUPS.md#requesting-the-mount-on-demand) | Local project "Add folder" is a person-driven UI action | Partially verified — Claude route confirmed working; ChatGPT/Codex assistant-triggered equivalent untested |
 
 ## Recurring Jobs
 

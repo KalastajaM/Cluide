@@ -94,6 +94,41 @@ Splitting a project requires separate native setup on each supported surface: in
 - **Keep pointers durable.** When the owner moves or renames the canonical file, update every referencing pointer in the same change. A pointer to a moved file is a dead reference.
 - **Reference across a mount, not a guess.** A project can only read another that is mounted in the same session. If the owner is not mounted, say so and stop; do not act on a remembered value.
 
+## Requesting the mount, on demand
+
+A project can only reference another when both are mounted in the same session (see
+"Reference across a mount, not a guess" above); getting mounted is a separate,
+platform-specific step, and it should happen only when a task actually needs the
+reference, not as a blanket step every session opens with.
+
+**Claude Cowork (device bridge).** A session can request access to an additional
+folder mid-task, and the person approves it as a one-click permission prompt; this
+does not require restarting the task. **Verified 2026-09-21:** three sibling folders
+were requested and granted mid-session, in two separate fresh sessions, with no task
+restart. This corrects the older claim in
+[Guide 17](./17_TROUBLESHOOTING.md#problem-claude-cant-reach-my-local-folder-mid-task)
+that folder access can only be granted when a task starts — that limit applies to the
+*first* folder a task is opened with, not to requesting an additional one afterward.
+
+Because each request is a permission prompt for the person, do not request every
+sibling a project might ever need at session start. Name the trigger in the shared
+policy instead: which fact, from which sibling, causes a request — so the assistant
+asks only when the task in front of it actually needs that sibling, and asks for that
+one folder, not the whole set. Rainela's `CLAUDE.md` "Sibling project access" section
+is the worked example: it lists each sibling, the kind of fact that would require it,
+and its path, and explicitly tells the assistant not to request any of them by
+default.
+
+**ChatGPT.** A ChatGPT *local project* attaches folders through its own "Add folder"
+UI action (a primary folder plus secondary folders; see
+[Guide 35 §5](./35_DUAL_PLATFORM_PROJECTS.md)); as of this writing there is no
+confirmed equivalent to Cowork's mid-session, assistant-triggered request. **Untested
+/ unverified:** whether a ChatGPT session can prompt the person to add a folder
+mid-task, or whether every sibling must be attached up front through the UI. Until
+this is checked directly, treat a ChatGPT side of a dual-platform project as needing
+every sibling folder attached at project setup, and record the actual behavior here
+once verified, with the date.
+
 ## Keeping linked projects consistent
 
 - **Detect drift** by scanning for the same fact stated in more than one project and comparing values, and by checking that each referencing pointer still resolves.
