@@ -196,10 +196,19 @@ The bridge — the desktop-app connection that lets a cloud session reach your l
 
 *Fix:* Wake or reopen the desktop app, then ask the assistant to retry the write. The work itself is not lost — files already produced are still in the session workspace, so a retry costs one tool call rather than a re-run.
 
-**2. The folder was never connected in this session**
-Folder access is granted when the task starts. A cloud task cannot add a folder mid-session.
+**2. The folder was never connected, and nobody asked for it**
+The first folder a task opens with is set when the task starts. But an *additional*
+folder can be requested mid-task: a Cowork session can trigger the desktop permission
+prompt for a specific path without restarting anything, and the person approves it in
+one click. **Verified 2026-09-21**, in two separate fresh sessions. If the assistant
+says it "can't add a folder mid-session," that reflects the assistant not knowing this
+is possible, not a real platform limit — see
+[Guide 23](./23_MULTI_PROJECT_SETUPS.md#requesting-the-mount-on-demand) for how to
+have it request the right folder only when the task actually needs it, instead of
+guessing at every folder up front.
 
-*Fix:* For one or two files, attach them to the chat directly. For a whole folder, start the task again with the folder connected.
+*Fix:* Ask the assistant to request access to the specific folder it needs. For one or
+two files rather than a whole folder, attach them to the chat directly.
 
 **3. The write was refused, not the connection**
 A commit can be rejected because the file on disk changed since the session last read it (a staleness guard, to stop the assistant overwriting your edit), or because it exceeds the per-file or per-call size limit.

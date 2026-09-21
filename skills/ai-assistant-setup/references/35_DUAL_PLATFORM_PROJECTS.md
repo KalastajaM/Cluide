@@ -169,7 +169,7 @@ A structure that looks right on disk is not verified until a session on each sur
 3. Compare the answer against an expected answer written before the session started.
 4. Record the result for that surface as **verified** (date, plus the product version if one is shown), **failed** (what differed), or **untested**.
 
-Untested is an honest result. "Works on both" while one surface is untested is not. Re-run the check after every change to the shared policy, the adapter or an app-side field, and after every refresh of uploaded sources. A passing check verifies that surface on that day, not the product in general. [Guide 31](./31_BEHAVIOUR_TESTS.md) turns the check into a case with graders, run on each surface with results recorded per product.
+Untested is an honest result. "Works on both" while one surface is untested is not. Re-run the check after every change to the shared policy, the adapter or an app-side field, and after every refresh of uploaded sources. A passing check verifies that surface on that day, not the product in general. [Guide 31](./31_BEHAVIOUR_TESTS.md) turns the check into a case with graders, run on each surface with results recorded per product. `tasks/audit-dual-platform.md` covers the mechanical half of this on a shorter cycle — do the referenced files, sibling folders and scheduler rows still resolve — without repeating the full fresh-session interview; run it more often than the check above, and run the full check whenever it finds something structural.
 
 ---
 

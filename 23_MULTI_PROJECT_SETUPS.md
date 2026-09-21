@@ -114,8 +114,8 @@ Because each request is a permission prompt for the person, do not request every
 sibling a project might ever need at session start. Name the trigger in the shared
 policy instead: which fact, from which sibling, causes a request — so the assistant
 asks only when the task in front of it actually needs that sibling, and asks for that
-one folder, not the whole set. Rainela's `CLAUDE.md` "Sibling project access" section
-is the worked example: it lists each sibling, the kind of fact that would require it,
+one folder, not the whole set. A "Sibling project access" section in the shared policy
+is the worked form: it lists each sibling, the kind of fact that would require it,
 and its path, and explicitly tells the assistant not to request any of them by
 default.
 

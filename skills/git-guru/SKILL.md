@@ -1,6 +1,16 @@
 ---
 name: git-guru
-description: Full-lifecycle git and GitHub management for the user's repositories — it diagnoses the repo's real state, then commits, branches, syncs, merges, and cleans up itself where it can, and hands over exact validated copy-paste commands where the session can't act (credentials, network, or environment limits). Use this skill whenever the user mentions git, GitHub, commit, push, pull, branch, merge, PR, squash, rebase, tag, release, .gitignore, or repository — AND for vague phrasings that imply version control: "save my work", "back this up", "is this synced?", "get this onto GitHub", "clean up this repo", "did my changes land?", "undo that change". Also use it proactively: when a session did file work inside a git repo and is wrapping up, when a repo shows uncommitted changes or lock files, or when the user is about to work on files that may be stale against the remote.
+description: >
+  Full-lifecycle git and GitHub management for the user's repositories — it diagnoses the repo's
+  real state, then commits, branches, syncs, merges, and cleans up itself where it can, and hands
+  over exact validated copy-paste commands where the session can't act (credentials, network, or
+  environment limits). Use this skill whenever the user mentions git, GitHub, commit, push, pull,
+  branch, merge, PR, squash, rebase, tag, release, .gitignore, or repository — AND for vague
+  phrasings that imply version control: "save my work", "back this up", "is this synced?", "get
+  this onto GitHub", "clean up this repo", "did my changes land?", "undo that change". Also use it
+  proactively: when a session did file work inside a git repo and is wrapping up, when a repo
+  shows uncommitted changes or lock files, or when the user is about to work on files that may be
+  stale against the remote.
 ---
 
 # Git Guru

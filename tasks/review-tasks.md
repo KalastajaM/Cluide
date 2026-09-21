@@ -53,6 +53,8 @@ Detect which guides have changed since each task was last reviewed, then check w
 | `setup-action-authority.md` | `32_ACTION_AUTHORITY.md`, `12_SECURITY.md` (§8 and the security-properties table), `07_TASK_LEARNING_GUIDE.md` (Part 3) |
 | `retire-project.md` | `33_RETIRING_AND_LEAVING.md`, `23_MULTI_PROJECT_SETUPS.md`, `24_PROJECT_FOLDER_STRUCTURE.md` |
 | `setup-dual-platform.md` | `35_DUAL_PLATFORM_PROJECTS.md`, `25_PROJECT_INSTRUCTION_LAYERS.md`, `01_PROJECT_INSTRUCTIONS.md`, `24_PROJECT_FOLDER_STRUCTURE.md`, `11_GIT_INTEGRATION.md` (see also `09_MULTI_TASK_ORCHESTRATION.md`, `34_IMPORTING_FROM_OTHER_ASSISTANTS.md`); also review when the platform facts it names change (`review-platform-changes.md`) |
+| `audit-dual-platform.md` | `35_DUAL_PLATFORM_PROJECTS.md` (§7–§9), `23_MULTI_PROJECT_SETUPS.md`, `17_TROUBLESHOOTING.md`, `24_PROJECT_FOLDER_STRUCTURE.md` |
+| `setup-sibling-access.md` | `23_MULTI_PROJECT_SETUPS.md`, `17_TROUBLESHOOTING.md` |
 | `analyze-project.md` (+ `analyze-project-reference.md`) | All guides (`01`–`35`) — its dimension criteria summarise the full set; review after any guide change |
 | `review-platform-changes.md` | All guides — its Step 4 table names which reference page each guide must agree with; review when a guide gains or loses a platform-facing claim |
 

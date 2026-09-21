@@ -1,17 +1,15 @@
 ---
 name: dispatch
 description: >
-  Route delegated work to the right model tier and effort level. Use this skill whenever the
-  session is about to spawn subagents, split a task into parallel or independent parts, choose a
-  model or effort for a subtask, workflow stage, or scheduled task, or when the user says things
-  like "dispatch", "route this", "orchestrate", "fan out", "run in parallel", "which model should
-  this use", or asks for a multi-step task that contains bulk, mechanical, or independent parts —
-  including sweeps, audits, and fixes phrased as "sweep all X", "check every Y", "audit the Z",
-  "fix what's broken across". Load it ALONGSIDE any playbook or maintenance skill that also
-  triggers: that skill says what to do, this one says what model tier does each part. Also use
-  when creating or editing a scheduled task, to propose its model tier. This is model-tier routing,
-  not the Cowork Dispatch sidebar agent, which runs long background tasks and is unrelated to model
-  routing. Do NOT use for choosing the session's own model — a session cannot switch that.
+  Route delegated work to the right model tier and effort level. Use whenever the session is about
+  to spawn subagents, split a task into parallel or independent parts, or choose a model or effort
+  for a subtask, workflow stage or scheduled task; when the user says "dispatch", "route this",
+  "orchestrate", "fan out", "run in parallel", "which model should this use"; or for multi-step
+  work with bulk, mechanical or independent parts, including "sweep all X", "check every Y", "audit
+  the Z", "fix what's broken across". Load it ALONGSIDE any playbook skill that also triggers: that
+  skill says what to do, this one says which tier does each part. Also use when creating or editing
+  a scheduled task, to propose its tier. This is model-tier routing, not the Cowork Dispatch sidebar
+  agent. Do NOT use for choosing the session's own model; a session cannot switch that.
 ---
 
 # Dispatch — model-aware orchestration

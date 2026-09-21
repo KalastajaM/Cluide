@@ -137,6 +137,7 @@ Tasks are standalone instruction files for setup and auditing. Run them by sayin
 | `tasks/setup-behaviour-tests.md` | Build a `tests/behaviour/` suite — prompt-plus-grader cases, a hand-run baseline, and the shared policy block that ties rule edits to a test run |
 | `tasks/setup-action-authority.md` | Classify every action a project's tasks and skills can take, install the action-authority block, propose standing approvals from logged evidence only |
 | `tasks/setup-dual-platform.md` | Make a project usable from Claude and ChatGPT/Codex — shared `AGENTS.md`, thin `CLAUDE.md` adapter, per-surface setup and ready-to-paste app text, fresh-session check on each surface |
+| `tasks/setup-sibling-access.md` | Write a "Sibling project access" section so the assistant requests a sibling project's folder only when a task needs a specific fact from it |
 
 ### Audit & maintenance tasks
 
@@ -152,6 +153,7 @@ Tasks are standalone instruction files for setup and auditing. Run them by sayin
 | `tasks/reorganize-project.md` | Safely restructure a project's folders — move files and rewire every reference without breaking it; takes a restore point first |
 | `tasks/relocate-project.md` | Move a project (or a whole projects root) elsewhere — sweeps the project, scheduled-task, artifact, Claude Code state and app-config layers |
 | `tasks/retire-project.md` | End a project or one task — inventory everything that still points at it, transfer what it owned, delete registrations, freeze the folder with `RETIRED.md` |
+| `tasks/audit-dual-platform.md` | Short, re-runnable check that a dual-platform project's required files, sibling-folder access and scheduler ownership still resolve |
 | `tasks/review-tasks.md` | Cluide maintenance — detect guide changes and flag tasks, skill bundles, and templates that drifted |
 | `tasks/harvest-from-projects.md` | Cluide maintenance — the inverse of `review-tasks.md`: harvest proven patterns from your live projects back into the guides, tasks, templates, and skills |
 | `tasks/review-platform-changes.md` | Cluide maintenance — read what Anthropic and OpenAI shipped since the last sweep (Claude Code, Cowork, ChatGPT, Codex, APIs and MCP) and flag the guide claims that are now wrong, stale or unverifiable; run after each model launch or monthly |
