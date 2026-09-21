@@ -52,6 +52,7 @@ decision is a deletion rather than an addition.
 | **Reference companion** | `PROJECT_REFERENCE.md` beside `AGENTS.md`, with triggers written into the parent | Rules genuinely belong in `AGENTS.md`, apply rarely, and are expensive to get wrong | On trigger only — that is the point of it | No task: Guide 01, *When AGENTS.md Cannot Be Short* |
 | **Helper app** | A small locally-run tool with its invariants and verification gates written down | You keep asking for the same computed answer and a script would settle it | Not loaded | No task: Guide 22 |
 | **Second-brain link** | A one-way return leg from this project to your notes layer | You run a notes layer above your projects and this project produces conclusions worth keeping | Not loaded | `tasks/setup-second-brain.md` (Guide 28) |
+| **Sibling project access** | A "Sibling project access" section in the Claude-side policy: each sibling project, what it owns, the fact-type that triggers a request, and its path (template embedded in the task) | This project references another project's master data (ownership, a shared settlement, a notes layer) rather than owning it, and nothing yet tells the assistant how or when to reach it | Not loaded — the section is read whenever the shared policy is, but it costs a permission prompt only when a listed trigger actually fires | `tasks/setup-sibling-access.md` (Guide 23, "Requesting the mount, on demand") |
 
 ## What is not a block
 
