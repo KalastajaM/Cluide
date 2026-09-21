@@ -48,7 +48,7 @@ git log -1 --format='%ad %s' --date=short "$(git describe --tags --abbrev=0)"   
 git log -1 --format='%ad %s' --date=short --grep='Platform sweep'                 # last sweep commit
 ```
 
-Record the boundary date and the versions separately for each platform at the boundary (product/app versions and available models) from the previous sweep's report if one exists under `development/reviews/`.
+Fix the boundary **per platform**, not once. A sweep commit may cover only one vendor (every sweep before 2026-09-21 covered only Anthropic), so read the versions a "Platform sweep" subject names and treat any platform it does not name as unswept since its last dated check (for OpenAI, the "checked" date in Guide 35 §9). Record the boundary date and the versions separately for each platform at the boundary (product/app versions and available models) from the previous sweep's report if one exists under `development/reviews/`.
 
 ### Step 2 — Read the sources, boundary forward
 
@@ -60,12 +60,16 @@ Fixed list. Read each page from the boundary date to today; do not sample.
 | https://claude.com/docs/cowork/changelog and the pages under https://claude.com/docs/cowork/ | Cowork: projects, scheduled tasks, Dispatch, plugins, folder access, permission prompts |
 | https://support.claude.com/en/articles/12138966-release-notes | claude.ai and the apps: memory, artifacts, connectors, Claude in Chrome, plan changes |
 | https://platform.claude.com/docs/en/release-notes/overview and https://platform.claude.com/docs/en/about-claude/pricing | Model launches, retirements, prices, context windows, effort levels, API features |
-| https://learn.chatgpt.com/docs and https://help.openai.com/en/articles/6825453-chatgpt-release-notes | OpenAI product documentation and ChatGPT releases; follow current links to Codex and project-source behavior |
+| https://learn.chatgpt.com/docs/changelog (ChatGPT and Codex changelog), https://learn.chatgpt.com/docs/whats-new and https://help.openai.com/en/articles/6825453-chatgpt-release-notes | OpenAI product documentation and ChatGPT releases; follow current links to Codex and project-source behavior |
 | https://learn.chatgpt.com/docs/agent-configuration/agents-md and https://learn.chatgpt.com/docs/build-skills | Codex instructions, nested discovery, limits and native skill metadata |
-| https://learn.chatgpt.com/docs/mcp and https://learn.chatgpt.com/docs/agent-approvals-security | Codex MCP configuration, effective sandbox and approval controls |
-| https://learn.chatgpt.com/docs/automations and https://help.openai.com/en/articles/10169521-projects-in-chatgpt | Codex/ChatGPT scheduling, project instructions, sources, memory and refresh behavior; verify each surface separately |
+| https://learn.chatgpt.com/codex/extend/mcp, https://learn.chatgpt.com/codex/permission-modes and https://learn.chatgpt.com/docs/agent-approvals-security | Codex MCP configuration, effective sandbox and approval controls |
+| https://learn.chatgpt.com/codex/automations and https://help.openai.com/en/articles/10291617-scheduled-tasks-in-chatgpt | ChatGPT scheduled tasks and Codex automations; verify each surface separately |
+| https://learn.chatgpt.com/codex/projects (local projects) and https://help.openai.com/en/articles/10169521-projects-in-chatgpt (cloud projects) | Local-project folders and primary-folder discovery; cloud project instructions, sources, memory and refresh behavior |
+| https://learn.chatgpt.com/codex/customization/memories | ChatGPT memory versus local Codex memory |
+| https://agentskills.io/specification | Skill frontmatter limits every host inherits (`name`, `description` length) |
 | https://developers.openai.com/api/docs/changelog and https://developers.openai.com/api/docs/pricing | OpenAI API changes, current model identifiers, deprecations and API pricing; not subscription allowance |
 | https://modelcontextprotocol.io/specification (latest changelog) | MCP transports, deprecations, auth |
+| https://code.claude.com/docs/llms.txt | Index of Claude Code pages, including each weekly `whats-new` digest; use it to find pages the table does not name |
 
 The desktop changelog groups entries under General, Code, Cowork and 3P. **3P entries describe
 organisation-managed third-party-platform deployments**, not consumer accounts; say so when citing one.
@@ -132,14 +136,14 @@ with links stripped per `review-tasks.md` step 4a), run `review-tasks.md` steps 
 "as of" marker with the sweep month. Put the boundary for the next run into the commit subject:
 
 ```
-Platform sweep 2026-09: <what changed> (Claude Code v2.1.263, desktop v1.46388.4)
+Platform sweep 2026-09b: <what changed> (Claude Code v2.1.278, desktop v2.2553.1, Codex CLI 0.155.1)
 ```
 
 ### Step 7 — Confirm
 
 Tell the user which sources were read and to what date, how many claims were checked, the A/B/C/D counts,
 what was applied, and what stays open in C with its test. Remind them the account-installed copies of any
-edited skill (`dispatch`, `security-review`, `git-guru`) must be reinstalled from the repo to take effect.
+edited skill (`dispatch`, `security-review`, `git-guru`) must be reinstalled from the repo to take effect. Claude Code v2.1.275 and later syncs skills enabled on the claude.ai account into terminal sessions, so one account reinstall also reaches those sessions; a Codex or ChatGPT copy is a separate install.
 
 ---
 

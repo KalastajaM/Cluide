@@ -50,7 +50,7 @@ Establish which runner the user has, because it shapes Step 5:
 
 - **Cowork only** — cases are run by hand in a fresh session. This is a complete method, not a fallback; say so.
 - **Claude Code** — cases can be scripted with `claude -p --output-format json`. Confirm in the user's build that print mode loads the project's `CLAUDE.md` and skills the way an interactive session does (Guide 31 §4 says why this needs checking) before promising a scripted run.
-- **`claude plugin eval` available** — early access as of September 2026, enabled per organisation. Check with `claude plugin eval --help`; if the command reports early access, say so and fall back to the previous option. Do not build the suite around a runner the user cannot execute.
+- **`claude plugin eval` available** — needs Claude Code v2.1.269 or later and a plugin manifest or skills-directory plugin; runs count against plan usage or API bill ([plugin evals](https://code.claude.com/docs/en/plugin-evals)). Check with `claude --version` (2.1.269 or later) and `claude plugin eval --help`. If the version is older, the command is missing, or the host is not Claude Code, say so and fall back to the previous option (or to hand-running). Do not build the suite around a runner the user cannot execute.
 
 ### Step 1 — Inventory what could be protected (read-only)
 

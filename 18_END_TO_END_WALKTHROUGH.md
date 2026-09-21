@@ -165,7 +165,7 @@ If you chose self-improvement in the setup interview (or started from the task t
 
 **Action — schedule it:**
 
-Choose one scheduler owner: Cowork for the Claude route, or OpenAI Scheduled for a supported local/web task. Give it a stable job ID, timezone, source revision and output contract. Test manually first, then review the first scheduled run. Keep local hosts awake where required. Do not register the same job on both platforms; [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) explains the native paths.
+Choose one scheduler owner: Cowork for the Claude route, or, on OpenAI, ChatGPT scheduled tasks or Codex automations for a supported local or web task. Give it a stable job ID, timezone, source revision and output contract. Test manually first, then review the first scheduled run. Keep local hosts awake where required. Do not register the same job on both platforms; [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) explains the native paths.
 
 **What the result looks like:** A task folder containing the instruction file, an improvements log, a task reference, and a run log. After a few runs, the improvements log will contain observations and proposals the task has generated from its own output.
 

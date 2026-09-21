@@ -72,3 +72,8 @@ Do small subtasks inline; dispatching has overhead.
 - Fields this pack doesn't set but that are available on the same page: `background` (keep the agent
   running in the background), `maxTurns` (a hard turn budget per run), and `experimental.cacheTtl`
   (`5m` or `1h`, worth setting on an agent you fan out repeatedly).
+- Optional for a blind reviewer: `omitClaudeMd: true` (Claude Code v2.1.271+) runs the agent
+  without user, project and local CLAUDE.md files; managed policy files still load
+  ([changelog](https://code.claude.com/docs/en/changelog)). Add it to a copy of `verifier.md` you use
+  for passes that must not have read the project policy — it does not hide the brief, folder access
+  or anything you pass the agent ([Guide 26](../../26_CONTEXT_SCOPING.md)).

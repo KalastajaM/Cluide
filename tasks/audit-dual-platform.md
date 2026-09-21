@@ -51,7 +51,7 @@ user** (for anything this surface cannot check directly) — never silently omit
 | 5 | Fresh-session check table is current | Compare each surface's last-verified date in `PLATFORM_SETUP.md` against the date of the most recent edit to the shared policy, adapter, or an app-side field. A check older than the last edit is stale, not passing |
 | 6 | Scheduler ownership is intact | Each row in the scheduler-owner table names one platform; where this surface can list actual registrations (e.g. Claude scheduled tasks), confirm the named owner still exists and no duplicate has appeared on the other platform |
 | 7 | Capability-gap and Platform Facts entries carry dates | Flag any row with no date, or a date old enough that the underlying product likely changed (a judgement call — say why, per Step 2's confidence discipline) |
-| 8 | ChatGPT-side state (revision, project fields) | Almost never checkable from a Claude session — record as **Ask user**: "is the uploaded source current, and do the project instructions match what's in the setup page's app-side text block?" |
+| 8 | ChatGPT-side state (revision, project fields) | Almost never checkable from a Claude session — record as **Ask user**: "is the uploaded source current, and do the project instructions match what's in the setup page's app-side text block?" For a ChatGPT local project, also ask whether the repository is the project's primary folder: only the primary folder's `AGENTS.md`, skills and `config.toml` are discovered (Guide 23) |
 
 ### Step 2 — Present findings
 

@@ -43,7 +43,7 @@ What does not earn a test: style preferences that cost nothing when they slip, a
 
 ## 3. A Case Is a Prompt and Its Graders
 
-Borrow the shape from the platform. As of September 2026, Claude Code's `claude plugin eval` (early access, enabled per organisation — the command exists and says so when it is not enabled) defines a case as a folder holding a `prompt.md` and a `graders/` directory. The layout and field names below are the ones that tool used at the time of writing; adopt the shape regardless, because it separates the input from the judgement and makes both greppable, and nothing in this guide depends on the names surviving. The suite is the same suite whichever runner executes it (§4).
+Borrow the shape from the platform. As of September 2026, Claude Code's [`claude plugin eval`](https://code.claude.com/docs/en/plugin-evals) (Claude Code v2.1.269 or later, on a plugin with a manifest or a skills-directory plugin; runs count against plan usage or API bill) defines a case as a folder under the plugin's `evals/` holding a `prompt.md` and a `graders/` directory, with an optional `case.yaml` for setup and conversation history; `claude plugin eval init` drafts cases and graders interactively. The layout and field names below are the ones that tool used at the time of writing; adopt the shape regardless, because it separates the input from the judgement and makes both greppable, and nothing in this guide depends on the names surviving. The suite is the same suite whichever runner executes it (§4).
 
 The suite is a home [Guide 24](./24_PROJECT_FOLDER_STRUCTURE.md) does not list. It holds definitions (the cases) and input data (the fixtures) that must never be read as project data, so it gets its own root and a line in the file map.
 
@@ -51,7 +51,7 @@ The suite is a home [Guide 24](./24_PROJECT_FOLDER_STRUCTURE.md) does not list. 
 tests/behaviour/
   README.md                          ← what the suite protects, when it was last run, pass rates
   no-send-without-approval/
-    prompt.md                        ← frontmatter: name, tags, runs; body: the request
+    prompt.md                        ← frontmatter: tags, model, max_turns; body: the request
     graders/
       no-send-tool.md                ← type: tool_used, tool: <send tool>, min: 0, max: 0
       draft-exists.md                ← type: file_exists (or a regex on the reply)
@@ -81,7 +81,7 @@ The suite is the same whichever way you run it. Pick by what you have.
 
 **Scripted, with `claude -p`.** Claude Code's [print mode](https://code.claude.com/docs/en/headless) runs a single prompt and exits, and `--output-format json` gives a parseable result; `--json-schema` forces a structured verdict you can assert on, and `--model` pins the model so a failure is attributable. As documented at the time of writing, print mode without `--bare` runs hooks and loads MCP servers; check in your own build that it also loads the project's CLAUDE.md and skills the way an interactive session does, because that is the whole point and the documentation is not explicit about it. A [`Stop` hook](https://code.claude.com/docs/en/hooks) receives the final reply as `last_assistant_message` and can fail the run on a pattern. A shell loop over the case folders, a regex per grader, a line per case in a results file — that is the whole harness, and it should stay that small.
 
-**With `claude plugin eval`.** Where it is enabled, it runs each case in a throwaway workspace with only the plugin under test loaded, several times by default, with an optional baseline arm that runs the same prompt without the plugin and reports the delta. That last feature is the one hand-running cannot cheaply reproduce, and it answers the question "does this skill actually change anything" more honestly than reading the skill does. It is early access at the time of writing, so treat its presence as something to check, not assume; what it asks for is the case-folder shape above, so a suite written that way is ready if it arrives.
+**With `claude plugin eval`.** On Claude Code v2.1.269 or later, it runs each case in a throwaway workspace with only the plugin under test loaded, three times by default, and compares each case with and without the plugin. That last feature is the one hand-running cannot cheaply reproduce, and it answers the question "does this skill actually change anything" more honestly than reading the skill does. It needs the suite packaged as a plugin (a manifest or a skills-directory plugin) and its runs count against plan usage or API bill, so check the version and the cost before choosing it; what it asks for is the case-folder shape above, so a suite written that way is ready for it.
 
 **Whichever runner: one run proves little.** Trigger behaviour in particular is probabilistic at the margin. Run a case three times before calling it passed or failed, and record the pass rate rather than a single verdict. A trigger case at two of three is a finding — the description is on the edge, and the next model will push it over.
 

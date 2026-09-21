@@ -14,6 +14,9 @@ access, or ChatGPT with project sources. Files copied here configure no accounts
   files as project sources, then paste the bootstrap into project instructions. Keep relative
   folder paths in a source manifest when uploaded filenames are ambiguous. Supply required
   nested `AGENTS.md` files explicitly. An upload is a snapshot, not a repository connection.
+  For a ChatGPT *local project* in the desktop app, attach this folder instead and make it the
+  primary folder: Codex discovers `AGENTS.md`, skills and `config.toml` only from the primary
+  folder, not from secondary ones (documented for Codex; untested for Work chats).
 
 Bootstrap to customize and paste:
 
@@ -84,7 +87,8 @@ missing or a job already ran. Compare to the written policies before marking tha
 Use the reusable cases in Cluide's `templates/PROJECT_TEMPLATE/tests/behaviour/` as fixtures.
 All surfaces in this unused template are **untested**; documentation checks are not runtime tests.
 
-Instruction/source mechanics checked 2026-09-14: [Claude Code memory](https://code.claude.com/docs/en/memory),
+Instruction/source mechanics checked 2026-09-21: [Claude Code memory](https://code.claude.com/docs/en/memory),
 [Codex AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md),
-[ChatGPT projects](https://help.openai.com/en/articles/10169521-projects-in-chatgpt).
+[local projects](https://learn.chatgpt.com/codex/projects) (ChatGPT desktop app, folders on the computer),
+[cloud ChatGPT projects](https://help.openai.com/en/articles/10169521-projects-in-chatgpt) (help article; uploaded files).
 Recheck current scheduler and connector documentation for the surface you actually deploy.

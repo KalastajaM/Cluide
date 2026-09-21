@@ -84,10 +84,11 @@ description: >
    2. Specific trigger phrases including casual ones
    3. What to do proactively if unclear (e.g. "confirm tone unless already clear")
    Aim for 4–8 lines. Vague descriptions cause the skill to never trigger.
-   Hard cap: a save/install path has been observed rejecting a description over
-   1024 characters (full field value, not line count) — check the actual
-   character count before writing the file, and keep well under the cap
-   (Guide 03).]
+   Hard cap: the Agent Skills spec limits the description to 1024 characters
+   (full field value, not line count), and spec-enforcing install paths reject
+   longer ones — check the actual character count before writing the file,
+   and keep well under the cap. Keep the folded `>` block: a plain one-line
+   value containing ": " is invalid YAML (Guide 03).]
 ---
 
 > Add optional metadata only for the selected runtime and only when its current documentation supports it. State tool requirements in the workflow and record enforced restrictions in the runtime configuration, not just prose.
@@ -215,6 +216,12 @@ mkdir -p "[selected-skill-folder]"
 Write the approved content to `[selected-skill-folder]/SKILL.md`.
 
 If the skill needs a `references/` subfolder (for schemas, detailed specs, domain content that shouldn't load every activation), create it and note: "Add any detailed reference files here — name them from SKILL.md with 'See references/[file]'."
+
+Then run a mechanical check on the written file: frontmatter parses as YAML, `description` is 1024 characters or fewer ([Agent Skills spec](https://agentskills.io/specification)), and `name` matches the folder name. With `[path]` set to `[selected-skill-folder]` (needs Python with PyYAML):
+```bash
+python3 -c "import sys,os,yaml; p=sys.argv[1]; m=yaml.safe_load(open(p).read().split('---')[1]); d=os.path.basename(os.path.dirname(os.path.abspath(p))); print('description chars:', len(m['description']), '| name matches dir:', m['name']==d)" "[path]/SKILL.md"
+```
+A parse error, a count over 1024 or `False` is a defect — fix it before Step 6.
 
 ### Step 6 — Confirm
 
