@@ -1,6 +1,16 @@
 ---
 name: template-exporter
-description: Use this skill whenever the user wants to create a reusable template from an existing Claude artifact or setup — including chat system prompts, Assistant tasks, Assistant projects, or skills. Trigger when the user says things like "turn this into a template", "create a template I can share", "make this reusable", "export this as a template", "I want to share this setup with someone", or "create a template for [task/project/skill/chat]". Also trigger when a conversation contains a full Assistant task, project, or skill definition and the user seems to want to preserve or share it. Do NOT use it for the word "template" alone: a Word or PowerPoint template (.dotx, .potx) belongs to the docx/pptx skills, and a folder scaffold under Cluide's own templates/ is not an export. The object here is an existing Claude artifact being turned into something shareable.
+description: >
+  Use this skill whenever the user wants to create a reusable template from an existing Claude
+  artifact or setup — including chat system prompts, Assistant tasks, Assistant projects, or
+  skills. Trigger when the user says things like "turn this into a template", "create a template I
+  can share", "make this reusable", "export this as a template", "I want to share this setup with
+  someone", or "create a template for [task/project/skill/chat]". Also trigger when a conversation
+  contains a full Assistant task, project, or skill definition and the user seems to want to
+  preserve or share it. Do NOT use it for the word "template" alone: a Word or PowerPoint template
+  (.dotx, .potx) belongs to the docx/pptx skills, and a folder scaffold under Cluide's own
+  templates/ is not an export. The object here is an existing Claude artifact being turned into
+  something shareable.
 ---
 
 # Template Exporter

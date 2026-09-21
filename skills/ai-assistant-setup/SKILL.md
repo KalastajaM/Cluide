@@ -1,21 +1,15 @@
 ---
 name: ai-assistant-setup
 description: >
-  Expert guide for setting up and improving a Claude or ChatGPT personal assistant — covering
-  CLAUDE.md, skills, memory, scheduled tasks, token efficiency, self-improving tasks,
-  MCP servers, git integration, dev workflow, personal data projects, and LLM wikis.
-  Use this skill whenever a user wants to: set up Claude, ChatGPT, or Codex as an assistant,
-  write or improve project instructions, create or refine a skill, set up memory or profiles,
-  build or optimize a scheduled task, connect Claude to personal data (investments,
-  finances, health, etc.), set up a new data project, add patterns to an existing
-  project, configure MCP servers, integrate git, or asks anything like "how do I
-  set up Claude to...", "help me improve my...", "create a skill for...", "set up
-  a task that...", "Claude keeps forgetting...", or "how do I get Claude to work
-  with my data". Do NOT use when a more specific skill owns the request: `cowork-optimizer`
-  for making one existing task cheaper or faster, `dispatch` for choosing a model tier,
-  `git-guru` for anything git or GitHub, `template-exporter` for turning a setup into a
-  shareable template, `review-protocol` for reviewing a document or decision. This skill is
-  the router for setup and improvement work that none of those owns.
+  Expert guide for setting up and improving a Claude or ChatGPT personal assistant: project
+  instructions, skills, memory, scheduled tasks, token efficiency, self-improving tasks, MCP
+  servers, git, dev workflow, personal data projects and LLM wikis. Use whenever a user wants to
+  set up Claude, ChatGPT or Codex as an assistant, write or improve project instructions, create
+  or refine a skill, set up memory, build or optimize a scheduled task, connect personal data,
+  configure MCP servers, or asks "how do I set up Claude to...", "create a skill for...", "Claude
+  keeps forgetting...". Do NOT use when a more specific skill owns the request: `cowork-optimizer`
+  (make one task cheaper or faster), `dispatch` (model tier), `git-guru` (git or GitHub),
+  `template-exporter` (shareable template), `review-protocol` (reviewing a document or decision).
 ---
 
 # Claude and ChatGPT Assistant Setup
