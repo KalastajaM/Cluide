@@ -15,7 +15,8 @@
 - Role: [job title and organization]
 - Relationship: [how they relate to you / this project]
 - Key context: [anything the assistant needs to know to interact correctly about this person]
-- Tags: `[CONFIRMED]` / `[inferred]`
+- Status: `[USER-CONFIRMED]` / `[SOURCE-SUPPORTED]` / `[INFERRED]` / `[CONFLICTING]`
+- Source and effective date: [user statement or document reference; distinguish from edit date]
 
 ---
 
@@ -45,7 +46,7 @@
 
 ## Hypotheses
 
-*Things believed to be true but not yet confirmed. Lifecycle: HYPOTHESIS → CONFIRMED (when user validates) or OUTDATED (no evidence 6+ months). User-validated entries get `[USER-CONFIRMED]` and are never overwritten.*
+*Things believed to be true but not yet confirmed. Lifecycle: HYPOTHESIS → CONFIRMED (when user validates) or OUTDATED (no evidence 6+ months). User-validated entries get `[USER-CONFIRMED]`. Inference alone cannot override them; an explicit user correction supersedes the old entry with source/date and reason preserved in history.*
 
 ```
 [HYPOTHESIS MEDIUM] [Description of belief]
@@ -74,3 +75,5 @@
 ### [Archived Project Name]
 - Closed: [YYYY-MM-DD]
 - Outcome: [brief summary]
+
+<!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->

@@ -50,11 +50,13 @@ See the next section for a complete breakdown of what belongs in `.gitignore` vs
 
 ---
 
+The tracking examples above apply only to content approved for that repository. Real profiles, memory, run logs and improvement logs may contain confidential information: keep them outside a distributed template and ignore them where repository policy requires. A clean diff is not evidence that a file is safe to publish.
+
 ## .gitignore and .claudeignore: What Goes Where
 
 Two separate ignore files serve different purposes:
 
-- **`.gitignore`** — files git will not track or commit
+- **`.gitignore`** — untracked files Git excludes by default; it does not remove files already tracked or prevent force-adding
 - **`.claudeignore`** — files Claude should not load as context (but git may still track them)
 
 They are independent: a file can be in one, both, or neither.
@@ -72,7 +74,7 @@ They are independent: a file can be in one, both, or neither.
 | Compiled/bundled output | `skills/*.zip` | Generated from source in `skills/*/SKILL.md` |
 | OS noise | `.DS_Store`, `*.swp` | Never intentional |
 
-Note that `RUN_LOG.md` is deliberately *not* in this table: it is append-only, so its diffs are clean single-entry additions — track it (see "What to Track" above). Only the wholesale-replaced `LAST_RUN.md` stays ignored.
+An append-only `RUN_LOG.md` has useful diffs, but track it only when its contents are approved for this repository. Otherwise ignore it and protect it through the project’s approved backup. The same privacy check applies to `IMPROVEMENTS.md`, profiles and memory.
 
 **Starter `.gitignore`:**
 ```
@@ -185,7 +187,7 @@ git commit -m "pre-run: [task-name] run $(date +%Y-%m-%d)"
 ```
 
 If the working tree is clean (nothing changed since the last commit), skip this step.
-This creates a restore point. If this run produces unwanted changes, `git checkout HEAD~1 -- tasks/[task-name]/` restores the pre-run state.
+Record the exact restore commit with `git rev-parse HEAD` after the snapshot (or after confirming the tree is clean). Restore only the approved paths from that recorded commit. `HEAD~1` is not a reliable pre-run reference: no new commit may have been created, or several later commits may exist.
 ````
 
 ### As a hook (all sessions)
@@ -260,7 +262,7 @@ This complements git rather than replacing it: commit the *script* and its text 
 
 ## Useful Git Commands for Assistant Files
 
-**See what changed in the last run:**
+**See what changed in the last commit (not necessarily the last run):**
 ```bash
 git diff HEAD~1 HEAD -- tasks/[task-name]/
 ```
@@ -272,7 +274,7 @@ git log --oneline -- tasks/[task-name]/IMPROVEMENTS.md
 
 **Restore a file to its pre-run state:**
 ```bash
-git checkout HEAD~1 -- tasks/[task-name]/IMPROVEMENTS.md
+git restore --source='<recorded-pre-run-commit>' -- tasks/[task-name]/IMPROVEMENTS.md
 ```
 
 **Compare today's profile against last week's:**
@@ -404,7 +406,7 @@ VS Code's built-in Source Control panel (`Ctrl+Shift+G`, including on macOS) let
 
 ## Bootstrap Pattern: Fresh Clone Readiness
 
-When runtime state files are gitignored, a fresh clone is missing the files tasks need. The bootstrap pattern solves this without committing personal data.
+When runtime state files are gitignored, a fresh clone is missing the files tasks need. The bootstrap pattern initialises an empty installation without committing personal data. It does not recover lost operational knowledge. If populated state is unexpectedly missing, stop dependent work and recover the approved backup; never replace it with a blank stub and report recovery complete.
 
 ### The Solution: a `bootstrap/` folder
 
@@ -449,14 +451,14 @@ Commit a `bootstrap/SETUP.md` with the exact shell commands needed. Anyone (or t
 
 ```bash
 # State files
-cp bootstrap/pending_actions.json Assistant-Task/pending_actions.json
-cp bootstrap/LAST_RUN.md Assistant-Task/LAST_RUN.md
+test -e Assistant-Task/pending_actions.json || cp bootstrap/pending_actions.json Assistant-Task/pending_actions.json
+test -e Assistant-Task/LAST_RUN.md || cp bootstrap/LAST_RUN.md Assistant-Task/LAST_RUN.md
 
 # Profile files
 mkdir -p Profile
-cp bootstrap/PROFILE_SUMMARY.md Profile/PROFILE_SUMMARY.md
-cp bootstrap/PROFILE_projects.md Profile/PROFILE_projects.md
-cp bootstrap/PROFILE_patterns.md Profile/PROFILE_patterns.md
+test -e Profile/PROFILE_SUMMARY.md || cp bootstrap/PROFILE_SUMMARY.md Profile/PROFILE_SUMMARY.md
+test -e Profile/PROFILE_projects.md || cp bootstrap/PROFILE_projects.md Profile/PROFILE_projects.md
+test -e Profile/PROFILE_patterns.md || cp bootstrap/PROFILE_patterns.md Profile/PROFILE_patterns.md
 ```
 
 ### Self-bootstrapping tasks
@@ -468,7 +470,9 @@ Tasks can detect and handle missing state files themselves. Add a first-run chec
 
 [standard find command]
 
-**First-run check:** Before reading any state file, verify it exists:
+**First-run check:** First establish that this is an explicitly initialised new installation.
+If previously populated state is unexpectedly missing, stop dependent work and recover the
+approved backup. Only for a new installation, check each state file without overwriting any existing file:
 - If `pending_actions.json` does not exist → copy from `bootstrap/pending_actions.json`.
   If bootstrap copy also missing → create with empty structure: `{"open":[],"resolved_today":[]}`
 - If `LAST_RUN.md` does not exist → copy from `bootstrap/LAST_RUN.md`.
@@ -512,3 +516,11 @@ scans staged changes for secrets and personal data before anything moves toward
 a public remote. This guide is the *why* — what to track and how the layers
 relate; the skill is the *how* for day-to-day operations. Install it as an
 account skill so it triggers in any session that touches git.
+
+## Export and recovery boundaries
+
+Before personalising a template, activate ignore rules and inspect the tracked file list. Before publishing, inspect actual staged content as well as paths. Ignoring or untracking a file does not remove it from earlier commits. Export generic templates from an allowlist of reviewed files into a clean repository; never copy a live project’s `.git`, ignored state, credentials or verification claims.
+
+Define a backup owner, allowed storage, retention and restore procedure for valuable ignored text and non-regenerable records as well as binaries. Test recovery using a synthetic sample. A rollback copy in the same project protects against an edit, not loss of the device. Bootstrap scripts must leave existing state intact.
+
+<!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->

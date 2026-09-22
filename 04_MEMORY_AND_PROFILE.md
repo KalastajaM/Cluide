@@ -120,11 +120,11 @@ The profile system divides a person's profile across files by topic. The key ins
 **Timestamp your updates.** Every significant profile edit should include `[updated: YYYY-MM]` so you can see at a glance how fresh the data is. Entries not updated in 3+ months should be flagged as potentially stale.
 
 **Distinguish evidence from confirmed fact.** The assistant will infer things from email patterns and context that may not be correct. Use consistent notation to mark confirmed vs. inferred:
-- `[USER]` or `[USER-CONFIRMED]` — manually entered or confirmed by the user; never overwrite
-- No tag — inferred by the assistant; may need verification
-- `[updated: YYYY-MM]` — recently confirmed accurate
+- `[USER]` or `[USER-CONFIRMED]` — manually entered or confirmed by the user; never replace with inference alone
+- `[INFERRED]` — an assistant inference, with supporting evidence and uncertainty; treat legacy untagged entries as unverified
+- `[updated: YYYY-MM]` — last edited, not proof of accuracy; record source and verification date separately
 
-**Never overwrite user annotations.** If the user has annotated their profile with a correction or note, treat it as ground truth that takes precedence over any inference.
+**Correct confirmed knowledge with provenance.** Inference alone cannot override a user annotation. An explicit user correction can supersede it: preserve the earlier statement, correction source/date and reason in the appropriate history. Conflicting documentary evidence is a conflict to resolve, not permission to silently replace the user’s statement.
 
 ---
 
@@ -134,9 +134,9 @@ Day-to-day memory captures what surfaces run-to-run (see [Guide 07](./07_TASK_LE
 
 The sweep is a four-step motion, distinct from incremental learning:
 
-1. **Sweep** — read across the corpus and dump raw findings into one dated file: `Knowledge-Sweep-YYYY-MM.md`. Capture liberally; don't filter yet.
+1. **Sweep** — read across the corpus and dump raw findings into one dated file: `Knowledge-Sweep-YYYY-MM.md`. Capture only information relevant to the task and permitted in this storage location; minimise sensitive detail from the start.
 2. **Validate** — check each finding against what's already known. Dedupe, resolve contradictions, flag anything uncertain for the user to confirm.
-3. **Merge** — fold the confirmed findings into the master profile / knowledge files using the targeted-edit discipline above. Tag confirmed items `[USER-CONFIRMED]`, leave inferences untagged.
+3. **Merge** — fold the confirmed findings into the master profile / knowledge files using the targeted-edit discipline above. Use `[USER-CONFIRMED]` only for actual user confirmation. Label document-supported findings with their source/date, and inferences explicitly as inferences.
 4. **Archive** — move the raw sweep file to an archive once merged. It has done its job; keep it for provenance but don't re-read it every session (that would defeat the lean-summary principle below).
 
 Run it at intervals or before transitions — not every session. The sweep is the bulk-import counterpart to the steady trickle of incremental updates: one mines history, the other keeps up with the present.
@@ -169,32 +169,13 @@ New fact arrives
 
 ## Contradiction Resolution
 
-Facts sometimes conflict — the user moved cities, changed roles, or corrected an earlier assumption. Resolution rules, in order:
+Facts sometimes conflict. Resolve them by evidence and scope, not recency alone:
 
-1. **`[USER]`-tagged entries always win.** If the existing entry is marked `[USER]` or `[USER-CONFIRMED]`, it was explicitly provided by the user. Never overwrite it based on inference alone — ask the user first.
+1. An explicit user correction can supersede an earlier user-confirmed entry. Preserve provenance and the reason for the change; do not ask the user to repeat a correction already given.
+2. A newer observation is not automatically more reliable. Check source authority, effective date and whether both statements concern the same thing. An email signature may identify an office, not a home address.
+3. If the conflict remains unresolved, retain both claims with their sources and a `[CONFLICTING]` marker. Identify what would resolve it and pause only dependent conclusions.
 
-2. **More recent wins, unless the older entry is user-confirmed.** If both entries are inferred (no `[USER]` tag), the more recent observation takes precedence. Update the file and add an `[updated: YYYY-MM]` tag.
-
-3. **When uncertain, keep both and flag.** If you cannot determine which fact is correct — for example, two plausible but conflicting inferences — do not silently pick one. Add both with a `[CONFLICTING]` tag and surface the conflict to the user at the next opportunity.
-
-**Example — user moved cities:**
-
-The memory file says `Lives in Amsterdam (timezone: Europe/Amsterdam) [updated: 2025-06]`. A new email signature shows a Helsinki address.
-
-- The existing entry has no `[USER]` tag → it's inferred, not user-confirmed
-- The new signal is more recent → update the file:
-
-```markdown
-Lives in Helsinki (timezone: Europe/Helsinki) [updated: 2026-04]
-Previously: Amsterdam (until ~2025)
-```
-
-**Example — ambiguous conflict:**
-
-Memory says "Prefers formal tone in Finnish emails." A recent email draft from the user uses casual Finnish. This could mean the preference changed, or it could be context-specific.
-
-- Add: `[CONFLICTING] Recent email used casual Finnish — confirm if tone preference has changed`
-- Surface to the user next session: "I noticed you used casual Finnish in a recent draft — should I update your preference, or was that specific to that message?"
+For example, a new signature showing a different city supports a hypothesis about location. It does not establish that the user moved home or changed timezone. Likewise, one casual message does not overturn a confirmed preference for formal business correspondence.
 
 ---
 
@@ -239,7 +220,7 @@ Store the minimum needed to be useful:
 - Financial specifics: store the project ("reviewing accountant options for next tax year") not account numbers or exact figures
 - Relationship details: note that a contact exists and the role, not sensitive context about the relationship
 
-The test: would you be comfortable if this profile file were accidentally shared? If no, reduce the detail.
+Minimisation does not establish permission. Confirm the allowed project, provider and storage destination before ingesting sensitive material. Conclusions can themselves be confidential: a personal notes layer receives only explicitly permitted abstractions and links, never an automatic copy of project knowledge. Ignored memory needs an approved backup and recovery route; Git does not protect files it does not track.
 
 ---
 
@@ -264,7 +245,7 @@ Multiple scheduled task agents (e.g., a daily email digest and a client pipeline
 
 - All agents read `PROFILE_SUMMARY.md` every run
 - Agents submit discoveries to the designated profile writer, or acquire the shared destination's atomic claim before reading and updating it. Re-read the current revision after acquisition; a failed claim waits or skips. Do not permit all agents to write freely.
-- No agent overwrites `[USER]`-annotated entries
+- No agent replaces `[USER]`-annotated entries with inference alone; explicit user corrections follow the provenance rule above
 - Each agent has its own session/run log; shared summaries, indexes and detail files still use the same writer/claim protection
 - Apply [Guide 09's collision procedure](./09_MULTI_TASK_ORCHESTRATION.md#avoiding-collisions) to manual runs, retries and both platforms. Schedule gaps and separate logs are not exclusion.
 
@@ -299,3 +280,5 @@ Facts that belong in auto-memory, shown here as illustrative examples. Each is s
 > "Read 04_MEMORY_AND_PROFILE.md and create the profile file structure for my daily email digest task. The task already has a TASK.md — add the profile files it needs to track context across runs."
 
 **Faster alternative:** `tasks/setup-memory.md` interviews you and creates the full `.auto-memory/` structure without reading the guide first. `tasks/audit-memory.md` reviews an existing memory system for staleness and drift.
+
+<!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->

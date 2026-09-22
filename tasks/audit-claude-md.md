@@ -115,3 +115,9 @@ Tell the user:
 - How many issues were found and fixed
 - Final line count
 - "Re-run this audit whenever `CLAUDE.md` feels cluttered, or after a period of frequent updates."
+
+## Cross-section consistency
+
+Check that broad default-deny language does not accidentally block actions explicitly permitted elsewhere; one-time and standing approvals keep their stated scope across handoffs. Missing company or project context should block dependent claims, not every useful draft. Look for explicit assumptions, unresolved questions and task-specific permission gates. Check that archive, output and memory rules allow authorised recovery, preservation of returned records and explicit corrections with provenance.
+
+<!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->

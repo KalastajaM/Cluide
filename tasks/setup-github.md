@@ -29,6 +29,10 @@ This task is designed to be portable and run on any project. Do not assume any s
 
 Execute the following steps in order. Stop and ask the user before making any changes.
 
+Before committing or publishing any existing project, inspect repository visibility, ignore
+rules, tracked history and actual staged content. Set data boundaries before the first commit.
+Apply the Publication boundary below; private visibility does not itself authorise a push.
+
 ### Step 1 — Check current state
 
 Run the following checks and report findings before proposing anything:
@@ -252,3 +256,9 @@ Tell the user:
 - The command to check status at any time: `git status` and `git log --oneline -10`
 
 If sync was skipped, note: "To commit future changes manually: `git add -A && git commit -m 'your message' && git push`"
+
+## Publication boundary
+
+Before the first commit or push, check actual staged content and the repository visibility, not only filenames. Profile, memory and run logs are trackable only when their contents are approved for this repository. Ignore rules do not remove tracked content or earlier history. Export reusable templates from reviewed generic files into clean history, excluding live `.git`, operational state and verification claims. Both private and public pushes need the project’s applicable publication authority; a local setup request alone does not grant it.
+
+<!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->

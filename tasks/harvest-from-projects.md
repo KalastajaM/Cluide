@@ -1,7 +1,7 @@
 # Task: Harvest Patterns From Live Projects
 
 > **Cluide maintenance task** — run this when your real assistant projects have evolved and you want
-> their proven patterns folded back into Cluide.
+> their generalisable lessons folded back into Cluide.
 > `Assistant, run tasks/harvest-from-projects.md`
 
 ## Runtime route
@@ -11,9 +11,10 @@ Name the target surface and available tools before running steps. Claude-only po
 Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
 
 ## Purpose
-Scan one or more **live** Claude projects (e.g. a running personal assistant, a PMO workspace) and
-surface the patterns they use in production that Cluide's guides, tasks, templates, or skills do **not
-yet teach** — then propose folding the *generalized* version of each back into Cluide.
+Scan authorised assistant projects and surface lessons Cluide’s guides, tasks, templates or
+skills do not yet teach. Distinguish patterns evidenced by production runs from improvements
+derived from a design review. Both can be useful; a reviewed design is not production proof.
+Generalise and redact each candidate before updating Cluide, within the user’s granted scope.
 
 This is the inverse of `tasks/review-tasks.md`. Together they form a two-way maintenance loop:
 
@@ -178,3 +179,5 @@ Tell the user:
 - What was added, what was enhanced, and what was skipped as already-covered
 - A reminder: "Re-run after major project changes, or quarterly alongside `tasks/review-tasks.md` —
   one pulls project learnings in, the other keeps the tasks in sync with the guides."
+
+<!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->

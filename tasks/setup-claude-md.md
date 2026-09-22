@@ -47,7 +47,8 @@ ls CLAUDE.md 2>/dev/null && echo "exists" || echo "missing"
 
 ### Step 2 — Interview the user
 
-Ask the following questions. Collect all answers before writing anything.
+Ask only what is relevant, reusing existing answers. Draft from confirmed information;
+leave noncritical unknowns explicit instead of requiring every answer before useful work.
 
 **Identity:**
 > 1. What's your name and where are you based? (city + country)
@@ -70,6 +71,10 @@ Ask the following questions. Collect all answers before writing anything.
 > 12. Are there any cross-reference rules — linked registers, trackers, or documents that should always be kept in sync?
 
 After collecting answers, say: "Thanks — let me draft your CLAUDE.md."
+
+Unknown context is not a reason to invent values or prevent all useful work. Capture critical
+unknowns with a source/owner and review trigger, define minimum facts and authority per early
+task, and distinguish readiness for supervised work from readiness for unattended jobs.
 
 ### Step 3 — Draft the CLAUDE.md
 
@@ -136,3 +141,5 @@ Tell the user:
 - Where the file was written
 - How many lines of real content it has
 - "Record the fresh-session result for the selected surface. Until it passes, the policy is written but loading remains unverified."
+
+<!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->

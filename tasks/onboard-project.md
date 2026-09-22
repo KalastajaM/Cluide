@@ -20,8 +20,9 @@ For ChatGPT sources, the deliverable is a small policy source plus selected refe
 Set up a new project end-to-end, in the right order, without the user having to know which
 individual setup tasks exist. It installs the default layout first (Guide 24), sets all three
 instruction layers (Guide 25), and only then offers the optional blocks from
-`templates/BLOCKS.md`. Git, ignore hygiene, and security run last, over a project that already
-has its real shape.
+`templates/BLOCKS.md`. Check data permissions and activate ignore rules before ingesting real
+material or making a first commit; repeat the full hygiene and security checks once the project
+has its final shape.
 
 This task orchestrates the other setup tasks rather than duplicating their logic: it reads the
 relevant task files and runs them in sequence.
@@ -37,6 +38,10 @@ relevant task files and runs them in sequence.
 Confirm the Cluide folder is reachable (the templates and tasks below are read from it) and that
 the destination folder for the new project exists or can be created. If Cluide is not mounted,
 stop and ask for it rather than reconstructing a layout from memory.
+
+Before collecting sensitive content, confirm the permitted workspace/provider, data categories,
+external destinations and credentials handling. Ask the questions below at category level only
+until that boundary is established. Access is not permission to publish.
 
 ### Step 1 — Understand the project
 
@@ -83,11 +88,15 @@ non-default answers explicitly:
 
 ### Step 3 — Install the core
 
-Copy the chosen template to the destination and rename it:
+Copy only the clean distributed template to the destination and rename it. Do not copy a live
+project’s Git history, personal state or claimed verification results:
 
 ```bash
 cp -r "<CLUIDE>/templates/<chosen template>" "<destination>/<Project Name>"
 ```
+
+Activate the template’s ignore rules before seeding real data; inspect already-tracked files in an
+existing repository. Empty scaffold removal below does not authorise deleting populated records.
 
 Then work through the core with the user, following that template's `README.md` Steps 2–4. For
 PROJECT_TEMPLATE that means:
@@ -106,7 +115,7 @@ PROJECT_TEMPLATE that means:
 3. **Seed the memory block** if it was kept: `Profile/PROFILE_SUMMARY.md` first, then any
    `Profile/PROFILE_detail.md` entries Claude will need from day one. Where the project needs a
    layer the template does not ship — native memory or `.auto-memory/` rather than profile files —
-   run `tasks/setup-memory.md`; it owns the choice between the three layers and this task does
+   run `tasks/setup-memory.md`; it owns the choice between the memory layers and this task does
    not restate it.
 
 For a project whose rules need drawing out rather than typing in — an unfamiliar domain, hard
@@ -116,6 +125,12 @@ rather than replacing the file with its output. The template's file map and app-
 not part of that task's output and must survive.
 
 Do not fill in the *App-side fields* block yet — Step 4 produces its text.
+
+Context discovery may continue during supervised work. Record unknowns, owners or sources to
+consult, and review triggers. For each early task, establish minimum facts, allowed inputs and
+authority; give conditional advice where useful, naming assumptions and the cost of delay.
+Missing context blocks only dependent work; missing permission blocks the affected action.
+A completed setup checklist does not certify every workflow or permit unattended execution.
 
 ### Step 4 — Set all three instruction layers
 
@@ -151,8 +166,8 @@ in a month, and the catalogue is where the user will find them.
 ### Step 6 — Ignore hygiene
 
 Follow `tasks/setup-ignore-hygiene.md` — scan, propose, apply, handle already-tracked files. The
-template ships a `.gitignore.template`; rename it to `.gitignore` and treat it as the starting
-point, not the answer.
+template’s `.gitignore.template` should already be active from Step 3; now verify it covers the
+actual project, tracked files and confidential output. Ignored state needs an approved backup.
 
 For the enforcement option in that task, recommend Option A (PostToolUse hook) for a code
 project and Option B (CLAUDE.md rule) otherwise.
@@ -183,10 +198,12 @@ wrong-tool cost matters more than the token cost.
 
 ### Step 10 — Confirm
 
-Report what was set up:
+Report what was set up. Separate installed scaffolding, open context questions, supervised work
+ready to start, and workflows actually tested on each surface. Replace the example checkmarks
+with the observed status; app fields and live tests remain pending until verified:
 
 ```
-Project Onboarding Complete
+Project Setup and Readiness
 ────────────────────────────
 ✓ Layout — core installed at [path]; blocks kept: [list]; blocks deleted: [list]
 ✓ CLAUDE.md — [N lines], file map covers [N] homes
@@ -206,7 +223,7 @@ does not have to remember this task existed.
 
 ## Output
 
-A project folder containing the core layout, a filled-in `CLAUDE.md` with a file map and a dated
+A project folder containing the core layout, the selected canonical policy with a file map and a dated
 app-side mirror block, whichever blocks the project needed, git and ignore hygiene, and a
 security pass. Plus two texts handed to the user for pasting into the app's project settings.
 
@@ -220,3 +237,5 @@ security pass. Plus two texts handed to the user for pasting into the app's proj
   restore point first. Do not move a user's existing files directly from this task.
 - **Blocks are offered, not installed by default.** Every always-loaded block is paid for in
   every session, including the ones that never use it.
+
+<!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->

@@ -108,7 +108,7 @@ Then **stop and wait.**
 
 Before moving anything, and confirmed to exist before the first change:
 
-- **Under git:** commit or tag the current state on every repo in scope.
+- **Under git:** commit or tag approved tracked state on every repo in scope, and separately back up valuable ignored or untracked state. Git alone does not protect the entire folder.
 - **Not under git:** a dated archive of the affected tree, stored **outside** both the old and new locations.
 - **Always:** back up any config file you will edit, alongside itself (`spaces.json.bak-YYYY-MM-DD`).
 
@@ -149,3 +149,5 @@ A pre-move inventory (Step 1), a classified reference table (Step 2), an approve
 - Confirm the restore point exists before the first move.
 - Verify arrival *before* rewiring references — rewiring toward a tree that didn't fully arrive turns a recoverable problem into a scattered one.
 - Never touch `.git/` internals beyond normal commit/tag operations.
+
+<!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->

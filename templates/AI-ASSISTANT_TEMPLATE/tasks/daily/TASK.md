@@ -133,7 +133,7 @@ Read only files that need updating; write back in full (no partial Edits).
 | Hypothesis confirmed, revised, or forming | `PROFILE_hypotheses.md` |
 | A deal or project confirmed closed/completed | `PROFILE_archive.md` |
 
-**Rules:** Add, confirm (`[HYPOTHESIS]` → `[CONFIRMED]`), revise actively. Timestamps: `[updated: YYYY-MM]` (assistant edits), `[confirmed: YYYY-MM]` (user-validated). Never overwrite `[USER]`/`[USER-CONFIRMED]` entries. Tag each new `[updated:]` with an evidence letter (`E`/`I`/`C`) — see `TASK_REFERENCE.md §Evidence-Tiers`. Flag sections with `Last updated` > 3 months in ACTIONS.md.
+**Rules:** Add, confirm (`[HYPOTHESIS]` → `[CONFIRMED]`), revise actively. Timestamps: `[updated: YYYY-MM]` (assistant edits), `[confirmed: YYYY-MM]` (user-validated). Never replace `[USER]`/`[USER-CONFIRMED]` entries with inference alone. Apply explicit user corrections with the earlier claim, source/date and reason retained in history. Tag each new `[updated:]` with an evidence letter (`E`/`I`/`C`) — see `TASK_REFERENCE.md §Evidence-Tiers`. Flag sections with `Last updated` > 3 months in ACTIONS.md.
 
 If changes are significant, also update `PROFILE_SUMMARY.md` (full Write; **hard limit `PROFILE_SUMMARY_LINE_LIMIT` lines → CONFIG.md**). If new content would exceed the limit, trim the least-recently-updated section first (check `[updated:]` timestamps); never trim Identity, Active Priorities, or Open Actions.
 
@@ -231,3 +231,5 @@ git diff --cached --quiet || git commit -m "post-run: daily $(date -u +%Y-%m-%d)
 ```
 
 The `--quiet` guard skips the commit silently if nothing changed (e.g., a pure fast-path run). Do not block completion if git fails — note the failure in RUN_LOG and continue.
+
+<!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->

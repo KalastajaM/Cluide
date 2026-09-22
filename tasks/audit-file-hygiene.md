@@ -60,6 +60,10 @@ Where cheap, confirm byte-identity (`md5`/`shasum`) rather than trusting the nam
 
 Default old outputs to **archive**, never delete. Treat something as stale only if it is clearly superseded *and* nothing references it — grep for the filename before proposing anything.
 
+A signed, approved or externally edited return remains a record even in `Outputs/`. Do not call
+it regenerable because of its folder or a newer filename. Identify its owner, retention and
+references before proposing any move or replacement. `Working/` is not blanket deletion authority.
+
 #### Check 3: Zero-byte and lock files
 
 - Zero-byte files: distinguish intentional placeholders (`.gitkeep`, a stub with a documented purpose) from strays.
@@ -131,3 +135,5 @@ A categorised findings table (Step 3), an approved change plan, and a post-apply
 - Never open or echo anything that looks like a secret; report location only.
 - Respect the target's own `CLAUDE.md`; an intentional-looking oddity is a flag, not a fix.
 - Confirm byte-identity before calling two files duplicates.
+
+<!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->

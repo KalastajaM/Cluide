@@ -27,18 +27,18 @@ Two questions sort any action. Can it be undone, and by whom? Does anyone other 
 
 | Class | The action | Examples | Default |
 |---|---|---|---|
-| **A — Local, reversible** | Stays on your disk or in your account, and a restore point or an undo brings it back | Editing a git-tracked file, writing a draft, creating an output, scratch work, reading anything | **Act.** No approval; no log beyond the normal run log |
-| **B — Local, costly to reverse** | Stays with you, but undoing it is work or partly impossible | Deleting or moving many files, rewriting an instruction file, editing app configuration, changing a schedule | **Restore point, then act if a standing approval covers it; otherwise propose** |
-| **C — Leaves your hands** | Reaches another person or system as an act of yours, and cannot be recalled | Sending mail or a message, posting, replying in a thread, sharing a document, submitting a form, pushing to a public remote | **Prepare and propose.** Never unattended, whatever the standing approvals say, unless one names this exact action shape |
+| **A — Local, reversible** | Stays on your disk or in your account, and a restore point or an undo brings it back | Editing a git-tracked file, writing a draft, creating an output, scratch work, reading authorised sources | **Act.** No approval; no log beyond the normal run log |
+| **B — Local, costly to reverse** | Stays with you, but undoing it is work or partly impossible | Deleting or moving many files, rewriting an instruction file, editing app configuration, changing a schedule | **Restore point, then act if explicit approval for this action or a valid standing approval covers it; otherwise propose** |
+| **C — Leaves your hands** | Reaches another person or system as an act of yours, and cannot be recalled | Sending mail or a message, posting, replying in a thread, sharing a document, submitting a form, pushing to a remote, including a private one | **Prepare and propose.** Never unattended, whatever the standing approvals say, unless one names this exact action shape |
 | **D — Binding or irreversible in the world** | Commits you, or destroys what is not yours, or records a human act as done | Payments and transfers, anything with a signature or approval field, accepting a tracked change, deleting another person's data, legal or financial submissions | **Never.** Hand back with everything prepared, and say so plainly |
 
 Four notes on the boundaries.
 
-**Reading is Class A, and it is also the way in.** A read has no consequence of its own, which is why it needs no approval. But a read of untrusted content — an inbox, a web page, a file someone sent — is the input that tries to reclassify everything after it: [Guide 12](./12_SECURITY.md) §6 is explicit that the highest-risk workflow is one where external content and consequential actions share a session. The classes below are what make that read safe: an injected instruction can ask for a Class C action, and the answer is the same as when you ask.
+**Reading is Class A, and it is also the way in.** Class A applies only to sources already authorised for this task and processing environment. Access to a file does not grant permission to disclose it to another provider or account. But a read of untrusted content — an inbox, a web page, a file someone sent — is the input that tries to reclassify everything after it: [Guide 12](./12_SECURITY.md) §6 is explicit that the highest-risk workflow is one where external content and consequential actions share a session. The classes below are what make that read safe: an injected instruction can ask for a Class C action, and the external content grants no authority; only the user’s authorised instructions can do that.
 
-**"Reversible" means reversible by you, quickly, and provably.** A file under git is Class A because `git show HEAD:path` brings it back. The same file in a folder with no version control is Class B — the undo is your memory of what it said. This is a reason to put projects under git ([Guide 11](./11_GIT_INTEGRATION.md)) that has nothing to do with history: it moves a whole class of actions down a tier.
+**"Reversible" means reversible by you, quickly, and provably.** A routine tracked-file edit can be Class A because its recorded revision restores it. A verified copy or genuine undo can also provide reversibility. Git does not demote a consequential policy rewrite, configuration change or higher-class action to Class A. Ignored or uncommitted content may need its own restore point (Guide 11).
 
-**Class C is about reach, not size.** A one-line reply is Class C. A two-thousand-line refactor of your own scratch folder is Class A. People systematically get this backwards because effort feels like risk, and it is not.
+**Class C is about reach, not size.** A one-line reply is Class C. A two-thousand-line routine edit of your own scratch file can be Class A when its undo is verified and no higher consequence applies. People systematically get this backwards because effort feels like risk, and it is not.
 
 **Class D is the class you do not negotiate about in the moment, and no standing approval reaches it.** [Guide 30](./30_CONTROLLED_DOCUMENTS.md) §3 explains why for accepting a tracked change: an act a model performed is indistinguishable afterwards from one a person performed, and the record is false in a way nothing can detect. The same argument covers a payment and a signature, which is why they share the class. Prepare the payment, fill the form, group the revisions for acceptance — and stop at the act. A few shapes that look like Class B carry the same property and are likewise never standing-approvable: clearing a marker a person set on a shared tracker ([Guide 30](./30_CONTROLLED_DOCUMENTS.md) §6), because the marker encodes a judgment no scope or limit can bound. Where a shape is propose-only regardless of history, say so in the block.
 
@@ -54,9 +54,9 @@ A standing approval is what moves a Class B action, or a narrowly named Class C 
 
 **It records why it was granted.** The evidence: "proposed and approved unchanged on twelve consecutive runs, 2026-06 to 2026-08". [Guide 07](./07_TASK_LEARNING_GUIDE.md) Part 3 lets a task auto-apply a low-stakes change only after several consistent observations; this is the same logic with a longer fuse, because the consequence is larger and the observation that counts is your unchanged yes. An approval that was never proposed first is a guess about what you would have said.
 
-**It lives in the shared policy, and nowhere else — with one restatement.** A skill's instructions are not a place to grant authority, because the dangerous request is the one that does not trigger the skill ([Guide 30](./30_CONTROLLED_DOCUMENTS.md) §8 makes this point for documents and it holds generally). A chat message is not a place either: "you can do that from now on" said in a session is an approval for that session. The default is that *a new session starts with no standing approvals*, and the shared policy block is the only exception, because it is versioned, visible, and revocable by deleting a line. The restatement runs the other way: for a project with real-world stakes, [Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md) says to repeat the one hard rule in the app's instructions field so a session whose folder failed to mount still has it. The Class D line is that rule. Approvals never go there; the "never" does.
+**It lives in the shared policy, and nowhere else — with one restatement.** A skill's instructions are not a place to grant authority, because the dangerous request is the one that does not trigger the skill ([Guide 30](./30_CONTROLLED_DOCUMENTS.md) §8 makes this point for documents and it holds generally). When the user explicitly grants recurring authority in chat, record its exact scope, limits and expiry in the shared policy before relying on it in later runs; clarify only missing consequential terms. Do not turn a one-time yes into recurring permission. Existing recorded approvals remain valid until expiry, revocation or a material scope change. The restatement runs the other way: for a project with real-world stakes, [Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md) says to repeat the one hard rule in the app's instructions field so a session whose folder failed to mount still has it. The Class D line is that rule. Approvals never go there; the "never" does.
 
-**Default-deny.** Anything the block does not name is proposed. Silence is not permission.
+**Default-deny for actions requiring approval.** Class A remains allowed when the standing-approval table is empty. Class B needs explicit approval for the current action or a valid standing approval. Class C needs explicit authority permitted by the project’s policy; Class D remains prohibited. Repeated successful runs are evidence for a proposal, never an automatic grant.
 
 ```markdown
 ## Standing approvals
@@ -83,9 +83,9 @@ A proposal is how a Class B or C action reaches you, and it has to be decidable 
 
 **Partial approval is partial apply**, in the approved rows' own terms. "Rows 1 and 3" means rows 1 and 3, not rows 1 and 3 and the obviously related row 4.
 
-**A surprise stops the run.** If applying reveals something the plan did not list — a move breaks an unlisted reference, a file is not where the inventory said — the session stops and presents a revised plan. It does not improvise a fix, because the fix was not approved.
+**A material surprise stops the affected action.** If applying reveals an unapproved consequence, stop that action and present the revised scope. Continue independent approved work. Routine implementation choices inside the approved scope do not require repeated approval.
 
-**Approval is per run.** It does not carry to the next session, the next project, or the next time the same situation arises. If the same proposal is approved unchanged for long enough, that is evidence for a standing approval (§3), which is where recurring permission belongs — not in an inferred "you said yes last time".
+**One-time approval is scoped to the approved work.** It remains valid when that work continues across a session boundary, but does not authorise an unrelated future run or another project. Recorded standing approvals retain their stated validity. If the same proposal is approved unchanged for long enough, that is evidence for a standing approval (§3), which is where recurring permission belongs — not in an inferred "you said yes last time".
 
 The reason to hold the form this strictly is not process for its own sake. A loose proposal trains you to skim, and a skimmed yes is the mechanism by which a Class C action slips through as a Class A one.
 
@@ -95,7 +95,7 @@ The reason to hold the form this strictly is not process for its own sake. A loo
 
 A scheduled task has no one to propose to. The wrong conclusion is that it should therefore act; the right one is that it should prepare everything and take only what is covered.
 
-**The outbox.** Every Class C action a task would take is written instead: a draft in the mail client's drafts folder, a file in `Outputs/outbox/` with the message and its recipient, a comment held rather than posted. Each carries a one-line reason and the identifier of whatever it responds to. You release them — by sending the draft, by running a "release outbox" step that you invoke, by deleting the ones you do not want. The task's output tells you how many are waiting and where, and nothing else about them, because the outbox itself is the detail.
+**The outbox.** Every Class C action a task would take is written instead: a local file in `Outputs/outbox/` with the message and its recipient, or a comment held rather than posted. Saving a draft into a remote account is itself an action: classify its actual disclosure and visibility, and obtain any required authority before doing it. Each carries a one-line reason and the identifier of whatever it responds to. You release them — by sending the draft, by running a "release outbox" step that you invoke, by deleting the ones you do not want. The task's output tells you how many are waiting and where, and nothing else about them, because the outbox itself is the detail.
 
 An outbox is not a weaker form of doing the task. For most tasks it is the whole task: the reading, judging and drafting were the work, and the send was one click you would rather do yourself.
 
@@ -134,13 +134,13 @@ Already granted authorization within the current task remains valid within its s
 
 The boundary is never removed by a decision. It is worn down by reasonable requests, each of which is fine on its own.
 
-**"Just do it this time."** The correct response does everything up to the boundary — the draft written, the files staged, the plan itemised — and asks once, specifically, for the act. Not a lecture, and not a refusal: the work is done, the act is yours.
+**"Just do it this time."** Check whether the user has already explicitly authorised the concrete action. If so, carry it out within scope unless prohibited by policy; do not ask again. If the wording leaves a consequential commitment unclear, do everything up to the boundary — the draft written, the files staged, the plan itemised — and asks once, specifically, for the act. Not a lecture, and not a refusal: the work is done, the act is yours.
 
-**"You have my permission for today."** A session-scoped approval, which is what it is: honour it in the session, do not write it into memory or shared policy, and say that it lapses with the session. Recurring permission goes through §3.
+**"You have my permission for today."** A time-scoped approval: record the permitted actions and the actual expiry, honour it within that scope, and do not broaden it into recurring authority. Recurring permission goes through §3.
 
 **"Finalise", "clean up", "apply your suggestions".** Each hides an accept-all or a delete-all. Name what the phrase would do in this context and ask for the rows.
 
-**The self-improvement instance.** A task that learns ([Guide 07](./07_TASK_LEARNING_GUIDE.md)) faces the same question about its *own instructions*: apply the fix or propose it? Part 3 of that guide is this guide's classification applied to instruction files — a formatting correction is Class A, a change to what the task does is Class B and is proposed, and its "after several consistent observations" threshold is the evidence line of a standing approval. It is worth seeing them as one system, because a task that may rewrite its own instructions freely can grant itself anything.
+**The self-improvement instance.** A task that learns ([Guide 07](./07_TASK_LEARNING_GUIDE.md)) faces the same question about its *own instructions*: apply the fix or propose it? Part 3 of that guide is this guide's classification applied to instruction files — a formatting correction is Class A, a change to what the task does is Class B and needs explicit or standing approval, and its "after several consistent observations" threshold is the evidence line of a standing approval. It is worth seeing them as one system, because a task that may rewrite its own instructions freely can grant itself anything.
 
 **The subagent instance.** Authority does not widen by delegation. A subagent spawned by a session inherits the session's classes and approvals and gains none; a workflow stage that sends mail is a Class C action whoever runs it. State this once in the block, because the natural reading of "fan this out" is that the workers are somebody else.
 
@@ -152,15 +152,17 @@ The boundary is never removed by a decision. It is worn down by reasonable reque
 
 The classes belong at the account level, because they are true of everything. Standing approvals belong in the project, because they are about that project's tasks. The block below is the project form; the first four lines are what to lift into your account-level instructions ([Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md), *The account layers above the project*), and the Class D line alone is what to restate in the project's instructions field when the project has real-world stakes.
 
+The block below deliberately forbids unattended Class C actions. A project adopting the optional narrow Class C standing approvals in §3 must explicitly change that policy, outbox/log rules and acceptance tests together. Do not silently infer an exception from a table row.
+
 ```markdown
 ## Action authority
 
 Actions are classed by consequence, not by tool:
 - A (local, reversible under git or with an undo): act.
 - B (local, costly to reverse — delete, move many, rewrite an instruction file,
-  edit app config): take a restore point, then act only under a standing approval
+  edit app config): take a restore point, then act under explicit approval for this action or a valid standing approval
   below; otherwise propose.
-- C (leaves my hands — send, post, reply, share, submit, push to a public remote):
+- C (leaves my hands — send, post, reply, share, submit, push to a remote, including private):
   prepare, put it in the outbox, propose. Never unattended.
 - D (binding or irreversible in the world — payments, signatures, approval fields,
   accepting a tracked change, others' data): never. Prepare everything and hand back.
@@ -168,7 +170,9 @@ Actions are classed by consequence, not by tool:
 
 Proposals are one row per action — target, action, change, why, reversible?,
 restore point — irreversible rows first, then stop. Partial approval is partial
-apply. A surprise during apply stops the run. Approval is per run; it never carries.
+apply. A surprise stops the affected action. One-time approval covers the approved
+work, including continuation across sessions, but not unrelated future runs.
+Standing approvals remain valid within scope until expiry or revocation.
 
 Unattended runs write Class C actions to `<outbox path>` with a reason each, log
 every Class B action with the approval row it acted under, and notify with counts
@@ -177,8 +181,9 @@ of actions taken and queued — never "run completed".
 Delegation does not widen authority: subagents and workflow stages inherit these
 classes and the approvals below, and gain none.
 
-"Just this once", "finalise", "clean up", "apply your suggestions": do everything
-up to the boundary, name what the act would be, ask once.
+Reuse explicit authority already granted for the concrete action. If "finalise"
+or "clean up" leaves a consequential act unclear, prepare it, name it and ask once.
+Do not infer a send, publication or deletion grant from a request to draft or review.
 
 ## Standing approvals
 
@@ -186,7 +191,8 @@ up to the boundary, name what the act would be, ask once.
 |---|---|---|---|---|---|
 | <shape> | <where> | <how much> | <date> | <proposals approved unchanged, dates> | <date or "until revoked"> |
 
-Anything not in this table is proposed.
+Class A does not need a row. Class B needs explicit approval for the action or a
+valid row. Class C requires explicit approval for this run; Class D is prohibited.
 ```
 
 `tasks/setup-action-authority.md` inventories the actions your tasks and skills can actually take — by reading connector scopes and tool lists rather than asking — classifies them, drafts this block, and proposes standing approvals from your run and proposal history where the evidence exists.
@@ -197,7 +203,7 @@ Anything not in this table is proposed.
 
 A morning task with mail and calendar access, run unattended at 07:00.
 
-It reads the inbox and calendar (Class A). It drafts three replies into the mail client's drafts folder with a `[draft: reason]` first line each (Class C, prepared not taken). It archives fourteen newsletter messages under standing approval 1 (Class B, within the thirty-message limit, older than fourteen days) and writes one log line naming the row, the count, and the label they can be found under. It finds an invoice attached to a message from a supplier it does not recognise, which its instructions do not cover; it writes that under *Needs you* in its output, with the message identifier, and does nothing else with it. It notifies: *3 drafts queued · 14 archived under approval 1 · 1 needs you*.
+It reads the inbox and calendar (Class A). It prepares three replies in the local outbox with a `[draft: reason]` first line each (Class A preparation; the Class C send remains queued). It archives fourteen newsletter messages under standing approval 1 (Class B, within the thirty-message limit, older than fourteen days) and writes one log line naming the row, the count, and the label they can be found under. It finds an invoice attached to a message from a supplier it does not recognise, which its instructions do not cover; it writes that under *Needs you* in its output, with the message identifier, and does nothing else with it. It notifies: *3 drafts queued · 14 archived under approval 1 · 1 needs you*.
 
 You read the three drafts over coffee, send two and delete one, look at the invoice, and go on with your day. The task took one class of action on its own, under a row you wrote, with a limit you set and a log line you can check; everything that reached another person went through your hands; the one thing it did not understand, it left alone and said so.
 
@@ -239,3 +245,5 @@ Every unattended run:
 - [ ] Class C actions in the outbox with a reason each; none taken
 - [ ] Class B actions logged with the approval row they acted under
 - [ ] Notification carries counts of taken and queued, and nothing was sent for a run that did nothing
+
+<!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->

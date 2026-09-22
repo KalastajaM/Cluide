@@ -39,7 +39,7 @@ Present an explicit **old path → new path** table for every file or folder tha
 
 Before moving anything, create a restore point so a botched reorg can be undone, and confirm it exists first:
 
-- **If the project is under git**, commit or tag the current state as a labelled snapshot. This is the cleanest option: precise, diffable, no clutter. Use it when the user manages the project's history that way; otherwise ask.
+- **If the project is under git**, commit or tag the approved tracked state as a labelled snapshot; separately back up valuable ignored or untracked files affected by the move. This is the cleanest option: precise, diffable, no clutter. Use it when the user manages the project's history that way; otherwise ask.
 - **If it is not under git**, create a dated zip of the folders being changed and store it **outside the project working tree** (or in an ignored `_backups/` location), never loose in the project root where it becomes clutter or gets swept into the reorg.
 - **Scope the backup to what changes.** Back up only the affected subtree unless the reorg is project-wide; do not zip a large project wholesale for a small move.
 
@@ -74,3 +74,5 @@ A findings list (Step 2), an approved old→new move table (Step 3), and a short
 - Archive, do not delete, unless deletion is explicitly approved for a specific file.
 - Never touch `.git/` internals, secrets, or raw source data marked do-not-modify. Taking a normal git commit or tag as the Step 4 restore point is fine.
 - Make the smallest set of moves that achieves a clean layout; do not opportunistically rewrite file contents beyond the reference rewiring a move requires.
+
+<!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->

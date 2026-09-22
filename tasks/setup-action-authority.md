@@ -46,7 +46,7 @@ Assign each action a class under Guide 32 §2 — A local and reversible, B loca
 
 Two checks that change the answer:
 
-- **Is the folder under git?** If yes, in-place edits to tracked files are Class A; if not, they are Class B. Say which, and if not under git, note that `setup-github.md` would move a whole class of actions down a tier.
+- **Is the change provably reversible?** Check the recorded Git revision, backup or actual undo, including ignored content. Routine edits may be Class A; policy rewrites and higher-consequence actions retain their higher class even under Git.
 - **Does any unattended task hold a Class C or D capability?** List each one. These are the rows Step 4 tries to remove structurally before any prose is written.
 
 Present the classified table. Ask the user to confirm or move any row; the classification is theirs to own, since it encodes their tolerance for each consequence.
@@ -55,9 +55,9 @@ Present the classified table. Ask the user to confirm or move any row; the class
 
 Read `RUN_LOG.md`, `IMPROVEMENTS.md` (the *Pending Proposals* and *Applied Fixes* sections), the maintenance or approval log if the project keeps one, and any chat-recorded approvals the user can point at.
 
-A candidate is a Class B action (or a narrowly shaped Class C one) that has been **proposed and approved unchanged** repeatedly. For each, draft a row in Guide 32 §3's form — action shape, scope, limit, evidence, proposed expiry — with the evidence quoted from the log (dates and counts). Do not propose a row without evidence; "the user would probably say yes" is not a row.
+A candidate is a Class B action (or a narrowly shaped Class C one only if the project explicitly permits that extension) that has been **proposed and approved unchanged** repeatedly. For each, draft a row in Guide 32 §3's form — action shape, scope, limit, evidence, proposed expiry — with the evidence quoted from the log (dates and counts). Do not propose a row without evidence; "the user would probably say yes" is not a row.
 
-If nothing qualifies, say so. A project with no standing approvals and an honest default-deny is a correct state, not an incomplete one.
+If nothing qualifies, say so. An empty standing-approval table is valid and does not block Class A work or an explicitly approved one-time Class B action.
 
 ### Step 4 — Present the plan and get sign-off
 
@@ -78,7 +78,7 @@ Then apply only the approved rows:
 
 - Add the block and the approved standing approvals to the selected canonical policy; add the four class lines to the account-level instructions template or ask the user to paste them into the account field (Guide 25: apply through supported controls, or report the field update as pending).
 - Add the security-properties rows.
-- For each unattended task: add the outbox step to its `TASK.md` so Class C actions are written to `<outbox path>` with a reason and an identifier each, and never taken; add the approval-row column to its `RUN_LOG.md` template; change its notification text to counts of actions taken and queued, and to send nothing on a run that did nothing.
+- For the conservative no-unattended-Class-C policy: add the outbox step to its `TASK.md` so Class C actions are written to `<outbox path>` with a reason and an identifier each, and never taken; add the approval-row column to its `RUN_LOG.md` template; change its notification text to counts of actions taken and queued, and to send nothing on a run that did nothing.
 - Add a one-line delegation rule if the project spawns subagents or workflow stages: they inherit the classes and approvals and gain none.
 
 Record the connector and grant changes applied through supported controls or by the user with the date, in the security-properties table's *Why it holds* column.
@@ -105,3 +105,9 @@ An action inventory by source and by task (Step 1); a classified table the user 
 - Never grant the session running this task any authority in the course of running it. The task writes rules; it does not act under them.
 - Never widen a connector scope or grant to make a step easier. If a task's design needs a Class C capability, that is a finding for the user, not a scope change.
 - Do not restate Guide 32's classes in the block beyond the §8 text; cite the guide for the reasoning.
+
+## Consistency checks before handoff
+
+Check both positive and negative cases: Class A with an empty table; an explicitly approved Class B edit with a restore point; the same edit without approval; a valid versus expired standing approval; continuation of approved work across sessions; a private remote push; and Class D despite a broad request. Confirm definitions, examples, app bootstrap and recurring-job instructions agree. A new grant must come from the user, never from repeated success alone. Preparing a local draft and saving it into a remote account are distinct actions.
+
+<!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->

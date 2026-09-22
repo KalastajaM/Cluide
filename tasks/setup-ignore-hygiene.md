@@ -226,3 +226,9 @@ Tell the user:
 - What the enforcement does: "Going forward, whenever a file is written or edited in this project, I'll check it against ignore patterns and flag anything that looks like it should be ignored."
 
 If the user skipped enforcement, note: "You can re-run this task at any time to audit new files."
+
+## Information boundary check
+
+Activate ignore rules before collecting real data or making the first commit. Inspect tracked files and staged content, not just ignore patterns. Untracking does not remove earlier history; a generic export needs a reviewed file allowlist and clean history. Include confidential archives, outboxes, rollback copies and logs in the same boundary. Valuable ignored state requires an approved backup; blank bootstrap files are not recovery.
+
+<!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->

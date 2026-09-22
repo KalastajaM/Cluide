@@ -9,10 +9,10 @@ A project's folder layout is an interface the assistant reads every session. Whe
 Every project, whatever its purpose, wants a home for each of these kinds of thing. The names matter less than having exactly one obvious place for each:
 
 - **Instructions** at the root: `AGENTS.md` as shared policy, a thin `CLAUDE.md` adapter for Claude, and `README.md` for a human. `PLATFORM_SETUP.md` records native setup and verification. Claude-only projects can retain `CLAUDE.md` as their policy; use [Guide 35](./35_DUAL_PLATFORM_PROJECTS.md) when adding a second platform.
-- **Source of truth**: the canonical data or working files the project is actually about. Markdown is the source of truth; see Guide 19.
-- **Generated outputs**: finished deliverables (Word, PPT, PDF, exports) that are produced *from* the source of truth. These live in their own home, not scattered at the root, because they are regenerable and should never be confused with the source.
+- **Source of truth**: the canonical data or working files the project is actually about. Name the authoritative source explicitly; Markdown is useful for assistant-maintained knowledge (Guide 19), but an approved source record may use another format.
+- **Generated outputs**: finished deliverables (Word, PPT, PDF, exports) that are produced *from* the source of truth. These live in their own home, not scattered at the root, so they are not confused with the source. A returned signed, approved or externally edited document is a record, not a regenerable draft; preserve it under a distinct name or record location.
 - **Scratch / working files**: transient in-progress material, clearly separated so it does not masquerade as a deliverable.
-- **Archive**: old material kept for reference, in a folder that is never read back (see naming below).
+- **Archive**: old material kept for reference, excluded from routine reads; named, authorised recovery or provenance work may read the required item (see naming below).
 - **Intake**, when material reaches the project outside a chat: one `incoming/` folder where new documents land before anyone has decided where they belong. The only conditional home on this list, and the only one whose correct steady state is empty. See the next section.
 
 Two of the templates Cluide ships (see `00_INDEX.md` for all of them) are project-layout starting points: `PROJECT_TEMPLATE/` implements this list less the source-of-truth home, which is project-specific by definition, and ships the optional pieces already in the folder so that setting a project up is deleting what it does not need rather than building what it does; and `PMO_TEMPLATE/` covers a richer project with deliverables and registers. Copy whichever is closer rather than inventing a layout, then add optional pieces from `templates/BLOCKS.md` as the project earns them; that catalogue carries the reasoning for adding late rather than up front.
@@ -68,10 +68,10 @@ Keep the format definition in one place and point to it; do not restate it insid
 Messiness is not one event; it is a slow accumulation of small "I will sort it later" decisions. These conventions stop it:
 
 - **Outputs never pile at the root.** Route them to a dedicated outputs home (or the relevant entity folder) the moment there is more than one.
-- **Archive, do not delete.** Move superseded material into an archive folder rather than deleting it, and never read from it. One archive is the default: a single `_archive/`, which is what `PROJECT_TEMPLATE` ships. Use `[ARCHIVE] <name>/` folders instead only when a project accumulates several distinct bodies of retired material worth keeping apart, as `PMO_TEMPLATE` does. Either way the underscore or the prefix is what makes both you and the assistant skip them by default.
+- **Archive, do not delete.** Move superseded material into an archive folder rather than deleting it. Exclude it from routine reads; permit a named, authorised recovery or provenance lookup without treating the old copy as current. One archive is the default: a single `_archive/`, which is what `PROJECT_TEMPLATE` ships. Use `[ARCHIVE] <name>/` folders instead only when a project accumulates several distinct bodies of retired material worth keeping apart, as `PMO_TEMPLATE` does. Either way the underscore or the prefix is what makes both you and the assistant skip them by default.
 - **Name versions consistently.** While there is one copy, use a plain name. Once a file goes through versioned iterations, mark the active one with a `_LATEST` suffix and move older revisions into an archive folder. Use dates (`YYYYMMDD`) for point-in-time snapshots. Pick one casing convention and hold it.
 - **Split a file when it grows.** A profile or knowledge file past roughly 150 lines should split into topic files, with the index updated. A folder holding dozens of mixed files should gain subfolders by kind or entity.
-- **No duplicated facts.** If the same fact would live in two files, keep it in one and link from the other. Duplication is how a project starts contradicting itself.
+- **No duplicated facts.** If the same fact would live in two files, keep it in one and link from the other. Do not maintain competing copies. A report may quote a dated, attributed snapshot or recomputed figure while linking to the authoritative source.
 - **Tidy on a cadence, not on a crisis.** A short periodic pass catches drift while it is one file out of place. To reorganize a project that has already drifted, use the `reorganize-project` task, which takes a restore point first, then moves files and rewires every reference without breaking the project.
 
 ## When one project is not enough
@@ -86,6 +86,12 @@ If the layout is straining because the project is really two purposes sharing a 
 4. One folder per tracked entity, same artifact set, indexed by a central tracker.
 5. Document the layout as a file map in the canonical policy (`AGENTS.md` for the shared setup; `CLAUDE.md` for Claude-only use), ideally with a read-only vs updatable column.
 6. Give each recurring file kind a standard format too, as a template or a documented Format section, kept in one place.
-7. Archive (never delete) into a single `_archive/` — or `[ARCHIVE] <name>/` folders where one archive is not enough — never read back; mark the active version `_LATEST`.
+7. Archive (never delete) into a single `_archive/` — or `[ARCHIVE] <name>/` folders where one archive is not enough — exclude from routine reads; use explicit recovery scope when needed; mark the active version `_LATEST`.
 8. Split oversized files and junk-drawer folders early; run `reorganize-project` to fix a project that has already drifted.
 9. Route inbound material through one `incoming/` folder: file by content, propose destinations before moving, archive rather than delete, and keep it empty.
+
+## Folder names do not grant authority
+
+`Outputs/` does not grant blanket overwrite or cleanup permission, and `Working/` does not make every file disposable. Identify regenerable drafts, evidence and returned records before proposing regeneration or cleanup. Preserve provenance and apply the project’s action-authority rules (Guide 32), including restore points and any required approval. Keep confidential archives, outboxes and rollback copies within the same information boundary as their sources.
+
+<!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->

@@ -1,18 +1,16 @@
 # Outputs
 
-Finished deliverables — documents, decks, PDFs, exports, reports — generated *from* the project's
-source files. They live here and not at the root, because they are regenerable and must never be
-confused with the sources they came from.
+Finished deliverables generated from the project’s sources belong here, not at the root.
+Distinguish regenerable drafts from records: signed, approved or externally edited returns
+must be preserved under distinct names with their source, date and status. Do not overwrite
+such a record by regenerating its original draft.
 
-Two consequences of that separation, worth stating in `AGENTS.md` if they matter here:
+Before rebuilding or cleaning up, identify the exact files, confirm which are regenerable,
+and apply the project’s authority and retention rules. Folder placement grants no blanket
+permission to overwrite, move or delete. Valuable ignored records need an approved backup.
 
-- **Regeneration is safe in this folder and nowhere else.** Rebuilding an output overwrites a file
-  here only. If a source ever ends up in this folder, that guarantee is gone.
-- **Cleanup can treat this folder as one batch.** Because outputs are regenerable by construction,
-  a tidy-up pass can propose archiving the contents in one go rather than asking file by file. It
-  still proposes: "regenerable by construction" is a statement about where a file was put, and a
-  signed PDF that came back from someone else does not become regenerable by landing here.
+Use a plain name for a single deliverable, `_LATEST` for the active working version when
+iterations exist, and `YYYYMMDD` for point-in-time snapshots. Archive superseded versions
+under the project’s rules. Cite dated facts back to their maintained authoritative source.
 
-While there is one copy of a deliverable, give it a plain name. Once it starts going through
-versioned iterations, mark the active one `_LATEST` and move older revisions to `_archive/`; use
-`YYYYMMDD` in the name for point-in-time snapshots.
+<!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->

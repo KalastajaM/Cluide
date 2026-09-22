@@ -42,6 +42,9 @@ ls CLAUDE.md 2>/dev/null && echo "claude-md-exists" || echo "no-claude-md"
 Explain first:
 > "I'm going to ask you a few questions to populate your memory system. These facts will be loaded at the start of every Claude session so you don't have to re-explain them. Keep answers brief — 1–3 sentences each is ideal."
 
+Before collecting answers, confirm the permitted destination and processing environment for
+personal data; do not collect sensitive detail until that is established.
+
 Ask the following. Skip any the user doesn't want to answer.
 
 **Identity (user memory):**
@@ -63,6 +66,10 @@ Ask the following. Skip any the user doesn't want to answer.
 
 After collecting answers: "Thanks — I'll create your memory files now."
 
+Confirm the destination and processing environment are permitted for the information before
+writing it. Store only relevant detail. A profile field can stay unknown while unrelated work
+continues; never convert an inference into user confirmation to complete setup.
+
 ### Step 3 — Create the memory files
 
 1. Create the `.auto-memory/` directory if it doesn't exist.
@@ -72,6 +79,8 @@ After collecting answers: "Thanks — I'll create your memory files now."
 ```markdown
 [Memory content — 2–5 sentences. Direct facts, no padding.]
 [updated: YYYY-MM]
+Source: [user statement or document reference and date]
+Status: [user-confirmed | source-supported | inferred | unresolved conflict]
 ```
 
 File naming:
@@ -113,3 +122,9 @@ Tell the user:
 - What's in the index
 - "After the fresh-session loading test passes, the selected surface can use these facts. To add a memory: ask Claude to save it. To update: ask Claude to update the relevant file. To remove: ask Claude to delete the file and its index entry."
 - "Keep the index under 30 entries. If it grows beyond that, consolidate or remove stale entries."
+
+## Correction and recovery acceptance
+
+An explicit user correction supersedes the previous entry with its source, date and reason retained in history. Inference alone cannot replace user-confirmed information. Check source reliability and effective date when claims conflict; recency alone does not decide. For ignored memory, identify the approved backup and recovery owner. An empty bootstrap initialises a new installation; it cannot recover lost knowledge.
+
+<!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->
