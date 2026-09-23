@@ -206,17 +206,19 @@ from PROJECT_TEMPLATE), review it against the `dispatch` skill's thresholds. Ski
 — do not create one.
 
 1. Read the rows added since the last calibration (the previous review's date in this file's footer is the
-   cutoff). Group by archetype and compute the escalation rate per archetype.
+   cutoff). Group by log key — the Archetype text before any colon, one of the keys in the skill's routing
+   table or `inline`. Map older free-text rows to a key by hand and say so; list any you cannot map as
+   unkeyed. Per key, count failures: rows escalated (`Y`) or with a Corrected count above zero, each
+   row counted once.
 2. Propose changes, both requiring the user's approval before anything is written:
-   - **Demote a tier:** an archetype with ~10+ dispatches and zero escalations is a candidate to run one
-     tier cheaper.
-   - **Promote a tier:** an archetype escalating more than ~1 in 3 is a candidate to start one tier higher.
-3. Approved changes are recorded in the project's **Dispatch Overrides** section (`CLAUDE.md`), never in
+   - **Demote a tier:** a key with ~10+ dispatches and no failures is a candidate to run one tier cheaper.
+   - **Promote a tier:** a key failing more than ~1 in 3 is a candidate to start one tier higher.
+3. Approved changes are recorded in the project's **Dispatch Overrides** section (the `CLAUDE.md` adapter), never in
    the log — the log is evidence, not policy ([Guide 09 §Model-Aware Dispatch](../09_MULTI_TASK_ORCHESTRATION.md)).
 4. Also flag reversion: a log whose bulk archetypes mostly run at top tiers, or a long gap with no rows at
    all in a project that delegates work, warrants checking its actual routing policy. Inheriting the configured model is correct on OpenAI unless an authorized alternative was selected; do not flag that as a defect. On Claude, compare with the explicit Claude dispatch override.
 
-Sample sizes below ~10 dispatches per archetype prove nothing; say "insufficient data" rather than
+Sample sizes below ~10 dispatches per key prove nothing; say "insufficient data" rather than
 proposing on noise.
 
 ### Step 5 — Present findings

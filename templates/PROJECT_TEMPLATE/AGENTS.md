@@ -52,7 +52,8 @@ current: delete the row for any block you drop, and add one for every folder you
 
 *Optional — delete this section and `ROUTING_LOG.md` if delegation is unused.*
 Use the configured model and only delegation tools available and authorized in this session.
-Log delegated work to `ROUTING_LOG.md`. Product-specific routing belongs in `PLATFORM_SETUP.md`.
+Log delegated work to `ROUTING_LOG.md`. Product-specific routing belongs in the native adapter
+(`CLAUDE.md` for Claude) or `PLATFORM_SETUP.md`, never here.
 
 # Incoming
 

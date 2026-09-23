@@ -53,7 +53,9 @@ capability; offer a supplied export or a draft only if it preserves the task's r
 Never invent connector names, model identifiers or cross-vendor configuration paths.
 
 **Claude-only optional routing:** if the installed dispatch skill and host allow delegation,
-configure its sonnet/opus/haiku tiers there. The agent starter pack is Claude Code only.
+record tier choices and the skill's load hook in a *Dispatch Overrides* section of `CLAUDE.md`,
+which loads every session (the skill's *Project overrides* section lists what it holds). The
+agent starter pack is Claude Code only.
 **OpenAI routing:** retain the configured model and follow the host's available delegation
 controls. No Claude-to-OpenAI model mapping is supplied.
 
