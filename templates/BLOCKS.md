@@ -30,7 +30,7 @@ decision is a deletion rather than an addition.
 |---|---|---|---|---|
 | **Profile & knowledge** | `Profile/PROFILE_SUMMARY.md`, `Profile/PROFILE_detail.md`, `Knowledge/INDEX.md` + topic files | the assistant needs context that outlives a session: who people are, where topics stand, what was decided | Summary auto-reads every session; detail and topics on demand | Ships in the template. To retrofit, copy the two folders from `templates/PROJECT_TEMPLATE/` and follow Guide 04 — there is no task for this layer |
 | **Intake** | `Incoming/` plus the *Incoming* section of `AGENTS.md` | Material reaches the project outside a chat — `Incoming/README.md` lists the cases | On demand | Ships in the template; to retrofit, copy the folder and its `AGENTS.md` section (Guide 24) |
-| **Dispatch routing** | `ROUTING_LOG.md` plus the *Delegation* section of `AGENTS.md` | Work here is delegated to subagents, workflow stages, or scheduled tasks | The delegation section loads with verified project policy; the log is read only at calibration | Ships in the template; to retrofit, copy both. Product-specific dispatch configuration lives in `PLATFORM_SETUP.md` (Guide 09) |
+| **Dispatch routing** | `ROUTING_LOG.md`, the *Delegation* section of `AGENTS.md`, and the *Dispatch Overrides* section of `CLAUDE.md` | Work here is delegated to subagents, workflow stages, or scheduled tasks | The delegation section and Dispatch Overrides load every session; the log is read only at calibration | Ships in the template; to retrofit, copy all three. Claude tier overrides and the skill's load hook live in `CLAUDE.md`; OpenAI routing lives in `PLATFORM_SETUP.md` (Guide 09) |
 
 ## Blocks installed from a task or another template
 

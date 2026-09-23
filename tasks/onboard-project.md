@@ -94,7 +94,8 @@ PROJECT_TEMPLATE that means:
 
 1. **Delete the blocks this project does not need**, using the Step 1 answers. No material
    arriving outside chat means `Incoming/` and its `CLAUDE.md` section go. No delegation means
-   `ROUTING_LOG.md` and the *Dispatch Overrides* section go. Deleting a block means deleting all of
+   `ROUTING_LOG.md`, the *Delegation* section of `AGENTS.md` and the *Dispatch Overrides* section
+   of `CLAUDE.md` go. Deleting a block means deleting all of
    its pieces — folder, `CLAUDE.md` section, and file-map rows — never one without the
    others. Dropping the memory block also means replacing the auto-read line above the file map,
    which names `Profile/PROFILE_SUMMARY.md`: that line sits in the part of `CLAUDE.md` that loads

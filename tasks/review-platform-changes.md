@@ -99,10 +99,10 @@ against the guide that carries it:
 | Reference page | Guide(s) that must agree |
 |----------------|--------------------------|
 | Pricing table, model lineup, default model per plan | `10`, `16`, `17`, `tasks/audit-cost.md`, `CHEATSHEET.md` |
-| Permission modes and settings keys | `12`, `20`, `tasks/setup-security.md`, `skills/security-review/` |
+| Permission modes, settings keys and permission-rule syntax (including `Tool(param:value)` rules) | `09`, `12`, `20`, `tasks/setup-security.md`, `skills/security-review/`, `skills/dispatch/` |
 | Hook events | `06`, `11`, `12`, `31` |
 | SKILL.md frontmatter fields | `03`, `tasks/audit-skill.md`, `tasks/setup-skill.md` |
-| Subagent frontmatter fields, fork mode, concurrency | `09`, `26`, `27`, `skills/dispatch/`, `templates/AGENT_STARTER_PACK/` |
+| Subagent frontmatter fields, model resolution order, fork mode, concurrency | `09`, `26`, `27`, `skills/dispatch/`, `templates/AGENT_STARTER_PACK/` |
 | Memory (auto memory, account memory, project memory, the `import-memory` skill) | `04`, `14`, `17`, `33`, `34`, `35`, `tasks/audit-memory.md`, `tasks/setup-memory.md`, `tasks/retire-project.md` |
 | `claude mcp` subcommands, result limits, MCP spec status | `05`, `15`, `tasks/setup-mcp.md` |
 | Cowork project fields, scheduled tasks, folder access | `25`, `06`, `tasks/tune-instruction-layers.md`, `tasks/relocate-project.md` |

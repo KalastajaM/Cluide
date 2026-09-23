@@ -335,7 +335,7 @@ output/
 }
 ```
 
-Deny rules are the one layer that holds in every mode, `bypassPermissions` included, which is what makes them the right place for the handful of paths and commands that must never be touched. They can also pin a tool's inputs rather than just its name — `Tool(param:value)` matching means a rule like `Agent(model:opus)` denies one model of subagent while leaving the rest alone. And `permissions.blockReadsOutsideWorkingDirectories` stops reads escaping the directories the session was started in.
+Deny rules are the one layer that holds in every mode, `bypassPermissions` included, which is what makes them the right place for the handful of paths and commands that must never be touched. They can also pin a tool's inputs rather than just its name — `Tool(param:value)` matching means a rule like `Agent(model:opus)` denies subagent calls that request that model alias while leaving the rest alone. It matches only the literal value passed: a call that omits the parameter is never matched (a subagent spawned without `model` inherits the session's model), and a full model ID is not the alias. And `permissions.blockReadsOutsideWorkingDirectories` stops reads escaping the directories the session was started in.
 
 **Bash-path caveat:** a deny rule on the Read tool does not by itself block `cat .env` or `python -c "open('.env')"` through the Bash tool — coverage of Bash-mediated file access is version-dependent. Pair Read deny rules with Bash deny rules (e.g. `"Bash(cat .env*)"`) and/or the PreToolUse guard from this guide. The combination — not deny rules alone — is the enforced posture.
 

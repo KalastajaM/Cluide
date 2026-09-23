@@ -48,7 +48,7 @@ current as the project changes.
 |---|---|---|
 | Memory | `Profile/`, `Knowledge/` | the assistant needs context that outlives a session — who people are, where topics stand |
 | Intake | `Incoming/` | material reaches this project outside a chat (`Incoming/README.md` has the cases) |
-| Dispatch routing | `ROUTING_LOG.md` + the *Delegation* section of `AGENTS.md` | work here gets delegated to subagents, workflow stages, or scheduled tasks |
+| Dispatch routing | `ROUTING_LOG.md` + the *Delegation* section of `AGENTS.md` + the *Dispatch Overrides* section of `CLAUDE.md` | work here gets delegated to subagents, workflow stages, or scheduled tasks |
 
 `templates/BLOCKS.md` is the full catalogue: these three, plus the blocks a project installs later
 from a task or another template, each with what it costs per session and where its installation
