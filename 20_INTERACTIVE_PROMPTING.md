@@ -311,6 +311,8 @@ Signs you're approaching the limit: responses start omitting details they'd norm
 
 The first-line answer is `/compact` — it summarises the conversation in place, freeing context while keeping the session going.
 
+In a long session, don't wait for the limit. Every turn re-sends the whole context, so compacting at a natural break — a finished subtask, the start of a new phase — makes every later turn cheaper. Anthropic's worked example has a compaction at 150K tokens paying for itself within about ten turns ([What a task costs on Opus 5.5](https://claude.com/blog/what-a-task-costs-on-opus-5-5), 2026-09-22). Compaction also rewrites the cached prefix, so do it between steps rather than in the middle of one ([Guide 10 §Prompt Caching](./10_COST_PERFORMANCE.md#prompt-caching)).
+
 For more control over what carries forward, do it manually:
 1. Summarise what's been completed: "Summarise the changes made so far in 5 bullet points."
 2. Save that summary somewhere (a file, a note)

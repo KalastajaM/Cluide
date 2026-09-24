@@ -19,7 +19,7 @@ folder or translate their model names. An OpenAI counterpart remains untested.
 | File | Agent | Model | Effort | Role |
 |---|---|---|---|---|
 | `scout.md` | scout | haiku | low | Bulk reading, searching, extraction, classification. Instructed read-only (Bash granted for inspection commands). |
-| `builder.md` | builder | sonnet | (default) | Implementing well-specified changes and drafts. |
+| `builder.md` | builder | sonnet | (default) | Implementing well-specified changes and drafts. For code, spawn it with `model: opus` (the dispatch table routes code to the top working tier). |
 | `verifier.md` | verifier | opus | high | Adversarial checking of other agents' output. Instructed read-only (Bash for checks), cannot spawn. |
 | `researcher.md` | researcher | sonnet | (default) | Web research legwork; returns findings with sources. |
 
@@ -45,10 +45,10 @@ Optionally add this stanza to `~/.claude/CLAUDE.md` (or a project's) to reinforc
 ```markdown
 ## Delegation
 When a task splits into independent or mechanical parts, plan and review here but dispatch the
-parts to subagents — scout for bulk reading/extraction, builder for specified changes,
-researcher for web legwork, verifier for checking — in parallel where independent. Subtask
-prompts must be self-contained. Have workers return summaries and file paths, not full content.
-Do small subtasks inline; dispatching has overhead.
+parts to subagents — scout for bulk reading/extraction, builder for specified changes (with
+model opus when the change is code), researcher for web legwork, verifier for checking — in
+parallel where independent. Subtask prompts must be self-contained. Have workers return
+summaries and file paths, not full content. Do small subtasks inline; dispatching has overhead.
 ```
 
 ## Notes

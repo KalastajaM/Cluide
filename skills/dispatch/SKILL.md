@@ -95,7 +95,11 @@ Verification scope:   verifier briefs only: full recheck, or a sample of stated 
   be published or relied on is checked against the primary source by the orchestrator before it
   is used, and any correction is logged (§7).
 - **When in doubt between two tiers, take the cheaper one and attach verification.** The
-  escalation ladder makes this rational.
+  escalation ladder makes this rational — except for work whose failure is expensive to detect
+  or to retry: code, or anything that re-reads a large context. Per-token price is not per-task
+  cost. Every turn and every retry re-sends the worker's whole context, so a cheaper tier that
+  fails once can cost more than the tier above getting it right first time. Start that work at
+  the tier that usually succeeds.
 
 ## 4. Escalation ladder
 
@@ -105,6 +109,13 @@ also fails, do the work inline. Where the host exposes no higher tier (a single 
 the ladder is one retry with the failure quoted, then inline. This turns "which model is good
 enough?" from a prediction into a cheap empirical loop, and escalations and corrections are the
 learning signal (§7).
+
+**Effort before tier.** Where the surface sets effort per call (§5 says where the Claude dial
+exists), the one escalation may instead be an effort step at the same tier — `medium` to `high`.
+Take it when the worker had the right approach but stopped short: a shallow answer, a fix at one
+layer when the fault spans two. Take the tier step when it misread the task or lacked the
+capability. Extra reasoning on one attempt usually costs less than a retry loop. Log either kind as
+escalated, and name the step in the outcome.
 
 ## 5. Claude binding
 
@@ -117,14 +128,23 @@ this skill was last edited, follow the schema and current product documentation,
 | Archetype | Log keys | Tier | Effort | Verification |
 |---|---|---|---|---|
 | Bulk read / extract / classify / OCR; file inventories and sweeps; format conversion; mechanical renames | `bulk-extract`, `sweep`, `convert` | haiku | low | orchestrator spot-checks a sample |
-| Web research and docs lookups; structured drafting from a clear spec; routine code; applying agreed edits | `research`, `docs-lookup`, `draft-to-spec`, `code`, `apply-edits` | sonnet | medium | orchestrator reviews the output |
+| Web research; lookups in docs, logs and test output; structured drafting from a clear spec; applying agreed edits whose wording the brief gives | `research`, `docs-lookup`, `draft-to-spec`, `apply-edits` | sonnet | medium | orchestrator reviews the output |
+| Writing or changing code, including routine code to a clear spec | `code` | opus | medium | the worker runs the code or its tests; orchestrator reviews the diff |
 | Judgment calls; sensitive drafting (legal, financial, anything with figures and dates that will be used); synthesis across sources; verifying lower-tier work | `judgment`, `sensitive-draft`, `synthesis`, `verify` | opus | high | second independent pass only if high-stakes |
-| Hardest planning; longest-horizon synthesis | `plan` | fable | high | rarely dispatched — usually the session itself |
+| Hardest planning; longest-horizon synthesis; long unsupervised runs and problems with no existing pattern, where the result matters more than the token price | `plan` | fable | high | rarely dispatched — usually the session itself |
+
+Code sits on the top working tier at `medium`, not on sonnet: a wrong first attempt at code is
+expensive to detect and to retry, so the cheaper tier rarely stays cheaper per task (§3). This
+follows Anthropic's guidance for the current lineup — smaller models "for lookups, not for writing
+code" ([What a task costs on Opus 5.5](https://claude.com/blog/what-a-task-costs-on-opus-5-5), 2026-09-22) — and is a starting point
+for calibration (§7), not a finding of any routing log. The `code` key keeps its name, so the log
+can demote it again if it never escalates.
 
 The Effort column is a per-row default, not a range. Drop to `low` for anything whose output is a
 label, a list, or a lookup; raise to `high` on sonnet for drafting that needs real care, and to
 `xhigh` only for the hardest verification or planning stages. Do not pay `high` effort for
-mechanical work because it is the default.
+mechanical work because it is the default. `max` is a setting for a single session, not a worker
+default.
 
 **Where the effort dial exists.** Workflow stages expose per-call `effort`, and Claude Code agent
 frontmatter pins it per agent (`effort:` — the starter pack does this). A Cowork Agent-tool spawn
@@ -156,7 +176,8 @@ persist between Cowork sessions; this skill plus per-spawn parameters are the me
 
 **Claude Code:** prefer the named agents from the starter pack if installed (`scout`, `builder`,
 `verifier`, `researcher` — see `templates/AGENT_STARTER_PACK/` in Cluide), since their frontmatter
-sets tier and effort by default, without re-deciding them per prompt. Otherwise pass the
+sets tier and effort by default, without re-deciding them per prompt. `builder` is pinned to
+sonnet; for code, spawn it with `model: opus`, which overrides the pin. Otherwise pass the
 per-invocation `model` parameter. Recommended session default for orchestrating work: `opus` (or
 `opusplan` where plan and execute phases are distinct). From v2.1.251, `CLAUDE_CODE_SUBAGENT_MODEL`
 is only a fallback default — a definition's model or a per-spawn model still wins; on earlier

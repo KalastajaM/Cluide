@@ -78,7 +78,7 @@ CLAUDE.md, skills, and task files need to work when you've forgotten all the con
 Every correction you give the assistant — and save to memory — is a correction you never have to make again. The first few weeks feel slow because you're building up the knowledge base. After that, the assistant improves noticeably with each session. Invest in saving corrections early.
 
 **Choose the right model tier for the job.**
-Sonnet handles structured extraction, template-driven output, and routine data processing at a fraction of the cost of Opus — a premium that compounds across daily runs. Use Haiku for feeder tasks — triage, classification, bulk extraction; default to Sonnet; reserve Opus for judgment-heavy review; and Fable for the hardest long-horizon synthesis. Upgrade a tier only when quality visibly suffers. See [Guide 10](./10_COST_PERFORMANCE.md) for the canonical pricing table and the full decision framework.
+Sonnet handles structured extraction, template-driven output, lookups and routine data processing at a fraction of the cost of Opus — a saving that compounds across daily runs. Use Haiku for feeder tasks — triage, classification, bulk extraction; default to Sonnet for routine runs; use Opus for writing code and judgment-heavy review; and Fable for the hardest long-horizon synthesis. Compare per task, not per token: a cheaper tier that needs a retry can cost more than the tier above getting it right. The routing table and its standing rules live in the `dispatch` skill; [Guide 10 §Model Tier Selection](./10_COST_PERFORMANCE.md#model-tier-selection) covers comparing costs from current provider pricing and measured usage.
 
 **Design tasks to handle upstream failures gracefully.**
 When tasks depend on each other's output, the downstream task must check that the expected input exists and is fresh — never assume the upstream task succeeded because it was scheduled first. Log outcomes (success/skipped/failed) to a run log so debugging is straightforward. See [Guide 09](./09_MULTI_TASK_ORCHESTRATION.md).
@@ -167,7 +167,7 @@ A setup that grows without pruning becomes a liability. These practices keep thi
 10. Save corrections to memory — the loop compounds
 11. Write instructions that stand alone without context
 12. Markdown is the source of truth; generate Word/PPT/PDF from it on demand
-13. Default to Sonnet; drop feeder steps to Haiku; reserve Opus/Fable for judgment-heavy work (Guide 10)
+13. Default to Sonnet for routine runs; drop feeder steps to Haiku; use Opus for code and judgment-heavy work, Fable for the hardest; compare per task, not per token (Guide 10)
 14. Design downstream tasks to handle upstream failures gracefully
 15. Compute and synthesise before ingesting — never dump raw data
 
