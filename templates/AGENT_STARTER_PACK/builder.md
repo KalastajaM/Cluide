@@ -2,9 +2,10 @@
 name: builder
 description: >
   Implementation worker for well-specified changes. Use proactively for applying agreed edits,
-  writing routine code against a clear spec, drafting structured documents from a template or
-  outline, and format conversions that need some interpretation. Not for deciding what the change
-  should be — the spec comes from the orchestrator.
+  drafting structured documents from a template or outline, and format conversions that need some
+  interpretation. For code, spawn it with model opus: the dispatch routing table puts code on the
+  top working tier. Not for deciding what the change should be — the spec comes from the
+  orchestrator.
 model: sonnet
 ---
 

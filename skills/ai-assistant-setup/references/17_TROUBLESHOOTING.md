@@ -392,9 +392,9 @@ An applied IMPROVEMENTS.md proposal may have added "also read [file]" to the tas
 *Fix:* Review recently applied proposals. Revert any that added file reads without clear justification.
 
 **3. You switched to a more expensive model without adjusting scope**
-Opus costs roughly 2.5x Sonnet — noticeable, but rarely the whole story. The bigger cost lever points the other way: extraction and triage steps often run fine on Haiku at a fraction of the cost (see Guide 10's canonical table for current per-model prices).
+Opus costs a multiple of Sonnet per token — noticeable, but rarely the whole story. The bigger cost lever points the other way: extraction and triage steps often run fine on Haiku at a fraction of the cost. Check the current ratio on the provider's pricing page rather than a remembered one ([Guide 10 §What Things Actually Cost](./10_COST_PERFORMANCE.md#what-things-actually-cost) names the source).
 
-*Fix:* Match the model to the step — Haiku for extraction/triage, Sonnet for routine runs — or reduce the task's input scope to compensate. Use the cost tables in [Guide 10](./10_COST_PERFORMANCE.md) to estimate the difference.
+*Fix:* Match the model to the step — Haiku for extraction/triage, Sonnet for routine runs — or reduce the task's input scope to compensate. Estimate the difference from measured usage and current rates, per task rather than per token ([Guide 10 §Model Tier Selection](./10_COST_PERFORMANCE.md#model-tier-selection)).
 
 ---
 

@@ -22,6 +22,12 @@ Track these four metrics at the end of every task run:
 
 Prefer measured counters. Label estimates and compare like workloads on the same surface and model; rough estimates are useful for trends, not invoices.
 
+Where the host reports cache counters (in Claude Code, `/usage` shows the session's input, output and cache tokens), three ratios explain most of a run's cost:
+
+- **Cache share** — cached input as a share of all input. Low means the reusable prefix keeps changing, or the session idles past the cache lifetime (§Prompt Caching).
+- **Output against input** — output is priced far above cached input, so a run that writes a lot is expensive however little it reads.
+- **Total input against conversation size** — roughly how many times the context was re-sent, which tracks the turn count. High means many small turns.
+
 ---
 
 ## What Things Actually Cost
@@ -48,6 +54,8 @@ Choose a model from the actual host inventory, then compare quality and cost on 
 
 For Claude, the repository's `dispatch` policy assigns available Claude tiers; it is a Claude routing policy, not a cross-vendor equivalence table. Effort is the other Claude cost lever: the Claude Code `maxEffortLevel` setting caps effort on every provider, which bounds what a delegated or scheduled run can spend on reasoning regardless of what its prompt or agent definition asks for ([Claude Code changelog](https://code.claude.com/docs/en/changelog), v2.1.263–269). For OpenAI, retain the configured model unless the user or host policy authorizes another supported identifier. Never translate Haiku, Sonnet or Opus into a guessed OpenAI model.
 
+**Compare per task, not per token.** A task's cost is set by how many turns it takes, how much of each turn's re-sent context comes from cache, and how much it writes, as much as by the rate card. A cheaper model that needs more turns or a retry re-sends its whole context each time and can cost more per task than a stronger one that gets it right first time; raising effort on one attempt can cost less than the retry it prevents. Anthropic's own worked examples make the point ([What a task costs on Opus 5.5](https://claude.com/blog/what-a-task-costs-on-opus-5-5), 2026-09-22). So record turns and retries alongside tokens when comparing, and route per workload: lookups and bulk reading move down a tier, writing code does not.
+
 Use three checks before changing a recurring task's model: the candidate is available to that execution surface, the fixture output passes the same graders, and measured allowance/spend or latency improves. Record the exact model returned by the run. A task prompt can request routing only where the host exposes that control; changing prose does not change the running session's model.
 
 [Guide 09](./09_MULTI_TASK_ORCHESTRATION.md#model-aware-dispatch) covers workload routing and [Guide 31](./31_BEHAVIOUR_TESTS.md) the acceptance tests.
@@ -57,6 +65,8 @@ Use three checks before changing a recurring task's model: the candidate is avai
 ## Prompt Caching
 
 Caching can reduce repeated-input costs, but eligibility, rates, retention and counters depend on the API and model. Keep a stable reusable prefix, avoid unnecessary repetition, and inspect the actual cache usage returned by the provider before assigning savings. Do not assume a daily task reuses yesterday's cache.
+
+**Cache lifetime and what breaks it (Claude; source: [What a task costs on Opus 5.5](https://claude.com/blog/what-a-task-costs-on-opus-5-5), 2026-09-22).** The default lifetime is five minutes on an API key and one hour on a Claude subscription. A cache read costs a small fraction of fresh input and a cache write costs more than fresh input, so a pause longer than the lifetime turns the next turn's cheap read into a write of the whole context. Within a session, switching model, changing the effort or thinking setting, and connecting or disconnecting an MCP server mid-work also invalidate the cached prefix; make those changes at a natural break, not mid-task. Two consequences for delegation: every spawned worker writes its own cache, which is one more reason to batch a fan-out rather than split it per item (the `dispatch` skill, §1), and a fork reuses the parent's cache but also runs on the parent's model ([Guide 09](./09_MULTI_TASK_ORCHESTRATION.md)). Runs of a scheduled task are hours apart, beyond any lifetime, which is why a daily task does not reuse yesterday's cache.
 
 Subscription usage displays are not API cache invoices. For Claude Code, use the usage and cost controls present in the installed version; for Codex or ChatGPT, use the host's account usage display or exposed usage tool. If only elapsed time and item counts are available, record those. A cache hit or exact token count cannot be reconstructed reliably from the length of the final answer.
 
