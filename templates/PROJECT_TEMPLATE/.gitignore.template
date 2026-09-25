@@ -1,6 +1,7 @@
 # Personal data — the memory block is untracked in full, folders and all.
 # A fresh clone therefore has no Profile/ or Knowledge/: recreate them from
-# templates/PROJECT_TEMPLATE/ rather than expecting git to restore them.
+# the clean template for a NEW installation. Recover lost populated state from
+# an approved backup; blank stubs do not restore knowledge.
 Profile/
 Knowledge/
 
@@ -10,7 +11,8 @@ Knowledge/
 *.state.json
 *.cache.json
 
-# Scratch and generated deliverables — regenerable; keep the folder notes only.
+# Scratch and deliverables may hold confidential, non-regenerable records.
+# Keep folder notes only; valuable ignored material needs an approved backup.
 # Note: because these patterns exclude subdirectories too, git will not descend
 # into them, so a later "!Outputs/Some/Subfolder/file" negation cannot work.
 # Un-ignore the parent folder first if you ever need one.
@@ -28,3 +30,11 @@ OPERATIONS.local.md
 .env
 .env.*
 !.env.example
+
+# Confidential retired material, outbox and routing history.
+_archive/*
+!_archive/README.md
+Outbox/
+ROUTING_LOG.md
+
+# harvested: 2026-09-22; generic framework design review, not production validation

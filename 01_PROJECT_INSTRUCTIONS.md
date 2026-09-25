@@ -298,3 +298,13 @@ For comparison — a canonical policy for a software engineer using an assistant
 - "Assume it is from my codebase" avoids the assistant treating every code snippet as a standalone hypothetical with invented context.
 
 Both examples use the same three-section structure. The sections stay fixed; the content inside reflects real use.
+
+## Start useful work while context develops
+
+Onboarding and operation can overlap. A new role or project rarely starts with complete information. Define a minimum starting scope: the principal, immediate task, authority boundary, allowed data and sources, and where drafts and decisions belong. Track unknowns with an owner or source to consult and a review trigger. Do not invent facts to finish a checklist.
+
+For each task, distinguish missing context from missing permission. With enough evidence for a reversible draft, give conditional advice, state the assumptions that could change it, and compare the cost of waiting with the cost of acting incorrectly. Stop only work that depends on a critical missing fact or permission; continue independent work. A useful provisional brief can coexist with an unfinished company profile.
+
+Expand scope as evidence improves. Supervised work does not certify unattended operation: each recurring job separately needs its inputs, acceptance criteria, approval scope, failure handling, ownership and fresh-session checks. Measure usefulness through decision quality, correction burden and time saved after review, not output volume alone. Keep proposals distinct from decisions actually adopted.
+
+<!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->

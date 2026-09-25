@@ -105,6 +105,11 @@ For each memory file:
 - Longer than ~10 lines: suggest trimming — memory should be compact facts, not narratives
 - Relative dates ("next Thursday", "in a few weeks"): flag — these become meaningless; should be absolute dates
 
+Also flag confirmation without a user source, edit timestamps presented as verification dates,
+recency used as the only conflict resolver, and rules that prevent explicit user corrections.
+Expect provenance for superseded facts and separation of hypotheses from decisions. Check that
+sensitive memory stays within its permitted boundary and valuable ignored state has a recovery route.
+
 #### Check 8: Right layer for the job
 
 Guide 04's rule: **scheduled tasks must not depend on native memory or on the account-level memory behind claude.ai and Cowork.** Neither is verified for autonomous runs — a task that relies on one may work some runs and forget everything on others, which reads as a task bug rather than a memory bug. The rule is conservative pending a test, so report the dependency as unverified rather than as known-broken.
@@ -180,3 +185,5 @@ Tell the user:
 - Issues found and fixed
 - Final index count
 - "Re-run this audit every few months, or when the memory system starts feeling slow or out-of-date."
+
+<!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->

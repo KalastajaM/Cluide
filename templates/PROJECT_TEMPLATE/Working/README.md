@@ -6,4 +6,7 @@ separate from `Outputs/` so that nothing unfinished is ever mistaken for a deliv
 Nothing here is authoritative, and that is the whole point — it is the folder where a session can
 write without deciding first whether the result matters. A file that has become the source of
 truth for something belongs in the project's proper home for that material; a file that has become
-a deliverable belongs in `Outputs/`. What is left over is safe to clear.
+a deliverable belongs in `Outputs/`. What remains is a candidate for cleanup, not automatically disposable. Check for unique
+evidence, valuable drafts and rollback copies; apply the project’s restore and approval rules.
+
+<!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->

@@ -349,7 +349,7 @@ Append a letter to `[updated: YYYY-MM]` tags when writing profile entries to ind
 | `I` | Inferred from an observed pattern | `[updated: 2026-04 I]` |
 | `C` | [USER] confirmed an inference | `[updated: 2026-04 C]` |
 
-`[confirmed: YYYY-MM]` tags imply tier `C` or a direct statement — no letter needed. `[USER]` and `[USER-CONFIRMED]` tags are the highest tier — never overwrite.
+`[confirmed: YYYY-MM]` tags imply tier `C` or a direct statement — no letter needed. `[USER]` and `[USER-CONFIRMED]` require actual user statements or confirmation. Inference alone cannot override them; explicit user corrections supersede the earlier claim with source/date and reason retained in history.
 
 Do **not** retroactively tag existing entries. Apply to new additions only.
 
@@ -449,3 +449,5 @@ Checklist used by the cowork-optimizer skill during periodic structural reviews 
 6. **TASK.md length** — target under 250 lines (extract detail into this reference file).
 7. **Credit efficiency audit** — review tool-call counts over last 10 runs. Identify most expensive step. Is the fast-path triggering at an appropriate rate?
 8. **Cross-task signals** — check MAINTENANCE_REPORT.md Task Health section for improvement candidates.
+
+<!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->

@@ -27,7 +27,7 @@ PLATFORM_SETUP.md ← source bootstrap, settings mirror and verification
 README.md      ← this file; how the layout works and how to set it up
 Outputs/       ← finished deliverables, generated from the sources
 Working/       ← scratch and in-progress material
-_archive/      ← superseded material, never read back
+_archive/      ← superseded material; no routine reads
 .gitignore.template
 Profile/  Knowledge/  Incoming/  ROUTING_LOG.md   ← blocks; keep or delete each
 ```
@@ -60,7 +60,10 @@ procedure lives.
 
 ### Step 1 — Copy and rename
 
-Copy `PROJECT_TEMPLATE/` to where the project should live and rename it.
+Copy the clean distributed `PROJECT_TEMPLATE/` to the destination and rename it. Do not copy
+a live project’s `.git`, personal state or verification claims. Activate `.gitignore.template`
+as `.gitignore` before personalising; inspect any files already tracked. Confirm the allowed
+data/provider boundary before ingesting sensitive material.
 
 ### Step 2 — Delete the blocks you don't need
 
@@ -72,7 +75,9 @@ rule pointing at a folder that no longer exists is worse than no rule, and it si
 
 ### Step 3 — Fill in AGENTS.md
 
-Replace every `[PLACEHOLDER]`; search for `[` to find them. The sections that need real thought:
+Review every `[PLACEHOLDER]`; search for `[` to find them. Fill only known values. Mark an
+unresolved item as unknown with a source/owner and review trigger, or explicitly not applicable.
+Do not guess to finish setup. The sections that need real thought:
 
 - **About** — delete it outright for a project that is not about a person.
 - **Context** — what this project covers, specifically enough that a stranger could tell it apart
@@ -88,6 +93,11 @@ the assistant will meet in this project. Leave the Open Action Items table empty
 
 In `Profile/PROFILE_detail.md`, add entries for anyone or anything the assistant needs context on from
 day one. `Knowledge/` starts with just its index; topic files get created when a topic earns one.
+
+Context discovery and supervised work may overlap. Agree the minimum facts and authority for each
+early task, give conditional advice where useful, and review assumptions as evidence arrives.
+A ready workspace does not certify unattended jobs. Ignored profile and knowledge files need an
+approved backup; copying an empty template is initialisation, not recovery of lost knowledge.
 
 ### Step 5 — Configure the selected surfaces
 
@@ -159,3 +169,5 @@ To retrofit this layout onto a project that grew without one:
 
 > "Read `tasks/reorganize-project.md` and run it against [path], targeting the layout in
 > `templates/PROJECT_TEMPLATE/README.md`."
+
+<!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->

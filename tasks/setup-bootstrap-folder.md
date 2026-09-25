@@ -120,7 +120,8 @@ Write `bootstrap/SETUP.md` with the exact copy commands for a fresh clone:
 # Bootstrap Setup
 
 Run these commands after cloning the repository to initialise the runtime state files.
-This only needs to be done once on a fresh clone.
+Run only for a new installation, not recovery of missing operational knowledge.
+Each copy command must leave existing state intact.
 
 ## State files
 [generated copy commands for each stub]
@@ -130,23 +131,25 @@ Generate the copy commands based on which stubs were created and where they belo
 
 Example:
 ```bash
-cp bootstrap/pending_actions.json tasks/email-digest/pending_actions.json
-cp bootstrap/RUN_LOG.md tasks/email-digest/RUN_LOG.md
+test -e tasks/email-digest/pending_actions.json || cp bootstrap/pending_actions.json tasks/email-digest/pending_actions.json
+test -e tasks/email-digest/RUN_LOG.md || cp bootstrap/RUN_LOG.md tasks/email-digest/RUN_LOG.md
 mkdir -p Profile
-cp bootstrap/PROFILE_SUMMARY.md Profile/PROFILE_SUMMARY.md
+test -e Profile/PROFILE_SUMMARY.md || cp bootstrap/PROFILE_SUMMARY.md Profile/PROFILE_SUMMARY.md
 ```
 
 ### Step 6 — Optionally add self-bootstrap to task files
 
 Ask:
-> "Would you like me to add first-run detection to the task files? This means each task will automatically copy the bootstrap stub if its state file is missing — no manual setup needed on a fresh clone."
+> "Would you like me to add first-run detection to the task files? This means each task can initialise missing state only when this is confirmed as a new installation — no manual setup needed on a fresh clone."
 
 If yes, ask which tasks to update.
 
 For each task's `TASK.md`, add a first-run check at the top of the run procedure (Step 0 or the Read State step):
 
 ```markdown
-**First-run check:** Before reading state files, verify they exist:
+**First-run check:** Confirm this is a new installation before initialising missing state.
+If previously populated state is unexpectedly absent, stop dependent work and recover its backup.
+For a new installation only, check each file and never overwrite an existing destination:
 - If `[state-file]` does not exist:
   - Copy from `bootstrap/[state-file]` if available
   - Otherwise create with empty structure: `[structure]`
@@ -173,3 +176,9 @@ Tell the user:
 - Whether self-bootstrap was added to task files
 - "Test this works: delete one of the state files and run the task — it should recreate the file from the bootstrap stub automatically."
 - "Update the stubs whenever the state file schema changes (new fields, new sections). Stubs should always mirror the current schema — just without real data."
+
+## Initialization is not recovery
+
+Stubs are for a genuinely new, empty installation. Never overwrite existing state. If populated memory or operational state unexpectedly disappears, pause dependent work and recover the approved backup; do not seed blanks and report recovery complete. State this distinction in the generated bootstrap instructions and test that an existing synthetic file survives unchanged.
+
+<!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->

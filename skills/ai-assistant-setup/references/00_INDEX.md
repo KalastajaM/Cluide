@@ -543,6 +543,7 @@ Tasks are designed to be portable: copy any task file to another project's `task
 | `tasks/tune-instruction-layers.md` | Review all three instruction layers — available app-side fields, shared policy and native adapters, with per-surface mirrors and source revisions | 25, 01 |
 | `tasks/setup-behaviour-tests.md` | Interview → a `tests/behaviour/` suite of prompt-plus-grader cases, a hand-run baseline, and the shared policy block that ties rule edits to a test run | 31 |
 | `tasks/setup-action-authority.md` | Inventory the actions tasks and skills can take, classify them by consequence, install the action-authority block, propose standing approvals only from logged evidence | 32, 12 |
+| `tasks/setup-sibling-access.md` | Interview → write a "Sibling project access" section so the assistant requests a sibling project's folder only when a task needs a specific fact from it, never as a blanket step | 23 |
 | `tasks/setup-dual-platform.md` | Make a project usable from Claude and ChatGPT/Codex — one shared `AGENTS.md`, a thin `CLAUDE.md` adapter, a per-surface setup page with sourced platform facts, one scheduler owner per job, and a fresh-session check on each surface | 35, 25, 01, 24, 11 |
 
 ### Audit tasks (re-runnable)
@@ -555,6 +556,7 @@ Tasks are designed to be portable: copy any task file to another project's `task
 | `tasks/audit-memory.md` | Check memory for staleness, duplicates, misplaced content — across the three on-disk layers (Claude Code auto memory, `.auto-memory/`, profile files), alongside native memory and source access on each selected platform | 04 |
 | `tasks/audit-skill.md` | Review a `SKILL.md` — trigger quality, workflow, output format, edge cases, runtime tool-permission verification | 03, 02 |
 | `tasks/audit-file-hygiene.md` | Sweep actual clutter: OS junk, lock/temp files, duplicate families, superseded outputs, and trees that are gitignored but still loading as context | 11, 24 |
+| `tasks/audit-dual-platform.md` | Short, re-runnable sanity check for an already dual-platform project — required files, sibling-folder access and scheduler ownership still resolve, with a fix per row | 35, 23, 17 |
 | `tasks/analyze-project.md` | Whole-project sweep of *another* assistant project (local or GitHub) against the full guide set → writes a `CLUIDE_IMPROVEMENT_PLAN.md` into it; read-only, plan-only (criteria in `analyze-project-reference.md`) | All (01–35) |
 | `tasks/reorganize-project.md` | Safely restructure a project's folders: move files and rewire every reference without breaking it; takes a restore point first | 24 |
 | `tasks/relocate-project.md` | Move a project (or a whole projects root) somewhere else — sweeps the project, scheduled-task, artifact, Claude Code state and app-config layers, and refuses streaming sync folders. Per-layer detail in `relocate-project-reference.md` | 11, 24, 05, 25 |

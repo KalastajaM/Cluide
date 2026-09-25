@@ -46,6 +46,9 @@ threshold copied here goes stale silently, because nothing breaks when the audit
 - **Checks:** does the layout match the confirmed runtime and its native configuration/source model? Are state files (`RUN_LOG.md`, `IMPROVEMENTS.md`) co-located with definitions? Any orphaned or duplicated config? Are generated outputs accumulating at the root instead of in their own folder? Do recurring files of the same kind share a format? Does inbound material that arrives outside a chat (scans, exports, downloads, files handed over by someone else) have a named landing place, or is it accumulating at the root? If there is an intake folder, does it have permanent residents, and does the selected shared policy say what the assistant may file where? **N/A** for the intake checks where every input arrives through a session. If a restructure is warranted, recommend `reorganize-project` rather than ad-hoc moves.
 
 ### 2. Project instruction quality — guides 01, 16, 02 → `setup-claude-md` / `audit-claude-md`
+
+Check whether context discovery can overlap with scoped supervised work, with explicit unknowns and task-specific permission gates.
+
 - **Healthy:** present, lean, sectioned, and current — `audit-claude-md.md` holds the length target and the required sections.
 - **Checks:** run `audit-claude-md.md`'s checklist read-only. Flag a missing or empty native instruction target or project bootstrap, bloat against its stated target, missing core sections, rules contradicted by observed behaviour, and vague instructions that should be examples (Guide 02).
 
@@ -54,7 +57,10 @@ threshold copied here goes stale silently, because nothing breaks when the audit
 - **Checks:** weak/generic descriptions that won't trigger; missing output format; unnamed tools; no edge cases; skill that should be a task (or vice-versa, per Guide 03). Check native discovery and supported metadata for the declared surface. For prohibitions, inspect actual tool grants and sandbox/approval controls; never require Claude frontmatter for Codex or source-only ChatGPT.
 
 ### 4. Memory & profile — guides 04, 14 → `setup-memory` / `audit-memory`
-- **Healthy:** one of the three layers (native memory, `.auto-memory/`, or profile files) is in place where cross-session persistence is needed, and it is the *right* one — scheduled tasks use `.auto-memory/` or profiles, never native memory (Guide 04). `audit-memory.md` holds the size targets and the per-layer checks.
+
+Check correction provenance, genuine user-confirmation tags, source reliability rather than recency alone, and recovery for valuable ignored memory.
+
+- **Healthy:** an appropriate layer from Guide 04 (separate native conversational and coding-agent memory, `.auto-memory/`, or profile files) is in place where cross-session persistence is needed, and it is the *right* one — scheduled tasks use `.auto-memory/` or profiles, never native memory (Guide 04). `audit-memory.md` holds the size targets and the per-layer checks.
 - **Checks:** run `audit-memory.md` read-only against every layer present, not just `.auto-memory/`. Flag persistence expected but absent, bloated always-loaded memory, stale or duplicated entries, facts that belong in a profile rather than memory, and a scheduled task relying on native memory. Do not report "no memory system" on the absence of `.auto-memory/` alone — check for native memory and profile files first.
 
 ### 5. Scheduled-task efficiency — guide 06 → `setup-scheduled-task` / `audit-task-efficiency`
@@ -82,6 +88,9 @@ threshold copied here goes stale silently, because nothing breaks when the audit
 - **Checks:** grep for credential patterns (report **location only**, never values); permission breadth; unrestricted shell or network access without a justified permission policy; autonomous task handling untrusted input without guardrails. For a deeper pass, recommend the `security-review` skill.
 
 ### 11. Git & ignore hygiene — guide 11 → `setup-github` / `setup-ignore-hygiene` / `audit-file-hygiene` / `git-guru` skill
+
+Check staged content and retained history before publication, clean generic exports, and backups for non-regenerable ignored state.
+
 - **Healthy:** `.gitignore` excludes run logs / outputs / personal data; context-loading rules exclude large generated content; `.claudeignore` is only a Claude advisory convention; tracked files that should be ignored are untracked; the working tree is free of OS junk, lock/temp files, and duplicate families. `setup-ignore-hygiene.md` owns the ignore-pattern list; `audit-file-hygiene.md` owns the clutter checks.
 - **Checks:** run `audit-file-hygiene.md`'s six checks read-only for the working-tree half, and `setup-ignore-hygiene.md`'s audit step for the ignore-file half. Flag a missing `.gitignore` where git is used, run logs or secrets tracked, personal-data files committed, an ignore rule covering one artifact but not its near-identical sibling, and unnecessary generated material actually loaded as context; never require `.claudeignore` on OpenAI. For ongoing git operations and repo-flow problems (stale branches, sync drift, missing repo profile), the fix is installing and running the `git-guru` skill.
 
@@ -160,6 +169,9 @@ outside a single-project audit. Judge only what is visible from inside the targe
   project with no standing rules, skills or scheduled tasks of its own.
 
 ### 24. Action authority — guide 32 → `setup-action-authority`
+
+Check Class A with an empty approval table, scoped one-time Class B approval, standing-approval validity, private remote publication and actual remote draft disclosure.
+
 - **Healthy:** every action the project's tasks and skills can take is classified by consequence; outbound
   and irreversible capabilities are absent from unattended tasks where the connector allows it, and the
   absence is a security-properties row; standing approvals carry shape, scope, limit, grant date, evidence
@@ -285,3 +297,5 @@ Each fix maps to a Cluide task or skill. When you're ready, run them in the orde
 ```
 
 <!-- last reviewed: 2026-08-04 against 23_MULTI_PROJECT_SETUPS.md, 24_PROJECT_FOLDER_STRUCTURE.md, 25_PROJECT_INSTRUCTION_LAYERS.md, 26_CONTEXT_SCOPING.md -->
+
+<!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->
