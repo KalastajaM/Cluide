@@ -61,7 +61,7 @@ These texts are ready to apply; their presence here does not configure an app. R
 
 Ask: “Which project instruction files did you load? Where should review notes go, what is the merge gate, and which parts of the guide are still Claude-specific?”
 
-The answer should identify `AGENTS.md`, `development/`, the shared merge gate, and which native mechanisms remain platform-specific. In Claude Code, check `/memory` to confirm the imported file. A natively read `AGENTS.md` does not show in `/memory`; look for the "AGENTS.md loaded" line instead. For an uploaded-source project, also check the source revision; replace stale uploads explicitly. A successful answer verifies that session, not every product or future session.
+The answer should identify `AGENTS.md`, `development/`, the shared merge gate, and which native mechanisms remain platform-specific. In Claude Code, check `/memory` to confirm the imported file. Claude Code v2.1.280 and later also list a natively read `AGENTS.md` in `/memory`; on earlier versions, ask Claude what its project instructions say. For an uploaded-source project, also check the source revision; replace stale uploads explicitly. A successful answer verifies that session, not every product or future session.
 
 ## Keeping the project dual-platform
 
