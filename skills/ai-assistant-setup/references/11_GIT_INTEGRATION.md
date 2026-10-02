@@ -317,6 +317,8 @@ fix: grocery-skill — add edge case for recipe requests
 Ask the assistant to follow this convention when it updates files:
 > "When updating any task file, commit after with the format: `run: [task-name] run N — [what changed]`."
 
+**Attribution lines.** Claude Code adds its own commit and pull request attribution unless told otherwise. Since v2.1.281, `"attribution": false` in `settings.json` hides all of it; older versions skip a settings file that holds the boolean, so a settings file shared across versions should keep the object form ([changelog](https://code.claude.com/docs/en/changelog); [settings reference](https://code.claude.com/docs/en/settings-reference#attribution)). Attribution is a separate control from the built-in git guidance: if your shared policy sets its own commit and PR rules, `"includeGitInstructions": false` leaves out Claude Code's built-in commit and PR instructions and its git status snapshot ([settings reference](https://code.claude.com/docs/en/settings-reference#includegitinstructions)).
+
 ---
 
 ## Configuring Git for the First Time

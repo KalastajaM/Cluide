@@ -56,8 +56,8 @@ Fixed list. Read each page from the boundary date to today; do not sample.
 
 | Source | What it settles |
 |--------|-----------------|
-| https://code.claude.com/docs/en/whats-new (weekly digest) and https://code.claude.com/docs/en/changelog | Claude Code CLI, Desktop, web, Agent SDK: commands, flags, settings, hooks, subagents, skills, memory, permission modes |
-| https://claude.com/docs/cowork/changelog and the pages under https://claude.com/docs/cowork/ | Cowork: projects, scheduled tasks, Dispatch, plugins, folder access, permission prompts |
+| https://code.claude.com/docs/en/whats-new (weekly digest) and https://code.claude.com/docs/en/changelog; for exact wording and version numbers, grep https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md | Claude Code CLI, Desktop, web, Agent SDK: commands, flags, settings, hooks, subagents, skills, memory, permission modes. The digest can lag the changelog, and a fetched summary of the long changelog page can truncate it or misattribute versions, so quote from the raw file |
+| https://claude.com/docs/cowork/changelog (raw: append `.md`) and the pages under https://claude.com/docs/cowork/ | Cowork: projects, scheduled tasks, Dispatch, plugins, folder access, permission prompts. Take each entry's release from the raw file: a fetched summary has attached entries to the wrong release |
 | https://support.claude.com/en/articles/12138966-release-notes | claude.ai and the apps: memory, artifacts, connectors, Claude in Chrome, plan changes |
 | https://platform.claude.com/docs/en/release-notes/overview and https://platform.claude.com/docs/en/about-claude/pricing | Model launches, retirements, prices, context windows, effort levels, API features |
 | https://learn.chatgpt.com/docs/changelog (ChatGPT and Codex changelog), https://learn.chatgpt.com/docs/whats-new and https://help.openai.com/en/articles/6825453-chatgpt-release-notes | OpenAI product documentation and ChatGPT releases; follow current links to Codex and project-source behavior |

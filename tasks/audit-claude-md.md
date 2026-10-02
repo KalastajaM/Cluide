@@ -61,6 +61,7 @@ Evaluate each criterion. For each, mark ✓ (pass), ⚠ (concern), or ✗ (fail)
 - [ ] No rules that contradict current actual behaviour (stale rules)
 - [ ] No rules for edge cases that come up less than once a month
 - [ ] Timezone is explicit (not just "local time")
+- [ ] *Claude Code v2.1.283 or later:* `/doctor prompt-audit` has been run and each finding it proposes is carried into Step 3 as a finding, not applied silently. It flags instructions written for older models, missing files or commands, and contradictions between instruction files
 
 **Project CLAUDE.md extras (if applicable):**
 - [ ] Cross-reference rules are present if the project has linked registers/trackers
