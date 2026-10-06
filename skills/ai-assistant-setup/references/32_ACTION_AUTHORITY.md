@@ -109,6 +109,18 @@ An outbox is not a weaker form of doing the task. For most tasks it is the whole
 
 ## 6. Enforce Structurally Where You Can
 
+### Recovery after partial success
+
+For an authorised workflow that changes more than one store, identify the authoritative commit before execution. A database write, a local mirror refresh and a completion log are separate outcomes. If the database commits and the mirror write fails, repair the mirror from the database; replaying the original command can duplicate the action. An error response or timeout alone does not establish that nothing happened.
+
+Record an operation identifier and the authoritative result or version where available. Distinguish **not committed**, **committed with follow-up incomplete**, and **outcome unknown**. For an unknown outcome, query authoritative status before retrying. If status cannot be established and the operation has no verified idempotency mechanism, stop the dependent write and report the uncertainty. Never claim exactly-once execution from a local log alone.
+
+Retry only a step whose repeat safety is established and whose effects remain inside the existing approval. Use the service's verified idempotency mechanism where available. If an approved preview depends on a particular state version, bind application to that version or revalidate the effects; a material change requires a revised proposal. Optimistic concurrency detects a race, but a retry that recomputes against new state does not prove the new effects were approved.
+
+Test recovery with synthetic state and injected failures before the commit, after the commit, and while its outcome is unknown. Assert both the final state and that the original effect was not duplicated. This extends the proposal and action log for workflows that need it; it grants no additional authority and does not relax the Class D boundary.
+
+### Enforcement layers
+
 A rule in the shared policy is guidance. It holds most of the time, and "most of the time" is the wrong standard for Class C and D. The strongest authority rule is a capability that does not exist, and the order of preference is fixed:
 
 1. **The capability is absent.** A Gmail connector with read and draft scopes and no send scope cannot send, whatever the task is told or whatever an injected email says ([Guide 12](./12_SECURITY.md) §6). A scheduled task with no payment app granted cannot pay; in Cowork, the per-app and per-folder grants are this tier, and withholding a grant from a task is the strongest rule it can have. That weighs more since desktop v2.19675.0 (2026-10-01): a scheduled task Claude creates defaults to "Automatically approve" where the organisation allows it, so a granted connector is used without a per-run prompt ([desktop changelog](https://claude.com/docs/cowork/changelog)). Check each task's approval setting, and do not count on a prompt to stop a Class C action. This is the only enforcement that survives prompt injection, and it is why the security-properties table in [Guide 12](./12_SECURITY.md) exists: write the absent capability down as a property, with the change that would break it, so that a future session widening the scope "to unblock a draft step" knows it is making a security decision.
@@ -234,6 +246,7 @@ Setting up:
 - [ ] Class C and D capabilities are absent from unattended tasks where the connector allows it, and the absence is a row in the security-properties table
 - [ ] The action-authority block is in the shared policy; the classes are also in the account-level instructions
 - [ ] Standing approvals each carry shape, scope, limit, grant date, evidence, expiry
+- [ ] Multi-store workflows name the authoritative commit, repeat-safe recovery steps and unknown-outcome handling, with synthetic failure tests
 
 Every proposal:
 

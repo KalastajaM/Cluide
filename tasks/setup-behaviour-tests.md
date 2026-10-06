@@ -2,7 +2,7 @@
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
 > `Assistant, run tasks/setup-behaviour-tests.md`
-> **Source guide:** `31_BEHAVIOUR_TESTS.md` (see also `27_INDEPENDENT_JUDGMENT.md` for grading judgement, `26_CONTEXT_SCOPING.md` for why tests run in a fresh session)
+> **Source guide:** `31_BEHAVIOUR_TESTS.md` (see also `27_INDEPENDENT_JUDGMENT.md` for grading judgement, `26_CONTEXT_SCOPING.md` for why tests run in a fresh session, `23_MULTI_PROJECT_SETUPS.md` for pinning cross-project fixtures and dependencies)
 
 ## Runtime route
 
@@ -61,6 +61,8 @@ Read, and list without judging yet:
 3. Every scheduled task, with the actions it may take (its connectors and scopes — Guide 32 §2 classes if the project has an action-authority block).
 4. Any rule that lives in a skill rather than in the selected canonical policy (Guide 30 §8 and Guide 32 §6 both flag these as weak; they are also the ones most worth testing).
 
+For tasks that wrap commands, also inspect their existing declarations of inputs, write targets/mode, authority and close/recovery procedures. Compare command coverage against the real registry or interface. List missing wiring and contradictions separately: a complete header does not prove its instructions agree with the owning policy. Include adopted structured rulings among the fixture inputs where they affect a result; tests must not silently load changing live rulings.
+
 Present the list. Do not propose cases yet — the user has to say what matters.
 
 ### Step 2 — Interview: what earns a case
@@ -94,6 +96,8 @@ Rules for the draft:
 - **`protects:` is filled for every case** — the rule it guards or the failure it was written against, with a date. A case without one is not drafted.
 - **Task cases name their fixture path** and the fixture lives under `tests/behaviour/fixtures/`, not in the project's data folders.
 
+Where Step 1 found missing workflow wiring, draft a small deterministic documentation check alongside the behaviour cases (Guide 31, "Check the Documentation Contract Too"). Reuse existing metadata, name exactly what the check proves, and include a disposable malformed fixture proving it detects a missing field or reference. For a policy contradiction, propose the correction to its owner and a normal-request behaviour case; a structural pass is not a resolution. Show these additions for approval with the case table.
+
 Present the full draft as a table: case, kind (trigger / rule / task), prompt, graders, protects. Then **stop and wait** for approval, row by row if the user prefers.
 
 ### Step 4 — Write the suite
@@ -115,6 +119,8 @@ Grading splits by grader type. **Mechanical graders** — regex, tool counts, fi
 
 Append the baseline block to `RESULTS.md`.
 
+Run approved deterministic checks locally where possible and record them separately from model pass rates. A structural pass cannot fill in a missing fresh-session baseline. For cross-project cases, distinguish a fully pinned baseline from a current-upstream integration run and record every executable, library, policy and fixture revision involved (Guide 23).
+
 A case that fails at baseline is a finding, not a bad test: either the setup does not do what the user believed (report it, with Guide 31 §7's table to sort it) or the case's prompt or grader is wrong (fix the case *only* with the user's agreement and say so in the results block). Do not edit a case to make the baseline pass.
 
 ### Step 6 — Install the shared-policy block
@@ -135,3 +141,5 @@ An inventory of protectable rules, skills and tasks (Step 1); an approved case t
 - Never edit a case to make a run pass. A baseline failure is reported; a case is corrected only with the user's agreement and a note in `RESULTS.md`.
 - Do not build the suite around a runner the user has not confirmed works in their build.
 - Keep the suite small. Over thirty cases is a finding about the filter, not a bigger suite.
+
+<!-- last reviewed: 2026-10-06 against 31_BEHAVIOUR_TESTS.md -->

@@ -63,6 +63,8 @@ This is the same principle Guide 09 applies to multiple tasks sharing state, rai
 
 ## Ownership registry
 
+Ownership includes behaviour as well as facts. When linked projects calculate or change shared state, name who owns the calculations, domain policies, interpretation and persistence. These may have different owners without duplicating the same responsibility. A planning app can own arithmetic and storage while a companion assistant project owns the user's priorities and the interpretation of reports. The companion calls the app's supported interface; it does not recreate the arithmetic or write around its checks.
+
 Track ownership explicitly in one place, a small table in whichever project coordinates the others (or in the owner of the domain). One row per shared fact:
 
 | Fact / topic | Owner | Canonical location | Referencing projects | Last verified | Status |
@@ -85,6 +87,28 @@ For source-only projects, record the owning source's revision and refresh rule a
 Splitting a project requires separate native setup on each supported surface: instructions/bootstrap, source grants and scheduler ownership. Update those records with the file links. A move is incomplete while a schedule or uploaded policy still points at the old home; [Guide 33](./33_RETIRING_AND_LEAVING.md) gives the retirement inventory.
 
 **Policy placement:** Put the shared rules below in `AGENTS.md` for Codex or a dual-platform repository, with a thin `CLAUDE.md` adapter for Claude. App projects bootstrap the same policy through their instructions and accessible sources (Guides 01 and 25). A Claude-only setup may keep its policy in `CLAUDE.md`.
+
+### When a pointer becomes an executable contract
+
+A file link is enough for reference material. When several interfaces compute from or mutate the same state, sharing source files alone is not enough: consumers can combine the same helpers differently. Prefer one supported query/command boundary, with validation and applicable policy checks on every write path. Keep consumer-specific interpretation outside the shared calculation. Policy selection is explicit; an assistant must not drop a required policy to make a command succeed.
+
+Record the contract beside the owner's consumed surface: supported operations and input/output shapes, version compatibility, data identity, time basis, failure behaviour, and who may write. Check the actual response's identity and protocol before using it. A failed live read must not silently become a successful read of an old mirror; offline use is an explicit mode with its source and date stated. Access to a command grants no authority to execute it (Guide 32).
+
+Use a small synthetic fixture to exercise the consumer through that boundary. A write-capable contract needs cases for a refused operation and a dry run that leaves state unchanged, as well as a successful operation. A multi-step operation that promises atomicity needs a failing-step case proving that nothing commits. Mark unavailable integration checks untested. This machinery pays for consequential shared state; do not build a command service for a folder of reference notes.
+
+### Pin the whole execution path
+
+A consumer can pin a copied library and still call an executable from a changing sibling checkout. That protects neither reproducibility nor compatibility by itself. Trace every path that contributes to the answer, including subprocesses, templates and policy data. Record the data revision, calculation clock, policy revision and each executable/library revision used. A commit id does not describe uncommitted source edits: require a clean checkout for a pinned baseline, or preserve the actual dirty inputs with hashes.
+
+Separate a **pinned baseline** from a **current-upstream integration run**. The first reproduces an accepted result; the second detects breakage from changes in the owner. Both are useful, but a passing integration run does not prove the baseline is reproducible. Compare old and new on the same frozen inputs and time basis; classify differences using Guide 29's reconciliation procedure.
+
+When maintaining a vendored fallback, enumerate the source tree when building and checking its manifest. Rehashing only the old manifest's entries cannot detect a newly added module. Record which copy was actually loaded, and make a missing owner distinguishable from a completed compatibility check.
+
+### Adopted judgments as policy data
+
+When a recurring judgment changes a computation or candidate selection, store the adopted ruling in a small structured file owned by the policy project, rather than burying it in code or repeating it across tasks. Include a stable identifier, the rule's scope, who adopted it, when, why, and what would trigger review. An unadopted proposal stays outside the active policy set. Domain rulings do not grant action authority; standing approvals still follow Guide 32.
+
+Readers distinguish a missing optional ruling from an invalid one. State the documented default when an optional file is absent; refuse the dependent operation when a required ruling is absent or an existing ruling cannot be parsed or validated. Check referenced entity ids too. Do not silently discard policy to keep a report running. An ordinary simulation may deliberately use current adopted rulings, but must say so; a reproducible test freezes the rulings alongside its other fixtures.
 
 ---
 
