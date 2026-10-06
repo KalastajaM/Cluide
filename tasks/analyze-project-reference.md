@@ -132,6 +132,11 @@ outside a single-project audit. Judge only what is visible from inside the targe
 - **Checks:** does the project mention another project's data? Are those mentions links to an owner, or
   local copies of a value that will drift? Any pointer to a file or fact with no owner named? Any sign the
   dependency runs both ways? Does anything read as authoritative here that another project plainly owns?
+  For executable dependencies, identify owners of calculation, policy, interpretation and persistence;
+  inspect the supported command/query contract, response identity/version checks and explicit offline
+  behaviour. Trace subprocesses as well as imports before calling a baseline pinned. Are adopted rulings
+  attributed, validated and frozen in reproducible tests? Assess only visible evidence; a missing sibling
+  is an unverified integration check, not proof of compatibility. Reference-only projects need no command service.
   **N/A** if the project references no other project.
 
 ### 20. Instruction layers — guide 25 → `tune-instruction-layers`
@@ -147,6 +152,9 @@ outside a single-project audit. Judge only what is visible from inside the targe
   same correction recurring across sessions, an invariant documented in prose with nothing enforcing it.
   Several classes tracing back to a shared root is the signal that respecification beats another patch;
   isolated defects are not. Guidance only. **N/A** for a young or small project.
+  Where a migration is under way, check whether its exact legacy exceptions can only shrink, whether a
+  planted violation tests the guard, and whether completed migration history has left active instructions
+  contradicting the current rule. A shrinking exception count alone does not prevent replacement bypasses.
 
 ### 22. Controlled documents — guide 30 → guidance only
 - **Healthy:** documents with an owner or an approver are named as such in the shared policy by path; Claude
@@ -167,6 +175,9 @@ outside a single-project audit. Judge only what is visible from inside the targe
   whose prompt describes the test rather than making the request, a case pointed at live data, a results
   file overwritten rather than appended, and a rule edited after the last recorded run. **N/A** for a
   project with no standing rules, skills or scheduled tasks of its own.
+  Where workflow coverage repeatedly drifts, inspect deterministic checks for task declarations, command
+  coverage and close/recovery references. Keep structural results separate from behaviour results; check
+  contradictory instructions even when their headers pass. Do not require metadata scaffolding without need.
 
 ### 24. Action authority — guide 32 → `setup-action-authority`
 
@@ -179,7 +190,12 @@ Check Class A with an empty approval table, scoped one-time Class B approval, st
 - **Checks:** look for authority granted by tool name ("may use Gmail"), a task that sends, posts or deletes
   with no approval row to cite, an approval with no limit or expiry, permission inferred from a previous
   session, a connector scope wider than the task's classified actions, and a boundary that lives only in a
-  skill. **N/A** for a project whose tasks and skills can only read and write inside its own folder.
+  skill. **N/A** for a project whose tasks and skills can only read and write inside its own folder and
+  have no multi-store recovery to assess.
+  For multi-store actions, also inspect the authoritative commit, partial-success reporting, unknown-outcome
+  handling and repeat safety. Does a failed mirror/log step replay a committed action? Can a retry materially
+  change an approved preview without revalidation? Local multi-store workflows still receive these recovery
+  checks even when outbound-action checks are N/A. Report untested recovery separately from prose coverage.
 
 ### 25. Retirement hygiene — guide 33 → `retire-project`
 - **Healthy:** a project that has ended carries `RETIRED.md` and is archived, and nothing current points at

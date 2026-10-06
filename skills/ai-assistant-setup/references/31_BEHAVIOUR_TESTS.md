@@ -41,6 +41,18 @@ What does not earn a test: style preferences that cost nothing when they slip, a
 
 ---
 
+## Check the Documentation Contract Too
+
+Some workflow defects are deterministic and need no model run. Where tasks wrap commands, give each task a small machine-checkable declaration: purpose, inputs or commands read, write targets and mode, authority reference, and completion/recovery procedure. Name the resource: "never writes the ledger" is different from "never writes files". Reuse the project's existing header format rather than installing a second schema.
+
+Check that required fields exist, referenced commands and procedures resolve, every exposed command needing interpretation has a playbook, and every writing workflow reaches its required close procedure. Derive the command set from the actual registry or interface rather than a second hand-maintained list. These checks are useful when a growing workflow repeatedly loses coverage; they are not compulsory scaffolding for a small prompt collection.
+
+A passing structural check proves presence and wiring, not semantic agreement or runtime behaviour. A review task can both recommend changing a plan and later forbid that recommendation unless asked, while every header passes. Reconcile contradictions to the owning policy, then add a behaviour case using an ordinary request that does not restate the rule. Do not declare the conflict resolved because a fresh run happened to choose the intended paragraph.
+
+Record structural results separately from fresh-session results. Deliberately remove a required field or reference in a disposable fixture to prove the structural check can fail; never corrupt the working instructions for this test.
+
+---
+
 ## 3. A Case Is a Prompt and Its Graders
 
 Borrow the shape from the platform. As of September 2026, Claude Code's [`claude plugin eval`](https://code.claude.com/docs/en/plugin-evals) (Claude Code v2.1.269 or later, on a plugin with a manifest or a skills-directory plugin; runs count against plan usage or API bill) defines a case as a folder under the plugin's `evals/` holding a `prompt.md` and a `graders/` directory, with an optional `case.yaml` for setup and conversation history; `claude plugin eval init` drafts cases and graders interactively. The layout and field names below are the ones that tool used at the time of writing; adopt the shape regardless, because it separates the input from the judgement and makes both greppable, and nothing in this guide depends on the names surviving. The suite is the same suite whichever runner executes it (§4).
@@ -223,6 +235,7 @@ Before the first run:
 - [ ] Every positive trigger case has a negative neighbour
 - [ ] Task cases run against fixtures, and the fixtures are under the suite, not in the project's data
 - [ ] Graders are mechanical wherever the rule has a mechanical shadow
+- [ ] Where workflow wiring needs protection, deterministic checks are tested with malformed fixtures and reported separately from behaviour results
 
 Every run:
 

@@ -109,6 +109,14 @@ Then build the table that justifies the whole exercise:
 
 A learning log ([Guide 07](./07_TASK_LEARNING_GUIDE.md)) accumulates one rule per incident. Left alone long enough it becomes a defect-driven specification in prose: it records what went wrong rather than what must be true, it is over-fitted to its own history, and it is hostile to any redesign because nobody can tell which entries still matter. Distil it periodically — restate the accumulated fixes as the handful of properties they are instances of, keep the properties, archive the instances. A rule that is a past incident restated is the thing to drop.
 
+### Prevent the old path from returning
+
+A gradual migration needs a ratchet: a check that permits the exact remaining legacy bypasses but refuses new ones. For example, when moving calculations behind shared queries, list the specific files and imported functions still allowed to bypass them. As each caller moves, remove its exception. Test the membership as well as the ceiling: a count alone lets one new bypass replace an old one unnoticed. Once the list is empty, assert that it stays empty.
+
+Test the guard itself with a planted violation. Check the actual bypass forms the project supports, such as direct calls, aliases, re-exports or another write entry point. This is a regression control, not a security boundary against arbitrary code changes. Pair it with output tests: prohibiting a duplicate calculation does not prove the canonical calculation is correct. Use it when recurring bypasses justify it, not for every stylistic preference.
+
+The migration state belongs beside the check. Keep shared instructions to the enduring obligation and a pointer; derive or inspect the remaining exceptions instead of copying their count into `AGENTS.md`. Archive completed phase narratives outside the active instructions. A rule saying "no exceptions" followed by an old list of exceptions gives the next session two incompatible contracts.
+
 ---
 
 ## Separate the Contract from the Runtime During a Migration
@@ -257,3 +265,4 @@ Before trusting the result:
 - [ ] Run in the configurations where each failure class is visible
 - [ ] The prevented-versus-checked ratio justifies having rebuilt at all
 - [ ] Cross-references resolve and self-claimed counts are asserted
+- [ ] Where legacy bypasses remain, their exact exception set can only shrink and a planted violation proves the guard works

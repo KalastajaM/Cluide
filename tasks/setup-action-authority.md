@@ -40,6 +40,8 @@ Then, for each scheduled task and each skill, which of those actions its instruc
 
 Present the inventory as a table: source (connector / grant / operation), action, which tasks and skills use it, which could.
 
+For workflows changing multiple stores, also identify the authoritative commit, derived mirrors/logs, available operation identifiers, status queries and verified idempotency support. Name how the workflow distinguishes not committed, committed with follow-up incomplete, and unknown outcome. Missing evidence stays unverified; a failed tool call is not proof that no action happened.
+
 ### Step 2 — Classify (read-only)
 
 Assign each action a class under Guide 32 §2 — A local and reversible, B local and costly to reverse, C leaves the user's hands, D binding or irreversible in the world — by asking the two questions: can it be undone and by whom, and does anyone else see it. Do not classify by tool; the same connector spans classes.
@@ -68,6 +70,8 @@ Show, in this order:
 3. **The standing-approvals table**, with the Step 3 candidates and their evidence. Each row is approved separately.
 4. **The outbox and log wiring** for each unattended task: where Class C actions will be written instead of taken, and the extra column in `RUN_LOG.md` naming the approval row for each Class B action.
 
+For any multi-store workflow in Step 1, include its recovery procedure in this plan: which step may be retried, how authoritative status is established, and how an approved preview remains bound to its state or effects. A committed action with a failed mirror refresh is repaired by refreshing the mirror, not replaying the action. Recovery does not expand approval or permit Class D actions.
+
 Mark anything irreversible (withdrawing a grant that is hard to re-obtain, for instance). Then **stop and wait.** Approval of the block is not approval of the standing-approval rows; approval of one row is not approval of the next.
 
 ### Step 5 — Take a restore point, then apply
@@ -80,6 +84,7 @@ Then apply only the approved rows:
 - Add the security-properties rows.
 - For the conservative no-unattended-Class-C policy: add the outbox step to its `TASK.md` so Class C actions are written to `<outbox path>` with a reason and an identifier each, and never taken; add the approval-row column to its `RUN_LOG.md` template; change its notification text to counts of actions taken and queued, and to send nothing on a run that did nothing.
 - Add a one-line delegation rule if the project spawns subagents or workflow stages: they inherit the classes and approvals and gain none.
+- Install any approved recovery procedure beside its workflow and include the authoritative outcome and pending follow-up in its log.
 
 Record the connector and grant changes applied through supported controls or by the user with the date, in the security-properties table's *Why it holds* column.
 
@@ -90,6 +95,7 @@ Record the connector and grant changes applied through supported controls or by 
 - Every standing-approval row carries all six fields; none lacks evidence or expiry.
 - Each unattended task's `TASK.md` writes Class C actions to the outbox and cites an approval row for Class B ones.
 - If the project has a behaviour-test suite (`31_BEHAVIOUR_TESTS.md`), propose a case per Class C boundary — `tool_used` on the send tool at zero is the canonical one — and offer to add it through `setup-behaviour-tests.md`.
+- Exercise approved recovery procedures on synthetic state with failures before commit, after commit, and with an unknown outcome. Check that the original effect is not duplicated, unknown outcomes stop dependent writes without verified repeat safety, and material changes to an approved preview return for review. Report unrun recovery cases as untested.
 
 Report what was classified, what was removed structurally, what was granted as standing, and what remains prose-only.
 
@@ -111,3 +117,4 @@ An action inventory by source and by task (Step 1); a classified table the user 
 Check both positive and negative cases: Class A with an empty table; an explicitly approved Class B edit with a restore point; the same edit without approval; a valid versus expired standing approval; continuation of approved work across sessions; a private remote push; and Class D despite a broad request. Confirm definitions, examples, app bootstrap and recurring-job instructions agree. A new grant must come from the user, never from repeated success alone. Preparing a local draft and saving it into a remote account are distinct actions.
 
 <!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->
+<!-- last reviewed: 2026-10-06 against 32_ACTION_AUTHORITY.md -->
