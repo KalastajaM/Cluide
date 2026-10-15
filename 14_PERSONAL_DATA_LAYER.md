@@ -277,7 +277,7 @@ def extract_from_screenshot(image_path: Path) -> list[dict]:
     response = client.messages.create(
         # Claude API example: re-check model availability and benchmark extraction
         # on your own fixtures before using it with live data.
-        model="claude-haiku-4-5-20251001",
+        model="claude-haiku-5-5",
         max_tokens=4096,  # headroom: a truncated response is unparseable JSON
         messages=[{
             "role": "user",
@@ -307,7 +307,9 @@ def extract_from_screenshot(image_path: Path) -> list[dict]:
         print(f"WARNING: {image_path.name}: response truncated — skipping")
         return []
     try:
-        transactions = json.loads(response.content[0].text)
+        # Haiku 5.5 thinks adaptively, so the first block can be a thinking block
+        text = next(b.text for b in response.content if b.type == "text")
+        transactions = json.loads(text)
     except json.JSONDecodeError as e:
         print(f"WARNING: {image_path.name}: malformed JSON ({e}) — skipping")
         return []

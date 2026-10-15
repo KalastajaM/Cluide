@@ -6,6 +6,16 @@ each one was a real failure.
 
 ## The mount refuses deletes — so git locks stick
 
+**Check first whether deletion can be granted.** Live-verified 2026-10-15 in a
+Cowork cloud session linked to a Mac: deletes were refused by default
+("Operation not permitted"), but the session offered a delete-permission
+request; once the person approved it for the connected folder, `rm` and
+ordinary git (`checkout -b`, `commit`, lock cleanup) worked for the rest of the
+session. Where that request exists, ask for it once, naming the repo's folder,
+and skip the rituals below. Where it does not, or the person declines,
+everything in this section applies. No public page documents the request, so
+re-check it after a desktop update.
+
 git creates lock files (`index.lock`, `HEAD.lock`, `ORIG_HEAD.lock`) and deletes
 them when done. On Cowork device mounts **deletes fail**, so every git command
 leaves its lock behind, and the next command refuses to start. The mount does
@@ -106,8 +116,12 @@ user's, whichever identity authored the commit.
 
 ## Two execution environments, split capabilities
 
-- **device_bash** (the user's machine via the Cowork VM): sees the real repos,
-  runs git against them — but has **no network**. No fetch, no push, no gh.
+- **device_bash** (the user's machine via the Cowork VM): sees the real repos
+  and runs git against them. Its network follows the account's egress
+  allowlist and has varied by session: on 2026-08-04 it had none, on 2026-10-15
+  `git fetch` and `git ls-remote` against a public GitHub repo worked. Test with
+  `git ls-remote origin` instead of assuming either way; a push still needs
+  credentials the VM may not hold.
 - **Cloud container Bash**: has network — `git ls-remote <https-url>` works for
   checking where origin's branches really are — but GitHub **API** calls are
   proxied and need the repo attached to the session (`add_repo`); unattached

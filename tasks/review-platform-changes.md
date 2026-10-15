@@ -48,7 +48,7 @@ git log -1 --format='%ad %s' --date=short "$(git describe --tags --abbrev=0)"   
 git log -1 --format='%ad %s' --date=short --grep='Platform sweep'                 # last sweep commit
 ```
 
-Fix the boundary **per platform**, not once. A sweep commit may cover only one vendor (every sweep before 2026-09-21 covered only Anthropic), so read the versions a "Platform sweep" subject names and treat any platform it does not name as unswept since its last dated check (for OpenAI, the "checked" date in Guide 35 §9). Record the boundary date and the versions separately for each platform at the boundary (product/app versions and available models) from the previous sweep's report if one exists under `development/reviews/`.
+Fix the boundary **per platform**, not once. A sweep commit may cover only one vendor (every sweep before 2026-09-21 covered only Anthropic), so read the versions a "Platform sweep" subject names and treat any platform it does not name as unswept since its last dated check (for OpenAI, the "checked" date in Guide 35 §9). Record the boundary date and the versions separately for each platform at the boundary (product/app versions and available models) from the previous sweep's report if one exists under `development/reviews/`. Read that report's **Carried forward** list first: its items are open findings, not history.
 
 ### Step 2 — Read the sources, boundary forward
 
@@ -56,9 +56,10 @@ Fixed list. Read each page from the boundary date to today; do not sample.
 
 | Source | What it settles |
 |--------|-----------------|
-| https://code.claude.com/docs/en/whats-new (weekly digest) and https://code.claude.com/docs/en/changelog; for exact wording and version numbers, grep https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md | Claude Code CLI, Desktop, web, Agent SDK: commands, flags, settings, hooks, subagents, skills, memory, permission modes. The digest can lag the changelog, and a fetched summary of the long changelog page can truncate it or misattribute versions, so quote from the raw file |
+| https://code.claude.com/docs/en/whats-new (weekly digest) and https://code.claude.com/docs/en/changelog; for exact wording and version numbers, grep https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md | Claude Code CLI, Desktop, web, Agent SDK: commands, flags, settings, hooks, subagents, skills, memory, permission modes. The digest can lag the changelog, and a fetched summary of the long changelog page can truncate it or misattribute versions, so quote from the raw file. A fetch tool may stop at about 100,000 characters; where the shell reaches `raw.githubusercontent.com`, download the whole file with `curl` instead |
 | https://claude.com/docs/cowork/changelog (raw: append `.md`) and the pages under https://claude.com/docs/cowork/ | Cowork: projects, scheduled tasks, Dispatch, plugins, folder access, permission prompts. Take each entry's release from the raw file: a fetched summary has attached entries to the wrong release |
 | https://support.claude.com/en/articles/12138966-release-notes | claude.ai and the apps: memory, artifacts, connectors, Claude in Chrome, plan changes |
+| https://support.claude.com/en/articles/15520349-use-claude-cowork-on-web-desktop-and-mobile, https://support.claude.com/en/articles/13455879-use-claude-cowork-on-team-and-enterprise-plans and https://support.claude.com/en/articles/14479288-claude-cowork-architecture-overview | Cowork: where sessions run (cloud or the computer) per plan, how a cloud session reaches local folders, where scheduled tasks run. Changes here have reached no changelog (the 2026-10-06 move of Pro and Max to cloud-only sessions appeared only on these pages), and they show a relative "Updated …" (the exact date sits in the hover tooltip, and it is a last-edit date, not when a change took effect), so record the checked date and diff the wording against the previous report |
 | https://platform.claude.com/docs/en/release-notes/overview and https://platform.claude.com/docs/en/about-claude/pricing | Model launches, retirements, prices, context windows, effort levels, API features |
 | https://learn.chatgpt.com/docs/changelog (ChatGPT and Codex changelog), https://learn.chatgpt.com/docs/whats-new and https://help.openai.com/en/articles/6825453-chatgpt-release-notes | OpenAI product documentation and ChatGPT releases; follow current links to Codex and project-source behavior |
 | https://learn.chatgpt.com/docs/agent-configuration/agents-md and https://learn.chatgpt.com/docs/build-skills | Codex instructions, nested discovery, limits and native skill metadata |
@@ -105,7 +106,7 @@ against the guide that carries it:
 | Subagent frontmatter fields, model resolution order, fork mode, concurrency | `09`, `26`, `27`, `skills/dispatch/`, `templates/AGENT_STARTER_PACK/` |
 | Memory (auto memory, account memory, project memory, the `import-memory` skill) | `04`, `14`, `17`, `33`, `34`, `35`, `tasks/audit-memory.md`, `tasks/setup-memory.md`, `tasks/retire-project.md` |
 | `claude mcp` subcommands, result limits, MCP spec status | `05`, `15`, `tasks/setup-mcp.md` |
-| Cowork project fields, scheduled tasks, folder access | `25`, `06`, `tasks/tune-instruction-layers.md`, `tasks/relocate-project.md` |
+| Cowork project fields, scheduled tasks, folder access, where sessions run | `25`, `06`, `17`, `35`, `tasks/tune-instruction-layers.md`, `tasks/relocate-project.md` |
 | Artifacts, Claude in Chrome | `19`, `05`, `12`, `22` |
 | Print mode flags (`claude -p`), `claude plugin eval` availability and case format, `/skill-doctor` | `31`, `tasks/setup-behaviour-tests.md` |
 | `CLAUDE.md` locations, imports and the loaded-files view | `01`, `25`, `35`, `tasks/setup-dual-platform.md` |
@@ -125,6 +126,8 @@ guide, line, the claim as written, what the source says, and the URL:
 Close with a change plan grouped into PR-sized units (one branch per unit; the merge gate in `CLAUDE.md`
 requires each to be a whole change) and the registration touchpoints each unit needs. A unit that adds a
 `tasks/` file grows the consumed surface: say so, because the next tag is then minor, not patch.
+
+End the report with a **Carried forward** list: every B or C finding this run does not apply, so the next run starts from it rather than rediscovering it.
 
 Present the report and **stop**. Ask which units to apply.
 

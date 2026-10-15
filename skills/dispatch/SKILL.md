@@ -146,11 +146,13 @@ label, a list, or a lookup; raise to `high` on sonnet for drafting that needs re
 mechanical work because it is the default. `max` is a setting for a single session, not a worker
 default.
 
-**Where the effort dial exists.** Workflow stages expose per-call `effort`, and Claude Code agent
-frontmatter pins it per agent (`effort:` — the starter pack does this). A Cowork Agent-tool spawn
-has **no effort parameter**: it sets tier only, and effort comes from the agent definition. Route
-effort-sensitive stages through a Workflow (opt-in required) or accept the definition's default;
-never claim an effort level the surface cannot set.
+**Where the effort dial exists.** The Agent tool takes a per-spawn `effort` parameter (Claude Code
+v2.1.292 and later; desktop v2.31226.1 and later bundle 2.1.295); Workflow stages expose per-call `effort`;
+and Claude Code agent frontmatter pins it per agent (`effort:` — the starter pack does this). Pass
+`effort` on a spawn the same way as `model`, so the table's Effort column is applied rather than
+inherited. Where the active tool schema shows no `effort` parameter (an older host), effort comes
+from the agent definition: route effort-sensitive stages through a Workflow (opt-in required) or
+accept the definition's default, and never claim an effort level the surface cannot set.
 
 ### Make every spawn's model explicit
 
@@ -169,7 +171,7 @@ never claim an effort level the surface cannot set.
 
 ### Surfaces
 
-**Cowork:** route via the Agent tool's `model` parameter per spawn (tier only; see effort above).
+**Cowork:** route via the Agent tool's `model` and `effort` parameters per spawn (see effort above).
 The Workflow threshold in §1 applies; workflows require the user's explicit opt-in ("use a workflow"
 / ultracode), so ask — plain Agent-tool dispatch needs no opt-in. Agent definition files do not
 persist between Cowork sessions; this skill plus per-spawn parameters are the mechanism.
@@ -183,8 +185,9 @@ per-invocation `model` parameter. Recommended session default for orchestrating 
 is only a fallback default — a definition's model or a per-spawn model still wins; on earlier
 versions it overrode both, so no routing took effect while it was set.
 `CLAUDE_CODE_SUBAGENT_MODEL_FORCE=1` (v2.1.257+) restores that override deliberately: it ignores
-every definition's `model` field and blocks per-spawn models. Check for both variables, and the
-version, before routing.
+every definition's `model` field and blocks per-spawn models. `CLAUDE_CODE_WORKFLOW_SUBAGENT_MODEL`
+(v2.1.296+) runs every workflow agent on one model while other subagents keep theirs. Check for
+all three variables, and the version, before routing.
 
 **Enforcement, and its limit.** A permission deny rule such as `Agent(model:opus)` refuses calls
 that pass that literal alias. It does not match a call that omits `model` — which inherits the

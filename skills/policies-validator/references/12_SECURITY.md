@@ -180,7 +180,7 @@ If you do want to understand the syntax, a PreToolUse hook is configured in `~/.
 
 - `matcher`: which tool to intercept (`"Bash"` catches all shell commands)
 - `command`: the script to run. The hook receives the tool call as **JSON on stdin** (fields include `tool_name` and `tool_input`) — not as environment variables. Extract the shell command with e.g. `jq -r '.tool_input.command // empty'`.
-- Exit code semantics: **`0` allows** the action; **`2` blocks** it, with stderr fed back to the assistant as the reason. Any *other* non-zero exit is non-blocking — the tool call proceeds — so a hook that merely crashes protects nothing.
+- Exit code semantics: **`0` allows** the action; **`2` blocks** it, with stderr fed back to the assistant as the reason. Any *other* non-zero exit is non-blocking — the tool call proceeds — so a hook that merely crashes protects nothing. Since v2.1.295 a command or HTTP hook can set `"onFailure": "block"`, which turns that around: a hook that cannot start, times out or exits with an unexpected code blocks the action instead. Set it on every hook meant as a guard.
 - Finer-grained control: instead of exit codes, a hook can print JSON to stdout with a `permissionDecision` of `allow`, `deny`, or `ask` (plus a `permissionDecisionReason`).
 
 The canonical implementation lives at `skills/security-review/references/hook-security-precheck.sh`. Its core pattern:
@@ -209,7 +209,7 @@ exit 0
 The assistant sessions accumulate data on disk.
 
 **What persists locally:**
-- `~/.claude/projects/<project-slug>/<session-id>.jsonl` — full conversation transcripts, including everything you pasted in and everything Claude output. Treat the whole `~/.claude/projects/` directory as sensitive. Deleting a session in the Claude desktop app also removes its Claude Code transcript and related files, after which `claude --resume` cannot reopen it (desktop v2.9939.2, [changelog](https://claude.com/docs/cowork/changelog)).
+- `~/.claude/projects/<project-slug>/<session-id>.jsonl` — full conversation transcripts, including everything you pasted in and everything Claude output. Treat the whole `~/.claude/projects/` directory as sensitive. Deleting a session in the Claude desktop app also removes its Claude Code transcript and related files, after which `claude --resume` cannot reopen it (desktop v2.9939.2, [changelog](https://claude.com/docs/cowork/changelog)). Since Claude Code v2.1.300 a transcript also records each API request's system prompt, tools and parameters, so a transcript you share exposes your whole instruction stack, not only the conversation.
 - `~/.claude/shell-snapshots/` — shell state snapshots that can accumulate to hundreds of files and gigabytes over time
 
 **Rules:**
@@ -338,6 +338,8 @@ output/
 ```
 
 Deny rules are the one layer that holds in every mode, `bypassPermissions` included, which is what makes them the right place for the handful of paths and commands that must never be touched. They can also pin a tool's inputs rather than just its name — `Tool(param:value)` matching means a rule like `Agent(model:opus)` denies subagent calls that request that model alias while leaving the rest alone. It matches only the literal value passed: a call that omits the parameter is never matched (a subagent spawned without `model` inherits the session's model), and a full model ID is not the alias. And `permissions.blockReadsOutsideWorkingDirectories` stops reads escaping the directories the session was started in.
+
+**MCP rules name the whole server.** Since v2.1.299 an MCP allow rule reaches only the server it names: `mcp__a` no longer also allows a server called `a__b` or `a_`. Write `mcp__<server>__*` with the server's full normalised name, and re-check older allow rules that relied on the looser match. An agent's `tools:` list follows the same rule. The same release fixed deny and ask rules not applying to a server whose normalised name contains `__` ([changelog](https://code.claude.com/docs/en/changelog)).
 
 **Bash-path caveat:** a deny rule on the Read tool does not by itself block `cat .env` or `python -c "open('.env')"` through the Bash tool — coverage of Bash-mediated file access is version-dependent. Pair Read deny rules with Bash deny rules (e.g. `"Bash(cat .env*)"`) and/or the PreToolUse guard from this guide. The combination — not deny rules alone — is the enforced posture.
 

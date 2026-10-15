@@ -230,14 +230,17 @@ def extract(image_path: Path) -> list[dict]:
     with open(image_path, "rb") as f:
         image_data = base64.b64encode(f.read()).decode()
     response = client.messages.create(
-        model="claude-haiku-4-5-20251001",
-        max_tokens=1024,
+        # Re-check model availability before use. Haiku 5.5 thinks adaptively,
+        # and thinking counts against max_tokens, so leave headroom.
+        model="claude-haiku-5-5",
+        max_tokens=4096,
         messages=[{"role": "user", "content": [
             {"type": "image", "source": {"type": "base64", "media_type": "image/png", "data": image_data}},
             {"type": "text", "text": SCHEMA_DESCRIPTION}
         ]}]
     )
-    return json.loads(response.content[0].text)
+    text = next(b.text for b in response.content if b.type == "text")  # skip thinking blocks
+    return json.loads(text)
 
 screenshots = sorted(Path("screenshots").glob("*.png"))
 all_items = []
