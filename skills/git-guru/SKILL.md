@@ -33,8 +33,9 @@ Before any git command, establish which of three regimes applies; everything
 downstream branches on it:
 
 - **Cowork device mount** (path under `/sessions/<session>/mnt/…`, or reached
-  via device_bash): the mechanics reference applies in full — lock rituals,
-  no-delete workarounds, no network.
+  via device_bash): the mechanics reference applies — lock rituals and
+  no-delete workarounds until deletion is granted for the folder, and a
+  network check rather than an assumption either way.
 - **Cloud container / any normal clone**: plain git with network; none of the
   mount rituals apply — no unlock dance, real deletes, `git status` is fine.
 - **Plain local machine** (e.g. Claude Code or Codex on the user's computer): normal git;

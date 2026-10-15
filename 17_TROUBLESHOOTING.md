@@ -197,7 +197,7 @@ A Gmail token set to read-only cannot send email. A calendar token set to read-o
 **Most likely causes:**
 
 **1. The desktop app closed, slept, or lost its network connection**
-The bridge — the desktop-app connection that lets a cloud session reach your local folder ([Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md) explains it) — only exists while the assistant desktop app is running and online. Dropped connections commonly recover on their own within the same session.
+The bridge — the desktop-app connection that lets a cloud session reach your local folder ([Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md) explains it) — only exists while the assistant desktop app is running and online. On Pro and Max every new session runs in the cloud since 6 October 2026 ([Cowork on web, desktop and mobile](https://support.claude.com/en/articles/15520349-use-claude-cowork-on-web-desktop-and-mobile)), so every session that touches a local folder depends on it. Dropped connections commonly recover on their own within the same session.
 
 *Fix:* Wake or reopen the desktop app, then ask the assistant to retry the write. The work itself is not lost — files already produced are still in the session workspace, so a retry costs one tool call rather than a re-run.
 
@@ -224,6 +224,11 @@ A commit can be rejected because the file on disk changed since the session last
 Files offloaded to iCloud or OneDrive can be listed but not read, typically failing with "Resource deadlock avoided."
 
 *Fix:* Force a local download of the affected files in Finder or Explorer, then retry.
+
+**5. The write reported success but never arrived**
+Before Claude Code v2.1.300, the ordinary Write, Edit and NotebookEdit tools in a Cowork cloud session could report success for a path on your computer when the file only reached the session's own workspace ([changelog](https://code.claude.com/docs/en/changelog)). The session then believes the work is delivered.
+
+*Fix:* Ask the assistant to list the folder and confirm each file by name and size. A write is delivered when the folder shows it, not when a tool said it succeeded.
 
 **Recovering the current session:** ask for the outstanding list explicitly — *"List every file you produced this session that did not land in my folder, with the exact path each was meant to go to."* Then retry once the desktop is back, or save them from the chat yourself. Do this before ending the session; the session workspace does not survive it.
 
