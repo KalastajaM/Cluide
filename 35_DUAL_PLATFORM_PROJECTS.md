@@ -1,4 +1,4 @@
-# Dual-Platform Projects: One Project, Claude and ChatGPT
+# Dual-Platform Projects: One Project, More Than One Assistant
 
 > A project worked on from two assistants has two sets of entry points and one set of intentions. Claude Code reads `CLAUDE.md`, Codex reads `AGENTS.md`, and a Claude project and a ChatGPT project each have instruction fields that the other never sees. Left alone, this produces three failures:
 > - two instruction files that start as copies and drift into disagreement;
@@ -29,7 +29,7 @@ Two rules keep the guide durable, and they are the rules for anyone editing it l
 - **Principle before product.** Every section states what must hold whichever assistant is working, and names product mechanisms only as examples.
 - **Product facts live in §9 and nowhere else.** That covers which file a product discovers, whether it resolves imports, its size limits, and where its skills and schedules live. Each row carries its source and the date it was checked. A sentence elsewhere that would need re-verifying after a vendor release is in the wrong section.
 
-In this guide, *dual-platform* means at least one Claude surface and at least one OpenAI surface. Claude Code plus Cowork is two surfaces of one platform: they can use the same authored policy through different entry points, and [Guide 13](./13_DEV_EXECUTION_WORKFLOW.md) covers that split. A *surface* is the product a session actually runs in: Claude Code, conversational Claude or Cowork, a ChatGPT project, or Codex. File access, tools and loaders depend on the surface, not on which model answers.
+In this guide, *dual-platform* means at least one Claude surface plus at least one surface from another vendor: OpenAI, or since October 2026 Google, whose routes in §9 are documented but not yet tested. A project on three vendors follows the same structure, with every per-platform rule applied once more. Claude Code plus Cowork is two surfaces of one platform: they can use the same authored policy through different entry points, and [Guide 13](./13_DEV_EXECUTION_WORKFLOW.md) covers that split. A *surface* is the product a session actually runs in: Claude Code, conversational Claude or Cowork, a ChatGPT project, Codex, Antigravity, Jules, or a Gemini app notebook. File access, tools and loaders depend on the surface, not on which model answers.
 
 ---
 
@@ -91,16 +91,16 @@ Four rules for the pair:
 
 - **Move rules; never copy them.** A rule enters the shared file in the same edit that removes it from the adapter. Two copies agree only on the day they are made.
 - **The fallback line is load-bearing.** Not every Claude surface resolves imports; a conversational session reading a folder may treat `@AGENTS.md` as plain text. The explicit "read `AGENTS.md`" sentence is what reaches those sessions. It supplements the import rather than replacing it: in Claude Code a prose pointer alone is followed only if Claude decides to open the file (§9). One observed session, not documented behaviour and not a fresh-session check (§8): in a Cowork cloud task linked to a local folder on 2026-09-21, the folder's `CLAUDE.md` reached the session but its `@AGENTS.md` import was not expanded, and `AGENTS.md` had to be read explicitly.
-- **Respect the smaller limit.** Both products load the shared file, so the stricter project-instruction size limit in §9 caps it. Long reference material goes into files the policy points to, using [Guide 01](./01_PROJECT_INSTRUCTIONS.md)'s companion-file pattern.
-- **Keep product names out of the shared file.** No model name, tool name or path that belongs to one product. The shared file says "use the configured model", and routing lives in the adapter. Never translate a Claude model name into a guessed OpenAI one, or the reverse.
+- **Respect the smaller limit.** Every product loads the shared file, so the strictest project-instruction size limit in §9 caps it. Long reference material goes into files the policy points to, using [Guide 01](./01_PROJECT_INSTRUCTIONS.md)'s companion-file pattern.
+- **Keep product names out of the shared file.** No model name, tool name or path that belongs to one product. The shared file says "use the configured model", and routing lives in the adapter. Never translate a model name from one vendor into a guessed equivalent from another.
 
-Nested instruction files get the same treatment one folder at a time. The two products discover nested files differently (§9), so check that a nested rule reaches both before relying on it.
+Nested instruction files get the same treatment one folder at a time. The products discover nested files differently (§9), so check that a nested rule reaches each of them before relying on it.
 
 ---
 
 ## 5. App-Side Layers on Each Platform
 
-[Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md)'s layers exist on both platforms, but not in the same form. Each project product has an instructions field that reaches the session before any file is read. Neither product versions those fields. A conversational project may not read the repository at all, and may work from uploaded copies instead.
+[Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md)'s layers exist on every platform, but not in the same form. Each project product has an instructions field that reaches the session before any file is read. No product versions those fields. A conversational project may not read the repository at all, and may work from uploaded copies instead.
 
 - **Bootstrap each side separately.** Each platform's instructions field gets its own short bootstrap:
   - read the shared policy first;
@@ -108,9 +108,10 @@ Nested instruction files get the same treatment one folder at a time. The two pr
   - distinguish the products' capabilities, and use only the tools this session has;
   - say whether changes were saved to the project or only drafted in chat.
 
-  One text can often serve both (Cluide's `PLATFORM_SETUP.md` gives one), but it is pasted twice and mirrored twice.
+  One text can often serve both (Cluide's `PLATFORM_SETUP.md` gives one), but it is pasted and mirrored once per platform.
 - **Local projects read folders, and only one is discovered.** A ChatGPT local project works on folders on the computer rather than uploads, but instruction files are discovered only from its primary folder (§9). Make the repository the primary folder, and treat discovery in a ChatGPT Work chat as untested until a fresh-session check (§8) has run there.
 - **Uploaded sources are copies.** A project that works from uploaded files sees the revision that was uploaded, not the repository. A merge does not refresh it. Record the uploaded revision (a commit hash or a date) in the mirror, and replace the uploads explicitly after every policy change.
+- **Uploaded skills are copies too.** The Gemini app (documented, untested) creates a skill from an uploaded `SKILL.md` folder (§9). Like an uploaded source, it does not follow the repository: record the revision you uploaded and replace it after a change.
 - **Mirror per platform.** Keep Guide 25's mirror block, with one entry per platform and a last-verified date on each. A mirror that says "fields verified" without naming a platform is the ambiguity this rule removes.
 - **Record only what was applied.** Proposed field text is a draft, not configuration. It enters the mirror after someone has pasted it and confirmed that.
 
@@ -157,7 +158,7 @@ Find a job registered on both platforms by inventory, not by noticing duplicate 
 - outstanding work;
 - anything drafted but not saved.
 
-Neither assistant has the other's session history, so the record is the only memory of the handoff. Keep it in the commit message or pull request, or wherever [Guide 24](./24_PROJECT_FOLDER_STRUCTURE.md) puts working notes.
+No assistant has another's session history, so the record is the only memory of the handoff. Keep it in the commit message or pull request, or wherever [Guide 24](./24_PROJECT_FOLDER_STRUCTURE.md) puts working notes.
 
 ---
 
@@ -191,6 +192,26 @@ Checked on 2026-09-21 against official documentation, except: the Claude cells o
 | Conversational projects | Cowork projects hold a description, instructions, local folders, links, linked claude.ai knowledge and project memory. *Re-verify* where they live: the Cowork projects page says they live on your computer and are not synced, while the Team and Enterprise help article says projects used by cloud sessions are saved with the account and that projects tied to a local folder support sessions on desktop only. Settle it with a fresh-session check (§8) from web and from desktop before relying on either. The page checked does not say a folder's `CLAUDE.md` loads as the project's instructions, so bootstrap it ([Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md), pattern 1) | Cloud ChatGPT projects hold files, instructions, connected apps and project-only memory, without direct laptop-folder access. Record source revision and refresh uploaded policy explicitly; do not infer native `AGENTS.md` loading from an upload. Local projects are a separate access mode for files on the computer: in the ChatGPT desktop app, Edit project → Add folder attaches more folders, and Make primary picks one. New chats start in the primary folder, and Codex discovers `AGENTS.md`, skills and `config.toml` only there; secondary folders can be searched, read and edited but are not discovered. Remote projects support one folder. Discovery is documented for Codex; whether a ChatGPT Work chat in the same local project gets it is untested | [Cowork projects](https://claude.com/docs/cowork/guide/projects); [Cowork on Team and Enterprise](https://support.claude.com/en/articles/13455879-use-claude-cowork-on-team-and-enterprise-plans); [ChatGPT projects (cloud)](https://help.openai.com/en/articles/10169521-projects-in-chatgpt); [Projects, including local projects](https://learn.chatgpt.com/codex/projects) |
 | Direct API parameters | Anthropic Messages is post-prefill and adaptive-thinking on current models. Assistant message prefilling returns a 400 on Sonnet 4.6, Opus 4.6 and later — use structured outputs (`output_config.format`) or a system-prompt instruction instead. Manual `budget_tokens` thinking is deprecated on Opus 4.6 and Sonnet 4.6 and returns a 400 on Sonnet 5, Opus 4.7 and later — use `thinking: {type: "adaptive"}` with `output_config.effort`. Haiku 4.5 and pre-4.6 models still take `budget_tokens`. Opus 5.5 (`claude-opus-5-5`) goes further: thinking is always on, so `thinking: {type: "disabled"}` or a manual budget returns a 400, as does forced tool use (`tool_choice` `any` or a named tool), and its default effort is `medium` where Opus 5's was `high`. Sonnet 5.5 (`claude-sonnet-5-5`) also rejects forced tool use and returns a 400 for a non-default `temperature`, `top_p` or `top_k`; its lowest thinking setting is `between_tools`, which turns off up-front thinking at `high` effort or below. On the Claude API and Google Cloud neither accepts the `computer_20251124` computer-use tool. On both, the short notes written between tool calls arrive as `thinking` blocks, not `text`, so an application streaming text goes quiet between tool calls. Haiku 5.5 (`claude-haiku-5-5`, 2026-10-07) is not a drop-in for Haiku 4.5: manual `budget_tokens`, `temperature`, `top_p`, `top_k`, assistant prefill and `computer_20250124` can each return a 400 | Not checked on this date. The OpenAI Responses API has its own parameters; neither thinking controls nor prefill behaviour transfer by renaming fields | [Migration guide](https://platform.claude.com/docs/en/about-claude/models/migration-guide), [adaptive thinking](https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking), [effort](https://platform.claude.com/docs/en/build-with-claude/effort), [structured outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs), [What's new in Opus 5.5](https://platform.claude.com/docs/en/models/opus-5-5/whats-new-opus-5-5), [Sonnet 5.5](https://platform.claude.com/docs/en/models/sonnet-5-5/overview), [API release notes](https://platform.claude.com/docs/en/release-notes/overview) |
 
+
+### Google (Gemini): the third platform
+
+Checked on 2026-10-15 against Google's official documentation. No Google surface has had a fresh-session check (§8), so every row here is documented, not verified; a project relying on one records its own check. Google's coding tools read the same `AGENTS.md` and `.agents/skills/` that Codex reads, which is why the shared-policy pattern carries over unchanged. The differences that matter are the limits and which surface reads which file.
+
+| Fact | Google | Sources |
+|---|---|---|
+| Surfaces | **Antigravity** (app, CLI `agy`, IDE, IDE extensions, SDK) is the repository agent. **Jules** is a cloud coding agent that works on a GitHub repository and is labelled experimental. The **Gemini app** (web, mobile, desktop) is the conversational surface. **Gemini CLI** stopped serving Google AI Pro, Ultra and free individual users on 18 June 2026 and remains available through paid Gemini and Gemini Enterprise Agent Platform API keys and Gemini Code Assist Standard or Enterprise licences: treat it as a legacy surface | [Gemini CLI to Antigravity CLI](https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli); [Jules](https://jules.google/docs/) |
+| Native instruction file | Antigravity reads `AGENTS.md` or `GEMINI.md` natively in any directory, plus `.agents/rules/*.md`. Which wins when `AGENTS.md` and `GEMINI.md` sit in the same directory is not documented, so keep only `AGENTS.md`. Jules reads `AGENTS.md` from the repository root; nested files are not documented. Gemini CLI reads `GEMINI.md` unless `context.fileName` in its `settings.json` lists `AGENTS.md` | [Antigravity rules](https://antigravity.google/docs/rules); [Gemini CLI context files](https://geminicli.com/docs/cli/gemini-md) |
+| Nested files | Antigravity walks up from the file being read or edited to the workspace root and loads rules at each level. Rules accumulate, and the more specific directory wins a conflict | [Antigravity rules](https://antigravity.google/docs/rules) |
+| Imports | Antigravity inlines `@[label](path)` before its size checks. Its rules page says a bare `@filename` is only rewritten to a path, while its app changelog (v2.11.0, 2026-08-26) says `@path/to/file` now inlines: *re-verify*. Gemini CLI imports `@file.md`. Import rules differ per product and Codex has none, so the shared file carries its own text rather than depending on an import | As above; [Antigravity changelog](https://antigravity.google/docs/changelog) |
+| Size limit | Antigravity truncates any single rule file over 24,000 bytes, measured after includes are expanded. All always-on and global rules share a 20,000-token budget; over it, the largest files are demoted to pointers read on demand | [Antigravity rules](https://antigravity.google/docs/rules) |
+| Seeing what loaded | Gemini CLI: `/memory show`. Antigravity: not documented on the rules page; ask the session which rule files it loaded | As above |
+| Configuration | Antigravity keeps MCP servers in `~/.gemini/config/mcp_config.json` and `.agents/mcp_config.json`, hooks in `~/.gemini/config/hooks.json` and `.agents/hooks.json`, and resolves permission rules Deny > Ask > Allow. Unconfigured MCP tools run in Ask mode | [MCP](https://antigravity.google/docs/mcp); [hooks](https://antigravity.google/docs/hooks); [permissions](https://antigravity.google/docs/permissions) |
+| Skills | Antigravity: a folder holding `SKILL.md`, `description` required, `name` optional (defaults to the folder name). Workspace skills live in `.agents/skills/`, the same path Codex uses. The global path differs by surface: `~/.gemini/config/skills/` for the app and IDE, `~/.gemini/antigravity-cli/skills/` for the CLI. The Gemini app replaces Gems with skills from November 2026 on personal accounts, and creates one from an uploaded `SKILL.md` file or a folder or `.zip` holding one; skills are not yet available on work or school accounts | [Antigravity skills](https://antigravity.google/docs/skills); [Gems to skills](https://support.google.com/gemini/answer/18560919); [Create skills](https://support.google.com/gemini/answer/17094296) |
+| Scheduled runs | Gemini app: up to 10 active scheduled actions, with Keep Activity on. Jules: scheduled tasks (daily, weekly); its scheduled-tasks page says a task cannot be edited, while its 2026-01-26 changelog entry adds Edit, Pause and Resume, so *re-verify* | [Gemini schedules](https://support.google.com/gemini/answer/16316416); [Jules scheduled tasks](https://jules.google/docs/scheduled-tasks/); [Jules changelog](https://jules.google/docs/changelog/) |
+| Conversational projects | Gemini app notebooks hold custom instructions and uploaded files and sync with NotebookLM; no access to folders on the computer is documented. Treat a notebook like a cloud ChatGPT project: bootstrap the policy in its instructions, upload it, record the revision. Launched in April 2026 for Google AI Ultra, Pro and Plus subscribers on the web, with mobile and free users to follow; not available on Workspace, Education or under-18 accounts | [Notebooks in Gemini](https://blog.google/innovation-and-ai/products/gemini-app/notebooks-gemini-notebooklm/) |
+| Models and plans | Gemini 4 Argon is in the Gemini app on Google AI Pro and Ultra, but in Antigravity only on Ultra and Enterprise, and not in the Antigravity IDE on any plan. On Pro, Antigravity offers Gemini 3.8 Flash and, on a non-trial subscription, Claude Sonnet 5.5 and Opus 5.5. Jules is included in Google AI Pro, for personal (@gmail.com) accounts, with higher limits than the free tier | [Gemini release notes](https://gemini.google/release-notes/); [Antigravity models](https://antigravity.google/docs/models); [Jules limits](https://jules.google/docs/usage-limits/) |
+| Direct API | The Gemini API's managed Antigravity agent loads `.agents/AGENTS.md` (not a root `AGENTS.md`) and discovers `.agents/skills/`; `system_instruction` and `AGENTS.md` are additive. `gemini-4-argon` is not on the free tier; at the Standard tier it costs $2/$10 per million input/output tokens through 30 November 2026, then $4/$20 | [Managed agents](https://ai.google.dev/gemini-api/docs/custom-agents); [pricing](https://ai.google.dev/gemini-api/docs/pricing) |
+
 ---
 
 ### Counterparts and gaps to carry into setup
@@ -208,6 +229,16 @@ Documentation checks below are dated 2026-09-21. They establish a native route, 
 | Model routing and skill extensions | Claude model identifiers, native frontmatter and agent definitions | Available OpenAI models and supported skill/agent metadata | No model-name or optional-field equivalence. Keep the configured model unless an authorized supported alternative is selected. |
 
 Sources for the additional routes: [Codex hooks](https://learn.chatgpt.com/docs/hooks), [OpenAI browser](https://learn.chatgpt.com/docs/browser), [OpenAI Computer Use](https://learn.chatgpt.com/docs/computer-use), [Codex non-interactive mode](https://learn.chatgpt.com/docs/non-interactive-mode). Instruction, skill, memory/source and schedule sources are in the table above. Confirm availability in the target account before installation.
+
+**Google routes for the same needs** (checked 2026-10-15, documented, untested):
+
+| Need | Google route | Gap or fallback |
+|---|---|---|
+| Shared rules | Antigravity and Jules read `AGENTS.md` natively; a Gemini app notebook bootstraps it in its instructions | No `AGENTS.override.md` equivalent is documented. A `GEMINI.md` beside `AGENTS.md` has undocumented precedence, so keep only `AGENTS.md` |
+| Lifecycle actions and tool checks | Antigravity `hooks.json` and permission rules | Same event names do not prove identical coverage; test the tool paths the project uses |
+| Skills | `.agents/skills/` in Antigravity, the same folder Codex reads | Global paths differ per Antigravity surface; a Gemini app skill is an uploaded copy |
+| Schedules | Gemini app scheduled actions; Jules scheduled tasks | One scheduler owner per job (§7); Jules editing behaviour needs re-verifying |
+| Model routing | The configured Gemini model | No model-name equivalence with Claude or OpenAI tiers |
 
 ## Anti-Patterns
 
@@ -227,7 +258,7 @@ Sources for the additional routes: [Codex hooks](https://learn.chatgpt.com/docs/
 
 ## Checklist
 
-- [ ] Surfaces the project supports are named; "dual-platform" means one Claude and one OpenAI surface at least
+- [ ] Surfaces the project supports are named; "dual-platform" means one Claude surface plus at least one OpenAI or Google surface
 - [ ] Shared policy in one root file; each rule has one home among the four
 - [ ] Claude adapter imports the shared file, carries the read fallback, restates nothing
 - [ ] Shared file within the smaller product's size limit, and free of product-specific model, tool and path names

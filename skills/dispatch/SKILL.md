@@ -23,9 +23,9 @@ change; for an actual comparison use current provider pricing (Guide 10 §What T
 Cost names the sources) and measured usage, never a remembered spread.
 
 Use it only when delegation is available and permitted by the host and the user's scope. Sections
-1–4 and 7 apply on every platform. Section 5 is the Claude binding, section 6 the OpenAI one: model
-identifiers and tool parameters are native to each runtime, and neither is a translation of the
-other. Not to be confused with any product feature also named Dispatch.
+1–4 and 7 apply on every platform. Section 5 is the Claude binding, section 6 the OpenAI and Google ones: model
+identifiers and tool parameters are native to each runtime, and none is a translation of
+another. Not to be confused with any product feature also named Dispatch.
 
 ## 1. When to dispatch
 
@@ -218,7 +218,7 @@ takes precedence over the table for this project and holds:
 
 Without overrides, use the table above. Local instructions always win over this skill.
 
-## 6. OpenAI binding
+## 6. OpenAI and Google bindings
 
 Use only the delegation controls exposed in the active Codex or ChatGPT session. Retain the
 configured model unless the user requests a supported alternative or the project's explicit
@@ -230,6 +230,12 @@ log rather than a Claude analogue, and if settings are not exposed, say so and r
 defaults. Verify the host's context-inheritance behaviour before calling a reviewer independent.
 If the surface has no delegation tool, execute inline and record that limitation. OpenAI routing
 decisions live in the project's `PLATFORM_SETUP.md`, not in the Claude adapter.
+
+**Google (Antigravity, Jules, the Gemini app).** The same rules apply: use the delegation
+controls the session exposes, retain the configured Gemini model unless the user picks a supported
+alternative, and never map a Claude tier onto a Gemini model name. Where Antigravity offers Claude
+models on the user's plan, that is the host's model setting, not a §5 spawn parameter. Google
+routing decisions also live in `PLATFORM_SETUP.md`.
 
 ## 7. Routing log
 

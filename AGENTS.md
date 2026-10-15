@@ -2,7 +2,7 @@
 
 ## About This Project
 
-Cluide covers Claude and ChatGPT, including Codex for repository work. This folder contains an operational framework for building, running, and improving a persistent AI assistant. It includes architecture guides, runnable setup and audit tasks, installable skills, and copy-paste templates — covering the full lifecycle from initial setup to scheduled automation, self-improvement, and security. The guides are human-readable and can be supplied to either assistant. Keep native mechanisms labelled and report which surfaces were actually tested; documentation coverage is not evidence of a live runtime check.
+Cluide covers Claude and ChatGPT, including Codex for repository work, and Google Gemini (Antigravity, Jules and the Gemini app), whose routes are documented but not yet tested. This folder contains an operational framework for building, running, and improving a persistent AI assistant. It includes architecture guides, runnable setup and audit tasks, installable skills, and copy-paste templates — covering the full lifecycle from initial setup to scheduled automation, self-improvement, and security. The guides are human-readable and can be supplied to any of these assistants. Keep native mechanisms labelled and report which surfaces were actually tested; documentation coverage is not evidence of a live runtime check.
 
 **When working in this project, apply the guides to your own behavior.** You have access to all of them as context. Use them:
 
@@ -70,12 +70,12 @@ If a newly created file should be ignored but is already tracked by git, run `gi
 
 ## Platform and Dispatch Boundaries
 
-- This file is the canonical repository policy. `CLAUDE.md` imports it for Claude Code. See `PLATFORM_SETUP.md` for ChatGPT and other conversational surfaces.
+- This file is the canonical repository policy. `CLAUDE.md` imports it for Claude Code. See `PLATFORM_SETUP.md` for ChatGPT, Gemini and other surfaces.
 - Repository examples under `templates/` and `skills/` are distribution content, not instructions to install or run a personal assistant while maintaining this repository.
-- Use only tools, models, skills, and permissions actually available in the current session. Never translate Claude model names into guessed OpenAI equivalents.
-- For delegation, consult `skills/dispatch/SKILL.md` and use the model configured for the current session. Claude-specific routing lives in `CLAUDE.md`; OpenAI-specific routing lives in `PLATFORM_SETUP.md`. Follow the host's delegation rules.
+- Use only tools, models, skills, and permissions actually available in the current session. Never translate a model name from one vendor into a guessed equivalent from another.
+- For delegation, consult `skills/dispatch/SKILL.md` and use the model configured for the current session. Claude-specific routing lives in `CLAUDE.md`; OpenAI- and Google-specific routing lives in `PLATFORM_SETUP.md`. Follow the host's delegation rules.
 - Keep working notes and routing logs under `development/`. Read root guides on demand; bundled references are distribution copies and should only be read for bundle checks.
-- `.claudeignore` is not an OpenAI configuration file or a security boundary. Respect actual sandbox and connector permissions; do not infer access restrictions from ignore files.
+- `.claudeignore` is not an OpenAI or Google configuration file, nor a security boundary. Respect actual sandbox and connector permissions; do not infer access restrictions from ignore files.
 - Share versioned definitions; keep credentials, app settings, native memory, scheduler registrations, and session history platform-local. Coordinate edits through branches or worktrees rather than concurrent writes to the same checkout.
 
 ---

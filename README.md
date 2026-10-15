@@ -5,11 +5,11 @@
 > A complete framework for building, running, and improving a persistent AI assistant with Claude or ChatGPT.
 > Includes architecture guides, runnable setup tasks, installable skills, and copy-paste templates.
 
-*Covers Claude Code, conversational Claude/Cowork, ChatGPT projects, and Codex. Shared principles are separated from native setup steps; a documented route still needs verification in your own session.*
+*Covers Claude Code, conversational Claude/Cowork, ChatGPT projects and Codex, and (documented, not yet tested) Google's Antigravity, Jules and the Gemini app. Shared principles are separated from native setup steps; a documented route still needs verification in your own session.*
 
 ## Working on Cluide with either platform
 
-This repository now has shared contributor instructions in [AGENTS.md](./AGENTS.md), a Claude entry point in [CLAUDE.md](./CLAUDE.md), and [setup instructions for Claude, ChatGPT, and Codex](./PLATFORM_SETUP.md). For your own project, start with [the quickstart](./00_QUICKSTART.md) or [Guide 35](./35_DUAL_PLATFORM_PROJECTS.md). Claude-specific hooks and agent definitions remain labelled; they are not installed on OpenAI by copying their folders.
+This repository now has shared contributor instructions in [AGENTS.md](./AGENTS.md), a Claude entry point in [CLAUDE.md](./CLAUDE.md), and [setup instructions for Claude, ChatGPT, Codex and Gemini](./PLATFORM_SETUP.md). For your own project, start with [the quickstart](./00_QUICKSTART.md) or [Guide 35](./35_DUAL_PLATFORM_PROJECTS.md). Claude-specific hooks and agent definitions remain labelled; they are not installed on OpenAI by copying their folders.
 
 ---
 
@@ -101,7 +101,7 @@ Cluide began as a Claude-built guide, drawing on the maintainer’s hands-on exp
 | 32 | [Action Authority](./32_ACTION_AUTHORITY.md) | All users | What an assistant may do without asking, classified by consequence rather than tool: four classes, standing approvals with scope and expiry, the proposal contract, the outbox and action log for unattended runs, and structural enforcement first |
 | 33 | [Retiring and Leaving](./33_RETIRING_AND_LEAVING.md) | Power users | Ending a task, a project or an account without live wires: the inventory of everything that still points at it, ownership transfer before archive, the freeze, and which layers of a setup were ever yours to take |
 | 34 | [Importing From Other Assistants](./34_IMPORTING_FROM_OTHER_ASSISTANTS.md) | New users | Bringing a setup in from another assistant: ask the assistant to export itself, route each category to its Cluide home, treat the export as data and as a specification to triage rather than a file to copy, and the one-paragraph reverse direction |
-| 35 | [Dual-Platform Projects](./35_DUAL_PLATFORM_PROJECTS.md) | Power users | Running one project from Claude and ChatGPT or Codex: one shared policy with thin native adapters, capability gaps recorded rather than translated, platform-local memory and one scheduler owner per job, and a fresh-session check on each surface |
+| 35 | [Dual-Platform Projects](./35_DUAL_PLATFORM_PROJECTS.md) | Power users | Running one project from Claude and ChatGPT, Codex or Gemini: one shared policy with thin native adapters, capability gaps recorded rather than translated, platform-local memory and one scheduler owner per job, and a fresh-session check on each surface |
 
 **Recommended order:** Quickstart → 01 → 02 → **20** → 03 → 04 → 05 → (06–10 once you have scheduled tasks running). The guide numbers are stable addresses, not a reading order — see the [Reading Tracks in 00_INDEX.md](./00_INDEX.md#reading-tracks) for per-goal paths, or follow [Guide 18](./18_END_TO_END_WALKTHROUGH.md) for a guided path through all stages.
 
@@ -136,7 +136,7 @@ Tasks are standalone instruction files for setup and auditing. Run them by sayin
 | `tasks/tune-instruction-layers.md` | Review available app-side fields, shared policy, native adapters and source freshness |
 | `tasks/setup-behaviour-tests.md` | Build a `tests/behaviour/` suite — prompt-plus-grader cases, a hand-run baseline, and the shared policy block that ties rule edits to a test run |
 | `tasks/setup-action-authority.md` | Classify every action a project's tasks and skills can take, install the action-authority block, propose standing approvals from logged evidence only |
-| `tasks/setup-dual-platform.md` | Make a project usable from Claude and ChatGPT/Codex — shared `AGENTS.md`, thin `CLAUDE.md` adapter, per-surface setup and ready-to-paste app text, fresh-session check on each surface |
+| `tasks/setup-dual-platform.md` | Make a project usable from Claude and ChatGPT/Codex or Gemini — shared `AGENTS.md`, thin `CLAUDE.md` adapter, per-surface setup and ready-to-paste app text, fresh-session check on each surface |
 | `tasks/setup-sibling-access.md` | Write a "Sibling project access" section so the assistant requests a sibling project's folder only when a task needs a specific fact from it |
 
 ### Audit & maintenance tasks
@@ -156,7 +156,7 @@ Tasks are standalone instruction files for setup and auditing. Run them by sayin
 | `tasks/audit-dual-platform.md` | Short, re-runnable check that a dual-platform project's required files, sibling-folder access and scheduler ownership still resolve |
 | `tasks/review-tasks.md` | Cluide maintenance — detect guide changes and flag tasks, skill bundles, and templates that drifted |
 | `tasks/harvest-from-projects.md` | Cluide maintenance — the inverse of `review-tasks.md`: harvest proven patterns from your live projects back into the guides, tasks, templates, and skills |
-| `tasks/review-platform-changes.md` | Cluide maintenance — read what Anthropic and OpenAI shipped since the last sweep (Claude Code, Cowork, ChatGPT, Codex, APIs and MCP) and flag the guide claims that are now wrong, stale or unverifiable; run after each model launch or monthly |
+| `tasks/review-platform-changes.md` | Cluide maintenance — read what Anthropic, OpenAI and Google shipped since the last sweep (Claude Code, Cowork, ChatGPT, Codex, Antigravity, Jules, the Gemini app, APIs and MCP) and flag the guide claims that are now wrong, stale or unverifiable; run after each model launch or monthly |
 
 ---
 
@@ -164,7 +164,7 @@ Tasks are standalone instruction files for setup and auditing. Run them by sayin
 
 The installable skills bundled in `skills/` are listed below. Install only the ones you need.
 
-**Claude Code:** install selected folders using Guide 03's Claude route. **Codex:** install selected folders into a supported `.agents/skills/` location using its route. **ChatGPT or conversational Claude:** use the product's supported skill installation, or supply the workflow as a source and request it explicitly. A source upload is not native installation. The `security-review` skill has separate OpenAI and Claude paths; its bundled shell hooks and `AGENT_STARTER_PACK` are Claude-specific.
+**Claude Code:** install selected folders using Guide 03's Claude route. **Codex:** install selected folders into a supported `.agents/skills/` location using its route. **Antigravity** (documented, untested): install selected folders into the workspace `.agents/skills/` folder, the same one Codex reads. **Gemini app** (documented, untested): upload a skill folder holding `SKILL.md`; the upload is a copy, not linked to the repository. **ChatGPT or conversational Claude:** use the product's supported skill installation, or supply the workflow as a source and request it explicitly. A source upload is not native installation. The `security-review` skill has separate OpenAI and Claude paths; its bundled shell hooks and `AGENT_STARTER_PACK` are Claude-specific.
 
 | Skill | What it does |
 |-------|-------------|

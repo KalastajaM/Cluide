@@ -5,13 +5,13 @@
 > A complete framework for building, running, and improving a persistent AI assistant with Claude or ChatGPT.
 > Includes architecture guides, runnable setup tasks, installable skills, and copy-paste templates — covering the full lifecycle from initial setup to automation, self-improvement, and security.
 
-*Covers Claude Code, conversational Claude/Cowork, ChatGPT projects, and Codex. Shared principles are separated from native setup steps; a documented route still needs verification in your own session.*
+*Covers Claude Code, conversational Claude/Cowork, ChatGPT projects and Codex, and (documented, not yet tested) Google's Antigravity, Jules and the Gemini app. Shared principles are separated from native setup steps; a documented route still needs verification in your own session.*
 
 ---
 
 ## What This Is
 
-These guides describe a persistent assistant architecture for Claude and ChatGPT. Start with shared intentions, then use the native setup for your surface. Codex can work in a repository; a ChatGPT project using uploaded sources needs an explicit bootstrap and source-refresh process.
+These guides describe a persistent assistant architecture for Claude and ChatGPT, with Google Gemini documented as a third platform. Start with shared intentions, then use the native setup for your surface. Codex can work in a repository; a ChatGPT project using uploaded sources needs an explicit bootstrap and source-refresh process.
 
 **Two ways to use these guides:**
 
@@ -53,7 +53,7 @@ Not sure where to start? Use this table:
 | Know the setup still behaves after a change | Behaviour-test suite | [31](./31_BEHAVIOUR_TESTS.md) |
 | Decide what a task may do while you are away | Action-authority block | [32](./32_ACTION_AUTHORITY.md) |
 | Bring a setup over from another assistant | Routed import | [34](./34_IMPORTING_FROM_OTHER_ASSISTANTS.md) |
-| Use one project from Claude and ChatGPT or Codex | Shared `AGENTS.md` + thin `CLAUDE.md` | [35](./35_DUAL_PLATFORM_PROJECTS.md) |
+| Use one project from Claude and ChatGPT, Codex or Gemini | Shared `AGENTS.md` + thin `CLAUDE.md` | [35](./35_DUAL_PLATFORM_PROJECTS.md) |
 
 ---
 
@@ -441,11 +441,11 @@ Covers: why the guide carries no vendor steps and the rule that keeps it that wa
 ### [35 — Dual-Platform Projects](./35_DUAL_PLATFORM_PROJECTS.md)
 `[Power user]` · `~12 min`
 
-*Running one project from Claude and from ChatGPT or Codex through a single shared policy, without pretending one product's mechanisms exist in the other.*
+*Running one project from Claude and from ChatGPT, Codex or Gemini through a single shared policy, without pretending one product's mechanisms exist in the other.*
 
 Covers: how coexistence differs from importing, when a second platform is worth its cost (and why Claude Code plus Cowork is not this), four homes for every rule and file (shared policy, native adapter, platform-specific rules, platform-local state), one shared `AGENTS.md` with a thin `CLAUDE.md` that imports it, app-side instructions and uploaded sources on each platform, capability gaps recorded as verified / none / untested rather than translated, native memory kept local, one scheduler owner per recurring job, one writer or separate branches plus a handoff record, a fresh-session check per surface, and one dated table holding every product-specific fact.
 
-**Use this when:** a project will be worked on from both Claude and ChatGPT or Codex, a project's `CLAUDE.md` and `AGENTS.md` have started to disagree, or switching assistants lost state or ran a job twice.
+**Use this when:** a project will be worked on from Claude and ChatGPT, Codex or Gemini, a project's `CLAUDE.md` and `AGENTS.md` have started to disagree, or switching assistants lost state or ran a job twice.
 
 ---
 
@@ -544,7 +544,7 @@ Tasks are designed to be portable: copy any task file to another project's `task
 | `tasks/setup-behaviour-tests.md` | Interview → a `tests/behaviour/` suite of prompt-plus-grader cases, a hand-run baseline, and the shared policy block that ties rule edits to a test run | 31 |
 | `tasks/setup-action-authority.md` | Inventory the actions tasks and skills can take, classify them by consequence, install the action-authority block, propose standing approvals only from logged evidence | 32, 12 |
 | `tasks/setup-sibling-access.md` | Interview → write a "Sibling project access" section so the assistant requests a sibling project's folder only when a task needs a specific fact from it, never as a blanket step | 23 |
-| `tasks/setup-dual-platform.md` | Make a project usable from Claude and ChatGPT/Codex — one shared `AGENTS.md`, a thin `CLAUDE.md` adapter, a per-surface setup page with sourced platform facts, one scheduler owner per job, and a fresh-session check on each surface | 35, 25, 01, 24, 11 |
+| `tasks/setup-dual-platform.md` | Make a project usable from Claude and ChatGPT/Codex or Gemini — one shared `AGENTS.md`, a thin `CLAUDE.md` adapter, a per-surface setup page with sourced platform facts, one scheduler owner per job, and a fresh-session check on each surface | 35, 25, 01, 24, 11 |
 
 ### Audit tasks (re-runnable)
 
@@ -568,7 +568,7 @@ Tasks are designed to be portable: copy any task file to another project's `task
 |------|-------------|
 | `tasks/review-tasks.md` | Detect guide updates and flag tasks that need syncing; also checks bundled reference copies, the IMPROVEMENTS template, and guide-set coverage for drift — run after editing any guide |
 | `tasks/harvest-from-projects.md` | The inverse of `review-tasks.md` — scan your live assistant projects and propose folding their proven, generalized patterns back into the guides, tasks, templates, and skills |
-| `tasks/review-platform-changes.md` | The outward leg — read what Anthropic and OpenAI shipped since the last sweep (Claude Code, Cowork, ChatGPT, Codex, APIs and MCP), re-check every dated or hedged claim in the guides, and report what is wrong, stale or unverifiable; run after each model launch or monthly |
+| `tasks/review-platform-changes.md` | The outward leg — read what Anthropic, OpenAI and Google shipped since the last sweep (Claude Code, Cowork, ChatGPT, Codex, Antigravity, Jules, the Gemini app, APIs and MCP), re-check every dated or hedged claim in the guides, and report what is wrong, stale or unverifiable; run after each model launch or monthly |
 
 ---
 
