@@ -10,8 +10,8 @@ Name the target surface and available tools before running steps. Claude-only po
 Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
 
 ## Purpose
-Detect what Anthropic and OpenAI have shipped since Cluide's last sweep — in Claude Code, Cowork, claude.ai, the
-Claude API, ChatGPT projects/apps/tasks, Codex, the OpenAI API and the MCP specification — and turn it into findings against the guides, tasks, skills and
+Detect what Anthropic, OpenAI and Google have shipped since Cluide's last sweep — in Claude Code, Cowork, claude.ai, the
+Claude API, ChatGPT projects/apps/tasks, Codex, the OpenAI API, Google Antigravity, Jules, the Gemini app, the Gemini API and the MCP specification — and turn it into findings against the guides, tasks, skills and
 templates. Every "as of <month>" in this repo was placed by hand and has no owner; a price, a default
 mode or a "not supported" statement goes stale silently, and nothing internal to Cluide can catch it.
 
@@ -48,7 +48,7 @@ git log -1 --format='%ad %s' --date=short "$(git describe --tags --abbrev=0)"   
 git log -1 --format='%ad %s' --date=short --grep='Platform sweep'                 # last sweep commit
 ```
 
-Fix the boundary **per platform**, not once. A sweep commit may cover only one vendor (every sweep before 2026-09-21 covered only Anthropic), so read the versions a "Platform sweep" subject names and treat any platform it does not name as unswept since its last dated check (for OpenAI, the "checked" date in Guide 35 §9). Record the boundary date and the versions separately for each platform at the boundary (product/app versions and available models) from the previous sweep's report if one exists under `development/reviews/`. Read that report's **Carried forward** list first: its items are open findings, not history.
+Fix the boundary **per platform**, not once. A sweep commit may cover only one vendor (every sweep before 2026-09-21 covered only Anthropic, and Google was first added on 2026-10-15 outside a sweep), so read the versions a "Platform sweep" subject names and treat any platform it does not name as unswept since its last dated check (for OpenAI and Google, the "checked" dates in Guide 35 §9). Record the boundary date and the versions separately for each platform at the boundary (product/app versions and available models) from the previous sweep's report if one exists under `development/reviews/`. Read that report's **Carried forward** list first: its items are open findings, not history.
 
 ### Step 2 — Read the sources, boundary forward
 
@@ -69,6 +69,11 @@ Fixed list. Read each page from the boundary date to today; do not sample.
 | https://learn.chatgpt.com/codex/customization/memories | ChatGPT memory versus local Codex memory |
 | https://agentskills.io/specification | Skill frontmatter limits every host inherits (`name`, `description` length) |
 | https://developers.openai.com/api/docs/changelog and https://developers.openai.com/api/docs/pricing | OpenAI API changes, current model identifiers, deprecations and API pricing; not subscription allowance |
+| https://antigravity.google/docs/changelog and the pages under https://antigravity.google/docs/ (rules, skills, mcp, hooks, permissions, models) | Google Antigravity app, CLI (`agy`), IDE, IDE extensions and SDK: instruction files, size limits, skills paths, MCP, hooks, permissions, models by plan. The changelog versions the five tracks separately; record all five. Fetch with `curl --compressed`: an uncompressed fetch returns unreadable bytes |
+| https://jules.google/docs/changelog/ and https://jules.google/docs/ | Jules: `AGENTS.md` reading, scheduled tasks, MCP, plan limits. Doc pages have lagged the changelog (scheduled-task editing), so prefer the later dated entry and record the conflict |
+| https://gemini.google/release-notes/ and the Gemini Apps Help pages under https://support.google.com/gemini/ | Gemini app: models per plan, skills (replacing Gems), notebooks, memory, scheduled actions |
+| https://ai.google.dev/gemini-api/docs/changelog, https://ai.google.dev/gemini-api/docs/pricing and https://ai.google.dev/gemini-api/docs/deprecations | Gemini API: model IDs, prices, deprecations, the managed agent's `.agents/AGENTS.md` loading |
+| https://geminicli.com/docs/changelogs/latest/ | Gemini CLI, a legacy surface for consumer plans since 2026-06-18; read it only while Cluide still documents it |
 | https://modelcontextprotocol.io/specification (latest changelog) | MCP transports, deprecations, auth |
 | https://code.claude.com/docs/llms.txt | Index of Claude Code pages, including each weekly `whats-new` digest; use it to find pages the table does not name |
 
@@ -110,8 +115,9 @@ against the guide that carries it:
 | Artifacts, Claude in Chrome | `19`, `05`, `12`, `22` |
 | Print mode flags (`claude -p`), `claude plugin eval` availability and case format, `/skill-doctor` | `31`, `tasks/setup-behaviour-tests.md` |
 | `CLAUDE.md` locations, imports and the loaded-files view | `01`, `25`, `35`, `tasks/setup-dual-platform.md` |
+| Google: Antigravity rule files and limits, skills paths, MCP and hooks files, models by plan; Jules and Gemini app features | `35` (§9 Google subsection and Google routes), `01`, `03`, `PLATFORM_SETUP.md`, `README.md` skill install line |
 
-Re-check **every** Guide 35 §9 row for both platforms using its current official source. Follow official redirects; an inaccessible page or absent product detail is a C finding, never a silent pass. Search all root guides, tasks, skill entry points and nested templates for dependent claims, not just Guide 35. Distinguish API billing, subscription allowances and measured runtime usage.
+Re-check **every** Guide 35 §9 row for every platform using its current official source. Follow official redirects; an inaccessible page or absent product detail is a C finding, never a silent pass. Search all root guides, tasks, skill entry points and nested templates for dependent claims, not just Guide 35. Distinguish API billing, subscription allowances and measured runtime usage.
 
 ### Step 5 — Findings report
 
@@ -139,8 +145,10 @@ with links stripped per `review-tasks.md` step 4a), run `review-tasks.md` steps 
 "as of" marker with the sweep month. Put the boundary for the next run into the commit subject:
 
 ```
-Platform sweep 2026-09b: <what changed> (Claude Code v2.1.278, desktop v2.2553.1, Codex CLI 0.155.1)
+Platform sweep 2026-10c: <what changed> (Claude Code v2.1.300, desktop v2.37337.1, Codex CLI 0.162.1, Antigravity CLI v1.3.1)
 ```
+
+Name every platform the sweep covered. A platform missing from the subject counts as unswept at the next run (Step 1).
 
 ### Step 7 — Confirm
 
@@ -152,7 +160,7 @@ edited skill (`dispatch`, `security-review`, `git-guru`) must be reinstalled fro
 
 ## Dispatch
 
-Use the current runtime's supported delegation policy. On Claude, apply the repository's Claude dispatch rules; on OpenAI, retain the configured model unless the user requested a supported alternative. Source extraction may be delegated only when the host permits it; every shipped claim is checked against its cited primary source by the reviewer. Record routing under `development/` without inventing cross-vendor model equivalents.
+Use the current runtime's supported delegation policy. On Claude, apply the repository's Claude dispatch rules; on OpenAI or Google, retain the configured model unless the user requested a supported alternative. Source extraction may be delegated only when the host permits it; every shipped claim is checked against its cited primary source by the reviewer. Record routing under `development/` without inventing cross-vendor model equivalents.
 
 ## Scheduled-task variant
 

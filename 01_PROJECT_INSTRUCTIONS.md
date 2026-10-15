@@ -18,6 +18,8 @@ For a dual-platform repository, keep shared rules in root `AGENTS.md`; make `CLA
 | Cowork / conversational Claude | Project instructions bootstrap the accessible policy source | Confirm the connected folder or uploaded revision was actually read |
 | Codex repository session | Native `AGENTS.md` discovery; `AGENTS.override.md` can supersede it at a level | Start in the intended workspace and inspect overrides along the instruction chain |
 | ChatGPT uploaded-source project | Project instructions plus uploaded or connected policy source | Record source revision; a repository edit does not refresh an upload |
+| Antigravity repository session (Google; documented, untested) | Native `AGENTS.md` or `GEMINI.md` in every directory from the file in use up to the workspace root, plus `.agents/rules/` ([Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts)) | Keep only `AGENTS.md`, not a `GEMINI.md` beside it; a rule file over 24,000 bytes is truncated |
+| Gemini app notebook (documented, untested) | Notebook instructions plus uploaded policy files | Record the uploaded revision, as for a ChatGPT project |
 
 Do not treat an `@` import as Codex syntax or an uploaded instruction file as proof of automatic loading. Put the full shared contract in `AGENTS.md`, with explicit read pointers for longer references. After changing rules, start a fresh session on each supported surface and test a behaviour that depends on them. Record missing sources as missing, not as permission to guess.
 
