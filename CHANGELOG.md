@@ -4,6 +4,73 @@ Cluide is versioned by content event, not on a calendar: a tag marks guides bein
 
 The **consumed surface** — dimension numbers in `tasks/analyze-project-reference.md`, filenames in `tasks/`, and guide numbers — is append-only. Entries below note explicitly when it grows.
 
+## [1.8.0] — 2026-10-15
+
+Seven pull requests since v1.7.0 (#65–#71), plus the changelog PR that carries this section:
+
+- #65 and #66 rework the `dispatch` skill and the cost guides.
+- #67 and #69 fold two framework reviews into the guides, tasks and templates.
+- #68 and #70 are platform sweeps 2026-10a and 2026-10b.
+- #71 adds Google Gemini as a third platform.
+
+**The consumed surface did not change:** no guide, dimension or `tasks/` filename was added, renumbered or
+retired. This is a minor release because #71 extends platform coverage across the set.
+
+### Added
+
+- **Google Gemini as a third platform** (#71), documented and not yet tested on any Google surface.
+  Guide 35 now defines dual-platform as a Claude surface plus an OpenAI or Google one, and §9 gains a dated
+  Google facts table and a Google routes table. The table covers Antigravity (Google's repository agent;
+  Gemini CLI has been a legacy surface for consumer plans since 2026-06-18), Jules and the Gemini app.
+  Antigravity and Jules read `AGENTS.md` natively and Antigravity skills live in `.agents/skills/`, so the
+  shared-policy pattern carries over. Guides 01 and 03, `PLATFORM_SETUP.md`, `AGENTS.md`, the README and
+  index, the `dispatch` skill and the dual-platform setup and audit tasks gain Google routes.
+  `review-platform-changes.md` now sweeps Google's changelogs and requires each sweep's commit subject to
+  name every platform it covered.
+
+- **`dispatch` behaviour cases** (#65): five cases in Guide 31's shape under `skills/dispatch/evals/`,
+  not yet run.
+
+### Changed
+
+- **`dispatch` skill** (#65, #66). Restructured into a platform-neutral core with separate Claude and
+  OpenAI bindings: a brief template whose visible scope limits what a worker may claim, verifier
+  independence, the model resolution order and the inheritance trap, `availableModels` as the real ceiling,
+  and routing-log keys with a Corrected column for calibration. Code moves to its own opus row, and effort
+  is set before tier. `CLAUDE.md` gets its Dispatch Overrides section and load hook back. Guides 09, 10, 12,
+  16, 17 and 20 and the agent starter pack follow.
+
+- **Framework reviews** (#67, #69). Onboarding allows scoped, supervised work before setup is complete.
+  Approval persistence, correction provenance, data boundaries, record preservation and bootstrap recovery
+  are clarified. Guides 23, 29, 31 and 32 gain behavioural ownership, executable boundaries, full
+  dependency pinning, structured rulings and recovery from partial success.
+
+- **Platform sweep 2026-10a** (#68), boundary Claude Code v2.1.287, desktop v2.19675.0, Codex CLI 0.160.0:
+  native `AGENTS.md` reading on every provider, auto mode as the starting mode, Cowork scheduled tasks
+  defaulting to automatic approval, Opus 5.5 and Sonnet 5.5 API limits, `/doctor prompt-audit`, and
+  `review-platform-changes.md` quoting raw changelogs.
+
+- **Platform sweep 2026-10b** (#70), boundary Claude Code v2.1.300, desktop v2.37337.1, Codex CLI 0.162.1:
+  - On Pro and Max, every new Cowork session runs in the cloud from 2026-10-06 and reaches local folders
+    only through the desktop app (Guides 06, 17, 25, 35). The bridge guard becomes the default for any
+    project that writes to a connected folder.
+  - The Agent tool takes a per-spawn `effort` (`dispatch`, Guide 09); `CLAUDE_CODE_WORKFLOW_SUBAGENT_MODEL`,
+    subagent skill preload cap and `autoCompactWindow`.
+  - MCP description caps of 4,096 and 16,384 characters (Guide 05), MCP allow rules matching the whole
+    server name and fail-closed hooks (Guides 12, 32), and Haiku 5.5's API breaking changes (Guide 35 §9).
+  - `review-platform-changes.md` reads the Cowork support articles and keeps a Carried-forward list
+    between runs.
+
+### Fixed
+
+- **Write confirmation in cloud sessions** (#70). Guide 25's bridge guard trusted the writing tool's own
+  report; before Claude Code v2.1.300, Write and Edit in Cowork cloud sessions could report success for a
+  file that never reached the computer. A folder listing now also counts as confirmation.
+- **Haiku examples** (#70). The Guide 14 and `setup-data-layer.md` examples move to `claude-haiku-5-5` and
+  read the text block instead of `content[0]`, which can be a thinking block.
+- **`git-guru` device mounts** (#70). The mechanics reference no longer asserts that the device shell has no
+  network, and covers the delete-permission request (both verified live, not documented).
+
 ## [1.7.0] — 2026-09-21
 
 Seven pull requests since v1.6.0 (#57–#63), plus the changelog PR that carries this section:
