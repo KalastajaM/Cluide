@@ -214,6 +214,11 @@ takes precedence over the table for this project and holds:
   row places;
 - content types that must never go below a named tier;
 - archetypes proven safe on the cheap tier (from calibration, §7);
+- which lines are cost rules and which are tier floors. A default tier or a known-safe list
+  exists to save money, and the tier is raised when a task is harder than its archetype; a
+  never-below line is a tier floor and is not traded against cost. Date a line that follows a real
+  failure — `(added YYYY-MM-DD after <failure>)` — so calibration does not demote it as if it
+  were cost tuning;
 - where the routing log lives.
 
 Without overrides, use the table above. Local instructions always win over this skill.

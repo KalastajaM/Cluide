@@ -14,6 +14,7 @@ Claude routing exceptions for work delegated from sessions in this repository �
 - Default worker tier: sonnet, replacing the table's haiku rows — only the known-safe list below runs on haiku. Pass `model` on every spawn of an unpinned agent type; an omitted one inherits the session's tier.
 - Never below opus for: writing or reviewing guide prose that ships, and review verdicts on guides, skills or templates — publication quality is this repository's whole product.
 - Known-safe on haiku: link checks, byte-identity mirror sweeps (`diff -q`), guide-number citation greps, file inventories — anything the merge gate defines mechanically.
+- The default tier and the known-safe list are cost rules: raise the tier when a task is harder than its archetype. The never-below line is a tier floor and is not traded against cost.
 - Log dispatches to `development/ROUTING_LOG.md` (gitignored working state: this section is the published example, the log is not).
 
 For conversational Claude setup, see `PLATFORM_SETUP.md`.

@@ -139,6 +139,8 @@ A setup that grows without pruning becomes a liability. These practices keep thi
 
 **CLAUDE.md is not a graveyard.** Rules that once made sense but no longer apply should be deleted, not commented out. If you're worried about losing context, commit first and then delete.
 
+**Mark the rules nobody decided.** A rule the assistant drafted and you accepted without weighing — one line inside a whole file you asked it to write, say — reads exactly like policy a year later, and the next session will defend it as your decision. Mark each such rule as it is written — a trailing `[DRAFTED]` is enough — and remove the mark only once you have read the rule and kept it. A marked rule still applies; the mark makes it a question for the next audit, as is any unmarked rule nobody can trace to a decision. [Guide 04](./04_MEMORY_AND_PROFILE.md) makes the same distinction for facts (`[USER]` against `[INFERRED]`).
+
 **Run audits periodically.** A 10-minute audit every few months catches drift: skills whose triggers no longer match how you ask for them, CLAUDE.md rules that have been superseded, memory files that reference closed projects. The shipped audit tasks do exactly this — `tasks/audit-claude-md.md`, `tasks/audit-skill.md`, `tasks/audit-memory.md`, and `tasks/audit-task-efficiency.md`.
 
 **The right time to refactor a task is when it starts feeling clunky.** Not on a schedule, not when it's broken — when you notice yourself working around it rather than with it.

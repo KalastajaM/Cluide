@@ -76,6 +76,8 @@ They are independent: a file can be in one, both, or neither.
 
 An append-only `RUN_LOG.md` has useful diffs, but track it only when its contents are approved for this repository. Otherwise ignore it and protect it through the project’s approved backup. The same privacy check applies to `IMPROVEMENTS.md`, profiles and memory.
 
+**When the repository is itself the distribution, the ignore list fails by omission.** Whatever git tracks ships, and with `git add -A` or an auto-commit hook (below) a new private file is tracked unless a rule already covers it. Prefer one ignored folder for everything that does not ship over a rule per file, so a new working file needs a home rather than a new rule, and before each release read `git ls-files` rather than trusting the rules (*Export and recovery boundaries* below).
+
 **Starter `.gitignore`:**
 ```
 # Credentials

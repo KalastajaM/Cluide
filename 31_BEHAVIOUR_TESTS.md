@@ -37,6 +37,8 @@ Not everything. A personal setup needs a small suite, on the order of ten to thi
 
 **Task tests.** A scheduled task run against a frozen input produces output of the expected shape — the sections present, the counts plausible, the actions it took within the ones it is allowed ([Guide 32](./32_ACTION_AUTHORITY.md)). Frozen means frozen: a fixture folder or an exported sample, never the live mailbox. Two reasons, and they are different from each other: a test pointed at live data can act on it, and live data changes under you, so a failure cannot be reproduced.
 
+Fixtures prove a heuristic's mechanism, not its calibration. A fixture case shows that a duplicate finder, classifier or matching rule fires where you expect it to; it cannot show how the heuristic behaves on real data, because fixtures carry none of the real noise. Before trusting a new heuristic, run it once over the real data with no write capability granted ([Guide 32](./32_ACTION_AUTHORITY.md) §6), count what it proposes and read a sample. A duplicate finder that proposes two hundred groups where you expect a handful is not ready, whatever its fixture cases say. That run calibrates the heuristic; it does not replace the frozen task test.
+
 What does not earn a test: style preferences that cost nothing when they slip, anything you would not notice or mind, and rules you added speculatively and have never seen violated. A test is a claim that a failure matters. If you cannot name the failure, you do not need the test yet.
 
 ---
