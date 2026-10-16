@@ -384,6 +384,8 @@ A file 50 lines longer than necessary costs tokens on every future run. Over 50 
 
 **Learning without acting** -- noting the same pattern in the backlog run after run without proposing or applying a change. A pattern noted 5 times is overdue for a proposal.
 
+**Normalising the anomaly** -- writing a rule whose only job is to make one odd run look expected ("Monday digests may be short"). The rule explains this anomaly and hides the next one with the same symptom. Record the anomaly as a Known Issue (Part 6) or a hypothesis about its cause (Part 4), with its evidence. A recurring observation is still codified (Part 7), but as its cause once known; until then it stays a hypothesis.
+
 **Noisy output** -- surfacing too many hypotheses, suggestions, and questions in a single run. One or two per category is enough. More than that and the user stops reading.
 
 ---

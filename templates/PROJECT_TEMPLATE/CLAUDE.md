@@ -19,4 +19,7 @@ for the `dispatch` skill; its routing table applies wherever this section is sil
 - Never below [opus] for: [content whose errors are expensive here — figures, dates, legal
   terms, anything sent in my name]
 - Known-safe on [haiku]: [archetypes the routing log has proven — leave empty until calibration]
+- The default tier and the known-safe list are cost rules, raised when a task is harder than its
+  archetype; the never-below line is a tier floor. Date any line that follows a real failure:
+  `(added YYYY-MM-DD after <failure>)`.
 - Log dispatches to `ROUTING_LOG.md`.

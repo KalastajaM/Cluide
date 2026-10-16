@@ -105,6 +105,10 @@ An outbox is not a weaker form of doing the task. For most tasks it is the whole
 
 **Stop on a surprise, and say what stopped.** The unattended version of §4's rule: a task that meets a situation its instructions did not anticipate prepares what it can, writes the situation to its log under a heading you will see, and ends. It does not pick the most plausible action.
 
+**Rehearse the first consequential write.** Fixtures and dry runs exercise everything except the real write path, so a task's first live unattended write is both its least tested step and its most consequential one. Before the first unattended Class B write under a standing approval, run that step once against a copy of the real store — or, where no copy can be made, at a limit of one with the restore point checked first — and compare the result with what you expected. Repeat whenever the write step changes.
+
+**When an automatic action may duplicate a manual one, skip the write and queue it.** If the task cannot tell whether you already did the thing by hand — booked the entry, filed the receipt — the cheap error is to queue it as a proposal naming the possible match and say so in the notification; the expensive one is a duplicate that looks legitimate. Declaring the two the same item is a step you confirm, never an inference the task makes.
+
 ---
 
 ## 6. Enforce Structurally Where You Can
@@ -129,6 +133,8 @@ A rule in the shared policy is guidance. It holds most of the time, and "most of
 4. **A skill states it.** Weakest, because it only exists for requests that trigger the skill. Fine for a skill's *own* actions; never the place a project-wide boundary lives.
 
 Move each Class C and D action as far up this list as your setup allows. Where the only enforcement available is a line of prose, say so in the security-properties table, so the gap is known rather than assumed closed.
+
+**For tools you build, layer 1 is a design choice.** An MCP server ([Guide 05](./05_MCP_SERVERS.md)) or helper app ([Guide 22](./22_HELPER_APPS.md)) that the assistant drives can expose read and propose operations only, with the one write path outside the assistant's reach — a command or button you run on a proposal you have read. An injected instruction can then produce a bad proposal, but not a bad write. If the assistant can call the apply step, or set the flag that marks a proposal approved, the capability is not absent.
 
 ---
 
