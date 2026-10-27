@@ -187,7 +187,7 @@ Covers: per-run metrics, budget checks, identifying high-cost steps, the token h
 ### [11 — Git Integration](./11_GIT_INTEGRATION.md)
 `[Power user]` · `~20 min`
 
-Covers: Versioning authored definitions and state, shared file hygiene, native context controls, snapshots, handoffs and rollback.
+Covers: Versioning authored definitions and state, shared file hygiene, native context controls, snapshots, handoffs and rollback, and landing a stack of pull requests without redundant CI runs.
 
 **Use this when:** you have a scheduled task running regularly and want the ability to roll back bad runs, see what changed between runs, or track how your assistant's knowledge and instructions have evolved over time.
 
