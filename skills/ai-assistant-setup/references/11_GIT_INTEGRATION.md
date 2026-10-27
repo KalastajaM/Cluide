@@ -501,13 +501,13 @@ This makes the task self-contained on a fresh clone. The bootstrap files are the
 
 When an agent works through a list of changes in one run, the natural output is a stack: one pull request per change, each branch built on the one before. Every review stays small, and the risk moves to the landing, where three things go wrong.
 
-**Squash merges make the next PR look conflicting.** After PR k is squashed, the trunk holds a new commit that the next branch does not descend from. GitHub merges from the old base, so any file both sides appended to (a changelog) conflicts although nothing has changed. Telling git the real base, the previous branch's original tip, resolves it and shows whether landing the PR changes anything at all.
+**Squash merges make the next PR look conflicting.** After PR k is squashed, the trunk holds a new commit that the next branch does not descend from. GitHub merges from the old base, so any file both sides appended to (a changelog) conflicts although the PR adds nothing new there. Telling git the real base, the previous branch's original tip, resolves it and shows whether landing the PR changes anything at all.
 
-**CI reruns that test nothing.** If the merge with that base produces exactly the tree CI already tested on the branch, rerunning CI after each squash tests identical content again. Compare trees, not commits: land without waiting where the tree is unchanged, and run the full check only where it is new (a side branch kept in, or someone else's commit landed mid-run), on the final combined tree, waiting for CI on the last PR. In the run this rule comes from, per-PR waits would have added about eight hours across 17 PRs. Check the trunk's tree after every merge and stop on any mismatch.
+**CI reruns that test nothing.** If the merge with that base produces exactly the tree CI already tested on the branch, rerunning CI after each squash tests identical content again. Compare trees, not commits: land without waiting where the tree is unchanged, and run the full check only where it is new (a side branch kept in, or someone else's commit landed mid-run), on the final combined tree, waiting for CI on the last PR. Check the trunk's tree after every merge and stop on any mismatch.
 
 **Fixes that do not travel.** A fix pushed to an earlier branch is missing from every later one until it is merged forward. Check containment after each such fix rather than trusting the order you pushed in.
 
-Two habits keep a busy repository safe meanwhile: build a fix for a branch that is not checked out with a temporary index instead of switching a working tree someone is using, and test any revision on an exported copy (`git archive`) rather than in a worktree. The commands, the landing procedure and a restartable script are in [`skills/git-guru/references/stacked-prs.md`](./skills/git-guru/references/stacked-prs.md).
+Two habits keep a busy repository safe: build a fix for a branch that is not checked out with a temporary index instead of switching a working tree someone is using, and test any revision on an exported copy (`git archive`) rather than in a worktree. The commands, the landing procedure and a restartable script are in `skills/git-guru/references/stacked-prs.md`.
 
 ---
 

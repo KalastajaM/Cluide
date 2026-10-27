@@ -41,16 +41,17 @@ plumbing and a temporary index instead. Write the corrected file anywhere
 outside the worktree first, then:
 
 ```bash
-B=fix-03                                   # branch to fix
-old=$(git rev-parse "refs/heads/$B")
-export GIT_INDEX_FILE="$(mktemp -d)/index"
-git read-tree "$old"
-blob=$(git hash-object -w --path=src/app.py /path/to/edited/app.py)
-git update-index --cacheinfo "100644,$blob,src/app.py"
-new=$(git commit-tree "$(git write-tree)" -p "$old" -m "fix: <why>")
-unset GIT_INDEX_FILE
-git update-ref "refs/heads/$B" "$new" "$old"   # refuses if B moved meanwhile
-git push origin "$B"                           # fast-forward, never --force
+( set -e                                   # subshell: the index variable dies with it
+  B=fix-03 P=src/app.py                    # branch to fix, file to replace
+  old=$(git rev-parse "refs/heads/$B")
+  export GIT_INDEX_FILE="$(mktemp -d)/index"
+  git read-tree "$old"
+  mode=$(git ls-tree "$old" -- "$P" | cut -d' ' -f1)   # keeps an exec bit
+  blob=$(git hash-object -w --path="$P" /path/to/edited/app.py)
+  git update-index --cacheinfo "${mode:-100644},$blob,$P"
+  new=$(git commit-tree "$(git write-tree)" -p "$old" -m "fix: <why>")
+  git update-ref "refs/heads/$B" "$new" "$old"   # refuses if B moved meanwhile
+  git push origin "$B" )                         # fast-forward, never --force
 ```
 
 Use it only on a branch no worktree has checked out (`git worktree list`):
@@ -67,8 +68,9 @@ git archive "$rev" | tar -x -C "$dir"
 
 The export touches no worktree, index or HEAD, so it can check a branch, a
 plumbing commit or a computed merge result while other sessions keep working.
-It contains tracked files only: local config the check needs (an env file,
-built assets) has to be supplied or rebuilt.
+It contains tracked files only, without submodules, without paths marked
+`export-ignore` and with `export-subst` placeholders expanded: local config
+the check needs (an env file, built assets) has to be supplied or rebuilt.
 
 ## Landing the stack without redundant CI
 
@@ -94,23 +96,33 @@ tree CI already tested on branch k+1. Then:
 2. Squash at once with `gh pr merge <n> --squash --match-head-commit <sha>`,
    which refuses if anyone pushed to the branch in between. GitHub reports
    the PR as `UNSTABLE` because checks on the new merge commit are pending;
-   that is expected. `BLOCKED` means branch protection requires the checks,
-   and this shortcut does not apply.
+   that is expected. `BLOCKED` means a protection rule is unmet (required
+   checks, required reviews or another rule); if it is the checks, this
+   shortcut does not apply.
 3. After each merge, assert `git rev-parse origin/main^{tree}` equals the
    tree you computed. Stop on a mismatch: someone else's commit landed, or
    the squash produced something you did not test.
 
 **Where the tree is new**, CI has not tested it: a kept side branch, or
-another commit that reached the trunk mid-run. Run the full check on an
-exported copy of the final combined tree and wait for CI on the last PR only;
-the earlier trees in that run are prefixes of a tree that passed.
+another commit that reached the trunk mid-run. The safe course is to wait for
+CI on each new tree, which the script below does. The faster course, used in
+the run this file comes from, is to run the full check on an exported copy of
+the final combined tree and wait for CI on the last PR only. It accepts that
+the intermediate trunk commits are untested: a later PR can mask what an
+earlier one broke, and a run that stops midway leaves the trunk on one of
+those untested trees.
 
-**Precondition:** every PR's own CI was green before the run starts. The
-shortcut reuses that result; it does not replace it.
+**Preconditions:** every PR's own CI was green before the run starts (the
+shortcut reuses that result; it does not replace it), and the trunk has no
+required merge queue, which turns `gh pr merge` into an enqueue.
 
-**The rule holds when CI depends only on the tree.** Jobs that read event
-metadata, or skip themselves by path filters, may not have run on the tested
-commit. Check what actually ran before treating a skipped job as a pass.
+**The rule holds when CI tested the branch's own tree.** A `pull_request`
+workflow in GitHub Actions tests the PR's merge with the trunk as it was then,
+which equals the branch's tree only while the trunk is an ancestor of the
+branch. If the trunk moved while the stack was open, rely on `push`-triggered
+checks of the head instead. Jobs that read event metadata, or skip themselves
+by path filters, may not have run either. Check what actually ran before
+treating a skipped job as a pass.
 
 In the run this comes from, a 19-PR stack of fixes, waiting for CI on each PR
 would have cost about 28 minutes each across 17 PRs whose trees were already
@@ -127,18 +139,17 @@ tested: roughly eight hours of retesting identical content.
   decision. The script takes a starting PR.
 - **Stop at the first surprise** (conflict, red CI, unexpected trunk tree,
   unknown state) rather than guessing past it.
-- **Keep automation from interfering.** A CI monitor or bot that syncs the
-  checked-out branch with the trunk, or answers conflicts, does not know the
-  run's order. Detach HEAD in the worktree the run uses (`git switch
-  --detach`) so nothing merges into a branch out of turn, and answer its
-  conflict reports with one line saying the run handles them in order.
+- **Keep automation from interfering.** A CI monitor that syncs or fixes
+  branches does not know the run's order: Guide 17, "A CI Monitor Keeps
+  Reporting Conflicts During a Merge Run".
 
 ## Script template
 
 Requires git 2.40 or newer (`merge-tree --merge-base`), `gh` signed in, and
 `jq`. Plan file, one PR per line in merge order: the PR number, its branch,
 and the original tip of the branch it was built on (`-` for the first, which
-is built on the trunk). Record those tips before the first merge.
+is built on the trunk). Record those tips before the first merge. Lines
+starting with `#` are skipped; anything after the third field is ignored.
 
 ```
 101 fix-01 -
@@ -150,15 +161,16 @@ is built on the trunk). Record those tips before the first merge.
 #!/usr/bin/env bash
 # Squash-merge a stack of PRs in order. Skips CI reruns where the landed tree
 # is the tree CI already tested; waits for CI where the tree is new.
-# Usage: REPO=owner/name land-stack.sh <plan-file> [first-pr]
+# Usage: REPO=owner/name [TRUNK=main] land-stack.sh <plan-file> [first-pr]
 set -euo pipefail
-PLAN=$1 START=${2:-0} REPO=${REPO:?set REPO=owner/name}
-log(){ printf '[%s] %s\n' "$(date +%H:%M:%S)" "$*"; }
+PLAN=$1 START=${2:-0} REPO=${REPO:?set REPO=owner/name} TRUNK=${TRUNK:-main}
+M=origin/$TRUNK
+log(){ printf '[%s] %s\n' "$(date +%H:%M:%S)" "$*" >&2; }   # stderr: callers capture stdout
 die(){ log "STOP: $*"; exit 1; }
 retry(){ local i; for i in 1 2 3 4 5; do "$@" && return 0; log "retry $i: $*"; sleep $((i * 20)); done; return 1; }
 
 ci(){ # prints green, pending or failed for a commit's check runs
-  local j; j=$(retry gh api "repos/$REPO/commits/$1/check-runs?per_page=100") || die "check-runs $1"
+  local j; j=$(retry gh api "repos/$REPO/commits/$1/check-runs?per_page=100") || { echo failed; return; }
   jq -r 'if .total_count == 0 then "pending"
     elif any(.check_runs[]; .status == "completed" and
       (.conclusion | IN("success", "skipped", "neutral") | not)) then "failed"
@@ -167,25 +179,27 @@ ci(){ # prints green, pending or failed for a commit's check runs
 }
 wait_green(){ local i s; for i in $(seq 120); do s=$(ci "$1"); [ "$s" = pending ] || break; sleep 60; done
   [ "$s" = green ] || die "CI $s on $1"; }
-pr_state(){ retry gh pr view "$1" --json state,mergeable,mergeStateStatus,headRefOid \
+pr_state(){ retry gh pr view "$1" -R "$REPO" --json state,mergeable,mergeStateStatus,headRefOid \
   --jq '"\(.state) \(.mergeable) \(.mergeStateStatus) \(.headRefOid)"'; }
 
-while read -r pr branch base _; do
-  [ -z "${pr:-}" ] || [ "$pr" -lt "$START" ] && continue
+while read -r pr branch base _ <&3 || [ -n "${pr:-}" ]; do
+  case "${pr:-#}" in \#*) continue;; esac
+  [ "$pr" -lt "$START" ] && continue
   retry git fetch -q origin || die "fetch"
   read -r state _ _ _ <<<"$(pr_state "$pr")"
   [ "$state" = MERGED ] && { log "#$pr already merged, skipping"; continue; }
+  [ "$state" = OPEN ] || die "#$pr state '$state'"
   head=$(git rev-parse "origin/$branch")
-  [ "$base" = - ] && base=$(git merge-base origin/main "$head")
-  out=$(git merge-tree --write-tree --merge-base="$base" origin/main "$head") \
-    || die "#$pr conflicts with main: $out"
+  [ "$base" = - ] && base=$(git merge-base "$M" "$head")
+  out=$(git merge-tree --write-tree --merge-base="$base" "$M" "$head") \
+    || die "#$pr conflicts with $TRUNK: $out"
   tree=$(head -1 <<<"$out")
   own=$head   # on a restart, judge by the branch's own commit, not our merge commit
-  [ "$(git log -1 --format=%s "$head")" = "Merge main into $branch" ] && own=$(git rev-parse "$head^1")
+  [ "$(git log -1 --format=%s "$head")" = "Merge $TRUNK into $branch" ] && own=$(git rev-parse "$head^1")
   tested=no; [ "$tree" = "$(git rev-parse "$own^{tree}")" ] && tested=yes
   [ "$(ci "$own")" = green ] || die "#$pr: CI on its own commit $own is not green"
-  if ! git merge-base --is-ancestor origin/main "$head"; then
-    head=$(git commit-tree "$tree" -p "$head" -p origin/main -m "Merge main into $branch")
+  if ! git merge-base --is-ancestor "$M" "$head"; then
+    head=$(git commit-tree "$tree" -p "$head" -p "$M" -m "Merge $TRUNK into $branch")
     retry git push -q origin "$head:refs/heads/$branch" || die "push $branch"
     log "#$pr pushed merge commit $head (tree already tested: $tested)"
   fi
@@ -196,18 +210,18 @@ while read -r pr branch base _; do
       { [ "$status" = CLEAN ] || { [ "$status" = UNSTABLE ] && [ "$tested" = yes ]; }; } && break
     sleep 15
   done
-  [ "$sha" = "$head" ] && [ "$mergeable" = MERGEABLE ] || die "#$pr state: $mergeable $status $sha"
-  retry gh pr merge "$pr" --squash --match-head-commit "$head" >/dev/null \
+  [ "$sha" = "$head" ] && [ "$mergeable" = MERGEABLE ] &&
+    { [ "$status" = CLEAN ] || [ "$status" = UNSTABLE ]; } || die "#$pr state: $mergeable $status $sha"
+  retry gh pr merge "$pr" -R "$REPO" --squash --match-head-commit "$head" >/dev/null \
     || [ "$(pr_state "$pr" | cut -d' ' -f1)" = MERGED ] || die "merge #$pr"
   retry git fetch -q origin || die "fetch"
-  [ "$(git rev-parse 'origin/main^{tree}')" = "$tree" ] || die "main after #$pr is not the computed tree"
-  log "merged #$pr as $(git rev-parse --short origin/main)"
-done < "$PLAN"
+  [ "$(git rev-parse "$M^{tree}")" = "$tree" ] || die "$TRUNK after #$pr is not the computed tree"
+  log "merged #$pr as $(git rev-parse --short "$M")"
+done 3< "$PLAN"
 log "all done"
 ```
 
 Run it from a worktree with a detached HEAD, log to a file
 (`land-stack.sh plan.txt 2>&1 | tee -a land.log`), and restart from the PR it
-stopped at once the cause is fixed. It waits for CI on every new tree; where
-several new trees come at the end, running the full check on an exported copy
-of the final tree and waiting only on the last PR is faster and equally safe.
+stopped at once the cause is fixed. It waits for CI on every new tree; the
+faster course and its cost are described under "Where the tree is new".
