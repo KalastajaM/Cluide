@@ -24,6 +24,7 @@
 - [A Task Run Was Unexpectedly Expensive](#problem-a-task-run-was-unexpectedly-expensive)
 - [MCP Server-Specific Failures](#problem-mcp-server-specific-failures)
 - [Multi-Task Orchestration Breaks Silently](#problem-multi-task-orchestration-breaks-silently)
+- [A CI Monitor Keeps Reporting Conflicts During a Merge Run](#problem-a-ci-monitor-keeps-reporting-conflicts-during-a-merge-run)
 - [Data Ingestion Script Fails](#problem-data-ingestion-script-fails)
 - [the assistant Keeps Re-Proposing an Approach You Already Ruled Out](#problem-claude-keeps-re-proposing-an-approach-you-already-ruled-out)
 - [When to Start Fresh](#when-to-start-fresh)
@@ -446,6 +447,16 @@ The upstream task may have hit an error mid-run and written an incomplete file.
 If the upstream task runs at 07:00 and the downstream task also starts at 07:00 (or too soon after), the upstream output may not be ready yet.
 
 *Fix:* Space task schedules with enough buffer. A 10-15 minute gap between dependent tasks is usually sufficient.
+
+---
+
+## Problem: A CI Monitor Keeps Reporting Conflicts During a Merge Run
+
+**Symptom:** While a script or session squash-merges a stack of pull requests in order, a CI monitor (in the Claude desktop app, Auto-fix on a session's PR) reports a merge conflict on every remaining PR and offers to fix it, or merges the trunk into the checked-out branch on its own.
+
+**Cause:** After the first squash, every later PR in the stack looks conflicting to GitHub until the run reaches it ([Guide 11](./11_GIT_INTEGRATION.md#stacks-of-pull-requests)). The monitor sees each PR on its own and does not know the run's order. A fix it applies, or a host-side sync of the checked-out branch, lands changes out of turn and can produce a tree nobody tested.
+
+*Fix:* Detach HEAD in the worktree that runs the merge (`git switch --detach`), so no branch is checked out there for the monitor to sync. Answer each conflict report with one line ("not blocked, the merge run handles it in order") instead of acting on it. If the surface lets you switch the monitor off for those PRs, do that for the duration of the run.
 
 ---
 

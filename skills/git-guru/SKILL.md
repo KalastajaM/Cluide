@@ -256,6 +256,10 @@ a decision. Assume the user reads the question cold.
   device-VM (no network) vs cloud container (network, `add_repo` for GitHub API),
   stale staged-copy hazards, verification by file reads. Read it before running
   git on any device mount.
+- `references/stacked-prs.md`: building a stack of dependent PRs, fixing an
+  earlier branch without a checkout, testing a revision on an exported copy,
+  and squash-merging the stack without rerunning CI on already-tested trees,
+  with a restartable script. Read it before landing more than two dependent PRs.
 - `references/profile-template.md` — the canonical profile shape used at
   onboarding, with a filled example.
 - Repo profiles are repo-resident (see step 2): the `## Git` section of the

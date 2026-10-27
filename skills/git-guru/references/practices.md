@@ -62,6 +62,9 @@ behind the remote or behind another machine/session.
   history until deletion. `gh pr merge --squash` (GitHub) or
   `git merge --squash <branch>` then `git commit` (local — `--squash` stages
   but does not commit).
+- **A stack of dependent PRs** squash-merged in order needs an explicit merge
+  base after each squash, or every later PR looks conflicting:
+  `references/stacked-prs.md`.
 - **Merge normally (no squash)** when the branch's commits are individually
   meaningful and worth preserving on main.
 - **Rebase** is for unpushed local commits only (cleaning up before sharing).
