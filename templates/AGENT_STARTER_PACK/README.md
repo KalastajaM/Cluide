@@ -72,8 +72,9 @@ summaries and file paths, not full content. Do small subtasks inline; dispatchin
 - Fields this pack doesn't set but that are available on the same page: `background` (keep the agent
   running in the background), `maxTurns` (a hard turn budget per run), and `experimental.cacheTtl`
   (`5m` or `1h`, worth setting on an agent you fan out repeatedly). Since Claude Code v2.1.296,
-  `autoCompactWindow` compacts an agent earlier than the main conversation's window
-  ([changelog](https://code.claude.com/docs/en/changelog)).
+  `autoCompactWindow` compacts an agent earlier than the main conversation; from v2.1.312 it
+  also applies when `CLAUDE_CODE_AUTO_COMPACT_WINDOW` is set, and it never raises that window
+  ([subagents](https://code.claude.com/docs/en/sub-agents)).
 - Optional for a blind reviewer: `omitClaudeMd: true` (Claude Code v2.1.271+) runs the agent
   without user, project and local CLAUDE.md files; managed policy files still load
   ([changelog](https://code.claude.com/docs/en/changelog)). Add it to a copy of `verifier.md` you use

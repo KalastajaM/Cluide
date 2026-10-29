@@ -34,6 +34,17 @@ decomposition and the tier of each part, **dispatch** with self-contained briefs
 ones in parallel, in one message or one fan-out), then **review** the results against the
 verification rules and synthesize.
 
+**Split by context, not by kind of work.** Cost is one reason to keep work inline; quality is the
+other. Every handoff loses detail, so the best candidates are parts that need little from the rest
+of the task and return a compact result: independent research paths, a component with a clean
+interface, an independent (black-box) verification, or parallel work that benefits from fresh
+context. Steps that chain on each other's output, share data or are usually needed together stay in
+one loop, guided by skills; the inline floor's "needs most of the main context" test below is the
+same idea at its extreme. Splitting by kind of work (Cluide's example: a researcher, a writer, an
+editor) turns that loss into a chain. For an agent you build, fold an over-split design back in one
+subagent at a time against an eval, running each case more than once
+([Anthropic, 2026-10-22](https://claude.com/resources/articles/building-agents-when-to-fold-subagents-into-your-main-agent-loop)).
+
 **Inline floor.** Do a subtask inline when any of these holds: it takes fewer than about five
 tool calls; it reduces to a few greps or one script, however many files it touches; it needs most
 of the main context anyway; or the brief would be longer than the work. Dispatch has real fixed
@@ -164,7 +175,8 @@ accept the definition's default, and never claim an effort level the surface can
   (the starter pack), omit it or pass the same tier — a passed value overrides the pin.
 - **Forks ignore routing.** A fork runs on the parent's model whatever you pass, and inherits the
   whole conversation. Never use one for cheap-tier work or for independent verification; name a
-  non-fork type.
+  non-fork type. Fork mode is on by default on Claude Code surfaces from v2.1.302 (`claude mcp serve` aside);
+  `"Agent(fork)"` in `permissions.deny` blocks forks structurally where a project needs that.
 - **Agent type is a second, separate choice.** The type decides tools and standing instructions
   (a read-only type for scouting; a docs-lookup type for product questions — some have no Write
   tool, so ask for the result inline); `model` decides the tier. Choose both.
