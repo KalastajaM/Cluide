@@ -4,6 +4,49 @@ Cluide is versioned by content event, not on a calendar: a tag marks guides bein
 
 The **consumed surface** — dimension numbers in `tasks/analyze-project-reference.md`, filenames in `tasks/`, and guide numbers — is append-only. Entries below note explicitly when it grows.
 
+## [1.8.1] — 2026-10-29
+
+Three pull requests since v1.8.0 (#73–#75), plus the changelog PR that carries this section. Lessons
+folded into existing guides and a platform sweep; no guide, dimension or `tasks/` filename was added,
+renumbered or retired, so the consumed surface is unchanged.
+
+### Changed
+
+- **Nine reusable lessons** (#73). Rules the assistant drafted and the user accepted without weighing
+  are marked `[DRAFTED]` (Guide 16). Guide 07 gains "Normalising the anomaly". Shared state fails towards
+  absent and catch-up runs keep a progress marker (Guide 09). The first consequential write is rehearsed,
+  and an automatic action that may duplicate a manual one is queued (Guide 32 §5). Tools you build can be
+  read- or propose-only (Guide 32 §6). Also: strict CLIs (Guide 22), fixtures prove a heuristic's
+  mechanism, not its calibration (Guide 31), and an ignore list fails by omission when the repo is the
+  distribution (Guide 11). Dispatch Overrides now separate cost rules from tier floors (`dispatch`,
+  `CLAUDE.md`, `PROJECT_TEMPLATE`).
+
+- **Eight lessons from a stacked-PR run** (#74). Guide 11 gains "Stacks of Pull Requests", backed by a
+  new `skills/git-guru/references/stacked-prs.md` with a restartable land-stack script. Guide 09 adds
+  desktop session limits and a parallel-edits anti-pattern, Guide 17 a CI monitor entry, Guide 22 a
+  run-time guard.
+
+- **Platform sweep 2026-10c** (#75), boundary Claude Code v2.1.312, desktop v4.29.0, Codex CLI 0.165.0
+  (Anthropic and OpenAI; Google not swept):
+  - Fork mode is on by default from Claude Code v2.1.302 on every surface except `claude mcp serve`;
+    `CLAUDE_CODE_FORK_SUBAGENT=0` turns it off and `Agent(fork)` in `permissions.deny` blocks forks
+    (Guides 09, 26, `dispatch`).
+  - `claude -p` and Agent SDK runs with no mode start in Manual from v2.1.302; `/auto-mode-setup`
+    (Guide 12).
+  - Cowork projects are saved to the Claude account while their folders stay on the computer
+    (Guide 35 §9). Scheduled tasks skip person-only MCP tools and need named URLs for web fetch outside
+    Auto (Guide 12, `setup-scheduled-task.md`). Cowork's deletion protection is documented (`git-guru`).
+  - Claude API version 2026-10-21 removes `temperature`, `top_p` and `top_k`; new SDK majors send it
+    by default (Guide 35 §9).
+  - From Anthropic's "When to fold subagents into your main agent loop" (2026-10-22): split delegated
+    work by context, not by kind of work (`dispatch`, Guide 09); tool choice degrades past 30–50 tool
+    definitions (Guide 05); `/claude-api build-eval` and `hillclimb` (Guide 31).
+
+### Fixed
+
+- **Fork mode and `-p` start mode** (#75). Guide 09 said forks were off under `-p` and the SDK, and
+  Guide 12 that `-p` started in auto on third-party providers; both changed in Claude Code v2.1.302.
+
 ## [1.8.0] — 2026-10-15
 
 Seven pull requests since v1.7.0 (#65–#71), plus the changelog PR that carries this section:
