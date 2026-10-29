@@ -13,8 +13,10 @@ request; once the person approved it for the connected folder, `rm` and
 ordinary git (`checkout -b`, `commit`, lock cleanup) worked for the rest of the
 session. Where that request exists, ask for it once, naming the repo's folder,
 and skip the rituals below. Where it does not, or the person declines,
-everything in this section applies. No public page documents the request, so
-re-check it after a desktop update.
+everything in this section applies. Anthropic documents that Cowork asks before
+permanently deleting files ([Use Claude Cowork safely](https://support.claude.com/en/articles/13364135-use-claude-cowork-safely));
+the folder-wide grant observed here is live-verified only, so re-check it
+after a desktop update.
 
 git creates lock files (`index.lock`, `HEAD.lock`, `ORIG_HEAD.lock`) and deletes
 them when done. On Cowork device mounts **deletes fail**, so every git command
