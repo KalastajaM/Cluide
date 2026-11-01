@@ -101,11 +101,13 @@ State, per class of change, what "done" requires. Not "run the tests" — specif
 
 The point is to deny the assistant the move of writing code, noting the code compiles, and reporting success. The gate is a tool call, not a promise.
 
-Two refinements are worth building into the gates from the start.
+Three refinements are worth building into the gates from the start.
 
 **Check the whole output, not the part you changed.** The expensive bugs are the ones that leave the output *self-consistent while wrong* — a figure converted in one place and displayed in another, an invariant that holds because both sides are wrong in the same direction. A gate that looks only at the screen you touched passes straight over that class. Where the app has a few derived surfaces — a summary, a list, an export — have the gate capture all of them in one run, so a change that moves two of them in step is visible.
 
 **Compute the expected answer before you ask for it.** When a gate involves a number, work it out by hand from the invariant first and put it in the prompt. Asking the assistant what the total should be and then checking that the app agrees tests only that two runs of the same reasoning agree, which is not evidence that either is right.
+
+**Name the fast command.** The assistant runs the command the gate names, as written. Put the parallel form there (`pytest -n auto`, not `pytest`), and say when to drop it: a single test, or a debugger.
 
 ### Pattern D — Convention Normalisations
 
@@ -167,9 +169,10 @@ Guardrails are cheap on day 1 and painful to retrofit. Before the app has any re
 - **Data backup.** If the app writes to local files that matter to you, decide a backup strategy (git commit of the data, periodic copy) before the first real entry goes in.
 - **Strict command-line interface.** If the assistant drives the app through a script or CLI, the CLI rejects unknown flags per command instead of ignoring them. A flag silently ignored on the wrong subcommand exits 0 with confident, wrong output, and the assistant reports that output as the answer. State the rule in CLAUDE.md, and check that the argument parser fails loudly on an option the command does not take.
 - **Run-time guard for an architectural rule.** A rule such as "only the storage module writes files" is easy to state and easy to break by a route a source lint cannot see: an alias, a `getattr`, a shell `mv` in a subprocess. A lint reads how a call is spelled; a run-time guard sees what it does. In Python, `sys.addaudithook` in the test suite receives an event for every file open (with its mode or flags), mkdir, rename, removal and subprocess launch, and can fail the test when a write comes from outside the allowed module. It does not see what a child process or a C extension does inside itself, which is why the subprocess launch is checked. On Windows the subprocess event carries one joined command-line string rather than a list, so split it with `shlex.split(posix=False)` and strip the quotes before matching. Name the guard in CLAUDE.md next to the rule it enforces.
+- **A suite that stays cheap.** The assistant runs the test suite before every "done", so its length is paid on every change, and a slow suite gets skipped or run on a subset. Give each test its own temporary folder and no fixed ports or shared globals from the start; a parallel runner then works with no test changes (in Python, `pytest -n auto` with pytest-xdist). Build an expensive fixture once per test process and copy it into each test, such as a database migrated to the newest schema. Before tuning CI, read the per-step timings of a run (`gh run view <id> --json jobs`) and profile one typical test file: in one Python/React project, installs and caching took seconds, and the whole cost was a single-process test step that rebuilt the database for every test. Parallel running and a copied database took that project's longest CI job from 36 to 13 minutes. Expect a few tests that assumed background jobs finish in the order they started; they pass alone and fail under parallel load, and the fix is in the test, not the runner.
 - **API version awareness.** Record the provider, endpoint and supported model in the app contract. Check current official documentation before changing model-specific parameters. Anthropic Messages and OpenAI Responses are separate APIs; neither thinking controls nor assistant-prefill behavior should be transferred by renaming fields. The dated parameter facts and their sources are in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts).
 
-Seven lines in CLAUDE.md. A few minutes on day 1. Many hours not spent later.
+Eight lines in CLAUDE.md. A few minutes on day 1. Many hours not spent later.
 
 ---
 

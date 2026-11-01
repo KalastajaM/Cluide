@@ -252,6 +252,8 @@ in the briefing and continue with calendar data only.
 
 **Parallel edits to the same code.** Two sessions changing the same files at once produce branches that each pass on their own and conflict, or quietly disagree, when combined. Run large changes to one area serially. The same goes for a review: findings written against an older trunk may describe code that has since moved, so recheck each one against the latest trunk before implementing it.
 
+**Timing evidence from a busy machine.** When several sessions share one computer, local timings and timeouts measure the other sessions, not the change. With a load average of 36 on 8 cores, one third of a test suite took three times as long as the whole suite had, and 27 tests failed that pass on an idle machine. Compare CPU time rather than wall time, let a clean CI run decide whether a failure is real, and never "fix" a failure seen only under shared load.
+
 **Giant shared state.** Putting everything in one `STATE.json`. If it exceeds 100 lines, you are probably conflating shared state with per-task state. Split.
 
 ---
