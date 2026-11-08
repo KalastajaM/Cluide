@@ -36,7 +36,7 @@ it is `27_INDEPENDENT_JUDGMENT.md` in the Cluide guide set; the skill stands alo
 - **Never say what the user thinks is wrong to a subagent.** If part of the review is delegated, write
   the brief before hearing their view, or reuse a fixed brief verbatim. A subagent briefed after the
   user speaks is uninformed about the project and perfectly informed about their opinion.
-- **Use a fresh reviewer without inherited conversation history.** Choose the host's documented no-history option; do not assume a tool called fork is isolated. Give the artifact, rubric, and output format in a self-contained brief. If isolation cannot be established, label the review non-independent.
+- **Use a fresh reviewer without inherited conversation history, and pin its type.** A fork inherits the whole conversation, and in Claude Code fork mode is on by default, so a reviewer spawned without a named type may receive everything the user just said. Name a non-fork type (a named agent definition, or the general-purpose type) and check the type in the run; where blind passes must never fork, `"Agent(fork)"` in `permissions.deny` makes it structural. On other hosts, use the documented no-history option and do not assume a new task or a tool called fork is isolated. Give the artifact, rubric, and output format in a self-contained brief. If isolation cannot be established, label the review non-independent.
 - **Write findings to a file before discussing them.** A verdict given in conversation is cheap to
   soften once the user reacts, and the softening leaves no trace.
 
@@ -109,7 +109,7 @@ When the user brings two reviews of the same artefact:
 
 Say this out loud when the user is deciding how much weight to put on the result.
 
-- **Two model runs can share errors.** Repeated runs of one model have correlated priors; using Claude and ChatGPT also does not prove independence. Judge the evidence and the reviewer’s information access, not brand agreement.
+- **Two model runs can share errors.** Repeated runs of one model have correlated priors; using Claude, ChatGPT and Gemini also does not prove independence. Judge the evidence and the reviewer’s information access, not brand agreement.
 - **Rerunning the same prompt buys almost nothing.** Varying the lens, the persona or the rubric buys
   something and is cheap. A different model buys more. A human who is not the user buys the most.
 - **Read reasons, not vote counts.** A finding that survived a reviewer actively trying to refute it is

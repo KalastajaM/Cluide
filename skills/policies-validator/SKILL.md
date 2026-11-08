@@ -26,7 +26,7 @@ This skill is the policy-handling layer for company policies. The authoritative 
 
 ## Runtime boundary
 
-Use this policy workflow on either platform, but inspect the active tool permissions separately. T1/T2/T3 describe policy handling, not a sandbox. An unavailable policy source is missing evidence, not a pass. Do not claim Claude frontmatter, an OpenAI sandbox, or connector permissions enforce the same rule without checking the actual operation. Draft findings when write access is unavailable; do not install a Claude hook on OpenAI.
+Use this policy workflow on any platform (Claude, OpenAI or Google), but inspect the active tool permissions separately. T1/T2/T3 describe policy handling, not a sandbox. An unavailable policy source is missing evidence, not a pass. Do not claim Claude frontmatter, an OpenAI sandbox, or connector permissions enforce the same rule without checking the actual operation. Draft findings when write access is unavailable; do not install a Claude hook on OpenAI.
 
 ## 1. Policy Registry
 
@@ -209,6 +209,10 @@ Zip the skill folder (a plain `.zip`) after filling in the placeholders, then up
 ### Codex and ChatGPT
 
 Use the native skill route from Guide 03, or supply this workflow and the required policy sources for explicit invocation. Codex repository skill folders use `.agents/skills/`; see [official skill documentation](https://learn.chatgpt.com/docs/build-skills) (checked 2026-09-14). Configure tool access separately. Neither installation nor copied policy text transfers connector grants.
+
+### Google (Antigravity, Gemini app)
+
+Documented, not tested. Antigravity reads `SKILL.md` folders from the workspace's `.agents/skills/`, the same folder Codex uses. Antigravity's permission rules (evaluated Deny > Ask > Allow) are a separate control and must be configured on their own; do not install a Claude hook as an Antigravity `hooks.json`. Gemini app skills are available only on personal accounts, not work or school accounts, so the Gemini app is not a route for company policy: do not upload organisational policy content to a personal account. Run a fresh-session check that a T1 case is actually blocked before relying on it.
 
 ### Wiring into a project
 
