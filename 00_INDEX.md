@@ -625,7 +625,7 @@ An interactive setup coach. All guides are bundled into this skill. Instead of r
 
 ### template-exporter
 
-Turns an existing assistant setup — a chat system prompt, Cowork task, Cowork project, or skill — into a clean, shareable template. Strips personal and business identifiers, adds placeholder annotations, and produces a dual-audience output: a human-readable README and an assistant setup prompt.
+Turns an existing assistant setup — a chat system prompt, assistant task, assistant project, or skill, from Claude, ChatGPT/Codex or Gemini — into a clean, shareable template. Strips personal and business identifiers, adds placeholder annotations, and produces a dual-audience output: a human-readable README and an assistant setup prompt. The folder is self-contained; its bundled checker (`scripts/check_template.py`) needs Python 3, with a manual fallback when Python is unavailable.
 
 **Install:** Follow [Guide 03](./03_SKILLS.md) for the selected surface, preserving the complete `template-exporter/` folder. Test the installed workflow; source-only projects can request it explicitly.
 
