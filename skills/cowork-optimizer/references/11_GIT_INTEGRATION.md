@@ -507,7 +507,7 @@ When an agent works through a list of changes in one run, the natural output is 
 
 **Fixes that do not travel.** A fix pushed to an earlier branch is missing from every later one until it is merged forward. Check containment after each such fix rather than trusting the order you pushed in.
 
-Two habits keep a busy repository safe: build a fix for a branch that is not checked out with a temporary index instead of switching a working tree someone is using, and test any revision on an exported copy (`git archive`) rather than in a worktree. The commands, the landing procedure and a restartable script are in `skills/git-guru/references/stacked-prs.md`.
+Two habits keep a busy repository safe: build a fix for a branch that is not checked out with a temporary index instead of switching a working tree someone is using, and test any revision on an exported copy (`git archive`) rather than in a worktree. The commands and the landing procedure are in `skills/git-guru/references/stacked-prs.md`, and the restartable script is `skills/git-guru/scripts/land-stack.sh`.
 
 ---
 
@@ -533,7 +533,9 @@ ones are proposed first), keeps per-repo flow profiles in the repo itself, and
 scans staged changes for secrets and personal data before anything moves toward
 a public remote. This guide is the *why* — what to track and how the layers
 relate; the skill is the *how* for day-to-day operations. Install it as an
-account skill so it triggers in any session that touches git.
+account skill so it triggers in any session that touches git, and install the
+whole folder (upload it zipped): a copy that keeps only `SKILL.md` still runs
+its core safety rules but loses the references and scripts.
 
 ## Export and recovery boundaries
 
