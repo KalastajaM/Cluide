@@ -1,287 +1,177 @@
 ---
 name: dispatch
 description: >
-  Route delegated work to the right model tier and effort level. Use whenever the session is about
-  to spawn subagents, split a task into parallel or independent parts, or choose a model or effort
-  for a subtask, workflow stage or scheduled task; when the user says "dispatch", "route this",
-  "orchestrate", "fan out", "run in parallel", "which model should this use"; or for multi-step
-  work with bulk, mechanical or independent parts, including "sweep all X", "check every Y", "audit
-  the Z", "fix what's broken across". Load it ALONGSIDE any playbook skill that also triggers: that
-  skill says what to do, this one says which tier does each part. Also use when creating or editing
-  a scheduled task, to propose its tier. This is model-tier routing, not the Cowork Dispatch sidebar
-  agent. Do NOT use for choosing the session's own model; a session cannot switch that.
+  Model-tier routing for delegated work. Use right before spawning a subagent (Agent or Task
+  tool), when planning a fan-out or workflow stages, or when setting the model or effort of a
+  subtask or scheduled task; also when the user asks which model delegated work should use, or
+  says "route this", "tier routing" or "fan out". Load it alongside any playbook skill: the
+  playbook says what to do, this says which tier does each part. Not for the session's own model
+  (a session cannot switch it) and not the Cowork Dispatch background agent.
 ---
 
-# Dispatch — model-aware orchestration
+# Dispatch — model-tier routing for delegated work
 
-This skill is the routing policy for delegated work: the session plans and reviews at its own
-tier, sends the bulk of the token volume to cheaper workers, and uses verification as the safety
-net. It pays for two reasons. In most real tasks the bulk of the volume is mechanical — reading,
-extracting, sweeping, applying agreed edits — and does not need the top tier. And workers burn
-their own context windows, which keeps the orchestrator's clear for planning and review. Rates
-change; for an actual comparison use current provider pricing (Guide 10 §What Things Actually
-Cost names the sources) and measured usage, never a remembered spread.
+The session plans and reviews at its own tier, sends the bulk of the volume to cheaper workers,
+and uses verification as the safety net. Workers also burn their own context, which keeps the
+orchestrator's clear. Precedence: the host's rules on whether to delegate at all, then the
+project's **Dispatch Overrides** (§7), then this skill.
 
-Use it only when delegation is available and permitted by the host and the user's scope. Sections
-1–4 and 7 apply on every platform. Section 5 is the Claude binding, section 6 the OpenAI and Google ones: model
-identifiers and tool parameters are native to each runtime, and none is a translation of
-another. Not to be confused with any product feature also named Dispatch.
+## 1. Inline or delegate
 
-## 1. When to dispatch
+**Inline floor.** Do it inline when any holds: under about five tool calls; a few greps or one
+script, however many files; it needs most of the main context; the brief would be longer than the
+work. Routing everything is as wrong as routing nothing.
 
-When a task decomposes into two or more independent or mechanical subtasks, **plan** the
-decomposition and the tier of each part, **dispatch** with self-contained briefs (independent
-ones in parallel, in one message or one fan-out), then **review** the results against the
-verification rules and synthesize.
+**Split by context, not by kind of work.** Every handoff loses detail. Good candidates need little
+from the rest and return a compact result: an independent research path, a component with a clean
+interface, a black-box verification. Steps that chain on each other's output stay in one loop.
+Never build researcher → writer → editor chains.
 
-**Split by context, not by kind of work.** Cost is one reason to keep work inline; quality is the
-other. Every handoff loses detail, so the best candidates are parts that need little from the rest
-of the task and return a compact result: independent research paths, a component with a clean
-interface, an independent (black-box) verification, or parallel work that benefits from fresh
-context. Steps that chain on each other's output, share data or are usually needed together stay in
-one loop, guided by skills; the inline floor's "needs most of the main context" test below is the
-same idea at its extreme. Splitting by kind of work (Cluide's example: a researcher, a writer, an
-editor) turns that loss into a chain. For an agent you build, fold an over-split design back in one
-subagent at a time against an eval, running each case more than once
-([Anthropic, 2026-10-22](https://claude.com/resources/articles/building-agents-when-to-fold-subagents-into-your-main-agent-loop)).
+**Batch the fan-out.** Worker count usually moves cost more than tier: each spawn re-buys its brief,
+its context and its own prompt cache. One worker per ~50 homogeneous items, not per item. Split
+finer only when items are independent *and* wall-clock matters. Send independent spawns in one
+message.
 
-**Inline floor.** Do a subtask inline when any of these holds: it takes fewer than about five
-tool calls; it reduces to a few greps or one script, however many files it touches; it needs most
-of the main context anyway; or the brief would be longer than the work. Dispatch has real fixed
-costs — routing everything is as wrong as routing nothing. A consulted-but-inline decision still
-gets a log line with key `inline` (§7), so the log shows the policy was applied, not skipped.
+**Summaries, not payloads.** A writing worker puts full output in a file and returns the path plus
+a bounded summary; a read-only worker returns the bounded summary inline. Reading every full
+output back re-buys the saved tokens.
 
-**Size the fan-out in batches, not items.** How many workers a task splits into usually moves
-cost more than which tier runs them: every spawn re-buys its briefing, its context, and its
-overhead. Batch homogeneous items so each worker gets meaningful volume — one scout per fifty
-files, not per file. Split finer only when items are truly independent *and* wall-clock matters.
+**Past ~5 concurrent workers, or stages that need checks between them,** propose a Workflow where
+the host has one, and only start it with the user's explicit opt-in.
 
-**Return summaries, not payloads.** Every worker returns a compact summary. One that may write
-puts its full output in a file and returns the path; a read-only worker returns a bounded summary
-inline. An orchestrator that reads every worker's full output back has re-bought the tokens it
-saved, and clogs its own context besides.
+## 2. Routing table (Claude)
 
-**Past roughly five concurrent agents, or when stages need verifying between them, propose a
-Workflow** where the host has one — within its stated size guideline, and only with the user's
-explicit opt-in.
+Tier = the `model` value (family alias, not a version). Effort = the `effort` value: pass it
+explicitly on every spawn as given here; this table is the instruction to set it.
 
-**Composing with playbook skills.** This skill decides *who runs each part*, not *what the parts
-are*. When another skill provides the procedure (a maintenance playbook, a review protocol, a
-setup task), follow that skill for the steps and this one for the tier of each step. One skill
-loading does not displace the other. Because policy skills lose trigger races to playbooks, a
-project that delegates should carry a load hook in its always-loaded instructions (§5, Project
-overrides).
-
-## 2. The brief
-
-Assume the worker sees nothing of this conversation — context inheritance depends on the host
-and the spawn mode, and a brief that relies on it breaks on the next surface. Every brief carries:
-
-```
-Goal and done-when:   what finished looks like, in checkable terms
-Context:              the facts and decisions the worker needs, stated, not referenced
-Visible scope:        exactly which files or sources it has been given
-May write:            its own file set, or "nothing"
-Output:               full result to <path> and a summary of at most N lines plus the path;
-                      read-only workers return the bounded summary inline
-Verification scope:   verifier briefs only: full recheck, or a sample of stated size
-```
-
-- **Visible scope is a claim limit.** A worker that was given a subset must report "not in what I
-  was given", never "missing". Absence findings from a partial view are false findings.
-- **Parallel writers get disjoint file sets.** One owner per file; the orchestrator merges.
-- **Quote, don't summarise, what must be exact** — a figure, a rule, the wording to apply.
-
-## 3. Verification
-
-- **Figure-bearing and legal-domain checks never run below the mid tier.** Extraction may run
-  cheap; the check on anything that will be relied on does not.
-- **State the scope.** Bulk cheap-tier output gets a sample by default — a full recheck at the
-  verify tier can cost more than doing the work one tier up would have, which erases the saving.
-  Reserve full rechecks for figure-bearing and legal-domain content that will be relied on.
-- **Keep the verifier independent.** Give it the artefact and the criteria or spec, not the
-  author's reasoning and not your own view; write its brief before you state a conclusion. A
-  spawn that inherits the conversation (a fork) is not an independent check (Guides 26, 27).
-- **Re-read what ships.** A lookup or extraction worker can misread its source. A claim that will
-  be published or relied on is checked against the primary source by the orchestrator before it
-  is used, and any correction is logged (§7).
-- **When in doubt between two tiers, take the cheaper one and attach verification.** The
-  escalation ladder makes this rational — except for work whose failure is expensive to detect
-  or to retry: code, or anything that re-reads a large context. Per-token price is not per-task
-  cost. Every turn and every retry re-sends the worker's whole context, so a cheaper tier that
-  fails once can cost more than the tier above getting it right first time. Start that work at
-  the tier that usually succeeds.
-
-## 4. Escalation ladder
-
-Dispatch cheap → check the result → on failure, re-dispatch **one tier up**, quoting the failure
-in the new brief so the retry doesn't repeat it. One escalation maximum; if the second attempt
-also fails, do the work inline. Where the host exposes no higher tier (a single configured model),
-the ladder is one retry with the failure quoted, then inline. This turns "which model is good
-enough?" from a prediction into a cheap empirical loop, and escalations and corrections are the
-learning signal (§7).
-
-**Effort before tier.** Where the surface sets effort per call (§5 says where the Claude dial
-exists), the one escalation may instead be an effort step at the same tier — `medium` to `high`.
-Take it when the worker had the right approach but stopped short: a shallow answer, a fix at one
-layer when the fault spans two. Take the tier step when it misread the task or lacked the
-capability. Extra reasoning on one attempt usually costs less than a retry loop. Log either kind as
-escalated, and name the step in the outcome.
-
-## 5. Claude binding
-
-Tier names below are model families — the values the `model` parameters accept — not versions.
-Confirm the names against the active tool schema before dispatch; if the lineup has changed since
-this skill was last edited, follow the schema and current product documentation, not this table.
-
-### Routing table
-
-| Archetype | Log keys | Tier | Effort | Verification |
+| Archetype | Log key | model | effort | Verification |
 |---|---|---|---|---|
-| Bulk read / extract / classify / OCR; file inventories and sweeps; format conversion; mechanical renames | `bulk-extract`, `sweep`, `convert` | haiku | low | orchestrator spot-checks a sample |
-| Web research; lookups in docs, logs and test output; structured drafting from a clear spec; applying agreed edits whose wording the brief gives | `research`, `docs-lookup`, `draft-to-spec`, `apply-edits` | sonnet | medium | orchestrator reviews the output |
-| Writing or changing code, including routine code to a clear spec | `code` | opus | medium | the worker runs the code or its tests; orchestrator reviews the diff |
-| Judgment calls; sensitive drafting (legal, financial, anything with figures and dates that will be used); synthesis across sources; verifying lower-tier work | `judgment`, `sensitive-draft`, `synthesis`, `verify` | opus | high | second independent pass only if high-stakes |
-| Hardest planning; longest-horizon synthesis; long unsupervised runs and problems with no existing pattern, where the result matters more than the token price | `plan` | fable | high | rarely dispatched — usually the session itself |
+| Bulk read/extract/classify/OCR, inventories, sweeps, format conversion, mechanical renames | `bulk-extract` `sweep` `convert` | haiku | low | orchestrator samples |
+| Web research, lookups in docs/logs/test output, drafting to a clear spec, applying edits whose wording the brief gives | `research` `docs-lookup` `draft-to-spec` `apply-edits` | sonnet | medium | orchestrator reviews |
+| Writing or changing code, even routine code to spec | `code` | opus | medium | worker runs code/tests; orchestrator reviews diff |
+| Judgment; sensitive drafting (legal, financial, figures and dates that will be used); cross-source synthesis; verifying lower-tier work | `judgment` `sensitive-draft` `synthesis` `verify` | opus | high | second independent pass only if high-stakes |
+| Hardest planning, longest-horizon synthesis, novel problems where the result outweighs price | `plan` | fable | high | rarely dispatched; usually the session itself |
 
-Code sits on the top working tier at `medium`, not on sonnet: a wrong first attempt at code is
-expensive to detect and to retry, so the cheaper tier rarely stays cheaper per task (§3). This
-follows Anthropic's guidance for the current lineup — smaller models "for lookups, not for writing
-code" ([What a task costs on Opus 5.5](https://claude.com/blog/what-a-task-costs-on-opus-5-5), 2026-09-22) — and is a starting point
-for calibration (§7), not a finding of any routing log. The `code` key keeps its name, so the log
-can demote it again if it never escalates.
+- Code sits on opus because a wrong first attempt is expensive to find and retry; per-token price
+  is not per-task cost. Calibration (§8) may demote it.
+- Effort column is a default, not a range: `low` for anything returning a label, list or lookup;
+  `high` on sonnet for drafting that needs care; `xhigh` only for the hardest verify or plan stage;
+  never `max` on a worker. A level the model lacks silently falls back to the highest it supports.
+- `fable` carries extra safeguards in biology, cybersecurity and AI R&D; if a fable worker is
+  limited there, use opus.
+- If the Agent tool's schema lists different `model` values than this table, follow the schema
+  and current product docs, and say the table is stale.
 
-The Effort column is a per-row default, not a range. Drop to `low` for anything whose output is a
-label, a list, or a lookup; raise to `high` on sonnet for drafting that needs real care, and to
-`xhigh` only for the hardest verification or planning stages. Do not pay `high` effort for
-mechanical work because it is the default. `max` is a setting for a single session, not a worker
-default.
+## 3. Every spawn
 
-**Where the effort dial exists.** The Agent tool takes a per-spawn `effort` parameter (Claude Code
-v2.1.292 and later; desktop v2.31226.1 and later bundle 2.1.295); Workflow stages expose per-call `effort`;
-and Claude Code agent frontmatter pins it per agent (`effort:` — the starter pack does this). Pass
-`effort` on a spawn the same way as `model`, so the table's Effort column is applied rather than
-inherited. Where the active tool schema shows no `effort` parameter (an older host), effort comes
-from the agent definition: route effort-sensitive stages through a Workflow (opt-in required) or
-accept the definition's default, and never claim an effort level the surface cannot set.
+- **Name the model.** Resolution: per-spawn `model` → agent definition's `model` → configured
+  default subagent model → **the session's model**. An unpinned type (general-purpose, for
+  example) with no `model` in an Opus or Fable session runs bulk work at the top tier,
+  silently. For a type whose definition pins a tier, omit `model` or pass the same value; a passed
+  value overrides the pin.
+- **Name the effort.** Resolution in Claude Code: `CLAUDE_CODE_EFFORT_LEVEL` (if set, it wins and
+  the per-spawn parameter disappears) → per-spawn `effort` → definition's `effort:` →
+  `CLAUDE_CODE_SUBAGENT_EFFORT` (v2.1.316+) → the session's level. If the schema has no `effort`,
+  say so; never claim a level the surface cannot set.
+- **No forks for routed work.** A fork runs on the parent's model and inherits the whole
+  conversation whatever you pass. Never use one for cheap-tier work or independent review.
+- **Type is a separate choice.** Type decides tools and standing instructions (read-only for
+  scouting; some types lack Write, so ask for results inline); `model` decides tier. Choose both.
+  Prefer a project's model-pinned agent types where they exist.
+- **Claude Code settings that change routing — check before routing:** `CLAUDE_CODE_SUBAGENT_MODEL`
+  (fallback default only), `CLAUDE_CODE_SUBAGENT_MODEL_FORCE=1` (pins every subagent, routing off),
+  `CLAUDE_CODE_WORKFLOW_SUBAGENT_MODEL` (all workflow agents on one model), `maxEffortLevel` (caps
+  effort), `availableModels` (a real ceiling inheritance cannot escape). A deny rule like
+  `Agent(model:opus)` blocks only calls naming that alias, not inheritance.
+- **Session default for orchestrating** (user's choice, not this skill's): `opus`, or `opusplan`
+  where plan and execute phases are distinct.
+- **Cowork:** per-spawn `model` and `effort` are the whole mechanism; agent definitions do not
+  persist between sessions.
+- **Scheduled tasks:** propose the cheapest tier that meets the hardest step, and name that step.
+  Never change an existing task's model unasked.
 
-### Make every spawn's model explicit
+## 4. The brief
 
-- **Never leave the tier to inheritance.** A spawn's model resolves in this order: the per-spawn
-  `model` parameter, the agent definition's `model`, any configured default subagent model, then
-  the **main conversation's model**. So pass `model` on every spawn of a type whose definition
-  sets none (general-purpose, for example): in an Opus or Fable session a forgotten
-  parameter runs a mechanical worker at the top tier, silently. For a type that pins its tier
-  (the starter pack), omit it or pass the same tier — a passed value overrides the pin.
-- **Forks ignore routing.** A fork runs on the parent's model whatever you pass, and inherits the
-  whole conversation. Never use one for cheap-tier work or for independent verification; name a
-  non-fork type. Fork mode is on by default on Claude Code surfaces from v2.1.302 (`claude mcp serve` aside);
-  `"Agent(fork)"` in `permissions.deny` blocks forks structurally where a project needs that.
-- **Agent type is a second, separate choice.** The type decides tools and standing instructions
-  (a read-only type for scouting; a docs-lookup type for product questions — some have no Write
-  tool, so ask for the result inline); `model` decides the tier. Choose both.
+Assume the worker sees nothing of this conversation.
 
-### Surfaces
+```
+Goal and done-when:  what finished looks like, in checkable terms
+Context:             facts and decisions it needs, stated, not referenced
+Visible scope:       exactly which files or sources it has
+May write:           its own file set, or "nothing"
+Output:              full result to <path>, summary of at most N lines; read-only: summary inline
+Verification scope:  verifier briefs only: full recheck, or sample of stated size
+```
 
-**Cowork:** route via the Agent tool's `model` and `effort` parameters per spawn (see effort above).
-The Workflow threshold in §1 applies; workflows require the user's explicit opt-in ("use a workflow"
-/ ultracode), so ask — plain Agent-tool dispatch needs no opt-in. Agent definition files do not
-persist between Cowork sessions; this skill plus per-spawn parameters are the mechanism.
+- Visible scope limits claims: a worker given a subset reports "not in what I was given", never
+  "missing".
+- Parallel writers get disjoint file sets; the orchestrator merges.
+- Quote, don't summarise, anything that must be exact: a figure, a rule, the wording to apply.
 
-**Claude Code:** prefer the named agents from the starter pack if installed (`scout`, `builder`,
-`verifier`, `researcher` — see `templates/AGENT_STARTER_PACK/` in Cluide), since their frontmatter
-sets tier and effort by default, without re-deciding them per prompt. `builder` is pinned to
-sonnet; for code, spawn it with `model: opus`, which overrides the pin. Otherwise pass the
-per-invocation `model` parameter. Recommended session default for orchestrating work: `opus` (or
-`opusplan` where plan and execute phases are distinct). From v2.1.251, `CLAUDE_CODE_SUBAGENT_MODEL`
-is only a fallback default — a definition's model or a per-spawn model still wins; on earlier
-versions it overrode both, so no routing took effect while it was set.
-`CLAUDE_CODE_SUBAGENT_MODEL_FORCE=1` (v2.1.257+) restores that override deliberately: it ignores
-every definition's `model` field and blocks per-spawn models. `CLAUDE_CODE_WORKFLOW_SUBAGENT_MODEL`
-(v2.1.296+) runs every workflow agent on one model while other subagents keep theirs. Check for
-all three variables, and the version, before routing.
+## 5. Verification
 
-**Enforcement, and its limit.** A permission deny rule such as `Agent(model:opus)` refuses calls
-that pass that literal alias. It does not match a call that omits `model` — which inherits the
-session's model — nor one that names a full model ID. It blocks explicit requests, not
-inheritance, so pair it with the rule above. For a real ceiling, use an `availableModels`
-allowlist: it applies to the session model, definitions, the Agent tool's `model` parameter and
-`CLAUDE_CODE_SUBAGENT_MODEL`, so inheritance cannot escape it, and routing below the ceiling
-still works (`enforceAvailableModels`, managed settings only, extends it to the Default option).
-`_FORCE=1` is a pin, not a ceiling, and it removes routing.
+- Figure-bearing and legal checks never run below sonnet; extraction may run cheap, the check on
+  anything relied on does not.
+- State the scope. Bulk output: sample ~1 in 5, minimum 3; a failed sample fails the batch. Full
+  recheck only for figure-bearing or legal content that will be relied on.
+- Keep the verifier independent: a non-fork type, given the artefact and the criteria, not the
+  author's reasoning or your view. Write its brief before stating your own conclusion.
+- Re-read what ships: a claim that will be published or relied on is checked against the primary
+  source by the orchestrator, and corrections are logged.
+- Unsure between two tiers: take the cheaper and attach verification, except for code or anything
+  re-reading a large context, where a retry costs more than the tier gap. Start those at the tier
+  that usually succeeds.
 
-**Scheduled tasks:** propose the cheapest available tier that meets the task's hardest step, and
-name the step that set it. Never change an existing scheduled task's model without the user
-asking.
+## 6. Escalation ladder
 
-### Project overrides
+Dispatch → check → on failure, re-dispatch **one step up**, quoting the failure in the new brief.
+One escalation; if it also fails, do it inline. The step is an effort raise at the same tier when
+the worker had the right approach but stopped short, a tier raise when it misread the task or
+lacked capability. With only one model available: one retry with the failure quoted, then inline.
+Log either kind as escalated and name the step in the outcome.
 
-Before routing, check the project's always-loaded Claude instructions — the `CLAUDE.md` adapter,
-or the project instructions field in an app project — for a **Dispatch Overrides** section. It
-takes precedence over the table for this project and holds:
+## 7. Project overrides
 
-- the load hook: "load `dispatch` alongside any playbook skill when a task has bulk, parallel or
-  mechanical parts" — the reliable fix for the trigger race in §1;
-- the default worker tier — say whether it replaces the table's cheap tier or only covers work no
-  row places;
-- content types that must never go below a named tier;
-- archetypes proven safe on the cheap tier (from calibration, §7);
-- which lines are cost rules and which are tier floors. A default tier or a known-safe list
-  exists to save money, and the tier is raised when a task is harder than its archetype; a
-  never-below line is a tier floor and is not traded against cost. Date a line that follows a real
-  failure — `(added YYYY-MM-DD after <failure>)` — so calibration does not demote it as if it
-  were cost tuning;
+Before routing, check the project's always-loaded instructions (CLAUDE.md, or the app project's
+instructions field) for a **Dispatch Overrides** section. It wins over §2 and holds:
+
+- the load hook: "Load `dispatch` alongside any playbook skill when a task has bulk, parallel or
+  mechanical parts." Policy skills lose trigger races to playbooks; this line is the reliable fix.
+- the default worker tier, and whether it replaces the cheap rows or only fills gaps;
+- never-below floors for named content types (dated if added after a failure, so calibration does
+  not treat them as cost tuning);
+- archetypes proven safe on the cheap tier;
 - where the routing log lives.
 
-Without overrides, use the table above. Local instructions always win over this skill.
+Without overrides, use §2.
 
-## 6. OpenAI and Google bindings
+## 8. Routing log and calibration
 
-Use only the delegation controls exposed in the active Codex or ChatGPT session. Retain the
-configured model unless the user requests a supported alternative or the project's explicit
-policy selects one; never translate a Claude tier name into a guessed OpenAI identifier. A task in
-the app sidebar, a subagent, and an API call are different resources — do not create a user-owned
-task as a hidden worker. Sections 1–4 apply unchanged: self-contained brief, restricted write
-ownership, summaries back, stated verification scope. Record the actual model and effort in the
-log rather than a Claude analogue, and if settings are not exposed, say so and retain the
-defaults. Verify the host's context-inheritance behaviour before calling a reviewer independent.
-If the surface has no delegation tool, execute inline and record that limitation. OpenAI routing
-decisions live in the project's `PLATFORM_SETUP.md`, not in the Claude adapter.
-
-**Google (Antigravity, Jules, the Gemini app).** The same rules apply: use the delegation
-controls the session exposes, retain the configured Gemini model unless the user picks a supported
-alternative, and never map a Claude tier onto a Gemini model name. Where Antigravity offers Claude
-models on the user's plan, that is the host's model setting, not a §5 spawn parameter. Google
-routing decisions also live in `PLATFORM_SETUP.md`.
-
-## 7. Routing log
-
-If the project keeps a routing log (`ROUTING_LOG.md` at the root, or `development/ROUTING_LOG.md`),
-append one line per dispatched subtask and per consulted-but-inline decision:
+If the project has a `ROUTING_LOG.md` (root or `development/`), append one row per dispatched
+subtask and per consulted-but-inline decision. Never create the log unasked.
 
 ```
-| 2026-09-23 | bulk-extract: 34 receipts | haiku | low | N | 0 | spot-check clean |
+| 2026-11-08 | bulk-extract: 34 receipts | haiku | low | N | 0 | sample clean |
 ```
 
-Columns: date, archetype, tier, effort, escalated (Y/N), corrected, one-line outcome.
+Columns: date, archetype (a §2 log key or `inline`, optional `: detail`), model, effort,
+escalated Y/N, corrected (items the orchestrator fixed or discarded; `—` for inline), outcome.
 
-- **Archetype** starts with one log key from the §5 table's Log keys column (or `inline`),
-  optionally followed by a colon and detail. The keys name the kind of work, not a Claude tier,
-  so OpenAI rows use them too. Free-text labels cannot be grouped, and a calibration that cannot
-  group never fires.
-- **Corrected** is the number of worker output items the orchestrator had to fix or discard
-  (`—` for inline rows). A correction is a failure the ladder did not see; count it as one.
+Calibration groups rows by key. ~10+ rows with no escalations or corrections: propose demoting one
+tier. Failing more than ~1 in 3: propose promoting. Under ~10 rows: "insufficient data". Proposals
+go to the user; approved changes go into Dispatch Overrides, never into the log.
 
-Calibration (`tasks/review-tasks.md` step 4d in Cluide) groups rows by key. A key with ~10+
-dispatches and no escalations or corrections is a candidate to demote a tier; one failing — escalated
-or corrected — more than ~1 in 3 is a candidate to promote. Both are proposals for the user;
-approved changes go into Dispatch Overrides (Claude) or the OpenAI routing section of
-`PLATFORM_SETUP.md`, never into the log. If the project has no routing
-log, skip logging — do not create the file unasked.
+## 9. Other platforms
 
-## What this skill does not do
+On OpenAI (Codex, ChatGPT) or Google (Antigravity, Jules, Gemini app) hosts, §1 and §4–§6 apply
+unchanged. Use only the delegation controls the session exposes, keep the configured model unless
+the user picks a supported alternative, and never map a Claude tier onto a guessed model name. Log
+the actual model and effort. Check whether a spawned reviewer inherits context before calling it
+independent. A user-visible task in an app sidebar is not a hidden worker; do not create one as
+such. No delegation tool: do it inline and say so.
 
-- It cannot switch the session's own model; that is set by the user at task start. If the session
-  model is clearly mismatched to the task, say so once and continue.
-- It does not start workflows on its own authority (opt-in required, see above).
-- It does not override a project's own rules; local instructions always win.
+## Does not do
+
+- Switch the session's own model. If it is clearly mismatched, say so once and continue.
+- Start a Workflow without the user's opt-in.
+- Override host rules or a project's own instructions.
