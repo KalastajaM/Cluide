@@ -687,6 +687,26 @@ independent reviews of the same artefact, anonymised, and names what neither of 
 
 ---
 
+### prompt-improver
+
+Improves, critiques or writes prompts for an AI assistant: everyday chat prompts, system and API prompts, agent task prompts, project instructions, standing instruction files, scheduled task prompts and skill descriptions. Returns the improved prompt ready to copy with a short rationale per change, checks the rewrite against the original so no constraint is silently dropped, and returns an already-sufficient prompt unchanged. Condenses Guides 02, 03, 19, 20, 25, 26, 27 and 31 into a self-contained folder; behaviour cases live in its `evals/`.
+
+**Install:** Follow [Guide 03](./03_SKILLS.md) for the selected surface, preserving the complete `prompt-improver/` folder. Test the installed workflow; source-only projects can request it explicitly.
+
+**Use when:**
+- A prompt, system prompt or instruction file gives inconsistent or wrong output
+- You need a one-shot prompt for a fresh session and want it standalone (Guide 26)
+- A skill description undertriggers or races another skill
+
+**Example prompts:**
+> "Improve this prompt: summarise the attached contract for the board."
+
+> "Why does my scheduled task keep asking me questions at 3am? Here's its prompt."
+
+> "Write me a prompt that gets the assistant to review my code before I ship."
+
+---
+
 ### security-review
 
 A structured security audit with separate Claude and OpenAI routes for a target project. The bundled installation scripts apply to Claude Code only. Covers credential exposure, MCP server risk, permission controls and execution guard hooks, session data hygiene, supply chain scanning, and malware detection. Read-only assessment phases (0, 1, 6, 7) run automatically and live in `SKILL.md`; the four mutating phases (2-5: hook installation, tool installs) pause for approval and load their procedures from `references/phases-2-5-install.md` only once the user opts in. Declining all four still produces a complete audit.

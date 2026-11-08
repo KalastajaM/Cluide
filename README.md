@@ -172,6 +172,7 @@ The installable skills bundled in `skills/` are listed below. Install only the o
 | `template-exporter` | Turns an assistant setup into a clean, shareable template |
 | `cowork-optimizer` | Audits an assistant task for token efficiency and structural quality |
 | `review-protocol` | Structured review that stays independent of your own view — commit-then-reveal, finding schema, blinded reconciliation |
+| `prompt-improver` | Improves, critiques or writes a prompt — chat, system/API, agent task, standing instructions, skill description — and leaves a sufficient prompt alone (Guides 02, 26, 27 companion) |
 | `security-review` | Separate Claude and OpenAI security-review routes |
 | `policies-validator` | Tiered company-policy guardrail (T1 block / T2 alert / T3 soft guidance) — ships as a template; fill the Policy Registry before use |
 | `git-guru` | Full-lifecycle git and GitHub management — diagnoses the repo's real state, acts where it safely can, hands over validated commands where it can't (Guide 11 companion) |

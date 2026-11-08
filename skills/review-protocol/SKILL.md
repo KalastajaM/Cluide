@@ -3,14 +3,15 @@ name: review-protocol
 description: >
   Run a structured review that produces a judgment the assistant reached on its own, rather than a reflection
   of the view the user already holds. Use whenever the user wants something reviewed, critiqued,
-  checked, sanity-checked, or second-opinioned — a document, a plan, a decision, a prompt, a piece of
+  checked, sanity-checked, or second-opinioned — a document, a plan, a decision, a piece of
   code — and especially when they say they have already formed a view, have doubts, or want to know
   whether they are being agreed with. Trigger on phrases like "review this", "give me a second
   opinion", "what's wrong with this", "am I missing something", "tell me honestly", "poke holes in
   this", "I think X but check me", "stress-test this plan", or "are you just agreeing with me?". Also
   use when reconciling two independent reviews of the same artefact, or when building a review step
   into a task or workflow that someone intends to rely on. For optimizing a Cowork task or project
-  definition (speed, tokens, structure), load `cowork-optimizer` instead.
+  definition (speed, tokens, structure), load `cowork-optimizer` instead; to critique, improve or
+  rewrite a prompt, `prompt-improver`.
 ---
 
 # Review Protocol
