@@ -6,6 +6,9 @@ A copy-paste starter for personal preferences and file-work instructions (Guide 
 Choose the actual product; these are proposed texts, not applied account settings.
 
 - **Claude:** field 1 is personal preferences; field 2 is Cowork-specific global guidance.
+- **Claude Code:** sessions there also load a user-level instruction file (Guide 25,
+  Guide 35 §9). Keep each rule in one place: field 1 or that file, not both, and
+  check which one a Code session actually receives before copying text into both.
 - **ChatGPT:** adapt field 1 to its custom instructions. Put project-only file rules in the
   project's instructions with a source bootstrap; do not assume a Cowork-wide field exists.
 - **Codex:** adapt applicable preferences to the user-level `AGENTS.md` discovered by the

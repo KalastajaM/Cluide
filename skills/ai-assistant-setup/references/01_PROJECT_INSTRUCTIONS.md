@@ -165,6 +165,7 @@ This pattern applies whenever a project manages two or more linked registers. Th
 - **Workflow steps** — these belong in task files
 - **Information about the user's projects or contacts** — these belong in profile files
 - **Rules that rarely apply** — do not clutter standing instructions with edge cases that come up once a month
+- **What the assistant can read from the files** — directory listings, lists of key files, a restated README or dependency list. They go stale without anyone noticing and add always-loaded cost without changing behaviour. Keep what a session cannot infer: what a folder is for, what the assistant may write there, and the rules that override its defaults. A generated first draft of a policy is a draft to prune against this list, not a finished policy.
 
 ---
 
