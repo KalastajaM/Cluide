@@ -46,8 +46,8 @@ behind the remote or behind another machine/session.
   creates merge commits that entangle histories. If `--ff-only` refuses, local
   and remote have diverged: stop and look before doing anything.
 - Divergence playbook: local-only commits on top of a moved remote → rebase them
-  (`git pull --rebase`) if unpushed *(terminal-only on device mounts — no
-  network there, and rebase half-applies; hand it over)*; if the local work is
+  (`git pull --rebase`) if unpushed *(terminal-only on delete-refusing mounts:
+  rebase rewrites tracked files and half-applies there; hand it over)*; if the local work is
   experimental, branch it out (`git branch rescue/<slug>`) and reset trunk to
   origin with `git reset --hard origin/<branch>` — **propose-first, always**:
   `--hard` discards uncommitted working-tree state, which has no reflog.
@@ -78,8 +78,16 @@ behind the remote or behind another machine/session.
 
 ## Releases and tags
 
-Solo projects version with **tags on main**, not release branches:
-`git tag -a v1.2.0 -m "..." && git push origin v1.2.0`.
+Solo projects version with **tags on main**, not release branches. Write the
+annotation from a heredoc so multi-line and non-ASCII text survives shell
+quoting:
+
+```bash
+git tag -a v1.2.0 -F - <<'EOF'
+v1.2.0 — what this release is
+EOF
+git push origin v1.2.0
+```
 
 Three ordering rules, each of which has cost a re-done release:
 
@@ -100,11 +108,27 @@ Three ordering rules, each of which has cost a re-done release:
 On a trunk with branch protection, the release commit — changelog included —
 goes through a PR like any other change. Read the repo profile's Gates field
 before proposing a direct commit to trunk; proposing one on a protected repo
-wastes a round trip and, if a tag rides along, leaves a mess to clean up. A GitHub release on top
-of the tag (`gh release create v1.2.0 --notes "..."`) adds a download page and
-notes — worth it when anyone else consumes the project. Keep a CHANGELOG.md when
-anything downstream consumes the project; update it in the same branch as the
-change. **Large files**: GitHub rejects files >100 MB and warns >50 MB — data
+wastes a round trip and, if a tag rides along, leaves a mess to clean up.
+
+**Where the user will see it.** A pushed tag appears in the repository's Tags
+view and the branch/tag dropdown. The Releases page stays empty until a Release
+object exists: `gh release create v1.2.0 --notes-file notes.md` adds the page,
+notes and downloads — worth it when anyone else consumes the project. Say which
+view to check, or a correct tag gets reported as "missing".
+
+**Changelog: two models, and the profile picks one.** Keep a `CHANGELOG.md`
+when anything downstream consumes the project.
+
+- *Per change*: each PR adds its entry (often under `## [Unreleased]`), and the
+  release renames the section. Simple, but parallel PRs conflict on the same
+  lines, and stacked squash merges make every later PR look conflicting.
+- *At tag time*: no PR touches the changelog; the release commit writes the
+  entry from `git log <previous-tag>..HEAD`. No conflicts, but the whole record
+  rests on commit subjects, so they must say what changed and why.
+
+Never mix them: under the tag-time model, an entry added by a feature PR is a
+defect, and an `[Unreleased]` section invites one. When the profile says
+nothing, ask before adding the first entry rather than guessing. **Large files**: GitHub rejects files >100 MB and warns >50 MB — data
 snapshots and binaries belong in .gitignore or git-lfs, decided *before* the
 first commit containing them (removing them later means rewriting history).
 
@@ -211,15 +235,41 @@ delete a branch checked out anywhere). On Cowork device mounts, creation works
 but removal needs deletes the mount refuses — create there if useful, clean up
 from the user's terminal.
 
-## Branch protection — physics where rules are prose
+## Enforcement — physics where rules are prose
 
-For any repo where agents operate (or that matters at all), enable GitHub
-branch protection on the trunk and stable line: require PRs, block direct
-pushes and force-pushes. This skill's "never force-push" is an instruction;
-protection is enforcement — defense in depth against any agent's or human's
-bad moment. One-time setup per repo (GitHub → Settings → Branches), recorded
-in the repo's profile. `gh api` can set it, but the UI is clearer for a
-one-time action.
+This skill's "never force-push" and "scan before commit" are instructions. For
+any repo where agents operate, add enforcement that holds even on an agent's or
+a human's bad day, and record what is enabled in the profile's Gates field.
+
+- **Protect the trunk and stable line.** Require pull requests, block direct
+  pushes, force-pushes and deletion. GitHub offers classic branch protection
+  and the newer **rulesets** (Settings → Rules → Rulesets): rulesets can be
+  switched between active and evaluate, have explicit bypass lists, can also
+  target tags (protecting release tags from deletion or moving), and layer —
+  where several apply, the most restrictive version of each rule wins. Prefer
+  rulesets for new setups; both kinds can coexist.
+- **Turn on secret scanning push protection** where the plan offers it
+  (Settings → Advanced Security). It rejects a push containing a recognised
+  secret before it reaches the remote — the server-side version of the staged
+  scan. Individual users can also enable push protection for their own
+  account, which covers their pushes to any public repository.
+- **Give agent work its own branch namespace** (`claude/…`, `codex/…`), and,
+  where the platform allows, restrict agent credentials to that namespace.
+  GitHub's own coding agent works this way: it can only push to `copilot/`
+  branches, stays subject to branch protection and required checks, and cannot
+  approve or merge its pull requests. The namespace makes agent branches easy
+  to find, review and clean up.
+- **Local hooks catch what remote rules see too late.** A pre-commit secrets
+  scanner (gitleaks, detect-secrets) or formatter runs before the commit
+  exists. An agent never bypasses them (`--no-verify`); a host that supports
+  tool hooks can block the bypass flags mechanically. Hooks are local and
+  skippable, so they complement remote rules rather than replace them.
+- **Signed commits.** If a ruleset requires signed commits, an agent without a
+  signing key cannot satisfy it: commits are rejected at push. Record the
+  requirement in the profile so the session knows to hand the commit over
+  instead of failing at push time.
+
+One-time setup per repo; the UI is clearer than `gh api` for a one-off.
 
 ## Cleanup recipes
 
@@ -234,7 +284,9 @@ one-time action.
   would be lost.
 - **A pile of uncommitted changes of mixed vintage** (a repo left uncommitted for weeks):
   don't guess. Diff-review the changes, group them into thematic commits
-  (`git add -p` or explicit paths), commit each with a message reconstructing
+  (explicit paths; to split one file's hunks without the interactive
+  `git add -p`, write the wanted hunks to a patch and `git apply --cached` it),
+  commit each with a message reconstructing
   the why, and only then sync with the remote.
 - **Untangling "I did things and now it's weird"**: reflog first
   (`git reflog -15`) — it shows what actually happened, and nearly everything
