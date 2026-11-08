@@ -1,7 +1,9 @@
 **/.DS_Store
 .claude/settings.local.json
 **/LAST_RUN.md
+# Compiled skill bundles: built at release time and attached to the GitHub Release, never committed
 skills/*.skill
+skills/*.zip
 
 # Development working area — anything not part of the published distribution.
 # New scratch files, review notes, planning docs and local tool configs go here.
