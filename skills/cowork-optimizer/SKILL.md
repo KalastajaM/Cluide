@@ -1,7 +1,12 @@
 ---
 name: cowork-optimizer
 description: >
-  Analyze and optimize an assistant task or project to make it run faster, use fewer tokens, reduce unnecessary steps, and improve overall structure. Use this skill whenever the user shares an assistant task or project and asks to optimize, improve, speed up, refactor, or reduce model usage. Also trigger when the user says things like "make this more efficient", "this task is slow", "can we trim this down", "review my task setup", or pastes an assistant task/project definition and asks for feedback. Do NOT use for
+  Analyze and optimize an assistant task or project to make it run faster, use fewer
+  tokens, reduce unnecessary steps, and improve overall structure. Use this skill whenever
+  the user shares an assistant task or project and asks to optimize, improve, speed up,
+  refactor, or reduce model usage. Also trigger when the user says things like "make this
+  more efficient", "this task is slow", "can we trim this down", "review my task setup", or
+  pastes an assistant task/project definition and asks for feedback. Do NOT use for
   building something new (use `ai-assistant-setup`), for auditing a whole project against
   the guide set (`tasks/analyze-project.md`), for choosing a model tier (`dispatch`), or
   for reviewing a document, plan or decision (`review-protocol`). The object here is an
@@ -26,19 +31,19 @@ Analyze an assistant task or project definition, identify optimization opportuni
  
 ## Platform selection
 
-The stable skill name remains `cowork-optimizer`. Identify Claude/Cowork, Codex, or ChatGPT and the actual task runner. Optimise the shared procedure without changing its scheduler owner, permissions, or outcomes. Use reported metrics where exposed; mark estimates as estimates and unavailable usage as unknown. For OpenAI/local folders, inspect only the supplied project, not `/sessions`; for source-only projects, work from supplied task definitions and return proposed edits if write access is absent.
+The stable skill name remains `cowork-optimizer`. Identify Claude/Cowork, Codex, ChatGPT or a Google surface (Antigravity, Jules, Gemini app scheduled actions) and the actual task runner. Google routes are documented, not tested: say so when the audit relies on them. Optimise the shared procedure without changing its scheduler owner, permissions, or outcomes. Use reported metrics where exposed; mark estimates as estimates and unavailable usage as unknown. Inspect only the supplied project; for source-only projects, work from supplied task definitions and return proposed edits if write access is absent.
 
 ## Phase 1: Ingest
 
 **If the content is already in the conversation, skip to Phase 2 immediately.**
 
-Otherwise, attempt to locate the task autonomously before asking the user:
+Otherwise, look for the task in the folders this session can actually reach before asking the user: the working directory, and each folder connected through a device bridge (search there with the bridge's shell, such as `device_bash`, giving the connected folder's path rather than `.`, since that shell may start elsewhere):
 
 ```bash
-find /sessions -maxdepth 6 -name "TASK.md" 2>/dev/null
+find "<folder>" -maxdepth 6 -name "TASK.md" -not -path "*/.git/*" 2>/dev/null
 ```
 
-(`/sessions` is the Cowork container path — outside Cowork, skip this probe.)
+A cloud session's own container holds no user tasks, so an empty result there means "not reachable from here", not "no tasks".
 
 If one or more TASK.md files are found, present the list and use the current surface’s question tool (or chat if unavailable) (one per found task + "Paste content here") to ask which to audit. If none are found, use the current surface’s question tool (or chat if unavailable) to ask how the user wants to provide it:
 > Buttons: `Paste task instructions` / `Provide file path` / `Provide project folder path`
@@ -127,7 +132,7 @@ Once the user confirms which changes to make:
 4. Present the final revised task/project.
 5. If the task has test prompts or a known test workflow, suggest running it to verify behavior is unchanged.
 
-**To roll back:** restore from git (`git checkout -- <file>`) or copy the `.bak` file back to its original path and delete the modified version.
+**To roll back:** restore from git through a temporary file, so a wrong path cannot empty the original: `git show HEAD:./<file> > /tmp/restore && cat /tmp/restore > <file>` (the `./` makes the path relative to the current directory; writing with `cat` truncates in place, so it also works on a mounted folder that refuses delete, where `git checkout -- <file>` fails). Otherwise copy the `.bak` file back to its original path and delete the modified version.
  
 **Apply vs. propose discipline:**
 - Apply directly (no further confirmation): clearly correct, low-risk, narrow-scope changes — typos, wrong dates, confirmed facts, adding a named sender to a noise list.

@@ -1,7 +1,8 @@
 ---
 name: security-review
 description: >
-  Run a phased security audit of Claude or OpenAI configuration and a target project.
+  Run a phased security audit of Claude or OpenAI configuration and a target project
+  (Google Gemini surfaces: scoping and a not-covered report only).
   Use when the user asks to: review security, audit Claude Code setup, check for
   exposed credentials, set up security hooks, harden their Claude environment,
   scan a project for secrets, or anything like "check if my setup is secure",
@@ -12,9 +13,16 @@ description: >
 
 # Assistant Security Review
 
-First identify the surface. For **Codex or ChatGPT**, read `references/openai-review.md`, execute that route, and stop: the Claude phases below do not apply. For a dual-platform audit, assess each surface independently and combine the findings without treating either control set as portable.
+First identify the surface. For **Codex or ChatGPT**, read `references/openai-review.md`, execute that route, and stop: the Claude phases below do not apply. For **Google surfaces** (Antigravity, Jules, the Gemini app) this skill has no route yet: record the scope as in step 1 of the OpenAI route, list Antigravity's permission rules and `hooks.json` as unaudited, and say plainly that no Google controls were checked. Do not run the Claude phases or install the Claude hooks there. For a multi-platform audit, assess each surface independently and combine the findings without treating any control set as portable.
 
 For **Claude Code**, conduct the structured review below. Its bundled shell hooks and configuration examples are Claude-specific.
+
+**Which machine are you auditing?** Every check below reads the home directory of the shell it runs in. A session that runs in the cloud (Cowork or claude.ai cloud sessions, Claude Code on the web) has a home directory of its own, and whatever `~/.claude.json` or `~/.claude/` it holds is the container's, not the user's configuration. Do not decide where you are from what those files contain. Before Phase 0, establish where the target configuration lives:
+- **The shell is on the target machine** (Claude Code in a local terminal, or a desktop session running locally): proceed.
+- **The session reaches the computer through a device bridge** (a tool such as `device_bash`): run every check through that tool, set `$PROJECT` to a path on that computer (a connected folder), and treat `$SKILL_DIR` as a container path the bridge cannot see. For the install phases, put each hook file onto the computer with the bridge's file-copy tool (such as `device_commit_files`) first, then run the install commands there against that copy. A file you cannot read through the bridge is **unverified**, not absent: never conclude "not configured" from a partial stage.
+- **No route to the computer:** stop before Phase 0 and say that the user's machine was not audited. Offer only what can run: the project checks (0b, 1f) on a git repository cloned into this session, or the content checks of 1f on files the user attaches (0b and the `.gitignore` check need a git repository). Never report a cloud container's configuration as theirs.
+
+Name the machine that was audited in the first row of the Phase 1 table and in the Phase 7 report.
 Work through phases sequentially. **Read-only phases run automatically. Mutating phases
 (marked APPROVAL REQUIRED) must pause and ask the user before creating any files,
 installing software, or modifying configuration.**
@@ -152,6 +160,7 @@ Print consolidated risk table:
 ```
 | Area                  | Finding                                    | Risk   |
 |-----------------------|--------------------------------------------|--------|
+| Machine audited       | [hostname] — local shell / device bridge   | —      |
 | ~/.claude.json        | Plaintext PASSWORD ([server-name] MCP)     | HIGH   |
 | PreToolUse hook       | Not configured — no execution guard        | MEDIUM |
 | Shell snapshots       | 47 snapshots, 230MB                        | LOW    |
@@ -215,6 +224,7 @@ Generate a security documentation file at `$PROJECT/SECURITY_AUDIT.md` (or `~/CL
 ```markdown
 # Claude Code Security Audit
 Generated: [date]
+Machine audited: [hostname — local shell / via device bridge]
 
 ## Attack Surface
 
@@ -241,7 +251,7 @@ Generated: [date]
 
 ## Edge Cases
 
-- If `~/.claude/settings.json` does not exist: skip the hook checks and note "No global settings file found — Claude Code may not be configured yet." (Credential checks in 0a use the MCP config files, not settings.json.)
+- If `~/.claude/settings.json` does not exist: first confirm you are on the target machine and could read the file (see "Which machine are you auditing?"); a container's home directory or a partial stage proves nothing. Then skip the hook checks and note "No global settings file found — Claude Code may not be configured yet." (Credential checks in 0a use the MCP config files, not settings.json.)
 - If `$PROJECT` is not a git repository: skip `.env` tracking check (0b) and `.gitignore` coverage (1f); note "Not a git repo — git-based checks skipped."
 - If the user declines all APPROVAL REQUIRED phases: produce the Phase 0 + Phase 1 read-only report and the Phase 7 governance doc. Do not treat declining as an error.
 - If a scanning tool (Socket CLI, ClamAV, pip-audit) fails to install: log the failure, skip that specific check, and continue with remaining phases. Do not abort the entire audit.
