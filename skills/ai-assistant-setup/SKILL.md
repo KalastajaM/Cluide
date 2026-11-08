@@ -8,7 +8,8 @@ description: >
   importing or retiring a setup. Use when the user is designing, restructuring or
   troubleshooting such a setup ("how should I set up Claude to...", "create a skill for...",
   "where should this rule live", "Claude keeps forgetting...", "make this project work in Codex
-  too"). Do NOT use for rewriting a single prompt, or when an installed skill owns the request:
+  too"). Do NOT use for improving the wording of one prompt, instruction file or skill
+  description (`prompt-improver`), or when an installed skill owns the request:
   `cowork-optimizer` (make one task cheaper), `dispatch` (model tiers), `git-guru` (git),
   `template-exporter` (shareable templates), `review-protocol` (reviewing a document or decision).
 ---

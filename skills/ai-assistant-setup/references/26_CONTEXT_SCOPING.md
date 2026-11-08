@@ -165,7 +165,7 @@ For a task that is high stakes and roughly one-shot, the prompt is worth treatin
 
 Bring the mess. Constraints, prior mistakes, things that must not be touched and why, what the output has to look like, who reads it. Ask the assistant to interview you, then produce the prompt as a standalone file.
 
-The bundled `review-protocol` skill can do this; [Guide 03](./03_SKILLS.md) covers installing it. Otherwise use the fallback prompt below:
+The bundled `prompt-improver` skill does this: its writing-from-scratch path asks only for the gaps that would change the result and returns the finished prompt, not a critique. When the prompt is a review brief, `review-protocol` supplies the finding schema. [Guide 03](./03_SKILLS.md) covers installing either. Otherwise use the fallback prompt below:
 
 > "I need to write a prompt for [task]. Before drafting, ask me the questions you need answered to write it well. Then produce the prompt as a standalone file I can run in a clean session — it must work for someone who was not part of this conversation."
 
