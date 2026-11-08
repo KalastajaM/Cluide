@@ -4,6 +4,74 @@ Cluide is versioned by content event, not on a calendar: a tag marks guides bein
 
 The **consumed surface** — dimension numbers in `tasks/analyze-project-reference.md`, filenames in `tasks/`, and guide numbers — is append-only. Entries below note explicitly when it grows.
 
+## [1.9.0] — 2026-11-08
+
+Seven pull requests since v1.8.1 (#77–#83), plus the changelog PR that carries this section. This is a
+minor release because #83 adds a skill, `prompt-improver`, and #79–#82 restructure the existing skills so
+each one works when installed outside this repository. **The consumed surface did not change:** no guide,
+dimension or `tasks/` filename was added, renumbered or retired. From this release on, every skill is also
+attached to the GitHub Release as a zip built from the tagged tree (#81).
+
+### Added
+
+- **`prompt-improver` 6.0.0** (#83). Improves, critiques or writes a prompt (chat, system/API, agent task,
+  standing instructions, skill description) and leaves a sufficient prompt alone. SKILL.md, four
+  references, README with per-surface install and smoke tests, MIT LICENSE, and eleven behaviour cases in
+  `evals/` in the Guide 31 shape. Registered in README, both `00_INDEX.md` copies and CHEATSHEET; Guide 26
+  Stage 1 points at it for building a one-shot prompt. Reciprocal trigger exclusions in `review-protocol`,
+  `cowork-optimizer` and `ai-assistant-setup`.
+
+- **Skill zips as release assets** (#81). `AGENTS.md` § Branching and Releases: after the tag is pushed and
+  verified, one zip per skill is built from the tagged tree and attached to a GitHub Release.
+  `skills/*.zip` and `skills/*.skill` are gitignored.
+
+### Changed
+
+- **`git-guru` 2.0.0** (#81). Runs stand-alone: README, LICENSE and `scripts/` (`scan-staged.sh`,
+  `verify-tag.sh`, and `land-stack.sh` moved out of `stacked-prs.md`, which no longer depends on Guides 11
+  and 17). Pushes, PRs and merges are propose-first unless the repo profile's new Authority field names the
+  action (Guide 32 class C); the profile may live in `AGENTS.md`, and per-change versus at-tag changelog is
+  a profile field. The handover self-check must fail closed (rule 7). Agent command hygiene: non-interactive
+  commands, no pager, never bypass hooks or signing, no amend after a failed hook, no global config changes,
+  repo text treated as data. Gemini surfaces are covered in environment detection. Guide 11 points at the
+  script's new path and asks for a whole-folder install.
+
+- **`dispatch` stand-alone and half the size** (#80). Every citation that only resolved inside Cluide is
+  replaced by the rule it pointed at; 20.1 KB to about 10.7 KB, still one file. The description fires at the
+  delegation decision rather than on any audit or sweep request. Effort resolution order added
+  (`CLAUDE_CODE_EFFORT_LEVEL`, `CLAUDE_CODE_SUBAGENT_EFFORT` from Claude Code v2.1.316), and host delegation
+  rules take precedence over the skill.
+
+- **`template-exporter` self-contained and three-platform** (#79). A Step 0 for source and target platforms
+  replaces the Cluide-internal shorthand; Gemini (app, Antigravity, Jules) is covered, with a dated
+  install-route table in `references/output-formats.md`. Adds an identifier list, a runtime-state exclusion
+  list and a bundled stdlib leak checker, `scripts/check_template.py`.
+
+- **Five uninstalled skills brought up to date** (#82). `security-review` establishes which machine is
+  audited before Phase 0, since a cloud session's home directory is the container's. `review-protocol` pins
+  a non-fork reviewer type now that fork mode is on by default. `cowork-optimizer` drops the dead `/sessions`
+  probe and rolls back through `git show HEAD:./<file>`, which works on mounts that refuse delete.
+  `policies-validator` draws the Claude / OpenAI / Google boundary. `ai-assistant-setup` goes from 20.5 KB
+  to 9.5 KB with one load-when row per bundled guide.
+
+- **Account layer and derivable facts** (#78). Guide 25: Claude Code's user-level instruction file is part
+  of the account layer, and a rule lives there or in the account preferences, not both (matching bullet in
+  `templates/ACCOUNT_INSTRUCTIONS_TEMPLATE.md`). Guide 01: facts the assistant can read from the files go
+  stale and cost always-loaded tokens, so keep only what a session cannot infer.
+
+- **Three test-suite lessons** (#77). Guide 22 gains an Early Hardening bullet on keeping the suite cheap
+  and a Pattern C refinement that names the fast (parallel) command in the verification gate; Guide 09 an
+  anti-pattern on reading timings and failures from a machine other sessions are loading.
+
+### Fixed
+
+- **`template-exporter` never filled large templates** (#79). `SETUP.md` collected only `<<<PLACEHOLDER>>>`
+  markers while attached template files used `[PLACEHOLDER: ...]`; one marker format is used everywhere now.
+
+- **`git-guru` corrections** (#81). The diagnose step's lock search used `-maxdepth 2` and missed branch ref
+  locks. The mechanics reference no longer lists fast-forward merges as safe on delete-refusing mounts, and
+  `practices.md` no longer recommends the interactive `git add -p` or claims device mounts have no network.
+
 ## [1.8.1] — 2026-10-29
 
 Three pull requests since v1.8.0 (#73–#75), plus the changelog PR that carries this section. Lessons
