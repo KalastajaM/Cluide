@@ -1,12 +1,12 @@
 # Output Formats by Template Type
 
-This reference defines the exact file structure and content expectations for each template type produced by the template-exporter skill.
+The exact file structure and content expectations for each template type the template-exporter skill produces, followed by per-platform install routes for the README. Every file uses the single placeholder format `[PLACEHOLDER: description — EXAMPLE: "..."]`.
 
 ---
 
 ## Chat System Prompt
 
-**Use when:** The source is a system prompt, persona definition, or instruction block intended for an assistant chat (claude.ai or API system prompt).
+**Use when:** the source is a system prompt, persona, custom instructions, or instruction block for a chat (a Claude, ChatGPT or Gemini project or notebook, or an API system prompt).
 
 **Folder structure:**
 ```
@@ -17,107 +17,129 @@ template-[name]/
 ```
 
 **`system-prompt.md` contents:**
-- The full system prompt text, sanitized
-- `[PLACEHOLDER: ...]` markers for every customizable value
-- Brief inline comments (HTML comments `<!-- ... -->`) where intent may not be obvious to a new reader
-- Do NOT include conversation history, examples, or sample user messages here — those belong in README.md under "Notes"
+- The full prompt text, sanitized
+- A placeholder for every customisable value
+- Brief HTML comments (`<!-- ... -->`) where intent may not be obvious to a new reader; tell the README reader to delete them before pasting if the target field shows them literally
+- No conversation history, examples or sample user messages — those belong in README.md under "Notes"
 
-**README "How to use it" section should say:**
-> Use the selected surface’s documented project/custom-instruction route, or supply the text as an explicit source. API integrations must use that API’s documented instruction parameter. Verify the resulting behavior; app fields and API messages are different interfaces.
+**README "How to use it":** paste `system-prompt.md` into the target platform's project or custom-instructions field (see Platform install routes), or supply it as the `system` / `system_instruction` parameter for the API. App fields and API parameters are different interfaces; test the result in a fresh chat.
 
 ---
 
 ## Assistant Task
 
-**Use when:** The source is a single Assistant task definition — a TASK.md file or equivalent step-by-step automation workflow.
+**Use when:** the source is a single task definition — a `TASK.md` file or equivalent step-by-step workflow, scheduled or on demand.
 
 **Folder structure:**
 ```
 template-[name]/
 ├── README.md
 ├── SETUP.md
-└── task.md
+├── task.md
+└── [companion files the task reads, by relative path]
 ```
 
 **`task.md` contents:**
 - Task name and one-line description
-- Full step list with tool calls, conditionals, and output instructions — sanitized
-- `[PLACEHOLDER: ...]` markers for: tool names, file paths, schedule triggers, and any domain-specific values
-- Any companion files the task references (e.g. a reference schema, a prompt fragment) should be included as additional files in the folder and referenced by relative path
+- Full step list with tool calls, conditionals and output instructions — sanitized
+- Placeholders for tool or connector names, file paths, the schedule, and domain-specific values
+- Companion files (a reference schema, a prompt fragment, an empty state file with headers only) included in the folder and referenced by relative path
 
 **Notes:**
-- If the task has an `IMPROVEMENTS.md` or `RUN_LOG.md`, do NOT include them in the template — these are runtime state, not definition.
-- If the task references a skill, include a note in README.md that the skill must be installed separately.
+- Leave runtime state out: `IMPROVEMENTS.md`, `RUN_LOG.md`, outputs, logs.
+- The schedule is a placeholder (`[PLACEHOLDER: when it runs — EXAMPLE: "weekdays at 07:30"]`), never an active registration. The README tells the recipient to run the task once by hand before scheduling it.
+- If the task uses a skill, the README names it and says it must be installed separately.
 
 ---
 
-## Project (Claude, ChatGPT, or Codex)
+## Assistant Project
 
-**Use when:** The source is a multi-task assistant project — a project config with multiple tasks, possibly a shared context or knowledge file.
+**Use when:** the source is a project with instructions plus several tasks, shared context files or a folder structure.
 
-**Folder structure:**
+**Folder structure — single platform:**
 ```
 template-[name]/
 ├── README.md
 ├── SETUP.md
-├── AGENTS.md             # shared policy
-├── CLAUDE.md             # thin native adapter
-├── PLATFORM_SETUP.md     # per-surface bootstrap, gaps, blank scheduler ownership
-├── project.md            # human-readable project description, not imported config
+├── project.md            # human-readable: purpose, tasks and their roles, schedule overview
+├── instructions.md       # the project instructions text, as pasted into the app or used as the root instruction file
+├── context/              # optional: shared knowledge files, sanitized
 └── tasks/
-    ├── task-01.md
-    ├── task-02.md
+    ├── task-01-[short-name].md
     └── ...
 ```
 
+**Add these when the template targets more than one platform, or when the source already has them:**
+```
+├── AGENTS.md             # shared policy that carries its own text (read natively by Codex, Antigravity, Jules and recent Claude Code)
+├── CLAUDE.md             # thin Claude adapter: @AGENTS.md plus Claude-only items, labelled
+└── PLATFORM_SETUP.md     # per-platform bootstrap steps, known gaps, and a blank scheduler-owner table
+```
+
+In that case `AGENTS.md` replaces `instructions.md`. Do not add a `GEMINI.md` beside `AGENTS.md`: their precedence in one directory is undocumented.
+
 **`project.md` contents:**
 - Project name and purpose
-- List of tasks and their roles
-- Any shared configuration (shared context file, shared tools, schedule overview)
-- `[PLACEHOLDER: ...]` for project name, owner, shared paths
+- List of tasks and their roles, in execution order
+- Shared configuration (context files, tools, connectors, schedule overview)
+- Placeholders for project name, owner and shared paths
 
-**`tasks/` subfolder:**
-- One file per task, following the Assistant Task spec above
-- Files named `task-[nn]-[short-name].md` for clarity
-- Order files to reflect logical execution order (not alphabetical if different)
+**`tasks/` subfolder:** one file per task following the Assistant Task spec, named `task-[nn]-[short-name].md`, numbered in logical execution order.
 
-**README "How to use it" section should say:**
-> Customise placeholders, then follow PLATFORM_SETUP.md for the selected surface. Supply project.md as context, not as an assumed native configuration format. Verify the shared policy in a new session. Task files are definitions: register only the jobs you choose, on one scheduler each, after a manual test.
+**Scheduler-owner table** (in `PLATFORM_SETUP.md`, or in README.md for a single-platform project) — blank, for the recipient to fill:
+
+| Task | Runs on (one platform only) | Schedule | Registered? |
+|------|-----------------------------|----------|-------------|
+| task-01-[short-name] | | | |
+
+One owner per job: the same task registered on two schedulers runs twice.
+
+**README "How to use it":** customise placeholders, then follow the platform route below (or `PLATFORM_SETUP.md`). Supply `project.md` as context, not as a native configuration format. Verify the instructions loaded by asking a fresh session what its project instructions say. Register only the tasks you choose, each on one scheduler, after a manual test run.
 
 ---
 
 ## Skill
 
-**Use when:** The source is a SKILL.md file, with or without a `references/` subfolder.
+**Use when:** the source is a `SKILL.md` file, with or without `references/`, `scripts/` or other subfolders.
 
-**Folder structure — simple skill (no references):**
+**Folder structure:**
 ```
 template-[name]/
 ├── README.md
 ├── SETUP.md
-└── SKILL.md
+└── [skill-name]/
+    ├── SKILL.md
+    ├── references/       # if present in the source
+    └── scripts/          # if present in the source
 ```
 
-**Folder structure — skill with references:**
-```
-template-[name]/
-├── README.md
-├── SETUP.md
-├── SKILL.md
-└── references/
-    ├── 01_reference-file.md
-    └── ...
-```
+Nest the skill in its own folder so the recipient can install that folder unchanged; several platforms require the folder name to match the skill's `name`.
 
 **`SKILL.md` contents:**
 - Full skill definition with frontmatter (`name`, `description`) — sanitized
-- `[PLACEHOLDER: ...]` for any domain-specific instructions, tool names, or file paths
-- Preserve the original frontmatter `description` field structure — it is used for skill triggering and should remain functionally accurate
+- Placeholders for domain-specific instructions, tool names or file paths
+- Keep the `description` functionally accurate: it decides when the skill triggers. Keep it within 1024 characters, the Agent Skills specification limit, so the same file installs on every platform
+- Keep platform-specific frontmatter keys or metadata files (for example Codex `agents/openai.yaml`) and label them in the README; they are not portable permission controls
 
-**References subfolder:**
-- Preserve the original filenames and folder structure exactly
-- Sanitize contents following the same rules as Step 2
-- If a reference file is very large (>300 lines), note in README.md that it may need to be split for token efficiency
+**Subfolders:** preserve filenames and structure exactly and sanitize contents by the same rules. Note in the README any reference file over ~300 lines that may need splitting, and any script's runtime requirement (for example Python 3).
 
-**README "How to use it" section should say:**
-> Customise placeholders and install the complete skill folder through the target surface’s supported mechanism. Claude Code uses `.claude/skills/`; Codex repository skills use `.agents/skills/`. For a conversational source-only route, supply the workflow and invoke it explicitly. Verify discovery and behavior after installation; never treat Claude-specific metadata as a portable permission control.
+**README "How to use it":** customise placeholders, then install the complete `[skill-name]/` folder by the target platform's route below. Verify the skill is discovered and behaves as expected after installation.
+
+---
+
+## Platform Install Routes
+
+Documented as of October 2026. Install paths and menus change; check the platform's current documentation before relying on a row, and mark in the README which routes were actually tested.
+
+| Platform | Instructions / system prompt | Skills | Scheduled tasks |
+|----------|------------------------------|--------|-----------------|
+| Claude app (chat projects, Cowork) | Project instructions field; files as project knowledge or a connected folder | The skill installation surface available to the account (typically uploading the zipped skill folder) | Cowork scheduled tasks |
+| Claude Code | `CLAUDE.md` (or `AGENTS.md`, read natively in recent versions when no `CLAUDE.md` exists) | `.claude/skills/<name>/` (project) or `~/.claude/skills/<name>/` (personal) | Not native; use the Claude app or an external scheduler |
+| ChatGPT | Project instructions; files as project sources | The skill or plugin installation surface available to the account | ChatGPT scheduled tasks |
+| Codex | `AGENTS.md` | `.agents/skills/<name>/` (repository) or `~/.agents/skills/<name>/` (personal) | Codex automations |
+| Gemini app | Notebook instructions; files as notebook sources | Upload a `SKILL.md`, or a folder or `.zip` holding one, on the Skills page (personal accounts) | Scheduled actions |
+| Antigravity | `AGENTS.md` (no `GEMINI.md` beside it) | `.agents/skills/<name>/` (workspace); the global folder differs between app/IDE and CLI | — |
+| Jules | `AGENTS.md` at the repository root | — | Jules scheduled tasks |
+| API | `system` (Anthropic), instructions parameter (OpenAI), `system_instruction` (Gemini) | Per the vendor's skills API | Not applicable |
+
+Where a platform offers no skill installation, the recipient can supply the skill folder as a source and invoke it explicitly; that is not automatic discovery, and the README should say so. An uploaded file is a copy: tell the recipient to re-upload after editing the template.
