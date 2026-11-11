@@ -292,7 +292,7 @@ A T3 policy should silently shape tone — test by asking for a draft and checki
 
 ## 8. Maintenance
 
-- **When a policy is revised:** update the source (the local file or the SharePoint / Confluence page). No change to Cluide. No change to the skill. The next the assistant turn sees the new text.
+- **When a policy is revised:** update the source (the local file or the SharePoint / Confluence page). No change to Cluide. No change to the skill. The next turn that reads the source sees the new text. An uploaded or cached copy (a ChatGPT project source, a within-session cache) must be refreshed first; see *Bind Policy to Each Platform's Actual Controls*.
 - **When a new policy is introduced:** re-run `tasks/setup-policies.md`. It will pick up the existing registry, ask about the new policy, and append it.
 - **When a policy is retired:** remove its row from the Policy Registry in the skill. Leaving stale entries causes broken-link behaviour and noisy false alerts.
 - **Periodic audit (quarterly suggested):** for each entry in the Policy Registry, confirm the path resolves or the MCP query returns a result. Flag broken references. Confirm the tier is still appropriate.

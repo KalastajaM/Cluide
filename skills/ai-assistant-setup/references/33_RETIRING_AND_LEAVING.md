@@ -21,14 +21,14 @@ So the rule: **a project is retired when nothing current points at it, not when 
 
 ## 2. The Inventory: What Points at It
 
-Read-only, before any decision, and by layer — because the layers a naive search misses are the ones that hurt. This is the same set `tasks/relocate-project.md` sweeps for a move, with three additions a move does not need: memory, credentials, and the ownership registry.
+Read-only, before any decision, and by layer — because the layers a naive search misses are the ones that hurt. This is the same set `tasks/relocate-project.md` sweeps for a move, plus the layers a move does not need: orchestration, memory, the second brain, credentials, git and the ownership registry.
 
 | Layer | Where to look | Why it matters at an ending |
 |---|---|---|
 | **Other projects** | `grep -rIn "<project name>"` across the projects root, plus the coordinator's registry if you run one ([Guide 23](./23_MULTI_PROJECT_SETUPS.md)) | Cross-project links become dead pointers; a registry row becomes an owner that never updates |
 | **Scheduled tasks** | Every task definition and every registration, wherever your surface keeps them — Cowork registrations, Claude Code Routines, ChatGPT and Codex scheduled tasks, Team Tasks (workspace, cloud; *re-verify*), and external schedulers or hooks | A disabled task is a stale reference with a switch; someone flips it |
 | **Orchestration** | [Guide 09](./09_MULTI_TASK_ORCHESTRATION.md) chains and shared-state files that named this project's task as a stage | The downstream stage waits for a handoff that never comes, or reads a file that stopped updating |
-| **Memory** | Account memory (Settings → Your Claude → Your memory; Settings → Memory in the older layout); each Claude or ChatGPT project's native memory; Claude Code and Codex native memory where enabled (local Codex memory is a separate store from ChatGPT memory, in `$CODEX_HOME/memories_v2/` on profiles created since CLI 0.165.0 or `memories/` on older ones, `CODEX_HOME` defaulting to `~/.codex`: check both, [Guide 35](./35_DUAL_PLATFORM_PROJECTS.md) §9); `.auto-memory/` in *other* projects; profile files in tasks | Present-tense lines about a dead project steer future sessions; this is the layer that outlives everything else, and two of its stores are app-side and invisible to a grep |
+| **Memory** | Account memory (Settings → Your Claude → Your memory; Settings → Memory in the older layout); each Claude or ChatGPT project's native memory; Claude Code and Codex native memory where enabled (local Codex memory is a separate store from ChatGPT memory; [Guide 35](./35_DUAL_PLATFORM_PROJECTS.md) §9 says where it lives, so check every folder it names); `.auto-memory/` in *other* projects; profile files in tasks | Present-tense lines about a dead project steer future sessions; this is the layer that outlives everything else, and two of its stores are app-side and invisible to a grep |
 | **Second brain** | Notes and index entries that link into the project ([Guide 28](./28_SECOND_BRAIN.md)) | The links stay resolvable and stop being true |
 | **App-side fields** | Each platform's project instructions/identity, accessible source copies and per-surface mirror ([Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md)) | A stale identity or uploaded policy can make a retired project appear current |
 | **Artifacts** | Published pages and the generators that feed them | A dashboard fed by a retired task renders stale data with no error, indefinitely |
@@ -105,7 +105,7 @@ An organisation account, a change of employer, a personal account that accumulat
 |---|---|---|
 | **The account** | Account memory; each Cowork project's per-project memory store; account-level instruction fields; account-installed skills; Cowork projects' app-side fields; scheduled tasks and Routines; published artifacts; chat and session history; connector authorisations and their tokens | Goes with the account. In an organisation account it belongs to the organisation and may be visible to its administrators; in a personal account it is yours and is lost only if you close it |
 | **The folder** | Project folders, `CLAUDE.md`, skills in the project, `.auto-memory/`, profile files, task definitions, outputs, git history | Yours if the disk and the repo are yours; the employer's if they are on employer equipment or in an employer repo |
-| **The machine** | Codex configuration (`~/.codex/config.toml`), local Codex memory (`memories_v2/` and `memories/` under the Codex home, Guide 35 §9), and locally stored session state; Claude Code auto memory under `~/.claude/projects/`, `~/.claude/settings.json`, hooks, agents, `~/.claude.json`, the desktop app's state | Stays on the machine. On employer equipment it leaves with the laptop |
+| **The machine** | Codex configuration (`~/.codex/config.toml`), local Codex memory (its folders under the Codex home, Guide 35 §9), and locally stored session state; Claude Code auto memory under `~/.claude/projects/`, `~/.claude/settings.json`, hooks, agents, `~/.claude.json`, the desktop app's state | Stays on the machine. On employer equipment it leaves with the laptop |
 
 Two things follow from the table that people find out late.
 
@@ -160,7 +160,7 @@ Retiring a project, in order:
 - [ ] Inventory (§2) before any decision; every hit classified
 - [ ] Ownership outcomes (§3) recorded before the folder is touched
 - [ ] Freeze (§4) reached and its verification list passed — the list there is the check; do not shorten it here
-- [ ] Nothing was deleted; nothing was left disabled
+- [ ] The folder was archived, not deleted; every registration was deleted, none left disabled
 
 Leaving:
 

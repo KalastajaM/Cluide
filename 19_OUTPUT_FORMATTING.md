@@ -24,7 +24,7 @@ This guide covers two formats:
 
 Markdown and HTML are portable files; chat rendering and artifact delivery are product-specific. In Claude, ChatGPT or Codex, use the preview/file mechanism actually exposed by that surface. A local file link can be useful in a desktop workspace but does not make a file on your laptop available to a cloud chat.
 
-Specify the destination together with the format: "save `outputs/report.html` in this workspace and preview it" for local work, or "return a downloadable self-contained HTML file" for a source-only chat. Verify that the file exists and opens, and distinguish generated, delivered, and published. A preview is not publication.
+Specify the destination together with the format: "save `Outputs/report.html` in this workspace and preview it" for local work, or "return a downloadable self-contained HTML file" for a source-only chat. Verify that the file exists and opens, and distinguish generated, delivered, and published. A preview is not publication.
 
 Test the real renderer for tables, checkboxes, internal links and embedded assets. Keep a standalone export when the result must be shared outside the conversation. Use native document/slide tools when the deliverable needs editable office formatting; Markdown is not a substitute for tracked changes in a controlled document ([Guide 30](./30_CONTROLLED_DOCUMENTS.md)).
 
@@ -159,7 +159,7 @@ body {
     --border: #e5e7eb;
 }
 ```
-Define colours once. Changing the theme means editing four lines, not hunting through the whole file.
+Define colours once. The badges are the exception: their text uses fixed darker shades, chosen for contrast on the light badge tints, so update the badge rules by hand when you change a status colour.
 
 **Card layout for sections**
 ```css
@@ -312,7 +312,7 @@ This skeleton is the canonical one. Hand it to the assistant with the prompt abo
 </html>
 ```
 
-Copy this skeleton into a task's `TASK_REFERENCE.md` or a skill's reference section as the output template. The assistant can then populate the data fields without redesigning the layout each run.
+Copy this skeleton into a task's `TASK_REFERENCE.md` (a task that runs unattended cannot depend on a Cluide checkout being present), and record the Guide 19 revision you copied from. A skill should point at this section instead of bundling a copy. With the skeleton in the task, the assistant can populate the data fields without redesigning the layout each run.
 
 **Claude-specific alternative for connector-backed dashboards: artifacts.** Where this guide recommends regenerating an HTML report each run, an artifact offers a different model: it persists to your account, carries version history you can compare and restore from, and pulls live data through the connectors you approve for that specific artifact — so a dashboard refreshes from its source instead of going stale. Sharing is per artifact too: only you, anyone with the link, or specific people by email invitation (beta) on Pro, Max and Ultra, plus organisation members, groups (Enterprise) or the whole organisation on Team and Enterprise, and a share link can point at the latest version or a frozen one. The account setting "Code execution and file creation" (shown as "Create and edit files" in the updated Settings layout) must be on for any of it to work. Note that artifacts published before the August 2026 relaunch keep running but cannot be edited in place until they are republished ([using artifacts](https://support.claude.com/en/articles/14729249-use-artifacts-in-claude-cowork), [publishing and sharing](https://support.claude.com/en/articles/9547008-publish-and-share-artifacts)). The static-HTML pattern remains the right choice for file-based data, archival snapshots, and anything that must be readable outside Claude.
 

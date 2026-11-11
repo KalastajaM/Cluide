@@ -5,7 +5,7 @@
 > **Companion guides:** [Guide 05 — MCP Servers](./05_MCP_SERVERS.md) for MCP-specific issues. [Guide 06 — Task Efficiency](./06_TASK_EFFICIENCY_GUIDE.md) for slow tasks. [Guide 09 — Multi-Task Orchestration](./09_MULTI_TASK_ORCHESTRATION.md) for task coordination failures. [Guide 10 — Cost and Performance](./10_COST_PERFORMANCE.md) for cost spikes. [Guide 11 — Git Integration](./11_GIT_INTEGRATION.md) for rollback. [Guide 12 — Security](./12_SECURITY.md) for security concerns. [Guide 14 — Personal Data Layer](./14_PERSONAL_DATA_LAYER.md) for data ingestion issues.
 
 > **Quick diagnostic prompt:**
-> "Read LAST_RUN.md and TASK.md for [task name]. The problem is [describe it]. What's causing it and what should I change?"
+> "Read the run log for [task name] (`RUN_LOG.md`, or `LAST_RUN.md` if the task keeps one) and its TASK.md. The problem is [describe it]. What's causing it and what should I change?"
 
 ---
 
@@ -52,7 +52,7 @@ Use one harmless diagnostic: read a known fixture, invoke the workflow explicitl
 
 Before jumping to specific problems, apply this order:
 
-1. **Read the evidence first.** Open `LAST_RUN.md` (if it exists) and read what actually happened (your task keeps either `RUN_LOG.md` or `LAST_RUN.md` — see [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md)). The problem often explains itself here.
+1. **Read the evidence first.** Open the run log (`RUN_LOG.md` by default, `LAST_RUN.md` if the task keeps one instead — see [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md)) and read what actually happened. The problem often explains itself here.
 2. **Then read the instruction.** Open `TASK.md` or `SKILL.md`. Does the instruction actually say what you think it says? Mismatches between what you intended and what you wrote are the most common cause.
 3. **Ask what changed.** Did this work before? What's different now — a file edit, a new MCP server, a different Cowork session?
 4. **One thing at a time.** Fix one suspected cause, test, then fix the next. Making three changes at once makes it impossible to know which one worked.
@@ -289,7 +289,7 @@ Tasks that accumulate run logs, profile data, or knowledge files without trimmin
 
 Also check:
 - Is `LAST_RUN.md` growing without limit? Add a rule: "Overwrite LAST_RUN.md on each run — do not append."
-- Is `RUN_LOG.md` very long? Trim entries older than 30 days.
+- Is `RUN_LOG.md` past ~30 entries? Keep the last 20 in full and move the rest to `RUN_LOG_ARCHIVE.md` ([Guide 06](./06_TASK_EFFICIENCY_GUIDE.md)).
 - Are profile files growing? Archive completed projects and old entries.
 
 **2. The task is reading files it doesn't need**
@@ -515,22 +515,23 @@ Undocumented dead ends get re-investigated every few sessions; documented ones c
 Sometimes a task or setup has accumulated so many issues that repair takes longer than starting over. Consider starting fresh when:
 
 - Three or more things are wrong at once and the causes are unclear
-- The task file has grown beyond 300 lines and the structure is hard to follow
+- TASK.md is still past [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md)'s 250-line ceiling after moving detail to TASK_REFERENCE.md
 - The IMPROVEMENTS.md shows repeated proposals for conflicting changes
 - You've changed so much that LAST_RUN.md no longer reflects actual behaviour
 
 **How to start fresh:**
-1. Copy the current broken file to `TASK.md.backup` so you can reference it
-2. Start from the `TASK_TEMPLATE/` in the templates folder
-3. Copy over only the sections you're confident in
-4. Let the task run 3–5 times to re-establish a baseline before re-adding complexity
+1. List what the current task must keep doing, using its RUN_LOG and IMPROVEMENTS history ([Guide 29](./29_SPEC_BEFORE_REBUILD.md)); after rebuilding, compare one run against the old output
+2. Copy the current broken file to `TASK.md.backup` so you can reference it
+3. Start from the `TASK_TEMPLATE/` in the templates folder
+4. Copy over only the sections you're confident in
+5. Let the task run 3–5 times to re-establish a baseline before re-adding complexity
 
 ---
 
 ## Giving This to an Assistant
 
 **To diagnose a specific problem:**
-> "Read LAST_RUN.md and TASK.md for [task name]. The problem is: [describe it]. What is causing it and what should I change?"
+> "Read the run log for [task name] (`RUN_LOG.md`, or `LAST_RUN.md` if the task keeps one) and its TASK.md. The problem is: [describe it]. What is causing it and what should I change?"
 
 **To audit a task that has slowed down:**
 > "Read 06_TASK_EFFICIENCY_GUIDE.md and run the audit checklist on my [task name] task. Tell me what to fix and in what order."
@@ -542,7 +543,7 @@ Sometimes a task or setup has accumulated so many issues that repair takes longe
 > "Read 09_MULTI_TASK_ORCHESTRATION.md and check the shared output files for my [task chain]. Are any files missing, stale, or malformed?"
 
 **To review recent changes for the cause of a problem:**
-> "Read the current TASK.md and compare it to what you would expect based on LAST_RUN.md. Report any inconsistencies, and say explicitly if the two are consistent."
+> "Read the current TASK.md and compare it to what you would expect based on its run log (`RUN_LOG.md`, or `LAST_RUN.md` if the task keeps one). Report any inconsistencies, and say explicitly if the two are consistent."
 
 **To explain an improvement proposal:**
 > "Read my IMPROVEMENTS.md and explain each pending proposal in plain language. For each one, tell me what it would change, why it was suggested, what could go wrong if I apply it, and what would have to be true for the proposal to be a mistake."

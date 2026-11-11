@@ -71,7 +71,7 @@ A toolchain-specific example is the Anthropic `docx` skill; its helper names and
 
 This deserves its own section, above the mechanics, because it is the rule most likely to be softened in the moment by an entirely reasonable request. "Clean this up", "finalise it", "just apply your own suggestions" — each of these is asking for an accept-all pass, and each should get the same answer: the revisions stay pending, and the assistant says so.
 
-The reason is not process piety. It is that **an AI-accepted change is an approval nobody gave, and after the fact it is indistinguishable from one that someone did give.** A rejected suggestion and an accepted one look identical in the final text. The only place the difference was ever recorded is the act of accepting, and if a model performed that act, the record is false in a way no later audit can detect. The same argument covers the register: the assistant does not write *Approved by* or *Approved on*, because those fields are a claim about what a person did.
+The reason is not process piety. It is that **an AI-accepted change is an approval nobody gave, and after the fact it is indistinguishable from one that someone did give.** A rejected suggestion and an accepted one look identical in the final text. The only place the difference was ever recorded is the act of accepting, and if a model performed that act, the record is false in a way no later audit can detect. The same argument covers the register: the assistant does not write *Approved by* or *Approved on* on its own initiative, because those fields are a claim about what a person did. It records them only once you state who approved, at which version and on what date.
 
 The compensating move is to make acceptance cheap for you rather than to do it for you. The assistant can group revisions so you accept a section at a time, list which ones are mechanical, and say plainly which of its own suggestions it is least confident in. What it does not do is convert your convenience into a signature.
 
@@ -176,7 +176,7 @@ and these rules do not apply.
   preserve and verify revisions, return a separate review table; do not edit the original.
 - Never accept a tracked change, mine or anyone's. "Finalise" and "clean up" mean
   leave the revisions pending and say so.
-- Never write Approved by / Approved on / Approved status. Those record a human act.
+- Never write Approved by / Approved on / Approved status on your own initiative. Those record a human act. Write them only when I state who approved, at which version and on what date, and record where the approval evidence is filed.
 - Filenames are stable and carry no version number. Version, status, owner, approver
   and date live in the control block and in the register. A `-DRAFT` suffix comes off
   at the moment approval is recorded.
