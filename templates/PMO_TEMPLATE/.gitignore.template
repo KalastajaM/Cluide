@@ -3,6 +3,10 @@
 # Data/
 # Financial Model/
 
+# Intake queue — the folder is committed, its contents are not.
+Incoming/*
+!Incoming/README.md
+
 # Credentials
 credentials.json
 token.json

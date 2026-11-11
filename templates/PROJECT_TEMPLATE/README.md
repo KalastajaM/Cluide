@@ -33,9 +33,9 @@ tests/behaviour/ ← surface-check cases and fixtures
 Profile/  Knowledge/  Incoming/  ROUTING_LOG.md   ← blocks; keep or delete each
 ```
 
-That covers four of the five kinds of home in Guide 24's standard layout: instructions, generated
-outputs, scratch, and archive. The fifth — the source of truth, the material the project is
-actually *about* — is the one no template can supply, because it is different in every project.
+That covers Guide 24's instruction, output, scratch and archive homes, and the intake home as a
+block. The remaining one — the source of truth, the material the project is actually *about* — is
+the one no template can supply, because it is different in every project.
 In this template the memory block stands in for it; in yours it might be case files, a dataset, a
 codebase, or a folder per tracked entity.
 
@@ -69,8 +69,9 @@ data/provider boundary before ingesting sensitive material.
 
 ### Step 2 — Delete the blocks you don't need
 
-Work down the block table above. For each block you drop, delete **all** of its pieces: the folder
-or file, its section in `AGENTS.md`, and its rows in the file map. Dropping the memory block also
+Work down the block table above. For each block you drop, delete **all** of its pieces listed in the
+block table: the folder or file, its section in `AGENTS.md` and, for dispatch routing, the
+*Dispatch Overrides* section of `CLAUDE.md`, plus its file-map rows. Dropping the memory block also
 means replacing the auto-read line above that table, which names `Profile/PROFILE_SUMMARY.md`. A
 rule pointing at a folder that no longer exists is worse than no rule, and it sits in the part of
 `AGENTS.md` that loads in every session.

@@ -727,7 +727,7 @@ Enforcement layer for company policies — AI use policy, Code of Conduct, data 
 
 ### dispatch
 
-Routes delegated work — subagents, workflow stages, scheduled tasks — to the right model tier and effort level. Carries the routing table by task archetype, the escalation ladder (dispatch cheap, verify, re-dispatch one tier up on failure), verification-scope rules, fan-out sizing, and the per-project Dispatch Overrides convention. The policy behind Guide 09 §Model-Aware Dispatch; pairs with the AGENT_STARTER_PACK template in Claude Code. Not Cowork's Dispatch sidebar agent, which runs background tasks and has nothing to do with model routing.
+Routes delegated work — subagents, workflow stages, scheduled tasks — to the right model tier and effort level. Carries the routing table by task archetype, the escalation ladder (dispatch cheap, verify, re-dispatch one step up, effort or tier, on failure), verification-scope rules, fan-out sizing, and the per-project Dispatch Overrides convention. The policy behind Guide 09 §Model-Aware Dispatch; pairs with the AGENT_STARTER_PACK template in Claude Code. Not Cowork's Dispatch sidebar agent, which runs background tasks and has nothing to do with model routing.
 
 **Install:** Follow [Guide 03](./03_SKILLS.md) for the selected surface, preserving the complete `dispatch/` folder. Test the installed workflow; source-only projects can request it explicitly. Then add a shared instruction to consult the dispatch policy before permitted delegation; retain native routing controls per surface (Guide 09).
 

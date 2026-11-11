@@ -14,8 +14,11 @@ would actually be typed and checkable graders. They test behaviour, not the text
 **How to run.** In a fresh session — never the session that edited the skill (Guides 26, 27) —
 opened on a *throwaway clone* of Cluide with the skill installed: one prompt asks for fixes, and
 a behaviour test never edits a live checkout. Paste `prompt.md`'s body, then check each grader
-against the reply and the tool calls. Record results below per surface and model; an unrun case
-is **untested**, not passing.
+against the reply and the tool calls. Run each case three times and record the pass rate; a case
+at two of three is a finding. Record results below per surface and model; an unrun case is
+**untested**, not passing. The graders name Claude transcript evidence (skill loads, tool calls),
+so the suite is Claude-only as written. On hosts where the delegation tool is named `Task`, change
+`tool:` in the `tool_used` graders before running.
 
 **What `loads-alongside-playbook` tests depends on the setup.** In a Cluide clone the root
 `CLAUDE.md` carries the load hook, so the case tests the hook. To test the bare trigger race —

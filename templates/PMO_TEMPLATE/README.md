@@ -27,6 +27,11 @@ The template is a shared project folder. Configure the chosen surface and verify
 ```
 PMO_TEMPLATE/
 ├── AGENTS.md                          ← assistant project instructions (rules + routing)
+├── CLAUDE.md                          ← thin Claude adapter that imports AGENTS.md
+├── PLATFORM_SETUP.md                  ← source bootstrap, settings mirror and verification per surface
+├── SETUP.md                           ← paste-in prompt that fills the placeholders interactively
+├── README.md                          ← this file
+├── .gitignore.template                ← ignore rules to activate as .gitignore (see "How to use it")
 ├── project.md                         ← App-side description/instructions text (Guide 25 fields — paste into the app)
 ├── PROJECT_GUIDE.md                   ← Folder map: what every file is, what to update
 ├── Charter/
@@ -67,6 +72,7 @@ Replace every `[PLACEHOLDER: ...]` value with your own content. The table below 
 ## How to use it
 
 1. Copy this folder to the chosen workspace; follow `PLATFORM_SETUP.md` for ChatGPT source uploads.
+1b. Rename `.gitignore.template` to `.gitignore` before adding real data. It keeps credentials and the contents of `Incoming/` out of git; uncomment its `Data/` and `Financial Model/` lines if your registers hold commercially sensitive data.
 2. Replace all `[PLACEHOLDER: ...]` values across all files. Or paste `SETUP.md` into a session to collect and substitute the placeholders interactively.
 3. Fill in the Charter with your actual initiative scope, team, KPIs, and financial figures.
 4. Clear or reset the PMO registers (Risk, Action, Dependency, Decision) — the current entries are illustrative examples. Keep the schema and format.
