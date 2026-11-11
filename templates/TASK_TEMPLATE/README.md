@@ -21,6 +21,7 @@ Use `../PROJECT_TEMPLATE/PLATFORM_SETUP.md` for the source bootstrap and per-sur
 | `KNOWLEDGE_SUMMARY.md` | Compact context that grows smarter over time | Every run |
 | `RUN_LOG.md` | Append-only history of every run | Last 2 entries |
 | `LESSONS.md` | Append-only reasoning history: why each fix was made, root causes, connector quirks | On demand |
+| `.gitignore.template` | Rename to `.gitignore` inside the task folder if runtime state must not be committed (see Guide 11 *What to Track*) | Never — not read by the task |
 
 One optional file can be added as the task matures:
 - `TASK_REFERENCE.md` — schemas, format templates, and edge-case rules — loaded on demand, not every run.
@@ -39,18 +40,23 @@ MyProject/
     ├── TASK.md
     ├── IMPROVEMENTS.md
     ├── KNOWLEDGE_SUMMARY.md
-    └── RUN_LOG.md
+    ├── RUN_LOG.md
+    └── LESSONS.md
 ```
 
 ### Step 2 — Fill in the placeholders
 
 Open `TASK.md` and replace every `[PLACEHOLDER]`. Search for `[` to find them all. Key ones:
 
-- `[TASK NAME]` — appears in all four files; replace everywhere
+- `[TASK NAME]` — appears in all five files; replace everywhere
 - Purpose paragraph — be specific about what the task monitors and produces
 - Step 2 (Fetch External Data) — define your noise patterns and recency skip conditions
 - Step 3 (Primary Work) — this is the domain-specific core of your task
 - Rules section — add any hard constraints for your domain
+
+### Step 2b — Clear the example content
+
+In `IMPROVEMENTS.md`, delete the `*(example)*` Noise Filters row and replace the Pending Proposals JSON with `[]`, so the example proposal is not live on run 1.
 
 ### Step 3 — Set the refactor threshold
 

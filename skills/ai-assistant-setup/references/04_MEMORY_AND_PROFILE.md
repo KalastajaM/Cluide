@@ -99,7 +99,7 @@ To request explicit loading, add this line to the canonical policy (`AGENTS.md` 
 
 The profile system divides a person's profile across files by topic. The key insight: you almost never need everything at once — you need a compact summary every time, and the full detail files only when updating them.
 
-**PROFILE_SUMMARY.md** — the only file read every single run. Keep it under 40–50 lines (roughly 600 tokens). It should answer: who is this person, what are their active projects right now, who are the key contacts, and what are the open action items? If it grows beyond this limit, trim or move content to the detail files.
+**PROFILE_SUMMARY.md** — the only file read every single run. Keep it under 40 lines (roughly 600 tokens). It should answer: who is this person, what are their active projects right now, who are the key contacts, and what are the open action items? If it grows beyond this limit, trim or move content to the detail files.
 
 **PROFILE_identity.md** — key people and relationships: family members, colleagues, service contacts, and what the assistant needs to know about each.
 
@@ -190,6 +190,8 @@ H-001: User may be considering raising their day rate
 Evidence: Googled "freelance rate calculator" twice; declined a small project citing time constraints
 Confidence: LOW
 Would confirm: Direct mention of rate change; new proposal sent with higher figure
+First observed: 2025-03
+Last checked: 2025-05
 ```
 
 This lets the assistant surface the hypothesis as a proactive suggestion ("I've noticed a few signals you might be re-evaluating your rates -- want me to pull together a market comparison?") rather than ignoring the signal or stating it as fact.
@@ -200,7 +202,7 @@ For the full hypothesis lifecycle — how hypotheses are promoted from LOW to CO
 
 ## The PROFILE_SUMMARY.md Hard Limit
 
-The summary file is read into every automated run. Every extra line costs context. Enforce a strict size limit (40-50 lines) and trim before every write. Priority order:
+The summary file is read into every automated run. Every extra line costs context. Enforce a strict size limit of 40 lines (Guide 06's ~5% tolerance band applies) and trim before every write. A template may make the limit configurable — AI-ASSISTANT_TEMPLATE's `PROFILE_SUMMARY_LINE_LIMIT` — in which case the configured value governs. Priority order:
 
 1. Who the person is (2–3 lines)
 2. Active projects with current status (most important)
@@ -245,7 +247,7 @@ Multiple scheduled task agents (e.g., a daily email digest and a client pipeline
 
 - All agents read `PROFILE_SUMMARY.md` every run
 - Agents submit discoveries to the designated profile writer, or acquire the shared destination's atomic claim before reading and updating it. Re-read the current revision after acquisition; a failed claim waits or skips. Do not permit all agents to write freely.
-- No agent replaces `[USER]`-annotated entries with inference alone; explicit user corrections follow the provenance rule above
+- No agent replaces `[USER]`- or `[USER-CONFIRMED]`-annotated entries with inference alone; explicit user corrections follow the provenance rule above
 - Each agent has its own session/run log; shared summaries, indexes and detail files still use the same writer/claim protection
 - Apply [Guide 09's collision procedure](./09_MULTI_TASK_ORCHESTRATION.md#avoiding-collisions) to manual runs, retries and both platforms. Schedule gaps and separate logs are not exclusion.
 

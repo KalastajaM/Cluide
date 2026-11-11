@@ -1,7 +1,7 @@
 # Lessons Log — [TASK NAME]
 
-> Optional companion to IMPROVEMENTS.md. Preserves the reasoning history behind applied fixes.
-> Append-only — prepend new entries at the top. Never edit existing entries.
+> Companion to IMPROVEMENTS.md. Preserves the reasoning history behind applied fixes.
+> Never edit existing entries; add new ones at the top (newest first).
 > See Guide 07, Part 6 for when and how to use this file.
 
 ---

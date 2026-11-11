@@ -35,7 +35,7 @@ Each scheduled task still has one owner. Transferring it transfers the task defi
 ### Four categories of task knowledge
 
 **1. Facts** -- confirmed information. User has validated it, or evidence is unambiguous.
-> Store in: profile/knowledge files. Mark `[confirmed: YYYY-MM]` or `[USER-CONFIRMED]`.
+> Store in: profile/knowledge files. Mark `[USER-CONFIRMED]` when the user confirmed it; when the evidence is a document, record its source and date instead ([Guide 04](./04_MEMORY_AND_PROFILE.md), *Profile Update Discipline*).
 
 **2. Hypotheses** -- uncertain information being tracked. Some evidence, not yet confirmed.
 > Store in: a dedicated hypotheses file or section. Mark confidence level. Confirm or revise over time.
@@ -83,7 +83,7 @@ The task must actively scan for signals each run -- not just execute its primary
 |--------|--------------------|---------------|
 | Implicit confirmation | User acts on a suggestion without comment | The suggestion was correct; reinforce the pattern. |
 | Ignored suggestion | Suggestion generated every run, never acted on | Either priority too low, or the suggestion is irrelevant -- investigate after 3 runs. |
-| Consistent pattern | Same sender / same type / same outcome across runs | Codify as a rule; do not keep rediscovering it. |
+| Consistent pattern | Same sender / same type / same outcome across runs | Propose it as a rule (Part 3); do not keep rediscovering it. |
 
 ### Operational signals (lower quality, but catches bugs)
 
@@ -116,16 +116,16 @@ This is the most important judgment a task makes. Applying a change the user did
 ### Apply directly (no confirmation needed)
 
 Apply when ALL of the following are true:
-- The change is clearly correct with HIGH confidence (unambiguous evidence, or explicit user instruction)
+- The change is **mechanically checkable** — it corrects a confirmed error, or writes down something the run already does. "It seemed clearly correct" is not a criterion: the session proposing the change is the one that would have to notice it was wrong
 - The change is low-risk (reversible, limited scope, does not affect core behavior)
 - The scope is narrow (single field, single sentence, single file)
-- The change is purely additive (adding a missing entry, correcting a typo, resolving a known error)
+- The change is purely additive or corrects a confirmed error — never a removal or a rewrite
 
 **Examples of auto-apply:**
-- Correcting a date that was recorded wrong
+- Correcting a date that was recorded wrong, once the user or a source document confirms the right one
 - Updating a contact's name after user confirms it
-- Marking a task resolved after clear evidence of completion
-- Adding a sender to the noise list after 5+ consistent observations
+- Marking a task resolved after a resolution check (an actual tool call) shows it complete
+- Adding a sender to the noise list after 5+ consistent observations — a count the run can check
 
 ### Propose and wait (put in IMPROVEMENTS.md, report in output)
 
@@ -135,7 +135,6 @@ Propose when ANY of the following are true:
 - The change modifies core logic (step order, resolution criteria, priority thresholds)
 - The change touches 3+ files or 10+ lines
 - Confidence is below HIGH
-- The user has not explicitly asked for this change
 
 **Examples that need a proposal:**
 - Adding a new step to the run procedure
@@ -155,21 +154,24 @@ Use hypotheses for information that is reasonably confident but unconfirmed. The
 
 ### Format
 
+The format and the provenance tags belong to [Guide 04](./04_MEMORY_AND_PROFILE.md) (*The Hypothesis System* and *Profile Update Discipline*), because the same profile files carry them. The block below is that format:
+
 ```
-[HYPOTHESIS] Description of the belief.
-  Evidence: What observations support this.
-  Confidence: LOW | MEDIUM | HIGH | CONFIRMED
-  First observed: YYYY-MM
-  Last checked: YYYY-MM
+H-NNN: Description of the belief
+Evidence: What observations support this
+Confidence: LOW | MEDIUM | HIGH | CONFIRMED
+Would confirm: What observation or user statement would settle it
+First observed: YYYY-MM
+Last checked: YYYY-MM
 ```
 
 ### Lifecycle
 
 ```
-Unobserved → [HYPOTHESIS LOW] → [HYPOTHESIS MEDIUM] → [HYPOTHESIS HIGH] → [CONFIRMED]
+Unobserved → LOW → MEDIUM → HIGH → CONFIRMED
 ```
 
-*User confirmation can promote a hypothesis to CONFIRMED from any level — mark it `[USER-CONFIRMED]`. The rules below are authoritative:*
+*User confirmation can promote a hypothesis to CONFIRMED from any level. A confirmed hypothesis becomes a fact in the detail files: tag it `[USER-CONFIRMED]` if the user confirmed it, or give its source and date if a document did (Guide 04). The rules below are authoritative:*
 
 - **LOW → MEDIUM:** A second observation from a different run context, or one strong observation. Two observations from the same task running the same procedure are one observation seen twice — they establish that the behaviour is stable, not that the hypothesis is correct ([Guide 27](./27_INDEPENDENT_JUDGMENT.md)).
 - **MEDIUM → HIGH:** Multiple consistent observations across different contexts.
@@ -209,7 +211,7 @@ Small improvements happen every run. Structural improvements -- rethinking how t
 A refactor is **structural cleanup, not content change**. It should make the system cleaner -- not change what gets surfaced or how the user is served (unless fixing a known problem).
 
 1. Review all knowledge files -- remove stale, duplicate, or contradictory entries.
-2. Review instruction file -- remove steps that are never followed or are now outdated.
+2. Review instruction file -- propose removal of steps that are never followed or are now outdated; removing a step is a proposal, never a direct apply.
 3. Review pending/open state -- identify orphaned or obsolete items.
 4. Review improvements log -- close resolved issues, archive old applied fixes.
 5. Reset the run counter.
@@ -318,7 +320,7 @@ For tasks with connector dependencies (a "connector" being a claude.ai/Cowork co
 **The distinction:** IMPROVEMENTS.md tracks *current state* -- what proposals are pending, what fixes have been applied. LESSONS.md preserves *reasoning history* -- the mistake, the root cause, what the fix was and why that approach was chosen. This matters when a task has run 30+ times: you can see why a connector query was redesigned without trying to reconstruct the context from a table row.
 
 **How it works:**
-- Append-only -- never edit existing entries, only prepend new ones.
+- Never edit existing entries; add new ones at the top (newest first).
 - When applying an approved proposal, log the reasoning here before making the change.
 - When fixing a connector bug or logic error, note the root cause and what signal revealed it.
 
@@ -350,7 +352,7 @@ When the user explicitly corrects something, that correction outweighs 10 indire
 
 ### Codify recurring observations
 
-If the same observation appears in 3+ consecutive runs without being codified as a rule, codify it now. Do not keep rediscovering the same pattern.
+If the same observation appears in 3+ consecutive runs without being codified as a rule, propose codifying it (Part 3). Do not keep rediscovering the same pattern.
 
 ### Do not regress
 
@@ -380,9 +382,9 @@ A file 50 lines longer than necessary costs tokens on every future run. Over 50 
 
 **Over-applying** -- auto-applying changes that should have been proposals because they seemed "obviously right." Erodes trust when the user finds unexpected changes. When in doubt, propose.
 
-**Under-applying** -- routing clearly correct, low-risk, single-field fixes through the proposal system. Slows improvement and creates noise. Apply typos, wrong dates, and user-confirmed facts directly.
+**Under-applying** -- routing mechanically checkable, low-risk, single-field fixes through the proposal system. Slows improvement and creates noise. Apply typos, wrong dates, and user-confirmed facts directly.
 
-**Learning without acting** -- noting the same pattern in the backlog run after run without proposing or applying a change. A pattern noted 5 times is overdue for a proposal.
+**Learning without acting** -- noting the same pattern in the backlog run after run without proposing or applying a change. A pattern noted 3 times without a proposal is overdue.
 
 **Normalising the anomaly** -- writing a rule whose only job is to make one odd run look expected ("Monday digests may be short"). The rule explains this anomaly and hides the next one with the same symptom. Record the anomaly as a Known Issue (Part 6) or a hypothesis about its cause (Part 4), with its evidence. A recurring observation is still codified (Part 7), but as its cause once known; until then it stays a hypothesis.
 
@@ -407,12 +409,12 @@ The template has two parts:
 **Step 1: Copy the template**
 
 ```bash
-cp templates/TASK_TEMPLATE/IMPROVEMENTS.md tasks/[task-name]/IMPROVEMENTS.md
+cp /path/to/cluide/templates/TASK_TEMPLATE/IMPROVEMENTS.md /path/to/workspace/tasks/[task-name]/IMPROVEMENTS.md
 ```
 
-Run this in your assistant workspace (where your task folders live), not inside the Cluide repo — the repo's own `tasks/` folder holds Cluide's runnable prompts, not your tasks. Or ask the assistant:
+Replace both paths: the first is your Cluide checkout (or wherever you keep a copy of the Cluide repository's `templates/` folder), the second your assistant workspace, where your task folders live. Do not target the Cluide repo's own `tasks/` folder — it holds Cluide's runnable prompts, not your tasks. Or ask the assistant:
 
-> "Copy `templates/TASK_TEMPLATE/IMPROVEMENTS.md` into my task folder at [path/], rename it `IMPROVEMENTS.md`, and fill in the task name."
+> "Copy `templates/TASK_TEMPLATE/IMPROVEMENTS.md` from the Cluide repository into my task folder at [path/], rename it `IMPROVEMENTS.md`, and fill in the task name."
 
 **Step 2: Fill in the task name** — replace `[TASK NAME]` in the title.
 

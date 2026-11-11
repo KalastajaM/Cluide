@@ -1,5 +1,7 @@
 # Runtime state — do not commit to version control
 RUN_LOG.md
+RUN_LOG_ARCHIVE.md
 KNOWLEDGE_SUMMARY.md
 LAST_RUN.*
 *.json
+!bootstrap/**
