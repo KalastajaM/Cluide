@@ -28,7 +28,7 @@ The four main levers:
 
 ### 1. Split the instruction file (TASK.md)
 
-The task instruction file is loaded on every run. Keep it to **~200 lines / ~3K tokens** of core procedure (target ~200 lines; hard cap 250). Move everything else to a `TASK_REFERENCE.md` that the assistant reads only when needed.
+The task instruction file is loaded on every run. Keep it to **~200 lines / ~3K tokens** of core procedure (target ~200 lines; ceiling 250). Move everything else to a `TASK_REFERENCE.md` that the assistant reads only when needed.
 
 **Extract to TASK_REFERENCE.md:**
 - JSON schemas and data formats
@@ -45,7 +45,7 @@ The task instruction file is loaded on every run. Keep it to **~200 lines / ~3K 
 **Rough targets:**
 | File | Lines | When read |
 |------|-------|-----------|
-| TASK.md | ~200 target, 250 hard cap | Every run |
+| TASK.md | ~200 target, 250 ceiling | Every run |
 | TASK_REFERENCE.md | any | On demand |
 
 These figures carry a tolerance band. See §6, *Tolerance: enforce the band, not the digit*.
@@ -127,13 +127,13 @@ Pass 2: fetch full content only for items flagged in Pass 1
 
 ### 6. Enforce hard size limits on always-loaded files
 
-Any file loaded every run must have a hard size cap. Without one, these files grow over time and compound the token cost of every future run.
+Any file loaded every run must have a size cap. Without one, these files grow over time and compound the token cost of every future run.
 
 **Apply to:** summary files, state files, any "read every run" file.
 
 ```
 # In the update instructions for that file:
-Hard limit: N lines / ~M tokens. Trim before writing.
+Size cap: N lines / ~M tokens. Trim before writing.
 Trim strategy: compress older entries, remove superseded items, archive resolved items.
 ```
 
@@ -177,7 +177,7 @@ Run this every 20–30 task executions, or whenever you notice usage spikes.
 ### Checklist
 
 **Instruction file drift**
-- [ ] Is TASK.md still within the ~200-line target (250 hard cap)? If not, extract the new additions to TASK_REFERENCE.md.
+- [ ] Is TASK.md still within the ~200-line target (250 ceiling)? If not, extract the new additions to TASK_REFERENCE.md.
 - [ ] Are there steps in TASK.md that are never executed? Flag them for removal or move to reference.
 
 **Always-loaded files**

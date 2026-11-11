@@ -137,7 +137,7 @@ Once the user confirms which changes to make:
 **To roll back:** restore from git through a temporary file, so a wrong path cannot empty the original: `git show HEAD:./<file> > /tmp/restore && cat /tmp/restore > <file>` (the `./` makes the path relative to the current directory; writing with `cat` truncates in place, so it also works on a mounted folder that refuses delete, where `git checkout -- <file>` fails). Otherwise copy the `.bak` file back to its original path and delete the modified version.
  
 **Apply vs. propose discipline:**
-- Apply directly (no further confirmation): clearly correct, low-risk, narrow-scope changes — typos, wrong dates, confirmed facts, adding a named sender to a noise list.
+- Apply directly (no further confirmation): mechanically checkable, low-risk, narrow-scope changes that are purely additive or correct a confirmed error — typos, wrong dates, confirmed facts, adding a named sender to a noise list.
 - Flag and ask before applying: anything that affects behavior in a non-obvious way, restructures how information is tracked, modifies core logic, touches 3+ files, or where you're not certain the user would agree.
  
 **Do not silently apply changes beyond what was agreed.** If you spot something while implementing that wasn't in the plan, flag it and ask.

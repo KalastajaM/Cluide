@@ -209,7 +209,7 @@ Operational signals:
 - Is the same section of KNOWLEDGE_SUMMARY.md being rewritten every run? → Consider a structural improvement.
 - Did any file operation fail? → Log as known issue.
 
-If `LESSONS.md` exists, add an entry in its format for each applied fix or approved proposal.
+If `LESSONS.md` exists, prepend an entry to it (newest first) for each applied fix or approved proposal, in the format of Guide 07 Part 6: `## [YYYY-MM-DD] Short description (FIX-NNN or PROP-NNN)` with **What happened** / **Root cause** / **Fix applied**.
 
 ### B. Refactor Trigger Check
 
@@ -219,13 +219,16 @@ If `LESSONS.md` exists, add an entry in its format for each applied fix or appro
 | File size | TASK.md > 250 lines | Propose consolidation |
 | File size | Any always-loaded file > 300 lines | Propose consolidation |
 | Stale content | Any section not updated in 3+ months | Flag in output |
+| Instruction drift | TASK.md contradicts observed behavior | Fix small drifts, propose large ones |
 | Accumulated state | > 8 open items at once | Review and reprioritize |
 | Repeated failure | Same check failing 5+ runs | Revise the check |
+| Log length | > ~20 applied fixes since last distillation | Distil into properties (step 3a) |
 
 When a full refactor runs:
 1. Review all tracked files for stale, duplicate, or contradictory content — consolidate.
 2. Review TASK.md for steps that are unclear, never followed, or outdated. Removing one is a proposal, never a direct apply — the session judging the step is the one it constrains.
 3. Review open items — close or merge where possible.
+   - 3a. Distil: read the Applied Fixes together and write the handful of properties they instantiate — present tense, each one a thing that must hold on every run — under a `## Properties` heading in IMPROVEMENTS.md (add it if absent). Archive the entries that are merely instances of a property; keep any that carry a specific trap, value or odd source.
 4. Reset `runs_since_last_refactor` to 0. Summarize findings in the run log.
 
 ### C. Apply or Propose

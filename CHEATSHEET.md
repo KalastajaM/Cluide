@@ -106,7 +106,7 @@ description: >
 
 > Use the canonical [IMPROVEMENTS.md template](./templates/TASK_TEMPLATE/IMPROVEMENTS.md). It owns the counters, noise filters, proposals, and applied-fix history; do not maintain another inline copy.
 
-**Responding to a PROP:** Tell your assistant "Apply PROP-001", "Reject PROP-001 — [reason]", or "Modify PROP-001: instead of X, do Y."
+**Responding to a PROP:** annotate it in `IMPROVEMENTS.md` (or the task's output file) with `[APPROVED]`, `[REJECTED]` or `[MODIFY: …]`; the task acts on it next run (Guide 07 Part 9). In chat, ask the assistant to write that annotation for you.
 
 ---
 
@@ -119,7 +119,7 @@ description: >
 | `LAST_RUN.md` | Output/log from the most recent task run (some templates use `LAST_RUN.txt` — pick one name per project) |
 | `RUN_LOG.md` | Running history of all runs |
 | `IMPROVEMENTS.md` | Self-improvement proposals and confirmed knowledge |
-| `PROFILE_SUMMARY.md` | Compact profile (≤50 lines) — read every run |
+| `PROFILE_SUMMARY.md` | Compact profile (≤40 lines) — read every run |
 | `PROFILE_[topic].md` | Detailed profile section — read only when updating |
 | `MEMORY.md` | Auto-memory index — read when explicitly requested by the shared policy; verify access on each surface |
 
@@ -133,7 +133,7 @@ These are rough planning examples, not measured usage for your model. Use actual
 |---|---|---|
 | 20 lines | ~300 t | short-policy example |
 | 30 lines | ~400 t | Personal policy target (Guide 01) |
-| 50 lines | ~600 t | PROFILE_SUMMARY.md limit |
+| 40 lines | ~500 t | PROFILE_SUMMARY.md limit (Guide 06) |
 | 150 lines | ~2,000 t | Ceiling for everything auto-read combined (Guide 04) — not per file |
 | 500 lines | ~6,000 t | Split this into reference + active sections |
 | 1,500 lines | ~18,000 t | Only load on demand |
