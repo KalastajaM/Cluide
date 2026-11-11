@@ -47,6 +47,8 @@ What it accomplishes, and when to use it (one short paragraph).
 - **Read-only before mutating.** Inspect and report first; make changes only in a later, clearly marked step.
 - **Approve before writing.** A task that changes a user's project presents its plan and waits for explicit approval. It does not act on assumption.
 - **Restore point before bulk or irreversible changes.** Before a task moves, renames, or deletes many files, take a way back first: a git commit or tag when the project is under version control, otherwise a dated zip of just the affected folders stored outside the working tree. Confirm it exists before the first change, and retire it once the result is verified.
+- **Re-runnable.** Every write step checks whether its target already exists and then reads, merges or skips; it never re-creates a file over existing state. A re-run of a setup task must be harmless to what the first run, or the user, left behind.
+- **No silent clean.** A check whose empty output means "clean" first confirms that its tool and its repository exist, and reports "not run" when they do not. Silence from a missing tool is not a pass.
 - **Cite the guide.** Name the guide the task implements, so criteria live in one place and the task does not restate them.
 - **Ordered, self-contained steps.** Each step is a discrete action; a reader can follow the task without external context.
 - **Name `verb-noun.md`.** For example `setup-skill.md`, `audit-memory.md`, `reorganize-project.md`.

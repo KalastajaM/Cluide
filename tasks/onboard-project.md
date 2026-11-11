@@ -44,6 +44,8 @@ memory: tell the user exactly which template files to upload or paste — `templ
 return the filled policy and bootstrap as downloadable files or text to paste, and record Step 3's
 copy and Steps 6–8 as N/A.
 
+If the project folder (`<destination>/<Project Name>`) already contains `AGENTS.md` or `CLAUDE.md` and the user is not retrofitting an existing folder (Step 2), stop: this project is already onboarded. Offer `tasks/analyze-project.md` instead, and do not run Step 3's copy over it.
+
 Before collecting sensitive content, confirm the permitted workspace/provider, data categories,
 external destinations and credentials handling. Ask the questions below at category level only
 until that boundary is established. Access is not permission to publish.
@@ -97,8 +99,11 @@ Copy only the clean distributed template to the destination and rename it. Do no
 project’s Git history, personal state or claimed verification results:
 
 ```bash
-cp -r "<CLUIDE>/templates/<chosen template>" "<destination>/<Project Name>"
+mkdir -p "<destination>/<Project Name>"
+cp -R "<CLUIDE>/templates/<chosen template>/." "<destination>/<Project Name>/"
 ```
+
+Copying the template's contents rather than the folder keeps a re-run from nesting a second copy inside the first. If the project folder already holds files, compare their names with the template's before copying and never overwrite one.
 
 Activate the template’s ignore rules before seeding real data; inspect already-tracked files in an
 existing repository. Empty scaffold removal below does not authorise deleting populated records.

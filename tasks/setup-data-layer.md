@@ -25,6 +25,8 @@ The core idea: Claude should read *computed summaries*, not raw data files. A Py
 
 > **Clarifying questions:** use an available question tool when the runtime permits it; otherwise ask concisely in chat. Reuse answers already supplied.
 
+> **Re-runs:** this task may be run on a project that already has a data layer. Before writing any file below (scripts, `data/` files, extraction notes), test whether it exists; if it does, read it, show the user what is there and keep it unchanged, offering a merge of missing parts only. Data files hold live personal data and are never re-created over existing content.
+
 ### Step 1 — Understand the use case
 
 Ask:
@@ -118,9 +120,9 @@ Ask:
 > - What are the key fields for each entity?
 > - What's the natural ID for each entity? (e.g. ISIN for securities, account ID, date for time-series)
 
-Create the `data/` directory.
+Create the `data/` directory if it does not exist (`mkdir -p data`).
 
-For each entity type, create a starter JSON file:
+For each entity type, first test for `data/[entity_plural].json` (`[ -e data/[entity_plural].json ]`). These files hold live personal data on a re-run: if it exists, read it, show the user what is there and keep it unchanged (offer to add only missing top-level keys, never to replace values), and list it as existing in the confirmation. If it does not exist, create this starter file:
 
 ```json
 {
@@ -129,7 +131,7 @@ For each entity type, create a starter JSON file:
 }
 ```
 
-Write a `data/README.md` listing each file, its purpose, and its schema. Tell the user:
+Write a `data/README.md` listing each file, its purpose, and its schema; if one exists, read it and add only the missing entries. Tell the user:
 - Keep master data (names, categories) separate from transactions (append-only records)
 - Store raw facts (purchase price, quantity) — not computed values (P&L, averages)
 - Always update `last_updated` when writing

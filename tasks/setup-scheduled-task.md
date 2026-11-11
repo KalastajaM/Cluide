@@ -25,7 +25,7 @@ For a handoff, pause the old trigger and confirm no run is active; create the ne
 See [Codex automations](https://learn.chatgpt.com/codex/automations) and the help article [Scheduled tasks in ChatGPT](https://help.openai.com/en/articles/10291617-scheduled-tasks-in-chatgpt) (checked 2026-09-21); verify the actual runtime before registration.
 
 ## Purpose
-Scaffold a new scheduled task from scratch with efficiency and self-improvement patterns built in from run 1: a lean `TASK.md`, a `TASK_REFERENCE.md` for detail content, a `RUN_LOG.md`, and an `IMPROVEMENTS.md`. The result is a task ready to run and improve from its first execution.
+Scaffold a new scheduled task from scratch with efficiency and self-improvement patterns built in from run 1: a lean `TASK.md`, a `TASK_REFERENCE.md` for detail content, a `RUN_LOG.md`, an `IMPROVEMENTS.md`, and optionally a `LESSONS.md`. The result is a task ready to run and improve from its first execution.
 
 **For adding self-improvement to an *existing* task:** use `tasks/setup-self-improving-task.md` instead.
 
@@ -54,6 +54,8 @@ Ask the following. Collect all answers before writing anything.
 >    Use the available question tool, or ask in chat: `Yes` / `No`
 > 8. If yes: how often does it run? (This sets the refactor threshold — daily → 25, weekly → 10.)
 >    Use the available question tool, or ask in chat: `Daily` / `Weekly` / `On demand`
+> 9. If yes: should I also create a `LESSONS.md` for reasoning history? (Recommended for tasks with external connectors or complex logic that runs 30+ times.)
+>    Use the available question tool, or ask in chat: `Yes` / `No`
 
 After collecting answers: "Thanks — I'll scaffold the task now."
 
@@ -71,7 +73,7 @@ If the folder already exists, read its contents and report. Ask whether to conti
 
 ### Step 3 — Create the task folder and files
 
-Create the folder and all files below.
+Create the folder and all files below. If Step 2 found an existing folder and the user chose to continue, create only the files that do not exist and leave existing ones unchanged — `RUN_LOG.md` and `IMPROVEMENTS.md` hold live history and counters.
 
 #### `tasks/[name]/TASK.md`
 
@@ -95,8 +97,11 @@ Read `IMPROVEMENTS.md`. Note `runs_since_last_refactor` — increment it this ru
 Act on any proposals marked [APPROVED], [REJECTED], or [MODIFY: ...] before proceeding.
 
 [If state files exist:]
-Read [state file]. If it does not exist, copy from `bootstrap/[file]` if available,
-otherwise create with empty structure: [structure].
+Read [state file]. Initialise a missing state file for a new installation only — no earlier
+entries in `RUN_LOG.md`; when in doubt, treat it as not new. For a new installation: if it does not exist,
+copy from `bootstrap/[file]` if available, otherwise create with empty structure: [structure].
+If populated state is unexpectedly missing, stop dependent work and recover its backup; never
+replace it with a blank.
 
 ---
 
@@ -175,6 +180,10 @@ Copy `templates/TASK_TEMPLATE/IMPROVEMENTS.md` **verbatim**. If that file is not
 
 IMPROVEMENTS.md stores **state only** — do not write the A–D instructions into it. Those belong in the generated TASK.md (see the Self-Improvement section in the skeleton above).
 
+#### `tasks/[name]/LESSONS.md` (only if requested in question 9)
+
+Create it in the format `tasks/setup-self-improving-task.md` Step 5 gives (or copy `templates/TASK_TEMPLATE/LESSONS.md` when it is available). If self-improvement or `LESSONS.md` was not requested, do not create it: the A–D block writes to `LESSONS.md` only where the file exists.
+
 If self-improvement was not requested, skip `IMPROVEMENTS.md` and omit only its reads, proposal handling, learning counters and the Self-Improvement (A–D) section. Always retain Step 0’s scheduler ownership/timezone check, run-key claim and duplicate-run guard, plus any task-state loading/bootstrap. Keep the Final Step’s run-log entry and retention rules; rename it “Final Step — Run log” and omit only the call to self-improvement.
 
 ### Step 4 — Efficiency check on the draft
@@ -218,6 +227,6 @@ For option A, add a SessionStart hook to `.claude/settings.json`:
 Tell the user:
 - Files created and their locations
 - TASK.md line count
-- Whether IMPROVEMENTS.md was included and the refactor threshold set
+- Whether IMPROVEMENTS.md (and LESSONS.md) was included and the refactor threshold set
 - Run frequency and how to trigger the task
 - "To audit for efficiency after a few runs: `tasks/audit-task-efficiency.md`. To add self-improvement later: `tasks/setup-self-improving-task.md`."

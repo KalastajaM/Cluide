@@ -42,9 +42,15 @@ If the skill is missing in both locations, copy it from the Cluide repo (if pres
 ```bash
 # User-level (applies across all projects)
 # Claude personal-scope branch only
-mkdir -p ~/.claude/skills/policies-validator
-cp path/to/Cluide/skills/policies-validator/SKILL.md ~/.claude/skills/policies-validator/SKILL.md
+mkdir -p ~/.claude/skills
+cp -r path/to/Cluide/skills/policies-validator ~/.claude/skills/
+
+# Project-level (this project only)
+mkdir -p .claude/skills
+cp -r path/to/Cluide/skills/policies-validator .claude/skills/
 ```
+
+Copy the whole folder, not `SKILL.md` alone: the skill links its bundled `references/` (including the security guidance its prompt-injection rule defers to), and a `SKILL.md`-only install leaves those links dangling.
 
 Ask the user whether they want the skill installed user-level (applies to all projects) or project-level (just this one). Default to user-level — policies are usually org-wide.
 
@@ -122,14 +128,15 @@ If any file is missing, ask: "[file] does not exist. Create an empty placeholder
 
 **4.2 — MCP availability (for SharePoint / Confluence policies):**
 
-Check whether the relevant MCP server is configured:
+Check whether the relevant MCP server is configured. Do not search `settings.json` for it: `tasks/setup-mcp.md` Step 1 records that file as holding permissions, hooks and env, not `mcpServers`. Use that step's method instead:
 
 ```bash
-grep -i "confluence\|sharepoint\|atlassian" ~/.claude/settings.json 2>/dev/null
-grep -i "confluence\|sharepoint\|atlassian" .claude/settings.json 2>/dev/null
+# Claude Code: registered servers across all scopes
+command -v claude >/dev/null 2>&1 && claude mcp list | grep -i "confluence\|sharepoint\|atlassian" \
+  || echo "no match, or claude CLI not available — check the session's tool listing"
 ```
 
-If not found, warn the user:
+Then check the session's own tool listing — "What MCP tools do you currently have access to? List them by server." If neither shows the server, warn the user (if you could run neither check, say the configuration is unverified rather than missing):
 
 > "⚠ You chose [SharePoint / Confluence] as the location for [policy name], but the corresponding MCP server doesn't appear to be configured. Options:
 > - Configure the MCP server first (see Guide 05) and re-run this task

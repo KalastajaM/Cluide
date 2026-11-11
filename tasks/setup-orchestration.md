@@ -57,6 +57,7 @@ Shared directory: shared/
 Handoff files: shared/[task-name]_[date].json  (written by: X, read by: Y)
 Schema contract: shared/SCHEMA.md
 Schedule: [task A at HH:MM] → [10+ min gap] → [task B at HH:MM]
+Write exclusion: [one serialized writer | atomic claim at <path> | verified scheduler guarantee]
 Edits to TASK.md files: [list of insertions per task]
 ```
 
@@ -64,9 +65,9 @@ Use the available question tool, or ask in chat: `Apply as proposed` / `Adjust f
 
 ### Step 3 — Create the shared-state scaffolding
 
-1. Create the `shared/` directory at the project root (or next to the task folders — confirm location).
+1. Create the `shared/` directory at the project root (or next to the task folders — confirm location). If `shared/` already exists, read what is in it and build on it.
 
-2. Write `shared/SCHEMA.md` documenting every handoff file:
+2. Write `shared/SCHEMA.md` documenting every handoff file. If `shared/SCHEMA.md` exists, read it and add only the handoff files it does not yet document; never overwrite it:
 
 ```markdown
 # Shared Data Schema
@@ -82,7 +83,7 @@ Fields:
 When this schema changes: update this file first, then verify all consumers.
 ```
 
-3. **If shared state (Pattern 2):** also write `shared/STATE.json` with one section per task:
+3. **If shared state (Pattern 2):** also write `shared/STATE.json` with one section per task. If `shared/STATE.json` exists, read it and leave it unchanged — it holds live state; add a section only for a task that has none, and list the file as existing in the confirmation. Otherwise create it:
 
 ```json
 {
@@ -92,11 +93,11 @@ When this schema changes: update this file first, then verify all consumers.
 }
 ```
 
-Rules to record in SCHEMA.md: each task owns its own section; no task modifies another's; always set `updated_at`; targeted edits, not full overwrites; keep under 100 lines.
+Rules to record in SCHEMA.md: each task owns its own section; no task modifies another's; always set `updated_at`; targeted edits, not full overwrites; keep under 100 lines. Also record the write-exclusion mechanism chosen in Step 2: targeted edits and schedule gaps do not exclude a second writer, the chosen mechanism does (Guide 09 §Avoiding Collisions).
 
 ### Step 4 — Wire the tasks
 
-Show each insertion as a diff and get approval before writing.
+Show each insertion as a diff and get approval before writing. Include the wiring for the write-exclusion mechanism chosen in Step 2 (the claim step, or the hand-off to the single writer) in every task that writes a shared destination. Skip any insertion that is already present in a `TASK.md`.
 
 **Feeder tasks** — add as the final output step:
 
@@ -114,12 +115,12 @@ Note "[feeder] not available — continuing without it" in the output, or stop w
 clear log message if the input is essential. Never assume the upstream task succeeded.
 ```
 
-**If dependency graph (Pattern 3):** create `tasks/orchestrator/TASK.md` — a lean task that checks each prerequisite file, stops with a named cause if any is missing, and otherwise runs the synthesis and logs the outcome (success / skipped / failed + which upstream caused it) to its RUN_LOG.md. Follow the ORCHESTRATOR.md skeleton in Guide 09 §Pattern 3.
+**If dependency graph (Pattern 3):** create `tasks/orchestrator/TASK.md` (if it already exists, read it and propose changes as a diff instead of overwriting it) — a lean task that checks each prerequisite file, stops with a named cause if any is missing, and otherwise runs the synthesis and logs the outcome (success / skipped / failed + which upstream caused it) to its RUN_LOG.md. Follow the ORCHESTRATOR.md skeleton in Guide 09 §Pattern 3.
 
 ### Step 5 — Set the schedule
 
 Propose run times with collision margins (Guide 09 §Scheduling Orchestrated Runs):
-- Feeders first, 10+ minute gaps between tasks writing to the same file
+- Feeders first, 10+ minute gaps between tasks writing to the same file. Gaps are latency buffers, not locks (Guide 09 §Avoiding Collisions): the write-exclusion mechanism from Step 2 is what protects the file.
 - Orchestrator/synthesis last, with buffer for slow runs (a 3-minute task can take 10 on a busy day)
 
 Present a timing table and remind the user to update their scheduled tasks (Cowork's scheduled-tasks feature — ask Claude in natural language) to match.

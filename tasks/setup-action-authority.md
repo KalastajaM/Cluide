@@ -28,7 +28,7 @@ Use it when a project has scheduled tasks with connectors that can act (send, po
 
 Confirm the project is mounted, and that you can read its selected canonical policy, every task definition, every skill, and the project's MCP or connector configuration (`.mcp.json`, or the connector list the user reads out from Cowork's settings — a session cannot read the app's connector scopes itself; ask).
 
-If the project already has an action-authority block, this is a **review** run: Steps 1, 2, 4 and 6, comparing what the block says against what the inventory finds.
+If the project already has an action-authority block, this is a **review** run: Steps 1–4 and 6, comparing what the block says against what the inventory finds, and re-mining Step 3 so expired or unevidenced standing approvals are renewed or dropped on fresh evidence. If Step 4 approves any change, run Step 5 (restore point first) before Step 6.
 
 ### Step 1 — Inventory the actions (read-only)
 
