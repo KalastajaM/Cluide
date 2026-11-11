@@ -258,7 +258,7 @@ git init -q "$T/repo" && cd "$T/repo" || exit 2
 G="git -c user.email=t@example.com -c user.name=t -c commit.gpgsign=false"
 seq 1 40 | sed 's/^/line /' > orig.txt; echo hello > keep.txt
 git add . && $G commit -qm init
-git mv orig.txt renamed.txt; echo 'aws = AKIAIOSFODNN7EXAMPLE' >> renamed.txt; git add renamed.txt
+git mv orig.txt renamed.txt; echo "aws = AKIA""IOSFODNN7EXAMPLE" >> renamed.txt; git add renamed.txt
 bash "$SCAN" >/dev/null 2>&1; rc=$?
 [ "$rc" = 1 ] && pass "scan-staged flags a renamed file with a key" || fail "scan-staged flags a renamed file with a key (exit $rc, wanted 1)"
 git reset -q --hard; echo more >> keep.txt; git add keep.txt
@@ -268,7 +268,7 @@ cd - >/dev/null || exit 2
 
 # (iv) check_template.py: a seeded-leak folder must fail and write no zip, a clean folder must pass
 mkdir -p "$T/leaky/.auto-memory" "$T/clean"
-echo 'OPENAI_API_KEY=sk-live-EXAMPLEEXAMPLEEXAMPLE' > "$T/leaky/.env.local"
+echo "OPENAI_API_KEY=sk-""live-EXAMPLEEXAMPLEEXAMPLE" > "$T/leaky/.env.local"
 echo 'password = hunter2hunter2' > "$T/leaky/notes"
 echo '# memory' > "$T/leaky/.auto-memory/MEMORY.md"
 echo '# Readme' > "$T/leaky/README.md"; echo '# Setup' > "$T/leaky/SETUP.md"
