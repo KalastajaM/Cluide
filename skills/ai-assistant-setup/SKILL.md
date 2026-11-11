@@ -76,7 +76,7 @@ When the request does not clearly match a row, read `references/00_INDEX.md` fir
 > question tool when available, otherwise ask a concise question in chat.
 
 1. **Identify the surface** before choosing a setup: Claude Code, Claude conversational or Cowork,
-   ChatGPT project, Codex workspace, a Google surface (Antigravity, Jules, Gemini app), or more
+   ChatGPT project, Codex workspace, a Google surface (Antigravity, Gemini app), or more
    than one. Record file access, native skill support, available tools and scheduler access.
    Guide 35 owns coexistence, Guide 01 shared policy, Guide 25 the app bootstrap. A file upload is
    not an installed skill, and a missing Claude file is not a defect in an OpenAI or Google

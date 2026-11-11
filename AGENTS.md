@@ -2,7 +2,7 @@
 
 ## About This Project
 
-Cluide covers Claude and ChatGPT, including Codex for repository work, and Google Gemini (Antigravity, Jules and the Gemini app), whose routes are documented but not yet tested. This folder contains an operational framework for building, running, and improving a persistent AI assistant. It includes architecture guides, runnable setup and audit tasks, installable skills, and copy-paste templates — covering the full lifecycle from initial setup to scheduled automation, self-improvement, and security. The guides are human-readable and can be supplied to any of these assistants. Keep native mechanisms labelled and report which surfaces were actually tested; documentation coverage is not evidence of a live runtime check.
+Cluide covers Claude and ChatGPT, including Codex for repository work, and Google Gemini (Antigravity and the Gemini app), whose routes are documented but not yet tested. This folder contains an operational framework for building, running, and improving a persistent AI assistant. It includes architecture guides, runnable setup and audit tasks, installable skills, and copy-paste templates — covering the full lifecycle from initial setup to scheduled automation, self-improvement, and security. The guides are human-readable and can be supplied to any of these assistants. Keep native mechanisms labelled and report which surfaces were actually tested; documentation coverage is not evidence of a live runtime check.
 
 **When working in this project, apply the guides to your own behavior.** You have access to all of them as context. Use them:
 

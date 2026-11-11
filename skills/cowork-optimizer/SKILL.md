@@ -33,7 +33,7 @@ Analyze an assistant task or project definition, identify optimization opportuni
  
 ## Platform selection
 
-The stable skill name remains `cowork-optimizer`. Identify Claude/Cowork, Codex, ChatGPT or a Google surface (Antigravity, Jules, Gemini app scheduled actions) and the actual task runner. Google routes are documented, not tested: say so when the audit relies on them. Optimise the shared procedure without changing its scheduler owner, permissions, or outcomes. Use reported metrics where exposed; mark estimates as estimates and unavailable usage as unknown. Inspect only the supplied project; for source-only projects, work from supplied task definitions and return proposed edits if write access is absent.
+The stable skill name remains `cowork-optimizer`. Identify Claude/Cowork, Codex, ChatGPT or a Google surface (Antigravity, Gemini app scheduled actions) and the actual task runner. Google routes are documented, not tested: say so when the audit relies on them. Optimise the shared procedure without changing its scheduler owner, permissions, or outcomes. Use reported metrics where exposed; mark estimates as estimates and unavailable usage as unknown. Inspect only the supplied project; for source-only projects, work from supplied task definitions and return proposed edits if write access is absent.
 
 ## Phase 1: Ingest
 

@@ -5,7 +5,7 @@
 > A complete framework for building, running, and improving a persistent AI assistant with Claude or ChatGPT.
 > Includes architecture guides, runnable setup tasks, installable skills, and copy-paste templates.
 
-*Covers Claude Code, conversational Claude/Cowork, ChatGPT projects and Codex, and (documented, not yet tested) Google's Antigravity, Jules and the Gemini app. Shared principles are separated from native setup steps; a documented route still needs verification in your own session.*
+*Covers Claude Code, conversational Claude/Cowork, ChatGPT projects and Codex, and (documented, not yet tested) Google's Antigravity and the Gemini app. Shared principles are separated from native setup steps; a documented route still needs verification in your own session.*
 
 ## Working on Cluide with either platform
 
@@ -156,7 +156,7 @@ Tasks are standalone instruction files for setup and auditing. Run them by sayin
 | `tasks/audit-dual-platform.md` | Short, re-runnable check that a dual-platform project's required files, sibling-folder access and scheduler ownership still resolve |
 | `tasks/review-tasks.md` | Cluide maintenance — detect guide changes and flag tasks, skill bundles, and templates that drifted |
 | `tasks/harvest-from-projects.md` | Cluide maintenance — the inverse of `review-tasks.md`: harvest proven patterns from your live projects back into the guides, tasks, templates, and skills |
-| `tasks/review-platform-changes.md` | Cluide maintenance — read what Anthropic, OpenAI and Google shipped since the last sweep (Claude Code, Cowork, ChatGPT, Codex, Antigravity, Jules, the Gemini app, APIs and MCP) and flag the guide claims that are now wrong, stale or unverifiable; run after each model launch or monthly |
+| `tasks/review-platform-changes.md` | Cluide maintenance — read what Anthropic, OpenAI and Google shipped since the last sweep (Claude Code, Cowork, ChatGPT, Codex, Antigravity, the Gemini app, APIs and MCP) and flag the guide claims that are now wrong, stale or unverifiable; run after each model launch or monthly |
 
 ---
 

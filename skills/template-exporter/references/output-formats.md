@@ -71,7 +71,7 @@ template-[name]/
 
 **Add these when the template targets more than one platform, or when the source already has them:**
 ```
-├── AGENTS.md             # shared policy that carries its own text (read natively by Codex, Antigravity, Jules and recent Claude Code)
+├── AGENTS.md             # shared policy that carries its own text (read natively by Codex, Antigravity and recent Claude Code)
 ├── CLAUDE.md             # thin Claude adapter: @AGENTS.md plus Claude-only items, labelled
 └── PLATFORM_SETUP.md     # per-platform bootstrap steps, known gaps, and a blank scheduler-owner table
 ```
@@ -129,7 +129,7 @@ Nest the skill in its own folder so the recipient can install that folder unchan
 
 ## Platform Install Routes
 
-Documented as of October 2026. Install paths and menus change; check the platform's current documentation before relying on a row, and mark in the README which routes were actually tested.
+Documented as of October 2026; the Antigravity row was re-checked in November 2026. Install paths and menus change; check the platform's current documentation before relying on a row, and mark in the README which routes were actually tested.
 
 | Platform | Instructions / system prompt | Skills | Scheduled tasks |
 |----------|------------------------------|--------|-----------------|
@@ -138,8 +138,7 @@ Documented as of October 2026. Install paths and menus change; check the platfor
 | ChatGPT | Project instructions; files as project sources | The skill or plugin installation surface available to the account | ChatGPT scheduled tasks |
 | Codex | `AGENTS.md` | `.agents/skills/<name>/` (repository) or `~/.agents/skills/<name>/` (personal) | Codex automations |
 | Gemini app | Notebook instructions; files as notebook sources | Upload a `SKILL.md`, or a folder or `.zip` holding one, on the Skills page (personal accounts) | Scheduled actions |
-| Antigravity | `AGENTS.md` (no `GEMINI.md` beside it) | `.agents/skills/<name>/` (workspace); the global folder differs between app/IDE and CLI | — |
-| Jules | `AGENTS.md` at the repository root | — | Jules scheduled tasks |
+| Antigravity | `AGENTS.md` (no `GEMINI.md` beside it) | `.agents/skills/<name>/` (workspace); `~/.gemini/config/skills/<name>/` (global, read by the app, IDE and CLI) | Antigravity Automations |
 | API | `system` (Anthropic), instructions parameter (OpenAI), `system_instruction` (Gemini) | Per the vendor's skills API | Not applicable |
 
 Where a platform offers no skill installation, the recipient can supply the skill folder as a source and invoke it explicitly; that is not automatic discovery, and the README should say so. An uploaded file is a copy: tell the recipient to re-upload after editing the template.

@@ -13,7 +13,7 @@ description: >
 
 # Assistant Security Review
 
-First identify the surface. For **Codex or ChatGPT**, read `references/openai-review.md`, execute that route, and stop: the Claude phases below do not apply. For **Google surfaces** (Antigravity, Jules, the Gemini app) this skill has no route yet: record the scope as in step 1 of the OpenAI route, list Antigravity's permission rules and `hooks.json` as unaudited, and say plainly that no Google controls were checked. Do not run the Claude phases or install the Claude hooks there. For a multi-platform audit, assess each surface independently and combine the findings without treating any control set as portable.
+First identify the surface. For **Codex or ChatGPT**, read `references/openai-review.md`, execute that route, and stop: the Claude phases below do not apply. For **Google surfaces** (Antigravity, the Gemini app) this skill has no route yet: record the scope as in step 1 of the OpenAI route, list Antigravity's permission rules and `hooks.json` as unaudited, and say plainly that no Google controls were checked. Do not run the Claude phases or install the Claude hooks there. For a multi-platform audit, assess each surface independently and combine the findings without treating any control set as portable.
 
 For **Claude Code**, conduct the structured review below. Its bundled shell hooks and configuration examples are Claude-specific.
 
@@ -135,7 +135,7 @@ Note which of PreToolUse / PostToolUse hooks are missing.
 ```bash
 cat ~/.claude/settings.local.json 2>/dev/null || echo "No settings.local.json"
 ```
-Check for `permissions.defaultMode` set to `"bypassPermissions"`, or stale permission entries. `"auto"` is the built-in starting mode for interactive sessions when none is configured (every plan and provider on current Claude Code) and is not a finding; `"dontAsk"` in a settings file that is not a CI or unattended setup is worth asking the user about.
+Check for `permissions.defaultMode` set to `"bypassPermissions"`, or stale permission entries. `"auto"` is the built-in starting mode for interactive sessions when none is configured (every plan and provider on current Claude Code) and is not a finding; `"dontAsk"` in a settings file that is not a CI or unattended setup is worth asking the user about. Note whether `permissions.blockWritesOutsideWorkingDirectories` (v2.1.314) and `permissions.denyInsteadOfPrompting` (v2.1.319) are set; absence is not a finding. Where an ask rule is the only protection for an action and plugins are installed, say so: since v2.1.321 a plugin's own code makes tool calls without a prompt under ask rules, and only deny rules and organisation policy still stop it.
 
 **1f. Project-specific checks (if `$PROJECT` is set)**
 

@@ -18,7 +18,7 @@ Keep the workflow, input contract and output format portable; install and test i
 |---|---|---|
 | Claude Code | Project `.claude/skills/<name>/SKILL.md` or personal `~/.claude/skills/<name>/SKILL.md` | Claude frontmatter extensions apply only here; inspect their documented semantics before using them |
 | Codex | Repository `.agents/skills/<name>/SKILL.md` or personal `~/.agents/skills/<name>/SKILL.md` | Required `name` and `description`; optional `agents/openai.yaml` for host metadata and invocation policy |
-| Antigravity (Google; documented, untested) | Workspace `.agents/skills/<name>/SKILL.md`, the same folder Codex reads; the global folder differs between the app and IDE and the CLI ([Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts)) | `description` required, `name` optional and defaulting to the folder name |
+| Antigravity (Google; documented, untested) | Workspace `.agents/skills/<name>/SKILL.md`, the same folder Codex reads; the global folder `~/.gemini/config/skills/` is read by the app, the IDE and the CLI ([Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts)) | `description` required, `name` optional and defaulting to the folder name |
 | Gemini app (documented, untested) | On a personal account, upload a `SKILL.md` file, or a folder or `.zip` holding one, on the Skills page | An upload is a copy: record its revision and re-upload after a change |
 | ChatGPT / conversational Claude | Use the skill or plugin installation surface available to the account | If installation is unavailable, supply the workflow as a source and invoke it explicitly; do not call that automatic discovery |
 
