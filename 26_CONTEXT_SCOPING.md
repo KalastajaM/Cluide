@@ -89,7 +89,7 @@ Use the deny-list alone for routine reviews. Stage a copy when the finding actua
 
 ## Verify Isolation on the Chosen Surface
 
-For Codex, check the actual task/agent history inheritance, `AGENTS.md` chain, native memory and filesystem grants. A fork is not a clean reviewer merely because it opens as another task. For ChatGPT, a new chat inside the same project can still receive project instructions and sources; use a deliberately scoped source set and report any unavoidable shared context. Claude subagent examples above are product-specific, not a guarantee about OpenAI agents.
+For Codex, check the actual task/agent history inheritance, `AGENTS.md` chain, native memory and filesystem grants. A fork is not a clean reviewer merely because it opens as another task. For ChatGPT, a new chat inside the same project can still receive project instructions and sources; use a deliberately scoped source set and report any unavoidable shared context. Claude subagent examples above are product-specific, not a guarantee about OpenAI agents. Google surfaces (Antigravity and the Gemini app) follow the same principle; their mechanisms are listed in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts), documented and not yet tested.
 
 Before the review, write the allowed inputs and expected audience knowledge. Afterward, check the observed tool reads where available and reject findings that rely on withheld background. Record the evidence limit if the host does not expose reads. A different model or provider can broaden perspective, but neither changes the isolation contract by itself.
 

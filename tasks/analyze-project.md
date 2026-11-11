@@ -54,10 +54,10 @@ repo to scope (cloud) or run this task locally where the project folder exists, 
 Scan the target for the canonical files that make up a surface-appropriate project (see
 `analyze-project-reference.md § Project-type detection`):
 
-`AGENTS.md` · `CLAUDE.md` · project instructions/source revisions · `.agents/skills/` · `.codex/config.toml` · `.claude/` · `skills/` · `tasks/` (or scheduled-task definitions) · `.auto-memory/` ·
+`AGENTS.md` · `CLAUDE.md` · `GEMINI.md` · `.agents/rules/` · project instructions/source revisions · `.agents/skills/` · `.codex/config.toml` · `.claude/` · `skills/` · `tasks/` (or scheduled-task definitions) · `.auto-memory/` ·
 `settings.json` · `.gitignore` / `.claudeignore` · MCP config · `README`.
 
-From what's present, classify the project: **Claude Code**, **Cowork**, **ChatGPT sources**, **Codex local**, or a named combination — and note any
+From what's present, classify the project: **Claude Code**, **Cowork**, **ChatGPT sources**, **Codex local**, **Antigravity / Gemini app** (documented, untested), or a named combination — and note any
 narrower shape (helper-app, knowledge-base/wiki). Report a **factual inventory only** — what exists and
 where. Do not judge yet.
 

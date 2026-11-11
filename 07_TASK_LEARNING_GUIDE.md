@@ -22,7 +22,7 @@ This guide covers the mechanics: what to track, when to act, when to ask, and ho
 
 ## Shared Learning, Local Execution
 
-The learning loop applies to Claude and OpenAI: observe a run, distinguish facts from hypotheses, propose a change when authority requires it, and verify that the change improves the next run. Keep observations tagged with the surface, exact model when available, task revision and input fixture. A failure in one connector or renderer is not automatically a flaw in the shared procedure.
+The learning loop applies to Claude and OpenAI: observe a run, distinguish facts from hypotheses, propose a change when authority requires it, and verify that the change improves the next run. Keep observations tagged with the surface, exact model when available, task revision and input fixture. A failure in one connector or renderer is not automatically a flaw in the shared procedure. Google surfaces (Antigravity and the Gemini app) follow the same principle; their mechanisms are listed in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts), documented and not yet tested.
 
 Put durable accepted learning in the authored task/profile files. Native memory and session history remain local to the platform that produced them. For ChatGPT source projects, return a proposed patch or revised file and refresh the project source only after it becomes the accepted version. For local Codex or Claude sessions, use a single writer or a reviewed branch; do not let two runs append conflicting `IMPROVEMENTS.md` entries.
 

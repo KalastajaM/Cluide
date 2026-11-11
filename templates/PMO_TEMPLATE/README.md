@@ -3,6 +3,7 @@
 Start with `PLATFORM_SETUP.md`: choose Claude or OpenAI and verify source access. `AGENTS.md`
 is shared policy; `CLAUDE.md` is its thin Claude adapter. ChatGPT needs the explicit project-source
 bootstrap; Codex uses the repository workspace. No surface is verified merely by copying files.
+Antigravity / Gemini app: documented, not tested; see Guide 35 §9 for where shared policy, skills and scheduled runs live.
 
 
 This template sets up a assistant-supported project workspace for managing a **PMO project**. It includes a AGENTS.md with project rules, a project guide, an initiative charter, and a full PMO register suite (risks, actions, dependencies, decisions, and a knowledge base).

@@ -145,7 +145,7 @@ Trim strategy: compress older entries, remove superseded items, archive resolved
 | Pending actions summary | proportional to open item count; archive resolved promptly |
 
 **Run log format and retention:**
-Each `RUN_LOG.md` entry uses the header `## [YYYY-MM-DD] Run #N` and includes a `**Tokens (est.):** ~XK input, ~YK output` line. Keep the last 20 entries in full — [Guide 10](./10_COST_PERFORMANCE.md)'s drift monitoring compares recent runs against runs 16–20, so it needs them. Once the file exceeds ~30 entries, archive older ones to `RUN_LOG_ARCHIVE.md`. Tasks that only ever need to debug the most recent run can keep a `LAST_RUN.md` instead — cheaper, but it gives up cross-run pattern detection and Guide 10's monitoring.
+Each `RUN_LOG.md` entry uses the header `## [YYYY-MM-DD] Run #N` and includes a `**Tokens (est.):** ~XK input, ~YK output` line. Keep the last 20 entries in full — [Guide 10](./10_COST_PERFORMANCE.md)'s drift monitoring compares recent runs against the 16th–20th most recent entries, so it needs them. Once the file exceeds ~30 entries, archive older ones to `RUN_LOG_ARCHIVE.md`. Tasks that only ever need to debug the most recent run can keep a `LAST_RUN.md` instead — cheaper, but it gives up cross-run pattern detection and Guide 10's monitoring.
 
 **Tolerance: enforce the band, not the digit.**
 
@@ -216,7 +216,7 @@ Use this to roughly estimate per-run cost and identify the highest-leverage impr
 
 ## How Scheduled Tasks Are Triggered
 
-Choose by trigger: a recurring schedule needs a scheduler, session initialization needs a lifecycle hook, and a temporary watch needs a task that stays active or a supported follow-up mechanism. These are different lifetimes. Codex also documents lifecycle hooks; see [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts). Use the selected host's configuration and test the event; the Claude hook JSON below is not an OpenAI installation recipe.
+Choose by trigger: a recurring schedule needs a scheduler, session initialization needs a lifecycle hook, and a temporary watch needs a task that stays active or a supported follow-up mechanism. These are different lifetimes. Codex also documents lifecycle hooks; see [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts). Use the selected host's configuration and test the event; the Claude hook JSON below is not an OpenAI installation recipe. Google surfaces (Antigravity and the Gemini app) follow the same principle; their mechanisms are listed in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts), documented and not yet tested.
 
 Choose the owning execution surface before registering anything. The procedure can be shared, but one job has one active scheduler owner, stable identity, timezone, input revision and output destination. Native registrations stay on that platform. An interval is not a lock: overlapping runs need an atomic claim or an execution service that prevents concurrent writes.
 

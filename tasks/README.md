@@ -1,8 +1,8 @@
 # Tasks
 
-Runnable procedures an assistant executes on request against a Claude, ChatGPT or Codex project. A task is the "how": a repeatable, ordered set of steps. It is distinct from a **guide** (the "why" and "what", the knowledge a task draws on) and from a **template** (a copy-paste folder scaffold). A task usually implements one guide.
+Runnable procedures an assistant executes on request against a Claude, ChatGPT, Codex or Gemini (documented, not tested) project. A task is the "how": a repeatable, ordered set of steps. It is distinct from a **guide** (the "why" and "what", the knowledge a task draws on) and from a **template** (a copy-paste folder scaffold). A task usually implements one guide.
 
-Run one with, for example: `Assistant, run tasks/audit-skill.md`.
+Run one with, for example: `"Run tasks/audit-skill.md"`.
 
 ## Surface selection
 

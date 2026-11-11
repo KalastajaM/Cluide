@@ -12,7 +12,7 @@ Execute only the selected native branch. Claude commands/settings/hooks are Clau
 
 ## Native implementation
 
-Local relocation requires an actual writable folder and a restore point. Before moving, inventory each surface's saved project path, scheduler registration, connector folder grant and source link. Codex saved-project references and scheduled tasks must be updated through supported app tools/UI, not by renaming internal session storage. For ChatGPT, refresh links/uploads and record source revisions; this does not move a local repository. Claude app/CLI history migration sections below apply only to confirmed Claude installations. Leave inaccessible platform-local state pending with its owner; do not certify relocation until the new project opens and one safe task resolves its inputs on each supported surface.
+Local relocation requires an actual writable folder and a restore point. Before moving, inventory each surface's saved project path, scheduler registration, connector folder grant and source link. Codex saved-project references and scheduled tasks must be updated through supported app tools/UI, not by renaming internal session storage. For ChatGPT, refresh links/uploads and record source revisions; this does not move a local repository. Gemini app scheduled actions and Antigravity Automations (documented, untested; Guide 35 §9) are inventoried the same way. Claude app/CLI history migration sections below apply only to confirmed Claude installations. Leave inaccessible platform-local state pending with its owner; do not certify relocation until the new project opens and one safe task resolves its inputs on each supported surface.
 
 ## Purpose
 

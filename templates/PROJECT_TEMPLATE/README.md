@@ -3,6 +3,7 @@
 Start with `PLATFORM_SETUP.md`: choose Claude or OpenAI and verify source access. `AGENTS.md`
 is shared policy; `CLAUDE.md` is its thin Claude adapter. ChatGPT needs the explicit project-source
 bootstrap; Codex uses the repository workspace. No surface is verified merely by copying files.
+Antigravity / Gemini app: documented, not tested; see Guide 35 §9 for where shared policy, skills and scheduled runs live.
 
 
 > The default layout for a assistant project: a small core that every project wants, plus optional

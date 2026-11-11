@@ -8,7 +8,7 @@
 
 ## 1. What This Guide Is, and Is Not
 
-It is a routing guide with one mechanism and four rules. It is not a migration manual. There are no steps for any vendor's settings page, no notes on any export file format, and no table of what the other tools can and cannot do. Cluide maintains Claude and OpenAI setup in the native procedure guides and in Guide 35's dated facts. Keeping vendor steps there avoids a second settings catalogue in this import guide; `tasks/review-platform-changes.md` checks each vendor's native guides.
+It is a routing guide with one mechanism and four rules. It is not a migration manual. There are no steps for any vendor's settings page, no notes on any export file format, and no table of what the other tools can and cannot do. Cluide maintains Claude and OpenAI setup in the native procedure guides and in Guide 35's dated facts. Keeping vendor steps there avoids a second settings catalogue in this import guide; `tasks/review-platform-changes.md` checks each vendor's native guides. Google surfaces (Antigravity and the Gemini app) follow the same principle; their mechanisms are listed in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts), documented and not yet tested.
 
 The rule that keeps it this way, for anyone editing it later: **a paragraph that would need re-verifying when another vendor ships a release does not belong in this guide.** Name the other assistants as a category, route their categories of content, and stop. A project that stays on two assistants at once is a different problem with its own guide: [Guide 35](./35_DUAL_PLATFORM_PROJECTS.md) keeps its product facts in one dated table, so this guide does not have to.
 

@@ -12,7 +12,7 @@
 
 ## One Practice, Several Execution Surfaces
 
-Use these habits with Claude, ChatGPT and Codex. Keep the operating contract in one shared policy, verify its native entry point, and treat source access as something to prove. Before a task, identify whether the assistant can edit the authored files or only return a proposed result from uploaded sources.
+Use these habits with Claude, ChatGPT and Codex. Keep the operating contract in one shared policy, verify its native entry point, and treat source access as something to prove. Before a task, identify whether the assistant can edit the authored files or only return a proposed result from uploaded sources. Google surfaces (Antigravity and the Gemini app) follow the same principle; their mechanisms are listed in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts), documented and not yet tested.
 
 After a change, refresh the source or reload the session and check the intended behaviour. At a platform handoff, pass the accepted revision, changed files, validation and outstanding work. Keep native memory, permissions and registrations separate. A recurring job has one scheduler owner, and a shared file has one writer at a time. [Guide 35](./35_DUAL_PLATFORM_PROJECTS.md) ties these practices together.
 

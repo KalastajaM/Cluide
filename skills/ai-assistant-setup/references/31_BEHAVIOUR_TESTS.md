@@ -7,7 +7,7 @@
 > **Giving this guide to an assistant:**
 > "Read 31_BEHAVIOUR_TESTS.md. List the rules in my shared policy and the skills in this project that would be embarrassing to lose silently, then propose a case for each in the §3 shape. Do not run anything yet."
 
-**Policy placement:** Put the shared rules below in `AGENTS.md` for Codex or a dual-platform repository, with a thin `CLAUDE.md` adapter for Claude. App projects bootstrap the same policy through their instructions and accessible sources (Guides 01 and 25). A Claude-only setup may keep its policy in `CLAUDE.md`.
+**Policy placement:** Put the shared rules below in `AGENTS.md` for Codex or a dual-platform repository, with a thin `CLAUDE.md` adapter for Claude. App projects bootstrap the same policy through their instructions and accessible sources (Guides 01 and 25). A Claude-only setup may keep its policy in `CLAUDE.md`. Google surfaces (Antigravity and the Gemini app) follow the same principle; their mechanisms are listed in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts), documented and not yet tested.
 
 ---
 

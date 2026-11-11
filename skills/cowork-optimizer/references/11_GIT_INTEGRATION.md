@@ -17,7 +17,7 @@ Without version control, state files are edited in place on every run. One bad r
 
 ## Working Between Claude Code and Codex
 
-Git history belongs to the project. Either coding surface can review the same definitions and fixture results; its native conversation state is not part of the branch. Use `AGENTS.md` for shared workflow rules and a thin `CLAUDE.md` adapter. Keep private settings, credentials and run data out of published commits.
+Git history belongs to the project. Either coding surface can review the same definitions and fixture results; its native conversation state is not part of the branch. Use `AGENTS.md` for shared workflow rules and a thin `CLAUDE.md` adapter. Keep private settings, credentials and run data out of published commits. Google surfaces (Antigravity and the Gemini app) follow the same principle; their mechanisms are listed in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts), documented and not yet tested.
 
 When switching assistants, record the branch and commit, uncommitted changes, verification already run, unresolved issues and current writer. If two sessions work concurrently, use separate branches/worktrees and integrate through review. Never assume different product names make concurrent writes safe.
 

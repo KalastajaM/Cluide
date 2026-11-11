@@ -9,7 +9,7 @@
 
 **This applies well beyond compliance work.** An ISO or SOC 2 document set is the clearest case, but so are board minutes, contracts under negotiation, a shared research protocol, a family estate document that several people comment on, and any document where a person other than you owns the text. The examples below lean on management-system documents because that is where the conventions are most developed, not because the pattern is confined there.
 
-**Policy placement:** Put the shared rules below in `AGENTS.md` for Codex or a dual-platform repository, with a thin `CLAUDE.md` adapter for Claude. App projects bootstrap the same policy through their instructions and accessible sources (Guides 01 and 25). A Claude-only setup may keep its policy in `CLAUDE.md`.
+**Policy placement:** Put the shared rules below in `AGENTS.md` for Codex or a dual-platform repository, with a thin `CLAUDE.md` adapter for Claude. App projects bootstrap the same policy through their instructions and accessible sources (Guides 01 and 25). A Claude-only setup may keep its policy in `CLAUDE.md`. Google surfaces (Antigravity and the Gemini app) follow the same principle; their mechanisms are listed in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts), documented and not yet tested.
 
 ---
 

@@ -64,9 +64,9 @@ Against Guide 25:
 
 **Description.** States what the project does (not how)? Names the concrete entities that make it unmistakable? Free of rules? Unique — not a duplicate of another project's, which is worth checking against the other descriptions the cache shows (if you read it) or the user pastes? Still true after whatever the project has become?
 
-**Instructions.** Contains only what must hold before any file is read — bootstrap, mount verification, restated hard safety rules, session posture, bridge guard? Anything long, evolving, or reference-shaped that belongs in CLAUDE.md instead? Conversely, for a project with real-world stakes: is the one hard safety rule present, or does it depend entirely on a mount succeeding?
+**Instructions.** Contains only what must hold before any file is read — bootstrap, mount verification, restated hard safety rules, session posture, bridge guard? Anything long, evolving, or reference-shaped that belongs in the shared policy (`AGENTS.md`, or `CLAUDE.md` in a Claude-only project) instead? Conversely, for a project with real-world stakes: is the one hard safety rule present, or does it depend entirely on a mount succeeding?
 
-**CLAUDE.md.** Judged against Guide 01 for the body. For this task specifically: does it contradict either field? Is there a settings mirror (the *Applied settings and sources* table in `PLATFORM_SETUP.md`; read a legacy mirror block in `CLAUDE.md` too, if one exists), is it labelled as a mirror, and does it match the live text you just read?
+**The shared policy (`AGENTS.md`, or `CLAUDE.md` in a Claude-only project).** Judged against Guide 01 for the body. For this task specifically: does it contradict either field? Is there a settings mirror (the *Applied settings and sources* table in `PLATFORM_SETUP.md`; read a legacy mirror block in `CLAUDE.md` too, if one exists), is it labelled as a mirror, and does it match the live text you just read?
 
 **Across layers.** Every rule and fact has exactly one home (Guide 23's single-owner principle applied across layers). The one sanctioned duplication is a hard safety rule restated in the instructions field. Anything else stated twice is a finding — name which layer should own it.
 
@@ -84,7 +84,7 @@ would-drop-it-if line instead of trading verdicts (`27_INDEPENDENT_JUDGMENT.md`)
 
 Two separate blocks, because they are applied by different hands:
 
-1. **CLAUDE.md edits** — an itemised list of what changes and why. Approval-gated.
+1. **Shared-policy edits** (`AGENTS.md`, or `CLAUDE.md` in a Claude-only project) — an itemised list of what changes and why. Approval-gated.
 2. **Field texts** — the full proposed replacement text for the description and/or instructions field, each in its own fenced block, ready to paste. Show the current text alongside so the user can see what changes. Do not propose a field edit that only reformats.
 
 State explicitly which findings you are *not* proposing to fix and why (usually: a deliberate local convention).
@@ -122,8 +122,8 @@ Exclude scheduled-task openers before computing anything (they start with a sche
 ## Output
 
 1. A three-layer findings list (Step 2).
-2. A change plan: CLAUDE.md edits + ready-to-paste field texts (Step 3).
-3. On approval: applied CLAUDE.md edits and an updated, dated settings mirror.
+2. A change plan: shared-policy edits + ready-to-paste field texts (Step 3).
+3. On approval: applied shared-policy edits and an updated, dated settings mirror.
 4. A closing note naming anything still outstanding — specifically any field text the user has not yet pasted.
 
 ## Constraints
@@ -131,6 +131,6 @@ Exclude scheduled-task openers before computing anything (they start with a sche
 - Read-only until Step 3 is approved.
 - **Never write to `spaces.json`.** The app rewrites it wholesale from memory, so an edit made while the app runs is silently discarded — and a change the user believes is applied but isn't is the worst outcome this task can produce. Field changes are always ready-to-paste text.
 - Never report a partial review as a full one. If a layer could not be read, say which and why.
-- Respect the target's own `CLAUDE.md`; flag conflicts rather than overriding.
+- Respect the target's own the shared policy (`AGENTS.md`, or `CLAUDE.md` in a Claude-only project); flag conflicts rather than overriding.
 - Quote a field only with its source (UI, connector, paste, cache) and read date.
 - Do not touch other projects' entries in `spaces.json`, even read-only, beyond the description-uniqueness check — and report that check as a comparison, never by quoting another project's content.

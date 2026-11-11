@@ -39,7 +39,7 @@ On every route, reuse the Quickstart's `plan-my-day/SKILL.md` and its fixed test
 
 Check against an expected plan written before running: every input item accounted for, correct timezone, correct output home/delivery, no external actions. Start a fresh session to test policy loading. Then change one source item and repeat after reloading or refreshing sources. These are documented starter procedures, not claims that your account has passed them. Record each result as passed, failed or untested.
 
-The stages below develop this starter. Claude-only paths are labelled; choose the equivalent native path explicitly for OpenAI rather than copying a dot-directory.
+The stages below develop this starter. Claude-only paths are labelled; choose the equivalent native path explicitly for OpenAI rather than copying a dot-directory. Google surfaces (Antigravity and the Gemini app) follow the same principle; their mechanisms are listed in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts), documented and not yet tested.
 
 ---
 

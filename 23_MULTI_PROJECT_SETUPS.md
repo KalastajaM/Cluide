@@ -1,6 +1,6 @@
 # 23 — Multi-Project Setups
 
-> How to design and maintain several linked projects across Claude and OpenAI so shared facts stay consistent and each one stays focused. This is the cross-*project* extension of Guide 09 (which handles shared state and ownership across multiple *tasks* inside one assistant).
+> How to design and maintain several linked projects across Claude and OpenAI so shared facts stay consistent and each one stays focused. This is the cross-*project* extension of Guide 09 (which handles shared state and ownership across multiple *tasks* inside one assistant). Google surfaces (Antigravity and the Gemini app) follow the same principle; their mechanisms are listed in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts), documented and not yet tested.
 
 Most setups start as one project and should stay that way. You reach for multiple projects when a single shared policy and folder start pulling in two directions at once: different purposes, different lifecycles, or data that keeps colliding. This guide covers when that moment has arrived, how to split cleanly when it has, what to do when two independent projects grow an overlap instead, and how to keep linked projects consistent and change them without breaking each other afterward.
 

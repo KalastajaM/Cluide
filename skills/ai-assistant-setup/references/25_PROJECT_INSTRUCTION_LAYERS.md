@@ -1,6 +1,6 @@
 # 25 — Project Instruction Layers
 
-> A project needs an identity, instructions available before sources are read, and an authored policy. These layers differ across Cowork, ChatGPT projects and Codex. Keep the shared contract versioned and verify each native entry point; a mirror records configuration but does not apply it.
+> A project needs an identity, instructions available before sources are read, and an authored policy. These layers differ across Cowork, ChatGPT projects and Codex. Keep the shared contract versioned and verify each native entry point; a mirror records configuration but does not apply it. Google surfaces (Antigravity and the Gemini app) follow the same principle; their mechanisms are listed in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts), documented and not yet tested.
 
 ## The three layers
 

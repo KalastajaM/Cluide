@@ -236,4 +236,4 @@ shared/
 
 ## Switching Platforms
 
-Read [Guide 35](./35_DUAL_PLATFORM_PROJECTS.md). Share the policy and task definitions; keep native memory, connector grants and scheduler registrations separate. Record the branch/revision, pending work, checks and output location at handoff. Refresh uploaded sources explicitly. Mark untested surfaces honestly.
+Read [Guide 35](./35_DUAL_PLATFORM_PROJECTS.md). Share the policy and task definitions; keep native memory, connector grants and scheduler registrations separate. Record the branch/revision, pending work, checks and output location at handoff. Refresh uploaded sources explicitly. Mark untested surfaces honestly. Google surfaces (Antigravity and the Gemini app) follow the same principle; their mechanisms are listed in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts), documented and not yet tested.

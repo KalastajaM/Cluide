@@ -13,7 +13,7 @@
 
 ## The Core Idea
 
-Retrieval answers questions from source material; a maintained wiki additionally saves accepted synthesis as explicit pages. Either Claude or OpenAI can contribute to that authored layer. Uploading documents by itself does not establish the ingest, citation and maintenance contract described here.
+Retrieval answers questions from source material; a maintained wiki additionally saves accepted synthesis as explicit pages. Either Claude or OpenAI can contribute to that authored layer. Uploading documents by itself does not establish the ingest, citation and maintenance contract described here. Google surfaces (Antigravity and the Gemini app) follow the same principle; their mechanisms are listed in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts), documented and not yet tested.
 
 The wiki pattern inverts this. When you add a new source, the LLM reads it, extracts key information, and integrates it into existing markdown pages — updating entities, revising summaries, flagging contradictions, strengthening the synthesis. Knowledge is compiled once and kept current. By the time you ask a question, the cross-references are already there. The contradictions have already been noted. The synthesis already reflects everything you've read.
 
