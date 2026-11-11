@@ -33,18 +33,41 @@ SAFE_EMAIL_DOMAINS = re.compile(r"(?:^|\.)example\.(?:com|org|net)$|(?:^|\.)(?:e
 PERSONAL_PATH = re.compile(r"(?:/Users/|/home/|[A-Za-z]:\\Users\\)([A-Za-z0-9._\-]+)")
 SAFE_PATH_USERS = {"you", "your-name", "yourname", "username", "user", "name", "me", "example", "[placeholder"}
 PLACEHOLDER = re.compile(r"\[PLACEHOLDER:\s*([^\]]*?)\s*\]")
-LEGACY_MARKER = re.compile(r"<<<\s*PLACEHOLDER")
-RUNTIME_NAMES = {"run_log.md", "improvements.md", ".env", ".ds_store", "thumbs.db",
-                 "settings.local.json", "identifiers.txt"}
+LEGACY_MARKER = re.compile(r"<<<[^>\n]{1,80}>>>|<<<\s*PLACEHOLDER")
+RUNTIME_NAMES = {".env", ".ds_store", "thumbs.db", "settings.local.json", "identifiers.txt"}
 RUNTIME_SUFFIXES = (".log",)
-RUNTIME_DIRS = {".git", "__pycache__", "node_modules", "memory", "outputs", "logs"}
-TEXT_SUFFIXES = {".md", ".txt", ".json", ".yaml", ".yml", ".toml", ".py", ".sh", ".js", ".ts",
-                 ".html", ".csv", ".xml", ".ini", ".cfg", ""}
+RUNTIME_DIRS = {".git", "__pycache__", "node_modules", "memory", ".memory", "auto-memory", ".auto-memory"}
+# State files and folders a template may legitimately ship as an empty starting definition:
+# HIGH only when they hold run data (see starting_state), otherwise MEDIUM.
+SCAFFOLD_NAMES = {"run_log.md", "improvements.md"}
+# Key-name examples are safe to ship by name; their content is still scanned like any other file.
+ENV_EXAMPLES = {".env.example", ".env.sample", ".env.template", ".env.dist"}
+SCAFFOLD_DIRS = {"outputs", "logs"}
+HTML_COMMENT = re.compile(r"<!--.*?-->", re.S)
+RUN_DATA = re.compile(
+    r"\b(?:19|20)\d\d[-/.](?:0[1-9]|1[0-2])[-/.](?:0[1-9]|[12]\d|3[01])\b"   # a real calendar date
+    r"|\b(?:19|20)\d\d(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])\b"            # YYYYMMDD
+    r"|\"total_runs\"\s*:\s*[1-9]")                                           # a non-zero run counter
 
 
 def placeholder_key(body):
     """Description part of a placeholder, before any EXAMPLE clause."""
     return re.split(r"\s*(?:—|--|-)?\s*EXAMPLE\s*:", body, maxsplit=1, flags=re.I)[0].strip().strip('"').lower()
+
+
+def starting_state(name, text, folder_note):
+    """True if a state file is an empty starting definition rather than live run data.
+
+    Headings, blank lines and HTML comments alone always qualify. A run log, improvements file or
+    folder note (README.md under outputs/logs) also qualifies when it holds no real dates and no
+    non-zero run counter, so the shipped task and project scaffolds pass. Anything else does not.
+    """
+    lines = [l.strip() for l in HTML_COMMENT.sub("", text).splitlines() if l.strip()]
+    if all(l.startswith("#") for l in lines):
+        return True
+    if name in SCAFFOLD_NAMES or folder_note:
+        return not RUN_DATA.search(HTML_COMMENT.sub("", text))
+    return False
 
 
 def main():
@@ -81,15 +104,31 @@ def main():
 
     for p in files:
         rel = p.relative_to(root).as_posix()
+        name = p.name.lower()
         parts = {x.lower() for x in p.relative_to(root).parts[:-1]}
-        if p.name.lower() in RUNTIME_NAMES or p.name.lower().endswith(RUNTIME_SUFFIXES) or parts & RUNTIME_DIRS:
+        in_scaffold_dir = bool(parts & SCAFFOLD_DIRS)
+        data = p.read_bytes()
+        binary = b"\0" in data[:8192]  # a NUL byte in the first 8 KB: a real binary, not text
+        text = None
+        if not binary:
+            try:
+                text = data.decode("utf-8")
+            except UnicodeDecodeError:
+                pass
+        if name == ".env" or (name.startswith(".env.") and name not in ENV_EXAMPLES):
+            add("HIGH", rel, "environment file (.env*) holds live secrets and must not ship in a template")
+        elif (name in RUNTIME_NAMES or parts & RUNTIME_DIRS
+              or (name.endswith(RUNTIME_SUFFIXES) and not in_scaffold_dir)):
             add("HIGH", rel, "runtime-state or private file should not ship in a template")
-        if p.suffix.lower() not in TEXT_SUFFIXES:
-            add("MEDIUM", rel, "binary or unknown file type: inspect by hand for identifying content")
+        elif name in SCAFFOLD_NAMES or in_scaffold_dir:
+            if text is not None and starting_state(name, text, name == "readme.md" and in_scaffold_dir):
+                add("MEDIUM", rel, "starting-state file: confirm it is empty of run data")
+            else:
+                add("HIGH", rel, "runtime-state or private file should not ship in a template")
+        if binary:
+            add("MEDIUM", rel, "binary file: inspect by hand for identifying content")
             continue
-        try:
-            text = p.read_text(encoding="utf-8")
-        except UnicodeDecodeError:
+        if text is None:
             add("MEDIUM", rel, "not UTF-8 text: inspect by hand")
             continue
         if p.name.lower() == "readme.md" and p.parent == root:
@@ -111,7 +150,7 @@ def main():
                 if ident.lower() in low:
                     add("HIGH", loc, f"identifier from list: {ident!r}")
             if LEGACY_MARKER.search(line):
-                add("MEDIUM", loc, "legacy <<<PLACEHOLDER>>> marker: use [PLACEHOLDER: ...] everywhere")
+                add("MEDIUM", loc, "leftover <<<...>>> marker: use [PLACEHOLDER: ...] everywhere")
             for m in PLACEHOLDER.finditer(line):
                 body = m.group(1)
                 if not re.search(r"EXAMPLE\s*:", body, re.I):

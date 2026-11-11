@@ -117,7 +117,7 @@ sw_vers && whoami && groups $(whoami) | grep -q admin && echo "IS ADMIN" || echo
 ```bash
 ps aux | grep -i "claude" | grep -v grep
 ```
-Flag any process with 0% CPU running >2h as a zombie.
+List these for information only. Do not flag low or 0% CPU as a zombie: MCP servers spawned by the app match this pattern and idle at 0.0% CPU when healthy (see the header of `references/hook-session-cleanup.sh`).
 
 **1c. MCP server inventory**
 Read `~/.claude.json`, any `$PROJECT/.mcp.json`, and (if present) `~/Library/Application Support/Claude/claude_desktop_config.json`. For each server, note:
@@ -133,9 +133,9 @@ Note which of PreToolUse / PostToolUse hooks are missing.
 
 **1e. Permission mode**
 ```bash
-cat ~/.claude/settings.local.json 2>/dev/null || echo "No settings.local.json"
+for f in ~/.claude/settings.json ~/.claude/settings.local.json "$PROJECT/.claude/settings.json" "$PROJECT/.claude/settings.local.json"; do [ -f "$f" ] && { echo "== $f"; cat "$f"; }; done
 ```
-Check for `permissions.defaultMode` set to `"bypassPermissions"`, or stale permission entries. `"auto"` is the built-in starting mode for interactive sessions when none is configured (every plan and provider on current Claude Code) and is not a finding; `"dontAsk"` in a settings file that is not a CI or unattended setup is worth asking the user about. Note whether `permissions.blockWritesOutsideWorkingDirectories` (v2.1.314) and `permissions.denyInsteadOfPrompting` (v2.1.319) are set; absence is not a finding. Where an ask rule is the only protection for an action and plugins are installed, say so: since v2.1.321 a plugin's own code makes tool calls without a prompt under ask rules, and only deny rules and organisation policy still stop it.
+Check each file for `permissions.defaultMode` set to `"bypassPermissions"`, or stale permission entries, and say which file each finding came from. `"auto"` is the built-in starting mode for interactive sessions when none is configured (every plan and provider on current Claude Code) and is not a finding; `"dontAsk"` in a settings file that is not a CI or unattended setup is worth asking the user about. Note whether `permissions.blockWritesOutsideWorkingDirectories` (v2.1.314) and `permissions.denyInsteadOfPrompting` (v2.1.319) are set; absence is not a finding. Where an ask rule is the only protection for an action and plugins are installed, say so: since v2.1.321 a plugin's own code makes tool calls without a prompt under ask rules, and only deny rules and organisation policy still stop it.
 
 **1f. Project-specific checks (if `$PROJECT` is set)**
 
@@ -217,9 +217,11 @@ Print a per-server risk card:
 
 ---
 
-## Phase 7: Governance & Documentation (read-only — outputs a report)
+## Phase 7: Governance & Documentation (writes one file — ask first)
 
-Generate a security documentation file at `$PROJECT/SECURITY_AUDIT.md` (or `~/CLAUDE_SECURITY_AUDIT.md` if no project):
+This phase writes a file, so it does not run automatically. The report records the hostname and which MCP servers hold plaintext secrets: warn the user it should not be committed or shared. Ask where to save it, and default to outside any git repository (for example `~/CLAUDE_SECURITY_AUDIT.md`). If `$PROJECT` is a git repository, write there only on an explicit yes and propose adding `SECURITY_AUDIT.md` to `.gitignore`.
+
+Then generate the security documentation file at the agreed location. Fill each row from what was actually installed in this run:
 
 ```markdown
 # Claude Code Security Audit
@@ -240,8 +242,8 @@ Machine audited: [hostname — local shell / via device bridge]
 
 | Task | Frequency | Method |
 |------|-----------|--------|
-| ClamAV signature update | Daily | freshclam (auto via launchd) |
-| Shell snapshot prune | Per session | session-cleanup.sh hook |
+| ClamAV signature update | [Daily if you scheduled it, else "manual"] | freshclam — not scheduled by this skill |
+| Shell snapshot prune | [as scheduled in Phase 5b, or "not scheduled"] | ~/.claude/hooks/session-cleanup.sh (standalone script) |
 | Transcript credential scan | Quarterly | Manual run of Phase 5a |
 | MCP server review | When adding new server | Run Phase 6 |
 | Full re-audit | Quarterly | Re-run /security-review |
@@ -253,7 +255,7 @@ Machine audited: [hostname — local shell / via device bridge]
 
 - If `~/.claude/settings.json` does not exist: first confirm you are on the target machine and could read the file (see "Which machine are you auditing?"); a container's home directory or a partial stage proves nothing. Then skip the hook checks and note "No global settings file found — Claude Code may not be configured yet." (Credential checks in 0a use the MCP config files, not settings.json.)
 - If `$PROJECT` is not a git repository: skip `.env` tracking check (0b) and `.gitignore` coverage (1f); note "Not a git repo — git-based checks skipped."
-- If the user declines all APPROVAL REQUIRED phases: produce the Phase 0 + Phase 1 read-only report and the Phase 7 governance doc. Do not treat declining as an error.
+- If the user declines all APPROVAL REQUIRED phases: produce the Phase 0 + Phase 1 read-only report and offer the Phase 7 governance doc (it asks before writing). Do not treat declining as an error.
 - If a scanning tool (Socket CLI, ClamAV, pip-audit) fails to install: log the failure, skip that specific check, and continue with remaining phases. Do not abort the entire audit.
 - If `~/.claude/hooks/` already contains a `security-precheck.sh`: read it, compare to `"$SKILL_DIR/references/hook-security-precheck.sh"`, and use the current surface’s question tool (or chat if unavailable): "An existing hook is already installed."
   > Buttons: `Replace with updated version` / `Keep current` / `Show diff`

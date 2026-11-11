@@ -197,7 +197,7 @@ For each row in the Policy Registry, add a loading instruction here:
 ### Claude Code
 
 ```bash
-cp -r skills/policies-validator/ ~/.claude/skills/
+cp -r skills/policies-validator ~/.claude/skills/
 ```
 
 Then fill in the Policy Registry, escalation contacts, and loading notes in the copied file.

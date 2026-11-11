@@ -9,11 +9,11 @@ extra=""
 if [ "${1:-}" = "--extra" ]; then extra=${2:?pattern file missing}; [ -r "$extra" ] || { echo "cannot read $extra" >&2; exit 2; }; fi
 git rev-parse --git-dir >/dev/null 2>&1 || { echo "not a git repository" >&2; exit 2; }
 diff=$(git --no-pager diff --cached -U0 --no-color --no-ext-diff) || { echo "git diff --cached failed" >&2; exit 2; }
-names=$(git --no-pager diff --cached --name-only --diff-filter=AM) || { echo "git diff --name-only failed" >&2; exit 2; }
-[ -z "$names" ] && { echo "nothing staged"; exit 0; }
+names=$(git --no-pager diff --cached --name-only --diff-filter=ACMRT) || { echo "git diff --name-only failed" >&2; exit 2; }
+git diff --cached --quiet && { echo "nothing staged"; exit 0; }
 
 added=$(printf '%s\n' "$diff" | awk '
-  /^\+\+\+ / { f=$2; sub(/^b\//,"",f); next }
+  /^\+\+\+ / { f=substr($0,5); sub(/\t.*$/,"",f); sub(/^b\//,"",f); next }
   /^@@ / { split($3,a,","); n=substr(a[1],2)+0; next }
   /^\+/ { print f ":" n ":" substr($0,2); n++ }')
 
