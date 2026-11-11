@@ -71,7 +71,9 @@ explicitly on every spawn as given here; this table is the instruction to set it
   value overrides the pin.
 - **Name the effort.** Resolution in Claude Code: `CLAUDE_CODE_EFFORT_LEVEL` (if set, it wins and
   the per-spawn parameter disappears) → per-spawn `effort` → definition's `effort:` →
-  `CLAUDE_CODE_SUBAGENT_EFFORT` (v2.1.316+) → the session's level. If the schema has no `effort`,
+  `CLAUDE_CODE_SUBAGENT_EFFORT` (v2.1.316+) → the session's level, but only for a subagent on the
+  session's own model: on any other model (the routed case) the last step is that model's saved
+  effort level or its default (v2.1.317+). If the schema has no `effort`,
   say so; never claim a level the surface cannot set.
 - **No forks for routed work.** A fork runs on the parent's model and inherits the whole
   conversation whatever you pass. Never use one for cheap-tier work or independent review.
@@ -163,7 +165,7 @@ go to the user; approved changes go into Dispatch Overrides, never into the log.
 
 ## 9. Other platforms
 
-On OpenAI (Codex, ChatGPT) or Google (Antigravity, Jules, Gemini app) hosts, §1 and §4–§6 apply
+On OpenAI (Codex, ChatGPT) or Google (Antigravity, Gemini app) hosts, §1 and §4–§6 apply
 unchanged. Use only the delegation controls the session exposes, keep the configured model unless
 the user picks a supported alternative, and never map a Claude tier onto a guessed model name. Log
 the actual model and effort. Check whether a spawned reviewer inherits context before calling it

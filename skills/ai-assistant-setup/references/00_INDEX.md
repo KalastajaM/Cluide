@@ -5,7 +5,7 @@
 > A complete framework for building, running, and improving a persistent AI assistant with Claude or ChatGPT.
 > Includes architecture guides, runnable setup tasks, installable skills, and copy-paste templates — covering the full lifecycle from initial setup to automation, self-improvement, and security.
 
-*Covers Claude Code, conversational Claude/Cowork, ChatGPT projects and Codex, and (documented, not yet tested) Google's Antigravity, Jules and the Gemini app. Shared principles are separated from native setup steps; a documented route still needs verification in your own session.*
+*Covers Claude Code, conversational Claude/Cowork, ChatGPT projects and Codex, and (documented, not yet tested) Google's Antigravity and the Gemini app. Shared principles are separated from native setup steps; a documented route still needs verification in your own session.*
 
 ---
 
@@ -568,7 +568,7 @@ Tasks are designed to be portable: copy any task file to another project's `task
 |------|-------------|
 | `tasks/review-tasks.md` | Detect guide updates and flag tasks that need syncing; also checks bundled reference copies, the IMPROVEMENTS template, and guide-set coverage for drift — run after editing any guide |
 | `tasks/harvest-from-projects.md` | The inverse of `review-tasks.md` — scan your live assistant projects and propose folding their proven, generalized patterns back into the guides, tasks, templates, and skills |
-| `tasks/review-platform-changes.md` | The outward leg — read what Anthropic, OpenAI and Google shipped since the last sweep (Claude Code, Cowork, ChatGPT, Codex, Antigravity, Jules, the Gemini app, APIs and MCP), re-check every dated or hedged claim in the guides, and report what is wrong, stale or unverifiable; run after each model launch or monthly |
+| `tasks/review-platform-changes.md` | The outward leg — read what Anthropic, OpenAI and Google shipped since the last sweep (Claude Code, Cowork, ChatGPT, Codex, Antigravity, the Gemini app, APIs and MCP), re-check every dated or hedged claim in the guides, and report what is wrong, stale or unverifiable; run after each model launch or monthly |
 
 ---
 

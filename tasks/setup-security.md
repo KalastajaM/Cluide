@@ -62,8 +62,10 @@ Report findings without showing actual credential values — show only which fil
 **Codex/ChatGPT:** perform the native permission audit above and then proceed to Step 3; do not read Claude settings as evidence. **Claude Code only:** inspect relevant fields in `.claude/settings.json` and `~/.claude/settings.json`:
 
 Check current documented values before interpreting settings; the following Claude values require re-verification at runtime.
-- `permissions.defaultMode` — the valid values are `default` (alias `manual`), `auto`, `acceptEdits`, `plan`, `dontAsk` and `bypassPermissions`. Flag `bypassPermissions`: it disables all permission prompts. Flag `dontAsk` too if this is not a CI or unattended setup. An unset value no longer means every action is prompted — auto is the built-in starting mode on Pro, Max and Team, so report "not set (auto on Pro/Max/Team)" rather than assuming manual. Note also that `"auto"` set in a project-level `.claude/settings.json` or `settings.local.json` has no effect; it belongs in `~/.claude/settings.json` or managed settings.
+- `permissions.defaultMode` — the valid values are `default` (alias `manual`), `auto`, `acceptEdits`, `plan`, `dontAsk` and `bypassPermissions`. Flag `bypassPermissions`: it disables all permission prompts. Flag `dontAsk` too if this is not a CI or unattended setup. An unset value no longer means every action is prompted — auto is the built-in starting mode on Pro, Max, Ultra and Team, so report "not set (auto on Pro/Max/Ultra/Team)" rather than assuming manual. Note also that `"auto"` set in a project-level `.claude/settings.json` or `settings.local.json` has no effect; it belongs in `~/.claude/settings.json` or managed settings.
 - `allowedTools` entries with broad scope (e.g. allowing all Bash commands without restriction)
+- `permissions.blockWritesOutsideWorkingDirectories` (v2.1.314) and, for unattended setups, `permissions.denyInsteadOfPrompting` (v2.1.319) — report whether each is set; neither is a finding when absent, both are worth proposing for a task that runs with nobody watching (Guide 12 §3)
+- Ask rules protecting something a plugin could reach — since v2.1.321 a plugin's own code (a mod) makes tool calls without a prompt under ask rules, so anything it must never do needs a deny rule
 - Existing hooks — are they configured correctly?
 
 Report:

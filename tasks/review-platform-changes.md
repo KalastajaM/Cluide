@@ -11,7 +11,7 @@ Execute only the selected native branch. Claude commands/settings/hooks are Clau
 
 ## Purpose
 Detect what Anthropic, OpenAI and Google have shipped since Cluide's last sweep — in Claude Code, Cowork, claude.ai, the
-Claude API, ChatGPT projects/apps/tasks, Codex, the OpenAI API, Google Antigravity, Jules, the Gemini app, the Gemini API and the MCP specification — and turn it into findings against the guides, tasks, skills and
+Claude API, ChatGPT projects/apps/tasks, Codex, the OpenAI API, Google Antigravity, the Gemini app, the Gemini API and the MCP specification — and turn it into findings against the guides, tasks, skills and
 templates. Every "as of <month>" in this repo was placed by hand and has no owner; a price, a default
 mode or a "not supported" statement goes stale silently, and nothing internal to Cluide can catch it.
 
@@ -56,12 +56,12 @@ Fixed list. Read each page from the boundary date to today; do not sample.
 
 | Source | What it settles |
 |--------|-----------------|
-| https://code.claude.com/docs/en/whats-new (weekly digest) and https://code.claude.com/docs/en/changelog; for exact wording and version numbers, grep https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md | Claude Code CLI, Desktop, web, Agent SDK: commands, flags, settings, hooks, subagents, skills, memory, permission modes. The digest can lag the changelog, and a fetched summary of the long changelog page can truncate it or misattribute versions, so quote from the raw file. A fetch tool may stop at about 100,000 characters; where the shell reaches `raw.githubusercontent.com`, download the whole file with `curl` instead |
+| https://code.claude.com/docs/en/whats-new (weekly digest) and https://code.claude.com/docs/en/changelog; for exact wording and version numbers, grep https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md | Claude Code CLI, Desktop, web, Agent SDK: commands, flags, settings, hooks, subagents, skills, memory, permission modes. The digest can lag the changelog, and a fetched summary of the long changelog page can truncate it or misattribute versions, so quote from the raw file. A fetch tool may stop at about 100,000 characters; where the shell reaches `raw.githubusercontent.com`, download the whole file with `curl` instead. The raw file carries no dates: take them from the desktop changelog's "Bundled Claude Code version" lines. The digest index can stop months behind (in November 2026 it ended at the week of 7 September), so never treat it as the boundary |
 | https://claude.com/docs/cowork/changelog (raw: append `.md`) and the pages under https://claude.com/docs/cowork/ | Cowork: projects, scheduled tasks, Dispatch, plugins, folder access, permission prompts. Take each entry's release from the raw file: a fetched summary has attached entries to the wrong release. Compare desktop releases by date: the version string jumped from v2.42304.2 (2026-10-19) to v3.1623.0 (2026-10-20) and v4.29.0 (2026-10-27) |
-| https://support.claude.com/en/articles/12138966-release-notes | claude.ai and the apps: memory, artifacts, connectors, Claude in Chrome, plan changes |
+| https://support.claude.com/en/articles/12138966-release-notes | claude.ai and the apps: memory, artifacts, connectors, Claude in Chrome, plan changes. A plan can be renamed without a release note (Max 20x became Ultra in November 2026: https://support.claude.com/en/articles/17728952-what-is-the-ultra-plan), so also compare the plan names in the Help Center's collection list |
 | https://support.claude.com/en/articles/15520349-use-claude-cowork-on-web-desktop-and-mobile, https://support.claude.com/en/articles/13455879-use-claude-cowork-on-team-and-enterprise-plans and https://support.claude.com/en/articles/14479288-claude-cowork-architecture-overview | Cowork: where sessions run (cloud or the computer) per plan, where projects are saved (in October 2026 a support article was more current than the Cowork docs page on where projects live; prefer the later dated source and record the conflict), how a cloud session reaches local folders, where scheduled tasks run. Changes here have reached no changelog (the 2026-10-06 move of Pro and Max to cloud-only sessions appeared only on these pages), and they show a relative "Updated …" (the exact date sits in the hover tooltip, and it is a last-edit date, not when a change took effect), so record the checked date and diff the wording against the previous report |
 | https://platform.claude.com/docs/en/release-notes/overview and https://platform.claude.com/docs/en/about-claude/pricing | Model launches, retirements, prices, context windows, effort levels, API features |
-| https://learn.chatgpt.com/docs/changelog (ChatGPT and Codex changelog), https://learn.chatgpt.com/docs/whats-new and https://help.openai.com/en/articles/6825453-chatgpt-release-notes | OpenAI product documentation and ChatGPT releases; follow current links to Codex and project-source behavior |
+| https://learn.chatgpt.com/docs/changelog (ChatGPT and Codex changelog), https://learn.chatgpt.com/docs/whats-new and https://help.openai.com/en/articles/6825453-chatgpt-release-notes | OpenAI product documentation and ChatGPT releases; follow current links to Codex and project-source behavior. The help.openai.com pages in this table refused automated fetches in three consecutive sweeps (2026-10-15 to 2026-11-11): when that happens, ask the user to open them, and record the facts that rest on them as re-verify, not as checked |
 | https://learn.chatgpt.com/docs/agent-configuration/agents-md and https://learn.chatgpt.com/docs/build-skills | Codex instructions, nested discovery, limits and native skill metadata |
 | https://learn.chatgpt.com/codex/extend/mcp, https://learn.chatgpt.com/codex/permission-modes and https://learn.chatgpt.com/docs/agent-approvals-security | Codex MCP configuration, effective sandbox and approval controls |
 | https://learn.chatgpt.com/codex/automations and https://help.openai.com/en/articles/10291617-scheduled-tasks-in-chatgpt | ChatGPT scheduled tasks and Codex automations; verify each surface separately |
@@ -69,8 +69,7 @@ Fixed list. Read each page from the boundary date to today; do not sample.
 | https://learn.chatgpt.com/codex/customization/memories | ChatGPT memory versus local Codex memory |
 | https://agentskills.io/specification | Skill frontmatter limits every host inherits (`name`, `description` length) |
 | https://developers.openai.com/api/docs/changelog and https://developers.openai.com/api/docs/pricing | OpenAI API changes, current model identifiers, deprecations and API pricing; not subscription allowance |
-| https://antigravity.google/docs/changelog and the pages under https://antigravity.google/docs/ (rules, skills, mcp, hooks, permissions, models) | Google Antigravity app, CLI (`agy`), IDE, IDE extensions and SDK: instruction files, size limits, skills paths, MCP, hooks, permissions, models by plan. The changelog versions the five tracks separately; record all five. Fetch with `curl --compressed`: an uncompressed fetch returns unreadable bytes |
-| https://jules.google/docs/changelog/ and https://jules.google/docs/ | Jules: `AGENTS.md` reading, scheduled tasks, MCP, plan limits. Doc pages have lagged the changelog (scheduled-task editing), so prefer the later dated entry and record the conflict |
+| https://antigravity.google/docs/changelog and the pages under https://antigravity.google/docs/ (rules, skills, mcp, hooks, permissions, and models, which changed twice in the four weeks to 2026-11-11) | Google Antigravity app, CLI (`agy`), IDE, IDE extensions and SDK: instruction files, size limits, skills paths, MCP, hooks, permissions, models by plan. The changelog versions the five tracks separately; record all five. Fetch with `curl --compressed`: an uncompressed fetch returns unreadable bytes |
 | https://gemini.google/release-notes/ and the Gemini Apps Help pages under https://support.google.com/gemini/ | Gemini app: models per plan, skills (replacing Gems), notebooks, memory, scheduled actions |
 | https://ai.google.dev/gemini-api/docs/changelog, https://ai.google.dev/gemini-api/docs/pricing and https://ai.google.dev/gemini-api/docs/deprecations | Gemini API: model IDs, prices, deprecations, the managed agent's `.agents/AGENTS.md` loading |
 | https://geminicli.com/docs/changelogs/latest/ | Gemini CLI, a legacy surface for consumer plans since 2026-06-18; read it only while Cluide still documents it |
@@ -115,7 +114,7 @@ against the guide that carries it:
 | Artifacts, Claude in Chrome | `19`, `05`, `12`, `22` |
 | Print mode flags (`claude -p`), `claude plugin eval` availability and case format, `/skill-doctor` | `31`, `tasks/setup-behaviour-tests.md` |
 | `CLAUDE.md` locations, imports and the loaded-files view | `01`, `25`, `35`, `tasks/setup-dual-platform.md` |
-| Google: Antigravity rule files and limits, skills paths, MCP and hooks files, models by plan; Jules and Gemini app features | `35` (§9 Google subsection and Google routes), `01`, `03`, `PLATFORM_SETUP.md`, `README.md` skill install line |
+| Google: Antigravity rule files and limits, skills paths, MCP and hooks files, models by plan; Gemini app features | `35` (§9 Google subsection and Google routes), `01`, `03`, `PLATFORM_SETUP.md`, `README.md` skill install line |
 
 Re-check **every** Guide 35 §9 row for every platform using its current official source. Follow official redirects; an inaccessible page or absent product detail is a C finding, never a silent pass. Search all root guides, tasks, skill entry points and nested templates for dependent claims, not just Guide 35. Distinguish API billing, subscription allowances and measured runtime usage.
 
@@ -145,7 +144,7 @@ with links stripped per `review-tasks.md` step 4a), run `review-tasks.md` steps 
 "as of" marker with the sweep month. Put the boundary for the next run into the commit subject:
 
 ```
-Platform sweep 2026-10c: <what changed> (Claude Code v2.1.300, desktop v2.37337.1, Codex CLI 0.162.1, Antigravity CLI v1.3.1)
+Platform sweep 2026-11a: <what changed> (Claude Code v2.1.322, desktop v5.1231.2, Codex CLI 0.167.1, Antigravity app v2.31.0, CLI v1.5.3)
 ```
 
 Name every platform the sweep covered. A platform missing from the subject counts as unswept at the next run (Step 1).

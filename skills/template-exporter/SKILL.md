@@ -25,7 +25,7 @@ Turns an existing assistant setup (chat system prompt, assistant task, assistant
 
 Before touching content, establish two things from context (ask only if unclear):
 
-- **Source platform** — where the setup runs today: Claude (chat projects, Cowork, Claude Code), ChatGPT or Codex, Gemini (app, Antigravity, Jules), or the API.
+- **Source platform** — where the setup runs today: Claude (chat projects, Cowork, Claude Code), ChatGPT or Codex, Gemini (app, Antigravity), or the API.
 - **Target platforms** — where the recipient will use it. Default to the source platform only. Add others only when the user asks; a template that claims to work everywhere but was written for one platform fails silently on the others.
 
 Platform-native pieces must stay labelled with the platform they belong to: a Claude Code hook, a `CLAUDE.md` file, Codex `agents/openai.yaml` metadata, an Antigravity `hooks.json`. Do not translate one platform's mechanism into another's by analogy; where a target has no documented counterpart, say so in the README as a gap.

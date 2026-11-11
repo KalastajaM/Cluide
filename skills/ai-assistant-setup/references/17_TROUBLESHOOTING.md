@@ -41,7 +41,7 @@ Before changing prompts, record the product, local/cloud execution, selected pro
 | Skill missing | Native `.agents/skills` location, metadata and selector | Skill/plugin installed for this account, or workflow explicitly supplied | Native `.claude/skills` or app installation; account-synced skill (Code v2.1.275+); description ≤1024 and valid YAML frontmatter |
 | Memory stale | Explicit file read and correct writer/revision | Uploaded/connected fact refreshed; do not assume local-file synchronization | Distinguish native memory from `.auto-memory/` |
 | Connector absent | Effective MCP config, authentication, tool discovery | App grant and tools exposed in this chat | Correct Code/Cowork connector configuration |
-| Scheduled output absent | Actual registered owner, local host awake, app running, last run status | Source availability, task status, authorized output destination | Correct Cowork/Routine owner and execution environment |
+| Scheduled output absent | Actual registered owner, local host awake, app running, last run status | Source availability, task status, authorized output destination | Correct Cowork/Routine owner and execution environment; for a task that runs on the computer, the run status on its card (desktop v5.1231.0, 2026-11-10: "Last run failed", "Needs input", "Didn't run", or why a due run has not started) |
 | Duplicate output | Stable job/run key and overlapping writers across both platforms | Same registration inventory | Same registration inventory |
 
 Use one harmless diagnostic: read a known fixture, invoke the workflow explicitly, or inspect one registration. Record the exact failure without printing secrets. A capability that does not exist on the current surface is **unavailable**, not a malformed Claude setup. The sections below retain Claude-specific examples where their commands are named; [Guide 35](./35_DUAL_PLATFORM_PROJECTS.md) links the current native documentation.
@@ -198,7 +198,7 @@ A Gmail token set to read-only cannot send email. A calendar token set to read-o
 **Most likely causes:**
 
 **1. The desktop app closed, slept, or lost its network connection**
-The bridge — the desktop-app connection that lets a cloud session reach your local folder ([Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md) explains it) — only exists while the assistant desktop app is running and online. On Pro and Max every new session runs in the cloud since 6 October 2026 ([Cowork on web, desktop and mobile](https://support.claude.com/en/articles/15520349-use-claude-cowork-on-web-desktop-and-mobile)), so every session that touches a local folder depends on it. Dropped connections commonly recover on their own within the same session.
+The bridge — the desktop-app connection that lets a cloud session reach your local folder ([Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md) explains it) — only exists while the assistant desktop app is running and online. On Pro, Max and Ultra every new session runs in the cloud since 6 October 2026 ([Cowork on web, desktop and mobile](https://support.claude.com/en/articles/15520349-use-claude-cowork-on-web-desktop-and-mobile)), so every session that touches a local folder depends on it. Dropped connections commonly recover on their own within the same session.
 
 *Fix:* Wake or reopen the desktop app, then ask the assistant to retry the write. The work itself is not lost — files already produced are still in the session workspace, so a retry costs one tool call rather than a re-run.
 
