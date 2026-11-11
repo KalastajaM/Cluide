@@ -17,9 +17,9 @@ Inventory shared file memory/profile files, each surface's exposed native memory
 ## Purpose
 Review the project's memory for stale entries, missing index pointers, duplicates, and entries that belong in `CLAUDE.md` instead. Keeps memory lean and current so it stays useful as sessions accumulate.
 
-Guide 04 describes three on-disk layers — **native memory**, the `.auto-memory/` folder, and **profile files**. All three use the same `MEMORY.md`-index-plus-topic-files shape, so the checks below apply to whichever the project actually uses. Audit every layer present, not just `.auto-memory/`. The fourth layer in Guide 04's table, the account memory behind claude.ai and Cowork, lives in the cloud and cannot be audited from the filesystem — it appears here only in Check 8.
+Guide 04 describes three on-disk layers — **native memory**, the `.auto-memory/` folder, and **profile files**. All three use the same `MEMORY.md`-index-plus-topic-files shape, so the checks below apply to whichever the project actually uses. Audit every layer present, not just `.auto-memory/`. The conversational memory layer in Guide 04's table, the account memory behind claude.ai and Cowork, lives in the cloud and cannot be audited from the filesystem — it appears here only in Check 8.
 
-Target: index under 30 entries, each memory file under ~10 lines, no entries older than 6 months without a freshness check.
+Target: index under 30 entries, each memory file under ~10 lines, no entries older than 3 months without a freshness check (Guide 04). Each figure in this task is a target with a ~5% tolerance band (Guide 06 §6): flag only beyond it. Externally enforced limits (a loader cap, an API limit) are hard and get no band — Check 1's 200-line / 25KB auto-load limit is one.
 
 ---
 
@@ -37,7 +37,8 @@ ls .auto-memory/MEMORY.md 2>/dev/null && echo "auto-memory: exists" || echo "aut
 ls .auto-memory/*.md 2>/dev/null | wc -l
 
 # Layer 2 — native memory (default location, or wherever autoMemoryDirectory points)
-ls ~/.claude/projects/*/memory/MEMORY.md 2>/dev/null | head
+# Lists folder names only: do not open any project's memory until the target's folder is identified.
+[ -d ~/.claude/projects ] && ls -d ~/.claude/projects/*/memory 2>/dev/null || echo "no native memory folders found (Layer 2 not run)"
 grep -rs "autoMemoryDirectory\|autoMemoryEnabled" .claude/settings.json ~/.claude/settings.json 2>/dev/null
 
 # Layer 3 — profile files
@@ -46,6 +47,7 @@ ls Profile/PROFILE_SUMMARY.md */PROFILE_SUMMARY.md 2>/dev/null
 
 - **No layer found after all applicable layers were inspected** (unread native memory is unverified, not absent): say "No memory system found. Run `tasks/setup-memory.md` to create one." Stop here.
 - **Any layer found:** read its index and topic files and audit it. Never report "no memory system" on the absence of `.auto-memory/` alone — native-memory availability and defaults depend on the actual surface.
+- **Layer 2 is per project.** The listing above shows every Claude Code project's memory folder on the machine, and only the target project's folder is in scope. Pick it from the folder names, remembering that a subdirectory or worktree of the project may have a folder of its own. If you cannot tell which folder is the target's, or more than one could be, ask the user to identify it. Audit only that folder's `memory/`; never read or propose edits to another project's memory. If the target's folder cannot be identified, report Layer 2 as **unverified**, not absent.
 - **Claude Code native memory redirected into the project** (`autoMemoryDirectory` set): audit it as a folder like any other, and note that it is git-trackable and readable by scheduled tasks in that configuration.
 
 Report:
@@ -81,7 +83,7 @@ Flag each broken pointer.
 For each memory file, check for a `[updated: YYYY-MM]` timestamp.
 
 - Missing timestamp: flag as "unknown freshness"
-- Timestamp older than 6 months: flag as "potentially stale — verify"
+- Timestamp older than 3 months (Guide 04): flag as "potentially stale — verify"
 - Project memories with past dates (deadlines, events): flag as "likely expired"
 
 #### Check 5: Duplicates
@@ -175,7 +177,7 @@ Ask:
 
 **Misplaced rules:** show the line, propose where it should go (CLAUDE.md section), apply after confirmation. Remove from memory file.
 
-**Stale entries:** show the content, ask: "Is this still accurate? If yes, I'll update the timestamp. If no, tell me what's changed and I'll update the content."
+**Stale entries:** show the content, ask: "Is this still accurate? If yes, I'll add `[verified: YYYY-MM-DD, source: user]` and leave `[updated:]` unchanged. If no, tell me what's changed; I'll update the content and its `[updated:]` stamp."
 
 **Trim:** for files over 10 lines, produce a condensed version preserving all distinct facts. Show before/after and apply after confirmation.
 

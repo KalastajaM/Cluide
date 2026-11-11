@@ -42,7 +42,7 @@ Inspect the policy selected above. The shell block and missing-file messages bel
 ls CLAUDE.md 2>/dev/null && echo "exists" || echo "missing"
 ```
 
-- If `CLAUDE.md` exists: read it, then tell the user "A CLAUDE.md already exists. I'll review it and suggest improvements rather than starting from scratch." Skip to Step 3.
+- If `CLAUDE.md` exists: read it, then tell the user "A CLAUDE.md already exists. I'll review it and suggest improvements rather than starting from scratch." Skip to Step 3E.
 - If missing: proceed to Step 2.
 
 ### Step 2 — Interview the user
@@ -78,7 +78,7 @@ task, and distinguish readiness for supervised work from readiness for unattende
 
 ### Step 3 — Draft the CLAUDE.md
 
-Write the file using the structure below. Keep it **under 30 lines of real content**. Every line must change behaviour.
+Write the file using the structure below (for a new file; an existing one goes through Step 3E). Keep it **under 30 lines of real content**. Every line must change behaviour.
 
 ```markdown
 # About [Name]
@@ -121,6 +121,10 @@ Do not add sections for capabilities, tool lists, or things Claude will discover
 - Always include a subject line suggestion when drafting emails
 - When I share a client brief, produce deliverable structure first, then ask before filling in content
 ```
+
+### Step 3E — Review an existing file (instead of Step 3)
+
+List each existing line as keep / move / delete, with a reason. Propose deletion only for lines that fail "changes behaviour". Never reshape a project policy into the personal skeleton above, and leave the 30-line target to new personal policies. Show the list and take the user's choices before the diff in Step 5.
 
 ### Step 4 — Review with the user
 

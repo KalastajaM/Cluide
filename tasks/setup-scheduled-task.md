@@ -12,7 +12,7 @@ Execute only the selected native branch. Claude commands/settings/hooks are Clau
 
 ## Native implementation
 
-Choose the owning scheduler before scaffolding: Cowork, Codex app, another explicitly supported scheduler, or manual. Record stable job ID, definition path/revision, owning surface, timezone, schedule, output/state paths and duplicate-run key in a project owner table. Inventory existing registrations on all used surfaces before creating one; update the matching job instead of duplicating it.
+Choose the owning scheduler before scaffolding: Cowork, Codex app, another explicitly supported scheduler, or manual. Record stable job ID, definition path/revision, owning surface, timezone, schedule, output/state paths and duplicate-run key in the scheduler-owner table of the project's `PLATFORM_SETUP.md` (create the table if absent). Inventory existing registrations on all used surfaces before creating one; update the matching job instead of duplicating it.
 
 **Codex app:** after writing/reviewing the files, use the exposed automation tool and its current schema to register the requested schedule against the intended project/task. Follow the runtime's heartbeat-versus-standalone rule; do not write scheduler storage directly. Verify the returned registration and one safe fixture run. If the tool is absent, provide the exact prompt/schedule/project for the native scheduling UI and mark registration pending.
 
@@ -73,7 +73,7 @@ If the folder already exists, read its contents and report. Ask whether to conti
 
 ### Step 3 — Create the task folder and files
 
-Create the folder and all files below. If Step 2 found an existing folder and the user chose to continue, create only the files that do not exist and leave existing ones unchanged — `RUN_LOG.md` and `IMPROVEMENTS.md` hold live history and counters.
+Draft (do not write yet) the folder and all files below. If Step 2 found an existing folder and the user chose to continue, draft only the files that do not exist and leave existing ones unchanged — `RUN_LOG.md` and `IMPROVEMENTS.md` hold live history and counters.
 
 #### `tasks/[name]/TASK.md`
 
@@ -193,21 +193,21 @@ Before writing, review the draft TASK.md against these targets:
 - No JSON schemas or output templates in TASK.md — move to TASK_REFERENCE.md
 - No fixed-format artifact generation in TASK.md — if the task produces a structured output file (HTML, formatted report), note: "Consider writing a generation script once the format stabilises — Claude runs it rather than composing from scratch."
 
-Show the user TASK.md line count and flag any efficiency issues before writing.
+Show the user TASK.md line count and flag any efficiency issues before writing, together with this job's row for the scheduler-owner table (job ID, owner, timezone, duplicate-run key). Then stop for approval.
 
 ### Step 5 — Write all files
 
-Write all files. Show the list of files created.
+After approval, write all files, and add this job's row to the scheduler-owner table in `PLATFORM_SETUP.md` (create the table if absent; if the job already has a row, update only that row). Show the list of files created.
 
 ### Step 6 — Register through the selected native route
 
 If scheduling was already requested, proceed using that authorization and the native implementation above. Otherwise offer only supported routes. The following options describe the **Claude Code/manual branch**:
 > "Would you like me to set up scheduling? Options:
-> - (A) SessionStart hook — runs automatically when you open Claude Code in this project
+> - (A) SessionStart reminder — prints a reminder to run the task when you open Claude Code; it does not run or schedule it
 > - (B) Manual trigger — you run it by saying 'run tasks/[name]/TASK.md'
 > - (C) Scheduled trigger — I'll note the schedule in TASK.md and you set it up in your scheduler"
 
-For option A, add a SessionStart hook to `.claude/settings.json`:
+For option A, merge a SessionStart hook into `.claude/settings.json` (create the file if absent, append to an existing `hooks.SessionStart` array, skip if the entry is already present):
 ```json
 {
   "hooks": {
@@ -229,4 +229,5 @@ Tell the user:
 - TASK.md line count
 - Whether IMPROVEMENTS.md (and LESSONS.md) was included and the refactor threshold set
 - Run frequency and how to trigger the task
+- The scheduler-owner table row, and where it was written
 - "To audit for efficiency after a few runs: `tasks/audit-task-efficiency.md`. To add self-improvement later: `tasks/setup-self-improving-task.md`."

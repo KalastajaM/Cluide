@@ -1,6 +1,6 @@
 # Task: Analyze Project
 
-> **Cluide task** — run this from a Cluide checkout to analyze *another* Claude project end-to-end:
+> **Cluide task** — run this from a Cluide checkout to analyze *another* assistant project end-to-end:
 > `Assistant, run tasks/analyze-project.md`
 > **Source guides:** the full Cluide set (01–35). Per-dimension criteria and the output template live
 > in `tasks/analyze-project-reference.md` (read on demand).
@@ -64,7 +64,10 @@ where. Do not judge yet.
 ```
 Target: [path or owner/repo]   |   Type: [named surfaces + separate purpose]
 Inventory:
+  AGENTS.md           [present (N lines) | missing]
   CLAUDE.md           [present (N lines) | missing]
+  Native adapters     [CLAUDE.md / other: …]
+  Codex config        [.codex/config.toml: y/n · .agents/skills: N]
   Skills              [N found: names | none]
   Tasks / scheduled   [N found: names | none]
   Memory (.auto-memory) [present | missing]

@@ -45,7 +45,7 @@ RUN_LOG.md: [exists with metrics / exists without metrics / missing]
 
 #### Check 1: Always-loaded file budgets
 
-For every file read on every run, compare against the hard limits (Guides 06/07 and the TASK_TEMPLATE):
+For every file read on every run, compare against the limits (Guides 06/07 and the TASK_TEMPLATE):
 
 | File | Limit |
 |------|-------|
@@ -54,7 +54,7 @@ For every file read on every run, compare against the hard limits (Guides 06/07 
 | IMPROVEMENTS.md | ≤ 150 lines (archive Applied Fixes when > 10 entries) |
 | Any other always-loaded file | ≤ 300 lines |
 
-Estimate the per-run fixed overhead: total always-loaded lines × ~15 tokens/line. Flag every over-limit file with its overage cost.
+Estimate the per-run fixed overhead: total always-loaded lines × ~15 tokens/line (the figure Guide 06 uses). Each limit is a target with a ~5% tolerance band (Guide 06 §6): flag only a file beyond it, with its overage cost. Externally enforced limits (a loader cap, an API limit) are hard and get no band.
 
 #### Check 2: Model tier appropriateness
 
@@ -85,10 +85,10 @@ Report token estimates, measured metrics and billed dollars in separate fields. 
 Cost Audit: [task name]
 ──────────────────────────────
 Fixed overhead per run: ~N tokens (always-loaded files)
-Estimated cost per run: ~$N on [tier]  |  per month: ~$N of [plan allowance]
+Billing surface: [API | subscription | app meter]  |  Per run: ~N tokens (est.)[; ~$N at API price if API-billed]  |  Allowance use: [measured from the account's usage view | unknown]
 
 HIGH IMPACT:
-  ⚠ [Check N]: [description] — estimated saving: ~$N/month or ~N tokens/run
+  ⚠ [Check N]: [description] — estimated saving: ~N tokens/run [or ~$N/month if API-billed]
 
 MEDIUM IMPACT:
   ⚠ [Check N]: [description]
@@ -140,7 +140,7 @@ Show each insertion and get approval before writing. File-size overages (Check 1
 ### Step 5 — Confirm
 
 Tell the user:
-- Estimated cost per run and per month, before and after any tier change
+- Per-run token estimate (and the monthly dollar estimate where API-billed), before and after any tier change
 - What instrumentation was added
 - Remaining manual steps (e.g. changing the model in the scheduler)
 - "Re-run after 10+ runs to read the cost trajectory from RUN_LOG.md — stable, step increase, or gradual drift (Guide 10 §Cost Trajectory Patterns)."

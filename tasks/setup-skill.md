@@ -18,7 +18,7 @@ Choose discovery scope before Step 2; use the common `name`, `description` and w
 - **Claude Code:** select `.claude/skills/[name]/SKILL.md` for project scope or `~/.claude/skills/[name]/SKILL.md` for personal scope before using the commands below. Check supported metadata against current Claude documentation.
 - **Cowork or ChatGPT:** use the runtime's exposed skill/plugin installation route if available and verified. A project-source upload alone is not native skill installation. If none is available, deliver the workflow as an explicitly invoked task/source with its trigger examples, mark native discovery unsupported here, and verify the manual invocation.
 
-For a hard prohibition, inspect actual sandbox, approval and connector controls. Claude `allowed-tools` pre-approves listed tools; omission is not an enforced deny. Do not add `disallowed-tools` without current documentation proving support for this artifact type. For Codex, configure verified runtime permissions or restrict connector scopes separately; do not copy Claude metadata and claim enforcement.
+For a hard prohibition, inspect actual sandbox, approval and connector controls. Claude `allowed-tools` pre-approves listed tools; omission is not an enforced deny. On Claude Code, `disallowed-tools` is the skill-level restriction (Guide 03); do not add it for another surface or artifact type without current documentation proving support. For Codex, configure verified runtime permissions or restrict connector scopes separately; do not copy Claude metadata and claim enforcement.
 
 Native discovery checked against [Codex skills](https://learn.chatgpt.com/docs/build-skills) on 2026-09-14; re-check the relevant surface before installation.
 
@@ -51,7 +51,7 @@ Ask the following questions. Collect all answers before writing anything.
 > 7. Are there any strong "never do this" rules for this skill? (e.g. "never send, only draft")
 > 8. Any edge cases you already know about? (e.g. "sometimes I'm in a hurry and just need the short version")
 
-If answer 7 names a hard prohibition, document its actual runtime enforcement and test it with an inert fixture. Missing enforcement is a capability gap; an allowlist of pre-approved tools does not establish denial.
+If answer 7 names a hard prohibition, document its actual runtime enforcement and test it with an inert fixture. Claude Code: if the prohibition maps onto a tool, add `disallowed-tools` per Guide 03 and test it with an inert fixture. Other surfaces: configure runtime controls, or record the gap. An allowlist of pre-approved tools does not establish denial.
 
 **Memory (optional):**
 > 9. Should the skill remember anything between sessions? (e.g. preferences, recurring contacts, past decisions)
@@ -75,7 +75,7 @@ If it exists, read the existing `SKILL.md` and tell the user. Ask whether to ove
 
 Write using the full structure below. Every section must be present — don't skip any.
 
-```markdown
+````markdown
 ---
 name: [name]
 description: >
@@ -134,11 +134,11 @@ Always pair a prohibition with a positive: "NEVER send — always create a draft
 [## Memory (include only if the skill needs cross-session memory)]
 [## Use memory to track:]
 [- Item: format]
-```
+````
 
 **Real-world example** — a completed SKILL.md for a meeting notes skill:
 
-```markdown
+````markdown
 ---
 name: meeting-notes
 description: >
@@ -194,7 +194,7 @@ action items, and follow-ups. Saves 10–15 minutes of post-meeting cleanup.
 - If no clear action items exist: include "No action items identified" rather than omitting the section
 - If the input is a partial transcript (mid-conversation): note "Partial transcript — summary may be incomplete"
 - If participants aren't named: use "Participant 1", "Participant 2" and ask the user to fill in names
-```
+````
 
 ### Step 4 — Review with the user
 
@@ -219,9 +219,9 @@ If the skill needs a `references/` subfolder (for schemas, detailed specs, domai
 
 Then run a mechanical check on the written file: frontmatter parses as YAML, `description` is 1024 characters or fewer ([Agent Skills spec](https://agentskills.io/specification)), and `name` matches the folder name. With `[path]` set to `[selected-skill-folder]` (needs Python with PyYAML):
 ```bash
-python3 -c "import sys,os,yaml; p=sys.argv[1]; m=yaml.safe_load(open(p).read().split('---')[1]); d=os.path.basename(os.path.dirname(os.path.abspath(p))); print('description chars:', len(m['description']), '| name matches dir:', m['name']==d)" "[path]/SKILL.md"
+python3 -c "import sys,os,re,yaml; p=sys.argv[1]; m=yaml.safe_load(re.match(r'^---\n(.*?)\n---\n', open(p).read(), re.S).group(1)); d=os.path.basename(os.path.dirname(os.path.abspath(p))); print('description chars:', len(m['description']), '| name matches dir:', m['name']==d); print('name ok:', bool(re.fullmatch(r'[a-z0-9-]{1,64}', m['name'])))" "[path]/SKILL.md"
 ```
-A parse error, a count over 1024 or `False` is a defect — fix it before Step 6.
+A parse error, a count over 1024 or `False` (from either check) is a defect — fix it before Step 6.
 
 ### Step 6 — Confirm
 

@@ -12,7 +12,7 @@ Execute only the selected native branch. Claude commands/settings/hooks are Clau
 
 ## Native implementation
 
-Inventory each participating surface and scheduler, not just task folders. Shared-state sections need one writer, timestamps, schema and freshness thresholds; read access does not grant write ownership. Put job ID, definition, owner, timezone and duplicate-run key in the owner table. A multi-platform workflow must serialize shared writes or use separate branches/worktrees. Use only actually exposed delegation tools/models; Claude dispatch examples are Claude-only. When moving ownership, suspend the old trigger, test the new owner in isolation, delete the old registration, then activate one owner and record the handoff (revision, changed files, tests, pending work). If a source-only ChatGPT project cannot read/write the live state, use an explicit export/import handoff rather than claiming live orchestration.
+Inventory each participating surface and scheduler, not just task folders. Shared-state sections need one writer, timestamps, schema and freshness thresholds; read access does not grant write ownership. Put job ID, definition, owner, timezone and duplicate-run key in the scheduler-owner table of the project's `PLATFORM_SETUP.md` (create the table if absent). A multi-platform workflow must serialize shared writes or use separate branches/worktrees. Use only actually exposed delegation tools/models; Claude dispatch examples are Claude-only. When moving ownership, suspend the old trigger, test the new owner in isolation, delete the old registration, then activate one owner and record the handoff (revision, changed files, tests, pending work). If a source-only ChatGPT project cannot read/write the live state, use an explicit export/import handoff rather than claiming live orchestration.
 
 ## Purpose
 Wire coordination between existing scheduled tasks per Guide 09: a shared-state convention, run-order and dependency handling, documented handoff files between feeder tasks and a synthesis task, and failure handling so downstream tasks never silently break.
@@ -59,6 +59,7 @@ Schema contract: shared/SCHEMA.md
 Schedule: [task A at HH:MM] → [10+ min gap] → [task B at HH:MM]
 Write exclusion: [one serialized writer | atomic claim at <path> | verified scheduler guarantee]
 Edits to TASK.md files: [list of insertions per task]
+Owner table: [rows to add or update in the scheduler-owner table of PLATFORM_SETUP.md]
 ```
 
 Use the available question tool, or ask in chat: `Apply as proposed` / `Adjust first` / `Cancel`
@@ -123,7 +124,7 @@ Propose run times with collision margins (Guide 09 §Scheduling Orchestrated Run
 - Feeders first, 10+ minute gaps between tasks writing to the same file. Gaps are latency buffers, not locks (Guide 09 §Avoiding Collisions): the write-exclusion mechanism from Step 2 is what protects the file.
 - Orchestrator/synthesis last, with buffer for slow runs (a 3-minute task can take 10 on a busy day)
 
-Present a timing table and remind the user to update their scheduled tasks (Cowork's scheduled-tasks feature — ask Claude in natural language) to match.
+Present a timing table and remind the user to update their scheduled tasks (Cowork's scheduled-tasks feature — ask Claude in natural language) to match. Add or update each job's row in the scheduler-owner table of `PLATFORM_SETUP.md` (create the table if absent), showing the rows first.
 
 ### Step 6 — Confirm
 
@@ -132,4 +133,5 @@ Tell the user:
 - Files created (`shared/SCHEMA.md`, `STATE.json` or handoff conventions, orchestrator task if any)
 - The insertions made to each TASK.md
 - The agreed schedule
+- The scheduler-owner table rows, and where they were written
 - "Test it once end-to-end: run the feeder(s) manually, then the consumer, and check the handoff files and RUN_LOG entries. To watch what the coordination costs, run `tasks/audit-cost.md` across the coordinated tasks after a week."

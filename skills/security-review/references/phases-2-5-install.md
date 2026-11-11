@@ -109,9 +109,14 @@ Use `AskUserQuestion` with buttons: "Install ClamAV and set up automatic file sc
 If approved (macOS; on Linux use the distribution's `clamav` package and its own config paths):
 ```bash
 brew install clamav 2>/dev/null && \
-  cp /opt/homebrew/etc/clamav/freshclam.conf.sample /opt/homebrew/etc/clamav/freshclam.conf && \
+  CLAM_ETC="$(brew --prefix)/etc/clamav" && \
+  { [ -f "$CLAM_ETC/freshclam.conf" ] || cp "$CLAM_ETC/freshclam.conf.sample" "$CLAM_ETC/freshclam.conf"; } && \
+  sed 's/^Example/# Example/' "$CLAM_ETC/freshclam.conf" > "$CLAM_ETC/freshclam.conf.new" && \
+  mv "$CLAM_ETC/freshclam.conf.new" "$CLAM_ETC/freshclam.conf" && \
   freshclam && echo "ClamAV ready"
 ```
+
+The sample config ships with an `Example` line that makes `freshclam` refuse to run until it is commented out, which is what the `sed` does. `$(brew --prefix)` keeps the paths right on both Apple-Silicon and Intel Homebrew; an existing `freshclam.conf` is kept, not replaced.
 
 ```bash
 mkdir -p ~/.claude/hooks
@@ -164,13 +169,31 @@ this script SIGTERM'd a user's entire MCP fleet on every scheduled run for weeks
 
 Despite the `hook-` filename this is **not** wired to a hook event — it is a standalone job
 that does nothing until something runs it. If the user wants it scheduled, ask first, then
-record the label and interval here so the installed copy and this reference cannot silently
-diverge:
+record the label and interval in the Phase 7 report so the schedule on the machine is documented:
 
 ```bash
 # macOS example — label com.user.claude-session-cleanup, daily at 09:00
+PLIST=~/Library/LaunchAgents/com.user.claude-session-cleanup.plist
+mkdir -p ~/Library/LaunchAgents
+if [ -e "$PLIST" ]; then
+  echo "plist exists — review it, not overwriting: $PLIST"
+else
+  cat > "$PLIST" <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.user.claude-session-cleanup</string>
+  <key>ProgramArguments</key>
+  <array><string>$HOME/.claude/hooks/session-cleanup.sh</string></array>
+  <key>StartCalendarInterval</key>
+  <dict><key>Hour</key><integer>9</integer><key>Minute</key><integer>0</integer></dict>
+</dict>
+</plist>
+EOF
+fi
 launchctl bootout gui/$UID/com.user.claude-session-cleanup 2>/dev/null || true
-launchctl bootstrap gui/$UID ~/Library/LaunchAgents/com.user.claude-session-cleanup.plist
+launchctl bootstrap gui/$UID "$PLIST"
 ```
 
 Every time this phase runs, check the installed copy against the reference and report drift

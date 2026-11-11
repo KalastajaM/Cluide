@@ -9,6 +9,8 @@ description: >
   "audit my Claude config", "set up security hooks", "scan for credentials".
   Accepts an optional project path argument (e.g. `/security-review /path/to/project`)
   to scope project-level checks; defaults to the current working directory if omitted.
+  Do NOT use for a general document or plan review (`review-protocol`), for designing a
+  new setup (`ai-assistant-setup`), or for scanning staged changes before a commit (`git-guru`).
 ---
 
 # Assistant Security Review

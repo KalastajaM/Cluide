@@ -29,7 +29,7 @@ Report:
 ```
 Task: [path]
 Lines: N
-Estimated tokens: ~N (rough: lines × 8)
+Estimated tokens: ~N (rough: lines × 15, Guide 06 §Quick Estimation)
 TASK_REFERENCE.md: [exists / missing]
 ```
 
@@ -37,7 +37,7 @@ TASK_REFERENCE.md: [exists / missing]
 
 #### Check 1: Instruction file size
 
-Target: TASK.md ≤ 250 lines. Everything else in TASK_REFERENCE.md (read on demand).
+Target: TASK.md ≤ 250 lines. Everything else in TASK_REFERENCE.md (read on demand). Each figure in this task is a target with a ~5% tolerance band (Guide 06 §6): flag only beyond it. Externally enforced limits (a loader cap, an API limit) are hard and get no band.
 
 Scan for content that should be extracted:
 - JSON schemas or data format definitions
@@ -75,9 +75,9 @@ Pattern: fetching full email bodies when a subject-line scan would determine rel
 For every file the task reads on every run, check size:
 - TASK.md / core instruction file: target ≤ 250 lines
 - KNOWLEDGE_SUMMARY.md or equivalent: target ≤ 40 lines
-- IMPROVEMENTS.md: target ≤ 150 lines (archive Applied Fixes when > 10 entries)
+- IMPROVEMENTS.md: limit as in `audit-cost.md` Check 1
 
-Flag any over-limit file.
+Flag any file beyond its limit and band.
 
 #### Check 6: Output file growth
 

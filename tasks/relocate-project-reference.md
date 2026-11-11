@@ -69,7 +69,7 @@ sweep will catch.
 **Retiring a task takes two steps.** The folder under `Scheduled/` holds only the task body; the
 registration lives in `scheduled-tasks.json` (below). A session can move or repair the folder, but
 it cannot safely rewrite the registration while the app is running. Move the folder **and** tell the
-user to delete or disable that task in the app UI, by name. Moving the folder alone converts a
+user to delete that task in the app UI, by name. Moving the folder alone converts a
 wrong-path failure into a missing-file failure, which is not an improvement.
 
 ---
@@ -170,14 +170,13 @@ back on failure, and print before/after counts.
 While in `scheduled-tasks.json`, check two things a path sweep misses: tasks whose
 `userSelectedFolders` name a project since archived or removed, and how many tasks actually carry a
 `cronExpression` or `fireAt` at all. **A task with neither never fires on its own regardless of
-`enabled`**, which users routinely assume otherwise. Prefer `"enabled": false` over deleting an
-entry: it keeps `lastRunAt` and is reversible.
+`enabled`**, which users routinely assume otherwise. For a task being repaired, `"enabled": false` is a safe temporary state while you fix it, and it keeps `lastRunAt`; for a task being retired, delete the registration (Guide 33, *Scheduled tasks deleted, not disabled*) — a disabled entry is not an end state.
 
 ---
 
 ## The config layer
 
-In `claude_desktop_config.json`:
+In `claude_desktop_config.json`. Like the files above, these entries are edited by the user's handed-over script with the app quit, never from the session:
 
 - `coworkUserFilesPath` — the Claude data root. Wrong here and everything downstream is wrong.
 - `mcpServers.*.args` — absolute script paths.

@@ -138,6 +138,8 @@ Write a `data/README.md` listing each file, its purpose, and its schema; if one 
 
 If the files contain personal data that shouldn't load as context, add a `Read(...)` deny rule for `data/` to `permissions.deny` in `.claude/settings.json` (merge into the existing file, never overwrite it); Claude Code does not enforce `.claudeignore` (Guide 12 §7).
 
+Ask: "Does `data/` hold identifiers (account numbers, names)?" If yes, `data/` must also stay out of git: show the `data/` line, ask, and append it to `.gitignore` unless it is already listed, then stub the state files via `tasks/setup-bootstrap-folder.md` so a fresh clone still works. A context deny rule keeps the files out of the session; only `.gitignore` keeps them out of a commit.
+
 ### Step 4 — Set up Pattern 3: Browser JS extraction
 
 *Use when: data is visible in a web app with no API. Requires Chrome developer console.*
@@ -202,7 +204,9 @@ Ask:
 
 Create `screenshots/` and `data/` directories.
 
-Add `screenshots/` to `.gitignore` — screenshots are large and may contain sensitive data.
+Add `screenshots/` to `.gitignore` (unless already listed) — screenshots are large and may contain sensitive data.
+
+Ask: "Does `data/` hold identifiers (account numbers, names)?" If yes, show the `data/` line, ask, and append it to `.gitignore` unless it is already listed, then stub it via `tasks/setup-bootstrap-folder.md` — the extracted rows are the same data as the screenshots and need the same protection.
 
 Write `scripts/extract_[name].py`:
 
@@ -212,7 +216,7 @@ Write `scripts/extract_[name].py`:
 extract_[name].py — vision-based data extraction
 Sends screenshots to the Claude API and extracts structured JSON.
 Requires: ANTHROPIC_API_KEY environment variable
-Cost: ~$0.001 per screenshot (Haiku tier — cheapest Claude model; plenty for structured OCR)
+Cost:   measure on a representative fixture; check current API rates (Guide 10)
 """
 import anthropic
 import base64
@@ -244,6 +248,10 @@ def extract(image_path: Path) -> list[dict]:
     text = next(b.text for b in response.content if b.type == "text")  # skip thinking blocks
     return json.loads(text)
 
+out_path = Path(f"data/[name]_raw_{date.today()}.json")
+if out_path.exists():
+    raise SystemExit(f"{out_path} already exists; not overwriting. Move it aside, then re-run.")
+
 screenshots = sorted(Path("screenshots").glob("*.png"))
 all_items = []
 for path in screenshots:
@@ -251,11 +259,11 @@ for path in screenshots:
     all_items.extend(extract(path))
 
 output = {"extracted_at": str(date.today()), "source": "vision extraction", "items": all_items}
-Path("data/[name]_raw.json").write_text(json.dumps(output, indent=2))
+out_path.write_text(json.dumps(output, indent=2))
 print(f"Extracted {len(all_items)} items from {len(screenshots)} screenshots.")
 ```
 
-Fill in the schema description and field names based on what the user described. Tell the user: "Update `SCHEMA_DESCRIPTION` to match exactly what fields you need — precise prompts produce consistent JSON."
+Fill in the schema description and field names based on what the user described. Tell the user: "Update `SCHEMA_DESCRIPTION` to match exactly what fields you need — precise prompts produce consistent JSON." Also tell them that each run writes its own dated file and refuses to overwrite one, so a re-run never discards an earlier extraction, but it does send every screenshot in `screenshots/` again and pay for each — move processed screenshots out first.
 
 **Add a reconciliation step before trusting the extraction.** Schema validation proves each row is well-formed; it does not prove the set is complete — extraction can drop, duplicate, or misread rows and still produce valid JSON. Ask the user: "Does the source state a total you can check against — a closing balance, a record count, monthly subtotals?" If yes, add a step that recomputes that total from the extracted rows and compares (e.g. ∑ extracted rows per month == the stated month-end balance), and treats the extraction as done only when it matches. If the source has no built-in total, suggest deriving one a second way (a second pass, or a hand-counted sample) and comparing. See the reconciliation guidance in [Guide 14](../14_PERSONAL_DATA_LAYER.md).
 

@@ -150,6 +150,23 @@ Several skills bundle copies of the root guides (`ai-assistant-setup`, `cowork-o
    (Reference files with no matching root guide — `audit-dimensions.md`, `output-formats.md` — are skill-specific; the `[ -f ]` test skips them.)
 2. **One deliberate exception:** `skills/ai-assistant-setup/references/00_INDEX.md` is a *variant*, not a copy — links to `templates/`, `tasks/` and `skills/` are stripped because those assets do not ship inside the skill package. It must therefore differ. The stripping covers `templates/`, `tasks/` and `skills/` links **and** the root-level `README.md` and `CHEATSHEET.md`, none of which ship inside the skill package. Confirm the diff is confined to that link-stripping and nothing else; a content change that reached the root index but not this copy is real drift wearing the exception as cover.
 3. Flag every other drifted copy: "`[file]` is out of sync with the root guide — re-copy it." Re-copying is the fix; never patch a bundled copy by hand, or the next diff passes while the two say different things.
+4. **List the links in the bundled copies that do not resolve.** Byte-identity keeps each copy's relative links intact, so a link to a guide, task or template the skill does not bundle points at nothing in an installed copy. This is a report, not a failure: the guide text stays identical, and each bundling skill's `SKILL.md` says these links do not resolve and where the full set lives. The list makes the set of dangling links visible at each merge, so a new one is a decision rather than an accident.
+   ```bash
+   python3 - <<'EOF'
+   import re, glob, os
+   files = sorted(glob.glob('skills/*/references/*.md'))
+   if not files: raise SystemExit("NOT RUN: no bundled reference files found")
+   n = 0
+   for f in files:
+       d = os.path.dirname(f)
+       for m in re.finditer(r'\]\(([^)\s#]+)(#[^)\s]*)?\)', open(f, encoding='utf-8').read()):
+           t = m.group(1)
+           if re.match(r'[a-z][a-z0-9+.-]*:', t): continue
+           if not os.path.exists(os.path.normpath(os.path.join(d, t))):
+               print(f"UNRESOLVED: {f} -> {t}"); n += 1
+   print(f"{len(files)} files checked, {n} unresolved links")
+   EOF
+   ```
 
 This is why `.claudeignore` excludes the numbered copies: they are build artifacts of the skill, and the shell commands here read them regardless.
 

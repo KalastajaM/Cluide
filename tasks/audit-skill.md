@@ -82,6 +82,8 @@ Claude `allowed-tools` grants pre-approval and does not prove that omitted tools
 
 #### Check 6: Size and progressive disclosure
 
+Each figure in this task is a target with a ~5% tolerance band (Guide 06 §6): flag only beyond it. Externally enforced limits (a loader cap, an API limit) are hard and get no band.
+
 - [ ] SKILL.md is under 500 lines
 - [ ] If over 500 lines: detailed reference content is moved (or should be moved) to `references/`
 - [ ] `references/` files are named from SKILL.md — not silently expected
@@ -101,7 +103,7 @@ If the skill involves recurring context (contacts, preferences, past decisions):
 
 Run it, do not eyeball it (needs Python with PyYAML; a parse error is itself the finding):
 ```bash
-python3 -c "import sys,os,yaml; p=sys.argv[1]; m=yaml.safe_load(open(p).read().split('---')[1]); d=os.path.basename(os.path.dirname(os.path.abspath(p))); print('description chars:', len(m['description']), '| name matches dir:', m['name']==d)" "[path]/SKILL.md"
+python3 -c "import sys,os,re,yaml; p=sys.argv[1]; m=yaml.safe_load(re.match(r'^---\n(.*?)\n---\n', open(p).read(), re.S).group(1)); d=os.path.basename(os.path.dirname(os.path.abspath(p))); print('description chars:', len(m['description']), '| name matches dir:', m['name']==d); print('name ok:', bool(re.fullmatch(r'[a-z0-9-]{1,64}', m['name'])))" "[path]/SKILL.md"
 ```
 
 ### Step 3 — Present findings

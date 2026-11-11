@@ -40,14 +40,20 @@ ls CLAUDE.md 2>/dev/null && echo "found" || echo "missing"
 
 Evaluate each criterion. For each, mark ✓ (pass), ⚠ (concern), or ✗ (fail):
 
-**Length:**
+**Length:** each figure in this task is a target with a ~5% tolerance band (Guide 06 §6): flag only beyond it. Externally enforced limits (a loader cap, an API limit) are hard and get no band.
 - [ ] Under 30 lines of real content — longer files dilute the effective rules
 - [ ] No section exceeds what's needed — no padding or filler
 
-**Structure — required where relevant to the selected policy:**
-- [ ] Has an identity section (who the user is, timezone, language preference)
-- [ ] Has a communication style section (format, verbosity, tone, emoji)
-- [ ] Has a critical rules section (what Claude must never do + positive counterpart)
+**Structure — required where relevant to the selected policy.** Personal policy: identity, communication style, critical rules. Repository policy: scope, conventions, verification, action boundaries. Check the set that matches the policy selected above; mark a section N/A where the work does not depend on it.
+- Personal policy:
+  - [ ] Has an identity section (who the user is, timezone, language preference)
+  - [ ] Has a communication style section (format, verbosity, tone, emoji)
+  - [ ] Has a critical rules section (what Claude must never do + positive counterpart)
+- Repository policy:
+  - [ ] Has a scope section (what the repository is and what the assistant may change)
+  - [ ] Has a conventions section (the rules a contributor's change must follow)
+  - [ ] Has a verification section (the checks to run before a change counts as done)
+  - [ ] Has an action-boundaries section (what needs approval or must never be done, with the positive counterpart)
 
 **Content quality:**
 - [ ] Every line changes behaviour — no line that, if removed, would make no difference
@@ -68,6 +74,13 @@ Evaluate each criterion. For each, mark ✓ (pass), ⚠ (concern), or ✗ (fail)
 - [ ] If the project uses register or document IDs, a labelling rule is present (Guide 01, *Writing IDs for Readers*)
 - [ ] Project description is one sentence, not a paragraph
 
+**Cross-section consistency:**
+- [ ] Broad default-deny language does not accidentally block actions explicitly permitted elsewhere
+- [ ] One-time and standing approvals keep their stated scope across handoffs
+- [ ] Missing company or project context blocks dependent claims, not every useful draft
+- [ ] Explicit assumptions, unresolved questions and task-specific permission gates are stated
+- [ ] Archive, output and memory rules allow authorised recovery, preservation of returned records and explicit corrections with provenance
+
 ### Step 3 — Present findings
 
 Format the report as:
@@ -77,10 +90,9 @@ CLAUDE.md Audit
 ───────────────
 Length: N lines of real content [✓ under 30 / ⚠ over 30 — consider trimming]
 
-Required sections:
-  [✓/✗] Identity
-  [✓/✗] Communication style
-  [✓/✗] Critical rules
+Required sections (print only the set for the selected policy; N/A allowed):
+  Personal:   [✓/✗/N/A] Identity · [✓/✗/N/A] Communication style · [✓/✗/N/A] Critical rules
+  Repository: [✓/✗/N/A] Scope · [✓/✗/N/A] Conventions · [✓/✗/N/A] Verification · [✓/✗/N/A] Action boundaries
 
 Issues found:
   ⚠ Line N: "[quote]" — [reason this is a problem]
@@ -117,9 +129,5 @@ Tell the user:
 - How many issues were found and fixed
 - Final line count
 - "Re-run this audit whenever `CLAUDE.md` feels cluttered, or after a period of frequent updates."
-
-## Cross-section consistency
-
-Check that broad default-deny language does not accidentally block actions explicitly permitted elsewhere; one-time and standing approvals keep their stated scope across handoffs. Missing company or project context should block dependent claims, not every useful draft. Look for explicit assumptions, unresolved questions and task-specific permission gates. Check that archive, output and memory rules allow authorised recovery, preservation of returned records and explicit corrections with provenance.
 
 <!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->

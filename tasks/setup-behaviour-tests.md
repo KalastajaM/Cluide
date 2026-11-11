@@ -108,14 +108,14 @@ Create `tests/behaviour/` with the approved cases, a `README.md`, an empty `RESU
 
 The `README.md` states: what the suite protects (one line per case, the `protects:` field), when it was last run and on which model, the four triggers for running it (Guide 31 §5), and which runner the project uses. Keep it under a page; it is read before every run.
 
-`RESULTS.md` is append-only: one block per run with date, model, runner, and a line per case with its pass rate (n of 3) and a note on any failure. Never overwritten.
+`RESULTS.md` is append-only: one block per run with date, model, runner, and a line per case with its pass rate (n of the runs actually made) and a note on any failure. Never overwritten.
 
 ### Step 5 — Run the baseline
 
-Run every case three times on the baseline model, by the runner established in Step 0:
+Run the cases on the baseline model, by the runner established in Step 0, and record n of the runs actually made for each case:
 
-- **By hand:** tell the user to open a **fresh** session in the project — not this one — paste each prompt, and report back what came out. The first pass is one run per case; any case that is marginal or fails gets its three runs (Guide 31 §4).
-- **Scripted:** run the loop with the model pinned (`--model`), collect the JSON output.
+- **By hand:** tell the user to open a **fresh** session in the project — not this one — paste each prompt, and report back what came out. One run per case; three runs for a case that is marginal or fails (Guide 31 §4).
+- **Scripted or `claude plugin eval`:** three runs per case. For a scripted loop, pin the model (`--model`) and collect the JSON output.
 
 Grading splits by grader type. **Mechanical graders** — regex, tool counts, file existence — may be applied by this session to whatever came back; they cannot be biased by having drafted the case. **`llm` graders and any judgement call** are not applied by this session: it drafted the criteria and knows what a pass looks like (Guide 27). Hand those to the user, or to a fresh session given only the output and the grader file. Record the pass rate per case.
 

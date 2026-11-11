@@ -108,7 +108,7 @@ For each stub that matches a bare `.gitignore` pattern, add a negation rule:
 git check-ignore -v bootstrap/* 2>/dev/null
 ```
 
-For each match, add to `.gitignore`:
+For each match, show the negation line and ask before adding it to `.gitignore` (skip any line already present):
 ```
 # Bootstrap stubs — explicitly included despite global ignore rules
 !bootstrap/[filename]

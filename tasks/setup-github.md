@@ -12,7 +12,7 @@ Execute only the selected native branch. Claude commands/settings/hooks are Clau
 
 ## Native implementation
 
-The Git/GitHub procedure is shared where a local checkout and authorized Git tools exist. On Codex, use those tools and the existing repository policy; Step 6's Claude SessionStart hook option is not available. A standing Git rule belongs in `AGENTS.md` for Codex/dual-platform. Do not install `.claude/settings.json` for an OpenAI session. For ChatGPT with a repository connector, inspect its actual read/write capabilities and use its authorized branch/PR workflow; source uploads alone cannot initialize, commit or push a repository. Return the remaining native Git steps as pending if no write tool exists.
+The Git/GitHub procedure is shared where a local checkout and authorized Git tools exist. On Codex, use those tools and the existing repository policy; Step 8's Claude SessionStart hook option (Option A) is not available. A standing Git rule belongs in `AGENTS.md` for Codex/dual-platform. Do not install `.claude/settings.json` for an OpenAI session. For ChatGPT with a repository connector, inspect its actual read/write capabilities and use its authorized branch/PR workflow; source uploads alone cannot initialize, commit or push a repository. Return the remaining native Git steps as pending if no write tool exists.
 
 ## Purpose
 Make a local project available on GitHub: initialize git if needed, create or connect a remote repository, make the first commit, and set up ongoing sync so future changes are committed automatically.
@@ -224,7 +224,7 @@ When merging: if `hooks.SessionStart` already exists as an array, append the ent
 
 Check the selected policy (`AGENTS.md` for Codex/dual-platform, `CLAUDE.md` for Claude-only). If absent, create it through the instruction setup task. Add or append a `## Git Sync` section:
 
-```markdown
+````markdown
 ## Git Sync
 
 After completing any task that modifies files, commit the changes. Show `git status` first and stage with `git add -u` (tracked files only). Stage new files only after the user confirms them. Push only when the user asks or a standing approval names pushing (Guide 32 §3).
@@ -237,7 +237,7 @@ git commit -m "update: <brief description of what changed>"
 
 Use a meaningful commit message that describes what changed, not just "update files".
 If the working tree is already clean, skip the commit step.
-```
+````
 
 ---
 
