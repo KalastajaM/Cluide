@@ -1,5 +1,5 @@
 {
-  "scan_time_hel":  "[placeholder]",
+  "scan_time_local": "[placeholder]",
   "last_scan_utc":  "[placeholder]",
   "scan_start_utc": "[placeholder]",
   "emails_scanned": 0,

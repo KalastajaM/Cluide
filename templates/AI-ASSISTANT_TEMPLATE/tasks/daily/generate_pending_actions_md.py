@@ -13,23 +13,41 @@ Usage:
 Paths default to siblings of this script's location:
     <AI-Assistant>/tasks/daily/pending_actions.json
     <AI-Assistant>/Actions/PENDING_ACTIONS.md
+
+The time zone comes from the TIMEZONE row of tasks/daily/CONFIG.md (UTC if unset).
 """
 
 import json
 import sys
 from pathlib import Path
-from datetime import date, datetime, timezone, timedelta
-
-# ============================================================
-# USER CONFIG — edit these for your setup
-# ============================================================
-USER_TIMEZONE = "Europe/Helsinki"          # IANA timezone name — change to your own
-USER_TIMEZONE_UTC_OFFSET_HOURS = 2         # Fallback offset if zoneinfo unavailable (standard time)
-# ============================================================
+from datetime import date, datetime, timezone
 
 # ─── Path resolution ──────────────────────────────────────────────────────────
 SCRIPT_DIR = Path(__file__).resolve().parent   # tasks/daily/
 AI_ROOT    = SCRIPT_DIR.parent.parent          # AI-Assistant/
+CONFIG_MD  = SCRIPT_DIR / "CONFIG.md"          # holds the TIMEZONE row shared by all four scripts
+
+# ─── Time zone (one value, read from CONFIG.md) ───────────────────────────────
+def load_timezone():
+    """Zone named by the TIMEZONE row of CONFIG.md; UTC if the row is unset or unknown.
+    zoneinfo applies daylight saving time per date."""
+    name = ""
+    try:
+        for line in CONFIG_MD.read_text(encoding="utf-8").splitlines():
+            cells = [c.strip().strip("`") for c in line.strip().strip("|").split("|")]
+            if len(cells) >= 2 and cells[0] == "TIMEZONE":
+                name = cells[1]
+                break
+    except OSError:
+        pass
+    try:
+        from zoneinfo import ZoneInfo
+        return ZoneInfo(name)
+    except Exception:
+        print(f"Note: TIMEZONE in {CONFIG_MD.name} is unset or unknown ({name or 'missing'}); using UTC.")
+        return timezone.utc
+
+USER_TZ = load_timezone()
 
 def parse_args():
     args = {
@@ -50,15 +68,7 @@ def parse_args():
 
 def today_local():
     """Return today's date in the user's configured timezone."""
-    try:
-        import zoneinfo
-        tz = zoneinfo.ZoneInfo(USER_TIMEZONE)
-        return datetime.now(tz).date()
-    except ImportError:
-        # Fallback: approximate with configured UTC offset (standard time)
-        utc_now = datetime.now(timezone.utc)
-        local_now = utc_now + timedelta(hours=USER_TIMEZONE_UTC_OFFSET_HOURS)
-        return local_now.date()
+    return datetime.now(USER_TZ).date()
 
 def parse_date(s):
     """Parse ISO date string (YYYY-MM-DD or ISO 8601) → date or None."""
@@ -92,8 +102,17 @@ def deadline_sort_key(pa, today):
 
 PRIORITY_ORDER = {"URGENT": 0, "SOON": 1, "LOW": 2}
 
+def pa_priority(pa):
+    """URGENT / SOON / LOW; a missing or unrecognised priority is shown as LOW."""
+    p = str(pa.get("priority") or "").strip().upper()
+    return p if p in PRIORITY_ORDER else "LOW"
+
 def priority_rank(pa):
-    return PRIORITY_ORDER.get(pa.get("priority", "LOW"), 99)
+    return PRIORITY_ORDER[pa_priority(pa)]
+
+def cell(text):
+    """Make text safe for one Markdown table cell."""
+    return str(text or "").replace("|", "\\|").replace("\n", " ")
 
 def is_portal(pa):
     if pa.get("sub_status") == "PORTAL_PENDING":
@@ -113,7 +132,7 @@ def format_pa_full(pa, today):
     """Full PA block for display in its primary section."""
     pid      = pa.get("id", "")
     title    = pa.get("title", "")
-    priority = pa.get("priority", "")
+    priority = pa_priority(pa)
     source   = pa.get("source", "")
     sub      = pa.get("sub_status") or ""
     deadline = pa.get("deadline")
@@ -166,7 +185,7 @@ def main():
 
     def group(priority):
         return sorted(
-            [p for p in other_pas if p.get("priority") == priority],
+            [p for p in other_pas if pa_priority(p) == priority],
             key=lambda p: deadline_sort_key(p, today)
         )
 
@@ -176,11 +195,11 @@ def main():
 
     # Portal PAs also appear as cross-refs in their priority section
     portal_by_priority = {
-        "URGENT": sorted([p for p in portal_pas if p.get("priority") == "URGENT"],
+        "URGENT": sorted([p for p in portal_pas if pa_priority(p) == "URGENT"],
                          key=lambda p: deadline_sort_key(p, today)),
-        "SOON":   sorted([p for p in portal_pas if p.get("priority") == "SOON"],
+        "SOON":   sorted([p for p in portal_pas if pa_priority(p) == "SOON"],
                          key=lambda p: deadline_sort_key(p, today)),
-        "LOW":    sorted([p for p in portal_pas if p.get("priority") == "LOW"],
+        "LOW":    sorted([p for p in portal_pas if pa_priority(p) == "LOW"],
                          key=lambda p: deadline_sort_key(p, today)),
     }
 
@@ -189,7 +208,7 @@ def main():
 
     out.append("# Pending Actions [GENERATED VIEW]")
     out.append("> Source of truth is pending_actions.json. Do not edit — regenerated each run.")
-    out.append("> To resolve: tell the assistant \"mark PA-NNNN as done\", or add [DONE]/[SKIP]/[IGNORE] to this file.")
+    out.append("> To resolve: tell the assistant \"mark PA-NNNN as done\".")
     out.append("")
     out.append("## Action Counter")
     out.append(f"**{len(open_pas)} open** (generated {today.isoformat()}) | Next ID: {next_id}")
@@ -209,7 +228,7 @@ def main():
         out.append("|----|----------|----------|-------|--------|")
         for pa in all_open_sorted:
             pid      = pa.get("id", "")
-            priority = pa.get("priority", "")
+            priority = pa_priority(pa)
             if is_portal(pa):
                 priority += " 🔑"
             elif pa.get("sub_status") == "WAITING_OTHER":
@@ -217,10 +236,10 @@ def main():
             dl_str   = deadline_display(pa.get("deadline"), today)
             # Topic: strip leading [TAG] from title for brevity, keep rest
             title    = pa.get("title", "")
-            action   = pa.get("action", "")
+            action   = str(pa.get("action") or "")
             # Truncate action to ~80 chars for table readability
             action_short = action if len(action) <= 80 else action[:77] + "…"
-            out.append(f"| {pid} | {priority} | {dl_str} | {title} | {action_short} |")
+            out.append(f"| {cell(pid)} | {priority} | {dl_str} | {cell(title)} | {cell(action_short)} |")
         out.append("")
 
     out.append("---")
@@ -276,8 +295,7 @@ def main():
         for pa in snoozed:
             pid   = pa.get("id", "")
             title = pa.get("title", "")
-            snooze_entries = pa.get("snoozed", [])
-            reminder = snooze_entries[0].get("reminder_date", "?") if snooze_entries else "?"
+            reminder = pa.get("reminder_date") or "?"
             out.append(f"**{pid}** — {title} (reminder: {reminder})\n")
         out.append("---")
         out.append("")
@@ -291,13 +309,14 @@ def main():
         for r in resolved:
             rid        = r.get("id", "")
             rdate      = r.get("resolved_date", "")
-            resolution = (r.get("resolution") or "").replace("|", "\\|").replace("\n", " ")
+            resolution = cell(r.get("resolution"))
             if len(resolution) > 160:
                 resolution = resolution[:157] + "…"
             out.append(f"| {rdate} | {rid} | {resolution} |")
         out.append("")
 
     output = "\n".join(out)
+    Path(args["output"]).parent.mkdir(parents=True, exist_ok=True)
     Path(args["output"]).write_text(output, encoding="utf-8")
     print(f"Written: {args['output']}")
     print(f"Stats: {len(open_pas)} open | {len(portal_pas)} portal | {len(resolved)} resolved (30d)")

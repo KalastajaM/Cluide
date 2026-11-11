@@ -7,7 +7,7 @@
 ## §File-Structure
 
 ```
-AI-Assistant/
+[project]/
 ├── Profile/
 │   ├── PROFILE_SUMMARY.md       ← READ EVERY RUN. Compact digest (~1 page).
 │   ├── PROFILE_identity.md      ← Role, org chart, key people, manual inputs.
@@ -23,7 +23,7 @@ AI-Assistant/
 │   ├── ACTIONS.md               ← Daily briefing (Markdown). Regenerated each run.
 │   ├── ACTIONS.html             ← Daily briefing (styled HTML). Regenerated each run.
 │   └── History/                 ← Archived ACTIONS.html files (ACTIONS-YYYY-MM-DD_HHMM.html).
-└── daily/
+└── tasks/daily/
     ├── TASK.md                  ← Run procedure.
     ├── TASK_REFERENCE.md        ← This file. Read on demand only.
     ├── CONFIG.md                ← Tunable thresholds. Read every run (Step 1).
@@ -35,6 +35,7 @@ AI-Assistant/
     ├── IMPROVEMENTS_DETAIL.md   ← Full fix history and all proposals (on demand — maintenance only).
     ├── SIGNAL_LOG.md            ← Structured operational signal log (on demand — maintenance reads).
     ├── LESSONS.md               ← Append-only log of mistakes and improvements.
+    ├── ISSUES_LOG.md            ← Issues logged in Step 9B (input to the maintenance task).
     ├── generate_actions_html.py ← Script: ACTIONS.md → ACTIONS.html (Step 8).
     └── generate_pending_actions_md.py ← Script: pending_actions.json → PENDING_ACTIONS.md (Step 6).
 ```
@@ -43,11 +44,11 @@ AI-Assistant/
 
 ## §Connector-Quirks
 
-O365 connector syntax notes (confirmed against the live connectors; update with a date when they change):
+O365 connector syntax notes (observed in one deployment — recheck against your own tenant; update with a date when they change). Dates in this file mark those observations:
 
 - **Email search:** `query: "*"` → syntax error. Use `"[YOUR_COMPANY_KEYWORD]"` for inbox, `"[YOUR_NAME_LOWERCASE]"` as fallback. Sent items: add `sender: "[YOUR_EMAIL]"` — **never** `folderName: "Sent Items"` (returns NOT_FOUND on many tenants).
 - **Flagged email:** `query: "isflagged:true"` (KQL, confirmed 2026-03-20). Full flag metadata via `read_resource` on the individual message.
-- **Calendar:** `query: "*"` works (confirmed Run 9); keyword queries may miss events. **Do NOT pass `limit`** — the connector coerces the integer to a string and fails ("Expected number, received string"); omit it and the API default applies.
+- **Calendar:** `query: "*"` works (observed in one deployment); keyword queries may miss events. **Do NOT pass `limit`** — the connector coerces the integer to a string and fails ("Expected number, received string"); omit it and the API default applies.
 - **Teams (`chat_message_search`):** filter by participant (`recipient:`) + `afterDateTime`; **do NOT pass `limit`** (same coercion bug). See §Teams-Search.
 
 ---
@@ -101,13 +102,13 @@ Two passes (**never pass `limit`** — see §Connector-Quirks):
 
 **Timezone rule (apply to every event individually — errors have occurred three times; never mix approaches within a run):**
 - `isOrganizer: true` ([USER] organized) → connector timestamp IS the local time. Display as-is; do NOT add offset.
-- `isOrganizer: false` (someone else organized) → connector timestamp is true UTC. Add the current offset ([YOUR_UTC_OFFSET] [YOUR_TIMEZONE_ABBR] Oct–Mar / [YOUR_UTC_OFFSET] [YOUR_TIMEZONE_ABBR] Mar–Oct) to get local time; confirm the current offset from `RUN_TIME_LOCAL`'s timezone string first.
+- `isOrganizer: false` (someone else organized) → connector timestamp is true UTC. Add the current offset ([YOUR_UTC_OFFSET_STANDARD] in standard time, [YOUR_UTC_OFFSET_DST] in daylight-saving time) to get local time; confirm which applies from `RUN_TIME_LOCAL`'s timezone string first.
 - Exception: `isOrganizer: true` AND `recurrence ≠ null` AND a large cross-team meeting → treat as true UTC and flag "connector time — verify local time".
 - Never compare raw UTC against `RUN_DATE_LOCAL` (`T22:00:00Z` = midnight [YOUR_TIMEZONE_ABBR] = start of the next calendar day).
 
 **Solo block:** any event where organizer = [USER] with no other participants — a personal work reservation; [USER] can freely attend other meetings during it.
 
-**Conflict detection (PROP-0002):** sort events by start time and scan for overlapping pairs where **both** are non-solo and at least one has named external attendees or known colleagues. For each real overlap: log both event names, the overlap duration, and all named attendees; flag ⚠️ in a **Scheduling Conflicts** sub-section at the top of `📅 Meeting Prep`. Ambiguous connector time → "possible overlap — verify [YOUR_TIMEZONE_ABBR] times". No conflicts → "none detected". An overlap where one event is a solo block is not a conflict — note simply that the meeting falls inside a personal work block.
+**Conflict detection:** sort events by start time and scan for overlapping pairs where **both** are non-solo and at least one has named external attendees or known colleagues. For each real overlap: log both event names, the overlap duration, and all named attendees; flag ⚠️ in a **Scheduling Conflicts** sub-section at the top of `📅 Meeting Prep`. Ambiguous connector time → "possible overlap — verify [YOUR_TIMEZONE_ABBR] times". No conflicts → "none detected". An overlap where one event is a solo block is not a conflict — note simply that the meeting falls inside a personal work block.
 
 ---
 
@@ -119,7 +120,7 @@ Step 3E full sync logic. `outlook_email_search` `query: "isflagged:true"`, `limi
 2. **Tracked flag still present** (messageId IS in current results): call `read_resource` for `flag.dueDateTime`. Changed vs the PA's `outlook_flag_due` → update deadline; unchanged → no write.
 3. **Tracked flag absent** (existing PA's `outlook_message_id` NOT in current results) → EXPIRED or RESOLVED. No `read_resource` — absence is sufficient.
 
-**Cost rule (PROP-0003, 2026-03-24):** skip `read_resource` for (a) removed/completed flags (case 3 — absence is sufficient); (b) tracked flags where `outlook_flag_due` is > 30 days from today AND `last_reviewed` is within 7 days (far-future stable flags — carry the stored `outlook_flag_due` forward unchanged). All other present flags — new or tracked — require `read_resource` to catch due-date changes. Note (b) skips in RUN_LOG.
+**Cost rule:** skip `read_resource` for (a) removed/completed flags (case 3 — absence is sufficient); (b) tracked flags where `outlook_flag_due` is > 30 days from today AND `last_reviewed` is within 7 days (far-future stable flags — carry the stored `outlook_flag_due` forward unchanged). All other present flags — new or tracked — require `read_resource` to catch due-date changes. Note (b) skips in RUN_LOG.
 
 ---
 
@@ -179,7 +180,20 @@ Step 9 detail.
 
 ## §PA-Schema
 
-Full JSON schema for pending action entries in `pending_actions.json`:
+`pending_actions.json` is one object shared by daily, midday and weekly-maint. Every task that touches it follows this shape:
+
+```json
+{
+  "next_id": "PA-NNNN",
+  "open": [ PA, ... ],
+  "snoozed": [ PA + "reminder_date": "YYYY-MM-DD", ... ],
+  "resolved_last_30_days": [ resolved entry, ... ]
+}
+```
+
+**ID allocation (every task that adds a PA):** use the current `next_id` as the new PA's `id`, then set `next_id` to the following number in the same Write. Never derive an ID from the highest `id` in the file — purged entries would free numbers for reuse.
+
+Full JSON schema for one pending action entry (`PA` above):
 
 ```json
 {
@@ -209,6 +223,8 @@ Full JSON schema for pending action entries in `pending_actions.json`:
 }
 ```
 
+`priority`: a missing or unrecognised value is shown as LOW by `generate_pending_actions_md.py`; always set it.
+
 `sub_status`: `PORTAL_PENDING` → 🔑 section; `WAITING_OTHER` → 🔄 section; `null` → standard 🔴/🟡.
 
 `hard_deadline`: Optional. When set and today ≥ `hard_deadline`, escalate the PA to URGENT regardless of `next_resolution_check` or other deferral logic. Use for truly immovable deadlines (e.g., SteerCo agenda cut-off, legal filing date). Leave `null` when absent.
@@ -224,7 +240,7 @@ Fallback template if `generate_pending_actions_md.py` fails:
 ```markdown
 # Pending Actions [GENERATED VIEW]
 > Source of truth is pending_actions.json. Do not edit — regenerated each run.
-> To resolve: tell the assistant "mark PA-NNNN as done", or add [DONE]/[SKIP]/[IGNORE] to this file.
+> To resolve: tell the assistant "mark PA-NNNN as done".
 
 ## Action Counter
 **N open** (generated YYYY-MM-DD) | Next ID: PA-NNNN
@@ -292,12 +308,10 @@ Section structure for `ACTIONS.md`. All sections must be present (use empty or "
 
 ## §RUN_LOG-Format
 
-**Canonical format (Runs 31+):** h2 header with run number and day name. Older h3 entries are grandfathered — do not reformat them.
-
-Append to `RUN_LOG.md` after each run:
+Format for all four task logs (Guide 06): h2 header with the date and run number, `N` being `runs_total` after this run's Step 9D increment. Append to `RUN_LOG.md` after each run:
 
 ```markdown
-## Run N — YYYY-MM-DD (Day)
+## YYYY-MM-DD Run #N
 - **Run start:** YYYY-MM-DDTHH:MM:SSZ | **Local time:** HH:MM [YOUR_TIMEZONE_ABBR]
 - **Analysis window:** YYYY-MM-DDTHH:MMZ → YYYY-MM-DDTHH:MMZ (~Xh — [single day / multi-day])
 - **Emails analyzed:** [brief summary of key emails processed]
@@ -310,30 +324,18 @@ Append to `RUN_LOG.md` after each run:
 - **Actions: new:** N | **resolved:** N | **still pending:** N | **overdue:** N
 - **Fast-path:** yes/no
 - **Tool calls:** N
+- **Tokens (est.):** ~XK input, ~YK output
+- **Restore commit:** [hash printed by Step 0, or "no repo"]
 - **Notable:** [1–2 sentences or "nothing significant"]
 ```
 
-Keep last 20 runs in full (per `RUN_LOG_KEEP_RUNS` in CONFIG.md); summarize older entries as a single compact block at the top of the file.
+Keep the last `RUN_LOG_KEEP_RUNS` (→ CONFIG.md) entries in full; once the file exceeds ~30 entries, move older ones to `RUN_LOG_ARCHIVE.md`. Midday, weekly-plan and weekly-maint logs follow the same header, `Tokens (est.)` line and retention rule.
 
 ---
 
 ## §Knowledge-Topic-Format
 
-Template for new topic files in `../../Knowledge/`:
-
-```markdown
-# [Topic Name]
-> Last updated: YYYY-MM | Status: ACTIVE / CLOSED / ON HOLD
-
-## Background
-## Key Facts
-## Decisions Log
-| Date | Decision | Made by | Notes |
-
-## Current Status
-## Open Questions
-## History / Context
-```
+Use `../../bootstrap/knowledge/TOPIC_TEMPLATE.md` for every new topic file in `../../Knowledge/` — it is the single topic format (header line `Last updated` and `Status`, then Background, Key Facts, Decisions Log, Current Status, Open Questions, History / Context). Mirror each topic's status and date on its `INDEX.md` line.
 
 Filenames: descriptive — `[Topic]_[Qualifier].md`, e.g. `Migration_Phase2.md` or `VendorRenewal_2027.md`. Avoid generic names.
 
@@ -439,15 +441,15 @@ Format: `[HYPOTHESIS] Description. Evidence: ... Confidence: LOW|MEDIUM|HIGH|CON
 
 ## §Cowork-Optimizer-Checklist
 
-Checklist used by the cowork-optimizer skill during periodic structural reviews (Step 9E). Run `/cowork-optimizer business-assistant task` in a fresh conversation — do not execute inline.
+Checklist used by the cowork-optimizer skill during periodic structural reviews (on demand). Run `/cowork-optimizer business-assistant task` in a fresh conversation — do not execute inline.
 
 1. **Redundancy** — same instructions in multiple places?
 2. **Dead rules** — workarounds for solved problems, obsolete connector notes?
 3. **Step efficiency** — steps producing no value?
 4. **Output quality** — sections empty 5+ consecutive runs?
-5. **File hygiene** — RUN_LOG growing large (target: last 30 runs full, older summarised).
+5. **File hygiene** — RUN_LOG growing large (target: last `RUN_LOG_KEEP_RUNS` runs full, older archived to `RUN_LOG_ARCHIVE.md`).
 6. **TASK.md length** — target under 250 lines (extract detail into this reference file).
 7. **Credit efficiency audit** — review tool-call counts over last 10 runs. Identify most expensive step. Is the fast-path triggering at an appropriate rate?
-8. **Cross-task signals** — check MAINTENANCE_REPORT.md Task Health section for improvement candidates.
+8. **Cross-task signals** — check the Needs Attention section of `MAINTENANCE_REPORT.md` and `MAINTENANCE_SUMMARY.md` for improvement candidates.
 
 <!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->

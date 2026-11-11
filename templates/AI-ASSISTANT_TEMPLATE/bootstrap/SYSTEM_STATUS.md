@@ -1,6 +1,6 @@
 # System Status
 > Updated by each task at end of run via targeted Edit (own section only).
-> Read by tasks/daily at Step 1 — flag any FAIL in Last 3 or last run > 2 days ago as ❓ item.
+> Read by tasks/daily at Step 1 — flag any FAIL in Last 3, a daily/midday last run earlier than the previous weekday, or a weekly-plan/weekly-maint last run > 8 days ago as ❓ item (ignore `[placeholder]`).
 
 ---
 
