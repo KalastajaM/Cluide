@@ -52,9 +52,10 @@ Output: `../../Actions/ACTIONS_URGENT.html` (archived before each run)
 cd "[PROJECT_ROOT]"
 git add -A
 git diff --cached --quiet || git commit -m "pre-run: urgent-scan $(date -u +%Y-%m-%d)"
+git rev-parse HEAD
 ```
 
-Captures state entering this scan. Skip silently if no changes. Do not block the run if git fails.
+Commits task-definition edits only: runtime state is git-ignored and not captured (see `../../bootstrap/SETUP.md` §Git snapshots and backup). Record the printed hash as `Restore commit` in this run's RUN_LOG entry. Skip silently if no changes. Do not block the run if git fails.
 
 ---
 
@@ -68,13 +69,13 @@ Before reading state files, verify they exist. For each missing file, copy from 
 - `IMPROVEMENTS.md` → copy from `../../bootstrap/midday/IMPROVEMENTS.md`
 - `ISSUES_LOG.md` → copy from `../../bootstrap/midday/ISSUES_LOG.md`
 
-If bootstrap files are also missing, create the file with empty structure (see `bootstrap/` for schemas). Note any bootstrapped files in this run's RUN_LOG entry: "Bootstrap: first run — [files] initialised."
+If bootstrap files are also missing, create the file with empty structure (see `bootstrap/` for schemas). Create `../../Actions/` if absent. Note any bootstrapped files in this run's RUN_LOG entry: "Bootstrap: first run — [files] initialised."
 
 ---
 
 ### Step 1: Read State
 
-1. `LAST_RUN.txt` — read single-line ISO 8601 UTC timestamp → store as **`LAST_SCAN_UTC`**. If missing or blank, fall back to `../daily/LAST_RUN.txt` (morning briefing baseline). Note the fallback in RUN_LOG.
+1. `LAST_RUN.txt` — read single-line ISO 8601 UTC timestamp → store as **`LAST_SCAN_UTC`**. If missing or blank, fall back to `../daily/LAST_RUN.txt` (morning briefing baseline); if that is also blank (first run), use 24 hours before `SCAN_START_UTC` (Step 1A). Note the fallback in RUN_LOG ("first run — 24h window").
 2. `../daily/pending_actions.json` — read current open actions to avoid creating duplicates.
 
 ---
@@ -109,11 +110,9 @@ Skip: bot messages, CI/CD notifications, standup bots, "[EXAMPLE_TEAMS_CHANNEL_T
 
 #### 2C. New flagged items
 
-**Pre-check before any `read_resource` calls:** Count open PAs in `pending_actions.json` with `source: "outlook-flag"` and `status: "PENDING"`. Run `outlook_email_search` with `query: "isflagged:true"`, `limit: 20`.
+**Pre-check before any `read_resource` calls:** Run `outlook_email_search` with `query: "isflagged:true"`, `limit: 50` (the morning briefing's limit). Compare the returned `messageId`s against the set of `outlook_message_id` values on **all** open PAs, whatever their `source` — comparing counts is not enough, because one flag removed and one added leaves the count unchanged.
 
-If the search returns the same count as the number of flag-sourced open PAs: no new flags — skip all `read_resource` calls for this step and note "flagged count unchanged (N) — no new flags" in RUN_LOG.
-
-Only proceed with `read_resource` for `messageId`s NOT already in any existing PA's `outlook_message_id`. Absence detection (removed flags) is handled by the morning briefing — not here.
+Call `read_resource` only for `messageId`s not in that set. If there are none, skip all `read_resource` calls for this step and note "no new flags" in RUN_LOG. Absence detection (removed flags) is handled by the morning briefing — not here.
 
 ---
 
@@ -123,7 +122,7 @@ From the fetched data, extract only items that qualify as URGENT:
 
 - **Same-day deadline** — explicitly stated or clearly implied
 - **Explicit urgency signal** — "urgent", "ASAP", "by end of day", "before your next meeting", escalation language, second follow-up from same sender
-- **New flag with `flag.dueDate` = today**
+- **New flag with `flag.dueDateTime` = today**
 - **Blocking dependency** — someone is waiting on [USER] to unblock them today
 
 Do NOT classify as URGENT: routine follow-ups, FYIs, items with no explicit deadline, newsletters, automated notifications, anything that can wait until tomorrow's briefing.
@@ -142,7 +141,15 @@ Read the current file. For each urgent item from Step 3:
 - Do not modify existing SOON or LOW PAs.
 - Write back in a single Write call.
 
-PA schema: same as morning briefing (`id`, `title`, `status`, `priority`, `created`, `deadline`, `source`, `context`, `action`, `resolution_check`, `draft`, `draft_channel`). Next ID: read current max from file and increment.
+PA schema, file shape and ID rule: `../daily/TASK_REFERENCE.md §PA-Schema` (same as the morning briefing). Next ID: use `next_id`, then advance it in the same Write call.
+
+After the write, regenerate the view so the Friday planner and the next briefing see the new PAs:
+
+```bash
+python3 "[PROJECT_ROOT]/tasks/daily/generate_pending_actions_md.py"
+```
+
+If it fails, note it in RUN_LOG and continue — the next daily run regenerates the view.
 
 ---
 
@@ -154,7 +161,7 @@ Write `midday/urgent_data.json`:
 
 ```json
 {
-  "scan_time_hel":  "HH:MM [YOUR_TIMEZONE_ABBR], DD Month YYYY",
+  "scan_time_local": "HH:MM [YOUR_TIMEZONE_ABBR], DD Month YYYY",
   "last_scan_utc":  "LAST_SCAN_UTC",
   "scan_start_utc": "SCAN_START_UTC",
   "emails_scanned": N,
@@ -167,7 +174,7 @@ Write `midday/urgent_data.json`:
       "context":       "1–2 line context",
       "action":        "what to do",
       "draft":         "draft text or null",
-      "draft_channel": "email | teams | null"
+      "draft_channel": "email | teams-dm | teams-channel | null"
     }
   ],
   "new_flags": [
@@ -193,10 +200,10 @@ Write `midday/urgent_data.json`:
 #### 5B. Run script
 
 ```bash
-python3 "<full-path-to>/midday/generate_urgent_html.py"
+python3 "[PROJECT_ROOT]/tasks/midday/generate_urgent_html.py"
 ```
 
-The script reads `urgent_data.json`, archives the previous `ACTIONS_URGENT.html` to `Actions/History/`, and writes the new file. Use the same absolute path as this TASK.md's parent directory.
+The script reads `urgent_data.json`, archives the previous `ACTIONS_URGENT.html` to `Actions/History/`, and writes the new file.
 
 ---
 
@@ -207,13 +214,18 @@ Write `SCAN_START_UTC` to `midday/LAST_RUN.txt` as a single line (overwrite).
 Append to `midday/RUN_LOG.md`:
 
 ```markdown
-### Scan: YYYY-MM-DD HH:MM ([YOUR_TIMEZONE_ABBR])
+## YYYY-MM-DD Run #N
+- **Local time:** HH:MM [YOUR_TIMEZONE_ABBR]
 - **Window:** LAST_SCAN_UTC → SCAN_START_UTC
 - **Emails scanned:** N | **Teams scanned:** N | **Flags checked:** N new
 - **Urgent items found:** N | **Added to PA:** N | **Enriched existing:** N
 - **Fast-path:** yes/no
 - **Tool calls:** N
+- **Tokens (est.):** ~XK input, ~YK output
+- **Restore commit:** [hash printed by Step 0, or "no repo"]
 ```
+
+`N` is `runs_total` in `IMPROVEMENTS.md` after you increment it by 1 here (targeted Edit of the counter line); use the same `N` in any ISSUES_LOG entry. Retention follows `../daily/TASK_REFERENCE.md §RUN_LOG-Format`.
 
 **Issue logging:** If any operational issue was encountered during this run (tool failure, unexpected data format, ambiguity requiring a judgment call, workaround applied, connector returning anomalous results), append one entry to `midday/ISSUES_LOG.md` using the standard format. If no issues: skip.
 
@@ -237,7 +249,7 @@ git add -A
 git diff --cached --quiet || git commit -m "run: urgent-scan $(date -u +%Y-%m-%d) — scan complete"
 ```
 
-Captures ACTIONS_URGENT.html, LAST_RUN.txt, RUN_LOG.md, pending_actions.json (if updated), SYSTEM_STATUS.md. Do not block if git fails.
+Commits task-definition edits only; the scan's outputs and state files (ACTIONS_URGENT.html, LAST_RUN.txt, RUN_LOG.md, pending_actions.json, SYSTEM_STATUS.md) are git-ignored and not captured. Do not block if git fails.
 
 ---
 

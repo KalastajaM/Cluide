@@ -61,6 +61,9 @@ summaries and file paths, not full content. Do small subtasks inline; dispatchin
   per-invocation model, then the definition's `model`, then the variable, then the session model).
 - The dispatching model can still override any agent's model per invocation; the frontmatter is
   the default, not a cage.
+- A project's Dispatch Overrides beat a pinned tier: if the overrides move an archetype off a
+  pinned agent's model (for example, off `scout`'s haiku), pass `model` on that spawn, or edit the
+  `model` line in your installed copy of the definition.
 - "Read-only" on scout and verifier is instruction, not enforcement: both carry Bash for
   inspection commands, and Bash can write. Treat it as a convention that holds in practice, not
   a sandbox — drop Bash from their `tools` line if you need the hard guarantee and can live

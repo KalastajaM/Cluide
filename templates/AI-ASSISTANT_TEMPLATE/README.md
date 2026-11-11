@@ -48,7 +48,7 @@ The setup entry point is **`bootstrap/SETUP.md`**. It covers the prerequisites (
 | Daily briefing | `tasks/daily/` | Every weekday morning | Analyzes email, Teams, calendar, and flagged items; updates profile and knowledge; regenerates the briefing and pending actions |
 | Mid-day urgent scan | `tasks/midday/` | Weekday afternoons | Catches urgent items that arrived since the morning briefing |
 | Weekly planner | `tasks/weekly-plan/` | Friday | Plans the coming week's focus blocks around the calendar |
-| Weekly maintenance | `tasks/weekly-maint/` | Monday | Profile hygiene, hypothesis review, and system health checks |
+| Weekly maintenance | `tasks/weekly-maint/` | Monday | Profile hygiene, knowledge and pending-action cleanup, hypothesis review |
 
 A fifth, on-demand procedure (`tasks/maintenance/`) analyzes any of the four tasks and generates improvement proposals — run it manually when you want a maintenance review.
 

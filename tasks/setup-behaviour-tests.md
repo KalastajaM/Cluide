@@ -52,6 +52,8 @@ Establish which runner the user has, because it shapes Step 5:
 - **Claude Code** — cases can be scripted with `claude -p --output-format json`. Confirm in the user's build that print mode loads the project's `CLAUDE.md` and skills the way an interactive session does (Guide 31 §4 says why this needs checking) before promising a scripted run.
 - **`claude plugin eval` available** — needs Claude Code v2.1.269 or later and a plugin manifest or skills-directory plugin; runs count against plan usage or API bill ([plugin evals](https://code.claude.com/docs/en/plugin-evals)). Check with `claude --version` (2.1.269 or later) and `claude plugin eval --help`. If the version is older, the command is missing, or the host is not Claude Code, say so and fall back to the previous option (or to hand-running). Do not build the suite around a runner the user cannot execute.
 
+Check whether `tests/behaviour/` already exists. A project born from `templates/PROJECT_TEMPLATE/` ships a compact starter there: `README.md`, `CASES.md` (a table of surface-acceptance cases, the compact form of Guide 31 §3's case shape), and `fixtures/`. If it is present, keep the starter and its fixtures as they are, write the new case folders beside them, and extend the existing `README.md` instead of replacing it. Do not create a second suite or a second `README.md`. Steps 4 and 6 apply to that extension.
+
 ### Step 1 — Inventory what could be protected (read-only)
 
 Read, and list without judging yet:
@@ -102,7 +104,7 @@ Present the full draft as a table: case, kind (trigger / rule / task), prompt, g
 
 ### Step 4 — Write the suite
 
-Create `tests/behaviour/` with the approved cases, a `README.md`, an empty `RESULTS.md`, and `fixtures/` if any task case needs one.
+Create `tests/behaviour/` with the approved cases, a `README.md`, an empty `RESULTS.md`, and `fixtures/` if any task case needs one. If Step 0 found the starter suite, add the case folders and `RESULTS.md` to the existing directory, reuse its `fixtures/`, and merge into its `README.md` rather than overwriting it.
 
 The `README.md` states: what the suite protects (one line per case, the `protects:` field), when it was last run and on which model, the four triggers for running it (Guide 31 §5), and which runner the project uses. Keep it under a page; it is read before every run.
 
@@ -125,7 +127,7 @@ A case that fails at baseline is a finding, not a bad test: either the setup doe
 
 ### Step 6 — Install the shared-policy block
 
-Add Guide 31 §10's block to the project's canonical policy, with the paths filled in. Add `tests/behaviour/` to the file map. A new hard rule in the canonical policy is one of Guide 25's update triggers, so check the app-side fields the same session; usually nothing there changes, and the mirror block records that it was checked.
+Add Guide 31 §10's block to the project's canonical policy, with the paths filled in. Add `tests/behaviour/` to the file map unless a row for it already exists. A new hard rule in the canonical policy is one of Guide 25's update triggers, so check the app-side fields the same session; usually nothing there changes, and the mirror block records that it was checked.
 
 If the project has a `.gitignore`, confirm `tests/behaviour/` is tracked and `fixtures/` contains nothing that should not be — a fixture built from a real mailbox export is personal data, and belongs in the ignore list with a bootstrap stub (Guide 11 and `setup-bootstrap-folder.md`).
 

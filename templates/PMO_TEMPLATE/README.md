@@ -67,19 +67,19 @@ Replace every `[PLACEHOLDER: ...]` value with your own content. The table below 
 ## How to use it
 
 1. Copy this folder to the chosen workspace; follow `PLATFORM_SETUP.md` for ChatGPT source uploads.
-2. Replace all `[PLACEHOLDER: ...]` values across all files.
+2. Replace all `[PLACEHOLDER: ...]` values across all files. Or paste `SETUP.md` into a session to collect and substitute the placeholders interactively.
 3. Fill in the Charter with your actual initiative scope, team, KPIs, and financial figures.
 4. Clear or reset the PMO registers (Risk, Action, Dependency, Decision) — the current entries are illustrative examples. Keep the schema and format.
 5. Add your own risks, actions, and dependencies as you work.
 6. Configure the bootstrap and run a fresh-session check for `AGENTS.md` and `PROJECT_GUIDE.md` on every selected surface.
 7. **Guardrails:** read `PMO/Guardrails.md` as project policy. Optional native skill packaging is product-specific: use Cluide’s `tasks/setup-skill.md`, preserve the domain checks, and test discovery on the chosen surface. Copying a policy file alone does not prove a skill is valid or loaded.
-8. **(Optional) Run the Updater-Task periodically:** After a heavy editing session — or on a cadence (e.g. weekly) — open `Updater-Task/Task.md` with your assistant and follow its steps. It audits cross-references across the four registers + KB, fixes what it can, and appends a change-log entry.
+8. **(Optional) Run the Updater-Task periodically:** After a heavy editing session — or on a cadence (e.g. weekly) — open `Updater-Task/Task.md` with your assistant and follow its steps. It audits cross-references across the four registers + KB, proposes fixes for your approval, applies the approved ones, and appends a change-log entry.
 
 ---
 
 ## Conventions
 
-- **`[ARCHIVE]` folders** — any folder whose name starts with `[ARCHIVE]` (e.g. `[ARCHIVE] Previous Plans/`) is a read-only backup. The assistant is instructed never to read from or write to them (see `AGENTS.md`). Use this prefix when you retire old material but want to keep it on disk.
+- **`[ARCHIVE]` folders** — any folder whose name starts with `[ARCHIVE]` (e.g. `[ARCHIVE] Previous Plans/`) is a backup of retired material. The assistant is instructed never to read from or edit files inside them (see `AGENTS.md`), but moving a file into one is the archive step and is allowed. Use this prefix when you retire old material but want to keep it on disk.
 - **`_LATEST` filename suffix (optional)** — when a file starts going through versioned iterations (common for the project plan), rename the active copy to `<name>_LATEST.md` and move older revisions into an `[ARCHIVE]` subfolder. Don't adopt this until versioning actually starts — the unsuffixed name shipped with the template is fine while there's only one.
 - **Register ID format** — `R-##` (risks), `D-##` (dependencies), `ACT-<Cat>-##` (actions, where `Cat` is one of P/C/F/O/D/PJ), `DEC-##` (decisions), `KB §#` (knowledge-base sections). Don't mix in legacy prefixes — the Updater-Task will flag them.
 

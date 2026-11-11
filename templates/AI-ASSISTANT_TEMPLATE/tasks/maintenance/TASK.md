@@ -9,7 +9,7 @@ Tool names below describe the required operation; bind them to this session's ve
 
 Run this task to analyze one or more assistant tasks, catalog issues, and generate improvement proposals. This is a generic procedure that targets any of the four assistant tasks, or all of them at once.
 
-**Trigger:** Run manually when [USER] requests a maintenance review, or on a scheduled basis.
+**Trigger:** Run manually when [USER] requests a maintenance review (not scheduled).
 
 ---
 
@@ -20,7 +20,7 @@ Specify a target at the start of the run:
 - **Single task:** `target: daily` (or `midday`, `weekly-maint`, `weekly-plan`)
 - **All tasks:** `target: all`
 
-When `target: all` — run Steps 1–7 for each task sequentially, then write a combined summary to `../../Actions/MAINTENANCE_REPORT.md`.
+When `target: all` — run Steps 1–7 for each task sequentially, then write a combined summary to `../../Actions/MAINTENANCE_SUMMARY.md` (the weekly-maint task owns `MAINTENANCE_REPORT.md`).
 
 ---
 
@@ -182,8 +182,8 @@ If a previous MAINTENANCE_PLAN.md exists in that task folder: move it to `../../
 
 In a single Write call, update `[Task]/IMPROVEMENTS.md`:
 1. Add all new PROP-NNNs to the Proposals section.
-2. Mark any ISSUES_LOG.md entries as resolved if a PROP-NNN addresses them (note the PROP-NNN ID).
-3. Update `last_maintenance_date` in the Run Counter.
+2. Mark any ISSUES_LOG.md entries as resolved if a PROP-NNN addresses them: change the entry's `Status: open` line to `Status: resolved (PROP-NNNN)` — the one edit ISSUES_LOG.md permits.
+3. Update `last_maintenance_date` in the Run Counter. For `target: daily`, also reset `runs_since_last_refactor` to 0 and set `last_refactor_date`.
 
 Do **not** apply APPROVED proposals here — that is done explicitly after [USER] approves.
 
@@ -193,10 +193,10 @@ Do **not** apply APPROVED proposals here — that is done explicitly after [USER
 
 Run Steps 1–7 for each task in this order: daily → midday → weekly-maint → weekly-plan.
 
-After all four are processed, write a combined summary to `../../Actions/MAINTENANCE_REPORT.md`:
+After all four are processed, write a combined summary to `../../Actions/MAINTENANCE_SUMMARY.md`:
 
 ```markdown
-# Maintenance Report — YYYY-MM-DD
+# Maintenance Summary — YYYY-MM-DD
 
 ## Summary
 [2–3 sentences covering what was found across all tasks.]

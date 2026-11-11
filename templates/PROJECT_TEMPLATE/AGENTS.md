@@ -46,6 +46,7 @@ or with "No additional mandatory reads."] Everything else is opened on demand.
 | `Working/` | Scratch and in-progress material | Yes — never treat as a deliverable |
 | `Incoming/` | Material that arrived outside a chat, not yet filed | File out of it; never delete from it |
 | `_archive/` | Superseded material kept for reference | Write; read only for named, authorised recovery or provenance |
+| `tests/behaviour/` | Behaviour cases and synthetic fixtures — never project data | Only when editing cases; run output goes to `Working/behaviour-runs/`, never into `fixtures/` |
 | `ROUTING_LOG.md` | One line per dispatched subtask, for tuning model routing | Append only |
 | `README.md` | How this project is laid out and how to set it up | Rarely — it is for humans |
 

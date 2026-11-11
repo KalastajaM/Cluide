@@ -10,27 +10,44 @@ Usage (from any directory):
     python3 /path/to/tasks/midday/generate_urgent_html.py
     python3 generate_urgent_html.py --data /path/to/urgent_data.json
     python3 generate_urgent_html.py --output /path/to/ACTIONS_URGENT.html
+
+The time zone comes from the TIMEZONE row of tasks/daily/CONFIG.md (UTC if unset).
 """
 
 import json
 import sys
 import shutil
-import subprocess
 from pathlib import Path
-from datetime import datetime, timezone, timedelta
-
-# ============================================================
-# USER CONFIG — edit these for your setup
-# ============================================================
-USER_TIMEZONE = "Europe/Helsinki"          # IANA timezone name — change to your own
-USER_TIMEZONE_UTC_OFFSET_HOURS = 2         # Fallback offset if zoneinfo unavailable (standard time)
-# ============================================================
+from datetime import datetime, timezone
 
 # ─── Path resolution ──────────────────────────────────────────────────────────
 SCRIPT_DIR  = Path(__file__).resolve().parent   # tasks/midday/
 AI_ROOT     = SCRIPT_DIR.parent.parent           # AI-Assistant/
 ACTIONS_DIR = AI_ROOT / "Actions"
 HISTORY_DIR = ACTIONS_DIR / "History"
+CONFIG_MD   = SCRIPT_DIR.parent / "daily" / "CONFIG.md"   # holds the TIMEZONE row shared by all four scripts
+
+# ─── Time zone (one value, read from CONFIG.md) ───────────────────────────────
+def load_timezone():
+    """Zone named by the TIMEZONE row of CONFIG.md; UTC if the row is unset or unknown.
+    zoneinfo applies daylight saving time per date."""
+    name = ""
+    try:
+        for line in CONFIG_MD.read_text(encoding="utf-8").splitlines():
+            cells = [c.strip().strip("`") for c in line.strip().strip("|").split("|")]
+            if len(cells) >= 2 and cells[0] == "TIMEZONE":
+                name = cells[1]
+                break
+    except OSError:
+        pass
+    try:
+        from zoneinfo import ZoneInfo
+        return ZoneInfo(name)
+    except Exception:
+        print(f"Note: TIMEZONE in {CONFIG_MD.name} is unset or unknown ({name or 'missing'}); using UTC.")
+        return timezone.utc
+
+USER_TZ = load_timezone()
 
 DEFAULT_DATA_PATH   = SCRIPT_DIR / "urgent_data.json"
 DEFAULT_OUTPUT_PATH = ACTIONS_DIR / "ACTIONS_URGENT.html"
@@ -117,25 +134,7 @@ HISTORY_KEEP = 14  # max archived files per prefix
 
 def _local_timestamp() -> str:
     """Return a YYYY-MM-DD_HHMM timestamp in the user's local timezone."""
-    try:
-        import zoneinfo
-        tz = zoneinfo.ZoneInfo(USER_TIMEZONE)
-        return datetime.now(tz).strftime("%Y-%m-%d_%H%M")
-    except Exception:
-        pass
-    # Fallback: try bash/TZ (works on Unix with tzdata installed)
-    try:
-        ts = subprocess.check_output(
-            ["bash", "-c", f'TZ={USER_TIMEZONE} date +"%Y-%m-%d_%H%M"'],
-            text=True, stderr=subprocess.DEVNULL
-        ).strip()
-        if ts:
-            return ts
-    except Exception:
-        pass
-    # Final fallback: UTC + configured offset
-    approx = datetime.now(timezone.utc) + timedelta(hours=USER_TIMEZONE_UTC_OFFSET_HOURS)
-    return approx.strftime("%Y-%m-%d_%H%M")
+    return datetime.now(USER_TZ).strftime("%Y-%m-%d_%H%M")
 
 def archive_existing(output_path: Path):
     """Copy existing ACTIONS_URGENT.html to History/ before overwriting."""
@@ -156,7 +155,7 @@ def rotate_history(prefix: str, keep: int = HISTORY_KEEP):
 
 # ─── HTML body builder ────────────────────────────────────────────────────────
 def build_body(data: dict) -> str:
-    scan_time  = data.get("scan_time_hel", "")
+    scan_time  = data.get("scan_time_local", "")
     urgent     = data.get("urgent_items", [])
     new_flags  = data.get("new_flags", [])
     notable    = data.get("notable_non_urgent", [])
@@ -174,14 +173,13 @@ def build_body(data: dict) -> str:
     item_word = "item" if n_urgent == 1 else "items"
     parts.append(
         f'<p class="meta">{n_urgent} new urgent {item_word}'
-        f' &nbsp;|&nbsp; <a href="ACTIONS.html">&#8592; View full morning briefing</a>'
-        f' &nbsp;|&nbsp; <a href="../tasks/daily/ACTIONS_EDITOR.html">Actions Editor &#8594;</a></p>'
+        f' &nbsp;|&nbsp; <a href="ACTIONS.html">&#8592; View full morning briefing</a></p>'
     )
 
     # ── Main content ──
     if n_urgent == 0 and not new_flags:
         parts.append('<div class="clear-box">')
-        parts.append('  <span class="icon">&#x2705;</span> Nothing urgent since morning briefing. Next full briefing tomorrow at 07:00.')
+        parts.append('  <span class="icon">&#x2705;</span> Nothing urgent since morning briefing. Next full briefing: next scheduled daily run.')
         parts.append('</div>')
     else:
         # Urgent item cards
@@ -269,9 +267,10 @@ def main():
         sys.exit(1)
 
     data      = json.loads(data_path.read_text(encoding="utf-8"))
-    scan_time = data.get("scan_time_hel", "")
+    scan_time = data.get("scan_time_local", "")
     body      = build_body(data)
 
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     archive_existing(output_path)
     rotate_history("ACTIONS_URGENT")
 

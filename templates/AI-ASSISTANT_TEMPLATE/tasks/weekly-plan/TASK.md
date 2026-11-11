@@ -9,13 +9,13 @@ Tool names below describe the required operation; bind them to this session's ve
 
 ## File locations
 
-This file lives at: `weekly-plan/TASK.md`
+This file lives at `tasks/weekly-plan/TASK.md`; paths below are relative to this folder.
 
-Referenced input files (relative to the project folder):
-- `Actions/PENDING_ACTIONS.md` — all open action items with priority, deadline, and context
-- `Actions/ACTIONS.md` — latest daily briefing and flagged priorities
+Referenced input files:
+- `../../Actions/PENDING_ACTIONS.md` — all open action items with priority, deadline, and context
+- `../../Actions/ACTIONS.md` — latest daily briefing and flagged priorities
 
-Output files are saved to: `Actions/WeekPlans/`
+Output files are saved to: `../../Actions/WeekPlans/`
 
 ---
 
@@ -25,15 +25,16 @@ Output files are saved to: `Actions/WeekPlans/`
 cd "[PROJECT_ROOT]"
 git add -A
 git diff --cached --quiet || git commit -m "pre-run: friday-weekly-plan $(date -u +%Y-%m-%d)"
+git rev-parse HEAD
 ```
 
-Captures state entering this run. Skip silently if no changes. Do not block if git fails.
+Commits task-definition edits only: runtime state is git-ignored and not captured (see `../../bootstrap/SETUP.md` §Git snapshots and backup). Record the printed hash as `Restore commit` in this run's RUN_LOG entry. Skip silently if no changes. Do not block if git fails.
 
 ---
 
 ## Step 0B — Check for duplicate run
 
-Before doing any work, check whether `Actions/WeekPlans/` already contains a file matching the coming Monday's date (format: `YYYY-MM-DD_weekplan.md`). If a matching file exists, skip to Step 5 and present the existing plan with a note that it was already generated today.
+Before doing any work, check whether `../../Actions/WeekPlans/` already contains a file matching the coming Monday's date (format: `YYYY-MM-DD_weekplan.md`). If a matching file exists, skip to Step 5 and present the existing plan with a note that it was already generated today.
 
 ---
 
@@ -45,7 +46,7 @@ Before reading state files, verify they exist. For each missing file, copy from 
 - `IMPROVEMENTS.md` → copy from `../../bootstrap/weekly-plan/IMPROVEMENTS.md`
 - `ISSUES_LOG.md` → copy from `../../bootstrap/weekly-plan/ISSUES_LOG.md`
 
-If bootstrap files are also missing, create the file with empty structure (see `bootstrap/` for schemas). Note any bootstrapped files in this run's RUN_LOG entry: "Bootstrap: first run — [files] initialised."
+If bootstrap files are also missing, create the file with empty structure (see `bootstrap/` for schemas). Create `../../Actions/WeekPlans/` if absent. Note any bootstrapped files in this run's RUN_LOG entry: "Bootstrap: first run — [files] initialised."
 
 ---
 
@@ -53,14 +54,14 @@ If bootstrap files are also missing, create the file with empty structure (see `
 
 Read both of these files:
 
-- `Actions/PENDING_ACTIONS.md` — all open action items with priority, deadline, and context
-- `Actions/ACTIONS.md` — latest daily briefing and any flagged priorities
+- `../../Actions/PENDING_ACTIONS.md` — all open action items with priority, deadline, and context
+- `../../Actions/ACTIONS.md` — latest daily briefing and any flagged priorities
 
 ---
 
 ## Step 2 — Check the calendar
 
-Use the Outlook calendar search tool to retrieve all events for **next Monday through Friday**. Convert all times to **[YOUR_TIMEZONE_ABBR] ([YOUR_UTC_OFFSET])**.
+Use the Outlook calendar search tool to retrieve all events for **next Monday through Friday**. Convert times per `../daily/TASK_REFERENCE.md §Calendar-Rules` (organizer vs attendee), to local time ([YOUR_TIMEZONE_ABBR]).
 
 For each day, identify what meetings are booked and which gaps exist within working hours. Treat the following recurring blocks as infrastructure, not scheduling targets:
 
@@ -84,7 +85,7 @@ Match open actions to free slots using these principles:
 
 **Meeting preparation** — scan next week's calendar for meetings that need a prep block. Default to no prep block unless at least one of these is true: (a) [USER] is presenting or has a deliverable due, (b) it is a SteerCo or equivalent formal governance meeting, (c) it is a first/one-off external call with a clear agenda. Light recurring syncs and 1:1s do not get prep blocks.
 
-**Avoid [YOUR_BUSIEST_WEEKDAY]** unless there is a hard deadline — name here whichever weekday your calendar is reliably packed with recurring meetings.
+**Avoid [YOUR_BUSIEST_WEEKDAY]** unless there is a hard deadline — name here whichever weekday your calendar is reliably packed with recurring meetings, and set the same weekday as `BUSIEST_WEEKDAY` in `generate_weekplan_html.py` so the plan renders it faded.
 
 For each proposed block, state:
 - Day and time ([YOUR_TIMEZONE_ABBR])
@@ -100,11 +101,11 @@ Determine the Monday date of the coming week (format: `YYYY-MM-DD`).
 
 ### 4a — Markdown file
 
-Save `Actions/WeekPlans/YYYY-MM-DD_weekplan.md` — clean markdown version of the full plan: open actions table, proposed blocks, notes.
+Save `../../Actions/WeekPlans/YYYY-MM-DD_weekplan.md` — clean markdown version of the full plan: open actions table, proposed blocks, notes.
 
 ### 4b — HTML file (scripted)
 
-Build a JSON data file at `Actions/WeekPlans/YYYY-MM-DD_plan_data.json` using this schema:
+Build a JSON data file at `../../Actions/WeekPlans/YYYY-MM-DD_plan_data.json` using this schema:
 
 ```json
 {
@@ -138,14 +139,26 @@ Block `type` values: `deep` (blue), `quick` (green), `prep` (amber), `conditiona
 Then run:
 
 ```bash
-python3 tasks/weekly-plan/generate_weekplan_html.py \
-  --input Actions/WeekPlans/YYYY-MM-DD_plan_data.json \
-  --output Actions/WeekPlans/YYYY-MM-DD_weekplan.html
+cd "[PROJECT_ROOT]/tasks/weekly-plan"
+python3 generate_weekplan_html.py \
+  --input ../../Actions/WeekPlans/YYYY-MM-DD_plan_data.json \
+  --output ../../Actions/WeekPlans/YYYY-MM-DD_weekplan.html
 ```
 
-If the script fails, fall back to composing the HTML directly (same spec as before) and log the error in `weekly-plan/RUN_LOG.md`.
+If the script fails, fall back to composing the HTML directly (a five-column Mon–Fri grid of blocks coloured by `type`, preceded by the open-actions table, as `generate_weekplan_html.py` renders it) and log the error in `RUN_LOG.md`.
 
-**Issue logging:** If any issue was encountered during this run (script failure, calendar data gap, deduplication ambiguity, connector anomaly), append one entry to `weekly-plan/ISSUES_LOG.md` using the standard format. If no issues: skip.
+**Run log and counter:** Increment `runs_total` in `IMPROVEMENTS.md` (targeted Edit of the counter line), then append to `RUN_LOG.md` with that value as `N` (use the same `N` in any ISSUES_LOG entry). Retention follows `../daily/TASK_REFERENCE.md §RUN_LOG-Format`.
+
+```markdown
+## YYYY-MM-DD Run #N
+- **Local time:** HH:MM [YOUR_TIMEZONE_ABBR]
+- **Week planned:** YYYY-MM-DD (Monday) | **Blocks proposed:** N | **Script:** ok / failed (fallback used)
+- **Tool calls:** N
+- **Tokens (est.):** ~XK input, ~YK output
+- **Restore commit:** [hash printed by Step 0A, or "no repo"]
+```
+
+**Issue logging:** If any issue was encountered during this run (script failure, calendar data gap, deduplication ambiguity, connector anomaly), append one entry to `ISSUES_LOG.md` using the standard format. If no issues: skip.
 
 **SYSTEM_STATUS.md update:** After saving plan files, update `../../SYSTEM_STATUS.md` — targeted Edit of the `## weekly-plan` section only:
 
@@ -167,7 +180,7 @@ git add -A
 git diff --cached --quiet || git commit -m "run: friday-weekly-plan $(date -u +%Y-%m-%d) — plan saved"
 ```
 
-Captures the weekplan markdown, JSON data file, HTML output, RUN_LOG.md, SYSTEM_STATUS.md. Do not block if git fails.
+Commits task-definition edits only; the weekplan files, RUN_LOG.md and SYSTEM_STATUS.md are git-ignored and not captured. Do not block if git fails.
 
 ---
 
