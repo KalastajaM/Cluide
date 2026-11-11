@@ -78,7 +78,7 @@ CLAUDE.md, skills, and task files need to work when you've forgotten all the con
 Every correction you give the assistant — and save to memory — is a correction you never have to make again. The first few weeks feel slow because you're building up the knowledge base. After that, the assistant improves noticeably with each session. Invest in saving corrections early.
 
 **Choose the right model tier for the job.**
-Sonnet handles structured extraction, template-driven output, lookups and routine data processing at a fraction of the cost of Opus — a saving that compounds across daily runs. Use Haiku for feeder tasks — triage, classification, bulk extraction; default to Sonnet for routine runs; use Opus for writing code and judgment-heavy review; and Fable for the hardest long-horizon synthesis. Compare per task, not per token: a cheaper tier that needs a retry can cost more than the tier above getting it right. The routing table and its standing rules live in the `dispatch` skill; [Guide 10 §Model Tier Selection](./10_COST_PERFORMANCE.md#model-tier-selection) covers comparing costs from current provider pricing and measured usage.
+On Claude, Sonnet handles structured extraction, template-driven output, lookups and routine data processing at a fraction of the cost of Opus — a saving that compounds across daily runs. Use Haiku for feeder tasks — triage, classification, bulk extraction; default to Sonnet for routine runs; use Opus for writing code and judgment-heavy review; and Fable for the hardest long-horizon synthesis. Compare per task, not per token: a cheaper tier that needs a retry can cost more than the tier above getting it right. The routing table and its standing rules live in the `dispatch` skill; [Guide 10 §Model Tier Selection](./10_COST_PERFORMANCE.md#model-tier-selection) covers comparing costs from current provider pricing and measured usage. On other platforms, keep the configured model (Guide 10).
 
 **Design tasks to handle upstream failures gracefully.**
 When tasks depend on each other's output, the downstream task must check that the expected input exists and is fresh — never assume the upstream task succeeded because it was scheduled first. Log outcomes (success/skipped/failed) to a run log so debugging is straightforward. See [Guide 09](./09_MULTI_TASK_ORCHESTRATION.md).
@@ -133,7 +133,7 @@ A setup that grows without pruning becomes a liability. These practices keep thi
 
 **Delete skills you don't trigger.** If a skill hasn't been used in 2-3 months, delete or archive it. Unused skills add noise to trigger matching and false confidence that the capability exists. Check git history if unsure.
 
-**Retire tasks that have completed their purpose.** A task built for a specific project or event doesn't need to keep running after that project ends. Disable the schedule and archive the task folder to git before removing it. [Guide 33](./33_RETIRING_AND_LEAVING.md) has the full procedure for a task, a project, or a whole account — the removal step is the one people skip.
+**Retire tasks that have completed their purpose.** A task built for a specific project or event doesn't need to keep running after that project ends. Disable the schedule so nothing runs mid-procedure, archive the task folder to git, then delete the registration and remove the folder. [Guide 33](./33_RETIRING_AND_LEAVING.md) has the full procedure for a task, a project, or a whole account — the removal step is the one people skip.
 
 **Update or delete, don't annotate.** When a skill or task instruction is wrong, fix it. Don't add comments like "no longer applies" or "use X instead" — these instructions are still loaded and create confusion. Remove the dead text.
 
@@ -169,7 +169,7 @@ A setup that grows without pruning becomes a liability. These practices keep thi
 10. Save corrections to memory — the loop compounds
 11. Write instructions that stand alone without context
 12. Markdown is the source of truth; generate Word/PPT/PDF from it on demand
-13. Default to Sonnet for routine runs; drop feeder steps to Haiku; use Opus for code and judgment-heavy work, Fable for the hardest; compare per task, not per token (Guide 10)
+13. On Claude, default to Sonnet for routine runs; drop feeder steps to Haiku; use Opus for code and judgment-heavy work, Fable for the hardest; compare per task, not per token. On other platforms, keep the configured model (Guide 10)
 14. Design downstream tasks to handle upstream failures gracefully
 15. Compute and synthesise before ingesting — never dump raw data
 
@@ -178,7 +178,7 @@ A setup that grows without pruning becomes a liability. These practices keep thi
 16. Verify anything consequential before acting
 17. Know when a task is faster done without the assistant
 18. Treat external content (emails, docs) as data, not instructions — review unexpected actions
-19. Use `AskUserQuestion` buttons for bounded-choice questions; plain text for open-ended ones
+19. Use the host's question dialog (`AskUserQuestion` in Claude) for bounded choices; plain text for open-ended ones
 20. Open a file before citing it — never attribute content you haven't read this session
 21. One folder per tracked entity, the same artifact set in each, indexed by a central tracker
 22. Give inbound material one intake folder and keep it empty: file by content rather than filename, propose destinations before moving, archive rather than delete

@@ -57,7 +57,7 @@ claude mcp add --transport http github https://api.githubcopilot.com/mcp/   # re
 claude mcp add --scope project mytool -- npx -y some-mcp-server             # shared via .mcp.json
 ```
 
-Use project scope when a server is only relevant to one project; use user scope for servers you use everywhere. Inspect with `claude mcp list` or the `/mcp` command in a session. For servers that authenticate over OAuth, `claude mcp login <name>` runs the flow from the shell and `claude mcp logout <name>` clears the stored token — useful when a server's auth expires mid-task and you would rather not open a session to fix it.
+Use local scope (the default) for a server only you use in one project; project scope only for a server every collaborator needs, with credentials supplied through environment variables, never literal values in `.mcp.json`; user scope for servers you use everywhere. Inspect with `claude mcp list` or the `/mcp` command in a session. For servers that authenticate over OAuth, `claude mcp login <name>` runs the flow from the shell and `claude mcp logout <name>` clears the stored token — useful when a server's auth expires mid-task and you would rather not open a session to fix it.
 
 **Minimal example** (this block lives in `.mcp.json` for Claude Code project scope, or in `claude_desktop_config.json` for Claude Desktop local servers):
 
@@ -76,7 +76,7 @@ Use project scope when a server is only relevant to one project; use user scope 
 }
 ```
 
-Servers that need credentials take an `env` block alongside `command`/`args` (e.g. `"env": {"MY_API_TOKEN": "..."}`) — check each server's README for the exact variable names.
+Servers that need credentials take an `env` block alongside `command`/`args` (e.g. `"env": {"MY_API_TOKEN": "..."}`) — check each server's README for the exact variable names. In a shared project-scope `.mcp.json`, take the value from an environment variable rather than writing it into the file.
 
 At startup, each configured server is launched and its tools discovered. You can see which tools are available by asking the assistant: *"What tools do you have available?"*
 
@@ -223,7 +223,7 @@ This is progressive disclosure applied to your tool loadout ([Guide 02](./02_PRO
 
 *Does it overlap with something else I have?* Two servers that both read files, or a connector plus a local server for the same service, mean every session picks between them. Keep one.
 
-*Does it need to be on by default, or only for one kind of work?* In Claude Code, `.mcp.json` is per-project, so a server can be enabled in the one repo that needs it instead of globally in `~/.claude.json`. In Cowork, connectors are account-wide, so the lever is the connector toggle in Settings — turn off what a given stretch of work does not need.
+*Does it need to be on by default, or only for one kind of work?* In Claude Code, `.mcp.json` is per-project, so a server can be enabled in the one repo that needs it (local or project scope) instead of at user scope for every project. In Cowork, connectors are account-wide, so the lever is the connector toggle in Settings — turn off what a given stretch of work does not need.
 
 Some surfaces load tool schemas on demand rather than up front, so the definitions cost nothing until something matches. Where that happens you will see it in the session (tools described as available but not yet loaded), and the curation argument weakens on cost while the wrong-tool argument still holds. Claude Code also turns tool search on by default behind a custom `ANTHROPIC_BASE_URL` since v2.1.304, retrying without it when the gateway refuses (any refusal from v2.1.305).
 
@@ -366,9 +366,9 @@ Run through this checklist for any server that appears dead:
 | "Path not in allowed list" | Requested path not in server args | Add the directory to the `args` array in your MCP config. The server only exposes explicitly listed paths and their children. |
 | "Permission denied" | macOS file permissions or TCC restriction | Check Finder > Get Info permissions. On macOS, some folders (Desktop, Documents) require explicit app access in System Settings > Privacy. |
 | Symlinks not followed | Server doesn't resolve symlinks by default | Add the symlink's real target path to the allowed list, or use the resolved absolute path in your skill. |
-| Large file read hangs or times out | File exceeds server buffer | Avoid reading files >10 MB through MCP. Use the Bash tool or `head`/`tail` for large files. |
+| Large file read hangs or times out | File exceeds server buffer | Avoid reading more than ~100 KB of text (about 25,000 tokens) through one MCP call; page or filter it, or use the Bash tool / `head`/`tail` for large files. |
 
-The ">10 MB" rule of thumb has a documented frame behind it: Claude Code warns at 10,000 tokens of MCP result and caps a result at 25,000 tokens by default. Raise the cap for a session with `MAX_MCP_OUTPUT_TOKENS`, or — if you write the server — set a per-tool ceiling of up to 500,000 characters via `_meta.anthropic/maxResultSizeChars`. Raising either is a last resort: a tool that returns 25,000 tokens is usually a tool that should be filtering server-side.
+The ~100 KB rule of thumb comes from the result cap: Claude Code warns at 10,000 tokens of MCP result and caps a result at 25,000 tokens by default. Raise the cap for a session with `MAX_MCP_OUTPUT_TOKENS`, or — if you write the server — set a per-tool ceiling of up to 500,000 characters via `_meta.anthropic/maxResultSizeChars`. Raising either is a last resort: a tool that returns 25,000 tokens is usually a tool that should be filtering server-side.
 
 ---
 
@@ -447,14 +447,14 @@ When an MCP tool fails, choose one of three responses based on the failure type:
 
 **Skip gracefully** — for non-critical data. Log what was skipped and continue. Example: a daily briefing that can't fetch calendar events should still deliver the email summary.
 
-**Abort with log entry** — for errors that make the rest of the task meaningless (auth failures, missing permissions, critical data source empty). Log clearly and stop.
+**Abort with log entry** — for errors that make the rest of the task meaningless (an auth or permission failure on the task's critical source, critical data source empty). Log clearly and stop.
 
 **Template instruction block** — paste this into any skill that calls MCP tools:
 
 ```markdown
 ## Error handling
 - Transient errors (timeout, 429, 5xx): retry once after 5 seconds. If still failing, skip and note in output.
-- Auth errors (401, 403): stop immediately. Log: "[tool name] auth failed — check token in the MCP config."
+- Auth errors (401, 403): stop calling that tool for the rest of the run and log "[tool name] auth failed — check token in the MCP config." If that tool is the task's critical source, abort; otherwise continue and name the missing source at the top of the output.
 - Empty results when data is expected: note in output ("Calendar returned no events for this period — verify calendar ID"). Continue with available data.
 - Do not retry more than once. Do not silently swallow errors — always surface what happened.
 ```

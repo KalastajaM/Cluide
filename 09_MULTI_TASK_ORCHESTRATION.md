@@ -82,11 +82,17 @@ Multiple tasks read and write a shared state file. Each task updates its section
   "last_updated_at": "2026-04-10T07:15:00",
   "email_digest": {
     "action_items": ["Reply to client X", "Review proposal Y"],
+    "run_id": "email-digest-2026-04-10-0700",
+    "status": "success",
+    "source_revision": "mailbox-2026-04-10T07:10",
     "updated_at": "2026-04-10T07:15:00"
   },
   "calendar": {
     "today_events": 3,
     "conflicts": [],
+    "run_id": "calendar-2026-04-10-0705",
+    "status": "success",
+    "source_revision": "calendar-2026-04-10T07:18",
     "updated_at": "2026-04-10T07:20:00"
   }
 }
@@ -96,6 +102,7 @@ Multiple tasks read and write a shared state file. Each task updates its section
 - Each task owns its own section (keyed by task name)
 - No task modifies another task's section
 - Always include `updated_at` timestamps so consumers know how fresh the data is
+- Record `run_id`, `status` (`success`, `partial` or `failed`) and `source_revision` in each section, so a consumer can tell a failed or partial write from a good one
 - **Fail towards absent.** A consumer treats an entry past its freshness window as missing, never as still true (Failure Handling, mode 3). A section a person edits by hand needs dates too: date each line when it is written and treat an undated line as stale, or a stale line looks exactly like a fresh one
 - Never blind-overwrite a shared file — read it first and edit only your task's section
 - Keep the file small (<100 lines / <2K tokens) — it's read on every run of every task
@@ -151,6 +158,9 @@ Fields:
 - action_items: array of strings — items requiring user action
 - summary: string — 2-3 sentence overview of today's email
 - flagged_senders: array of strings — senders marked as important
+- run_id: string — identifies the run that wrote the file
+- status: `success`, `partial` or `failed` — consumers use only `success` unless they are written to handle `partial`
+- source_revision: string — the version or snapshot of the source the run read
 ```
 
 This prevents silent breakage when one task changes its output format. When Task A's schema changes, update `SCHEMA.md` and verify all consumers still work.
@@ -260,9 +270,9 @@ in the briefing and continue with calendar data only.
 
 ## Newer Orchestration Surfaces (Research Preview)
 
-As of September 2026, Claude Code ships a materially more powerful orchestration layer than the file-based patterns above. All of it is optional, and some of it is research-preview — the file-based patterns in this guide remain the stable, debuggable foundation.
+As of November 2026, Claude Code ships a materially more powerful orchestration layer than the file-based patterns above. All of it is optional, and some of it is research-preview — the file-based patterns in this guide remain the stable, debuggable foundation.
 
-**Caveat:** these are research-preview features whose names and availability change between releases — verify in your version (`/help`, [code.claude.com/docs](https://code.claude.com/docs)) before relying on them. `ultracode`, `/workflows`, `/goal`, `claude --bg`, `claude agents`, `/fork`, and the `SendMessage`/`ListAgents` tools are confirmed current as of September 2026; the others may differ.
+**Caveat:** these are research-preview features whose names and availability change between releases — verify in your version (`/help`, [code.claude.com/docs](https://code.claude.com/docs)) before relying on them. `ultracode`, `/workflows`, `/goal`, `claude --bg`, `claude agents`, `/fork`, and the `SendMessage`/`ListAgents` tools were confirmed current in September 2026, and `ultracode`, `/goal` and `/fork` were re-checked in November 2026; the others may differ.
 
 - **Dynamic workflows** (research preview) — triggered with the keyword `ultracode`, these orchestrate tens to hundreds of background agents on a single goal; inspect runs with `/workflows`. Since v2.1.284 `ultracode` is also its own toggle in `/effort` (`/effort ultracode on` or `off`); it no longer forces xhigh effort and stays on at any effort level. `CLAUDE_CODE_WORKFLOW_MAX_CONCURRENT_AGENTS` (1–256) raises the concurrent agent limit for a dynamic workflow (v2.1.269; [changelog](https://code.claude.com/docs/en/changelog)).
 - **Background sessions** — `claude --bg` starts a session that runs detached; `/goal` sets a standing objective for it (the assistant checks in after 30 minutes while idle, then backs off (1 h, then every 2 h), at most three times before your next message; `CLAUDE_CODE_GOAL_CHECKIN_MINUTES` tunes it). `claude agents` shows all running agent sessions.
@@ -285,7 +295,7 @@ When to care: if a sequential chain or dependency graph from this guide starts f
 
 The patterns above coordinate *scheduled tasks*. The same orchestrator stance applies one level down, inside a single session: when a task decomposes into independent or mechanical parts, the session plans and reviews at its own tier while dispatching the parts to subagents or workflow stages on cheaper models. Two facts make this worth engineering. Model costs differ ([Guide 10 §What Things Actually Cost](./10_COST_PERFORMANCE.md)), and in most real tasks the bulk of the token volume is mechanical — reading, extracting, sweeping, applying agreed edits — work that does not need the top tier. Delegation also protects the orchestrator's own context: workers burn their context windows, not yours, which is what keeps a long session planning well.
 
-**The stance.** Plan the decomposition, dispatch with self-contained prompts (context inheritance depends on the host and invocation — every prompt states its required context, file paths, output format, and done-criteria), review the results, synthesize. Three rules keep the economics honest:
+**The stance.** Plan the decomposition, dispatch with self-contained prompts (context inheritance depends on the host and invocation — every prompt states its required context, file paths, output format, and done-criteria), review the results, synthesize. These rules keep the economics honest:
 
 - **Summaries, not payloads.** Workers return a compact summary plus file paths to their full output. An orchestrator that reads every worker's full output back has re-bought the tokens it saved.
 - **Batch the fan-out.** How many workers a task splits into usually moves cost more than which tier runs them — every spawn re-buys its briefing and its own context. One worker per fifty files, not per file; split finer only when items are independent *and* wall-clock matters.

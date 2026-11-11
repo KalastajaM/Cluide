@@ -169,7 +169,7 @@ A minimal starting schema for a research wiki:
 ## Page types
 - `wiki/overview.md` — evolving synthesis of everything ingested so far. Update after every ingest.
 - `wiki/entities/[name].md` — one page per named entity (person, organisation, tool, concept). Create when first mentioned; update as more sources arrive.
-- `wiki/source-notes/[slug].md` — assistant-written summary of a single raw source. Create on ingest; never modify after. (Named `source-notes` to keep it distinct from the top-level `sources/` folder, which holds the raw immutable inputs themselves.)
+- `wiki/source-notes/[slug].md` — assistant-written summary of a single raw source. Create on ingest; do not rewrite a note to reflect later sources. A new version of the same source supersedes it: create the new note, mark the old one `superseded-by:` and update the index. (Named `source-notes` to keep it distinct from the top-level `sources/` folder, which holds the raw immutable inputs themselves.)
 - `wiki/queries/[slug].md` — saved answer to a query. Create when the answer is worth keeping.
 - `wiki/index.md` — catalog. Update on every ingest or new page.
 - `wiki/log.md` — append-only. Add one entry per operation.
@@ -352,7 +352,7 @@ The git log on `wiki/log.md` shows the exact date of every ingest, every saved q
 
 **Skipping the schema.** Without a `SCHEMA.md` defining page types, naming conventions, and workflows and a shared-policy instruction to read it, the assistant improvises. Pages drift in structure across sessions: some have frontmatter, some don't; naming varies; the ingest workflow changes. The schema is cheap to write and prevents entropy.
 
-**Ingesting without deduplication.** Adding the same source twice (or two versions of the same report) creates contradictions and bloat. Before ingesting, check `wiki/log.md` and `wiki/index.md` for the source. If it's already there, update rather than re-ingest. Add a dedup check to your schema's ingest workflow.
+**Ingesting without deduplication.** Adding the same source twice (or two versions of the same report) creates contradictions and bloat. Before ingesting, check `wiki/log.md` and `wiki/index.md` for the source. If it's already there, skip it; if it is a newer version, supersede the old source-note as the schema says. Add a dedup check to your schema's ingest workflow.
 
 **Treating the wiki as append-only.** Wikis need pruning. Sources get superseded, entities merge, early summaries become stale as better sources arrive. The lint operation exists for this reason — run it regularly and let the assistant remove or consolidate pages that no longer earn their keep.
 

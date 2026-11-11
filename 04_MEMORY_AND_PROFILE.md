@@ -1,6 +1,6 @@
 # Best Practices: Memory and Profile Systems
 
-Without memory, every session starts from zero — you re-explain your situation, preferences, and contacts. This guide covers two complementary memory systems: **auto-memory** (lightweight, cross-session facts in `.auto-memory/`) and **profile files** (structured, richly maintained knowledge for scheduled task agents).
+Without memory, every session starts from zero — you re-explain your situation, preferences, and contacts. This guide covers two complementary memory systems: **project memory** (lightweight, cross-session facts in `.auto-memory/`) and **profile files** (structured, richly maintained knowledge for scheduled task agents).
 
 ---
 
@@ -17,13 +17,13 @@ Separate **native conversational memory**, **native coding-agent memory**, **exp
 | Cluide `.auto-memory/` | Explicit Markdown index and topic files in the project | Add a read instruction to the shared policy; test from a fresh session |
 | Task profile files | Explicit input to a recurring task | Name them in `TASK.md` and confirm access in the actual scheduled environment |
 
-Cluide's `.auto-memory/` is a convention, not either vendor's native feature. Codex does not gain Claude Code memory by sharing a checkout, and a ChatGPT uploaded source does not update when a local memory file changes.
+Cluide's `.auto-memory/` is a convention, not either vendor's native feature. Codex does not gain Claude Code memory by sharing a checkout, and a ChatGPT uploaded source does not update when a local memory file changes. This guide calls the `.auto-memory/` store *project memory* and reserves *auto memory* for Claude Code's native store, always written *Claude Code auto memory*.
 
 For scheduled tasks, use explicit, accessible state whose revision and load can be verified. Local tasks can read project files; cloud tasks need uploaded or connected sources and an explicit write-back destination. A file on your laptop is not an available input merely because its path appears in the prompt. Keep one writer per memory topic; the other surface proposes updates or receives a handoff. Conflicts need evidence and dates, not last-writer-wins.
 
 ### Claude Code auto memory as of September 2026
 
-Claude Code documents per-project memory under `~/.claude/projects/<project>/memory/`, with a compact `MEMORY.md` index and on-demand topic files. Keep that store separate from shared project memory and exclude private content from distribution. Use its memory controls to inspect what is enabled rather than assuming every environment loads it. [Official memory documentation](https://code.claude.com/docs/en/memory), checked 2026-09-14.
+Claude Code documents per-project memory under `~/.claude/projects/<project>/memory/`, with a compact `MEMORY.md` index and on-demand topic files. Keep that store separate from shared project memory and exclude private content from distribution. Use its memory controls to inspect what is enabled rather than assuming every environment loads it. Only the start of `MEMORY.md` auto-loads (200 lines / 25KB when last checked); re-check the current limit in the official memory documentation. [Official memory documentation](https://code.claude.com/docs/en/memory), checked 2026-09-14.
 
 ### ChatGPT and Codex continuity
 
@@ -37,15 +37,15 @@ Start with a short index. Add richer profiles when a recurring task needs narrat
 
 ## Two Kinds of Memory
 
-**Auto-memory** stores discrete facts about the user, their preferences, and their projects in small markdown files with a shared index (`MEMORY.md`). General-purpose, designed for facts that change how the assistant behaves in any future conversation. It handles the vast majority of deliberate memory cases: assistant-wide preferences, corrections, project states, and reference pointers.
+**Project memory** stores discrete facts about the user, their preferences, and their projects in small markdown files with a shared index (`MEMORY.md`). General-purpose, designed for facts that change how the assistant behaves in any future conversation. It handles the vast majority of deliberate memory cases: assistant-wide preferences, corrections, project states, and reference pointers.
 
 **Profile files** are richer, domain-specific documents a task agent reads at the start of each run. They capture relationships, project states, hypotheses, and history. Best suited to recurring agents needing deep contextual awareness — for example, a daily email analysis task.
 
-Use auto-memory for assistant-wide preferences and quick facts. Use profile files for narrative depth, tracking over time, or structured relationships.
+Use project memory for assistant-wide preferences and quick facts. Use profile files for narrative depth, tracking over time, or structured relationships.
 
 ---
 
-## Auto-Memory: What to Save
+## Project Memory: What to Save
 
 Save things that would change how the assistant responds in a future conversation. Four types:
 
@@ -63,7 +63,7 @@ Save things that would change how the assistant responds in a future conversatio
 
 ## Memory File Format
 
-Auto-memory files are small markdown files stored in `.auto-memory/`. There is one index file (`MEMORY.md`) and one file per memory entry. Here is what they look like:
+Project memory files are small markdown files stored in `.auto-memory/`. There is one index file (`MEMORY.md`) and one file per memory entry. Here is what they look like:
 
 **`.auto-memory/MEMORY.md`** (the index, explicitly loaded by the project bootstrap below):
 
@@ -255,9 +255,9 @@ The shared profile becomes connective tissue between agents — the user does no
 
 ---
 
-## Real-World Auto-Memory Examples
+## Real-World Project Memory Examples
 
-Facts that belong in auto-memory, shown here as illustrative examples. Each is saved as a small markdown file with a pointer in `MEMORY.md`.
+Facts that belong in project memory, shown here as illustrative examples. Each is saved as a small markdown file with a pointer in `MEMORY.md`.
 
 **User memory:**
 > User is Dutch, lives in Helsinki (timezone: Europe/Helsinki). Prefers English responses always, even when sending content in Finnish. Uses Gmail and Google Calendar as primary tools.
@@ -275,7 +275,7 @@ Facts that belong in auto-memory, shown here as illustrative examples. Each is s
 
 ## Giving This to an Assistant
 
-**To set up auto-memory from scratch:**
+**To set up project memory from scratch:**
 > "Read 04_MEMORY_AND_PROFILE.md and start setting up my memory system. Ask me what you need to know about me, my projects, and my preferences — then save it in the right format."
 
 **To set up profile files for a scheduled task:**

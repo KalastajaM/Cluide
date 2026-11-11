@@ -62,11 +62,11 @@ Three questions determine which pattern to use:
 
 ### Example: investment portfolio advisor
 
-`investments.json` holds raw positions (ISIN, quantity, purchase price). A companion script reads it, computes P&L per position, and prints an ASCII table. The assistant reads the table output as its context for writing an advice report.
+`portfolio_positions.json` holds raw positions (ISIN, quantity, average purchase price). A companion script reads it, computes P&L per position, and prints an ASCII table. The assistant reads the table output as its context for writing an advice report.
 
 ```
 Script: portfolio_advisor.py
-Input:  investments.json  (positions: ISIN, quantity, buy_price, current_price)
+Input:  portfolio_positions.json  (positions: ISIN, quantity, avg_buy_price, current_price)
 Output: ASCII table to stdout — one row per position: ticker, qty, buy, now, P&L, P&L%
 Usage:  python3 portfolio_advisor.py
 ```
@@ -78,11 +78,11 @@ Portfolio summary — 2026-04-06
 ═══════════════════════════════════════════════════════════
 Ticker        Qty    Buy      Now      P&L        P&L%
 ───────────────────────────────────────────────────────────
-MSCI World     50    92.00    98.40   +320.00     +7.0%
-STOXX 600      30   110.00   118.50   +255.00     +7.7%
+FTSE All-World 50    92.00    98.40   +320.00     +7.0%
+MSCI World     30   110.00   118.50   +255.00     +7.7%
 Tech Fund       8   250.00   297.50   +380.00    +19.0%
 ───────────────────────────────────────────────────────────
-TOTAL                                 +955.00    +10.5%
+TOTAL                                 +955.00     +9.6%
 ═══════════════════════════════════════════════════════════
 ```
 
@@ -92,7 +92,7 @@ How the task file references the script:
 ## Step 1: Load portfolio data
 Run: `python3 scripts/portfolio_advisor.py`
 Use the printed table as your context for the analysis below.
-Do not read investments.json directly.
+Do not read portfolio_positions.json directly.
 ```
 
 **Design rules:**
@@ -154,16 +154,22 @@ Example `portfolio_positions.json` structure:
   "last_updated": "2026-04-06",
   "positions": {
     "IE00B3RBWM25": {
-      "name": "Vanguard FTSE All-World ETF",
+      "name": "FTSE All-World",
       "currency": "USD",
       "quantity": 50,
       "avg_buy_price": 92.00
     },
     "LU0274208692": {
-      "name": "Xtrackers MSCI World",
+      "name": "MSCI World",
       "currency": "EUR",
       "quantity": 30,
       "avg_buy_price": 110.00
+    },
+    "IE00EXAMPLE1": {
+      "name": "Tech Fund",
+      "currency": "USD",
+      "quantity": 8,
+      "avg_buy_price": 250.00
     }
   }
 }
@@ -474,7 +480,7 @@ Here is how all five patterns combine in a complete personal finance data layer.
 |-------------|---------|-------------|
 | Bank app screenshots | 4 — Vision ingestion | `bank_transactions_raw.json` |
 | Envelope-budgeting web app | 3 — Browser JS extraction | `envelope_balances.json` |
-| `investments.json` | 2 — JSON database | (maintained continuously) |
+| `portfolio_positions.json` | 2 — JSON database | (maintained continuously) |
 
 **Analysis** (the assistant reads script output, not raw files):
 

@@ -89,10 +89,10 @@ At the end of every task run, append a metrics block to `RUN_LOG.md`:
 Add this as the final step in your `TASK.md`:
 
 ```markdown
-Step [last]: Append a metrics block to RUN_LOG.md with duration, estimated tokens, API call count, and a one-line summary.
+Step [last]: Append a metrics block to RUN_LOG.md in the format above: surface/model/source, duration, tokens (measured or estimated), tool calls, and a one-line summary.
 ```
 
-**Keep RUN_LOG.md lean.** Each entry should be 4–6 lines, using the `## [YYYY-MM-DD] Run #N` header and `**Tokens (est.):** ~XK input, ~YK output` line shown above. Keep the last 20 entries in full — the drift check below compares the last 5 runs against runs 16–20, so it needs them. Once the file exceeds ~30 entries, archive older ones to `RUN_LOG_ARCHIVE.md`.
+**Keep RUN_LOG.md lean.** Each entry should be 4–6 lines, using the `## [YYYY-MM-DD] Run #N` header and `**Tokens (est.):** ~XK input, ~YK output` line shown above. Keep the last 20 entries in full — the drift check below compares the 5 most recent entries against the 16th–20th most recent, so it needs them. Once the file exceeds ~30 entries, archive older ones to `RUN_LOG_ARCHIVE.md`.
 
 ---
 
@@ -124,7 +124,7 @@ The 1.5x multiplier gives headroom for occasional expensive runs (more emails th
 
 **Illustrative API example:** A daily email digest averaging $0.05/run: $0.05 × 30 × 1.5 = **$2.25/month budget**. If actual spend crosses $2.25, something changed.
 
-**Adding a budget check to your task:**
+**Adding a token-growth check to your task:**
 
 Add this as Step 0 (before the main procedure) in `TASK.md`:
 
@@ -135,6 +135,8 @@ to IMPROVEMENTS.md: "Token usage trending up — review what changed."
 ```
 
 This catches gradual drift before it becomes expensive. It costs almost nothing — reading 5 short log entries adds ~100 tokens to the run.
+
+The Step 0 check watches per-run growth, not spend, so add a monthly check as well: sum this month's run costs (estimated from the tokens in `RUN_LOG.md`, or read from the provider's usage page) and flag in `IMPROVEMENTS.md` when the total exceeds the budget.
 
 ---
 
@@ -222,8 +224,9 @@ After 10+ runs, your RUN_LOG.md reveals one of three patterns:
 
 ```markdown
 After logging metrics: if RUN_LOG.md has 20+ entries, compare the average
-of the last 5 runs to the average of runs 16–20. If the recent average
-exceeds the older average by more than 50%, flag in IMPROVEMENTS.md:
+of the 5 most recent entries with the average of the 16th–20th most recent
+entries. If the recent average exceeds the older average by more than 50%,
+flag in IMPROVEMENTS.md:
 "Gradual cost drift detected — token usage up [X]% over 15 runs."
 ```
 
@@ -264,26 +267,44 @@ For tasks that run daily, a simple script can parse `RUN_LOG.md` and produce a s
 import re, sys
 from pathlib import Path
 
+def in_k(line, word):
+    """Tokens in thousands for '<number>[K] <word>', or None when absent.
+    '~8K input' gives 8; a measured raw count such as '9,100 input' gives 9.1."""
+    m = re.search(rf'(\d[\d,]*(?:\.\d+)?)\s*(K?)\s*{word}', line, re.IGNORECASE)
+    if not m:
+        return None
+    n = float(m.group(1).replace(',', ''))
+    return n if m.group(2) else n / 1000
+
 log = Path(sys.argv[1]).read_text()
-runs = re.findall(
-    r'## \[(\d{4}-\d{2}-\d{2})\].*?\n'
-    r'.*?\*\*Tokens \(est\.\):\*\*\s*~(\d+(?:\.\d+)?)K input,\s*~(\d+(?:\.\d+)?)K output',
-    log, re.DOTALL
-)
+rows = []
+for entry in re.split(r'(?m)^## \[', log)[1:]:    # one chunk per entry
+    head = re.match(r'(\d{4}-\d{2}-\d{2})\]', entry)
+    if not head:
+        continue
+    tok = re.search(r'\*\*Tokens[^*\n]*:\*\*([^\n]*)', entry)
+    line = tok.group(1) if tok else ''
+    rows.append((head.group(1), in_k(line, 'input'), in_k(line, 'output')))
 
 print(f"{'Date':<12} {'Input':>8} {'Output':>8} {'Total':>8}")
 print("-" * 40)
-total = 0.0
-for date, inp, out in runs:
-    t = float(inp) + float(out)
+total, counted = 0.0, 0
+for date, inp, out in rows:
+    if inp is None or out is None:
+        print(f"{date:<12} {'unavailable':>26}")    # shown, never skipped or borrowed
+        continue
+    t = inp + out
     total += t
-    print(f"{date:<12} {inp+'K':>8} {out+'K':>8} {f'{t:g}K':>8}")
+    counted += 1
+    print(f"{date:<12} {f'{inp:g}K':>8} {f'{out:g}K':>8} {f'{t:g}K':>8}")
 print("-" * 40)
 print(f"{'Total':<12} {'':>8} {'':>8} {f'{total:g}K':>8}")
-print(f"Runs: {len(runs)}  |  Avg: {total / max(len(runs), 1):.1f}K tokens/run")
+print(f"Runs: {len(rows)} ({counted} with token counts)  |  Avg: {total / max(counted, 1):.1f}K tokens/run")
 ```
 
 Run with: `python3 dashboard.py path/to/RUN_LOG.md`
+
+Entries are read one at a time, so an entry with no token counts (an **unavailable** run, or one with no `Tokens` line) is listed as unavailable and left out of the totals instead of borrowing the next entry's figures. Measured raw counts such as `9,100 input` are converted to thousands.
 
 This is optional — the in-task metrics and alerting are the core pattern. Add the dashboard when you want a periodic overview across many runs.
 
@@ -294,7 +315,7 @@ This is optional — the in-task metrics and alerting are the core pattern. Add 
 When setting up cost monitoring for a task:
 
 - [ ] Add a metrics block template to the final step of `TASK.md`
-- [ ] Add a Step 0 budget check that reads the last 5 log entries
+- [ ] Add a Step 0 token-growth check that reads the last 5 log entries
 - [ ] Annotate each task step with its rough token cost (token heat map)
 - [ ] Add the 2x alerting rule to the metrics step
 - [ ] Add the gradual drift check (compare against 20 runs ago)

@@ -44,7 +44,7 @@ Not everything in your assistant setup belongs in git. Use this as a guide:
 - `tasks/*/LAST_RUN.md` — replaced wholesale every run, so diffs are meaningless. Use `RUN_LOG.md` for history.
 - Credentials (OAuth tokens, API keys, `.env`, `.json` credential files) — never commit secrets
 
-**LLM wikis** (see [Guide 15](./15_LLM_WIKI.md)) — track the `wiki/` folder and `CLAUDE.md` schema. The `log.md` file is append-only, producing clean git history: `git log -- wiki/log.md` reads as a timeline of evolution, and `git diff HEAD~1 HEAD -- wiki/` shows what a single ingest changed when each ingest is one commit.
+**LLM wikis** (see [Guide 15](./15_LLM_WIKI.md)) — track the `wiki/` folder, `SCHEMA.md`, and the shared policy that loads it. The `log.md` file is append-only, producing clean git history: `git log -- wiki/log.md` reads as a timeline of evolution, and `git diff HEAD~1 HEAD -- wiki/` shows what a single ingest changed when each ingest is one commit.
 
 See the next section for a complete breakdown of what belongs in `.gitignore` vs `.claudeignore`.
 
