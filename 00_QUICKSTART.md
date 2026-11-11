@@ -89,7 +89,7 @@ Assumptions or conflicts: [only if needed]
   use a separately authorised tool workflow for the external action.
 ````
 
-For ChatGPT or Claude project sources, supply this file too. For local work, keep it in the folder. Native installation is optional: [Guide 03](./03_SKILLS.md) gives separately scoped installation steps. Do not assume a folder uploaded as a source is an installed skill.
+For ChatGPT or Claude project sources, supply this file too. An uploaded source may not keep the `plan-my-day/` folder path, so upload it as `plan-my-day-SKILL.md` and use that name in the Working Rules line and the test prompt below (or keep `SKILL.md` and add a line to `AGENTS.md`: "The uploaded SKILL.md is plan-my-day/SKILL.md"). For local work, keep it in the folder. Native installation is optional: [Guide 03](./03_SKILLS.md) gives separately scoped installation steps. Do not assume a folder uploaded as a source is an installed skill.
 
 ## Step 3: Test a Fresh Session
 

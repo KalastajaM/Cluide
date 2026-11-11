@@ -260,7 +260,7 @@ That is usually enough. Add sections only when they solve a real behavioural pro
 
 ## Real-World Example
 
-Below is a personal policy example. Put its shared content in `AGENTS.md` for a dual-platform setup, or `CLAUDE.md` for Claude-only use. It is intentionally short — 18 lines of real content — and every line changes behaviour.
+Below is a personal policy example. Put its shared content in `AGENTS.md` for a dual-platform setup, or `CLAUDE.md` for Claude-only use. It is intentionally short — under twenty lines — and every line changes behaviour.
 
 ```markdown
 # About User
