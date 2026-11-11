@@ -145,6 +145,8 @@ Shift+Tab cycles between them: from auto it moves to Manual first, then Manual �
 
 Do not live in `bypassPermissions` outside such a container — it disables every permission prompt. (Note: `bypassPermissionsMode` is not a settings key; the related setting is `permissions.disableBypassPermissionsMode`, which prevents the mode from being used at all.) Cowork is separate: it has its own per-folder and per-app permission prompts and is not governed by these CLI modes.
 
+**Runs nobody watches (`claude -p`).** The [permission modes page](https://code.claude.com/docs/en/permission-modes) names no single headless setup; it gives three routes by goal (checked 2026-11-11). For CI and scheduled work, pre-define what may run: `--permission-mode dontAsk` with an exact `--allowedTools` list, so every other call is denied and the run never waits for input. For a classifier-reviewed run, `--permission-mode auto`; with no prompt to fall back to, a blocked action does not run and the session carries on. `--dangerously-skip-permissions` is for a container, VM or the sandbox runtime only, and there the few calls that would still prompt are denied. With no mode set, the run starts in Manual (above) and a call needing approval is denied unless an allow rule, a hook or `--permission-prompt-tool` approves it. Start from the first route and widen the allow list from what the run log shows was denied.
+
 **PreToolUse hooks — execution guards:**
 
 A Claude Code PreToolUse hook matched to Bash can inspect and block Bash tool calls. It does not automatically cover other tools, remote connectors or another runtime. Test the actual tool paths the task uses. Examples to test include:
