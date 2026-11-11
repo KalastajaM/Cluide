@@ -709,7 +709,7 @@ Improves, critiques or writes prompts for an AI assistant: everyday chat prompts
 
 ### security-review
 
-A structured security audit with separate Claude and OpenAI routes for a target project. The bundled installation scripts apply to Claude Code only. Covers credential exposure, MCP server risk, permission controls and execution guard hooks, session data hygiene, supply chain scanning, and malware detection. Read-only assessment phases (0, 1, 6, 7) run automatically and live in `SKILL.md`; the four mutating phases (2-5: hook installation, tool installs) pause for approval and load their procedures from `references/phases-2-5-install.md` only once the user opts in. Declining all four still produces a complete audit.
+A structured security audit with separate Claude and OpenAI routes for a target project. The bundled installation scripts apply to Claude Code only. Covers credential exposure, MCP server risk, permission controls and execution guard hooks, session data hygiene, supply chain scanning, and malware detection. Read-only assessment phases (0, 1, 6) run automatically and live in `SKILL.md`, and Phase 7 asks before writing its report; the four mutating phases (2-5: hook installation, tool installs) pause for approval and load their procedures from `references/phases-2-5-install.md` only once the user opts in. Declining all four still produces a complete audit.
 
 **Install:** Copy `security-review/` to `~/.claude/skills/` (Claude Code).
 

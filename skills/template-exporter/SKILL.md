@@ -61,7 +61,7 @@ Before editing, write down every identifying string you can find or that the use
 
 ### 2b. Leave runtime state behind
 
-A template is a definition, not a snapshot. Do not copy: run logs and outputs (`RUN_LOG.md`, `IMPROVEMENTS.md`, `*.log`), memory files and memory exports, session history, `.env` files, local settings (`settings.local.json` and similar), connector or OAuth grants, scheduler registration IDs, `.git/` folders, OS clutter (`.DS_Store`, `Thumbs.db`). An **empty** state file that the setup needs in order to start (a blank tracker with headers only) may be included as a starting definition.
+A template is a definition, not a snapshot. Do not copy: run logs and outputs (`RUN_LOG.md`, `IMPROVEMENTS.md`, `*.log`), memory files and memory exports, session history, `.env` files, local settings (`settings.local.json` and similar), connector or OAuth grants, scheduler registration IDs, `.git/` folders, OS clutter (`.DS_Store`, `Thumbs.db`). An **empty** state file that the setup needs in order to start (a blank tracker with headers only) may be included as a starting definition; the checker accepts such a file (at MEDIUM) when it holds no real dates or run counters.
 
 ### 2c. Sanitization rules — all mandatory
 
