@@ -10,7 +10,7 @@
 
 - Be direct and structured — use tables and register formats where appropriate
 - No emojis unless asked
-- Always reference register IDs (R-##, ACT-<Cat>-##, D-##, DEC-##) when discussing tracked items
+- Always reference register IDs (R-##, ACT-<Cat>-##, D-##, DEC-##) when discussing tracked items, with a short label on first mention: `ACT-F-02 (Phase 2 budget stress-test)`. Take the label from the item's title in the register's Summary table; if the title is long, summarise it in about six words. Do not guess a label for an ID you have not looked up. Label every first mention in text meant for people outside the project. Register link fields, filenames and commit messages stay bare
 
 ## Before starting any task
 Read `PROJECT_GUIDE.md` in this folder. It maps every folder and file in the project, tells you what is read-only vs. updatable, and is the authoritative guide for navigating this project.

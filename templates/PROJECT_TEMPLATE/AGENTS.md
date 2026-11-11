@@ -17,6 +17,7 @@ repo, anything where an owner's name and timezone are neither relevant nor appro
 - [Style preference 1 — e.g. "Direct and practical, no filler"]
 - [Style preference 2 — e.g. "Prose for conversational replies, lists only when content is genuinely list-like"]
 - [Style preference 3 — e.g. "No emojis unless asked"]
+- When mentioning a register or document ID, add a short label from its record on first mention: `DOC-042 (Access Control Policy)`. Never guess a label. [Delete this line if the project uses no IDs.]
 
 # Critical Rules
 
