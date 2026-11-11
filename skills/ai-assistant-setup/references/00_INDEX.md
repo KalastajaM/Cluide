@@ -13,10 +13,11 @@
 
 These guides describe a persistent assistant architecture for Claude and ChatGPT, with Google Gemini documented as a third platform. Start with shared intentions, then use the native setup for your surface. Codex can work in a repository; a ChatGPT project using uploaded sources needs an explicit bootstrap and source-refresh process.
 
-**Two ways to use these guides:**
+**Three ways to use these guides:**
 
 1. **Read them yourself** and set things up manually — useful if you want full control.
 2. **Give them to your assistant as input** and ask it to create or improve a specific part of your setup. Either assistant can follow the applicable guide route with the tools and sources available (write project instructions, create a skill, or draft a task definition).
+3. **Run a task** — faster, guided, no reading required. Say `"Run tasks/onboard-project.md"` to start a full interactive setup (needs a session that can read a Cluide checkout; on ChatGPT start with the Quickstart).
 
 ---
 
@@ -236,7 +237,7 @@ Covers: the difference between RAG and a wiki, the three-layer architecture (sou
 
 *Lessons from real use — a shareable summary.*
 
-Covers: giving the assistant good inputs, working effectively session-to-session, building a setup that compounds over time, and knowing when not to use the assistant. Includes a 15-point short version for quick reference.
+Covers: giving the assistant good inputs, working effectively session-to-session, building a setup that compounds over time, and knowing when not to use the assistant. Includes a numbered short version for quick reference.
 
 **Use this when:** you want a quick overview of what actually matters, or you want something to share with someone just getting started.
 
@@ -353,7 +354,7 @@ Covers: the three ways context goes wrong (too little, too much, wrong kind), wh
 ### [27 — Independent Judgment](./27_INDEPENDENT_JUDGMENT.md)
 `[All users]` · `~10 min`
 
-*the assistant is disposed to agree with you, and you leak your own view constantly without meaning to. How to get an independently formed judgment — and how much independence the usual protocols actually buy, which is less than it feels like.*
+*The assistant is disposed to agree with you, and you leak your own view constantly without meaning to. How to get an independently formed judgment — and how much independence the usual protocols actually buy, which is less than it feels like.*
 
 Covers: the two mechanisms (anchoring and agreement pressure) and why "would this work?" triggers both at once, a leak table separating context that calibrates severity from context that biases the finding, existence priming (a reviewer told that problems exist will produce problems), asking for the artefact rather than a verdict on yours, the commit-then-reveal protocol with a reusable review prompt, blinded reconciliation (fresh session, two lists labelled A and B), false independence — two runs of the same model agreeing is correlated error rather than corroboration — with the independence levers ranked by what they actually buy, the second subagent leak channel (a brief written after you spoke carries your framing), and standing rules that name a behaviour instead of a disposition.
 
@@ -511,12 +512,7 @@ Four Claude Code subagent definitions with the model tier pinned in frontmatter 
 
 ## Tasks: One-Command Setup and Auditing
 
-Tasks are standalone instruction files you run by saying `the assistant, run tasks/[task-name].md`. Each task handles a specific setup or audit job end-to-end — interviewing you, proposing changes, and applying them after approval.
-
-**Three ways to use the guides in this project:**
-1. **Read them yourself** and set things up manually
-2. **Give a guide to your assistant** — `"Read 01_PROJECT_INSTRUCTIONS.md and help me write shared project instructions for my chosen surface"`
-3. **Run a task** — faster, guided, no reading required
+Tasks are standalone instruction files you run by saying `"Run tasks/[task-name].md"`. Each task handles a specific setup or audit job end-to-end — interviewing you, proposing changes, and applying them after approval.
 
 Tasks are designed to be portable: copy any task file to another project's `tasks/` directory and run it there. Each task includes a `Source guide:` reference so you can trace it back here. Every task follows the standard format documented in `tasks/README.md`.
 
@@ -576,30 +572,11 @@ Tasks are designed to be portable: copy any task file to another project's `task
 
 The skills bundled with this project are listed below. Each is self-contained — install only the ones you need.
 
-### Installing in Claude Code
+### Installing a skill
 
-Skills are loaded automatically from the `~/.claude/skills/` directory. Copy any skill folder there:
+**Claude Code:** install selected folders using Guide 03's Claude route. **Codex:** install selected folders into a supported `.agents/skills/` location using its route. **Antigravity** (documented, untested): install selected folders into the workspace `.agents/skills/` folder, the same one Codex reads. **Gemini app** (documented, untested): upload a skill folder holding `SKILL.md`; the upload is a copy, not linked to the repository. **ChatGPT or conversational Claude:** use the product's supported skill installation, or supply the workflow as a source and request it explicitly. A source upload is not native installation. The `security-review` skill has separate OpenAI and Claude paths; its bundled shell hooks and `AGENT_STARTER_PACK` are Claude-specific.
 
-```bash
-mkdir -p ~/.claude/skills
-cp -r /path/to/skill-folder ~/.claude/skills/
-```
-
-After installation or edits, confirm the selected host sees the new revision. Use its documented reload controls or start a fresh session; do not assume a Claude reload command works in OpenAI (Guide 03).
-
-### Installing in Claude.ai (Personal Skills)
-
-Claude.ai has a built-in Personal Skills feature that accepts skill uploads directly.
-
-The repo ships skill *folders*, not bundles. To create an uploadable bundle, zip the skill folder (or ask the assistant: "bundle `skills/[name]/` as `[name].zip`"):
-
-```bash
-cd skills && zip -r [name].zip [name]/
-```
-
-Go to **claude.ai → Skills → Upload skill** and drag in the `.zip` file you created.
-
-Claude.ai reads the `name:` and `description:` frontmatter in `SKILL.md` to name the skill and trigger it automatically — the same way Claude Code does.
+The per-surface steps are in [Guide 03](./03_SKILLS.md).
 
 ---
 
@@ -711,7 +688,7 @@ Improves, critiques or writes prompts for an AI assistant: everyday chat prompts
 
 A structured security audit with separate Claude and OpenAI routes for a target project. The bundled installation scripts apply to Claude Code only. Covers credential exposure, MCP server risk, permission controls and execution guard hooks, session data hygiene, supply chain scanning, and malware detection. Read-only assessment phases (0, 1, 6) run automatically and live in `SKILL.md`, and Phase 7 asks before writing its report; the four mutating phases (2-5: hook installation, tool installs) pause for approval and load their procedures from `references/phases-2-5-install.md` only once the user opts in. Declining all four still produces a complete audit.
 
-**Install:** Copy `security-review/` to `~/.claude/skills/` (Claude Code).
+**Install:** Follow [Guide 03](./03_SKILLS.md) for the selected surface, preserving the complete `security-review/` folder. Test the installed workflow; source-only projects can request it explicitly. The bundled hooks are Claude Code only.
 
 **Use when:**
 - Auditing a Claude Code setup for security issues
@@ -730,9 +707,9 @@ A structured security audit with separate Claude and OpenAI routes for a target 
 
 ### policies-validator
 
-Enforcement layer for company policies — AI use policy, Code of Conduct, data classification, the assistant guidelines, and similar. Keeps policy *content* outside Cluide (stored centrally or fetched via MCP) and applies tiered enforcement: T1 hard block, T2 required check with `✅ POLICY ALIGNED` / `⚠️ POLICY ALERT` output, T3 soft guidance. Ships as a placeholder-filled template; `tasks/setup-policies.md` fills it in.
+Enforcement layer for company policies — AI use policy, Code of Conduct, data classification, AI usage guidelines, and similar. Keeps policy *content* outside Cluide (stored centrally or fetched via MCP) and applies tiered enforcement: T1 hard block, T2 required check with `✅ POLICY ALIGNED` / `⚠️ POLICY ALERT` output, T3 soft guidance. Ships as a placeholder-filled template; `tasks/setup-policies.md` fills it in.
 
-**Install:** Copy `policies-validator/` to `~/.claude/skills/` (Claude Code). Run `tasks/setup-policies.md` to populate the Policy Registry and wire the shared-policy reference.
+**Install:** Follow [Guide 03](./03_SKILLS.md) for the selected surface, preserving the complete `policies-validator/` folder. Test the installed workflow; source-only projects can request it explicitly. Run `tasks/setup-policies.md` to populate the Policy Registry and wire the shared-policy reference.
 
 **Use when:**
 - Your organisation has existing policies that the assistant should respect across projects
@@ -804,14 +781,7 @@ Or for just the minimum:
 
 ## Recommended Starting Path
 
-If you're new to this, go in this order:
-
-1. **Start with [00_QUICKSTART.md](./00_QUICKSTART.md)** — get something working first.
-2. **Then 01** — refine your project instructions once you've seen how it behaves.
-3. **Then 02 + 20** — learn prompting basics and Claude Code's interactive features (`@` references, plan mode, context hygiene). These apply from your very first skill onwards.
-4. **Then 03** — create your first real skill.
-5. **Then 04 + 05** — enable memory and connect MCP tools.
-6. **Only then 06–10** — once you have scheduled tasks running, optimise and teach them to improve.
+If you're new to this, follow the **Foundation** track in [Reading Tracks](#reading-tracks), which starts with [00_QUICKSTART.md](./00_QUICKSTART.md) — get something working first.
 
 **Quick reference while building:** Keep CHEATSHEET.md open as a one-page reference for file structures, skeletons, and common patterns.
 **If something breaks:** Go to [Guide 17 — Troubleshooting](./17_TROUBLESHOOTING.md).

@@ -172,6 +172,10 @@ Cluide file with an invisible marker so the next harvest/review can see provenan
 If a proposal adds a new task or skill, also add it to the discoverability surfaces: `README.md`,
 `00_INDEX.md`, and — for tasks tied to a guide — the mapping table in `tasks/review-tasks.md`.
 
+Mirror every changed root guide byte-identically into every `skills/*/references/` copy (the bundled
+`00_INDEX.md` takes the same patch with links stripped), work on a branch from `main`, and run
+`tasks/review-tasks.md` steps 4a and 4c before presenting the result.
+
 ### Step 7 — Confirm
 
 Tell the user:
