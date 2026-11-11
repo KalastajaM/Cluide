@@ -12,21 +12,21 @@ Usage:
 
 Paths default to siblings of this script's parent:
     <AI-Assistant>/Actions/ACTIONS.md  →  <AI-Assistant>/Actions/ACTIONS.html
+
+The time zone comes from the TIMEZONE row of tasks/daily/CONFIG.md (UTC if unset).
 """
 
 import re
 import os
 import sys
 import shutil
-import subprocess
 from pathlib import Path
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone
 
 # ============================================================
 # USER CONFIG — edit these for your setup
+# (the time zone is not set here: it is the TIMEZONE row of CONFIG.md)
 # ============================================================
-USER_TIMEZONE = "Europe/Helsinki"                # IANA timezone name — change to your own
-USER_TIMEZONE_UTC_OFFSET_HOURS = 2               # Fallback offset if zoneinfo unavailable (standard time)
 BRIEFING_TITLE = "Business Assistant Briefing"   # Title on the HTML briefing pages
 # ============================================================
 
@@ -35,6 +35,29 @@ SCRIPT_DIR  = Path(__file__).resolve().parent   # tasks/daily/
 AI_ROOT     = SCRIPT_DIR.parent.parent           # AI-Assistant/
 ACTIONS_DIR = AI_ROOT / "Actions"
 HISTORY_DIR = ACTIONS_DIR / "History"
+CONFIG_MD   = SCRIPT_DIR / "CONFIG.md"           # holds the TIMEZONE row shared by all four scripts
+
+# ─── Time zone (one value, read from CONFIG.md) ───────────────────────────────
+def load_timezone():
+    """Zone named by the TIMEZONE row of CONFIG.md; UTC if the row is unset or unknown.
+    zoneinfo applies daylight saving time per date."""
+    name = ""
+    try:
+        for line in CONFIG_MD.read_text(encoding="utf-8").splitlines():
+            cells = [c.strip().strip("`") for c in line.strip().strip("|").split("|")]
+            if len(cells) >= 2 and cells[0] == "TIMEZONE":
+                name = cells[1]
+                break
+    except OSError:
+        pass
+    try:
+        from zoneinfo import ZoneInfo
+        return ZoneInfo(name)
+    except Exception:
+        print(f"Note: TIMEZONE in {CONFIG_MD.name} is unset or unknown ({name or 'missing'}); using UTC.")
+        return timezone.utc
+
+USER_TZ = load_timezone()
 
 def parse_args():
     args = {
@@ -143,7 +166,7 @@ _BADGE_PATTERNS = [
     # Leading emoji (if present) is consumed; trailing annotation emoji preserved.
     (r"(?:🔴\s*)?\bURGENT\b", '<span class="badge-urgent">URGENT</span>'),
     (r"(?:🟡\s*)?\bSOON\b",   '<span class="badge-soon">SOON</span>'),
-    (r"(?:⚪\s*)?\bLOW\b",    '<span class="badge-low">LOW</span>'),
+    (r"(?:🔵\s*)?\bLOW\b",    '<span class="badge-low">LOW</span>'),
     # "(new this run)" annotation → green NEW badge
     (r"\(new this run\)", '<span class="new-badge">NEW</span>'),
 ]
@@ -352,25 +375,7 @@ def convert_md_to_html(md_text: str) -> str:
 # ─── Archiving ────────────────────────────────────────────────────────────────
 def _local_timestamp() -> str:
     """Return a YYYY-MM-DD_HHMM timestamp in the user's local timezone."""
-    try:
-        import zoneinfo
-        tz = zoneinfo.ZoneInfo(USER_TIMEZONE)
-        return datetime.now(tz).strftime("%Y-%m-%d_%H%M")
-    except Exception:
-        pass
-    # Fallback: try bash/TZ (works on Unix with tzdata installed)
-    try:
-        ts = subprocess.check_output(
-            ["bash", "-c", f'TZ={USER_TIMEZONE} date +"%Y-%m-%d_%H%M"'],
-            text=True, stderr=subprocess.DEVNULL
-        ).strip()
-        if ts:
-            return ts
-    except Exception:
-        pass
-    # Final fallback: UTC + configured offset
-    approx = datetime.now(timezone.utc) + timedelta(hours=USER_TIMEZONE_UTC_OFFSET_HOURS)
-    return approx.strftime("%Y-%m-%d_%H%M")
+    return datetime.now(USER_TZ).strftime("%Y-%m-%d_%H%M")
 
 def archive_existing(output_path: Path):
     """Copy existing HTML to History/ before overwriting."""
@@ -416,10 +421,6 @@ def main():
     title   = extract_title(md_text)
     body    = convert_md_to_html(md_text)
 
-    # Inject editor link after the first <h1>
-    editor_link = '<p style="font-size:12px;color:#6b7280;margin-top:-4px;margin-bottom:4px;"><a href="../tasks/daily/ACTIONS_EDITOR.html">Actions Editor \u2192</a></p>'
-    body = re.sub(r'(<h1>[^<]*</h1>)', r'\1\n' + editor_link, body, count=1)
-
     html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -436,6 +437,7 @@ def main():
 </html>
 """
 
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     archive_existing(output_path)
     output_path.write_text(html, encoding="utf-8")
     print(f"Written   → {output_path}")

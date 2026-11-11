@@ -6,4 +6,4 @@ Read `../../AGENTS.md` before this task. Resolve paths in this file relative to 
 |------|-----------------|
 | `TASK.md` | Generic maintenance procedure — targets any of the four assistant tasks, or all of them |
 
-Output files are written to the target task's folder (`[Task]/MAINTENANCE_PLAN.md`). When `target: all`, a combined summary is also written to `../../Actions/MAINTENANCE_REPORT.md`.
+Output files are written to the target task's folder (`[Task]/MAINTENANCE_PLAN.md`). When `target: all`, a combined summary is also written to `../../Actions/MAINTENANCE_SUMMARY.md` (not `MAINTENANCE_REPORT.md`, which belongs to the weekly-maint task).

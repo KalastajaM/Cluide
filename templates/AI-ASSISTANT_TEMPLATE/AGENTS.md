@@ -24,7 +24,7 @@
 - Key clients/accounts: To be learned from email and Teams analysis
 - Internal stakeholders to track: To be learned from email and Teams analysis
 - Teams channels to include: To be learned — channels where [USER] participates
-- Topics to exclude from tracking: [ANY PRIVATE THREADS OR TOPICS]
+- Topics to exclude from tracking: [YOUR_EXCLUDED_TOPICS]
 
 # Knowledge Files
 
@@ -41,7 +41,7 @@ The assistant maintains a set of structured files in this folder. When answering
 | `Profile/PROFILE_hypotheses.md` | Confirmed and unconfirmed beliefs about the business context |
 | `Profile/PROFILE_archive.md` | Closed deals and completed projects, archived from the active profile files |
 | `Knowledge/INDEX.md` | Index of all project/topic knowledge files — read this to know what topics exist |
-| `Knowledge/[TOPIC].md` | Per-topic file: key facts, decisions log, current status, open questions |
+| `Knowledge/[Topic]_[Qualifier].md` | Per-topic file in the `bootstrap/knowledge/TOPIC_TEMPLATE.md` format (background, key facts, decisions log, current status, open questions, history) |
 | `Actions/ACTIONS.md` | Latest daily briefing — current priorities, draft messages, meeting prep |
 | `Actions/PENDING_ACTIONS.md` | All open action items with context and drafts |
 | `tasks/daily/AGENTS.md` | Working folder file map for the daily business assistant task |
@@ -50,7 +50,8 @@ The assistant maintains a set of structured files in this folder. When answering
 | `tasks/weekly-maint/AGENTS.md` | Working folder file map for the Monday weekly maintenance task |
 | `tasks/maintenance/AGENTS.md` | Working folder file map for the generic on-demand maintenance task (covers all four tasks) |
 | `Actions/ACTIONS_URGENT.html` | Latest urgent scan output — new urgent items since morning briefing |
-| `Actions/MAINTENANCE_REPORT.md` | Latest weekly maintenance report |
+| `Actions/MAINTENANCE_REPORT.md` | Latest weekly maintenance report (weekly-maint task) |
+| `Actions/MAINTENANCE_SUMMARY.md` | Latest combined summary from the on-demand maintenance task (`target: all`) |
 | `SYSTEM_STATUS.md` | Health monitor — last run result and rolling status for all four tasks |
 | `bootstrap/SETUP.md` | One-time setup guide — read this before first run |
 
