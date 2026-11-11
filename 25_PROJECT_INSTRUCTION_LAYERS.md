@@ -29,7 +29,7 @@ A good description:
 - is unique. A duplicated or copy-pasted description is not cosmetic: it can misidentify the project wherever the product supplies it as context.
 - fits the actual field limit shown by the current product; do not copy a Cowork character limit into ChatGPT or Codex guidance.
 
-The failure mode to guard against: a wrong description (stale after the project's purpose shifted, or accidentally pasted from another project) can supply a stale project identity, and because the field is unversioned nothing in git will ever show it changed. Three fixes, cheapest first: a periodic scan of the project list; the mirror block below, which puts a checkable copy in AGENTS.md; and an audit that reads the field directly (see *Reading the app-side fields*) — the only one that catches a description you never look at.
+The failure mode to guard against: a wrong description (stale after the project's purpose shifted, or accidentally pasted from another project) can supply a stale project identity, and because the field is unversioned nothing in git will ever show it changed. Three fixes, cheapest first: a periodic scan of the project list; the settings mirror below, which puts a checkable copy in the project's `PLATFORM_SETUP.md`; and an audit that reads the field directly (see *Reading the app-side fields*) — the only one that catches a description you never look at.
 
 ## The project instructions field
 
@@ -90,11 +90,11 @@ For a ChatGPT project, a short project-instructions bootstrap can say:
 
 > Read the supplied `AGENTS.md` policy and the source revision record before using project material. Identify missing sources before making claims about them. Follow the project output contract and state whether a result was only drafted, delivered as a file, or written to an authorized destination.
 
-Upload the policy and only the sources needed by this project. Record the commit or dated revision in `UI-FIELDS.md`. After changing the authored policy, replace the uploaded copy, read back the project instructions and test a fresh chat against a prewritten expected result.
+Upload the policy and only the sources needed by this project. Record the commit or dated revision in the *Applied settings and sources* table in `PLATFORM_SETUP.md`. After changing the authored policy, replace the uploaded copy, read back the project instructions and test a fresh chat against a prewritten expected result.
 
 For Codex, the bootstrap is the repository instruction chain, not a ChatGPT project field. Open the intended directory, inspect `AGENTS.override.md` files that may supersede `AGENTS.md`, and start a fresh session after instruction changes. Keep account-level Codex defaults and project rules non-overlapping. A ChatGPT project's native memory is not proof that a local Codex session received its instructions.
 
-Mirror example:
+Mirror example (one entry per surface in that table, or in `UI-FIELDS.md` when the texts are too long for it):
 
 ```text
 Surface: ChatGPT uploaded-source project
@@ -119,9 +119,9 @@ The single-owner principle (Guide 23) applies across layers just as it does acro
 
 Because the fields are unversioned, the folder needs a record of them:
 
-- **Mirror block.** Keep the current text of both fields verbatim in the project folder — a short `## App-side fields` section in `PLATFORM_SETUP.md` (or a separate `UI-FIELDS.md`) with a last-verified date. This is documentation of an external surface, not a second copy of rules: the field is the live text, the mirror is the versioned record of it. Reading the live field tells you what it says today; only the mirror records its earlier reviewed form.
+- **Settings mirror.** Keep the current text of both fields verbatim in the project folder — in the *Applied settings and sources* table in `PLATFORM_SETUP.md` (as `templates/PROJECT_TEMPLATE/PLATFORM_SETUP.md` ships it), with a last-verified date. A separate `UI-FIELDS.md` beside it is overflow, for texts too long for the table. A project from before the shared-policy layout may still carry a mirror block in `CLAUDE.md`: read it, but do not add one. This is documentation of an external surface, not a second copy of rules: the field is the live text, the mirror is the versioned record of it. Reading the live field tells you what it says today; only the mirror records its earlier reviewed form.
 - **Update triggers.** When the shared policy's purpose or hard rules change, check the app-side fields the same session. When you edit a field in the app, update the mirror. Either direction without the other reintroduces the drift.
-- **Audit checklist.** A maintenance sweep over a project should check: description matches the project's current purpose and is not a duplicate of another project's; instructions contain a bootstrap or pointer plus the project's hard rule (or are deliberately empty for a low-stakes project); the mirror block exists and matches the live field. Read the live values through an available supported surface; if that is unavailable, mark the comparison unverified and request only the missing field when needed.
+- **Audit checklist.** A maintenance sweep over a project should check: description matches the project's current purpose and is not a duplicate of another project's; instructions contain a bootstrap or pointer plus the project's hard rule (or are deliberately empty for a low-stakes project); the mirror exists and matches the live field. Read the live values through an available supported surface; if that is unavailable, mark the comparison unverified and request only the missing field when needed.
 
 `tasks/tune-instruction-layers.md` runs this checklist end to end.
 

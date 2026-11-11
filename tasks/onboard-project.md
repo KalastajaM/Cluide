@@ -36,8 +36,13 @@ relevant task files and runs them in sequence.
 ### Step 0 — Locate Cluide and the destination
 
 Confirm the Cluide folder is reachable (the templates and tasks below are read from it) and that
-the destination folder for the new project exists or can be created. If Cluide is not mounted,
-stop and ask for it rather than reconstructing a layout from memory.
+the destination folder for the new project exists or can be created. If Cluide is not reachable in
+this session (for example a ChatGPT web project), do not stop and do not reconstruct a layout from
+memory: tell the user exactly which template files to upload or paste — `templates/PROJECT_TEMPLATE/AGENTS.md`,
+`PLATFORM_SETUP.md` and `README.md`, plus `CLAUDE.md` when a Claude surface is selected and
+`templates/BLOCKS.md` if Step 5 will run — then continue from those. With no destination folder,
+return the filled policy and bootstrap as downloadable files or text to paste, and record Step 3's
+copy and Steps 6–8 as N/A.
 
 Before collecting sensitive content, confirm the permitted workspace/provider, data categories,
 external destinations and credentials handling. Ask the questions below at category level only
@@ -83,7 +88,7 @@ non-default answers explicitly:
   instead of Steps 3–5, then rejoin at Step 6.
 - **Existing folder** — run `tasks/reorganize-project.md` (it takes a restore point before
   moving anything) targeting the layout in `templates/PROJECT_TEMPLATE/README.md`. That task moves
-  files; it does not write a `CLAUDE.md`. Rejoin at Step 3, skipping only its copy sub-step, so the
+  files; it does not write the instructions file. Rejoin at Step 3, skipping only its copy sub-step, so the
   project still gets its instructions file and file map.
 
 ### Step 3 — Install the core
@@ -99,19 +104,20 @@ Activate the template’s ignore rules before seeding real data; inspect already
 existing repository. Empty scaffold removal below does not authorise deleting populated records.
 
 Then work through the core with the user, following that template's `README.md` Steps 2–4. For
-PROJECT_TEMPLATE that means:
+PROJECT_TEMPLATE that means (a legacy project with no `AGENTS.md` keeps its rules in `CLAUDE.md`
+and uses it wherever this step says `AGENTS.md`):
 
 1. **Delete the blocks this project does not need**, using the Step 1 answers. No material
-   arriving outside chat means `Incoming/` and its `CLAUDE.md` section go. No delegation means
+   arriving outside chat means `Incoming/` and its `AGENTS.md` section go. No delegation means
    `ROUTING_LOG.md`, the *Delegation* section of `AGENTS.md` and the *Dispatch Overrides* section
    of `CLAUDE.md` go. Deleting a block means deleting all of
-   its pieces — folder, `CLAUDE.md` section, and file-map rows — never one without the
+   its pieces — folder, `AGENTS.md` section, and file-map rows — never one without the
    others. Dropping the memory block also means replacing the auto-read line above the file map,
-   which names `Profile/PROFILE_SUMMARY.md`: that line sits in the part of `CLAUDE.md` that loads
+   which names `Profile/PROFILE_SUMMARY.md`: that line sits in the part of `AGENTS.md` that loads
    in every session, so a stale one is the most expensive leftover in the file.
-2. **Fill in `CLAUDE.md`**: identity, context, communication style, critical rules, and the file
+2. **Fill in `AGENTS.md`**: identity, context, communication style, critical rules, and the file
    map. Prune the file map rows for deleted blocks and add a row for each folder this project
-   needs that the template does not ship.
+   needs that the template does not ship. `CLAUDE.md` stays the thin adapter.
 3. **Seed the memory block** if it was kept: `Profile/PROFILE_SUMMARY.md` first, then any
    `Profile/PROFILE_detail.md` entries Claude will need from day one. Where the project needs a
    layer the template does not ship — native memory or `.auto-memory/` rather than profile files —
@@ -121,10 +127,10 @@ PROJECT_TEMPLATE that means:
 For a project whose rules need drawing out rather than typing in — an unfamiliar domain, hard
 constraints the user has not articulated, an existing codebase with conventions worth capturing —
 run `tasks/setup-claude-md.md` for its interview and bring the result into the template's file
-rather than replacing the file with its output. The template's file map and app-side block are
-not part of that task's output and must survive.
+rather than replacing the file with its output. The template's file map and the *Applied settings
+and sources* table in `PLATFORM_SETUP.md` are not part of that task's output and must survive.
 
-Do not fill in the *App-side fields* block yet — Step 4 produces its text.
+Do not fill in the *Applied settings and sources* table yet — Step 4 produces its text.
 
 Context discovery may continue during supervised work. Record unknowns, owners or sources to
 consult, and review triggers. For each early task, establish minimum facts, allowed inputs and
@@ -134,11 +140,15 @@ A completed setup checklist does not certify every workflow or permit unattended
 
 ### Step 4 — Set all three instruction layers
 
+A Claude Code-only or Codex-only project has no app-side fields: record Step 4 as N/A in one line
+and go to Step 5.
+
 The folder is one of three channels a Cowork project speaks through, and it is the only one this
 task can write directly. **`tasks/tune-instruction-layers.md` owns this step** — run its Step 1
 (read the fields as they currently stand), Step 3 (draft and present both texts) and Step 5
-(update the mirror block once the user confirms they have pasted them). It carries the state-file
-path, the absent-versus-empty rule, the freshness caveat and the sibling files to ignore; none of
+(update the settings mirror once the user confirms they have pasted them). It carries how to read
+the fields (paste first, the app's state-file cache only as a stale-prone hint), the absent-versus-empty
+rule, the freshness caveat and the sibling files to ignore; none of
 that is repeated here, because a second copy of an app-internal detail is a second thing to
 re-verify after every app update.
 
@@ -206,8 +216,8 @@ with the observed status; app fields and live tests remain pending until verifie
 Project Setup and Readiness
 ────────────────────────────
 ✓ Layout — core installed at [path]; blocks kept: [list]; blocks deleted: [list]
-✓ CLAUDE.md — [N lines], file map covers [N] homes
-✓ Instruction layers — description set, instructions [set / deliberately empty], mirror block dated [date]
+✓ AGENTS.md — [N lines], file map covers [N] homes
+✓ Instruction layers — [N/A: no app fields on this surface] / [description set, instructions [set / deliberately empty], settings mirror dated [date]]
 ✓ .gitignore / .claudeignore — [N patterns]
 ✓ Git / GitHub — [local only / github.com/...]
 ✓ Security — [clean / N issues found and fixed]
@@ -224,8 +234,8 @@ does not have to remember this task existed.
 ## Output
 
 A project folder containing the core layout, the selected canonical policy with a file map and a dated
-app-side mirror block, whichever blocks the project needed, git and ignore hygiene, and a
-security pass. Plus two texts handed to the user for pasting into the app's project settings.
+settings mirror, whichever blocks the project needed, git and ignore hygiene, and a
+security pass. Plus, where the surface has app-side fields, two texts handed to the user for pasting into the app's project settings.
 
 ## Constraints
 

@@ -278,9 +278,9 @@ If a tool you need appears in a list but calling it errors or is refused, look f
 
 ## Credentials and Security
 
-MCP server credentials (API keys, OAuth tokens) live in the MCP config file (`claude_desktop_config.json` for Cowork local servers, `.mcp.json` or `~/.claude.json` for Claude Code) or in environment variables. Rules:
+MCP server credentials (API keys, OAuth tokens) live in the MCP config file (`claude_desktop_config.json` for Cowork local servers, `.mcp.json` or `~/.claude.json` for Claude Code, `~/.codex/config.toml` or a trusted project `.codex/config.toml` for Codex) or in environment variables. Rules:
 
-- **Never put credentials in CLAUDE.md, skill files, or memory files** — those get read back in session output. Credentials belong only in the server's `env` block in the MCP config, or in a `.env` file loaded by the server.
+- **Never put credentials in `AGENTS.md`, `CLAUDE.md`, project instructions, skill files, or memory files** — those get read back in session output. Credentials belong only in the server's `env` block in the MCP config, or in a `.env` file loaded by the server.
 - **Use read-only tokens where possible.** A read-only Gmail token is safer than one with send permission, for any skill that only reads.
 - **Rotate tokens periodically.** Set a reminder to rotate every 6-12 months.
 
@@ -405,7 +405,7 @@ These mistakes cut across servers and cause silent failures:
 | Tool name in skill doesn't match actual tool | the assistant improvises a different approach or errors | Ask *"What MCP tools do you have?"* and copy the exact name into your skill. Tool names change between server versions. |
 | Expired OAuth token in MCP config | Server starts but every call returns 401 | Re-run the OAuth flow. Don't manually paste tokens that will expire — use refresh-token-based setups where possible. |
 | Wrong `env` variable name | Server launches but can't authenticate | Check the server's README for the exact variable names. `GITHUB_TOKEN` vs `GITHUB_PERSONAL_ACCESS_TOKEN` matters. |
-| Credentials in `CLAUDE.md` instead of the MCP config | Keys exposed in session output and potentially git | Move credentials to the server's `env` block or a `.env` file. Add `.env` (and `.mcp.json` if it holds secrets) to `.gitignore`. |
+| Credentials in `AGENTS.md`/`CLAUDE.md` instead of the MCP config | Keys exposed in session output and potentially git | Move credentials to the server's `env` block or a `.env` file. Add `.env` (and `.mcp.json` if it holds secrets) to `.gitignore`. |
 | Server args missing required path/URL | Server starts but scopes are empty | Filesystem needs explicit paths; Atlassian needs the site URL. Check args match the server's expected positional arguments. |
 
 ---
