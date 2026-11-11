@@ -57,7 +57,7 @@ Run these three checks immediately — they catch the highest-risk issues first.
 Do not wait for Phase 1.
 
 **0a. Plaintext credentials in MCP configs**
-MCP servers live in `~/.claude.json` and `.mcp.json` (Claude Code) or `claude_desktop_config.json` (Cowork/Desktop) — not `settings.json`. Scan all that exist:
+MCP servers live in `~/.claude.json` and `.mcp.json` (Claude Code) or `claude_desktop_config.json` (Claude Desktop) — not `settings.json`. Scan all that exist:
 ```bash
 python3 -c "
 import json, os
@@ -154,7 +154,7 @@ Run in a subshell so the working directory does not leak into later phases:
 ls -la ~/.claude/shell-snapshots/ 2>/dev/null | wc -l && \
 du -sh ~/.claude/shell-snapshots/ 2>/dev/null
 ```
-Report count and size; flag if >100 snapshots.
+Report count and size; flag if >100 snapshots. Current Claude Code versions delete this folder on clean exit and sweep crash leftovers, so a large count points to repeated crashes or an old version.
 
 Print consolidated risk table:
 ```

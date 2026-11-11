@@ -115,9 +115,9 @@ For an interactive inspection session, a documented CLI starting point is:
 codex --sandbox read-only --ask-for-approval on-request
 ```
 
-Use the host's supported permissions UI or configuration when work needs writes. Do not weaken the boundary just to make a check pass. The ChatGPT desktop app, Codex CLI and IDE name three permission modes: **Ask for approval** (reads, edits and routine local commands in the workspace; asks before internet access or going beyond the workspace — workspace-write with `on-request` and the user as reviewer), **Approve for me** (requests for more access go to auto-review, which "can make mistakes"), and **Full access** (edit any file and run networked commands without approval), plus Custom through `config.toml`. In `config.toml`, `approval_policy` now takes `on-request`, `never` or a `granular` table; `untrusted` and `on-failure` are retired and are not current presets. `default_permissions` selects a built-in profile (`:read-only`, `:workspace`, `:danger-full-access`) or a custom `[permissions.<name>]` profile and should not be combined with `sandbox_mode` or `[sandbox_workspace_write]`. `approvals_reviewer` is `user` (default) or `auto_review`; an automatic approval reviewer is also a real boundary: report a rejection and its reason if a safer authorized path cannot complete the work. A project's `.codex/config.toml` loads only when you trust the project, so a cloned repository cannot loosen these settings until you do.
+Use the host's supported permissions UI or configuration when work needs writes. Do not weaken the boundary just to make a check pass. The ChatGPT desktop app, Codex CLI and IDE name three permission modes: **Ask for approval** (reads, edits and routine local commands in the workspace; asks before internet access or going beyond the workspace — workspace-write with `on-request` and the user as reviewer), **Approve for me** (requests for more access go to auto-review, which "can make mistakes"), and **Full access** (edit any file and run networked commands without approval), plus Custom through `config.toml`. In `config.toml`, `approval_policy` now takes `on-request`, `never` or a `granular` table; `untrusted` is unsupported (it can stop Codex from starting) and `on-failure` is deprecated; use `on-request` interactively and `never` for non-interactive runs. `default_permissions` selects a built-in profile (`:read-only`, `:workspace`, `:danger-full-access`) or a custom `[permissions.<name>]` profile and should not be combined with `sandbox_mode` or `[sandbox_workspace_write]`. `approvals_reviewer` is `user` (default) or `auto_review`; an automatic approval reviewer is also a real boundary: report a rejection and its reason if a safer authorized path cannot complete the work. A project's `.codex/config.toml` loads only when you trust the project, so a cloned repository cannot loosen these settings until you do.
 
-Scheduled runs are the unattended case. ChatGPT scheduled tasks and Codex automations on the desktop run "unattended with your default sandbox settings" and use `approval_policy = "never"` where organisational policy permits, so nothing is left to prompt: the sandbox and permission profile you set beforehand are the whole boundary for those runs.
+Scheduled runs are the unattended case. ChatGPT and Codex scheduled tasks on the desktop run "unattended with your default sandbox settings" and use `approval_policy = "never"` where organisational policy permits, so nothing is left to prompt: the sandbox and permission profile you set beforehand are the whole boundary for those runs.
 
 Cowork scheduled tasks carry their own approval setting per task. Since desktop v2.19675.0 (2026-10-01), a scheduled task Claude creates for you defaults to "Automatically approve" where your organisation allows it: its runs use tools without asking and pause only when something looks unsafe ([desktop changelog](https://claude.com/docs/cowork/changelog)). Check the setting on each task you create, and treat the connectors and folders the task can reach as its boundary, not its prompt ([Guide 32](./32_ACTION_AUTHORITY.md) §6). Separately, since desktop v2.16120.0 (2026-09-29), a connector tool your organisation sets to "Restrict to Ask" asks for approval in tasks on your computer even in "Skip all approvals" mode, for newly started tasks. Since desktop v4.29.0 (2026-10-27, not on third-party deployments), "Skip all approvals" follows the organisation's Cowork setting rather than its Claude Code settings, though a device's own Claude Code managed settings still apply; and outside Auto and Skip all approvals a scheduled task's web fetch needs a URL named in the task's instructions or found by search or an earlier fetch. Since v3.6556.1 (2026-10-22), an MCP tool its server marks as needing a person asks only in the app, so a scheduled run goes on without that call: design such a task so a skipped call fails visibly.
 
@@ -127,7 +127,7 @@ Validate controls with harmless fixtures: a permitted read, a denied write outsi
 
 Codex also documents `PreToolUse` hooks. Configure them through its native hook sources and test every relevant tool path; some paths can bypass hooks, so a hook is not a complete security boundary. The dated counterpart and its source are in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts). Do not copy Claude settings into Codex.
 
-Official controls checked 2026-09-21: [OpenAI approvals and sandbox](https://learn.chatgpt.com/docs/agent-approvals-security), [Codex permission modes](https://learn.chatgpt.com/codex/permission-modes), [Codex config reference](https://learn.chatgpt.com/docs/config-file/config-reference), [ChatGPT scheduled tasks and Codex automations](https://learn.chatgpt.com/codex/automations), [Claude Code security](https://code.claude.com/docs/en/security). The Claude settings and hook examples below apply only to Claude Code.
+Official controls checked 2026-09-21: [OpenAI approvals and sandbox](https://learn.chatgpt.com/docs/agent-approvals-security), [Codex permission modes](https://learn.chatgpt.com/codex/permission-modes), [Codex config reference](https://learn.chatgpt.com/docs/config-file/config-reference), [Scheduled tasks (ChatGPT and Codex)](https://learn.chatgpt.com/codex/automations), [Claude Code security](https://code.claude.com/docs/en/security). The Claude settings and hook examples below apply only to Claude Code.
 
 ---
 
@@ -138,14 +138,14 @@ Claude Code offers several controls over what Claude can do without your approva
 **Permission modes** in Claude Code — `permissions.defaultMode` sets the one you start in; without it, the surface and version decide (see auto below):
 - **Manual** (`default`, alias `manual`) — the assistant asks before edits and before any command not covered by your allow rules. This is the mode that asks about everything.
 - **auto** — the built-in starting mode when no mode is configured: on Pro, Max, Ultra and Team since August 2026, and for interactive terminal and VS Code sessions on every plan and provider since v2.1.283 (the [permission modes page](https://code.claude.com/docs/en/permission-modes#which-mode-a-session-starts-in) gives v2.1.283; the changelog lists the change under v2.1.284). Since v2.1.302, `claude -p` and Agent SDK runs with no permission mode set start in Manual (`default`) on every provider, so calls that need approval are denied unless an allow rule, hook or callback approves them; pass `--permission-mode auto` to start one in auto. `/auto-mode-setup` (v2.1.304) reads the project and recent sessions to teach auto mode your environment. A classifier reviews each action that edits a file, runs a command or reaches the network, instead of prompting you; it blocks destructive git commands, `rm -rf`, transcript tampering and cloud-metadata access. You see the denials, listed under "Recently denied" in `/permissions`. The `autoMode` settings hold your own allow and deny rules for the classifier, including hard denies it cannot override, and `disableAutoMode: "disable"` removes the mode for an organisation. Since v2.1.278, auto mode for Claude API and Enterprise users (and Bedrock, Vertex, Foundry and gateways) defaults to the server-side classifier, which does not charge for classifier overhead. One trap: `permissions.defaultMode: "auto"` has no effect in a project's `.claude/settings.json` or `settings.local.json` — set it in `~/.claude/settings.json` or in managed settings.
-- **acceptEdits** — file edits are auto-approved; commands still prompt.
-- **plan** — the assistant proposes a plan; nothing is written or executed until you approve. Use for reviewing changes to important files.
-- **dontAsk** — no prompts and no classifier. Meant for CI and unattended runs, not for a session you are sitting in front of.
-- **bypassPermissions** — every permission check is skipped. Appropriate only for trusted, well-tested tasks in isolated environments such as a container.
+- **acceptEdits** — file edits and common filesystem commands (`mkdir`, `touch`, `rm`, `rmdir`, `mv`, `cp`, `sed`) inside the working directories are auto-approved; other commands still prompt.
+- **plan** — the assistant reads files and runs exploratory commands (reviewed by the auto-mode classifier where available) but edits nothing until you approve the plan. In interactive terminal sessions where bypass permissions are available, plan mode does not enforce its blocks. Use for reviewing changes to important files.
+- **dontAsk** — anything that would prompt is denied instead, and there is no classifier; only calls your allow rules already approve go ahead (an installed mod can still approve some calls, see §7). Meant for CI and unattended runs, not for a session you are sitting in front of.
+- **bypassPermissions** — permission prompts and allow checks are skipped; deny rules still apply (see §7). Use only for well-tested tasks in an isolated container, and nowhere else.
 
-Shift+Tab cycles between them: from auto it moves to Manual first, then Manual → acceptEdits → plan and back. `dontAsk` is never in the cycle, and `bypassPermissions` joins it only if the session was started with `--permission-mode bypassPermissions` or `--dangerously-skip-permissions`.
+Shift+Tab cycles between them: from auto it moves to Manual first, then Manual → acceptEdits → plan and back. `dontAsk` is never in the cycle, and `bypassPermissions` joins it only when enabled at start: `--permission-mode bypassPermissions`, `--dangerously-skip-permissions`, `--allow-dangerously-skip-permissions`, or `defaultMode: "bypassPermissions"` in user, `--settings` or managed settings.
 
-Do not live in `bypassPermissions` — it disables every permission prompt. (Note: `bypassPermissionsMode` is not a settings key; the related setting is `permissions.disableBypassPermissionsMode`, which prevents the mode from being used at all.) Cowork is separate: it has its own per-folder and per-app permission prompts and is not governed by these CLI modes.
+Do not live in `bypassPermissions` outside such a container — it disables every permission prompt. (Note: `bypassPermissionsMode` is not a settings key; the related setting is `permissions.disableBypassPermissionsMode`, which prevents the mode from being used at all.) Cowork is separate: it has its own per-folder and per-app permission prompts and is not governed by these CLI modes.
 
 **PreToolUse hooks — execution guards:**
 
@@ -210,11 +210,11 @@ The assistant sessions accumulate data on disk.
 
 **What persists locally:**
 - `~/.claude/projects/<project-slug>/<session-id>.jsonl` — full conversation transcripts, including everything you pasted in and everything Claude output. Treat the whole `~/.claude/projects/` directory as sensitive. Deleting a session in the Claude desktop app also removes its Claude Code transcript and related files, after which `claude --resume` cannot reopen it (desktop v2.9939.2, [changelog](https://claude.com/docs/cowork/changelog)). Since Claude Code v2.1.300 a transcript also records each API request's system prompt, tools and parameters, so a transcript you share exposes your whole instruction stack, not only the conversation.
-- `~/.claude/shell-snapshots/` — shell state snapshots that can accumulate to hundreds of files and gigabytes over time
+- `~/.claude/shell-snapshots/` — shell state captured at startup; current versions delete it on clean exit and sweep crash leftovers, so a large folder points to repeated crashes or an old version
 
 **Rules:**
 - Do not share credentials, personal data, or company-confidential content in the assistant conversations unless required for the task — it persists
-- Prune shell snapshots periodically:
+- If the snapshots folder has grown large, prune the old ones:
   ```bash
   find ~/.claude/shell-snapshots/ -type f -mtime +7 -delete
   ```
@@ -241,7 +241,7 @@ When the assistant installs software on your behalf, that software runs code on 
 
 The `security-review` skill (Phase 3) installs Socket CLI and pip-audit, and extends the PreToolUse hook to scan npm installs automatically.
 
-A few related points worth knowing: Claude Code ships sandboxing features that isolate command execution where available — enable them where your platform supports them (see the current Claude Code docs). The `--dangerously-skip-permissions` flag disables the permission layer entirely and should never be used with autonomous tasks; `--restricted` goes the other way, removing the built-in command and code-execution tools and WebFetch for locked-down environments, and `--permission-prompts none` is the right flag for a headless run where nobody is there to answer a prompt. On Enterprise plans, third-party skills and plugins are scanned for malicious content before install (August 2026) — useful, but not a substitute for reading what you install. And a cloned repository's `.mcp.json` is a supply-chain vector in its own right — auto-approving its servers means running someone else's code with your privileges, so review the file before trusting it.
+A few related points worth knowing: Claude Code ships sandboxing features that isolate command execution where available — enable them where your platform supports them (see the current Claude Code docs). The `--dangerously-skip-permissions` flag disables the permission layer entirely and should never be used with autonomous tasks outside an isolated container; `--restricted` goes the other way, removing the built-in command and code-execution tools and WebFetch for locked-down environments, and `--permission-prompts none` is the right flag for a headless run where nobody is there to answer a prompt. On Enterprise plans, third-party skills and plugins are scanned for malicious content before install (August 2026) — useful, but not a substitute for reading what you install. And a cloned repository's `.mcp.json` is a supply-chain vector in its own right — auto-approving its servers means running someone else's code with your privileges, so review the file before trusting it.
 
 ---
 
@@ -272,7 +272,7 @@ Acting without approving each step is now the default in Claude in Chrome: auton
 
 ## 7. File Hygiene: .gitignore and .claudeignore
 
-Git tracking, context selection and access permissions are separate controls. Use `.gitignore` for Git; the `.claudeignore` example below is Claude-specific and advisory.
+Git tracking, context selection and access permissions are separate controls. Use `.gitignore` for Git; the `.claudeignore` example below is a convention file that Claude Code does not enforce.
 
 ### .gitignore — keep secrets out of version control
 
@@ -309,7 +309,7 @@ The `security-review` skill runs a version of this in Phase 0b.
 
 ### .claudeignore — context hygiene, not a security control
 
-Claude loads files in the project directory as context. Use `.claudeignore` to exclude files that are large or simply not needed:
+Keep a `.claudeignore` only as a human-readable convention for files that are large or simply not needed in context:
 
 ```
 # Compiled skill bundles
@@ -319,7 +319,7 @@ skills/*.zip
 output/
 ```
 
-**Important:** treat `.claudeignore` as advisory. Enforcement varies by product and version — recent Claude Code builds honour it for context exclusion, but treat it as hygiene, not a security boundary. Do not rely on it to protect sensitive files: the enforced mechanism for those is `permissions.deny` (with the Bash caveat below) plus folder scoping.
+**Important:** Claude Code does not enforce `.claudeignore`. Its permissions page says that if a project has one, it "has no effect", and points to `Read` deny rules instead (read 2026-11-11). A check on 2026-11-11 in a Claude Code 2.1.322-based cloud session also found the Read tool returning files listed in `.claudeignore`. Support on other Claude surfaces is untested. To keep Claude's file tools off a path, use `Read(...)` deny rules in `permissions.deny` (with the Bash caveat below), or `respectGitignore` for the @ picker, plus folder scoping; this holds for sensitive files and for bulky ones alike.
 
 **The enforced mechanisms:**
 
@@ -353,7 +353,7 @@ Deny rules are the one layer that holds in every mode, `bypassPermissions` inclu
 
 A PreToolUse hook is the programmable alternative when deny rules aren't expressive enough.
 
-Use both layers: `.claudeignore` for token savings, deny rules / folder scoping for actual protection.
+Use deny rules and folder scoping for protection and for keeping paths out of Claude Code's reads; a `.claudeignore` alongside them is documentation for readers and other tools, not a layer of its own.
 
 ### Sharing and bootstrapping
 

@@ -136,8 +136,8 @@ Documented as of October 2026; the Antigravity row was re-checked in November 20
 | Claude app (chat projects, Cowork) | Project instructions field; files as project knowledge or a connected folder | The skill installation surface available to the account (typically uploading the zipped skill folder) | Cowork scheduled tasks |
 | Claude Code | `CLAUDE.md` (or `AGENTS.md`, read natively in recent versions when no `CLAUDE.md` exists) | `.claude/skills/<name>/` (project) or `~/.claude/skills/<name>/` (personal) | Not native; use the Claude app or an external scheduler |
 | ChatGPT | Project instructions; files as project sources | The skill or plugin installation surface available to the account | ChatGPT scheduled tasks |
-| Codex | `AGENTS.md` | `.agents/skills/<name>/` (repository) or `~/.agents/skills/<name>/` (personal) | Codex automations |
-| Gemini app | Notebook instructions; files as notebook sources | Upload a `SKILL.md`, or a folder or `.zip` holding one, on the Skills page (personal accounts) | Scheduled actions |
+| Codex | `AGENTS.md` | `.agents/skills/<name>/` (repository) or `~/.agents/skills/<name>/` (personal) | Codex scheduled tasks |
+| Gemini app | Notebook instructions; files as notebook sources | Upload a `SKILL.md`, or a folder or `.zip` holding one, on the Skills page (personal accounts) | Scheduled actions; Tasks have their own schedules (*re-verify* availability) |
 | Antigravity | `AGENTS.md` (no `GEMINI.md` beside it) | `.agents/skills/<name>/` (workspace); `~/.gemini/config/skills/<name>/` (global, read by the app, IDE and CLI) | Antigravity Automations |
 | API | `system` (Anthropic), instructions parameter (OpenAI), `system_instruction` (Gemini) | Per the vendor's skills API | Not applicable |
 

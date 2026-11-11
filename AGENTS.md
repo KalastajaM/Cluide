@@ -62,7 +62,7 @@ When the user asks a question or makes a request that a guide covers, read the r
 
 When creating new files, check whether they belong in `.gitignore` or `.claudeignore`:
 - **Add to `.gitignore`**: run logs, output files, auto-generated bundles, any file containing personal data (paths, names, company names)
-- **Add to `.claudeignore`**: large generated files that don't need to be loaded as context (compiled skill bundles, output archives, etc.)
+- **Add to `.claudeignore`** (a convention for readers and other tools; Claude Code does not enforce it, see Guide 12 §7): large generated files that don't need to be loaded as context (compiled skill bundles, output archives, etc.)
 
 If a newly created file should be ignored but is already tracked by git, run `git rm --cached <file>` to untrack it.
 

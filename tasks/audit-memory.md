@@ -12,7 +12,7 @@ Execute only the selected native branch. Claude commands/settings/hooks are Clau
 
 ## Native implementation
 
-Inventory shared file memory/profile files, each surface's exposed native memory, and ChatGPT project-source revisions separately. On OpenAI, ChatGPT memory and the local Codex memory store (`~/.codex/memories/`, off by default; turned on in Settings or with `features.memories`, with per-chat use set by `/memories`) are separate stores; audit each on its own. A missing Claude native-memory path is N/A on OpenAI. Apply size/freshness/duplication checks to the relevant layer; do not infer native-memory contents from repository files. Validate explicit state loading in scheduled runs and record inaccessible native memory as unverified. Check one writer or branch isolation for shared state, and verify source refresh/recall separately on each supported surface.
+Inventory shared file memory/profile files, each surface's exposed native memory, and ChatGPT project-source revisions separately. On OpenAI, ChatGPT memory and the local Codex memory store (`$CODEX_HOME/memories_v2/` on fresh profiles, `memories/` on older ones, off by default; check both, since `memories.version` can pin either; turned on in Settings or with `features.memories`, with per-chat use set by `/memories`) are separate stores; audit each on its own. A missing Claude native-memory path is N/A on OpenAI. Apply size/freshness/duplication checks to the relevant layer; do not infer native-memory contents from repository files. Validate explicit state loading in scheduled runs and record inaccessible native memory as unverified. Check one writer or branch isolation for shared state, and verify source refresh/recall separately on each supported surface.
 
 ## Purpose
 Review the project's memory for stale entries, missing index pointers, duplicates, and entries that belong in `CLAUDE.md` instead. Keeps memory lean and current so it stays useful as sessions accumulate.
@@ -29,7 +29,7 @@ Target: index under 30 entries, each memory file under ~10 lines, no entries old
 
 ### Step 1 — Find which layers are in use
 
-Check all applicable layers before concluding anything is missing. Use the shared folder/profile checks below with a filesystem; inspect ChatGPT/native memory through exposed controls or operator-provided evidence (local Codex memory, where enabled, is under `~/.codex/memories/`). The Layer 2 shell commands are **Claude Code only**.
+Check all applicable layers before concluding anything is missing. Use the shared folder/profile checks below with a filesystem; inspect ChatGPT/native memory through exposed controls or operator-provided evidence (local Codex memory, where enabled, is under the Codex home: check both `memories_v2/` and `memories/`, `CODEX_HOME` defaulting to `~/.codex`). The Layer 2 shell commands are **Claude Code only**.
 
 ```bash
 # Layer 1 — .auto-memory/ folder (the explicit pattern)
@@ -115,7 +115,7 @@ sensitive memory stays within its permitted boundary and valuable ignored state 
 Guide 04's rule: **scheduled tasks must not depend on native memory or on the account-level memory behind claude.ai and Cowork.** Neither is verified for autonomous runs — a task that relies on one may work some runs and forget everything on others, which reads as a task bug rather than a memory bug. The rule is conservative pending a test, so report the dependency as unverified rather than as known-broken.
 
 - Any scheduled task in this project that expects remembered context, with no `.auto-memory/` or profile file it explicitly loads: flag as HIGH.
-- Any reliance on the **Cowork project memory store or the account memory** (Settings → Memory) for something a scheduled task needs: flag, and ask whether it has actually been tested in a scheduled run. Untested is the same as unknown here — if it has not been tested, the fact belongs in a file the task loads explicitly.
+- Any reliance on the **Cowork project memory store or the account memory** (Settings → Your Claude → Your memory; Settings → Memory in the older layout) for something a scheduled task needs: flag, and ask whether it has actually been tested in a scheduled run. Untested is the same as unknown here — if it has not been tested, the fact belongs in a file the task loads explicitly.
 - Native memory redirected into the project via `autoMemoryDirectory`: not a finding — that puts it on disk where a task can read it. Note the configuration so the next audit doesn't re-flag it.
 - The reverse case is also worth a note: heavy profile machinery built for purely interactive use, where native memory would have done the job with no files to maintain.
 

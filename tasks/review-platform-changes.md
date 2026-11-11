@@ -64,14 +64,14 @@ Fixed list. Read each page from the boundary date to today; do not sample.
 | https://learn.chatgpt.com/docs/changelog (ChatGPT and Codex changelog), https://learn.chatgpt.com/docs/whats-new and https://help.openai.com/en/articles/6825453-chatgpt-release-notes | OpenAI product documentation and ChatGPT releases; follow current links to Codex and project-source behavior. The help.openai.com pages in this table refused automated fetches in three consecutive sweeps (2026-10-15 to 2026-11-11): when that happens, ask the user to open them, and record the facts that rest on them as re-verify, not as checked |
 | https://learn.chatgpt.com/docs/agent-configuration/agents-md and https://learn.chatgpt.com/docs/build-skills | Codex instructions, nested discovery, limits and native skill metadata |
 | https://learn.chatgpt.com/codex/extend/mcp, https://learn.chatgpt.com/codex/permission-modes and https://learn.chatgpt.com/docs/agent-approvals-security | Codex MCP configuration, effective sandbox and approval controls |
-| https://learn.chatgpt.com/codex/automations and https://help.openai.com/en/articles/10291617-scheduled-tasks-in-chatgpt | ChatGPT scheduled tasks and Codex automations; verify each surface separately |
+| https://learn.chatgpt.com/codex/automations and https://help.openai.com/en/articles/10291617-scheduled-tasks-in-chatgpt | OpenAI Scheduled tasks (ChatGPT and Codex; the Codex page's URL still says automations) and Team Tasks; verify each surface separately |
 | https://learn.chatgpt.com/codex/projects (local projects) and https://help.openai.com/en/articles/10169521-projects-in-chatgpt (cloud projects) | Local-project folders and primary-folder discovery; cloud project instructions, sources, memory and refresh behavior |
 | https://learn.chatgpt.com/codex/customization/memories | ChatGPT memory versus local Codex memory |
 | https://agentskills.io/specification | Skill frontmatter limits every host inherits (`name`, `description` length) |
 | https://developers.openai.com/api/docs/changelog and https://developers.openai.com/api/docs/pricing | OpenAI API changes, current model identifiers, deprecations and API pricing; not subscription allowance |
 | https://antigravity.google/docs/changelog and the pages under https://antigravity.google/docs/ (rules, skills, mcp, hooks, permissions, and models, which changed twice in the four weeks to 2026-11-11) | Google Antigravity app, CLI (`agy`), IDE, IDE extensions and SDK: instruction files, size limits, skills paths, MCP, hooks, permissions, models by plan. The changelog versions the five tracks separately; record all five. Fetch with `curl --compressed`: an uncompressed fetch returns unreadable bytes |
 | https://gemini.google/release-notes/ and the Gemini Apps Help pages under https://support.google.com/gemini/ | Gemini app: models per plan, skills (replacing Gems), notebooks, memory, scheduled actions |
-| https://ai.google.dev/gemini-api/docs/changelog, https://ai.google.dev/gemini-api/docs/pricing and https://ai.google.dev/gemini-api/docs/deprecations | Gemini API: model IDs, prices, deprecations, the managed agent's `.agents/AGENTS.md` loading |
+| https://aistudio.google.com/docs/changelog, https://aistudio.google.com/docs/pricing, https://aistudio.google.com/docs/custom-agents and https://aistudio.google.com/docs/deprecations (the former `ai.google.dev/gemini-api/docs/` pages now redirect there; a fetch tool that does not follow cross-host redirects, or serves a cached copy, can read stale prices) | Gemini API: model IDs, prices, deprecations, the managed agent's `.agents/AGENTS.md` loading |
 | https://geminicli.com/docs/changelogs/latest/ | Gemini CLI, a legacy surface for consumer plans since 2026-06-18; read it only while Cluide still documents it |
 | https://modelcontextprotocol.io/specification (latest changelog) | MCP transports, deprecations, auth |
 | https://code.claude.com/docs/llms.txt | Index of Claude Code pages, including each weekly `whats-new` digest; use it to find pages the table does not name |
@@ -88,9 +88,10 @@ Dispatch below) and keep the judgement for later steps.
 The guides mark their own version-sensitive statements. Grep them:
 
 ```bash
-grep -rniE "as of (january|february|march|april|may|june|july|august|september|october|november|december) 20[0-9]{2}|verified (in )?[a-z]* ?20[0-9]{2}|currently|not (yet )?(supported|possible|available|documented)|research preview|rolling out|\\\$[0-9]+ ?/|per (1M|MTok)" \
-  *.md tasks/*.md skills/*/SKILL.md templates/**/*.md 2>/dev/null | grep -v "^development/"
+git ls-files -z '*.md' | grep -zvE '^skills/[^/]+/references/[0-9]{2}_' | xargs -0 grep -HniE "as of (january|february|march|april|may|june|july|august|september|october|november|december) 20[0-9]{2}|verified (in )?[a-z]* ?20[0-9]{2}|currently|not (yet )?(supported|possible|available|documented)|research preview|rolling out|\\\$[0-9]+ ?/|per (1M|MTok)"
 ```
+
+`git ls-files` lists every tracked Markdown file, including the nested templates, the top-level template files and the skills' own reference files; the `grep -v` drops only the numbered guide copies bundled under `skills/*/references/`, which are byte-identical to the root guides. Without git, report "not run", not "clean".
 
 Add every statement of limitation ("cannot", "no way to", "only in Claude Code", "manual-only"): these
 are the claims most often superseded. Each hit is one row: file, line, claim, product/surface, source URL, source date, checked date, verification result, category (model/pricing,
@@ -116,7 +117,7 @@ against the guide that carries it:
 | `CLAUDE.md` locations, imports and the loaded-files view | `01`, `25`, `35`, `tasks/setup-dual-platform.md` |
 | Google: Antigravity rule files and limits, skills paths, MCP and hooks files, models by plan; Gemini app features | `35` (§9 Google subsection and Google routes), `01`, `03`, `PLATFORM_SETUP.md`, `README.md` skill install line |
 
-Re-check **every** Guide 35 §9 row for every platform using its current official source. Follow official redirects; an inaccessible page or absent product detail is a C finding, never a silent pass. Search all root guides, tasks, skill entry points and nested templates for dependent claims, not just Guide 35. Distinguish API billing, subscription allowances and measured runtime usage.
+Re-check **every** Guide 35 §9 row for every platform using its current official source. Follow official redirects; an inaccessible page or absent product detail is a C finding, never a silent pass. Search every tracked Markdown file (the Step 3 file list) for dependent claims, not just Guide 35. Distinguish API billing, subscription allowances and measured runtime usage.
 
 ### Step 5 — Findings report
 
@@ -140,8 +141,8 @@ Present the report and **stop**. Ask which units to apply.
 
 For each approved unit: branch from `main`, apply the edits, mirror every changed guide byte-identically
 into every `skills/*/references/` copy that carries it (the bundled `00_INDEX.md` takes the same patch
-with links stripped per `review-tasks.md` step 4a), run `review-tasks.md` steps 4a and 4c, and re-stamp every touched
-"as of" marker with the sweep month. Put the boundary for the next run into the commit subject:
+with links stripped per `review-tasks.md` step 4a), run `review-tasks.md` steps 4a and 4c, re-stamp every touched
+"as of" marker with the sweep month, and update the "Guides last reviewed" month in `README.md` line 3. Put the boundary for the next run into the commit subject:
 
 ```
 Platform sweep 2026-11a: <what changed> (Claude Code v2.1.322, desktop v5.1231.2, Codex CLI 0.167.1, Antigravity app v2.31.0, CLI v1.5.3)
