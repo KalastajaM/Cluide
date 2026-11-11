@@ -1,7 +1,7 @@
 # Task: Review Platform Changes Against the Guides
 
 > **Cluide maintenance task** — run this after every model launch, or monthly, whichever comes first.
-> `Assistant, run tasks/review-platform-changes.md`
+> `Run tasks/review-platform-changes.md`
 
 ## Runtime route
 

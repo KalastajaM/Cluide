@@ -1,7 +1,7 @@
 # Task: Setup Data Layer
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Assistant, run tasks/setup-data-layer.md`
+> `Run tasks/setup-data-layer.md`
 > **Source guide:** `14_PERSONAL_DATA_LAYER.md`
 
 ## Runtime route
@@ -325,4 +325,18 @@ Tell the user:
 - Any files added to `.gitignore` or `.claudeignore`, and any deny rules merged into `.claude/settings.json`
 - "Once the scripts are working, add a step to the relevant task that runs the script and uses its output — never the raw file directly."
 
+## Output
 
+- For the pattern or patterns chosen: `scripts/[name]_feeder.py`, `data/[entity_plural].json` files with `data/README.md`, `scripts/extract_[name].js` with `data/[name]_extraction.md`, `scripts/extract_[name].py` with `screenshots/` and `data/`, or `tasks/[workflow-name]/` with its `TASK.md` and `steps/` files.
+- A task step that runs the feeder script and uses its output instead of the raw file.
+- Where applicable, a `data/` or `screenshots/` line in `.gitignore`, a `Read(...)` deny rule for `data/` merged into `.claude/settings.json`, and stubs from `tasks/setup-bootstrap-folder.md`.
+- The Step 7 confirmation: patterns set up and where, what still needs manual work, and any ignore or deny entries added.
+
+## Constraints
+
+- Claude reads computed summaries, never the raw data file directly; if a feeder script fails, log the error and stop instead of reading the raw file.
+- Before writing any script, `data/` file or extraction note, test whether it exists; if it does, read it, show it and keep it unchanged, offering a merge of missing parts only. Data files hold live personal data and are never re-created over existing content.
+- Merge into `.claude/settings.json` and append to `.gitignore` without overwriting, show each ignore line and ask first, and skip a line already listed.
+- Store raw facts, not computed values; update `last_updated` on every write; keep master data separate from append-only transactions.
+- The vision extraction script refuses to overwrite an earlier dated output, and extracted rows are reconciled against a stated or independently derived total before the extraction counts as done.
+- The Claude API vision code is a Claude-only example; keep credentials platform-local.

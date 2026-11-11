@@ -1,7 +1,7 @@
 # Task: Audit Task Cost
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Assistant, run tasks/audit-cost.md` (then specify which task folder to audit)
+> `Run tasks/audit-cost.md` (then specify which task folder to audit)
 > **Source guide:** `10_COST_PERFORMANCE.md`
 
 ## Runtime route
@@ -51,7 +51,7 @@ For every file read on every run, compare against the limits (Guides 06/07 and t
 |------|-------|
 | TASK.md | ≤ 250 lines |
 | KNOWLEDGE_SUMMARY.md (or equivalent) | ≤ 40 lines |
-| IMPROVEMENTS.md | ≤ 150 lines (archive Applied Fixes when > 10 entries) |
+| IMPROVEMENTS.md | ~150 lines (archive Applied Fixes when > 10 entries; Guide 06 §6, *Recommended caps*) |
 | Any other always-loaded file | ≤ 300 lines |
 
 Estimate the per-run fixed overhead: total always-loaded lines × ~15 tokens/line (the figure Guide 06 uses). Each limit is a target with a ~5% tolerance band (Guide 06 §6): flag only a file beyond it, with its overage cost. Externally enforced limits (a loader cap, an API limit) are hard and get no band.

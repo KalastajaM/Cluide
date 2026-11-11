@@ -1,7 +1,7 @@
 # Task: Setup MCP Servers
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Assistant, run tasks/setup-mcp.md`
+> `Run tasks/setup-mcp.md`
 > **Source guide:** `05_MCP_SERVERS.md`
 
 ## Runtime route
@@ -143,3 +143,18 @@ Tell the user:
 - Which tools each server exposes
 - Any servers that were skipped and why
 - "To add more servers later, re-run this task, use `claude mcp add` (Claude Code), or Customize → Connectors (Cowork), or Settings → Developer (Claude Desktop chat)."
+
+## Output
+
+- The Step 1 summary of the environment, configured servers and active tools.
+- Each approved server added to the selected target: a `claude mcp add` registration or a project `.mcp.json` entry, a local connector or plugin in Cowork, a `claude_desktop_config.json` entry for Claude Desktop chat, an `mcp_servers` entry on Codex, or an app connection on ChatGPT.
+- The Step 5 confirmation: servers added and where, the tools each exposes, and any servers skipped and why.
+
+## Constraints
+
+- Inventory the tools already exposed before installing anything; an existing connector may already meet the need, and in Cowork the built-in connectors come first.
+- Never print credential-bearing configuration values, never put a token in `.mcp.json`, and use environment or secret references instead of inline credentials.
+- Read a config file first and merge the new entry without overwriting existing entries; preserve unrelated settings.
+- Pin versions where possible, and use GitHub's official server rather than the archived npm package.
+- The commands and JSON templates are for Claude Code and Cowork only; do not edit local Claude JSON for ChatGPT, and on Codex stop before writing if the configuration cannot be verified.
+- Confirm each server with a restart where needed and a tool listing or one harmless read.

@@ -1,7 +1,7 @@
 # Task: Audit File Hygiene
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Assistant, run tasks/audit-file-hygiene.md`
+> `Run tasks/audit-file-hygiene.md`
 > **Source guides:** 11 (Git Integration — ignore rules), 24 (Project Folder Structure — archive conventions).
 
 ## Runtime route

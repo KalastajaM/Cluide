@@ -1,7 +1,7 @@
 # Task: Audit Dual Platform
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Assistant, run tasks/audit-dual-platform.md`
+> `Run tasks/audit-dual-platform.md`
 > **Source guides:** `35_DUAL_PLATFORM_PROJECTS.md` (§7 State/Schedules/Handoffs, §8
 > Verifying Each Surface, §9 Platform Facts and counterparts table), `23_MULTI_PROJECT_SETUPS.md`
 > ("Requesting the mount, on demand"), `17_TROUBLESHOOTING.md` (common failure causes this

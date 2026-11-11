@@ -391,5 +391,20 @@ Tell the user:
 - Routing-log calibration outcome, if a log exists (proposals made, or "insufficient data")
 - "Run this task again after the next guide update, or quarterly as a health check."
 
+## Output
+
+- The Step 5 findings report: the tasks reviewed, the issues found per task, and the result of each structural drift check (4a–4e), with "not run" wherever a check could not run.
+- On approval, edits to the affected task files, each ending with a `<!-- last reviewed: YYYY-MM-DD against [guide file] -->` footer, and re-copied bundled guide copies where check 4a found drift.
+- Proposed routing-tier changes from check 4d, recorded only after approval.
+
+## Constraints
+
+- Report "not run" instead of "no changes" when there is no git history to read (Step 1).
+- Steps 1–5 are read-only. Step 6 shows each change as old → new and waits for approval before writing.
+- Never patch a bundled guide copy by hand; re-copy it from the root guide (check 4a).
+- Preserve dimension numbers and task filenames when reviewing or editing a task.
+- Check 4d skips silently when no routing log exists and never creates one; tier changes need approval and go in the project's Dispatch Overrides section, not in the log.
+- With fewer than about 10 dispatches per key, report "insufficient data" instead of proposing a change.
+
 <!-- last reviewed: 2026-08-12 — added step 4d routing-log calibration -->
 <!-- last routing calibration: never — first log rows date from 2026-08-12 -->

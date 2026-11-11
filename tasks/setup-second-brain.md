@@ -1,7 +1,7 @@
 # Task: Setup Second Brain
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Assistant, run tasks/setup-second-brain.md`
+> `Run tasks/setup-second-brain.md`
 > **Source guide:** `28_SECOND_BRAIN.md` (see also `15_LLM_WIKI.md` for the boundary against a curated domain wiki)
 
 ## Runtime route

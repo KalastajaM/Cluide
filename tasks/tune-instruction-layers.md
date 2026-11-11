@@ -1,7 +1,7 @@
 # Task: Tune Instruction Layers
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Assistant, run tasks/tune-instruction-layers.md`
+> `Run tasks/tune-instruction-layers.md`
 > **Source guides:** `25_PROJECT_INSTRUCTION_LAYERS.md` (the layer split), `01_PROJECT_INSTRUCTIONS.md` (the CLAUDE.md body).
 
 ## Runtime route
@@ -91,9 +91,9 @@ State explicitly which findings you are *not* proposing to fix and why (usually:
 
 Then **stop and wait**. Do not proceed on assumed approval.
 
-### Step 4 — Take a restore point, then apply the CLAUDE.md edits
+### Step 4 — Take a restore point, then apply the shared-policy edits
 
-Before the first edit, take a way back: a git commit or tag when the project is under version control, otherwise a dated copy of `CLAUDE.md` (and `UI-FIELDS.md` if it exists) stored outside the working tree. Confirm it exists before writing anything. Rewriting the instruction layer is a structural change — a bad rewrite is not obvious until a later session behaves oddly, which is exactly when nobody remembers what the file used to say.
+Before the first edit, take a way back: a git commit or tag when the project is under version control, otherwise a dated copy of the shared policy (`AGENTS.md`, or `CLAUDE.md` in a Claude-only project), and of `UI-FIELDS.md` if it exists, stored outside the working tree. Confirm it exists before writing anything. Rewriting the instruction layer is a structural change — a bad rewrite is not obvious until a later session behaves oddly, which is exactly when nobody remembers what the file used to say.
 
 Apply only what was approved. If applying reveals something the plan missed, stop and present a revised plan rather than improvising.
 
@@ -131,6 +131,6 @@ Exclude scheduled-task openers before computing anything (they start with a sche
 - Read-only until Step 3 is approved.
 - **Never write to `spaces.json`.** The app rewrites it wholesale from memory, so an edit made while the app runs is silently discarded — and a change the user believes is applied but isn't is the worst outcome this task can produce. Field changes are always ready-to-paste text.
 - Never report a partial review as a full one. If a layer could not be read, say which and why.
-- Respect the target's own the shared policy (`AGENTS.md`, or `CLAUDE.md` in a Claude-only project); flag conflicts rather than overriding.
+- Respect the target's own shared policy (`AGENTS.md`, or `CLAUDE.md` in a Claude-only project); flag conflicts rather than overriding.
 - Quote a field only with its source (UI, connector, paste, cache) and read date.
 - Do not touch other projects' entries in `spaces.json`, even read-only, beyond the description-uniqueness check — and report that check as a comparison, never by quoting another project's content.

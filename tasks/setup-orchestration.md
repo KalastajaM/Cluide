@@ -1,7 +1,7 @@
 # Task: Setup Multi-Task Orchestration
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Assistant, run tasks/setup-orchestration.md`
+> `Run tasks/setup-orchestration.md`
 > **Source guide:** `09_MULTI_TASK_ORCHESTRATION.md`
 
 ## Runtime route
@@ -135,3 +135,20 @@ Tell the user:
 - The agreed schedule
 - The scheduler-owner table rows, and where they were written
 - "Test it once end-to-end: run the feeder(s) manually, then the consumer, and check the handoff files and RUN_LOG entries. To watch what the coordination costs, run `tasks/audit-cost.md` across the coordinated tasks after a week."
+
+## Output
+
+- The `shared/` directory with `shared/SCHEMA.md` documenting every handoff file, and `shared/STATE.json` where shared state is the chosen pattern.
+- Insertions in the `TASK.md` files: a handoff-write step in each feeder, a freshness-checked read in each consumer, and the write-exclusion wiring for every task that writes a shared destination.
+- For the dependency-graph pattern, `tasks/orchestrator/TASK.md`.
+- Rows in the scheduler-owner table of `PLATFORM_SETUP.md` and the agreed schedule.
+- The Step 6 confirmation: the pattern chosen and why, files created, insertions made, schedule and owner rows.
+
+## Constraints
+
+- Stop when the tasks are independent; orchestration is built only for tasks that read each other's output or need a specific order, and needs more than one task, each with a working `TASK.md`.
+- Present the plan before writing anything, show each insertion as a diff, and get approval before writing; skip any insertion already present.
+- Never overwrite `shared/SCHEMA.md`, `shared/STATE.json` or an existing `tasks/orchestrator/TASK.md`: read them and add only what is missing, or propose a diff.
+- Each task owns its own section of shared state and modifies no other; always set `updated_at`; use targeted edits rather than full overwrites; keep `STATE.json` under 100 lines.
+- A consumer never assumes the upstream task succeeded: a missing, malformed or stale handoff is treated as unavailable.
+- Schedule gaps are latency buffers, not locks; the write-exclusion mechanism chosen in Step 2 is what protects a shared file.

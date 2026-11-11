@@ -1,7 +1,7 @@
 # Task: Setup Self-Improving Task
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Assistant, run tasks/setup-self-improving-task.md` (then specify which task to upgrade)
+> `Run tasks/setup-self-improving-task.md` (then specify which task to upgrade)
 > **Source guides:** `07_TASK_LEARNING_GUIDE.md` (incl. Part 9, formerly Guide 08)
 
 ## Runtime route
@@ -67,6 +67,7 @@ Then customise the copy:
 
 > Managed by the task. Read every run (in the "Read State" step). Updated every run (in the "Self-Improvement" step).
 > The human can respond to proposals by annotating them directly here or in the task's output file with [APPROVED], [REJECTED], or [MODIFY: ...].
+> Size cap: about 150 lines, and Applied Fixes archived once it passes 10 entries (Guide 06 §6, *Recommended caps*).
 
 ---
 
@@ -284,3 +285,19 @@ Tell the user:
 - Where the two wiring points and the A–D section were added in `TASK.md`
 - The refactor threshold that was set and why
 - "On the next run, the task will start tracking its own evolution. Respond to proposals by writing [APPROVED], [REJECTED], or [MODIFY: ...] directly in `IMPROVEMENTS.md` or in the task's output."
+
+## Output
+
+- `[task-folder]/IMPROVEMENTS.md` as a state-only file (counters, noise filters, applied and archived fixes, pending proposals, known issues, ideas backlog), customised with the task name and the refactor threshold chosen in Step 2.
+- Three insertions in the task's `TASK.md`: the read-state lines near the top, the Final Step: Self-Improvement, and the Self-Improvement (A–D) section.
+- Optionally `[task-folder]/LESSONS.md`.
+- The Step 6 confirmation: what was created, where the wiring points were added, and the threshold set and why.
+
+## Constraints
+
+- The target task needs a working `TASK.md`; if `IMPROVEMENTS.md` already exists, read it and add only the sections the template has and the file lacks, and never re-copy the template over live state.
+- `IMPROVEMENTS.md` stores state only; the A–D instructions live in `TASK.md`, never in `IMPROVEMENTS.md`.
+- Skip any insertion already present in `TASK.md`, and never append the A–D section a second time.
+- Preserve existing ownership checks, run-key claims, duplicate-run guards, task-state loading and run logging.
+- Use `templates/TASK_TEMPLATE/IMPROVEMENTS.md` when it is available; the inline copy must stay verbatim with it (`tasks/review-tasks.md` checks this).
+- If `LESSONS.md` already exists, leave it unchanged and list it as existing; its entries are append-only.

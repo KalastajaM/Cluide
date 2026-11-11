@@ -1,7 +1,7 @@
 # Task: Setup Action Authority
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Assistant, run tasks/setup-action-authority.md`
+> `Run tasks/setup-action-authority.md`
 > **Source guide:** `32_ACTION_AUTHORITY.md` (see also `12_SECURITY.md` §8 and *Recording What a Refactor Must Not Weaken*, `07_TASK_LEARNING_GUIDE.md` Part 3 for the self-improvement instance)
 
 ## Runtime route

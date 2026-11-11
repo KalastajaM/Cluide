@@ -1,7 +1,7 @@
 # Task: Setup CLAUDE.md
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Assistant, run tasks/setup-claude-md.md`
+> `Run tasks/setup-claude-md.md`
 > **Source guide:** `01_PROJECT_INSTRUCTIONS.md`
 
 ## Runtime route
@@ -145,5 +145,20 @@ Tell the user:
 - Where the file was written
 - How many lines of real content it has
 - "Record the fresh-session result for the selected surface. Until it passes, the policy is written but loading remains unverified."
+
+## Output
+
+- The instruction entry point for the selected surface: `CLAUDE.md` for a Claude-only project; the shared policy in `AGENTS.md` plus a thin `CLAUDE.md` adapter for dual-platform; project `AGENTS.md` on Codex; a source artifact plus the project-instructions bootstrap text for a ChatGPT source project.
+- For an existing file, a diff of what changed with a brief reason for each change (Step 5).
+- The Step 6 confirmation: where the file was written, its line count, and the fresh-session result for the selected surface.
+
+## Constraints
+
+- Draft from confirmed information; do not invent values for unknown context, and leave noncritical unknowns explicit (Step 2).
+- Every line must change behaviour. A new personal policy stays under 30 lines of real content and carries no capability lists or tool lists (Step 3).
+- The 30-line target is never grounds to delete required repository safety or workflow rules, and an existing project policy is never reshaped into the personal skeleton (Step 3E).
+- An existing file is reviewed, not replaced: list each line as keep / move / delete and take the user's choices before the diff.
+- Write only approved content, and only to the selected native target: dual-platform keeps one copy of the shared rules in `AGENTS.md`.
+- Until the fresh-session check passes, loading is unverified.
 
 <!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->

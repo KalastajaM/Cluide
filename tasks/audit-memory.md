@@ -1,7 +1,7 @@
 # Task: Audit Memory
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Assistant, run tasks/audit-memory.md`
+> `Run tasks/audit-memory.md`
 > **Source guide:** `04_MEMORY_AND_PROFILE.md`
 
 ## Runtime route

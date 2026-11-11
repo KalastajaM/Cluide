@@ -1,7 +1,7 @@
 # Task: Setup Behaviour Tests
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Assistant, run tasks/setup-behaviour-tests.md`
+> `Run tasks/setup-behaviour-tests.md`
 > **Source guide:** `31_BEHAVIOUR_TESTS.md` (see also `27_INDEPENDENT_JUDGMENT.md` for grading judgement, `26_CONTEXT_SCOPING.md` for why tests run in a fresh session, `23_MULTI_PROJECT_SETUPS.md` for pinning cross-project fixtures and dependencies)
 
 ## Runtime route
