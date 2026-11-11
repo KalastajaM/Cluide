@@ -32,27 +32,29 @@ The asymmetry that shapes this task: the app-side fields are **readable but unve
 
 ### Step 0 — Preconditions
 
-- The target project folder is mounted. If not, stop and ask for it.
+- If the target has a project folder, it is mounted; if not, ask for it. A project with no folder (a chat or source-only project) does not need one: continue with the field review (Step 1).
 - Read the target's own `CLAUDE.md` and `README` first. Local conventions are authoritative: a deliberate deviation from Guide 25 is a **conflict to confirm**, not a defect to fix.
 - Read Guide 25, and Guide 01 for the CLAUDE.md body.
 
 ### Step 1 — Read the app-side fields
 
-Both fields are on disk in the desktop app's state file (Guide 25, *Reading the app-side fields*):
+Ask the user to paste the current text of both fields, with the date they read them — or read them through the app UI or a documented connector when the session has one (Guide 25, *Reading the app-side fields*). Record the product, the project, the observed text and the read date.
+
+Optionally, as a hint only: earlier Cowork workflows read a macOS `spaces.json` cache of the fields. Guide 25 calls it an internal, possibly stale cache and not evidence of the current UI value, so check it only if it is already readable in this session, and never ask for a filesystem grant to reach it:
 
 ```bash
 ls ~/Library/Application\ Support/Claude/local-agent-mode-sessions/*/*/spaces.json
 ```
 
-Read the entry whose `name` (or `folders[].path`) matches the target. Take `description`, `instructions`, `folders`, and `updatedAt`.
+If it is readable, read the entry whose `name` (or `folders[].path`) matches the target and take `description`, `instructions`, `folders` and `updatedAt`. Label anything taken from it *cache, possibly stale*, and never quote it as the current field text.
 
 Three things to get right:
 
-- **Absent ≠ empty.** `description` and `instructions` are missing keys when unset, not empty strings. "No instructions field" and "an instructions field containing nothing" are the same state here — report it as *unset*.
-- **Report freshness.** Convert `updatedAt` (epoch ms) to a readable date and state it alongside anything you quote. If it predates a change the user says they made, ask them to confirm that one field rather than distrusting the whole file.
-- **Ignore the siblings.** `remote-session-spaces.json` holds session/folder state only; any `spaces copy.json` is a stale duplicate.
+- **Absent ≠ empty.** In the cache, `description` and `instructions` are missing keys when unset, not empty strings. "No instructions field" and "an instructions field containing nothing" are the same state here — report it as *unset*.
+- **Report freshness.** State the read date alongside anything you quote (for the cache, convert `updatedAt`, epoch ms, to a readable date). If it predates a change the user says they made, ask them to confirm that one field rather than distrusting the whole source.
+- **Ignore the siblings.** If you read the cache: `remote-session-spaces.json` holds session/folder state only; any `spaces copy.json` is a stale duplicate.
 
-**If the file is unreachable** — no Filesystem MCP access to `~/Library/Application Support` (see Guide 05; re-verify after September 2026 — the picker now accepts the Library folder but protects Claude's own data), or this is not a Cowork project — say so plainly and ask the user to paste the two field texts. Do not guess, and do not silently review only CLAUDE.md: a two-layer review reported as a three-layer review is the failure this task exists to prevent.
+**If neither the UI, a connector, a paste nor the cache gives you the text**, or this is not a Cowork project, say so plainly and ask the user to paste the two field texts. Do not guess, and do not silently review only CLAUDE.md: a two-layer review reported as a three-layer review is the failure this task exists to prevent.
 
 For a **chat project** (no folder), there is no CLAUDE.md layer: the instructions field is the whole contract. Review only the two fields, judged as a mini CLAUDE.md (Guide 25, *Chat projects*), and skip Steps 4 and 5.
 
@@ -60,11 +62,11 @@ For a **chat project** (no folder), there is no CLAUDE.md layer: the instruction
 
 Against Guide 25:
 
-**Description.** States what the project does (not how)? Names the concrete entities that make it unmistakable? Free of rules? Unique — not a duplicate of another project's, which is worth checking directly since you have every entry in `spaces.json` in front of you? Still true after whatever the project has become?
+**Description.** States what the project does (not how)? Names the concrete entities that make it unmistakable? Free of rules? Unique — not a duplicate of another project's, which is worth checking against the other descriptions the cache shows (if you read it) or the user pastes? Still true after whatever the project has become?
 
 **Instructions.** Contains only what must hold before any file is read — bootstrap, mount verification, restated hard safety rules, session posture, bridge guard? Anything long, evolving, or reference-shaped that belongs in CLAUDE.md instead? Conversely, for a project with real-world stakes: is the one hard safety rule present, or does it depend entirely on a mount succeeding?
 
-**CLAUDE.md.** Judged against Guide 01 for the body. For this task specifically: does it contradict either field? Is there a mirror block, is it labelled as a mirror, and does it match the live text you just read?
+**CLAUDE.md.** Judged against Guide 01 for the body. For this task specifically: does it contradict either field? Is there a settings mirror (the *Applied settings and sources* table in `PLATFORM_SETUP.md`; read a legacy mirror block in `CLAUDE.md` too, if one exists), is it labelled as a mirror, and does it match the live text you just read?
 
 **Across layers.** Every rule and fact has exactly one home (Guide 23's single-owner principle applied across layers). The one sanctioned duplication is a hard safety rule restated in the instructions field. Anything else stated twice is a finding — name which layer should own it.
 
@@ -97,7 +99,7 @@ Apply only what was approved. If applying reveals something the plan missed, sto
 
 ### Step 5 — Update the mirror block
 
-Once the user confirms they have pasted the field texts into the app, update the mirror block in the target's `CLAUDE.md` (a `## App-side fields` section, or `UI-FIELDS.md` when the instructions are long) to the new verbatim text, with today's date as last-verified.
+Once the user confirms they have pasted the field texts into the app, update the settings mirror — the *Applied settings and sources* table in the target's `PLATFORM_SETUP.md`, with `UI-FIELDS.md` beside it only for texts too long for the table — to the new verbatim text, with today's date as last-verified. Never create a mirror block in `CLAUDE.md`; if the target has no `PLATFORM_SETUP.md`, propose adding one from `templates/PROJECT_TEMPLATE/` in the Step 3 plan.
 
 If the user has not pasted them yet, do **not** update the mirror — a mirror that describes text nobody applied is worse than a stale one, because it reads as verified. Leave it and say what is outstanding.
 
@@ -107,7 +109,7 @@ If the user has not pasted them yet, do **not** update the mirror — a mirror t
 
 The account-wide preferences and the Cowork-wide instructions (Guide 25, *The account layers above the project*) are tuned with the same loop as the project fields — diagnose, plan, sign-off, apply, mirror — plus two evidence steps the project mode does not have.
 
-**Evidence 1 — session history.** The desktop app stores one JSON record per session under `~/Library/Application Support/Claude/local-agent-mode-sessions/<accountId>/<profileId>/`, including each session's opening prompt, title, model, and connected folders. *App-internal, verified August 2026 — re-verify after app updates.* Read the files via a Filesystem MCP allowlist entry (Guide 05; re-verify after September 2026 — the picker now accepts the Library folder but protects Claude's own data), or have the user zip the JSONs and attach the archive to a session. Session openers are ground truth about real prompting style. Three metrics turn them into instruction evidence:
+**Evidence 1 — session history.** The desktop app stores one JSON record per session under `~/Library/Application Support/Claude/local-agent-mode-sessions/<accountId>/<profileId>/`, including each session's opening prompt, title, model, and connected folders. *App-internal, verified August 2026 — re-verify after app updates.* Read the files only if they are already readable in this session — do not widen a filesystem grant to reach them, as with `spaces.json` above — or have the user zip the JSONs and attach the archive to a session. Session openers are ground truth about real prompting style. Three metrics turn them into instruction evidence:
 
 - how often the user explicitly invites clarifying questions — calibrates the ask-vs-proceed default;
 - the opening-prompt length distribution — whether the instructions should tell Claude to interpret terse prompts against project files instead of asking;
@@ -121,7 +123,7 @@ Exclude scheduled-task openers before computing anything (they start with a sche
 
 1. A three-layer findings list (Step 2).
 2. A change plan: CLAUDE.md edits + ready-to-paste field texts (Step 3).
-3. On approval: applied CLAUDE.md edits and an updated, dated mirror block.
+3. On approval: applied CLAUDE.md edits and an updated, dated settings mirror.
 4. A closing note naming anything still outstanding — specifically any field text the user has not yet pasted.
 
 ## Constraints
@@ -130,5 +132,5 @@ Exclude scheduled-task openers before computing anything (they start with a sche
 - **Never write to `spaces.json`.** The app rewrites it wholesale from memory, so an edit made while the app runs is silently discarded — and a change the user believes is applied but isn't is the worst outcome this task can produce. Field changes are always ready-to-paste text.
 - Never report a partial review as a full one. If a layer could not be read, say which and why.
 - Respect the target's own `CLAUDE.md`; flag conflicts rather than overriding.
-- Quote a field only with its `updatedAt` date attached.
+- Quote a field only with its source (UI, connector, paste, cache) and read date.
 - Do not touch other projects' entries in `spaces.json`, even read-only, beyond the description-uniqueness check — and report that check as a comparison, never by quoting another project's content.

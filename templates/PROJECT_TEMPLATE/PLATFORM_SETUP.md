@@ -26,6 +26,14 @@ Bootstrap to customize and paste:
 > be established. Follow the project's hardest safety rule: [paste exact rule]. State whether
 > outputs were saved to the connected project or are drafts for me to apply.
 
+**Cowork (output to a connected folder):** this project writes deliverables to `Outputs/`, so append
+Guide 25's bridge guard (pattern 4, the default for any project whose output lands in a connected
+folder) to the bootstrap above:
+
+> Before starting any work whose output must be saved to my folder, verify the connection to my computer by listing the project folder. If that fails, tell me before doing the work, not after.
+> A file is not delivered until the write to my folder has been confirmed by the tool that performed it or by listing the folder. Writing it into your own workspace is not delivery.
+> If a write fails: send the file into the chat anyway so it exists, retry once later in the session, and if it still fails, end your reply with an `UNCOMMITTED` list naming each file and the exact path it was meant to land in. Never close a task by asking me to download and file something myself as though that were the normal path — say plainly that the connection failed and what is outstanding.
+
 ## Applied settings and sources
 
 Keep one row per surface; drafts remain untested until someone applies and checks them.

@@ -18,7 +18,7 @@ That shape creates two failure modes Cluide's co-work guides don't directly addr
 - **Drift over sessions.** You add a feature this week, forget the conventions next week, and the assistant — starting each session cold — reinvents helpers you already wrote, breaks invariants you never wrote down, and introduces a third way of formatting dates. The app slowly rots.
 - **False "done".** the assistant writes code that compiles, runs the test, reports success, and the UI is visibly broken. Or the data file is silently corrupted. Without a hard verification gate, "done" means "the code ran" — not "the thing works".
 
-This guide is about pushing both failure modes back into the CLAUDE.md layer, where they cost one line each to prevent.
+This guide is about pushing both failure modes back into the shared policy layer (`AGENTS.md`, or `CLAUDE.md` in a Claude-only project), where they cost one line each to prevent.
 
 ---
 
@@ -66,7 +66,7 @@ The invariant is the thing a reviewer would catch in five seconds but the assist
 
 Every helper app accumulates a small library of utility functions that cover 90% of the common cases — a currency formatter, an ID generator, a DOM-escape helper, a toast popup, whatever. The drift failure mode is the assistant writing a sixth variant of `formatMoney` in session twelve because it didn't know about the first five.
 
-Fix it with a named list at the top of CLAUDE.md:
+Fix it with a named list at the top of the shared policy:
 
 ```markdown
 ## Helpers — check these first before writing new code
@@ -155,7 +155,7 @@ Helper apps are built feature-by-feature over dozens of short sessions. The loop
 5. **Verification gate runs** — per Pattern C. Screenshot, reload, smoke check. The assistant reports "done" only after the gate passes.
 6. **Promote any lesson** — if the review surfaced a new convention, add one line to Pattern D. If a new helper landed, add it to Pattern B.
 
-Step 6 is the drift defence. Without it, the CLAUDE.md and the code diverge, and the app rots. With it, the CLAUDE.md *is* the collaboration memory and stays usable six months in.
+Step 6 is the drift defence. Without it, the shared policy and the code diverge, and the app rots. With it, the shared policy *is* the collaboration memory and stays usable six months in.
 
 ---
 
@@ -163,16 +163,16 @@ Step 6 is the drift defence. Without it, the CLAUDE.md and the code diverge, and
 
 Guardrails are cheap on day 1 and painful to retrofit. Before the app has any real data in it, decide:
 
-- **Unsafe-HTML rule.** If the app renders any dynamic content, ban raw string interpolation into HTML in CLAUDE.md from the start. Retrofitting this once there are fifty `innerHTML` calls is a multi-day sweep.
-- **Secret handling.** If the app ever calls an external API, decide where the key lives (env var, local file outside the repo) and write that in CLAUDE.md. Never let the first version hardcode a key "temporarily".
+- **Unsafe-HTML rule.** If the app renders any dynamic content, ban raw string interpolation into HTML in the shared policy from the start. Retrofitting this once there are fifty `innerHTML` calls is a multi-day sweep.
+- **Secret handling.** If the app ever calls an external API, decide where the key lives (env var, local file outside the repo) and write that in the shared policy. Never let the first version hardcode a key "temporarily".
 - **Input validation at the boundary.** Any data read from disk, URL, or user input gets validated once at the boundary. The assistant will follow this if it is stated; it will not invent it unprompted.
 - **Data backup.** If the app writes to local files that matter to you, decide a backup strategy (git commit of the data, periodic copy) before the first real entry goes in.
-- **Strict command-line interface.** If the assistant drives the app through a script or CLI, the CLI rejects unknown flags per command instead of ignoring them. A flag silently ignored on the wrong subcommand exits 0 with confident, wrong output, and the assistant reports that output as the answer. State the rule in CLAUDE.md, and check that the argument parser fails loudly on an option the command does not take.
-- **Run-time guard for an architectural rule.** A rule such as "only the storage module writes files" is easy to state and easy to break by a route a source lint cannot see: an alias, a `getattr`, a shell `mv` in a subprocess. A lint reads how a call is spelled; a run-time guard sees what it does. In Python, `sys.addaudithook` in the test suite receives an event for every file open (with its mode or flags), mkdir, rename, removal and subprocess launch, and can fail the test when a write comes from outside the allowed module. It does not see what a child process or a C extension does inside itself, which is why the subprocess launch is checked. On Windows the subprocess event carries one joined command-line string rather than a list, so split it with `shlex.split(posix=False)` and strip the quotes before matching. Name the guard in CLAUDE.md next to the rule it enforces.
+- **Strict command-line interface.** If the assistant drives the app through a script or CLI, the CLI rejects unknown flags per command instead of ignoring them. A flag silently ignored on the wrong subcommand exits 0 with confident, wrong output, and the assistant reports that output as the answer. State the rule in the shared policy, and check that the argument parser fails loudly on an option the command does not take.
+- **Run-time guard for an architectural rule.** A rule such as "only the storage module writes files" is easy to state and easy to break by a route a source lint cannot see: an alias, a `getattr`, a shell `mv` in a subprocess. A lint reads how a call is spelled; a run-time guard sees what it does. In Python, `sys.addaudithook` in the test suite receives an event for every file open (with its mode or flags), mkdir, rename, removal and subprocess launch, and can fail the test when a write comes from outside the allowed module. It does not see what a child process or a C extension does inside itself, which is why the subprocess launch is checked. On Windows the subprocess event carries one joined command-line string rather than a list, so split it with `shlex.split(posix=False)` and strip the quotes before matching. Name the guard in the shared policy next to the rule it enforces.
 - **A suite that stays cheap.** The assistant runs the test suite before every "done", so its length is paid on every change, and a slow suite gets skipped or run on a subset. Give each test its own temporary folder and no fixed ports or shared globals from the start; a parallel runner then works with no test changes (in Python, `pytest -n auto` with pytest-xdist). Build an expensive fixture once per test process and copy it into each test, such as a database migrated to the newest schema. Before tuning CI, read the per-step timings of a run (`gh run view <id> --json jobs`) and profile one typical test file: in one Python/React project, installs and caching took seconds, and the whole cost was a single-process test step that rebuilt the database for every test. Parallel running and a copied database took that project's longest CI job from 36 to 13 minutes. Expect a few tests that assumed background jobs finish in the order they started; they pass alone and fail under parallel load, and the fix is in the test, not the runner.
 - **API version awareness.** Record the provider, endpoint and supported model in the app contract. Check current official documentation before changing model-specific parameters. Anthropic Messages and OpenAI Responses are separate APIs; neither thinking controls nor assistant-prefill behavior should be transferred by renaming fields. The dated parameter facts and their sources are in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts).
 
-Eight lines in CLAUDE.md. A few minutes on day 1. Many hours not spent later.
+Eight lines in the shared policy. A few minutes on day 1. Many hours not spent later.
 
 ---
 
@@ -194,7 +194,7 @@ Helper apps have a ceiling. Signs you have hit it:
 - More than one person uses it.
 - It stores data you would be upset to lose and you have no backup story.
 - You are adding auth, multi-tenancy, or a server.
-- The CLAUDE.md has grown past a page and the patterns here no longer fit.
+- The shared policy has grown past a page and the patterns here no longer fit.
 
 At that point, the tool has graduated. It needs proper architecture, proper tests, proper deployment — and a collaboration model that goes beyond CLAUDE.md guardrails. Cluide does not cover that. Move the project to your normal engineering setup and keep only the patterns from this guide that still pay rent.
 
@@ -202,7 +202,7 @@ At that point, the tool has graduated. It needs proper architecture, proper test
 
 ## 9. Checklist
 
-Before you consider the helper-app CLAUDE.md "done":
+Before you consider the helper app's shared policy "done":
 
 - [ ] One-line invariant written and linked to its canonical helper.
 - [ ] Helper index with 5–10 entries, each with a file path.

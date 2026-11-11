@@ -12,8 +12,8 @@ Name the target surface and available tools before running steps. On Claude Cowo
 with the device bridge, this installs an instruction the assistant follows using
 `device_request_folder_access` mid-session. On Claude Code or a local Codex session
 already working inside the filesystem, no request step is needed — say so and skip to
-recording the paths for reference. On a ChatGPT project, this task can only produce
-the section text; whether the ChatGPT surface can request a folder mid-task is
+Step 2, writing only the ownership and path lines. On a ChatGPT project, this task can
+only produce the section text; whether the ChatGPT surface can request a folder mid-task is
 unverified (Guide 23), so record every sibling folder needed and tell the user each
 one must be attached through "Add folder" at project setup instead. A sibling attached
 that way is a secondary folder: readable and editable, but its `AGENTS.md`, skills and
@@ -53,9 +53,13 @@ too often (and spends a permission prompt on work that didn't need it).
 
 ### Step 2 — Write the section
 
-Add a "Sibling project access" section to the project's Claude-side policy file,
-filling in this template (do not omit any of the four parts — each is load-bearing,
-see Constraints):
+Add a "Sibling project access" section, filling in this template. Where it goes
+depends on the project: in a Claude-only project, in `CLAUDE.md`; in a dual-platform
+project, in the `CLAUDE.md` adapter, because the device bridge is a Cowork mechanism
+(a labelled platform-specific section, Guide 35 §3), with only the plain ownership
+lines (which project owns which facts, read-only from here) in `AGENTS.md`. Do not
+omit any of the four parts — the ownership statement, the on-demand rule, the
+per-sibling paths and the decline fallback; each is load-bearing:
 
 ```markdown
 ## Sibling project access (Cowork / device bridge)

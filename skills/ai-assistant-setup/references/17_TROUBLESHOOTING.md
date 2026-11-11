@@ -144,15 +144,15 @@ Some skills and scheduled tasks load their own instructions that may not repeat 
 **1. You're relying on native memory for tasks**
 Native memory is designed for conversational use. Scheduled tasks should use the `.auto-memory/` folder system.
 
-*Fix:* Set up `.auto-memory/` as described in [Guide 04](./04_MEMORY_AND_PROFILE.md) and add this line to your `CLAUDE.md`:
+*Fix:* Set up `.auto-memory/` as described in [Guide 04](./04_MEMORY_AND_PROFILE.md) and add this line to your shared policy (`AGENTS.md`, or `CLAUDE.md` in a Claude-only project):
 ```markdown
 - Read `.auto-memory/MEMORY.md` at the start of every session.
 ```
 
 **2. The MEMORY.md isn't being loaded**
-Even with the folder in place, if `CLAUDE.md` doesn't instruct the assistant to read it, it won't be loaded automatically.
+Even with the folder in place, if your shared policy doesn't instruct the assistant to read it, it won't be loaded automatically.
 
-*Fix:* Check your `CLAUDE.md` contains the line above.
+*Fix:* Check your shared policy contains the line above.
 
 **3. The memory file was written but not in the right format**
 The assistant reads `MEMORY.md` as an index of pointers. If the file doesn't list the individual memory files, those files won't be read.
