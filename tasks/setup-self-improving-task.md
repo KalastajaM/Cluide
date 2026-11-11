@@ -31,7 +31,7 @@ Read the `TASK.md` in that folder. Understand:
 - What its current final step is
 - Whether it already has an `IMPROVEMENTS.md`
 
-If `IMPROVEMENTS.md` already exists: read it, tell the user what's already in place, and skip to Step 3 to fill any gaps.
+If `IMPROVEMENTS.md` already exists: read it, tell the user what's already in place, and skip to Step 4. If the file lacks sections the template has, Step 3's rule for an existing file applies: add only those, and never re-copy the template over it.
 
 ### Step 2 — Ask a few questions
 
@@ -50,7 +50,7 @@ Based on the run frequency, set the refactor threshold:
 
 `IMPROVEMENTS.md` stores **state only** — counters, noise filters, applied fixes, proposals, known issues. The self-improvement instructions (sections A–D) do *not* live here; they are written into `TASK.md` in Step 4. This is the architecture Guide 07 Part 9 prescribes.
 
-Create `[task-folder]/IMPROVEMENTS.md`:
+Create `[task-folder]/IMPROVEMENTS.md`. **When `IMPROVEMENTS.md` already exists, add only the sections the template has and the file lacks; never re-copy the template over it** — its counters, applied fixes and pending proposals are live state, and there may be no git history to recover them from.
 
 1. **If `templates/TASK_TEMPLATE/IMPROVEMENTS.md` is available** (you are running inside the Cluide repo, or the templates folder was copied along): copy that file verbatim.
 2. **If not** (this task file was copied to another project on its own): use the inline copy below. It is a verbatim copy of `templates/TASK_TEMPLATE/IMPROVEMENTS.md` — if you later get access to the canonical template, prefer it.
@@ -167,7 +167,7 @@ A proposal with nothing in that field is an opinion — do not raise it.*
 
 ### Step 4 — Write the self-improvement instructions (A–D) into TASK.md
 
-The instructions live in `TASK.md`, not in `IMPROVEMENTS.md` (which stores state only). Preserve existing ownership checks, run-key claims, duplicate-run guards, task-state loading and run logging when adding or later removing learning. Make three insertions:
+The instructions live in `TASK.md`, not in `IMPROVEMENTS.md` (which stores state only). Preserve existing ownership checks, run-key claims, duplicate-run guards, task-state loading and run logging when adding or later removing learning. **Skip any insertion that is already present** (check for its heading, or for its quoted text where it has none); never append the A–D section a second time. Make three insertions:
 
 **1. Near the top of the run procedure** (in the "Read State" step, or as a new Step 0 if none exists):
 
@@ -209,8 +209,7 @@ Operational signals:
 - Is the same section of KNOWLEDGE_SUMMARY.md being rewritten every run? → Consider a structural improvement.
 - Did any file operation fail? → Log as known issue.
 
-Append each lesson extracted above as a dated one-liner to `LESSONS.md` — the append-only reasoning
-history the file map lists.
+If `LESSONS.md` exists, add an entry in its format for each applied fix or approved proposal.
 
 ### B. Refactor Trigger Check
 
@@ -257,7 +256,7 @@ When a full refactor runs:
 
 ### Step 5 — Create LESSONS.md (if requested)
 
-If the user asked for `LESSONS.md`, create `[task-folder]/LESSONS.md`:
+If the user asked for `LESSONS.md`, create `[task-folder]/LESSONS.md` — unless it already exists, in which case read it, leave it unchanged and list it as existing in the confirmation:
 
 ```markdown
 # [TASK NAME] — Lessons Log

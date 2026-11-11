@@ -45,11 +45,11 @@ After collecting answers: "Thanks — I'll create the structure now."
     └── entities/      ← one page per entity/concept/actor
 ```
 
-Create all directories. Create placeholder files for `index.md`, `log.md`, and `overview.md`.
+Create any directory that does not exist (`mkdir -p`). Create placeholder files for `index.md`, `log.md`, and `overview.md` only where they do not already exist; an existing wiki's index and its append-only log are its history, so if one exists, read it, leave it unchanged and list it as existing in the confirmation.
 
 ### Step 3 — Write the CLAUDE.md schema
 
-Tailor the schema to the user's domain based on the interview answers. Use this structure:
+If `[wiki-root]/CLAUDE.md` already exists, read it and leave it unchanged: the user and the assistant evolve it as sources are ingested. Offer to add only sections it lacks. Otherwise tailor the schema to the user's domain based on the interview answers. Use this structure:
 
 ```markdown
 # [Topic] Wiki — Schema
@@ -99,6 +99,8 @@ Adapt the entity types and log prefix format to the user's domain.
 
 ### Step 4 — Initialise the index and log
 
+Do this for each of the three files below only if it does not exist yet. If it does, show the user what is there and keep it; never overwrite an index, a log or an overview, and never reset the log to a bare setup entry. (To test: `[ -e wiki/index.md ] && echo "exists — keeping" || echo "create"`.)
+
 Write `wiki/index.md`:
 ```markdown
 # Wiki Index
@@ -141,7 +143,7 @@ No sources ingested yet. This overview will evolve as sources are added.
 Ask:
 > "Should I add `sources/` to `.gitignore`? Raw sources often contain sensitive or large files."
 
-If yes, add `[wiki-root]/sources/` to `.gitignore`.
+If yes, add `[wiki-root]/sources/` to `.gitignore` unless that line is already there.
 
 ### Step 6 — Explain how to use it
 

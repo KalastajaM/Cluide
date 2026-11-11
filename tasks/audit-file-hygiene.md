@@ -74,9 +74,17 @@ references before proposing any move or replacement. `Working/` is not blanket d
 
 The check that catches what the others miss. A large tree can be correctly gitignored and still load into every session, because `.gitignore` and `.claudeignore` are different lists serving different purposes.
 
+**Claude surfaces only, and only where `.claudeignore` support is confirmed (Guide 11).** On Codex, report large ignored trees against the sandbox and instruction scope instead and propose no ignore file. Without git, list large directories (the fallback in the block below) and mark the ignored/loaded distinction unverified.
+
 ```bash
-# Anything sizeable that git ignores — then ask whether .claudeignore covers it too
-git status --ignored --porcelain | grep '^!!' | cut -c4- | xargs -I{} du -sh {} 2>/dev/null | sort -rh | head -20
+# Anything sizeable that git ignores — then ask whether .claudeignore covers it too.
+# Empty output is "clean" only when git ran; otherwise report "not run", not "clean".
+if command -v git >/dev/null 2>&1 && git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  git status --ignored --porcelain | grep '^!!' | cut -c4- | xargs -I{} du -sh {} 2>/dev/null | sort -rh | head -20
+else
+  echo "NOT RUN (git): ignored paths unknown — listing large directories instead"
+  du -sh -- * .[!.]* 2>/dev/null | sort -rh | head -20
+fi
 ```
 
 Flag any large gitignored path — backup folders, `_to_delete/`, vendored trees, duplicate exports — that `.claudeignore` does **not** cover. Flag duplicated content specifically: a second copy of files that already exist elsewhere in the project is pure context cost with no upside.
@@ -93,7 +101,7 @@ Exclude from every proposal, without exception: `.git/` internals (except a stal
 
 ### Step 3 — Present findings and the change plan
 
-A table, grouped by category: path, size, category, proposed action (`archive` / `delete` / `add to .claudeignore` / `leave — flagged`), and a one-line reason.
+A table, grouped by category: path, size, category, proposed action (`archive` / `delete` / `add to .claudeignore` (Claude surfaces only, per Check 4) / `leave — flagged`), and a one-line reason.
 
 Default every row to **archive** (move to `_archive/` inside the target). Reserve `delete` for truly worthless, regenerable files — `.DS_Store`, stale git locks — and even then it needs explicit per-file approval, never a blanket yes.
 

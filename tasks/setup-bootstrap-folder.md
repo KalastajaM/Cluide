@@ -24,13 +24,21 @@ Create a `bootstrap/` folder containing empty, non-personal stub versions of all
 ### Step 1 — Scan for gitignored runtime state files
 
 ```bash
-# List all gitignored files that look like runtime state
-git ls-files -o --exclude-standard 2>/dev/null
-git ls-files 2>/dev/null | xargs -I{} git check-ignore -q {} 2>/dev/null; echo ""
+# Empty output below means "clean" only if git and a repository exist — confirm that first
+if command -v git >/dev/null 2>&1 && git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  # Ignored, untracked files: the usual runtime state
+  git ls-files -o -i --exclude-standard
+  # Tracked files that also match an ignore rule
+  git ls-files -ci --exclude-standard
+else
+  echo "NOT RUN: git is missing or this is not a git repository"
+fi
 
 # Show what patterns are in .gitignore
 cat .gitignore 2>/dev/null
 ```
+
+Not a git repository (or no git): say so, skip Steps 4 and 7, and rely on the filename patterns below.
 
 Also look for common state file patterns even if not currently ignored:
 - `*_state.json`, `*_archive.json`, `pending_*.json`, `recent_*.json`
@@ -54,7 +62,7 @@ Skip:
 ls bootstrap/ 2>/dev/null && echo "exists" || echo "missing"
 ```
 
-If `bootstrap/` already exists, read its contents. Report what stubs are present and what's missing.
+If `bootstrap/` already exists, read its contents. Report what stubs are present and what's missing. Existing stubs, `bootstrap/SETUP.md` and any first-run checks already in a `TASK.md` are kept as they are in Steps 3, 5 and 6: create only what is missing, and offer a change to an existing one only as a diff.
 
 ### Step 3 — Create stubs
 
@@ -161,10 +169,14 @@ Show the exact insertion for each task and ask for approval before writing.
 ### Step 7 — Verify
 
 ```bash
-git ls-files bootstrap/
+if command -v git >/dev/null 2>&1 && git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  git status --porcelain --ignored -uall bootstrap/
+else
+  echo "NOT RUN: git is missing or this is not a git repository"
+fi
 ```
 
-Confirm all stubs are tracked (none are accidentally ignored after negation rules were added).
+Any `!!` line is a failure: that stub is still ignored, so fix its negation rule (Step 4) and re-run. With none, ask for approval, then run `git add bootstrap/` (staging only — do not commit) and confirm that `git ls-files bootstrap/` now lists every stub. A stub that is not tracked does not reach a fresh clone.
 
 Tell the user the results.
 
@@ -174,7 +186,7 @@ Tell the user:
 - Which stubs were created
 - Which negation rules were added to `.gitignore`
 - Whether self-bootstrap was added to task files
-- "Test this works: delete one of the state files and run the task — it should recreate the file from the bootstrap stub automatically."
+- "Test this in a scratch clone, never against live state: run the task there and confirm it initialises the missing files from the stubs; then create a synthetic state file and confirm a second run leaves it unchanged. Never delete a live state file to test."
 - "Update the stubs whenever the state file schema changes (new fields, new sections). Stubs should always mirror the current schema — just without real data."
 
 ## Initialization is not recovery

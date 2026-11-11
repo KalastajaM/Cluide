@@ -105,7 +105,7 @@ Check whether Claude has access to both:
 - External data sources (Gmail, Calendar, file reads, web pages)
 - Consequential action tools (send email, create events, write files, run bash)
 
-If both are present in the same settings.json, flag this:
+Take the inventory the way `tasks/setup-mcp.md` Step 1 does — `claude mcp list` plus the session's own tool listing — not from `settings.json`, which that step records as not holding MCP servers. If the session's tool inventory exposes both, flag this:
 > "⚠ Your setup has tools that read external data AND tools that take consequential actions in the same context. This creates prompt injection risk — malicious content in an email or file could attempt to trigger an action. Mitigations are listed below."
 
 ### Step 5 — Present findings

@@ -31,9 +31,11 @@ List the folder tree and classify what exists: instructions, source-of-truth fil
 
 Compare the inventory to Guide 24: which of the homes (instructions, source of truth, outputs, scratch, archive, plus intake if material reaches the project outside a chat) are missing or muddled? If the project has an intake folder, is it empty, or has it acquired permanent residents? Which naming and archive conventions are violated? Produce a short findings list.
 
+Then find the consumers. Guide 23 makes the owner responsible for them: a canonical path another project cites is a contract, and a restructure breaks it silently, because every grep inside the moving project passes. List the projects that reference this one, mount them read-only, and grep each for the paths that look likely to move. Record the hits; do not edit anything in a consumer here. A consumer that cannot be reached this session is listed as unchecked.
+
 ### Step 3 — Propose the target layout and get sign-off
 
-Present an explicit **old path → new path** table for every file or folder that would move, rename, or be archived, plus any new folders to create. Group by kind. State what stays untouched. Note anything irreversible, and state the **restore point** you will take (see Step 4). Then **stop and wait for approval.** Do not proceed on assumed approval.
+Present an explicit **old path → new path** table for every file or folder that would move, rename, or be archived, plus any new folders to create. Group by kind. List each consumer hit from Step 2 as its own row — file, old reference, new reference — in a separate section that needs its own approval: approving the target's moves does not approve edits in another project, which keeps its own owner rules (Guide 23). State what stays untouched. Note anything irreversible, and state the **restore point** you will take (see Step 4). Then **stop and wait for approval.** Do not proceed on assumed approval.
 
 ### Step 4 — Take a restore point
 
@@ -41,7 +43,7 @@ Before moving anything, create a restore point so a botched reorg can be undone,
 
 - **If the project is under git**, commit or tag the approved tracked state as a labelled snapshot; separately back up valuable ignored or untracked files affected by the move. This is the cleanest option: precise, diffable, no clutter. Use it when the user manages the project's history that way; otherwise ask.
 - **If it is not under git**, create a dated zip of the folders being changed and store it **outside the project working tree** (or in an ignored `_backups/` location), never loose in the project root where it becomes clutter or gets swept into the reorg.
-- **Scope the backup to what changes.** Back up only the affected subtree unless the reorg is project-wide; do not zip a large project wholesale for a small move.
+- **Scope the backup to what changes.** Back up only the affected subtree unless the reorg is project-wide; do not zip a large project wholesale for a small move. Cover every consumer file in an approved consumer row too, by copying those files outside the working tree; do not commit into a consumer project unless its owner approves.
 
 Retire the restore point once Step 6 confirms the result is good.
 
@@ -60,11 +62,11 @@ Apply only the approved rows. If applying reveals something the plan missed, sto
 
 Confirm no dead references remain (grep the project for the old paths), the file map in `CLAUDE.md` matches the new tree, and any scheduled tasks or skills still resolve. If the project runs a workflow, do a dry read-through to confirm it still finds its inputs. Report what moved and confirm the tree is clean. Once verified, retire the restore point: a git snapshot stays in history, so just delete any zip you created.
 
-**Then check outside the project.** Guide 23 makes the owner responsible for its consumers: a canonical path another project cites is a contract, and a restructure breaks it silently, because every grep inside the moving project passes. List the projects that reference this one, mount them, and grep each for the old paths, fixing what you find in the same change. Where a consumer cannot be reached this session, say so explicitly and point at the move log — do not report the reorganisation clean. A consumer nobody checked is not a consumer that passed.
+**Then check outside the project.** Re-grep the consumers listed in Step 2 for the old paths, and present the consumer fixes found; apply only the rows approved in Step 3. A hit with no approved row goes back as a revised plan, not an edit. Where a consumer cannot be reached this session, say so explicitly and point at the move log — do not report the reorganisation clean. A consumer nobody checked is not a consumer that passed.
 
 ## Output
 
-A findings list (Step 2), an approved old→new move table (Step 3), and a short confirmation after Step 6 that references resolve and the layout matches Guide 24. This task writes only to the target project, and only the approved moves.
+A findings list (Step 2), an approved old→new move table (Step 3), and a short confirmation after Step 6 that references resolve and the layout matches Guide 24. This task writes only to the target project and to approved consumer rows, and only the approved moves.
 
 ## Constraints
 

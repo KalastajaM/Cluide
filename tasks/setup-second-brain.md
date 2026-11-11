@@ -12,7 +12,7 @@ Execute only the selected native branch. Claude commands/settings/hooks are Clau
 
 ## Purpose
 
-Build or repair the personal knowledge layer that sits above a user's projects: the four homes sorted by relevance decay, an index cheap enough to always load, an inbox with an emptying rule, and a review pass that prunes and resolves contradictions. Use it when a user keeps notes scattered across apps, when a notes folder has grown past the point where anyone opens it, or when `analyze-project.md` dimension 16 reports a second-brain finding — a notes tree with no index, an `inbox/` with permanent residents, notes contradicting each other with nothing marked superseded, or curated domain material mixed in with general working notes.
+Build or repair the personal knowledge layer that sits above a user's projects: the four homes sorted by relevance decay, an index cheap enough to always load, an inbox with an emptying rule, and a review pass that surfaces what to prune and which notes contradict. Use it when a user keeps notes scattered across apps, when a notes folder has grown past the point where anyone opens it, or when `analyze-project.md` dimension 16 reports a second-brain finding — a notes tree with no index, an `inbox/` with permanent residents, notes contradicting each other with nothing marked superseded, or curated domain material mixed in with general working notes.
 
 This is not the wiki task. `setup-wiki.md` builds one curated domain where every source enriches existing pages; this builds a many-domain layer where the job is triage. A project that needs both gets both, in separate roots.
 
@@ -24,7 +24,7 @@ This is not the wiki task. `setup-wiki.md` builds one curated domain where every
 
 Confirm you can read and write the folder the layer will live in, and that it is a folder Claude can mount — markdown files on disk, not an app database. If the user's notes are currently in Notion, Roam, Evernote or similar, say plainly that the layer cannot be built where it is and that the first decision is an export, not a folder structure. Guide 28's *Format beats features* is the reasoning; do not restate it, point at it.
 
-Establish whether this is a **new** layer or a **repair** of an existing one. The two run different steps: a repair does Steps 1, 2, 5 and 6; a new build does 1 through 4 and 6.
+Establish whether this is a **new** layer or a **repair** of an existing one. The two run different steps: a repair does Steps 1, 2, 3, 5 and 6; a new build does 1–4 and 6, plus 5 when there are notes to move.
 
 ### Step 1 — Test whether it is worth building (read-only)
 
@@ -91,7 +91,7 @@ Then sort read-only first and present the result before moving:
 
 ### Step 6 — Wire the review and the return leg
 
-**The review.** Set up the cadence agreed in Step 2 as a scheduled task if the user wants it automated — `setup-scheduled-task.md` owns that shape, do not build a rival one here. The pass empties `inbox/`, moves anything the sorting rule placed wrongly, prunes `resources/`, resolves contradictions by editing rather than by keeping both versions, and refreshes `index.md`'s recently-changed section.
+**The review.** Set up the cadence agreed in Step 2 as a scheduled task if the user wants it automated — `setup-scheduled-task.md` owns that shape, do not build a rival one here. The scheduled pass is report-only and uses Guide 28's weekly-review prompt. It lists inbox items with their `why`, misplaced notes, prune candidates and contradiction pairs, writes them as a dated proposals list at the root of the layer, and changes no note. Then the user empties, moves, prunes and resolves — or does so in an attended run with the assistant, each change approved by the user, including the refresh of `index.md`'s recently-changed section. No unattended run deletes, moves, merges or edits a note, and the task itself never deletes one.
 
 **The return leg.** A second brain that only ever receives from the user misses the material worth the most: the conclusions Claude and the user reach together. Offer to add a return-leg block to the CLAUDE.md files of the projects that produce conclusions — a short standing instruction to write a note to `inbox/` when a session settles a question, with the `captured` / `source` / `why` frontmatter. `templates/BLOCKS.md` carries the block; a project's own CLAUDE.md is where it goes.
 
