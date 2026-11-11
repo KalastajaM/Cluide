@@ -176,7 +176,7 @@ git push -u origin main
 ```
 
 If the push fails because the remote has commits (e.g. it was initialized with a README), say:
-> "The remote has existing commits. Run `git pull origin main --allow-unrelated-histories` to merge them, then push again. Want me to do that?"
+> "The remote has existing commits. Run `git pull --no-rebase origin main --allow-unrelated-histories` to merge them, then push again. Want me to do that?"
 
 ### Step 8 — Set up ongoing sync
 
@@ -185,7 +185,7 @@ Use the available question tool, or ask in chat to ask about ongoing sync:
 > "Would you like me to set up ongoing sync so future changes are committed automatically?"
 > Buttons: `SessionStart hook` / `CLAUDE.md rule` / `Both` / `Skip`
 >
-> - **SessionStart hook** — auto-commits uncommitted changes at the start of every Claude session. Modifies `.claude/settings.json`.
+> - **SessionStart hook** — auto-commits uncommitted changes to tracked files at the start of every Claude session; new files are never swept in. Modifies `.claude/settings.json`.
 > - **CLAUDE.md rule** — adds a standing instruction to commit after completing any task that modifies files. Works without hook infrastructure.
 > - **Both** — hook for automatic safety snapshots + CLAUDE.md rule for meaningful post-task commits.
 > - **Skip** — commit manually when you choose.
@@ -207,7 +207,7 @@ Proceed based on the user's choice:
         "hooks": [
           {
             "type": "command",
-            "command": "cd \"$CLAUDE_PROJECT_DIR\" && git add -A && git commit -m \"pre-session snapshot $(date +%Y-%m-%d\\ %H:%M)\" 2>/dev/null || true"
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && git add -u && git commit -m \"pre-session snapshot $(date +%Y-%m-%d\\ %H:%M)\" 2>/dev/null || true"
           }
         ]
       }
@@ -227,12 +227,12 @@ Check the selected policy (`AGENTS.md` for Codex/dual-platform, `CLAUDE.md` for 
 ```markdown
 ## Git Sync
 
-After completing any task that modifies files, commit the changes:
+After completing any task that modifies files, commit the changes. Show `git status` first and stage with `git add -u` (tracked files only). Stage new files only after the user confirms them. Push only when the user asks or a standing approval names pushing (Guide 32 §3).
 
 ```bash
-git add -A
+git status
+git add -u
 git commit -m "update: <brief description of what changed>"
-git push
 ```
 
 Use a meaningful commit message that describes what changed, not just "update files".
@@ -255,7 +255,7 @@ Tell the user:
 - Which ongoing sync option was set up (if any)
 - The command to check status at any time: `git status` and `git log --oneline -10`
 
-If sync was skipped, note: "To commit future changes manually: `git add -A && git commit -m 'your message' && git push`"
+If sync was skipped, note: "To commit future changes manually: `git status`, then `git add <files> && git commit -m 'your message'`. Push when you want to publish."
 
 ## Publication boundary
 

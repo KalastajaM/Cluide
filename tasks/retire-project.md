@@ -32,7 +32,7 @@ Confirm:
 
 - The project is mounted, plus every project that references it and the coordinator or maintenance project if one keeps a registry. A retirement with the consumers unmounted rewires nothing and reports success.
 - The project is fully readable — the transfer in Step 3 needs the source intact. Never retire from a half-archived tree.
-- Its git repository, if any, is committed and clean. Commit anything dirty now; the retirement's final commit is not the place to discover uncommitted work.
+- Its git repository, if any, is committed and clean. If any repo is dirty, list the changes and stop: ask the user to commit or stash them (or approve a commit you prepare) before continuing.
 - Whether the scope is the **whole project** or **one task** in it. A single task runs Steps 1 to 4, then Step 6 instead of Step 5, then Step 7; the whole project runs everything except Step 6.
 
 Ask the user for the **reason** and the **successor**, if any. Both go into `RETIRED.md`, and the successor is where Step 3 transfers to.

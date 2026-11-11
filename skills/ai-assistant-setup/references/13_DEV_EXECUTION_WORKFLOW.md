@@ -144,10 +144,10 @@ If the problem appeared after a recent change, git is your fastest diagnostic:
 
 ```bash
 git log --oneline -- tasks/[task-name]/
-git diff HEAD~1 HEAD -- tasks/[task-name]/TASK.md
+git log -p -1 -- tasks/[task-name]/TASK.md
 ```
 
-This shows exactly what was different in the run that broke versus the run before it.
+This shows the most recent change to `TASK.md`. Run commits usually do not touch it, so `HEAD~1` is not a reliable "run before" here. To compare against the run that last worked, diff from the commit you recorded before that run (`git rev-parse HEAD` after the pre-run snapshot, [Guide 11](./11_GIT_INTEGRATION.md)): `git diff <recorded pre-run commit> HEAD -- tasks/[task-name]/TASK.md`.
 
 If you are not using git, compare the current TASK.md against the last time you remember it working. Even a mental diff of "what did I change?" is useful.
 

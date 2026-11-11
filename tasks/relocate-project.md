@@ -61,7 +61,7 @@ find <old-root> -maxdepth 1 -type d | sort          # the project list
 du -sh <old-root>/*                                  # sizes
 ```
 
-Per project: `git -C <project> rev-parse HEAD` and `git -C <project> status --porcelain`. Commit anything dirty now, before the move, not after.
+Per project: `git -C <project> rev-parse HEAD` and `git -C <project> status --porcelain`. If any repo is dirty, list the changes and stop: ask the user to commit or stash them (or approve a commit you prepare) before continuing.
 
 Keep this inventory. Projects do go missing in bulk moves, and diffing this list against the destination is how you find out.
 
