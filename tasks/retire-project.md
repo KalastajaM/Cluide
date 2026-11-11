@@ -12,7 +12,7 @@ Execute only the selected native branch. Claude commands/settings/hooks are Clau
 
 ## Native implementation
 
-Inventory registrations, connector grants, native memories, source uploads, project links and ownership rows separately for every used platform. Codex app automations are inspected/deleted through the exposed automation API or supported UI; ChatGPT tasks and source projects through their own controls; Cowork through its native scheduler. Never infer deletion from removing a task folder or disabling a trigger. Stop scheduling, drain active runs and transfer ownership before archiving. Record inaccessible registrations as pending operator action. A shared-policy edit or source deletion does not revoke account grants or erase platform-local memory. Apply the retirement checks below to each named surface; Claude paths and app storage examples remain Claude-only.
+Inventory registrations, connector grants, native memories, source uploads, project links and ownership rows separately for every used platform. Codex app scheduled tasks are inspected/deleted through the exposed automation API or supported UI; ChatGPT tasks and source projects through their own controls; Cowork through its native scheduler. Never infer deletion from removing a task folder or disabling a trigger. Stop scheduling, drain active runs and transfer ownership before archiving. Record inaccessible registrations as pending operator action. A shared-policy edit or source deletion does not revoke account grants or erase platform-local memory. Apply the retirement checks below to each named surface; Claude paths and app storage examples remain Claude-only.
 
 ## Purpose
 
@@ -53,7 +53,7 @@ Beyond the grep, read directly:
 | Scheduled tasks | Every task definition and registration on the surface(s) the user runs — Cowork's task registrations, Claude Code Routines, hooks with schedules. Read each; do not infer from folder names |
 | Orchestration | Shared-state and handoff files, and any chain that names this project's task as a stage |
 | Ownership registry | Every row naming this project as owner |
-| Memory | Account memory and the project's own per-project store (ask the user to search both in the app for the project's name and read out what is there — a session cannot); Claude Code auto memory for the project; local Codex memory under `~/.codex/memories/` where enabled (separate from ChatGPT memory); `.auto-memory/` files in *other* projects; profile files in tasks |
+| Memory | Account memory and the project's own per-project store (ask the user to search both in the app for the project's name and read out what is there — a session cannot); Claude Code auto memory for the project; local Codex memory where enabled (check both `$CODEX_HOME/memories_v2/` and `memories/`; `CODEX_HOME` defaults to `~/.codex`; Guide 35 §9) (separate from ChatGPT memory); `.auto-memory/` files in *other* projects; profile files in tasks |
 | Second brain | Index entries and notes linking into the project |
 | App-side fields | The project's description and instructions (from the mirror block, or pasted by the user); its `spaces.json` row where the Filesystem MCP reaches it |
 | Artifacts | Published pages fed by the project's tasks |

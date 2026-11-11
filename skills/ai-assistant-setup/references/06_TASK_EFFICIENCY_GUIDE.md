@@ -224,7 +224,7 @@ Choose the owning execution surface before registering anything. The procedure c
 
 ### OpenAI: Scheduled Tasks with Local or Cloud Inputs
 
-OpenAI uses two names: ChatGPT **scheduled tasks** (the Scheduled page in the ChatGPT sidebar) run in ChatGPT, and **Codex automations** run in Codex. Prepare and manually test the task first. In the ChatGPT app, use Scheduled or the exposed scheduling tool to create the registration; whether the Codex CLI and IDE offer schedule management is not documented, so prepare the workflow there and register it where the management interface is actually present. Scheduled tasks can use plugins and skills. Choose a recurring task in the current chat for a follow-up that needs its context, or a standalone task when each run should start from a saved prompt, following the host's available controls.
+OpenAI's feature is **Scheduled tasks** (the Scheduled page in the ChatGPT sidebar), created from ChatGPT or Codex chats in the desktop app; the Codex docs no longer use the name "automations" outside URLs. Team Tasks (workspace, service account, cloud) are a separate admin-managed route: *re-verify*. Prepare and manually test the task first. In the ChatGPT app, use Scheduled or the exposed scheduling tool to create the registration; whether the Codex CLI and IDE offer schedule management is not documented, so prepare the workflow there and register it where the management interface is actually present. Scheduled tasks can use plugins and skills. Choose a recurring task in the current chat for a follow-up that needs its context, or a standalone task when each run should start from a saved prompt, following the host's available controls.
 
 A desktop task that needs local files needs the computer on and the app running; it runs in the project directory or an isolated worktree. Scheduled runs are unattended: they use your default sandbox settings and `approval_policy = "never"` where organisational policy permits, so the task must not depend on an approval prompt. A task created in a ChatGPT project cannot access that project's uploaded files or files stored in the project — do not plan a scheduled job around project uploads. On web and mobile, eligible plans can also trigger tasks from supported app events (event-triggered tasks need Plus or higher). Record which mode owns the job and verify the first run's inputs and saved output. A notification alone does not prove successful execution. Checked 2026-09-21: [Codex automations](https://learn.chatgpt.com/codex/automations) and the help article [Scheduled tasks in ChatGPT](https://help.openai.com/en/articles/10291617-scheduled-tasks-in-chatgpt).
 
@@ -265,7 +265,7 @@ Routines are Claude Code's own cloud scheduled tasks, set up on the web. They ru
 
 Hooks are shell commands that fire automatically in response to Claude Code events. Configure them in `~/.claude/settings.json` (global) or `.claude/settings.json` (project-level).
 
-**SessionStart** fires every time a new Claude Code session opens — useful for lightweight pre-session setup (git snapshots, loading context) rather than full task execution.
+**SessionStart** fires when a Claude Code session starts, and also on resume, `/clear`, compaction and fork — useful for lightweight pre-session setup (git snapshots, loading context) rather than full task execution.
 
 ```json
 {
@@ -302,8 +302,8 @@ Hooks are shell commands that fire automatically in response to Claude Code even
 - **Notification** — fires when the assistant sends a notification.
 
 **Hook practical notes:**
-- SessionStart fires once per session. Multiple sessions per day = multiple hook runs. Add deduplication (checklist item 7) if running full tasks via hooks.
-- The `matcher` field filters by context. Leave it empty (`""`) to fire on all sessions.
+- SessionStart fires on startup, resume, `/clear`, compaction and fork; set `matcher: "startup"` if it should run only for new sessions. Multiple sessions per day = multiple hook runs. Add deduplication (checklist item 7) if running full tasks via hooks.
+- The `matcher` field filters by context. Leave it empty (`""`) to fire on every start, resume, `/clear`, compaction and fork.
 - For git pre-session snapshots, the hook approach is the right fit. See [Guide 11 — Git Integration](./11_GIT_INTEGRATION.md).
 
 For the full hooks reference: [Claude Code documentation on hooks](https://code.claude.com/docs/en/hooks).

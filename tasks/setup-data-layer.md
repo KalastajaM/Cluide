@@ -136,7 +136,7 @@ Write a `data/README.md` listing each file, its purpose, and its schema; if one 
 - Store raw facts (purchase price, quantity) — not computed values (P&L, averages)
 - Always update `last_updated` when writing
 
-Add `data/` to `.claudeignore` if the files contain personal data that shouldn't auto-load as context.
+If the files contain personal data that shouldn't load as context, add a `Read(...)` deny rule for `data/` to `permissions.deny` in `.claude/settings.json` (merge into the existing file, never overwrite it); Claude Code does not enforce `.claudeignore` (Guide 12 §7).
 
 ### Step 4 — Set up Pattern 3: Browser JS extraction
 
@@ -314,7 +314,7 @@ To re-run from step N: [instruction]
 Tell the user:
 - Which patterns were set up and where the files are
 - What still needs manual work (filling in selectors, implementing the computation function, taking the first screenshots)
-- Any files added to `.gitignore` or `.claudeignore`
+- Any files added to `.gitignore` or `.claudeignore`, and any deny rules merged into `.claude/settings.json`
 - "Once the scripts are working, add a step to the relevant task that runs the script and uses its output — never the raw file directly."
 
 

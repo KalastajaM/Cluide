@@ -165,7 +165,7 @@ If you chose self-improvement in the setup interview (or started from the task t
 
 **Action — schedule it:**
 
-Choose one scheduler owner: Cowork for the Claude route, or, on OpenAI, ChatGPT scheduled tasks or Codex automations for a supported local or web task. Give it a stable job ID, timezone, source revision and output contract. Test manually first, then review the first scheduled run. Keep local hosts awake where required. Do not register the same job on both platforms; [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) explains the native paths.
+Choose one scheduler owner: Cowork for the Claude route, or, on OpenAI, ChatGPT or Codex scheduled tasks for a supported local or web task. Give it a stable job ID, timezone, source revision and output contract. Test manually first, then review the first scheduled run. Keep local hosts awake where required. Do not register the same job on both platforms; [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) explains the native paths.
 
 **What the result looks like:** A task folder containing the instruction file, an improvements log, a task reference, and a run log. After a few runs, the improvements log will contain observations and proposals the task has generated from its own output.
 
@@ -203,14 +203,14 @@ Then:
 "Run tasks/setup-ignore-hygiene.md"
 ```
 
-This initializes version control, creates a GitHub repository if wanted, and audits `.gitignore` plus the selected runtime's actual context and permission controls. Review `.claudeignore` only for a Claude surface that supports it; do not create it as a Codex requirement or treat it as a security boundary.
+This initializes version control, creates a GitHub repository if wanted, and audits `.gitignore` plus the selected runtime's actual context and permission controls. Claude Code does not enforce `.claudeignore` ([Guide 12](./12_SECURITY.md) §7), so use `Read(...)` deny rules there; do not create the file as a Codex requirement or treat it as a security boundary.
 
 **What the result looks like:** A clean git repository with proper ignore rules. No credentials in tracked files. A harmless fixture demonstrating the chosen native access boundary.
 
 **Check before moving on:**
 - For a local versioned project, inspect tracked files and `git status` for sensitive material; a source-only project instead checks its supplied source package
 - For a local versioned project, check `.gitignore` covers private run logs, generated outputs and personal data. For a source-only project, exclude that material from the uploaded/connected package unless explicitly needed
-- For Claude only, check supported `.claudeignore` patterns for large generated context. For Codex, verify native permissions and explicit source-scoping instructions; for ChatGPT, inspect the uploaded/connected source set
+- For Claude Code, check that `Read(...)` deny rules in `permissions.deny` cover large generated context (`.claudeignore` is not enforced). For Codex, verify native permissions and explicit source-scoping instructions; for ChatGPT, inspect the uploaded/connected source set
 - Test an intended denial with harmless fixture data on each enabled surface; never use a real destructive operation as the test
 
 ---

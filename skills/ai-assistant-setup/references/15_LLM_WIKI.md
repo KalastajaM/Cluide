@@ -290,7 +290,7 @@ qmd search "lateral movement techniques" --top 10 --path wiki/
   }
 }
 ```
-In Cowork, use `claude_desktop_config.json`.
+For Claude Desktop chat, use `claude_desktop_config.json`; Anthropic documents servers there as not available in Cowork, so for Cowork use a local connector or a plugin that bundles the server ([Guide 05](./05_MCP_SERVERS.md)).
 
 With the MCP server running, the assistant can call the qmd search tool directly instead of reading the index — the actual tool name will be namespaced (e.g. `mcp__qmd__search`; confirm by asking the assistant "what tools do you have?"). The hybrid BM25/vector search handles disambiguation and fuzzy matching that index scanning misses.
 

@@ -21,7 +21,7 @@ Git history belongs to the project. Either coding surface can review the same de
 
 When switching assistants, record the branch and commit, uncommitted changes, verification already run, unresolved issues and current writer. If two sessions work concurrently, use separate branches/worktrees and integrate through review. Never assume different product names make concurrent writes safe.
 
-`.gitignore` controls untracked files in Git. `.claudeignore` is a Claude-specific context convention whose support must be checked; it is not a Codex security control and there is no OpenAI ignore file to invent by analogy. Codex uses its actual sandbox, permissions and project instructions. Claude hook examples later in this guide are not portable Git hooks.
+`.gitignore` controls untracked files in Git. `.claudeignore` is a convention file that Claude Code does not enforce ([Guide 12](./12_SECURITY.md) §7); it is not a Codex security control and there is no OpenAI ignore file to invent by analogy. Codex uses its actual sandbox, permissions and project instructions. Claude hook examples later in this guide are not portable Git hooks.
 
 A ChatGPT source project sees its uploaded revision, not the current checkout. Deliver a patch or file to the repository owner, review and commit it, then refresh the project's sources. A successful chat response alone is not a commit or deployment.
 
@@ -57,11 +57,11 @@ The tracking examples above apply only to content approved for that repository. 
 Two separate ignore files serve different purposes:
 
 - **`.gitignore`** — untracked files Git excludes by default; it does not remove files already tracked or prevent force-adding
-- **`.claudeignore`** — files Claude should not load as context (but git may still track them)
+- **`.claudeignore`** — a convention file listing what should stay out of context (git may still track those files); Claude Code does not act on it
 
 They are independent: a file can be in one, both, or neither.
 
-> **Enforcement caveat:** `.gitignore` is enforced by git. `.claudeignore` support **varies by product and version** — recent Claude Code builds honour it for context exclusion, but don't count on enforcement everywhere. Use it for context hygiene (keeping bulky files out of context), not as a security boundary. The enforced mechanisms are: in **Cowork**, folder selection — Claude can only reach the folders you connect to a session; in **Claude Code**, `permissions.deny` rules in `.claude/settings.json` (e.g. `"deny": ["Read(./.env)"]`) or a PreToolUse hook. See [Guide 12 §7](./12_SECURITY.md) for the security side.
+> **Enforcement caveat:** `.gitignore` is enforced by git. Claude Code does not enforce `.claudeignore`: its permissions page says that a project's `.claudeignore` "has no effect" and points to `Read` deny rules instead (read 2026-11-11), and a check on 2026-11-11 in a Claude Code 2.1.322-based cloud session found the Read tool returning files listed in it. Support on other Claude surfaces is untested. Keep the file as a convention for human readers and other tools, not as a security boundary or a token saving. To keep Claude Code's file tools off a path, use `Read(...)` deny rules in `permissions.deny`, or `respectGitignore` for the @ picker. The enforced mechanisms are: in **Cowork**, folder selection — Claude can only reach the folders you connect to a session; in **Claude Code**, `permissions.deny` rules in `.claude/settings.json` (e.g. `"deny": ["Read(./.env)"]`) or a PreToolUse hook. See [Guide 12 §7](./12_SECURITY.md) for the security side.
 
 ### What belongs in `.gitignore`
 
@@ -113,7 +113,7 @@ __pycache__/
 
 ### What belongs in `.claudeignore`
 
-The assistant loads files as context when reading a project. Excluding large or redundant files keeps context lean. (Remember: this is advisory — list things here to save tokens, not to protect secrets.)
+Large or redundant files are worth keeping out of context. Claude Code does not read this file (see the caveat above), so the list documents intent for readers and other tools; to make Claude Code skip a path, add a matching `Read(...)` deny rule to `permissions.deny`. It protects no secrets either way.
 
 | Category | Examples | Why |
 |---|---|---|
@@ -176,7 +176,7 @@ If an ignored file is already tracked, inspect it and use `git rm --cached`
 on that path to stop tracking it while retaining the local file.
 ```
 
-For a Claude surface that supports `.claudeignore`, put its native patterns in that file. Do not create an OpenAI lookalike. For session-triggered snapshots, both coding agents document hooks, but install a native hook only after checking its coverage; an explicit task step remains the portable route (Guide 35 §9).
+If the project keeps a `.claudeignore` as a convention, put its patterns in that file, and use `Read(...)` deny rules for Claude Code enforcement. Do not create an OpenAI lookalike. For session-triggered snapshots, both coding agents document hooks, but install a native hook only after checking its coverage; an explicit task step remains the portable route (Guide 35 §9).
 
 ---
 
@@ -226,7 +226,7 @@ To snapshot automatically at session start, add a `SessionStart` hook in `.claud
 
 > **Warning:** `git add -A` stages **all** untracked files — including credentials or personal data not yet covered by `.gitignore`. Get your ignore hygiene right *before* enabling this hook (see [Guide 12](./12_SECURITY.md) and `tasks/setup-ignore-hygiene.md`).
 
-The `|| true` suppresses the error message when the working tree is clean (`git commit` exits non-zero with nothing to commit). Note that for hooks only exit code 2 has blocking semantics — a plain non-zero exit wouldn't block the session anyway, so `|| true` is cosmetic, not load-bearing. Replace `/path/to/your/assistant` with your actual path.
+The `|| true` suppresses the error message when the working tree is clean (`git commit` exits non-zero with nothing to commit). Note that for hooks only exit code 2 has blocking semantics — a plain non-zero exit wouldn't block the session anyway, so `|| true` is cosmetic, not load-bearing. Replace `/path/to/your/assistant` with your actual path. An empty `matcher` fires on startup, resume, `/clear`, compaction and fork, so this snapshot also runs on each of those; set `"matcher": "startup"` to snapshot only for new sessions.
 
 ---
 

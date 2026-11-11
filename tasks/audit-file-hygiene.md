@@ -72,12 +72,12 @@ references before proposing any move or replacement. `Working/` is not blanket d
 
 #### Check 4: Ignored but still loaded
 
-The check that catches what the others miss. A large tree can be correctly gitignored and still load into every session, because `.gitignore` and `.claudeignore` are different lists serving different purposes.
+The check that catches what the others miss. A large tree can be correctly gitignored and still load into every session, because `.gitignore` only controls Git and Claude Code does not enforce `.claudeignore` (Guide 12 §7): what keeps a path out of Claude Code's reads is a `Read(...)` rule in `permissions.deny`.
 
-**Claude surfaces only, and only where `.claudeignore` support is confirmed (Guide 11).** On Codex, report large ignored trees against the sandbox and instruction scope instead and propose no ignore file. Without git, list large directories (the fallback in the block below) and mark the ignored/loaded distinction unverified.
+**Claude surfaces only.** `.claudeignore` is a convention file that Claude Code does not enforce, and support on other Claude surfaces is untested (Guide 11); for Claude Code propose `Read(...)` deny rules. On Codex, report large ignored trees against the sandbox and instruction scope instead and propose no ignore file. Without git, list large directories (the fallback in the block below) and mark the ignored/loaded distinction unverified.
 
 ```bash
-# Anything sizeable that git ignores — then ask whether .claudeignore covers it too.
+# Anything sizeable that git ignores — then ask whether a Read(...) deny rule covers it too.
 # Empty output is "clean" only when git ran; otherwise report "not run", not "clean".
 if command -v git >/dev/null 2>&1 && git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   git status --ignored --porcelain | grep '^!!' | cut -c4- | xargs -I{} du -sh {} 2>/dev/null | sort -rh | head -20
@@ -87,7 +87,7 @@ else
 fi
 ```
 
-Flag any large gitignored path — backup folders, `_to_delete/`, vendored trees, duplicate exports — that `.claudeignore` does **not** cover. Flag duplicated content specifically: a second copy of files that already exist elsewhere in the project is pure context cost with no upside.
+Flag any large gitignored path — backup folders, `_to_delete/`, vendored trees, duplicate exports — that no `Read(...)` deny rule covers (and `.claudeignore` does not list, where the project keeps that convention file). Flag duplicated content specifically: a second copy of files that already exist elsewhere in the project is pure context cost with no upside.
 
 Recommend `setup-ignore-hygiene.md` for the rule change; this task proposes the sweep.
 
@@ -101,7 +101,7 @@ Exclude from every proposal, without exception: `.git/` internals (except a stal
 
 ### Step 3 — Present findings and the change plan
 
-A table, grouped by category: path, size, category, proposed action (`archive` / `delete` / `add to .claudeignore` (Claude surfaces only, per Check 4) / `leave — flagged`), and a one-line reason.
+A table, grouped by category: path, size, category, proposed action (`archive` / `delete` / `add Read(...) deny rule` / `add to .claudeignore` (Claude surfaces only, per Check 4) / `leave — flagged`), and a one-line reason.
 
 Default every row to **archive** (move to `_archive/` inside the target). Reserve `delete` for truly worthless, regenerable files — `.DS_Store`, stale git locks — and even then it needs explicit per-file approval, never a blanket yes.
 
@@ -123,13 +123,13 @@ Then **stop and wait.**
 
 This step moves files in bulk and may delete some, so take a way back first: a git commit or tag when the project is under version control, otherwise a dated zip of just the affected folders stored outside the working tree. Confirm it exists before the first move. Retire it once Step 5 verifies the result.
 
-Apply only approved rows. Create `_archive/` if needed. For `.claudeignore` additions, show the diff before writing.
+Apply only approved rows. Create `_archive/` if needed. For `.claudeignore` additions and `permissions.deny` rules, show the diff before writing; merge rules into an existing `.claude/settings.json` and never overwrite it (`setup-ignore-hygiene.md` Step 3 has a merge that works as written).
 
 If a file turns out to be referenced somewhere after all, stop and re-present rather than moving it anyway.
 
 ### Step 5 — Verify
 
-Confirm nothing referenced was moved (grep the project for the names of archived files), the project's own tasks and skills still resolve, and any `.claudeignore` change is syntactically valid. Report what moved, what was deleted, and what was left flagged.
+Confirm nothing referenced was moved (grep the project for the names of archived files), the project's own tasks and skills still resolve, any `.claudeignore` change is syntactically valid, and `.claude/settings.json` still parses (`python3 -m json.tool .claude/settings.json`). Report what moved, what was deleted, and what was left flagged.
 
 ## Output
 

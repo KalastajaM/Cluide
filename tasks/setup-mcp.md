@@ -43,7 +43,7 @@ claude mcp list
 python3 -c 'import json,pathlib; p=pathlib.Path(".mcp.json"); print(list(json.loads(p.read_text()).get("mcpServers",{})) if p.exists() else "no project .mcp.json")'
 ```
 
-**In Cowork:** remote connectors are managed in Settings → Connectors; local servers live in `claude_desktop_config.json` (macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`). Check the local config if accessible, and otherwise rely on the tool listing below.
+**In Cowork:** remote connectors are managed in Customize → Connectors; local servers reach Cowork as local connectors (desktop extensions) or plugins that bundle them. Servers in `claude_desktop_config.json` (macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`) are a Claude Desktop chat mechanism that Anthropic documents as not available in Cowork (Guide 05; not re-tested live). Check that config if accessible, and otherwise rely on the tool listing below.
 
 In both environments, also list currently available tools:
 > "What MCP tools do you currently have access to? List them by server."
@@ -78,10 +78,10 @@ Present the most common MCP servers and ask which the user wants to set up:
 > - Computer Use — native desktop app control
 
 For each server the user wants, also ask:
-- **Scope?** Claude Code: user scope = every project, project scope = `.mcp.json` here (shareable via git), local scope = this project, private. Cowork: local servers in `claude_desktop_config.json` apply to all sessions; remote connectors are account-level.
+- **Scope?** Claude Code: user scope = every project, project scope = `.mcp.json` here (shareable via git), local scope = this project, private. Claude Desktop chat: local servers in `claude_desktop_config.json` apply to all chats but are not available in Cowork (Guide 05). Cowork: remote connectors are account-level; local servers come as local connectors (desktop extensions) or plugins.
 - **Credentials needed?** (API key, OAuth token, directory path)
 
-**In Cowork:** for Gmail/Calendar/Drive, Microsoft 365, Atlassian, and Slack, prefer the built-in connectors (Settings → Connectors) — OAuth is handled in-app and no JSON editing is needed. Only fall back to manual config for servers without a connector.
+**In Cowork:** for Gmail/Calendar/Drive, Microsoft 365, Atlassian, and Slack, prefer the built-in connectors (Customize → Connectors) — OAuth is handled in-app and no JSON editing is needed. Only fall back to manual config for servers without a connector.
 
 ### Step 3 — Set up each server
 
@@ -95,9 +95,9 @@ node --version && npx --version || echo "Node.js not installed — required for 
 ```
 If missing, tell the user: "Node.js is required. Install it from nodejs.org, then re-run this task."
 
-**b) Determine the target config** — Claude Code: prefer `claude mcp add` (with `--scope project` to write `.mcp.json`, or `--scope user` for everywhere); Cowork local servers: `claude_desktop_config.json`.
+**b) Determine the target config** — Claude Code: prefer `claude mcp add` (with `--scope project` to write `.mcp.json`, or `--scope user` for everywhere); Claude Desktop chat local servers: `claude_desktop_config.json` (for Cowork, a local connector or a plugin that bundles the server, per Guide 05).
 
-**c) If editing a JSON file directly** (Cowork local config, or project `.mcp.json`), read it first, or start with `{}`.
+**c) If editing a JSON file directly** (Claude Desktop config, or project `.mcp.json`), read it first, or start with `{}`.
 
 **d) Add the server entry** under `mcpServers` (or pass the equivalent to `claude mcp add`). Use the templates below. Pin versions where possible (replace `@latest` with a specific version after confirming).
 
@@ -111,10 +111,10 @@ If missing, tell the user: "Node.js is required. Install it from nodejs.org, the
 Ask the user which directories Claude should have access to.
 
 **GitHub** — use GitHub's official server, not the archived `@modelcontextprotocol/server-github` npm package:
-- **Remote (recommended)** — Claude Code: `claude mcp add --transport http github https://api.githubcopilot.com/mcp/` (OAuth handled on connect — no token to paste). Cowork: add the same URL as a custom connector (Settings → Connectors).
+- **Remote (recommended)** — Claude Code: `claude mcp add --transport http github https://api.githubcopilot.com/mcp/` (OAuth handled on connect — no token to paste). Cowork: add the same URL as a custom connector (Customize → Connectors).
 - **Local / GitHub Enterprise** — run GitHub's official `github/github-mcp-server` binary and pass a fine-grained token via its `env`; grant only the scopes needed (read-only if the use case allows).
 
-**Slack** — prefer the built-in **Slack connector** (Settings → Connectors in Cowork / Claude): OAuth handled in-app, no JSON. The old `@modelcontextprotocol/server-slack` npm package is archived; if you need a local server, pick a maintained one from the MCP Registry (see Step 5).
+**Slack** — prefer the built-in **Slack connector** (Customize → Connectors in Cowork / Claude): OAuth handled in-app, no JSON. The old `@modelcontextprotocol/server-slack` npm package is archived; if you need a local server, pick a maintained one from the MCP Registry (see Step 5).
 
 **Google Workspace / Microsoft 365 / Atlassian:**
 These require OAuth setup through the vendor's developer portal. Tell the user:
@@ -124,7 +124,7 @@ Guide the relevant setup steps based on their choice.
 **e) Write the updated config** — merge the new server entry without overwriting existing entries (not needed when using `claude mcp add`).
 
 **Security reminder** — after adding any credential to a config file, say:
-> "Credentials are now in `[config file]`. If this file lives in a git repo (e.g. `.mcp.json`), make sure it's in `.gitignore`, or keep tokens out of it and export them from your shell profile instead."
+> "Credentials are now in `[config file]`. If that file is `.mcp.json`, move the token out: never put a token in `.mcp.json`. Use the environment-variable reference its format supports (verify against current docs) and keep the file tracked. A server that needs an inline secret goes in local or user scope."
 
 ### Step 4 — Verify
 
@@ -142,4 +142,4 @@ Tell the user:
 - Which servers were added and where (scope / config file)
 - Which tools each server exposes
 - Any servers that were skipped and why
-- "To add more servers later, re-run this task, use `claude mcp add` (Claude Code), or Settings → Connectors / Developer (Cowork)."
+- "To add more servers later, re-run this task, use `claude mcp add` (Claude Code), or Customize → Connectors (Cowork), or Settings → Developer (Claude Desktop chat)."

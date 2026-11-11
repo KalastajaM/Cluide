@@ -53,7 +53,7 @@ my-skill/
 
 **`scripts/`** — Python or shell scripts the skill can execute when the host exposes an appropriate execution tool. Good for fixed-format artifact generation, data transformation, or any repeatable computation that doesn't need the assistant to reason about it.
 
-**Context note (Claude-specific exclusion example):** Files in `references/` and `scripts/` are not loaded into Claude's context automatically — the host initially discovers metadata and loads the skill body when invoked. To discourage Claude from loading them even when exploring the project, add the patterns to `.claudeignore` — but note that `.claudeignore` support varies by product and version; treat it as hygiene, not a security boundary, and pair it with `permissions.deny` rules for genuinely sensitive files (see [Guide 12](./12_SECURITY.md)). See [Guide 11 — Git Integration](./11_GIT_INTEGRATION.md) for `.claudeignore` setup.
+**Context note (Claude-specific exclusion example):** Files in `references/` and `scripts/` are not loaded into Claude's context automatically — the host initially discovers metadata and loads the skill body when invoked. Claude Code does not enforce `.claudeignore` (see [Guide 12](./12_SECURITY.md) §7), so an entry there documents the intent for readers and other tools only; a `Read(...)` deny rule in `permissions.deny` would also stop the skill's own reads, so use one only for files no skill should open. See [Guide 11 — Git Integration](./11_GIT_INTEGRATION.md) for the convention file.
 
 The SKILL.md file has two parts: a YAML frontmatter block, and the instruction body.
 

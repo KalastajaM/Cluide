@@ -224,7 +224,7 @@ A CLAUDE.md file can import other files using the same `@filepath` syntax:
 
 Use this to:
 - Share common rules across multiple projects without copy-pasting
-- Keep the root CLAUDE.md short while pulling in detailed references only when needed
+- Keep shared rules in one file that several projects import. Imported files load along with the CLAUDE.md that imports them, so importing does not reduce context. For material needed only in some sessions, use a read pointer to a companion file instead ([Guide 01](./01_PROJECT_INSTRUCTIONS.md), *the Reference Companion*)
 - Maintain a single source of truth for conventions used across repos
 
 ### Length discipline

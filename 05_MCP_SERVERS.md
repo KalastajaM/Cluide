@@ -36,8 +36,8 @@ Cowork and Claude Code configure MCP servers differently. The JSON shape — a `
 
 ### In Cowork (Claude Desktop)
 
-- **Remote connectors** — added through **Settings → Connectors** in the app (the connector directory, or a custom connector pointing at a remote MCP server URL). OAuth is handled in-app. This is the primary mechanism for Gmail, Calendar, Drive, Atlassian, and most SaaS tools.
-- **Local servers** — added via **Settings → Developer**, which opens `claude_desktop_config.json` (macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`; Windows: `%APPDATA%\Claude\claude_desktop_config.json`). This file takes the `mcpServers` block shown below. Servers configured here are bridged by the desktop app into Cowork sessions.
+- **Remote connectors** — added through **Customize → Connectors** in the app (the connector directory, or a custom connector pointing at a remote MCP server URL). OAuth is handled in-app. This is the primary mechanism for Gmail, Calendar, Drive, Atlassian, and most SaaS tools. On Team and Enterprise, an owner adds custom connectors under Organization settings → Connectors; members then connect them from Customize → Connectors.
+- **Local servers (Claude Desktop chat)** — added via **Settings → Developer**, which opens `claude_desktop_config.json` (macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`; Windows: `%APPDATA%\Claude\claude_desktop_config.json`). This file takes the `mcpServers` block shown below. Anthropic documents servers configured here as a separate mechanism that is not available in Cowork or claude.ai (custom-connectors article, checked 2026-11-11), so do not count on a Cowork session seeing them; this guide has not re-tested that live. For Cowork, use a local connector (desktop extension, `.mcpb`) or a plugin that bundles the server: Anthropic's Cowork article says these work through the desktop app. Cowork on third-party platforms permits local stdio servers by default (Anthropic help article 14680753, checked 2026-11-11; *re-verify*). If a setup you have observed does reach Cowork through this file, record it as "observed, contradicts vendor docs" with the date.
 - **Desktop extensions** (`.mcpb`) — installable local servers from the Connectors settings page, no JSON editing required.
 - **Plugins** — can bundle MCP servers via their own `.mcp.json`.
 
@@ -59,7 +59,7 @@ claude mcp add --scope project mytool -- npx -y some-mcp-server             # sh
 
 Use project scope when a server is only relevant to one project; use user scope for servers you use everywhere. Inspect with `claude mcp list` or the `/mcp` command in a session. For servers that authenticate over OAuth, `claude mcp login <name>` runs the flow from the shell and `claude mcp logout <name>` clears the stored token — useful when a server's auth expires mid-task and you would rather not open a session to fix it.
 
-**Minimal example** (this block lives in `.mcp.json` for Claude Code project scope, or in `claude_desktop_config.json` for Cowork local servers):
+**Minimal example** (this block lives in `.mcp.json` for Claude Code project scope, or in `claude_desktop_config.json` for Claude Desktop local servers):
 
 ```json
 {
@@ -91,7 +91,7 @@ Servers are grouped by context. Most setups need one block from Personal or Busi
 ### Personal (Google Workspace)
 **Via:** Google's official MCP server
 
-Google publishes an official MCP server covering Gmail, Google Calendar, Google Drive, Docs, and Sheets. Set it up following the Google Workspace MCP documentation, or add it as a custom connector in Claude (Settings → Connectors) — it handles OAuth authentication and exposes the full Workspace API surface. In Cowork, the built-in Gmail/Calendar/Drive connectors are the easiest route.
+Google publishes an official MCP server covering Gmail, Google Calendar, Google Drive, Docs, and Sheets. Set it up following the Google Workspace MCP documentation, or add it as a custom connector in Claude (Customize → Connectors) — it handles OAuth authentication and exposes the full Workspace API surface. In Cowork, the built-in Gmail/Calendar/Drive connectors are the easiest route.
 
 Typical tools: `gmail_search_messages`, `gmail_read_message`, `gmail_create_draft`, `gcal_list_events`, `gcal_create_event`, `drive_search_files`, `drive_read_file`
 
@@ -116,7 +116,7 @@ Typical tools: `searchJiraIssuesUsingJql`, `getJiraIssue`, `createJiraIssue`, `e
 #### Slack
 Read channel history, search messages, and post to channels. Useful for assistants that monitor team communication.
 
-The easiest route is the **Slack connector** in Cowork / Claude (Settings → Connectors) — OAuth handled in-app, no JSON. If you need a local server, pick a maintained one from the MCP Registry (see "Finding more servers" below). Avoid the old `@modelcontextprotocol/server-slack` npm package — it has been archived and unmaintained since early 2025.
+The easiest route is the **Slack connector** in Cowork / Claude (Customize → Connectors) — OAuth handled in-app, no JSON. If you need a local server, pick a maintained one from the MCP Registry (see "Finding more servers" below). Avoid the old `@modelcontextprotocol/server-slack` npm package — it has been archived and unmaintained since early 2025.
 
 ---
 
@@ -147,7 +147,7 @@ Access to GitHub repositories, issues, and pull requests. GitHub hosts an offici
 claude mcp add --transport http github https://api.githubcopilot.com/mcp/
 ```
 
-In Cowork, add the same URL as a custom connector (Settings → Connectors). If you need a local server (e.g. for GitHub Enterprise), use GitHub's official `github/github-mcp-server` binary. The old `@modelcontextprotocol/server-github` npm package is archived — don't use it in new setups.
+In Cowork, add the same URL as a custom connector (Customize → Connectors). If you need a local server (e.g. for GitHub Enterprise), use GitHub's official `github/github-mcp-server` binary. The old `@modelcontextprotocol/server-github` npm package is archived — don't use it in new setups.
 
 Key tools: `list_issues`, `create_issue`, `get_pull_request`, `search_code`
 
@@ -175,7 +175,7 @@ Key tools: `navigate`, `read_page`, `get_page_text`, `find`, `left_click`, `form
 
 **A note on the tool namespace.** The prefix these tools appear under is not stable across surfaces — a Cowork session sees `mcp__claude-in-chrome__*`, and other surfaces have exposed a differently cased variant. A skill that hard-codes the string will break silently when it is wrong, so read the namespace from your own tool list before writing it into a skill, and re-check it after an extension or app update.
 
-**The extension is also a Cowork surface.** Claude in Chrome reached general availability on every paid plan on 26 August 2026, and its side panel runs a full Cowork session rather than a browser-only chat: the skills, connectors and plugins you have configured elsewhere are available in it, and the session persists to your history, so work started in the browser can be picked up in the desktop or mobile app and the other way round. That turns the extension into a decision about *where a session runs*, not only about which tool drives the browser — and it makes the browser a sensible home for the multi-step web work described above, since the session that scrapes a vendor portal is the same one that holds your spreadsheet skill.
+**The extension is also a Cowork surface.** Claude in Chrome reached general availability on every paid plan on 26 August 2026, and on Max, Ultra and Team (Pro as the rollout reaches it; Enterprise when an admin enables Claude in Chrome and Cowork in the cloud) its side panel runs a full Cowork session rather than a browser-only chat; everyone else gets the classic side panel. In the full session the skills, connectors and plugins you have configured elsewhere are available, and the session persists to your history, so work started in the browser can be picked up in the desktop or mobile app and the other way round. That turns the extension into a decision about *where a session runs*, not only about which tool drives the browser — and it makes the browser a sensible home for the multi-step web work described above, since the session that scrapes a vendor portal is the same one that holds your spreadsheet skill.
 
 Autonomous multi-step actions are on by default: the extension acts through a sequence of steps without asking you to approve each one, with a safety classifier checking every action first. You can turn that off in settings and go back to approving each action, and in Cowork you grant browser access per website — the "Allow all browser actions" option was removed from the permission cards in August 2026. [Guide 12](./12_SECURITY.md) covers when to make that per-site call.
 
@@ -207,7 +207,7 @@ Key tools: `screenshot`, `left_click`, `type`, `scroll`, `key`, `open_applicatio
 
 **Finding more servers:** The maintained discovery points are the official MCP Registry at [registry.modelcontextprotocol.io](https://registry.modelcontextprotocol.io) and the reference server repo at [github.com/modelcontextprotocol/servers](https://github.com/modelcontextprotocol/servers). If you're using Claude.ai (the web interface) or Cowork, the built-in connector directory lets you discover and enable integrations directly — no JSON required.
 
-**If you are writing a server rather than installing one:** the MCP specification of 28 July 2026 deprecates the HTTP+SSE transport along with the Roots, Sampling and Logging features, on a twelve-month window ([changelog](https://modelcontextprotocol.io/specification/2026-07-28/changelog)). Target streamable HTTP for remote servers and stdio for local ones, and treat a server still built on HTTP+SSE as something to migrate rather than to copy.
+**If you are writing a server rather than installing one:** the MCP specification of 28 July 2026 deprecates Roots, Sampling, Logging and OAuth Dynamic Client Registration (earliest removal: the first revision on or after 2027-07-28) and reclassifies HTTP+SSE, deprecated since 2025-03-26, with removal possible three months after SEP-2596 is final. The same revision makes the protocol stateless (no `initialize` handshake or `Mcp-Session-Id`; servers must implement `server/discover`) ([changelog](https://modelcontextprotocol.io/specification/2026-07-28/changelog), [deprecated features](https://modelcontextprotocol.io/specification/2026-07-28/deprecated)). Target streamable HTTP for remote servers and stdio for local ones, and treat a server still built on HTTP+SSE as something to migrate rather than to copy.
 
 ---
 
@@ -278,7 +278,7 @@ If a tool you need appears in a list but calling it errors or is refused, look f
 
 ## Credentials and Security
 
-MCP server credentials (API keys, OAuth tokens) live in the MCP config file (`claude_desktop_config.json` for Cowork local servers, `.mcp.json` or `~/.claude.json` for Claude Code, `~/.codex/config.toml` or a trusted project `.codex/config.toml` for Codex) or in environment variables. Rules:
+MCP server credentials (API keys, OAuth tokens) live in the MCP config file (`claude_desktop_config.json` for Claude Desktop local servers, `.mcp.json` or `~/.claude.json` for Claude Code, `~/.codex/config.toml` or a trusted project `.codex/config.toml` for Codex) or in environment variables. Rules:
 
 - **Never put credentials in `AGENTS.md`, `CLAUDE.md`, project instructions, skill files, or memory files** — those get read back in session output. Credentials belong only in the server's `env` block in the MCP config, or in a `.env` file loaded by the server.
 - **Use read-only tokens where possible.** A read-only Gmail token is safer than one with send permission, for any skill that only reads.
@@ -299,7 +299,7 @@ When an MCP tool fails, the cause is usually one of a handful of known issues pe
 Run through this checklist for any server that appears dead:
 
 1. **Is the server process running?** Ask the assistant: *"What MCP tools do you have available?"* If a server's tools are missing, it never started.
-2. **Check config syntax.** A trailing comma or missing quote kills the entire config. Validate the file your server lives in — Cowork: `cat ~/Library/Application\ Support/Claude/claude_desktop_config.json | python3 -m json.tool`; Claude Code: `.mcp.json` or run `claude mcp list`.
+2. **Check config syntax.** A trailing comma or missing quote kills the entire config. Validate the file your server lives in — Claude Desktop: `cat ~/Library/Application\ Support/Claude/claude_desktop_config.json | python3 -m json.tool`; Claude Code: `.mcp.json` or run `claude mcp list`.
 3. **Check the launch command.** Run the server's `command` + `args` manually in a terminal. If it errors, you'll see the real failure (missing dependency, wrong Node version, etc.).
 4. **Node/npx version.** Most MCP servers require Node 18+. Run `node --version`. If outdated, update Node before anything else.
 5. **Network.** Servers that use OAuth need internet access at launch to validate tokens. VPN, proxy, or firewall changes can break a previously working server.

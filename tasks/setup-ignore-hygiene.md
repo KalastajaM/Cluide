@@ -12,12 +12,12 @@ Execute only the selected native branch. Claude commands/settings/hooks are Clau
 
 ## Native implementation
 
-Run the `.gitignore` inventory and tracked-file checks on any local Git repository. For Codex, skip `.claudeignore` creation and the PostToolUse option; use the selected `AGENTS.md` to state which generated paths should be read only on demand, and use actual sandbox/access controls for restrictions. No OpenAI ignore filename is implied. For ChatGPT sources, audit the uploaded source inventory, remove or replace unnecessary generated/personal artifacts through the supported project UI, and record the new revision; local Git checks are N/A when no repository is supplied. In a dual-platform repo `.claudeignore` may remain as a labelled Claude advisory convention, but the shared policy must not treat it as enforced.
+Run the `.gitignore` inventory and tracked-file checks on any local Git repository. For Codex, skip `.claudeignore` creation and the PostToolUse option; use the selected `AGENTS.md` to state which generated paths should be read only on demand, and use actual sandbox/access controls for restrictions. No OpenAI ignore filename is implied. For ChatGPT sources, audit the uploaded source inventory, remove or replace unnecessary generated/personal artifacts through the supported project UI, and record the new revision; local Git checks are N/A when no repository is supplied. In a dual-platform repo `.claudeignore` may remain as a labelled convention file, but Claude Code does not enforce it (Guide 12 §7) and the shared policy must not treat it as enforced; for Claude Code, propose matching `Read(...)` deny rules instead.
 
-Step 5 offers only supported choices: Claude Code hook (Claude Code only), a standing instruction in the selected policy (behavioral guidance on every surface), or manual audit. Scope Step 3's `.claudeignore` operation to Claude projects and Step 6's report to actions actually applied.
+Step 5 offers only supported choices: Claude Code hook (Claude Code only), a standing instruction in the selected policy (behavioral guidance on every surface), or manual audit. Scope Step 3's `.claudeignore` and deny-rule operations to Claude projects and Step 6's report to actions actually applied.
 
 ## Purpose
-Audit the project for files that should be ignored by git and/or Claude, update `.gitignore` and `.claudeignore` accordingly, and optionally install a PostToolUse hook (or CLAUDE.md rule) that flags newly created files that should be ignored.
+Audit the project for files that should be ignored by git and/or kept out of Claude's context, update `.gitignore` and the `.claudeignore` convention file accordingly, propose matching `Read(...)` deny rules for Claude Code, and optionally install a PostToolUse hook (or CLAUDE.md rule) that flags newly created files that should be ignored.
 
 This task is designed to be portable and run on any project. Do not assume any files or directories already exist — check first.
 
@@ -46,7 +46,7 @@ Use `git ls-files -o --exclude-standard` to list untracked files and `git ls-fil
 - IDE/editor directories: `.vscode/`, `.idea/`, `*.code-workspace`
 - Personal/private data directories (Profile/, personal data folders)
 
-**Should go in `.claudeignore`** (keep out of Claude context, but may still be in git — note this is an advisory convention, not enforced; for files that must not be accessed, use `permissions.deny` or Cowork folder scoping per Guide 12 §7):
+**Should go in `.claudeignore`** (keep out of Claude context, but may still be in git — note this is a convention for readers and other tools, not enforced by Claude Code, and support on other Claude surfaces is untested; to keep Claude Code's file tools off a path, use `Read(...)` rules in `permissions.deny`, and for files that must not be accessed also Cowork folder scoping, per Guide 12 §7):
 - `.git/` directory
 - Large generated archives or history directories (e.g. `Actions/History/`, `*.archive/`)
 - Compiled or bundled skill files
@@ -64,6 +64,9 @@ Proposed additions to .gitignore:
 Proposed additions to .claudeignore:
   [category]: pattern1, pattern2, ...
 
+Proposed Read(...) deny rules for .claude/settings.json (Claude Code only):
+  Read(path-pattern), ...
+
 Already covered (no changes needed):
   pattern1, pattern2, ...
 ```
@@ -78,14 +81,27 @@ After the user approves (in full or partially):
 
 1. Check if `.gitignore` exists. If not, create it with a header comment. If yes, append the approved additions.
 2. **Claude projects only:** check if `.claudeignore` exists. If not, create it using the template below. If yes, append the approved additions.
+3. **Claude Code projects only:** for the approved entries that should stay out of Claude Code's reads, add the matching `Read(...)` rules to `permissions.deny` in `.claude/settings.json`. Never overwrite an existing settings file: read it, add only the rules not already present, show the diff and write it back. A merge that works as written (it stops without writing if the file is not valid JSON):
+   ```bash
+   python3 - .claude/settings.json 'Read(./output/**)' 'Read(./data/raw/**)' <<'PY'
+   import json, os, sys
+   path, rules = sys.argv[1], sys.argv[2:]
+   cfg = json.load(open(path)) if os.path.exists(path) else {}
+   deny = cfg.setdefault("permissions", {}).setdefault("deny", [])
+   deny += [r for r in rules if r not in deny]
+   os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+   json.dump(cfg, open(path, "w"), indent=2)
+   PY
+   ```
+   Replace the two example rules with the approved ones.
 
 **`.claudeignore` header template** (use when creating from scratch):
 ```
-# .claudeignore — files Claude should not load as context (advisory convention).
-# These files remain on disk and in git (if tracked). Claude reads this file as a
-# standing instruction; it is NOT technically enforced. For files that must not be
-# accessed, use permissions.deny in .claude/settings.json (Claude Code) or keep
-# them outside the connected folder (Cowork).
+# .claudeignore — a convention file listing what should stay out of context.
+# Claude Code does not enforce it (Guide 12 §7); support on other Claude surfaces
+# is untested. These files remain on disk and in git (if tracked). Not a security
+# boundary: to keep Claude Code off a path use Read(...) rules in permissions.deny
+# in .claude/settings.json, or keep files outside the connected folder (Cowork).
 
 ```
 
@@ -210,7 +226,7 @@ Select `AGENTS.md` for Codex/dual-platform, `CLAUDE.md` for Claude-only, or the 
 
 When creating or editing files, check Git hygiene and unnecessary context loading:
 - **Add to `.gitignore`**: run logs, output files, auto-generated bundles, any file containing personal data (paths, names, company names), secrets, temp files.
-- Keep large generated files out of routine context reads. On Claude, `.claudeignore` may document this advisory convention; it is not an enforced boundary.
+- Keep large generated files out of routine context reads. On Claude Code, use `Read(...)` rules in `permissions.deny` for enforcement; `.claudeignore` only documents the convention.
 
 If a newly created file should be ignored but is already tracked by git, flag it and suggest: `git rm --cached <file>`
 ```
@@ -220,7 +236,7 @@ If a newly created file should be ignored but is already tracked by git, flag it
 ### Step 6 — Confirm
 
 Tell the user:
-- What was added to `.gitignore` and `.claudeignore`
+- What was added to `.gitignore` and `.claudeignore`, and which `Read(...)` deny rules were merged into `.claude/settings.json`
 - Whether any files were untracked from git
 - Which enforcement option was set up (hook, CLAUDE.md rule, or none)
 - What the enforcement does: "Going forward, whenever a file is written or edited in this project, I'll check it against ignore patterns and flag anything that looks like it should be ignored."

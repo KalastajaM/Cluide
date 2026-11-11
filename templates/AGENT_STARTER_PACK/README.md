@@ -32,7 +32,7 @@ cp scout.md builder.md verifier.md researcher.md ~/.claude/agents/
 ```
 
 For one project only: copy into that project's `.claude/agents/` instead. Project-level
-definitions override user-level ones with the same name. Verify with `/agents` in a session.
+definitions override user-level ones with the same name. A running session does not detect a newly created `~/.claude/agents/` directory, so start a new session. Verify by asking Claude which custom subagents it can use (or check that the copied files are in `~/.claude/agents/`); the `/agents` wizard was removed in Claude Code v2.1.198, and the command now only prints a reminder.
 
 ## Recommended session setup
 

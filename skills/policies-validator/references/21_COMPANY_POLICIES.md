@@ -82,7 +82,7 @@ Every project's `policies-validator` skill references these via absolute paths.
 
 **File hygiene:**
 - Keep the folder outside any git-tracked directory (simplest)
-- If it must live inside a repo for any reason, add the folder to both `.gitignore` **and** `.claudeignore` — see [Guide 11](./11_GIT_INTEGRATION.md)
+- If it must live inside a repo for any reason, add the folder to `.gitignore` **and** add a `Read(...)` deny rule for it in `permissions.deny`, because Claude Code does not enforce `.claudeignore` — see [Guide 11](./11_GIT_INTEGRATION.md) and [Guide 12](./12_SECURITY.md) §7
 
 **Best for:** individual users whose policies change infrequently, or air-gapped / offline work.
 
@@ -269,7 +269,7 @@ This makes the dependency visible when someone maintains the task — they know 
 Checks:
 
 - **Before committing any change to Cluide:** grep the repo for company names, internal URLs, and policy IDs. Zero matches expected.
-- **If policies are stored locally inside a git-tracked folder:** add the folder to `.gitignore` and `.claudeignore`. See [Guide 11](./11_GIT_INTEGRATION.md).
+- **If policies are stored locally inside a git-tracked folder:** add the folder to `.gitignore` and add a `Read(...)` deny rule for it in `permissions.deny` (Claude Code does not enforce `.claudeignore`). See [Guide 11](./11_GIT_INTEGRATION.md) and [Guide 12](./12_SECURITY.md) §7.
 - **If policies are fetched via MCP:** nothing to ignore — but confirm the MCP server's authentication flow does not log credentials into session transcripts. See [Guide 12](./12_SECURITY.md).
 
 **The skill itself** (`skills/policies-validator/SKILL.md`) is Cluide-safe by design: it contains only `[PLACEHOLDER: ...]` markers where policy names, paths, and owners go. The filled-in version lives in `~/.claude/skills/policies-validator/SKILL.md` on each user's machine (or in `.claude/skills/` per project), not in the repo.
