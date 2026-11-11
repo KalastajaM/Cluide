@@ -111,7 +111,7 @@ The main session, with everything: project files, memory, source material, prior
 
 ### Pass 3 — Reconcile
 
-The main session does the merge — it is the only one holding both reports, and its job here is arbitration, not review. One caveat belongs to [Guide 27](./27_INDEPENDENT_JUDGMENT.md): if this session has already heard what *you* think of the artefact, it knows which findings are yours and will defer to them, so run the merge in a fresh session with the two reports anonymised. Inputs: the blind report and the in-context findings. Findings are matched by *location in the artefact*, not by number, because the two passes number independently.
+The merge is arbitration, not review. Run it in a fresh session if the main session has heard your view of the artefact, which is the usual case: a session that knows which findings are yours will defer to them ([Guide 27](./27_INDEPENDENT_JUDGMENT.md)). Label the two reports by pass (blind / in context), because the keep-and-mark rule below depends on it. Withhold only your own opinion and which findings you agree with; Guide 27's A/B anonymisation hides authorship, not pass. Inputs: the blind report and the in-context findings. Findings are matched by *location in the artefact*, not by number, because the two passes number independently.
 
 The rule that makes it work: where the blind pass flagged something the context explains, **keep the finding** and mark it `Explained by context`, stating the explanation. Do not delete it. The external reader is blind too, so a finding that only your project file dissolves is still a real weakness in the artefact.
 

@@ -89,6 +89,7 @@ State, per class of change, what "done" requires. Not "run the tests" — specif
 ```markdown
 ## Verification — before reporting any change as done
 
+- Smoke check → `[one command or click path that exercises the main screen]`; expect `[visible result]`.
 - UI / CSS change → take a screenshot via a browser MCP such as the assistant in
   Chrome (or another preview/screenshot MCP if you have one installed),
   confirm the element looks correct. Code review alone is not enough.
@@ -210,6 +211,6 @@ Before you consider the helper app's shared policy "done":
 - [ ] Convention list populated with the rules you have already caught yourself breaking.
 - [ ] `.claude/settings.local.json` lists only the tools the workflow actually uses.
 - [ ] `plans/` folder exists; use a simple feature-plan format (goal, checkboxed steps, file paths touched).
-- [ ] Early-hardening rules (HTML escaping, secrets, validation, backup) written *before* the code needs them.
+- [ ] All eight Early Hardening items written *before* the code needs them, or a one-line reason why one does not apply.
 
 If each of those is in place, the app can survive six months of vibe-coding without rotting.

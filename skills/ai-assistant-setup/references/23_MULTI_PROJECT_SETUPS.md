@@ -129,10 +129,9 @@ reference, not as a blanket step every session opens with.
 folder mid-task, and the person approves it as a one-click permission prompt; this
 does not require restarting the task. **Verified 2026-09-21:** three sibling folders
 were requested and granted mid-session, in two separate fresh sessions, with no task
-restart. This corrects the older claim in
-[Guide 17](./17_TROUBLESHOOTING.md#problem-claude-cant-reach-my-local-folder-mid-task)
-that folder access can only be granted when a task starts — that limit applies to the
-*first* folder a task is opened with, not to requesting an additional one afterward.
+restart. The limit that a task's folders are set when it starts applies to the *first* folder
+only ([Guide 17](./17_TROUBLESHOOTING.md#problem-cowork-cant-reach-my-local-folder-mid-task)
+lists this as a cause).
 The mid-session request is verified live only: it is not described in Anthropic's
 public docs as of 2026-09-21, so re-check it after a desktop app update.
 
