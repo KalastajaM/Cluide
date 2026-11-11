@@ -118,13 +118,15 @@ For **Skip for now**: record as `[TBD]` — the skill will still run but will em
 
 Before asking, show the tier definitions:
 
-> **T1 — Hard block.** Violation causes legal, security, or compliance exposure. The skill will refuse to produce output and escalate. Examples: data classification, export control.
+> **T1 — Stop and escalate.** Violation causes legal, security, or compliance exposure. The skill will refuse to produce output and escalate. Examples: data classification, export control. It cannot stop data the user has already pasted or uploaded — that needs a control outside the assistant (Guide 21 §1, *What a policy line cannot stop*).
 >
 > **T2 — Required check.** Violation is surface-level but should be flagged. The skill drafts the response then attaches an alert or an aligned confirmation. Examples: AI use policy, Code of Conduct.
 >
 > **T3 — Soft guidance.** The policy shapes how Claude writes. No visible alert; the policy just influences output. Examples: style guides, preferred vendors.
 
-For each policy, use the available question tool, or ask in chat: `T1 — Hard block` / `T2 — Required check` / `T3 — Soft guidance`.
+For each policy, use the available question tool, or ask in chat: `T1 — Stop and escalate` / `T2 — Required check` / `T3 — Soft guidance`.
+
+For each policy classified T1, ask one follow-up: "What stops this breach before it reaches the assistant — DLP, an admin setting, an approved internal tool, training, or nothing yet?" Record the answer, or `none`, for the skill's *Upstream controls* table. If the answer is `none`, tell the user once that the skill will catch the breach only after the data has been sent, and that the gap belongs with the policy owner.
 
 #### 3.4 — Escalation contacts
 
@@ -191,6 +193,8 @@ Edit the installed native skill selected above (Codex: `.agents/skills/policies-
 | 1 | Policy name | T1/T2/T3 | filepath or "MCP: [tool + arg]" | One-line purpose |
 ```
 
+**5.1a — Upstream controls (§2):** fill the *Upstream controls* table with one row per T1 policy and the answer collected in Step 3.3. Write `none` where the user named nothing; do not leave it blank or invent a control.
+
 **5.2 — Escalation Path (§5):** fill in the contact table with collected answers. Leave rows the user did not provide as `[not specified — ask the skill maintainer]`.
 
 **5.3 — Policy Loading Notes (§6):** for each policy in the registry, add a loading instruction:
@@ -256,7 +260,9 @@ Test 2 — T2 adjacent:
 Test 3 — T1 violating:
   Ask Claude to do something a T1 policy prohibits.
   Example generated from your policies: [auto-generated based on T1 entries]
-  Expected: 🛑 POLICY BLOCK — response halted, policy cited.
+  Use mock data only — pasting real classified data is itself the breach.
+  Expected: 🛑 POLICY BLOCK — response halted, policy cited, and for a
+  breach in the input, a plain statement that the content was already sent.
 ```
 
 Ask the user to run the three prompts in a fresh session and report back whether the output matched expectations.
@@ -267,9 +273,9 @@ Print:
 
 ```
 Policies wired: N
-  T1 (hard block):       [count]
-  T2 (required check):   [count]
-  T3 (soft guidance):    [count]
+  T1 (stop and escalate): [count]  (upstream control: none for [count])
+  T2 (required check):    [count]
+  T3 (soft guidance):     [count]
 
 Installed at:  [path to SKILL.md]
 CLAUDE.md updated: [path(s)]

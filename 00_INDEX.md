@@ -290,7 +290,7 @@ Covers: Shared in-session work patterns with native file references, decision co
 
 *Make the assistant honour your organisation's AI use policy, Code of Conduct, data classification, and similar — without copying the policy content into Cluide.*
 
-Covers: the separation principle (generic Cluide vs. private policy content vs. the skill/shared-policy bridge), two storage patterns (central user-level folder and external systems via MCP), a tiered enforcement model (T1 hard block, T2 required check, T3 soft guidance), worked examples for each tier, file hygiene so policies never leak into the repo, verification prompts, and maintenance.
+Covers: the separation principle (generic Cluide vs. private policy content vs. the skill/shared-policy bridge), two storage patterns (central user-level folder and external systems via MCP), a tiered enforcement model (T1 stop and escalate, T2 required check, T3 soft guidance), what a policy line cannot stop — input already sent — and where the before-send, read and action controls sit, worked examples for each tier, file hygiene so policies never leak into the repo, verification prompts, and maintenance.
 
 **Use this when:** your company has policies that the assistant should respect across projects — and you want them enforced automatically, at the right strictness per policy, without retyping the policy text into the shared policy or skills.
 
@@ -707,7 +707,7 @@ A structured security audit with separate Claude and OpenAI routes for a target 
 
 ### policies-validator
 
-Enforcement layer for company policies — AI use policy, Code of Conduct, data classification, AI usage guidelines, and similar. Keeps policy *content* outside Cluide (stored centrally or fetched via MCP) and applies tiered enforcement: T1 hard block, T2 required check with `✅ POLICY ALIGNED` / `⚠️ POLICY ALERT` output, T3 soft guidance. Ships as a placeholder-filled template; `tasks/setup-policies.md` fills it in.
+Enforcement layer for company policies — AI use policy, Code of Conduct, data classification, AI usage guidelines, and similar. Keeps policy *content* outside Cluide (stored centrally or fetched via MCP) and applies tiered enforcement: T1 stop and escalate, T2 required check with `✅ POLICY ALIGNED` / `⚠️ POLICY ALERT` output, T3 soft guidance. Ships as a placeholder-filled template; `tasks/setup-policies.md` fills it in.
 
 **Install:** Follow [Guide 03](./03_SKILLS.md) for the selected surface, preserving the complete `policies-validator/` folder. Test the installed workflow; source-only projects can request it explicitly. Run `tasks/setup-policies.md` to populate the Policy Registry and wire the shared-policy reference.
 

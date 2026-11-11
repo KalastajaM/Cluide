@@ -1,7 +1,7 @@
 ---
 name: policies-validator
 description: >
-  Company policy guardrail, applying three enforcement tiers: hard block (T1),
+  Company policy guardrail, applying three enforcement tiers: stop and escalate (T1),
   required check (T2), soft guidance (T3). Use this skill when the request touches
   one of the policies in its Policy Registry (§1) — typically drafting external or
   internal communications, handling classified data, choosing a tool or vendor,
@@ -47,9 +47,19 @@ Fill this table for each policy that should apply. Remove example rows that do n
 
 | Tier | Name | When to use | Action on relevance |
 |---|---|---|---|
-| **T1** | Hard block | Violation causes legal, security, or compliance exposure | Pre-action check. On violation: **stop, do not produce the requested output**, emit `🛑 POLICY BLOCK`, point to the policy and owner. |
+| **T1** | Stop and escalate | Violation causes legal, security, or compliance exposure | Pre-action check. On violation: **stop, do not produce the requested output**, emit `🛑 POLICY BLOCK`, point to the policy and owner. |
 | **T2** | Required check | Violation is embarrassing, requires author action, or should be surfaced to the user | Pre-response checklist. Emit `⚠️ POLICY ALERT` on drift, or `✅ POLICY ALIGNED` on pass. |
 | **T3** | Soft guidance | The policy shapes *how*, not *whether* — tone, style, preferences | Load into context while drafting. Apply judgment. No required output block. |
+
+**What this skill cannot stop.** Every tier acts on what the assistant does next. None can stop input the user has already sent: by the time this skill reads a pasted file and recognises Confidential data, the service has received it. For a T1 policy whose breach is the act of sending, the real control sits upstream — training and redaction, DLP or endpoint controls, admin settings, an approved internal tool, or (Claude Code only) a `UserPromptSubmit` hook. See *What a policy line cannot stop* in [references/21_COMPANY_POLICIES.md](references/21_COMPANY_POLICIES.md) §1.
+
+### Upstream controls
+
+For each T1 policy, record the control outside this skill that prevents the breach, or `none` if there is none. A `none` is a known gap the policy owner should see, not a reason to treat this skill as the control.
+
+| Policy | Upstream control |
+|---|---|
+| [PLACEHOLDER: T1 policy name] | [PLACEHOLDER: e.g. "DLP blocks uploads of files labelled Confidential" / "none"] |
 
 ---
 
@@ -65,7 +75,7 @@ For each relevant policy: load the content using the loading method in §6 (file
 
 ### Step 3 — Tier-conditional check
 
-- **For each relevant T1 policy:** apply a hard pre-action check. If the request would cause a violation, halt. Do not produce the requested output. Emit `🛑 POLICY BLOCK` (see §4).
+- **For each relevant T1 policy:** apply a pre-action check. If the request would cause a violation, halt. Do not produce the requested output. Emit `🛑 POLICY BLOCK` (see §4).
 - **For each relevant T2 policy:** draft the response, then run the checklist below, then attach either `⚠️ POLICY ALERT` or `✅ POLICY ALIGNED` (see §4).
 - **For each relevant T3 policy:** apply the guidance while drafting. No output block is required.
 
@@ -104,6 +114,8 @@ What to do next: [Concrete next step for the user — redact, re-route, escalate
 ```
 
 Produce the block *instead of* the requested output. Do not include a partial draft.
+
+When the breach is in the user's own input (a paste, an upload, an attachment), say plainly that the content has already reached this service, do not quote or restate the sensitive fields, and include the policy's reporting step if it has one. The block stops the response; it does not undo the send.
 
 ### ⚠️ POLICY ALERT (T2)
 
