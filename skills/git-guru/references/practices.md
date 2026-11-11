@@ -151,8 +151,9 @@ build/
 
 Plus per-repo: data snapshots, generated outputs, backup folders, quarantine
 folders like `_to_delete/` — and whenever the `_to_delete/` quarantine pattern
-is used in a repo (it lives at the repo root), the ignore rule for it is
-mandatory in the same change, or it haunts every status. Two checks whenever
+is used in a repo (at the location the repo's profile names; `_to_delete/` at
+the root only when the repo has no ignored working folder), the ignore rule for
+it is mandatory in the same change, or it haunts every status. Two checks whenever
 touching ignore files: (1) is anything **tracked** that the rules would ignore —
 if so it stays tracked until `git rm --cached`; (2) does an ignore rule cover
 one artifact but not its near-identical sibling.
@@ -277,11 +278,22 @@ One-time setup per repo; the UI is clearer than `gh api` for a one-off.
   are ancestors of main — safe to delete. **Squash-merged branches never show
   up there** (the squash creates a new commit; the branch's own commits are not
   ancestors), so under this skill's default flow `--merged` proves little. The
-  checks that actually answer "is this branch's work in main": an empty
-  `git diff main...<branch>`, `git cherry main <branch>` showing only `-` lines,
-  or `gh pr list --state merged --head <branch>`. A branch failing all three
-  gets a look before deletion: `git log main..<branch> --oneline` shows what
-  would be lost.
+  checks that actually answer "is this branch's work in main": the containment
+  test from `stacked-prs.md`, which holds when merging the branch into main
+  changes nothing (needs git 2.38 or newer, for `merge-tree --write-tree`):
+
+  ```bash
+  [ "$(git merge-tree --write-tree main "$branch" | head -1)" = \
+    "$(git rev-parse 'main^{tree}')" ] && echo "contained in main" || echo "NOT contained"
+  ```
+
+  or `gh pr list --state merged --head <branch>` (needs network), or
+  `git cherry main <branch>` showing only `-` lines (single-commit branches
+  only: patch-ids of a squashed multi-commit branch never match). A branch
+  failing the containment test gets a look before deletion:
+  `git log main..<branch> --oneline` shows what would be lost. A three-dot
+  diff (`main...<branch>`) is no check here: it compares against the old fork
+  point and is never empty for a branch that has changes.
 - **A pile of uncommitted changes of mixed vintage** (a repo left uncommitted for weeks):
   don't guess. Diff-review the changes, group them into thematic commits
   (explicit paths; to split one file's hunks without the interactive

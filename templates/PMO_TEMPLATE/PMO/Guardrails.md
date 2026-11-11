@@ -64,10 +64,10 @@ Refer to the **Current Planning Calculations** and **Financial Benefit & Costs**
 
 ## 5. Stakeholder Segmentation
 
-Refer to the **Objectives** section of the Initiative Charter for stakeholder and workstream definitions.
+Refer to the **Stakeholder Segmentation** section of the Initiative Charter for the stakeholder groups, their priority and how each is treated. Keep this section only while the Charter defines segments.
 
 **Guardrail**:
-- Do not apply high-effort resources to low-priority workstreams without justification
+- Do not apply high-effort resources to low-priority stakeholder groups without justification
 - Do not apply one-size-fits-all approaches where the Charter specifies differentiated treatment of stakeholder groups
 - Any segmentation change must be validated against the Charter
 
@@ -132,7 +132,7 @@ When this skill is active, apply the following checklist to every response:
 ### Before answering:
 - [ ] Does this action/recommendation align with the strategic objectives? *(Charter: Objectives)*
 - [ ] Is it financially consistent with the baseline and targets? *(Charter: Current Planning Calculations)*
-- [ ] Does it respect the stakeholder segmentation model? *(Charter: Objectives)*
+- [ ] Does it respect the stakeholder segmentation model? *(Charter: Stakeholder Segmentation)*
 - [ ] Does it respect confirmed milestones and deadlines? *(Charter: High-Level Implementation Steps)*
 - [ ] Does it treat confirmed decisions as fixed? *(Section 7 above)*
 - [ ] Does it address or acknowledge relevant risks? *(Charter: Risks & Mitigants)*

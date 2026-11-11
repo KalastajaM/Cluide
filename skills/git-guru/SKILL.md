@@ -71,9 +71,10 @@ mount wedges the repo. Detect first.
   `checkout`/`switch` of a branch, `merge` (fast-forward included),
   `reset --hard`, `stash pop`, `rebase`, `cherry-pick`. They need unlink, fail
   half-way, and can leave HEAD on one branch with the files of another. Create
-  branches by writing refs, restore files with `git show HEAD:<path> > <path>`,
-  and hand anything else to the user's terminal (recipes in the mechanics
-  reference).
+  branches by writing refs, restore files through a temporary file with
+  `git show "HEAD:./<path>" > /tmp/restore && cat /tmp/restore > "<path>"` (a
+  wrong path then cannot empty the original), and hand anything else to the
+  user's terminal (recipes in the mechanics reference).
 
 ### 1. Diagnose — always first, never from memory
 
@@ -294,7 +295,7 @@ reads the question cold.
    the values on failure:
 
    ```bash
-   T=$(git ls-remote origin 'refs/tags/v1.2.0^{}' | cut -f1); M=$(git ls-remote origin refs/heads/main | cut -f1); [ -n "$T" ] && [ -n "$M" ] && [ "$T" = "$M" ] && echo RELEASED || echo "NOT RELEASED (tag=$T main=$M)"
+   T=$(git ls-remote origin 'refs/tags/v1.2.0^{}' | cut -f1); [ -z "$T" ] && T=$(git ls-remote origin refs/tags/v1.2.0 | cut -f1); M=$(git ls-remote origin refs/heads/main | cut -f1); [ -n "$T" ] && [ -n "$M" ] && [ "$T" = "$M" ] && echo RELEASED || echo "NOT RELEASED (tag=$T main=$M)"
    ```
 
    `scripts/verify-tag.sh` packages this check.
