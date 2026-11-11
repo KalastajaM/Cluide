@@ -86,7 +86,7 @@ Version numbers in filenames are the single most common document-management fail
 The convention that survives contact with reality:
 
 - **A stable filename, forever.** `Access-Control-Policy.docx`, not `Access-Control-Policy-v2.4.docx`. Every link, citation and register row points here and never breaks.
-- **A short identifier that outlives the title.** `DOC-042`. Documents get renamed and merged; the identifier is what the evidence file, the register row and the cross-reference in another document all agree on. Titles are not stable enough to carry that load.
+- **A short identifier that outlives the title.** `DOC-042`. Documents get renamed and merged; the identifier is what the evidence file, the register row and the cross-reference in another document all agree on. Titles are not stable enough to carry that load. The identifier is for registers, links and scripts; text written for people pairs it with the title on first mention — `DOC-042 (Access Control Policy)` — per [Guide 01](./01_PROJECT_INSTRUCTIONS.md#writing-ids-for-readers).
 - **Version, status, owner, approver and approval date live inside the document**, in a control block at the top, and are mirrored in the register (§5). The filename says *which document*; the content says *which state*.
 - **One conditional suffix, removed once.** A `-DRAFT` suffix is the one exception worth allowing, because "is this approved yet" is the question people ask most and a filename answers it for free. It comes off at the same moment the approval is recorded in the register — one rename, done once, after which the link is permanent.
 

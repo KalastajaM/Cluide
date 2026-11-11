@@ -65,6 +65,7 @@ Evaluate each criterion. For each, mark ✓ (pass), ⚠ (concern), or ✗ (fail)
 
 **Project CLAUDE.md extras (if applicable):**
 - [ ] Cross-reference rules are present if the project has linked registers/trackers
+- [ ] If the project uses register or document IDs, a labelling rule is present (Guide 01, *Writing IDs for Readers*)
 - [ ] Project description is one sentence, not a paragraph
 
 ### Step 3 — Present findings

@@ -155,6 +155,33 @@ Write the rule as a checklist tied to the ID type:
 
 This pattern applies whenever a project manages two or more linked registers. The PMO_TEMPLATE (`templates/PMO_TEMPLATE/`) shows a full implementation. For a simple project with one tracker, skip this — it is only needed when orphaned IDs are a real failure mode.
 
+<a id="writing-ids-for-readers"></a>
+
+## Writing IDs for Readers
+
+Short identifiers (`DOC-042`, `ACT-F-02`, `R-07`) are what registers, links and evidence files agree on, and they should stay. But a bare code means nothing to someone who has not memorised the register, and nothing at all once the text leaves the project — a status email, a steering-group slide, a forwarded summary. Codes that differ by one letter (`D-03` a dependency, `DEC-03` a decision) make it worse.
+
+The rule: **on first mention, pair the code with a short label.** `ACT-F-02 (Phase 2 budget stress-test)`. After that, the bare code is fine within the same reply or section.
+
+- **Code first, label in parentheses.** One consistent shape keeps the code scannable and greppable, and the reader learns to skip the label once they know it.
+- **The label comes from the record, not from memory.** Use the item's title or short name. If it has none, or the title is long, summarise it in about six words. Never invent a label for an ID that has not been looked up; a confident wrong label is worse than a bare code. If the ID cannot be found, say so: `ACT-P-07 (not in the action tracker)`.
+- **No status or detail in the label.** `R-07 (supplier lock-in)`, not `R-07 (supplier lock-in, high, owner Anna, mitigating)`. Status belongs in the sentence or in a table column.
+- **Many IDs: use a table.** Five labelled codes in one sentence are unreadable. A table with ID and Title columns labels every row by construction.
+- **Text leaving the project gets labels every time.** In anything written for people outside the project, label the first mention in each section, and never leave a code the recipient cannot resolve.
+- **Not inside the registers themselves.** Link fields (`Linked risks: R-03`), filenames, commit messages and register cross-references stay bare — that is where the code does its machine job.
+
+Put the rule under Communication Style, not in a skill: it has to apply to any reply that happens to mention an ID, and those replies never ask for labelling.
+
+```markdown
+- When mentioning a register or document ID (<ID patterns>), add a short label on first
+  mention: `ACT-F-02 (Phase 2 budget stress-test)`. Take the label from the item's title in
+  `<register path>`; if there is no short title, summarise in about six words. Do not guess
+  a label for an ID you have not looked up. Label every first mention in text meant for
+  people outside the project. Register link fields, filenames and commit messages stay bare.
+```
+
+Labelling costs a register read in a session that would not otherwise need one. Keep that read cheap: a summary table with ID and Title columns at the top of each register (as the PMO_TEMPLATE trackers have) answers every label in one read. [Guide 30](./30_CONTROLLED_DOCUMENTS.md) applies the same rule to document identifiers.
+
 ---
 
 <a id="what-not-to-put-in-claudemd"></a>

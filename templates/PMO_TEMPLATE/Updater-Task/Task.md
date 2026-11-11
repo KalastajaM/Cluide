@@ -64,7 +64,7 @@ Flag any legacy or one-off formats (e.g. bare `A-2`, `S-1`, `PM-2`, or actions w
 
 ## Step 5 — Report, then fix
 
-Before editing, produce a short report of all findings from Steps 2–4, grouped by file. Let the user confirm scope if any of the fixes look material (e.g. an ID migration that changes many references).
+Before editing, produce a short report of all findings from Steps 2–4, grouped by file. Label each ID on first mention with its title from the register (the Communication Style rule in `AGENTS.md`), so the report reads without the trackers open. Let the user confirm scope if any of the fixes look material (e.g. an ID migration that changes many references).
 
 Then apply the corrections. When you touch a file:
 
