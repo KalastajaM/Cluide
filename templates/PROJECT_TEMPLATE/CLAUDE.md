@@ -15,7 +15,7 @@ for the `dispatch` skill; its routing table applies wherever this section is sil
 - Before any task with bulk, parallel or mechanical parts, load the `dispatch` skill — even when
   another skill has already supplied the procedure.
 - Default worker tier for work no table row places: [sonnet]. Pass `model` on every spawn of
-  an unpinned agent type.
+  an unpinned agent type, and on a pinned one whose pin this section overrides.
 - Never below [opus] for: [content whose errors are expensive here — figures, dates, legal
   terms, anything sent in my name]
 - Known-safe on [haiku]: [archetypes the routing log has proven — leave empty until calibration]

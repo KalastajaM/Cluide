@@ -498,7 +498,7 @@ A ready-to-fill starter for the two account-level instruction fields (Guide 25, 
 **Use this when:** setting up or overhauling your account-level instructions rather than a single project's.
 
 ### [BLOCKS.md](./templates/BLOCKS.md)
-The catalogue of optional blocks that sit on top of the PROJECT_TEMPLATE core: what each adds, when a project has earned it, whether it costs context in every session or only on demand, and the task or template that installs it. Covers the three blocks shipped inside PROJECT_TEMPLATE (memory, intake, dispatch routing) and the ones installed from elsewhere (scheduled tasks, orchestration, subagents, registers, data layer, wiki, skills, policies, MCP, git, security, reference companion, helper apps, second-brain link).
+The catalogue of optional blocks that sit on top of the PROJECT_TEMPLATE core: what each adds, when a project has earned it, whether it costs context in every session or only on demand, and the task or template that installs it. Covers the blocks shipped inside PROJECT_TEMPLATE (memory, intake, dispatch routing, behaviour tests) and the ones installed from elsewhere (scheduled tasks, orchestration, subagents, registers, data layer, wiki, skills, policies, MCP, git, security, reference companion, helper apps, second-brain link).
 
 **Use this when:** deciding what a project needs beyond the core — at setup, or months later when a need shows up.
 

@@ -5,6 +5,12 @@ workspace, fill placeholders with synthetic values, and keep real connectors/sch
 For root checks use that workspace; for loading-nested start in its
 `tests/behaviour/fixtures/nested/` directory. The fixture is self-contained; preserve its layout.
 
+`CASES.md` is the compact form of Guide 31 §3's case shape: one table row per case, with the prompt
+and its checkable graders in two columns, instead of a `prompt.md` and a `graders/` folder. When a
+case needs a `protects:` line, several grader files, or a runner such as `claude plugin eval`,
+graduate it to its own folder under this directory and remove its row. `tasks/setup-behaviour-tests.md`
+extends this starter rather than replacing it.
+
 1. Write expected answers from AGENTS.md and CASES.md before opening the test session.
 2. Start a fresh session on each selected surface. For Claude Code retain the adapter; for Codex
    open the fixture workspace at the relevant root/task folder. For Cowork use the connected

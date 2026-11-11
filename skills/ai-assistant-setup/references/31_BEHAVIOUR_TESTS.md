@@ -63,7 +63,9 @@ The suite is a home [Guide 24](./24_PROJECT_FOLDER_STRUCTURE.md) does not list. 
 
 ```
 tests/behaviour/
-  README.md                          ← what the suite protects, when it was last run, pass rates
+  README.md                          ← what the suite protects, which runner, when last run
+  RESULTS.md                         ← append-only run history: date, model, runner, pass rate per case
+  fixtures/                          ← frozen inputs, never project data
   no-send-without-approval/
     prompt.md                        ← frontmatter: tags, model, max_turns; body: the request
     graders/
@@ -91,7 +93,7 @@ tests/behaviour/
 
 The suite is the same whichever way you run it. Pick by what you have.
 
-**By hand, in a fresh session.** The floor, and the only option for a Cowork-only setup. Open a new session in the project — new, never the one you just edited in, because that session already holds your intent and will grade itself kindly ([Guide 27](./27_INDEPENDENT_JUDGMENT.md); [Guide 26](./26_CONTEXT_SCOPING.md) on what a fresh session does and does not clear) — paste the prompt, check each grader against what came back, record pass or fail in the suite README with the date and the model. A run of ten cases takes a quarter of an hour; the three-run rule below triples that, which is why the first baseline pass is one run per case and the repeats are reserved for the cases that were marginal and for regression runs on a rule you changed. This is not a lesser method; it is the same test with a slower runner.
+**By hand, in a fresh session.** The floor, and the only option for a Cowork-only setup. Open a new session in the project — new, never the one you just edited in, because that session already holds your intent and will grade itself kindly ([Guide 27](./27_INDEPENDENT_JUDGMENT.md); [Guide 26](./26_CONTEXT_SCOPING.md) on what a fresh session does and does not clear) — paste the prompt, check each grader against what came back, append pass or fail to `RESULTS.md` with the date and the model. A run of ten cases takes a quarter of an hour; the three-run rule below triples that, which is why the first baseline pass is one run per case and the repeats are reserved for the cases that were marginal and for regression runs on a rule you changed. This is not a lesser method; it is the same test with a slower runner.
 
 **Scripted, with `claude -p`.** Claude Code's [print mode](https://code.claude.com/docs/en/headless) runs a single prompt and exits, and `--output-format json` gives a parseable result; `--json-schema` forces a structured verdict you can assert on, and `--model` pins the model so a failure is attributable. As documented at the time of writing, print mode without `--bare` runs hooks and loads MCP servers; check in your own build that it also loads the project's CLAUDE.md and skills the way an interactive session does, because that is the whole point and the documentation is not explicit about it. A [`Stop` hook](https://code.claude.com/docs/en/hooks) receives the final reply as `last_assistant_message` and can fail the run on a pattern. A shell loop over the case folders, a regex per grader, a line per case in a results file — that is the whole harness, and it should stay that small.
 
@@ -159,7 +161,7 @@ A failed case is a fact, not yet a diagnosis. Sort it into one of four before to
 | Fails on the new model, passed on the old, no file changed | A model change | Fix the instruction so it holds on the model you run, not the one you wrote it for. Waiting is not a fix. Pinning the task's model buys time and should be recorded as a decision with an expiry |
 | Fails on both models after a recent edit elsewhere | Your own accretion — a trigger race, a rule interaction | Find the competing rule or skill; the fix is usually in the *other* file |
 | Fails intermittently at a stable rate | A marginal description or an under-specified rule | Sharpen it until the rate is 3 of 3, or accept the rate in writing |
-| Fails because the platform moved | A platform change | Record it in the suite README with the date; rewrite the case or the rule |
+| Fails because the platform moved | A platform change | Record it in `RESULTS.md` with the date; rewrite the case or the rule |
 
 **A failure after a model launch is evidence to investigate, not proof of a single cause. Reproduce it with the same fixtures and controls before deciding whether to change instructions, repair the runner or record a platform limitation.** The instinct is to wait for the model to settle, or to file it as a platform problem. Neither changes what your setup does tomorrow morning.
 
@@ -172,7 +174,7 @@ A suite rots in the same two directions a shared policy does: cases nobody remem
 - **A case that cannot say what it protects is pruned**, the same as a rule ([Guide 16](./16_BEST_PRACTICES.md)).
 - **A deleted rule takes its cases with it.** In the same commit.
 - **A changed rule changes its cases first** — never a test edited to match whatever the setup did today.
-- **The results file is history, not state.** Append, with date and model; never overwrite. The pattern across runs is what tells you whether a failure is new.
+- **The results file is history, not state.** Append, with date and model; never overwrite. The pattern across runs is what tells you whether a failure is new. A project may instead keep run output in an ignored working folder, as PROJECT_TEMPLATE does with `Working/behaviour-runs/`; the history is then only as durable as that folder.
 - **Size stays small.** If the suite passes thirty cases, ask what each is for. A suite that takes an hour to run by hand will not be run.
 
 ---
@@ -183,7 +185,7 @@ A setup with three things worth protecting: an account-level rule that outgoing 
 
 Six cases: two for the rule (an email request that says nothing about punctuation, once in each language, regex on the output), two for the skill (the positive phrasing, the negative phrasing, a `tool_used`-style check on whether the skill loaded, or by hand a look at whether its output format appeared), two for the task (the fixture mailbox run through the task's instruction file, `tool_used` on the send tool at zero, `file_exists` on the draft folder).
 
-Run by hand in a fresh session the first time, one run per case — ten minutes. Five pass cleanly; the negative skill case is marginal, so it gets its three runs and fails two of them, because "summarise this thread and draft a short reply" is in the fixture and is a legitimately ambiguous request. That is a finding about the fixture, not the skill; the case is split into a clean negative and an ambiguous one whose expected outcome is "asks". The README records the date, the model, and the split.
+Run by hand in a fresh session the first time, one run per case — ten minutes. Five pass cleanly; the negative skill case is marginal, so it gets its three runs and fails two of them, because "summarise this thread and draft a short reply" is in the fixture and is a legitimately ambiguous request. That is a finding about the fixture, not the skill; the case is split into a clean negative and an ambiguous one whose expected outcome is "asks". `RESULTS.md` records the date, the model, and the split.
 
 After the next model launch, the full six again. The em-dash rule now fails one of three in the second language. The fix is one line in the account instructions, made specific about that language; the case that caught it gets the date added to its frontmatter.
 

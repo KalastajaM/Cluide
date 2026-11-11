@@ -29,6 +29,7 @@ Outputs/       ← finished deliverables, generated from the sources
 Working/       ← scratch and in-progress material
 _archive/      ← superseded material; no routine reads
 .gitignore.template
+tests/behaviour/ ← surface-check cases and fixtures
 Profile/  Knowledge/  Incoming/  ROUTING_LOG.md   ← blocks; keep or delete each
 ```
 
@@ -49,8 +50,9 @@ current as the project changes.
 | Memory | `Profile/`, `Knowledge/` | the assistant needs context that outlives a session — who people are, where topics stand |
 | Intake | `Incoming/` | material reaches this project outside a chat (`Incoming/README.md` has the cases) |
 | Dispatch routing | `ROUTING_LOG.md` + the *Delegation* section of `AGENTS.md` + the *Dispatch Overrides* section of `CLAUDE.md` | work here gets delegated to subagents, workflow stages, or scheduled tasks |
+| Behaviour tests | `tests/behaviour/` + its row in the file map of `AGENTS.md` | a rule or skill would be embarrassing to lose silently, or a surface needs a fresh-session check (Step 6) |
 
-`templates/BLOCKS.md` is the full catalogue: these three, plus the blocks a project installs later
+`templates/BLOCKS.md` is the full catalogue: these, plus the blocks a project installs later
 from a task or another template, each with what it costs per session and where its installation
 procedure lives.
 

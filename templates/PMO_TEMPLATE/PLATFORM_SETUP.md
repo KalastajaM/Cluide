@@ -86,7 +86,7 @@ work and unsaved drafts. Overlapping tasks must serialize shared-state writes.
 Start a fresh session on each selected surface. Ask which instruction files loaded, where outputs
 go, what actions need approval, what source revision is visible, and what happens when a tool is
 missing or a job already ran. Compare to the written policies before marking that surface verified.
-Use the reusable cases in Cluide's `templates/PROJECT_TEMPLATE/tests/behaviour/` as fixtures.
+Use the cases in `tests/behaviour/` if this project has them (PROJECT_TEMPLATE ships them); otherwise copy `tests/behaviour/` from Cluide's `templates/PROJECT_TEMPLATE/` into this project first.
 All surfaces in this unused template are **untested**; documentation checks are not runtime tests.
 
 Instruction/source mechanics checked 2026-09-21: [Claude Code memory](https://code.claude.com/docs/en/memory),

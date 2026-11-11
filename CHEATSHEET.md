@@ -32,21 +32,22 @@
 **File location:** root `AGENTS.md` for the shared pattern; `CLAUDE.md` imports it for Claude Code. App-source projects need a bootstrap. Keep the starter short; length targets are design guidance, not universal product limits. See Guides 01 and 35.
 
 ```markdown
-## Who I Am
+## About [User]
 - I am [name], [role] at [organisation]
-- Based in [city], timezone [e.g. Europe/Helsinki]
-- [1–2 lines of relevant context: industry, main tools, languages]
+- Based in [city], timezone [e.g. Europe/Helsinki], preferred language [e.g. English]
+- [1–2 lines of relevant context: industry, main tools]
 
-## How I Work
+## Communication Style
 - [Communication preference: e.g. concise / detailed / bullet points]
 - [Drafting preference: e.g. produce directly / ask first]
 - [Decision preference: e.g. give me options / recommend one]
 
-## Standing Rules
-- [Rule 1 that overrides default behaviour]
-- [Rule 2]
-- [Rule 3 — max 5 total]
+## Critical Rules
+- [What the assistant may never do, and what it should do instead — see Guide 32]
+- [Rule that overrides default behaviour]
 ```
+
+✅ Keep the whole policy under ~30 lines (Guide 01)
 
 ✅ Every line should change the assistant's behaviour
 ❌ Keep long workflow steps and reference material outside standing instructions; retain the project purpose and a short file map.
@@ -131,8 +132,9 @@ These are rough planning examples, not measured usage for your model. Use actual
 | File size | Approx. tokens | Notes |
 |---|---|---|
 | 20 lines | ~300 t | short-policy example |
+| 30 lines | ~400 t | Personal policy target (Guide 01) |
 | 50 lines | ~600 t | PROFILE_SUMMARY.md limit |
-| 150 lines | ~2,000 t | Good max for any always-loaded file |
+| 150 lines | ~2,000 t | Ceiling for everything auto-read combined (Guide 04) — not per file |
 | 500 lines | ~6,000 t | Split this into reference + active sections |
 | 1,500 lines | ~18,000 t | Only load on demand |
 

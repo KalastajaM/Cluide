@@ -57,4 +57,4 @@ Home for the project plan. Update `Project_Plan.md` (or equivalent) whenever sco
 Home for the cross-reference audit task. Run it periodically (or after a heavy editing session) to catch orphaned IDs, missing back-links, and ID-format drift across the four registers and the knowledge base. See `Updater-Task/Task.md` for the step-by-step procedure.
 
 ### `[ARCHIVE]` folders
-Any folder whose name starts with `[ARCHIVE]` (e.g. `[ARCHIVE] Background/`, `[ARCHIVE] Previous Plans/`) is a read-only backup. **Never read from or write to them** — they contain outdated material and will confuse future work.
+Any folder whose name starts with `[ARCHIVE]` (e.g. `[ARCHIVE] Background/`, `[ARCHIVE] Previous Plans/`) is a backup of retired material. **Never read from or edit files inside them** — they contain outdated material and will confuse future work. Moving a file into one is the archive step and is allowed.
