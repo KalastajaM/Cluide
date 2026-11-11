@@ -84,7 +84,7 @@ If a newly created file should be ignored but is already tracked by git, run `gi
 
 Cluide is trunk-based. Work happens on a short-lived branch per change, merged into `main` by PR, branch deleted on merge. `main` is always the current, self-consistent guide set.
 
-**Do not add a `develop` or release branch.** A stabilisation branch solves a problem this repo does not have: one maintainer, no build step, no artefact anyone pins. A fresh clone and the private companion project both read `main` directly, so a second integration branch would add a merge that catches nothing while leaving the consumed working tree unprotected. Version by content event instead — see *Releases* below.
+**Do not add a `develop` or release branch.** A stabilisation branch solves a problem this repo does not have: one maintainer, no build step, no artefact anyone pins. Readers and fresh clones take `main` directly, so a second integration branch would add a merge that catches nothing. Version by content event instead — see *Releases* below.
 
 **When the maintainer asks to merge a branch, run this gate first.** Name each check and its result, and stop at the first failure rather than merging past it.
 
@@ -92,7 +92,7 @@ Cluide is trunk-based. Work happens on a short-lived branch per change, merged i
 2. **Guide-set coverage.** Run `tasks/review-tasks.md` step 4c and fix everything it names. Do not restate its assertions here or anywhere else; run the check.
 3. **Bundled copies and registration.** Whenever the branch touches a root guide or index, run `tasks/review-tasks.md` step 4a: every copy under *any* `skills/*/references/` — not only `ai-assistant-setup` — must be byte-identical to its root counterpart, with `skills/ai-assistant-setup/references/00_INDEX.md` the one permitted variant, whose diff must be confined to the link-stripping that step describes. Do not restate the loop here; run it. When the branch adds or renames a guide, also assert registration completeness: step 4c proves a guide is scored, not that it is registered everywhere, so every `.md` citing the previous guide's number must also cite the new one. Stale bundled copies and partial registration are this repo's two known drift modes — two consecutive merges left copies outside `ai-assistant-setup` behind while this check named only that skill.
 4. **Consumed surface is append-only.** Dimension numbers, `tasks/` filenames, and guide numbers may be added, never renumbered, and a retired number is never reused. A branch that renumbers is a stop, not a judgement call.
-5. **Downstream links** *(maintainer-only — skip this check if you cloned Cluide to use the guides).* Cluide is consumed by a private companion project that runs its own link check against this repo; if that project is mounted, run its `scripts/check-cluide-links.sh`. If it is not mounted, report the check as skipped — never assume it passes.
+5. **Retired.** This number was a downstream link check run from a private companion project that is no longer maintained. Nothing runs here; the number is kept and not reused so references to checks 4 and 6 stay valid.
 6. **Squash.** Merge with squash so `main` only ever gains complete units of work.
 
 Check the current session’s GitHub connectivity and authorization. When authorized and available, push, open the PR, and merge after the gate passes. If a runtime cannot access GitHub, report the actual blocker and provide the remaining commands; do not assume that every cloud or desktop session has the same limitations.
