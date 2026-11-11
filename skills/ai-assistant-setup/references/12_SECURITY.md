@@ -276,6 +276,8 @@ Git tracking, context selection and access permissions are separate controls. Us
 
 ### .gitignore — keep secrets out of version control
 
+The canonical list is in `tasks/setup-ignore-hygiene.md`; the lists below are an excerpt.
+
 Always exclude:
 ```
 .env

@@ -320,7 +320,7 @@ Then Dataview can answer structured queries instantly without the assistant read
 
 The wiki is just a folder of markdown files — version it with git and you get the full pre/post-run commit pattern from [Guide 11](./11_GIT_INTEGRATION.md) for free.
 
-`wiki/log.md` is append-only, which produces an unusually clean git history: each commit adds exactly one entry, so `git log` on that file reads like a timeline of the wiki's evolution. `git diff HEAD~1 HEAD -- wiki/` shows exactly what a single ingest changed across all pages — useful for reviewing the assistant's work before pushing.
+`wiki/log.md` is append-only, which produces an unusually clean git history: each commit adds exactly one entry, so `git log` on that file reads like a timeline of the wiki's evolution. `git diff HEAD~1 HEAD -- wiki/` shows exactly what a single ingest changed across all pages when each ingest is one commit — useful for reviewing the assistant's work before pushing.
 
 Track the `wiki/` folder. Track `SCHEMA.md`, `AGENTS.md` and the Claude adapter when used. Do not track anything in `sources/` that contains sensitive data.
 
