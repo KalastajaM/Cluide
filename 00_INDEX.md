@@ -622,7 +622,7 @@ Turns an existing assistant setup — a chat system prompt, assistant task, assi
 
 ### cowork-optimizer
 
-Audits an assistant task or project for token efficiency, run speed, and structural quality. Identifies concrete improvements across 8 dimensions, presents a prioritized plan, and implements agreed changes.
+Audits an assistant task or project for token efficiency, run speed, and structural quality. Identifies concrete improvements across a ranked set of dimensions, presents a prioritized plan, and implements agreed changes.
 
 **Install:** Follow [Guide 03](./03_SKILLS.md) for the selected surface, preserving the complete `cowork-optimizer/` folder. Test the installed workflow; source-only projects can request it explicitly.
 

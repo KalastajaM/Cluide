@@ -1,6 +1,6 @@
 # Guide 19: Output Formatting — Markdown & HTML
 
-> How to make generated output look good — whether Claude or OpenAI is producing a Markdown summary or a full HTML report.
+> How to make generated output look good — whether Claude or OpenAI is producing a Markdown summary or a full HTML report. Google surfaces (Antigravity and the Gemini app) follow the same principle; their mechanisms are listed in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts), documented and not yet tested.
 > Covers Markdown basics with Claude-specific tips, and a practical HTML layout pattern for polished, self-contained reports.
 
 > **Companion guides:** [Guide 02](./02_PROMPTING_BASICS.md) covers how to prompt the assistant to use a specific output format. [Guide 06](./06_TASK_EFFICIENCY_GUIDE.md) explains when to script fixed-format artifact generation instead of having the assistant compose it fresh each run.

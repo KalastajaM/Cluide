@@ -121,7 +121,7 @@ The migration state belongs beside the check. Keep shared instructions to the en
 
 ## Separate the Contract from the Runtime During a Migration
 
-For a Claude/OpenAI rebuild, specify what must remain true before translating mechanisms: accepted inputs, output schema, action authority, state ownership and failure behaviour. Loader names, skill metadata, connector calls and scheduler registrations are implementation choices with separate evidence.
+For a Claude/OpenAI rebuild, specify what must remain true before translating mechanisms: accepted inputs, output schema, action authority, state ownership and failure behaviour. Loader names, skill metadata, connector calls and scheduler registrations are implementation choices with separate evidence. Google surfaces (Antigravity and the Gemini app) follow the same principle; their mechanisms are listed in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts), documented and not yet tested.
 
 Keep the old accepted outputs as the oracle only for behaviours the specification endorses. Record deliberate divergences, such as replacing a Claude hook with a tested Codex permission boundary or delivering a file from ChatGPT instead of writing directly to a local folder. A missing counterpart is an explicit gap; do not silently weaken the contract to make both routes look complete.
 

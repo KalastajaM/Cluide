@@ -32,7 +32,7 @@ Where the host reports cache counters (in Claude Code, `/usage` shows the sessio
 
 ## What Things Actually Cost
 
-Separate three ledgers: **API spend**, **subscription allowance**, and **runtime effort**. A token estimate helps compare runs; it does not tell you how much of a ChatGPT or Claude subscription remains.
+Separate three ledgers: **API spend**, **subscription allowance**, and **runtime effort**. A token estimate helps compare runs; it does not tell you how much of a ChatGPT or Claude subscription remains. Google surfaces (Antigravity and the Gemini app) follow the same principle; their mechanisms are listed in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts), documented and not yet tested.
 
 | Ledger | Record | Use it for |
 |---|---|---|

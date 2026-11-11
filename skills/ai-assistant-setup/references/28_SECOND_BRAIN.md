@@ -121,7 +121,7 @@ Distillation is the step to hand to the assistant, and it is worth being specifi
 
 ## One Knowledge Owner Across Assistants
 
-Keep the inbox, accepted notes, index and review log in one authored store. Claude and Codex can work on those files when connected; a ChatGPT project can use an uploaded or connected subset. In either case, index-first retrieval means reading the relevant index and then obtaining the actual note, not treating its title as sufficient evidence.
+Keep the inbox, accepted notes, index and review log in one authored store. Claude and Codex can work on those files when connected; a ChatGPT project can use an uploaded or connected subset. In either case, index-first retrieval means reading the relevant index and then obtaining the actual note, not treating its title as sufficient evidence. Google surfaces (Antigravity and the Gemini app) follow the same principle; their mechanisms are listed in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts), documented and not yet tested.
 
 Record the source revision for uploaded subsets. Return proposed note changes to the authoritative store and refresh the subset after acceptance. Use one writer for filing and index updates; another assistant can propose candidate notes without moving or deleting the originals. Native account memory is not the index and should not become a second copy of the knowledge layer.
 

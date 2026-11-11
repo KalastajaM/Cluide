@@ -30,7 +30,7 @@ Most setups don't need orchestration. Use this decision table:
 
 The sequential, shared-state and dependency patterns below work across platforms when the data contract is explicit. A producer records job ID, run ID, source revision, timestamp/timezone and success state; a consumer validates those before using the output. Native chat history is not the handoff.
 
-Claude Code and Codex may expose subagents or task coordination, but their tools, inheritance and lifecycle differ. Delegate only when authorized by the host and user. Give independent workers separate outputs or worktrees; one coordinator integrates changes. If delegation is unavailable, run the same bounded steps sequentially and record that execution mode.
+Claude Code and Codex may expose subagents or task coordination, but their tools, inheritance and lifecycle differ. Delegate only when authorized by the host and user. Give independent workers separate outputs or worktrees; one coordinator integrates changes. If delegation is unavailable, run the same bounded steps sequentially and record that execution mode. Google surfaces (Antigravity and the Gemini app) follow the same principle; their mechanisms are listed in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts), documented and not yet tested.
 
 For a Cowork-to-Codex or ChatGPT-to-Claude handoff, include the last accepted files and unresolved work. A ChatGPT upload cannot be treated as a live shared state file: return the next revision through an authorized destination and wait for its acceptance before downstream use. Every recurring job has one scheduler owner, even when its producer and consumer use different platforms.
 

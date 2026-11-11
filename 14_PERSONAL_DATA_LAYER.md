@@ -25,7 +25,7 @@ This is an advanced guide. The patterns here require writing Python scripts, run
 
 ## Choose an Ingestion Path the Surface Can Run
 
-The data contract is shared: source, extraction time, schema, validation totals and known gaps. Execution is native. Claude Code and Codex can run a checked local feeder when their sandbox permits it; a ChatGPT source project can analyze an uploaded CSV/JSON export or use an authorized connector. Never claim a local data file was refreshed by a chat that could only produce a replacement for download.
+The data contract is shared: source, extraction time, schema, validation totals and known gaps. Execution is native. Claude Code and Codex can run a checked local feeder when their sandbox permits it; a ChatGPT source project can analyze an uploaded CSV/JSON export or use an authorized connector. Never claim a local data file was refreshed by a chat that could only produce a replacement for download. Google surfaces (Antigravity and the Gemini app) follow the same principle; their mechanisms are listed in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts), documented and not yet tested.
 
 Prefer a service's export or read-only connector before browser extraction. Browser and computer-use tools have their own rules and may prohibit scripts or access methods available in a manual developer console. The manual JavaScript example below is a user-run extraction pattern, not permission for an assistant to inject it through any browser tool.
 

@@ -32,7 +32,7 @@ It is also not a guide for anything larger. If the tool grows a second user, an 
 
 ## Use a Shared App Contract and Native Verification Tools
 
-Put the invariant, helper index, conventions and definition of done in `AGENTS.md` for a dual-platform app, with the Claude adapter pointing to it. Claude Code and Codex should read the same contract and work on separate branches when active concurrently. Record data/schema changes and tests in the handoff so switching assistants does not repeat a migration or overwrite local state.
+Put the invariant, helper index, conventions and definition of done in `AGENTS.md` for a dual-platform app, with the Claude adapter pointing to it. Claude Code and Codex should read the same contract and work on separate branches when active concurrently. Record data/schema changes and tests in the handoff so switching assistants does not repeat a migration or overwrite local state. Google surfaces (Antigravity and the Gemini app) follow the same principle; their mechanisms are listed in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts), documented and not yet tested.
 
 Use the browser and execution tools actually available to the current session. A Claude in Chrome example is not an instruction to call that tool from Codex. A Codex session can run local tests and inspect a browser when its tools permit; ChatGPT without local execution can review supplied code or screenshots, but should report the app run as untested.
 

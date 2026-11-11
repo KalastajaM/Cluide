@@ -36,9 +36,9 @@ List every artefact that carries instructions or binds the project to one platfo
 
 | Kind | Look for |
 |---|---|
-| Instruction files | root and nested `CLAUDE.md`, `AGENTS.md`, any override variants the Step 0 sources name, and the imports between them |
-| App-side fields | Claude project description and instructions (read them as `tune-instruction-layers.md` Step 1 does); ChatGPT project instructions (inspect through a supported tool or UI; if unavailable, ask the user for the current text) |
-| Platform configuration | `.claude/` settings, hooks, agents and skills; `.mcp.json`; `.claudeignore`; any OpenAI-side configuration the sources name |
+| Instruction files | root and nested `CLAUDE.md`, `AGENTS.md`, any override variants the Step 0 sources name, the Google files Guide 35 §9 names (`GEMINI.md`, `.agents/AGENTS.md`, `.agents/rules/*.md`), and the imports between them |
+| App-side fields | Claude project description and instructions (read them as `tune-instruction-layers.md` Step 1 does); ChatGPT project instructions and Gemini app notebook instructions (inspect through a supported tool or UI; if unavailable, ask the user for the current text) |
+| Platform configuration | `.claude/` settings, hooks, agents and skills; `.mcp.json`; `.claudeignore`; any OpenAI-side configuration the sources name; any Google-side configuration Guide 35 §9 names (`.agents/`, `~/.gemini/config/`) |
 | Skills and tasks | skill folders, `tasks/`, scheduled-task definitions, and the platform each one is registered on |
 | State | native memory on each platform, `.auto-memory/` and profile files, run logs, scheduler registrations |
 | Generators | templates or tasks inside the project that write instruction files and would reinstall single-platform assumptions |

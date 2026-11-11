@@ -19,7 +19,7 @@ Two of the templates Cluide ships (see `00_INDEX.md` for all of them) are projec
 
 ## Local Folders and Uploaded Sources
 
-For Codex and other local file-capable sessions, the file map describes real paths in the selected workspace. Confirm the workspace before writing. Keep authored definitions versioned and personal state private; `.claude/` and `.codex/` are native configuration locations, not interchangeable homes for shared task data. Install skill entry points using [Guide 03](./03_SKILLS.md).
+For Codex and other local file-capable sessions, the file map describes real paths in the selected workspace. Confirm the workspace before writing. Keep authored definitions versioned and personal state private; `.claude/` and `.codex/` are native configuration locations, not interchangeable homes for shared task data. Install skill entry points using [Guide 03](./03_SKILLS.md). Google surfaces (Antigravity and the Gemini app) follow the same principle; their mechanisms are listed in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts), documented and not yet tested.
 
 For ChatGPT uploaded-source projects, the same logical homes organize the source package, but they do not create a mounted filesystem. Upload the policy and the inputs needed for the task, record their revision, and say where returned edits will be incorporated. A relative Markdown link may identify a needed file without making that file available. Refresh the source package after accepted changes.
 

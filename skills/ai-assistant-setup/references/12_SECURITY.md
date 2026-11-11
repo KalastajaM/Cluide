@@ -1,6 +1,6 @@
 # Security Guide: Using Claude, ChatGPT and Codex Safely
 
-> Operational security for assistant tools, with separate enforcement paths for Claude Code, Cowork, ChatGPT and Codex. Covers credential hygiene, MCP server trust, permission controls, session data, supply chain risks, prompt injection, and file hygiene. Does not cover secure coding or application security practices.
+> Operational security for assistant tools, with separate enforcement paths for Claude Code, Cowork, ChatGPT and Codex. Covers credential hygiene, MCP server trust, permission controls, session data, supply chain risks, prompt injection, and file hygiene. Does not cover secure coding or application security practices. Google surfaces (Antigravity and the Gemini app) follow the same principle; their mechanisms are listed in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts), documented and not yet tested.
 
 > **Companion guides:** [Guide 05](./05_MCP_SERVERS.md) covers MCP server setup — read it alongside this guide when configuring servers. [Guide 11](./11_GIT_INTEGRATION.md) covers `.gitignore` and `.claudeignore` in full.
 

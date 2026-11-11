@@ -11,7 +11,7 @@
 
 ---
 
-Shared rules belong in `AGENTS.md` for Codex or a dual-platform repository, with a thin `CLAUDE.md` adapter; app projects bootstrap the same policy through accessible sources. Native skill installation follows Guide 03.
+Shared rules belong in `AGENTS.md` for Codex or a dual-platform repository, with a thin `CLAUDE.md` adapter; app projects bootstrap the same policy through accessible sources. Native skill installation follows Guide 03. Google surfaces (Antigravity and the Gemini app) follow the same principle; their mechanisms are listed in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts), documented and not yet tested.
 
 ## 1. Why This Pattern
 

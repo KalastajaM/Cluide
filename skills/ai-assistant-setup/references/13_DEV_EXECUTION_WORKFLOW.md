@@ -1,6 +1,6 @@
 # Development and Execution: Working Across Claude and OpenAI
 
-> Separate changing the assistant from using it. Claude Code and Codex can maintain repository definitions; Cowork, ChatGPT and coding-agent sessions can execute workflows when they have the required sources and tools. Assign roles by capability, not by brand.
+> Separate changing the assistant from using it. Claude Code and Codex can maintain repository definitions; Cowork, ChatGPT and coding-agent sessions can execute workflows when they have the required sources and tools. Assign roles by capability, not by brand. Google surfaces (Antigravity and the Gemini app) follow the same principle; their mechanisms are listed in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts), documented and not yet tested.
 
 > **See also:** [Guide 20 — Interactive Prompting](./20_INTERACTIVE_PROMPTING.md) for Claude Code session features: `@` file references, plan mode, AskUserQuestion input types, and context hygiene.
 

@@ -123,8 +123,12 @@ and never unlinks. Never `git checkout -- <path>`.
 **Repair a stranded tree wholesale** (HEAD right, files from another branch):
 
 ```bash
-git --no-optional-locks diff --name-only | while read -r p; do git show "HEAD:$p" > "$p"; done
+git --no-optional-locks diff --name-only | while read -r p; do git show "HEAD:$p" > /tmp/restore && cat /tmp/restore > "$p"; done
 ```
+
+The loop uses the same temporary file as the restore recipe above, so a path that
+does not exist at HEAD (staged new, say) fails the `git show` and leaves the working
+file untouched instead of emptying it.
 
 then move aside any untracked paths that came from the other branch. This is
 far better than handing the user a `git checkout -- .`, which asks them to

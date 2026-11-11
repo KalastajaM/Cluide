@@ -7,7 +7,7 @@
 > **Giving this guide to an assistant:**
 > "Read 20_INTERACTIVE_PROMPTING.md and apply the patterns here to help me set up / improve / debug [my workflow / this task / this skill]."
 
-The patterns apply across Claude and OpenAI, but controls are native to the surface. `AskUserQuestion`, Claude slash commands and `CLAUDE.md` imports below are Claude examples, not a universal protocol. Inspect the current tool schema and UI rather than asking another host to execute them.
+The patterns apply across Claude and OpenAI, but controls are native to the surface. `AskUserQuestion`, Claude slash commands and `CLAUDE.md` imports below are Claude examples, not a universal protocol. Inspect the current tool schema and UI rather than asking another host to execute them. Google surfaces (Antigravity and the Gemini app) follow the same principle; their mechanisms are listed in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts), documented and not yet tested.
 
 ## OpenAI Session Workflow
 

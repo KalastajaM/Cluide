@@ -18,7 +18,8 @@ Record **surface(s)** and **purpose** separately. Confirm the surface from the r
 | ChatGPT project instructions and uploaded/linked source inventory | ChatGPT source project; record source revision and available write tools |
 | Codex runtime, `AGENTS.md`, `.agents/skills/`, or verified Codex configuration | Codex local; establish whether the checkout is writable |
 | Both Claude Code and Cowork are confirmed | Claude Code + Cowork (one platform) |
-| At least one Claude surface and one OpenAI surface are confirmed | Dual-platform (Guide 35) |
+| `GEMINI.md`, `.agents/rules/`, or Gemini app notebook instructions or uploaded skills (the Google surfaces Guide 35 §9 lists) | Antigravity / Gemini app (documented, untested); establish what is actually in use |
+| A shared policy file plus any two of a Claude surface, an OpenAI surface and a Google surface are confirmed | Dual- or multi-platform (Guide 35) |
 | A small local app with invariants and a helper index | Helper-app purpose (Guide 22), independent of surface |
 | Knowledge index, source layer and schema | Knowledge-base/wiki purpose (Guide 15), independent of surface |
 
@@ -207,7 +208,7 @@ Check Class A with an empty approval table, scoped one-time Class B approval, st
   project with no dormant components and no dormant siblings.
 
 ### 26. Platform coexistence — guide 35 → `setup-dual-platform`
-- **Healthy (only if the project is used from a Claude surface and an OpenAI surface):** one shared policy
+- **Healthy (only if the project is used from at least two of a Claude surface, an OpenAI surface and a Google surface, the last documented and untested per Guide 35):** one shared policy
   file, which each platform's native entry point adapts rather than restates; product-specific facts in the
   project carry a source and a date; every mechanism the project relies on that exists on only one platform
   is listed with its verified counterpart, or marked as having none; each recurring job has one owning
@@ -217,7 +218,7 @@ Check Class A with an empty approval table, scoped one-time Class B approval, st
   Claude adapter with no import or read fallback for the shared file, a mirror of `.claude/` produced by path
   conversion, a prose rule silently standing in for an enforcement mechanism the other platform lacks, the
   same scheduled job registered on both platforms, an uploaded-source copy older than the repository, and a
-  surface described as supported with no check recorded. **N/A** for any single-platform project, including OpenAI-only and Claude Code plus Cowork. Record confirmed surfaces as evidence.
+  surface described as supported with no check recorded. **N/A** for any single-platform project, including OpenAI-only, Google-only and Claude Code plus Cowork. Record confirmed surfaces as evidence.
 
 ### Guides not scored
 

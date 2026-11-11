@@ -67,8 +67,9 @@ explicitly on every spawn as given here; this table is the instruction to set it
 - **Name the model.** Resolution: per-spawn `model` → agent definition's `model` → configured
   default subagent model → **the session's model**. An unpinned type (general-purpose, for
   example) with no `model` in an Opus or Fable session runs bulk work at the top tier,
-  silently. For a type whose definition pins a tier, omit `model` or pass the same value; a passed
-  value overrides the pin.
+  silently. For a type whose definition pins a tier, omit `model` or pass the same value, unless the
+  project's Dispatch Overrides (§7) move that archetype off the pin: then pass `model` on the
+  spawn (a passed value overrides the pin) or edit the definition.
 - **Name the effort.** Resolution in Claude Code: `CLAUDE_CODE_EFFORT_LEVEL` (if set, it wins and
   the per-spawn parameter disappears) → per-spawn `effort` → definition's `effort:` →
   `CLAUDE_CODE_SUBAGENT_EFFORT` (v2.1.316+) → the session's level, but only for a subagent on the

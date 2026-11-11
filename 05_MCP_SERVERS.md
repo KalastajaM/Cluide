@@ -1,6 +1,6 @@
 # MCP Servers: Connecting Assistants to Your Tools
 
-> MCP is one way to connect Claude, ChatGPT and Codex to external tools. Hosts can also provide native file, browser, shell and app tools without an MCP server. First inspect what the session already exposes; add a connection only for a missing capability.
+> MCP is one way to connect Claude, ChatGPT and Codex to external tools. Hosts can also provide native file, browser, shell and app tools without an MCP server. First inspect what the session already exposes; add a connection only for a missing capability. Google surfaces (Antigravity and the Gemini app) follow the same principle; their mechanisms are listed in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts), documented and not yet tested.
 
 ---
 

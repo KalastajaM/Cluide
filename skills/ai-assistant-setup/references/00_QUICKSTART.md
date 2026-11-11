@@ -13,7 +13,7 @@ Choose the surface you will actually use:
 | Claude project / Cowork | Project sources or a connected folder | Project instructions explicitly ask it to read the supplied shared policy |
 | ChatGPT project | Uploaded or connected project sources | Project instructions explicitly ask it to read the supplied shared policy |
 
-For the last two, access to a source is not proof of write access to the original folder. The [official instruction and project references in Guide 35](./35_DUAL_PLATFORM_PROJECTS.md) explain the differences. Use a text editor for local files, or ask the assistant to produce files you can add to the project.
+For the last two, access to a source is not proof of write access to the original folder. The [official instruction and project references in Guide 35](./35_DUAL_PLATFORM_PROJECTS.md) explain the differences. Use a text editor for local files, or ask the assistant to produce files you can add to the project. Google surfaces (Antigravity and the Gemini app) follow the same principle; their mechanisms are listed in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts), documented and not yet tested.
 
 ## Step 1: Create the Shared Policy
 

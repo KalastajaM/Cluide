@@ -7,7 +7,7 @@
 > **Giving this guide to an assistant:**
 > "Read 32_ACTION_AUTHORITY.md. Inventory every action this project's tasks and skills can take — connectors, scopes, file operations — classify each under §2, and propose the shared policy block from §8. Do not grant yourself anything."
 
-**Policy placement:** Put the shared rules below in `AGENTS.md` for Codex or a dual-platform repository, with a thin `CLAUDE.md` adapter for Claude. App projects bootstrap the same policy through their instructions and accessible sources (Guides 01 and 25). A Claude-only setup may keep its policy in `CLAUDE.md`.
+**Policy placement:** Put the shared rules below in `AGENTS.md` for Codex or a dual-platform repository, with a thin `CLAUDE.md` adapter for Claude. App projects bootstrap the same policy through their instructions and accessible sources (Guides 01 and 25). A Claude-only setup may keep its policy in `CLAUDE.md`. Google surfaces (Antigravity and the Gemini app) follow the same principle; their mechanisms are listed in [Guide 35 §9](./35_DUAL_PLATFORM_PROJECTS.md#9-platform-facts), documented and not yet tested.
 
 ---
 

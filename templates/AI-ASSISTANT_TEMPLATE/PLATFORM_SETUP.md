@@ -17,6 +17,8 @@ access, or ChatGPT with project sources. Files copied here configure no accounts
   For a ChatGPT *local project* in the desktop app, attach this folder instead and make it the
   primary folder: Codex discovers `AGENTS.md`, skills and `config.toml` only from the primary
   folder, not from secondary ones (documented for Codex; untested for Work chats).
+- **Antigravity / Gemini app:** documented, not tested; see Guide 35 §9 for where shared policy,
+  skills and scheduled runs live.
 
 Bootstrap to customize and paste:
 
@@ -37,6 +39,7 @@ Replace uploaded sources after policy/source changes and record the new revision
 | Cowork | [folder] | [commit/date] | draft, not applied | untested |
 | Codex | [workspace] | [commit/date] | shared file, untested | untested |
 | ChatGPT | [source manifest] | [commit/date uploaded] | draft, not applied | untested |
+| Antigravity / Gemini app (documented, not tested; Guide 35 §9) | [folder or uploaded manifest] | [commit/date] | Untested | Untested |
 
 Mirror the exact applied instructions and any description separately for each selected surface.
 Do not assume every app offers the same fields. Keep native memory, credentials, connector grants,

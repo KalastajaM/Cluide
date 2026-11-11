@@ -72,7 +72,7 @@ Flag weak descriptions with: "A user saying '[phrase]' would not trigger this sk
 - [ ] Each prohibition has a positive counterpart (what to do instead)
 - [ ] Every hard prohibition has evidence of effective runtime permissions, sandbox restrictions or connector scopes; prose-only restrictions are identified as such.
 
-Claude `allowed-tools` grants pre-approval and does not prove that omitted tools are denied. Check supported metadata in current official docs; do not assume `disallowed-tools` is a skill field. Codex constraints require its actual runtime controls. Report the forbidden action, effective grant and missing boundary; recommend a native fix or keep that action on a surface with verified enforcement.
+Claude `allowed-tools` grants pre-approval and does not prove that omitted tools are denied. On Claude Code, `disallowed-tools` is the skill-level restriction (Guide 03): look for it where a hard prohibition maps onto a tool. Do not credit it on another surface or artifact type without current official documentation that proves support. Codex constraints require its actual runtime controls. Report the forbidden action, effective grant and missing boundary; recommend a native fix or keep that action on a surface with verified enforcement.
 
 #### Check 5: Edge cases
 

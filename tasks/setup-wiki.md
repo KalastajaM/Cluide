@@ -65,7 +65,7 @@ If `[wiki-root]/CLAUDE.md` already exists, read it and leave it unchanged: the u
 
 - `wiki/overview.md` — evolving synthesis of everything ingested. Update after every ingest. Keep under 3 pages.
 - `wiki/entities/[name].md` — one page per [entity type from interview]. Create when first mentioned; update as more sources arrive.
-- `wiki/source-notes/[slug].md` — summary of a single raw source. Create on ingest; never modify after.
+- `wiki/source-notes/[slug].md` — summary of a single raw source. Create on ingest; do not rewrite a note to reflect later sources. A new version of the same source supersedes it: create the new note, mark the old one `superseded-by:` and update the index.
 - `wiki/queries/[slug].md` — saved answer to a query. Create when the answer is worth keeping.
 - `wiki/index.md` — catalog. Update on every ingest or new page.
 - `wiki/log.md` — append-only. One entry per operation.

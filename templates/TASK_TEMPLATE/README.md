@@ -5,6 +5,7 @@ credentials, native memory and tool bindings are product-local. Complete `TASK.m
 contract and implement/test its duplicate guard before enabling one owning scheduler. ChatGPT
 project uploads support source-based drafting, not an assumed live filesystem or script runner.
 Use `../PROJECT_TEMPLATE/PLATFORM_SETUP.md` for the source bootstrap and per-surface checks.
+Antigravity / Gemini app: documented, not tested; see Guide 35 §9 for where shared policy, skills and scheduled runs live.
 
 
 > A ready-to-copy starter for self-learning, token-efficient assistant tasks.
