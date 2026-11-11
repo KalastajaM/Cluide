@@ -23,7 +23,8 @@ The goal of this pattern:
 
 - Relevant policies are checked as part of the workflow, with evidence and human review where required
 - Policy *content* stays in its authoritative location (SharePoint, Confluence, or a private local folder) — Cluide contains only pointers
-- The enforcement strength scales with the policy: a data classification rule blocks hard, a style-guide nudges softly
+- The response scales with the policy: a data classification breach stops the work and escalates, a style guide nudges softly
+- The limits are stated plainly: a policy the assistant reads can stop what the assistant does next, never what the user has already sent (see *What a policy line cannot stop*)
 - Policy changes flow through a freshness check; uploaded or cached copies must be refreshed before use
 
 **Why not just put the policies in the shared policy?**
@@ -32,6 +33,22 @@ The goal of this pattern:
 - Copies drift from the authoritative source — and it is not obvious which copy is current
 - Cluide is designed to be shareable. Pasting confidential policies into it defeats that
 - The shared policy has no enforcement mechanism — it is advisory. Policies often need a stronger surface
+
+### What a policy line cannot stop
+
+Every mechanism in this guide — the skill, the shared policy line, a project instruction, `CLAUDE.md` or `AGENTS.md` — is text the model reads alongside the user's input. The check runs inside the service that has already received that input. If the policy says "no customer data" and the user pastes a customer file, the assistant can recognise the breach and refuse to go on, but the file has already been sent, processed and, on most surfaces, stored in the conversation. Recognising the data *is* processing it. A policy line reports a breach after the fact; it does not prevent one.
+
+So place each control at the moment it can act:
+
+| Moment | What can stop it | What cannot |
+|---|---|---|
+| **Before the input leaves the user** (paste, upload, attachment, typed prompt) | Training and redaction habits; data loss prevention, CASB or browser and endpoint controls on the user's device or network; admin settings that disable uploads or restrict which tools may be used; routing sensitive work to an approved internal tool. In Claude Code only, a `UserPromptSubmit` hook (below) | Any skill or instruction the assistant reads |
+| **When the assistant reads data** (files, connectors, MCP tools) | Access rights on the source; connector and OAuth scopes; `permissions.deny` rules and `PreToolUse` hooks ([Guide 12](./12_SECURITY.md)) | A policy line asking the assistant not to look |
+| **When the assistant produces output or acts** (drafts, sends, writes, calls a tool) | The T1/T2 checks in this guide, backed by permissions and approvals for consequential actions ([Guide 32](./32_ACTION_AUTHORITY.md)) | Nothing further: this is where the skill does real work |
+
+**The one in-product pre-send control: Claude Code's `UserPromptSubmit` hook.** It runs before each prompt is processed and can reject it, in which case the prompt never reaches the model ([hooks reference](https://code.claude.com/docs/en/hooks), checked 2026-11-11). Know its limits before relying on it. It sees the prompt text (pasted text arrives expanded), not files the assistant reads later — those fall to deny rules. A hook that times out lets the prompt through unless it sets `onFailure: "block"`. A blocked prompt still lands in the local transcript and prompt history. And it exists only in Claude Code: the Claude and ChatGPT chat apps have no equivalent, so there the before-send row depends entirely on controls outside the assistant.
+
+For a policy whose breach is the act of sending — data classification, export control, confidentiality — the skill is a backstop and a teaching moment, not the control. Record which upstream control, if any, covers each such policy (the *Upstream controls* table in `policies-validator` §2), so the gap is visible rather than assumed away. Policies, training, access rights and security tooling do the preventing; the assistant's instructions make the policy visible at the point of work.
 
 ---
 
@@ -129,15 +146,15 @@ Not every policy deserves the same treatment. A data classification rule should 
 
 | Tier | Enforcement | Typical policies | Skill behaviour |
 |---|---|---|---|
-| **T1 — Hard block** | Refuse the action, escalate | Data classification, export control, information security, legal constraints | Pre-action check. On violation: stop, emit `🛑 POLICY BLOCK`, point to the policy and owner. Do not produce the requested output. |
+| **T1 — Stop and escalate** | Refuse the action, escalate | Data classification, export control, information security, legal constraints | Pre-action check. On violation: stop, emit `🛑 POLICY BLOCK`, point to the policy and owner. Do not produce the requested output. |
 | **T2 — Required check** | Validate and surface the result | AI use policy, Claude-specific guidelines, Code of Conduct | Pre-response checklist. Emit `⚠️ POLICY ALERT` when the response drifts, or `✅ POLICY ALIGNED` when it passes. |
 | **T3 — Soft guidance** | Load into context; apply judgment | Style guides, preferred vendors, tone guidelines, branding rules | Content is loaded into context; the assistant applies it while drafting. No required output block. |
 
-**An honest note on what "hard block" means.** T1 enforcement is best-effort model behaviour, not a technical control: a skill and a shared policy line are the same kind of mechanism — prompt-level instructions the model is asked to follow — and neither can guarantee the block fires every time. For hard guarantees, pair T1 policies with permission rules and hooks ([Guide 12](./12_SECURITY.md)), which are enforced by the tooling rather than the model. Compliance readers should not treat T1 as a technical boundary.
+**What T1 is and is not.** T1 is best-effort model behaviour, not a technical control: a skill and a shared policy line are the same kind of mechanism — prompt-level instructions the model is asked to follow — and neither can guarantee the stop fires every time. Even when it fires, it acts on what the assistant does next, never on input already sent (see *What a policy line cannot stop* in §1). Permission rules and hooks ([Guide 12](./12_SECURITY.md)) are enforced by the tooling rather than the model, so pair T1 policies with them for reads and actions; for input, the before-send controls in §1 are the only prevention. Compliance readers should not treat T1 as a technical boundary. The output marker keeps its name, `🛑 POLICY BLOCK`, for compatibility with installed skills: it blocks the response, not the data.
 
 The emoji markers (🛑 / ⚠️ / ✅) are intentional signalling — they make policy outcomes scannable at a glance — and are a deliberate exception to any project-level no-emoji conventions.
 
-### Worked example — T1 (Hard block)
+### Worked example — T1 (Stop and escalate)
 
 **Policy:** Data classification scheme says "Confidential" data must not be sent to external AI services.
 
@@ -156,11 +173,14 @@ data to this assistant.
 Policy: ~/CompanyPolicies/data-classification.md §3.2
 Owner:  Data Governance team — datagovernance@example.com
 
+The pasted content has already reached this service; this block stops the
+summary but cannot undo the send. Report it if the policy requires.
+
 What to do next: re-run with the export redacted to Public/Internal only,
 or route the request through an approved internal tool.
 ```
 
-Note the limit: by the time the block fires, the content has already been pasted into the session. The block stops further processing and output — it cannot un-send what was pasted. True prevention needs user habits (redact before pasting) or upstream controls, not the skill.
+> **The data has already been sent.** By the time this block fires, the customer export is in the session: the service has received it and the model has read it in order to recognise it. The block stops the summary and tells the user what went wrong — it cannot un-send the paste. Treat a T1 block on input as an incident signal: the user may need to report it under the policy, and the fix is upstream (redaction before pasting, DLP, an approved internal tool), not a better skill. See *What a policy line cannot stop* in §1.
 
 ### Worked example — T2 (Required check)
 
@@ -245,7 +265,8 @@ One line in the project's shared policy tells the assistant to consult the skill
 ```markdown
 ## Company policies
 Before responding, consult the `policies-validator` skill. T1 violations must
-block; T2 issues must be surfaced; T3 guidance should shape the response.
+stop the work and escalate; T2 issues must be surfaced; T3 guidance should shape
+the response.
 ```
 
 Keep it short — the skill itself holds the detail.
@@ -284,7 +305,7 @@ After running `tasks/setup-policies.md`, test the wiring with three prompts:
 |---|---|
 | Ask something benign ("What's the weather pattern called when warm air sits above cold air?") | No policy marker at all — the question touches no policy. (Only expect `✅ POLICY ALIGNED` in setups where a configured T2 policy is actually relevant to the prompt.) |
 | Ask something that exercises a T2 policy (e.g. "draft an external email" when the AI use policy requires labelling) | `⚠️ POLICY ALERT` with a reference to the AI use policy |
-| Ask something that violates a T1 policy (e.g. paste mock data flagged Confidential) | `🛑 POLICY BLOCK` with refusal and escalation path |
+| Ask something that violates a T1 policy (e.g. paste mock data flagged Confidential — never real data, since pasting it is itself the breach) | `🛑 POLICY BLOCK` with refusal and escalation path |
 
 A T3 policy should silently shape tone — test by asking for a draft and checking that the output follows the style guide without any visible block.
 
