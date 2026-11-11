@@ -23,6 +23,18 @@
 
 ---
 
+## Stakeholder Segmentation
+
+| Stakeholder group | Priority | Treatment |
+|---|---|---|
+| [PLACEHOLDER: Group 1 — e.g. "Sponsoring teams"] | [PLACEHOLDER: High / Medium / Low] | [PLACEHOLDER: How this group is engaged — e.g. "Weekly update; approval at each gate"] |
+| [PLACEHOLDER: Group 2 — e.g. "Affected operational teams"] | [PLACEHOLDER: High / Medium / Low] | [PLACEHOLDER: How this group is engaged — e.g. "Monthly briefing; pilot participation"] |
+| [PLACEHOLDER: Group 3 — e.g. "Peripheral stakeholders"] | [PLACEHOLDER: High / Medium / Low] | [PLACEHOLDER: How this group is engaged — e.g. "Informed at milestones"] |
+
+*If the initiative does not treat stakeholder groups differently, delete this section and the Stakeholder Segmentation guardrail in `PMO/Guardrails.md`: add a segmentation guardrail only if the charter defines segments.*
+
+---
+
 ## Future State & Deliverables
 
 - [PLACEHOLDER: Describe the target end state. Example: "All [N] teams operating on the new [process/system/capability] by end of [PLACEHOLDER: year]"]

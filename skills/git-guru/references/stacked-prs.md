@@ -22,7 +22,8 @@ branch is missing from every later one until merged forward.
   order after #X. Review only the top commit."
 - **Check containment after every fix to an earlier branch.** A fix pushed to
   branch k is not in branches k+1 to n until it is merged forward. A branch
-  contains its predecessor when merging the predecessor in changes nothing:
+  contains its predecessor when merging the predecessor in changes nothing
+  (needs git 2.38 or newer, for `merge-tree --write-tree`):
 
   ```bash
   [ "$(git merge-tree --write-tree "$branch" "$prev" | head -1)" = \

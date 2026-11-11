@@ -11,6 +11,9 @@ description: >
   instructions with a request for feedback on them. Do NOT use to review a document, plan or
   decision that is not a prompt, to cut an existing task's token cost or run time, or to turn a
   setup into a shareable template.
+license: MIT
+metadata:
+  version: "6.0.0"
 ---
 
 # Prompt Improver

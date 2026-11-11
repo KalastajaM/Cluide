@@ -114,8 +114,11 @@ git rev-parse HEAD > .git/refs/heads/<new> && echo "ref: refs/heads/<new>" > .gi
 To start a branch from a *different* commit than the current one, the tree must
 change: hand that to the user's terminal, or repair the tree as below.
 
-**Restore a file to HEAD:** `git show HEAD:<path> > <path>` — redirection
-truncates in place and never unlinks. Never `git checkout -- <path>`.
+**Restore a file to HEAD:** `git show "HEAD:./<path>" > /tmp/restore && cat /tmp/restore > "<path>"` —
+the temporary file means a wrong path cannot empty the original (redirecting
+straight into the target truncates it before git runs), and the `./` makes the
+path relative to the current directory. Writing with `cat` truncates in place
+and never unlinks. Never `git checkout -- <path>`.
 
 **Repair a stranded tree wholesale** (HEAD right, files from another branch):
 
