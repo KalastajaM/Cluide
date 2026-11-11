@@ -39,7 +39,7 @@ Each thing worth harvesting maps to where it belongs in Cluide. Use this table i
 |-----------|--------------------------------|-----------------|
 | CLAUDE.md patterns | Standing rules / file-map structures that work in production but Cluide doesn't teach | `01_PROJECT_INSTRUCTIONS.md`, `16_BEST_PRACTICES.md`, templates |
 | Skills | Skills the project relies on that Cluide doesn't ship or teach | `03_SKILLS.md`, `skills/` |
-| Scheduled-task structure | Efficiency tricks, self-improvement loops, run-log conventions proven across real runs | `06`, `07`, `08`, `templates/TASK_TEMPLATE/` |
+| Scheduled-task structure | Efficiency tricks, self-improvement loops, run-log conventions proven across real runs | `06`, `07` (Part 9), `templates/TASK_TEMPLATE/` |
 | Memory / profile schema | Profile and knowledge file shapes that earned their keep | `04_MEMORY_AND_PROFILE.md`, `14_PERSONAL_DATA_LAYER.md`, templates |
 | MCP / hooks / security | Connector setups, guard hooks, permission patterns, credential handling | `05_MCP_SERVERS.md`, `12_SECURITY.md`, `setup-*` tasks |
 | Output formatting | HTML / Markdown report generators worth generalizing | `19_OUTPUT_FORMATTING.md` |
@@ -143,6 +143,7 @@ Projects harvested: [list]   |   Candidates found: N   |   After redaction gate:
 
 PROPOSAL 1 — [Add | Enhance]: [destination, e.g. "17_TROUBLESHOOTING.md → new entry"]
   Source (generalized): [project, what was observed — already redacted]
+  Evidence:             [production — N runs over <period> | design review — not production-validated]
   Pattern:              [the reusable shape]
   Why Cluide needs it:  [gap it fills]
   Cluide status:        [net-new | partially covered by <X>]
@@ -166,7 +167,7 @@ Ask:
 For each approved proposal, show the specific edit, then write it. After applying, stamp the changed
 Cluide file with an invisible marker so the next harvest/review can see provenance:
 ```markdown
-<!-- harvested: YYYY-MM-DD from <generalized project descriptor> -->
+<!-- harvested: YYYY-MM-DD from <generalized project descriptor>; evidence: <production | design review> -->
 ```
 
 If a proposal adds a new task or skill, also add it to the discoverability surfaces: `README.md`,

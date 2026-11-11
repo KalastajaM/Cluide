@@ -19,7 +19,7 @@ description: >
 
 This skill is the policy-handling layer for company policies. The authoritative source for each policy is recorded in the Policy Registry below. Before producing any response, the skill consults the relevant policies, applies tier-appropriate validation, and emits the correct output block.
 
-📎 **Source guide:** [references/21_COMPANY_POLICIES.md](references/21_COMPANY_POLICIES.md) — bundled with the skill so it remains self-contained when copied to `~/.claude/skills/` outside the Cluide repo.
+📎 **Source guide:** [references/21_COMPANY_POLICIES.md](references/21_COMPANY_POLICIES.md) — bundled with the skill so it remains self-contained when copied to `~/.claude/skills/` outside the Cluide repo. Links in `references/` that point outside this skill folder do not resolve in an installed copy; the full guide set is at https://github.com/KalastajaM/Cluide.
 
 ---
 

@@ -40,7 +40,7 @@ What it accomplishes, and when to use it (one short paragraph).
 ## Constraints   (limits, safety rules, what not to touch)
 ```
 
-`Output` and `Constraints` are required for any task that writes or changes files, and a `## Hard rules` section satisfies both where a task states its limits that way. A purely interactive setup task, and an `audit-*` task whose write step is the fix it proposes back to the operator, may fold them into the steps instead. Setup tasks interview before creating; audit tasks run a checklist read-only before proposing fixes.
+`Output` and `Constraints` are required for any task that writes or changes files, and a `## Hard rules` section satisfies both where a task states its limits that way. A purely interactive setup task — one that writes nothing and returns drafts only — and an `audit-*` task whose write step is the fix it proposes back to the operator, may fold them into the steps instead. A setup task that writes files, settings, hooks or ignore rules is not purely interactive, so it carries Output and Constraints (or Hard rules). Setup tasks interview before creating; audit tasks run a checklist read-only before proposing fixes.
 
 ## Conventions
 

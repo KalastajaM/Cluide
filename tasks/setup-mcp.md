@@ -114,10 +114,10 @@ Ask the user which directories Claude should have access to.
 - **Remote (recommended)** — Claude Code: `claude mcp add --transport http github https://api.githubcopilot.com/mcp/` (OAuth handled on connect — no token to paste). Cowork: add the same URL as a custom connector (Customize → Connectors).
 - **Local / GitHub Enterprise** — run GitHub's official `github/github-mcp-server` binary and pass a fine-grained token via its `env`; grant only the scopes needed (read-only if the use case allows).
 
-**Slack** — prefer the built-in **Slack connector** (Customize → Connectors in Cowork / Claude): OAuth handled in-app, no JSON. The old `@modelcontextprotocol/server-slack` npm package is archived; if you need a local server, pick a maintained one from the MCP Registry (see Step 5).
+**Slack** — prefer the built-in **Slack connector** (Customize → Connectors in Cowork / Claude): OAuth handled in-app, no JSON. The old `@modelcontextprotocol/server-slack` npm package is archived; if you need a local server, pick a maintained one from the MCP Registry.
 
 **Google Workspace / Microsoft 365 / Atlassian:**
-These require OAuth setup through the vendor's developer portal. Tell the user:
+Only when no built-in connector is available (Step 2): these require OAuth setup through the vendor's developer portal. Tell the user:
 > "Google/Microsoft/Atlassian MCP servers require OAuth credentials from the vendor's developer console. I can walk you through the steps — which would you like to start with?"
 Guide the relevant setup steps based on their choice.
 

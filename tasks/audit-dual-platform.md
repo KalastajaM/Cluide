@@ -34,8 +34,8 @@ folder request has failed or looked wrong.
 ### Step 0 — Locate the target
 
 Confirm the project folder is mounted on this surface. If it is not, stop: report
-that as the first and only finding (per Guide 17, this is the single most common
-dual-platform failure) rather than trying to check anything else from memory.
+that as the first and only finding (Guide 17, *Cowork Can't Reach My Local Folder
+Mid-Task*) rather than trying to check anything else from memory.
 
 ### Step 1 — Run the checklist (read-only)
 
@@ -47,7 +47,7 @@ user** (for anything this surface cannot check directly) — never silently omit
 | 1 | Shared policy and adapter exist | `AGENTS.md` (or the project's Claude-only `CLAUDE.md`) and, for dual-platform, a `CLAUDE.md` that imports it, are present and non-empty |
 | 2 | Setup page exists and matches reality | `PLATFORM_SETUP.md` (or equivalent) is present; its surface table, capability-gap list and scheduler-owner table are not stubs |
 | 3 | Every referenced path resolves | Extract every relative link and backticked path from `AGENTS.md`, `CLAUDE.md` and `PLATFORM_SETUP.md`; confirm each exists on disk. A dead reference is exactly what Guide 23's "Keeping linked projects consistent" calls a broken pointer |
-| 4 | Every named sibling/cross-project folder is reachable *right now* | For each "Sibling project access" (or similarly named) section, check whether this session can currently read that path. Do not assume a past grant still holds — Guide 23's "Requesting the mount, on demand" section records that Claude Cowork grants have been observed not to persist across sessions |
+| 4 | Every named sibling/cross-project folder is reachable *right now* | For each "Sibling project access" (or similarly named) section, check whether this session can currently read that path. Do not assume a past grant still holds — re-check each run (Guide 23, *Requesting the mount, on demand*) |
 | 5 | Fresh-session check table is current | Compare each surface's last-verified date in `PLATFORM_SETUP.md` against the date of the most recent edit to the shared policy, adapter, or an app-side field. A check older than the last edit is stale, not passing |
 | 6 | Scheduler ownership is intact | Each row in the scheduler-owner table names one platform; where this surface can list actual registrations (e.g. Claude scheduled tasks), confirm the named owner still exists and no duplicate has appeared on the other platform |
 | 7 | Capability-gap and Platform Facts entries carry dates | Flag any row with no date, or a date old enough that the underlying product likely changed (a judgement call — say why, per Step 2's confidence discipline) |

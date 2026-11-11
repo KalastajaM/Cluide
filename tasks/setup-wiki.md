@@ -30,7 +30,11 @@ Ask:
 > 4. What are the key entities in this domain? (e.g. for a competitive analysis: competitors, products, features; for threat intel: threat actors, TTPs, tools)
 > 5. Where should the wiki live? (provide a folder path, e.g. `~/Documents/my-wiki/` or `./wiki/`)
 
-After collecting answers: "Thanks — I'll create the structure now."
+After collecting answers: "Thanks — here is what I'll create."
+
+### Step 1b — Show the plan and get sign-off
+
+Show the root path, the directory tree (Step 2) and an outline of the schema (Step 3). Then **stop and wait** for explicit approval; create nothing on assumed approval.
 
 ### Step 2 — Create the directory structure
 

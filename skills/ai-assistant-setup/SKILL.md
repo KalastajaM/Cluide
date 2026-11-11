@@ -9,9 +9,10 @@ description: >
   troubleshooting such a setup ("how should I set up Claude to...", "create a skill for...",
   "where should this rule live", "Claude keeps forgetting...", "make this project work in Codex
   too"). Do NOT use for improving the wording of one prompt, instruction file or skill
-  description (`prompt-improver`), or when an installed skill owns the request:
-  `cowork-optimizer` (make one task cheaper), `dispatch` (model tiers), `git-guru` (git),
-  `template-exporter` (shareable templates), `review-protocol` (reviewing a document or decision).
+  description (`prompt-improver`), or when another skill owns the request:
+  `cowork-optimizer` (cheaper tasks), `dispatch` (model tiers), `git-guru` (git),
+  `template-exporter` (templates), `review-protocol` (document or decision review),
+  `security-review` (security audit), `policies-validator` (company policy checks).
 ---
 
 # Assistant Setup (Claude, ChatGPT/Codex, Gemini)
@@ -25,7 +26,7 @@ is needed to run the skill. The Cluide repository also has runnable `tasks/` and
 `templates/`; they are not bundled. When they are reachable (a Cluide checkout in the working
 folder), prefer them. When they are not, follow the guide directly and build the files from what
 it describes; the result is the same in substance but you write the structure yourself, so say so.
-Do not report the missing folders as a fault. A guide link to `tasks/` or
+Do not report the missing folders as a fault. A guide link to `tasks/`, `CHEATSHEET.md` or
 `templates/` is a pointer to that optional checkout.
 
 ## Which guide to load

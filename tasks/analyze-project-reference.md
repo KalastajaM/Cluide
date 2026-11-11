@@ -64,7 +64,7 @@ Check correction provenance, genuine user-confirmation tags, source reliability 
 - **Checks:** run `audit-memory.md` read-only against every layer present, not just `.auto-memory/`. Flag persistence expected but absent, bloated always-loaded memory, stale or duplicated entries, facts that belong in a profile rather than memory, and a scheduled task relying on native memory. Do not report "no memory system" on the absence of `.auto-memory/` alone — check for native memory and profile files first.
 
 ### 5. Scheduled-task efficiency — guide 06 → `setup-scheduled-task` / `audit-task-efficiency`
-- **Healthy:** `TASK.md` ≤ 250 lines, heavy detail split to `TASK_REFERENCE.md`, fixed-format output scripted, partial reads, two-pass triage, hard size limits, run dedup.
+- **Healthy:** `TASK.md` within the cap `audit-task-efficiency.md` holds, heavy detail split to `TASK_REFERENCE.md`, fixed-format output scripted, partial reads, two-pass triage, hard size limits, run dedup.
 - **Checks:** run `audit-task-efficiency.md`'s six checks read-only against each task file. Flag oversized always-loaded files, un-scripted fixed-format generation, full-file reads, unbounded logs.
 
 ### 6. Task self-improvement — guide 07 (incl. Part 9) → `setup-self-improving-task`

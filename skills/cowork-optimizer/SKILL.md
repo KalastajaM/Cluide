@@ -19,7 +19,7 @@ description: >
 
 Analyze an assistant task or project definition, identify optimization opportunities, present a prioritized plan, get user sign-off, then implement agreed changes.
 
-> This skill applies the patterns from [references/06_TASK_EFFICIENCY_GUIDE.md](references/06_TASK_EFFICIENCY_GUIDE.md) and [references/07_TASK_LEARNING_GUIDE.md](references/07_TASK_LEARNING_GUIDE.md). Read those guides if you want to understand the reasoning behind any recommendation.
+> This skill applies the patterns from [references/06_TASK_EFFICIENCY_GUIDE.md](references/06_TASK_EFFICIENCY_GUIDE.md) and [references/07_TASK_LEARNING_GUIDE.md](references/07_TASK_LEARNING_GUIDE.md). Read those guides if you want to understand the reasoning behind any recommendation. Links in `references/` that point outside this folder do not resolve in an installed copy; the full guide set is at https://github.com/KalastajaM/Cluide.
 
 ## Rules
 
@@ -65,7 +65,7 @@ Also check whether the task folder contains any of these companion files — the
  
 ## Phase 2: Audit
 
-Analyze the task/project across eight dimensions. For each finding, note: what it is, why it's a problem, and the effort to fix (Low / Medium / High).
+Analyze the task/project across the dimensions in the table below. For each finding, note: what it is, why it's a problem, and the effort to fix (Low / Medium / High).
 
 **Read `references/audit-dimensions.md` for the full checklist.** The dimensions are ranked by typical ROI:
 
@@ -128,7 +128,7 @@ End with a question using the available tool or chat: `All of them` / `Let me pi
  
 Once the user confirms which changes to make:
  
-1. **Back up before editing.** Preferred: `git add` and commit the current state so there's a clean restore point. If git is not available, copy the file with a `.bak` suffix. Note the backup location in your response.
+1. **Back up before editing.** Preferred: commit only the files you are about to edit — list them first, then `git add <those paths>` and `git commit -m "<message naming the restore point>" -- <those paths>`, so any other dirty or staged file stays out of the commit. If git is not available, copy each file with a `.bak` suffix. Note the backup location in your response.
 2. Apply changes one finding at a time.
 3. After each non-trivial change, briefly note what you changed and why (one line).
 4. Present the final revised task/project.
@@ -156,7 +156,7 @@ After implementation:
 
 ## Edge Cases
 
-- If the task file is empty or contains only a title: say "This task has no content to audit. Would you like me to help you write it from scratch instead?" and offer to run `tasks/setup-scheduled-task.md`.
+- If the task file is empty or contains only a title: say "This task has no content to audit. Would you like me to help you write it from scratch instead?" and offer to run `tasks/setup-scheduled-task.md` if a Cluide checkout is reachable; otherwise offer to draft the task from `references/06_TASK_EFFICIENCY_GUIDE.md` and `references/07_TASK_LEARNING_GUIDE.md` Part 9.
 - If the task is under 50 lines and already follows Guide 06 patterns: say "This task is already well-optimized. No changes recommended." Do not invent marginal findings.
 - If the user provides a Cowork project folder (not a single TASK.md): read all task files in the folder and audit each independently, presenting findings grouped by file.
 - If IMPROVEMENTS.md contains stale proposals (>10 pending, none applied): flag this as a finding — the improvement system itself needs maintenance.

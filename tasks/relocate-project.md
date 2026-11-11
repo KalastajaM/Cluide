@@ -36,7 +36,7 @@ Confirm all of these before touching anything:
 - The old location is still fully readable, or a complete backup of it is. Never start from a half-copied tree.
 - Every git repository in scope is committed and clean. Check, don't assume.
 - The parent of everything being moved is mounted, plus any project that references it.
-- If the config layer is in scope: the Filesystem MCP server is connected with `~/Library/Application Support/Claude` in its `allowed_directories` (Guide 05; re-verify after September 2026 — the picker now accepts the Library folder but protects Claude's own data).
+- If the config layer is in scope: the Filesystem MCP server is connected with `~/Library/Application Support/Claude` in its `allowed_directories`, so the Step 2 sweep can read it (Guide 05; re-verify after September 2026 — the picker now accepts the Library folder but protects Claude's own data). The config edits themselves are the user's, by script (Step 5).
 
 ### Why not a sync folder
 
@@ -82,7 +82,7 @@ Sweep five layers. The last four are outside the projects and are the ones a nai
 | **Scheduled tasks** | Definitions under `<CLAUDE_ROOT>/Scheduled/*/`, and their registrations in `scheduled-tasks.json` | They run unattended: a broken one fails quietly on a schedule, and the folder and the registration break separately |
 | **Artifacts** | `<CLAUDE_ROOT>/Artifacts/<id>/index.html` and whatever generates them | An artifact fed by a broken generator keeps rendering stale data with no error anywhere |
 | **Claude Code state** | `~/.claude/projects/` (one directory per project, named after its path) and `~/.claude.json` | A move orphans the project's whole transcript history under a dead name, and orphans can be garbage-collected |
-| **Config** | `~/Library/Application Support/Claude/` — including `spaces.json`, which records `folders[].path` per project | The app's own record of where each project's folder is |
+| **Config** | `~/Library/Application Support/Claude/` (`claude_desktop_config.json`) and `…/local-agent-mode-sessions/<accountId>/<profileId>/spaces.json`, which records `folders[].path` per project | The app's own record of where each project's folder is |
 
 `<CLAUDE_ROOT>` is the Claude data root, recorded as `coworkUserFilesPath` in `claude_desktop_config.json`. Read it there rather than assuming a location.
 
@@ -110,17 +110,17 @@ Before moving anything, and confirmed to exist before the first change:
 
 - **Under git:** commit or tag approved tracked state on every repo in scope, and separately back up valuable ignored or untracked state. Git alone does not protect the entire folder.
 - **Not under git:** a dated archive of the affected tree, stored **outside** both the old and new locations.
-- **Always:** back up any config file you will edit, alongside itself (`spaces.json.bak-YYYY-MM-DD`).
+- **When the config layer is in scope:** the handed-over script (Step 5) backs up each config file it edits, alongside itself (`spaces.json.bak-YYYY-MM-DD`).
 
 Retire the restore point only once Step 6 verifies the result.
 
 ### Step 5 — Move, then rewire
 
-1. **For the approved Claude app-internal config branch only, quit the desktop app before touching its config.** Codex/ChatGPT references use supported app tools/UI instead. It rewrites its state files wholesale from memory, so an edit made while it runs is silently discarded (Guide 25). This is the single most common way a config fix appears to work and doesn't.
+1. **Config layer (Claude only): do not edit it from the session.** Generate the script described in `relocate-project-reference.md` § *The desktop app's own state, and the catch-22*, hand it to the user to run with the app quit, and wait for their before/after counts. The app rewrites its state files wholesale from memory, so an edit made while it runs is silently discarded (Guide 25), and a session cannot quit an app it depends on. This is the single most common way a config fix appears to work and doesn't. Codex/ChatGPT references use supported app tools/UI instead.
 2. **Move the folders.** Prefer a copy-then-verify-then-remove over an in-place move when crossing volumes.
 3. **Verify arrival before rewiring:** diff the Step 1 project list against the destination, and re-run `git -C <project> rev-parse HEAD` on every repo. A repo that reports a different HEAD, or fails, stops the run.
 4. **Rewire each approved reference.** Never bulk-replace blind across the whole tree: a global search-and-replace on a path string will rewrite documentation, historical logs, and other projects' records of where things used to be. Apply the classified table from Step 2, row by row, using the anchored-replacement rules in `relocate-project-reference.md` — replace complete strings only, assert before and after, and check for the doubled slash an unanchored replace leaves behind, which POSIX hides from the shell while every string-matching consumer breaks on it.
-5. **Restart the app** and confirm the projects resolve.
+5. **Restart the app** (the user does this, after their script has run) and confirm the projects resolve.
 
 If applying reveals something the plan missed, stop and present a revised plan.
 
@@ -145,7 +145,7 @@ A pre-move inventory (Step 1), a classified reference table (Step 2), an approve
 - Read-only until Step 3 is approved. The config layer needs its own separate approval.
 - **Never relocate into a streaming sync folder.** If the user insists after being told what breaks, that is their call — record it in the plan.
 - Never bulk search-and-replace a path across a tree. Rewire the classified rows only.
-- Never edit the app's config while the app is running.
+- Never edit the app's own config from the session — not while the app is running, and not by quitting it first. The user runs the handed-over script with the app quit.
 - Confirm the restore point exists before the first move.
 - Verify arrival *before* rewiring references — rewiring toward a tree that didn't fully arrive turns a recoverable problem into a scattered one.
 - Never touch `.git/` internals beyond normal commit/tag operations.

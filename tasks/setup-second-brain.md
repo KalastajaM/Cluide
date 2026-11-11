@@ -93,7 +93,13 @@ Then sort read-only first and present the result before moving:
 
 **The review.** Set up the cadence agreed in Step 2 as a scheduled task if the user wants it automated — `setup-scheduled-task.md` owns that shape, do not build a rival one here. The scheduled pass is report-only and uses Guide 28's weekly-review prompt. It lists inbox items with their `why`, misplaced notes, prune candidates and contradiction pairs, writes them as a dated proposals list at the root of the layer, and changes no note. Then the user empties, moves, prunes and resolves — or does so in an attended run with the assistant, each change approved by the user, including the refresh of `index.md`'s recently-changed section. No unattended run deletes, moves, merges or edits a note, and the task itself never deletes one.
 
-**The return leg.** A second brain that only ever receives from the user misses the material worth the most: the conclusions Claude and the user reach together. Offer to add a return-leg block to the CLAUDE.md files of the projects that produce conclusions — a short standing instruction to write a note to `inbox/` when a session settles a question, with the `captured` / `source` / `why` frontmatter. `templates/BLOCKS.md` carries the block; a project's own CLAUDE.md is where it goes.
+**The return leg.** A second brain that only ever receives from the user misses the material worth the most: the conclusions Claude and the user reach together. Offer to add the block below to the selected policy of each project that produces conclusions — `AGENTS.md` for dual-platform or Codex, `CLAUDE.md` for Claude-only — with `<root>` filled in. If that policy already has a `## Return leg to the notes layer` section, keep it and offer a change only as a diff.
+
+```markdown
+## Return leg to the notes layer
+
+When a session settles a question worth keeping, write a note to `<root>/inbox/` with `captured` / `source` / `why` frontmatter before the session ends. Never capture routine work, in-progress state, or figures another project owns.
+```
 
 State plainly what a return leg must not capture: routine work, in-progress state, and figures another project owns. A layer that receives everything a session touches becomes an archive nobody opens, which is the failure mode in Guide 28's anti-patterns.
 

@@ -1,6 +1,6 @@
 # Audit Dimensions — Detailed Reference
 
-> Referenced from SKILL.md Phase 2. Work through dimensions in order — they are ranked by typical ROI. Dimensions 2.1 and 2.2 almost always yield the highest savings; 2.7 and 2.8 are lower-ROI and can be skipped if the task is already efficient.
+> Referenced from SKILL.md Phase 2. Work through dimensions in order — they are ranked by typical ROI. Dimensions 2.1 and 2.2 almost always yield the highest savings; 2.7–2.9 are lower-ROI and can be skipped if the task is already efficient.
 
 ## 2.1 Token & Context Efficiency
 

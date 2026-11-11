@@ -96,6 +96,7 @@ Record the connector and grant changes applied through supported controls or by 
 - Each unattended task's `TASK.md` writes Class C actions to the outbox and cites an approval row for Class B ones.
 - If the project has a behaviour-test suite (`31_BEHAVIOUR_TESTS.md`), propose a case per Class C boundary — `tool_used` on the send tool at zero is the canonical one — and offer to add it through `setup-behaviour-tests.md`.
 - Exercise approved recovery procedures on synthetic state with failures before commit, after commit, and with an unknown outcome. Check that the original effect is not duplicated, unknown outcomes stop dependent writes without verified repeat safety, and material changes to an approved preview return for review. Report unrun recovery cases as untested.
+- Consistency check before handoff, over positive and negative cases: Class A with an empty table; an explicitly approved Class B edit with a restore point; the same edit without approval; a valid versus expired standing approval; continuation of approved work across sessions; a private remote push; and Class D despite a broad request. Confirm definitions, examples, app bootstrap and recurring-job instructions agree. A new grant must come from the user, never from repeated success alone. Preparing a local draft and saving it into a remote account are distinct actions.
 
 Report what was classified, what was removed structurally, what was granted as standing, and what remains prose-only.
 
@@ -111,10 +112,6 @@ An action inventory by source and by task (Step 1); a classified table the user 
 - Never grant the session running this task any authority in the course of running it. The task writes rules; it does not act under them.
 - Never widen a connector scope or grant to make a step easier. If a task's design needs a Class C capability, that is a finding for the user, not a scope change.
 - Do not restate Guide 32's classes in the block beyond the §8 text; cite the guide for the reasoning.
-
-## Consistency checks before handoff
-
-Check both positive and negative cases: Class A with an empty table; an explicitly approved Class B edit with a restore point; the same edit without approval; a valid versus expired standing approval; continuation of approved work across sessions; a private remote push; and Class D despite a broad request. Confirm definitions, examples, app bootstrap and recurring-job instructions agree. A new grant must come from the user, never from repeated success alone. Preparing a local draft and saving it into a remote account are distinct actions.
 
 <!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->
 <!-- last reviewed: 2026-10-06 against 32_ACTION_AUTHORITY.md -->
