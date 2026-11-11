@@ -1,17 +1,11 @@
 # Cluide — The Claude and ChatGPT Guide
 
-*Guides last reviewed: September 2026 — the guides are maintained and reviewed as a set, so individual guides no longer carry their own "last reviewed" dates. This line is the single source of truth.*
+*Guides last reviewed: November 2026 — the guides are maintained and reviewed as a set, so individual guides no longer carry their own "last reviewed" dates. This line is the single source of truth.*
 
 > A complete framework for building, running, and improving a persistent AI assistant with Claude or ChatGPT.
 > Includes architecture guides, runnable setup tasks, installable skills, and copy-paste templates.
 
 *Covers Claude Code, conversational Claude/Cowork, ChatGPT projects and Codex, and (documented, not yet tested) Google's Antigravity and the Gemini app. Shared principles are separated from native setup steps; a documented route still needs verification in your own session.*
-
-## Working on Cluide with either platform
-
-This repository now has shared contributor instructions in [AGENTS.md](./AGENTS.md), a Claude entry point in [CLAUDE.md](./CLAUDE.md), and [setup instructions for Claude, ChatGPT, Codex and Gemini](./PLATFORM_SETUP.md). For your own project, start with [the quickstart](./00_QUICKSTART.md) or [Guide 35](./35_DUAL_PLATFORM_PROJECTS.md). Claude-specific hooks and agent definitions remain labelled; they are not installed on OpenAI by copying their folders.
-
----
 
 ## What This Is
 
@@ -46,12 +40,16 @@ Cluide began as a Claude-built guide, drawing on the maintainer’s hands-on exp
 
 ## Getting Started
 
-| Your surface | Start here |
-|---|---|
-| Claude Code or Codex | Open a local project folder; create shared policy and native entry points using the quickstart. |
-| ChatGPT project or conversational Claude | Supply the policy and needed workflow files as sources, set the project bootstrap, and verify source freshness. |
-| Both platforms | Use Guide 35 and `tasks/setup-dual-platform.md`; choose one scheduler owner per job. |
+Get Cluide with GitHub's own mechanics: the green **Code** button → **Download ZIP** on this page (the guides, tasks and templates, to read or to supply as sources); a skill's own `.zip`, attached to the latest GitHub Release (one zip per skill, built from the tagged tree); or `git clone` for a local checkout.
 
+| You use | Get the files | Route | Next step |
+|---|---|---|---|
+| ChatGPT (web or desktop app) | Download ZIP, or a skill's `.zip` from the latest GitHub Release | The [Quickstart](./00_QUICKSTART.md); or the `ai-assistant-setup` skill, uploaded where your product accepts skill uploads | Skill installation per surface: [Guide 03](./03_SKILLS.md) |
+| Claude app or Cowork | Download ZIP, or a skill's `.zip` from the latest GitHub Release | The `ai-assistant-setup` skill, or the [Quickstart](./00_QUICKSTART.md) | Skill installation per surface: [Guide 03](./03_SKILLS.md) |
+| Claude Code | `git clone`, or Download ZIP | `"Run tasks/onboard-project.md"` for a full setup, or the [Quickstart](./00_QUICKSTART.md) for a first small one | Skills and the other routes: [Guide 03](./03_SKILLS.md) |
+| Codex or Antigravity (Antigravity is documented, untested) | `git clone`, or Download ZIP | `"Run tasks/onboard-project.md"` for a full setup, or the [Quickstart](./00_QUICKSTART.md) | Skills and the other routes: [Guide 03](./03_SKILLS.md) |
+
+Running one project from more than one of these? Use [Guide 35](./35_DUAL_PLATFORM_PROJECTS.md) and `tasks/setup-dual-platform.md`; choose one scheduler owner per job.
 
 **New here?** Start with [00_QUICKSTART.md](./00_QUICKSTART.md) — build shared instructions and a planning workflow on your chosen surface.
 
@@ -59,6 +57,12 @@ Cluide began as a Claude-built guide, drawing on the maintainer’s hands-on exp
 > "Help me set up a personal assistant for Claude, ChatGPT, or Codex. First identify which surface I use."
 
 **Quick reference while building:** Keep [CHEATSHEET.md](./CHEATSHEET.md) open for file skeletons and common patterns.
+
+---
+
+## Working on Cluide with either platform
+
+This repository now has shared contributor instructions in [AGENTS.md](./AGENTS.md), a Claude entry point in [CLAUDE.md](./CLAUDE.md), and [setup instructions for working on this repository with Claude, ChatGPT, Codex or Gemini](./PLATFORM_SETUP.md). For your own project, start with [the quickstart](./00_QUICKSTART.md) (Guide 35 when one project must run on two platforms). Claude-specific hooks and agent definitions remain labelled; they are not installed on OpenAI by copying their folders.
 
 ---
 
@@ -103,7 +107,7 @@ Cluide began as a Claude-built guide, drawing on the maintainer’s hands-on exp
 | 34 | [Importing From Other Assistants](./34_IMPORTING_FROM_OTHER_ASSISTANTS.md) | New users | Bringing a setup in from another assistant: ask the assistant to export itself, route each category to its Cluide home, treat the export as data and as a specification to triage rather than a file to copy, and the one-paragraph reverse direction |
 | 35 | [Dual-Platform Projects](./35_DUAL_PLATFORM_PROJECTS.md) | Power users | Running one project from Claude and ChatGPT, Codex or Gemini: one shared policy with thin native adapters, capability gaps recorded rather than translated, platform-local memory and one scheduler owner per job, and a fresh-session check on each surface |
 
-**Recommended order:** Quickstart → 01 → 02 → **20** → 03 → 04 → 05 → (06–10 once you have scheduled tasks running). The guide numbers are stable addresses, not a reading order — see the [Reading Tracks in 00_INDEX.md](./00_INDEX.md#reading-tracks) for per-goal paths, or follow [Guide 18](./18_END_TO_END_WALKTHROUGH.md) for a guided path through all stages.
+**Where to start:** the Foundation track in the [Reading Tracks in 00_INDEX.md](./00_INDEX.md#reading-tracks) is the recommended starting order. The guide numbers are stable addresses, not a reading order — the same page lists tracks for other goals, or follow [Guide 18](./18_END_TO_END_WALKTHROUGH.md) for a guided path through all stages.
 
 For detailed per-guide descriptions, reading times, and usage guidance, see [00_INDEX.md](./00_INDEX.md).
 

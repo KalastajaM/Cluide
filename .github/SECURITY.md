@@ -2,7 +2,7 @@
 
 ## What this repository is
 
-Cluide is documentation. It ships no service, no package, and no compiled artefact, so it has no CVE surface in the usual sense. The realistic risk is different and worth stating plainly: **the guides, tasks, skills, and templates here are read by Claude and acted on.** A defect in this repository is a defect in instructions that an agent will follow.
+Cluide is documentation. It ships no service, no package, and no compiled artefact, so it has no CVE surface in the usual sense. The realistic risk is different and worth stating plainly: **the guides, tasks, skills, and templates here are read by AI assistants (Claude, ChatGPT/Codex, Gemini) and acted on.** A defect in this repository is a defect in instructions that an agent will follow.
 
 That makes the following in scope, and worth reporting privately:
 
@@ -12,7 +12,7 @@ That makes the following in scope, and worth reporting privately:
 - **Over-broad permissions.** An allow-list, MCP configuration, or `allowed-tools` example that grants materially more than the described use needs.
 - **A script that does something other than what its surrounding prose says.** The extraction and helper scripts under `skills/` and `templates/` are copy-paste starters; a mismatch between what one does and what it claims is a security issue, not a documentation nit.
 
-Out of scope: the security posture of Claude, Claude Code, Cowork, or any third-party MCP server. Report those to their respective vendors. Anthropic's own vulnerability disclosure process is the right destination for issues in Claude itself.
+Out of scope: the security posture of Claude, Claude Code, Cowork, ChatGPT, Codex, Gemini, Antigravity, or any third-party MCP server. Report those to their respective vendors. Anthropic's own vulnerability disclosure process is the right destination for issues in Claude itself.
 
 ## Reporting
 
