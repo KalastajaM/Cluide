@@ -105,7 +105,7 @@ Report per project:
 ### Step 3 — Generalize + redact (mandatory gate)
 
 Before *any* candidate can be proposed for Cluide, strip everything personal or business-specific, per
-`14_PERSONAL_DATA_LAYER.md` and this repo's File-Hygiene rule in `CLAUDE.md`. Remove or placeholder:
+`14_PERSONAL_DATA_LAYER.md` and this repo's File-Hygiene rule in `AGENTS.md`. Remove or placeholder:
 
 - Names, email addresses, phone numbers, usernames
 - Company / client / account names, internal project names, deal data

@@ -107,7 +107,7 @@ Keep each index line under ~100 characters. Max 30 entries total.
 Check the policy selected by the native implementation (`AGENTS.md`, Claude-only `CLAUDE.md`, or ChatGPT project instructions).
 
 - If yes: check if it already contains a line like `Read .auto-memory/MEMORY.md`. If not, add it to a `## Memory` section or append to the top-level list.
-- If no: tell the user "You don't have a CLAUDE.md yet. Run `tasks/setup-claude-md.md` to create one — it will include the memory loading instruction."
+- If no: tell the user "You don't have a policy file yet." Then create the selected policy file containing the `## Memory` block below (with approval), or run `tasks/setup-claude-md.md` and then re-run this Step 4 to add the block.
 
 The line to add to that policy:
 ```markdown

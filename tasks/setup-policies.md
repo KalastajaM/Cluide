@@ -176,13 +176,14 @@ Preserve the rest of the skill (tier definitions, validation protocol, output fo
 Select the native policy target from the runtime route. The following project/user checks are Claude-only; Codex uses its effective `AGENTS.md` chain, and ChatGPT uses project instructions/source.
 
 ```bash
-ls .claude/CLAUDE.md 2>/dev/null && echo "project-claude-md"
+ls CLAUDE.md 2>/dev/null && echo "project-claude-md (root)"
+ls .claude/CLAUDE.md 2>/dev/null && echo "project-claude-md (.claude/)"
 ls ~/.claude/CLAUDE.md 2>/dev/null && echo "user-claude-md"
 ```
 
 Ask the user where to add the policy reference. Use the available question tool, or ask in chat: `Project CLAUDE.md` / `User CLAUDE.md` / `Both` / `Skip`.
 
-Append to the chosen file(s):
+Append to the chosen file(s). If a project has a `CLAUDE.md` at the root and one under `.claude/`, append to the one that already holds the project's rules rather than creating a second:
 
 ```markdown
 

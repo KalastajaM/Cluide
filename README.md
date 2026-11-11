@@ -40,7 +40,7 @@ Cluide began as a Claude-built guide, drawing on the maintainer’s hands-on exp
 
 1. **Read the guides yourself** and set things up manually — useful if you want full control.
 2. **Give a guide to your assistant** — `"Read 01_PROJECT_INSTRUCTIONS.md and set up project instructions for the surface I use."` The assistant follows the applicable route.
-3. **Run a task** — faster, guided, no reading required. Say `"Run tasks/onboard-project.md"` to start a full interactive setup.
+3. **Run a task** — faster, guided, no reading required. Say `"Run tasks/onboard-project.md"` to start a full interactive setup (needs a session that can read a Cluide checkout; on ChatGPT start with the Quickstart).
 
 ---
 
@@ -186,7 +186,7 @@ The copy-paste starting points in `templates/`:
 
 | Template | What it is |
 |----------|-----------|
-| `PROJECT_TEMPLATE/` | The default project layout: shared `AGENTS.md` and a `CLAUDE.md` adapter with a file map and an app-side mirror block, `Outputs/`, `Working/`, `_archive/`, plus the memory, intake, and routing blocks ready to keep or delete |
+| `PROJECT_TEMPLATE/` | The default project layout: shared `AGENTS.md` with a file map, a thin `CLAUDE.md` adapter, and `PLATFORM_SETUP.md` with the per-surface settings mirror, `Outputs/`, `Working/`, `_archive/`, plus the memory, intake, and routing blocks ready to keep or delete |
 | `TASK_TEMPLATE/` | Scheduled task folder with `TASK.md`, `IMPROVEMENTS.md`, `RUN_LOG.md` |
 | `AI-ASSISTANT_TEMPLATE/` | Full personal business assistant — email, calendar, Teams, daily briefings |
 | `PMO_TEMPLATE/` | Programme workspace with risk register, action tracker, and decision log |

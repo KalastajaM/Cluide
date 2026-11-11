@@ -44,7 +44,7 @@ Not everything in your assistant setup belongs in git. Use this as a guide:
 - `tasks/*/LAST_RUN.md` — replaced wholesale every run, so diffs are meaningless. Use `RUN_LOG.md` for history.
 - Credentials (OAuth tokens, API keys, `.env`, `.json` credential files) — never commit secrets
 
-**LLM wikis** (see [Guide 15](./15_LLM_WIKI.md)) — track the `wiki/` folder and `CLAUDE.md` schema. The `log.md` file is append-only, producing clean git history: `git log -- wiki/log.md` reads as a timeline of evolution, and `git diff HEAD~1 HEAD -- wiki/` shows what a single ingest changed.
+**LLM wikis** (see [Guide 15](./15_LLM_WIKI.md)) — track the `wiki/` folder and `CLAUDE.md` schema. The `log.md` file is append-only, producing clean git history: `git log -- wiki/log.md` reads as a timeline of evolution, and `git diff HEAD~1 HEAD -- wiki/` shows what a single ingest changed when each ingest is one commit.
 
 See the next section for a complete breakdown of what belongs in `.gitignore` vs `.claudeignore`.
 
@@ -78,19 +78,29 @@ An append-only `RUN_LOG.md` has useful diffs, but track it only when its content
 
 **When the repository is itself the distribution, the ignore list fails by omission.** Whatever git tracks ships, and with `git add -A` or an auto-commit hook (below) a new private file is tracked unless a rule already covers it. Prefer one ignored folder for everything that does not ship over a rule per file, so a new working file needs a home rather than a new rule, and before each release read `git ls-files` rather than trusting the rules (*Export and recovery boundaries* below).
 
-**Starter `.gitignore`:**
+**Starter `.gitignore`** — an excerpt; the canonical list is in `tasks/setup-ignore-hygiene.md`:
 ```
 # Credentials
 credentials.json
 token.json
 *.oauth
 .env
+.env.*
+*.env
+*.pem
+*.key
+*.p12
+secrets.*
 
 # Personal / local config
 .claude/settings.local.json
 
-# Run output
+# Run output and runtime state
 **/LAST_RUN.md
+*_state.json
+*_archive.json
+pending_*.json
+recent_*.json
 
 # Compiled skill bundles
 skills/*.zip
@@ -343,20 +353,41 @@ The `--global` flag writes to `~/.gitconfig` (all repos on your machine). Use `-
 If your assistant assistant files are not yet in git:
 
 ```bash
-<a id="navigate-to-your-claude-folder-or-wherever-your-assistant-files-live"></a>
-
 # Open the authored project folder, not the native runtime-state directory
 cd /path/to/your/claude-setup
 
 # Initialise
 git init
 
-# Add a .gitignore before the first commit
+# Add a .gitignore before the first commit (an excerpt; the canonical list
+# is in tasks/setup-ignore-hygiene.md)
 cat > .gitignore << 'EOF'
+# Credentials
 credentials.json
 token.json
 *.oauth
 .env
+.env.*
+*.env
+*.pem
+*.key
+*.p12
+secrets.*
+
+# Personal / local config
+.claude/settings.local.json
+
+# Run output and runtime state
+**/LAST_RUN.md
+*_state.json
+*_archive.json
+pending_*.json
+recent_*.json
+
+# Compiled skill bundles
+skills/*.zip
+
+# OS and editor noise
 .DS_Store
 *.swp
 __pycache__/
@@ -522,7 +553,7 @@ Two habits keep a busy repository safe: build a fix for a branch that is not che
 **Faster alternatives:** `tasks/setup-github.md` handles full GitHub setup including ongoing sync. `tasks/setup-ignore-hygiene.md` audits and fixes `.gitignore`/`.claudeignore`. `tasks/setup-bootstrap-folder.md` creates bootstrap stubs for gitignored runtime files.
 
 **To review what a recent run changed:**
-> "Run `git diff HEAD~1 HEAD -- [task-folder]/` and summarise what changed in the last run."
+> "Run `git diff <pre-run commit> HEAD -- [task-folder]/`, where `<pre-run commit>` is the one recorded with `git rev-parse HEAD` at the start of that run, and summarise what changed in that run."
 
 ## The git-guru skill
 

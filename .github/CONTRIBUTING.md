@@ -20,7 +20,7 @@ Read `AGENTS.md` before opening a pull request. It is the operating contract for
 
 ## The workflow
 
-Cluide is trunk-based. Work happens on a short-lived branch, merged into `main` by pull request, branch deleted on merge. There is no `develop` branch and no release branch, deliberately — `CLAUDE.md` explains why. `main` is always the current, self-consistent guide set.
+Cluide is trunk-based. Work happens on a short-lived branch, merged into `main` by pull request, branch deleted on merge. There is no `develop` branch and no release branch, deliberately — `AGENTS.md` § Branching and Releases explains why. `main` is always the current, self-consistent guide set.
 
 ```bash
 git checkout -b short-descriptive-name

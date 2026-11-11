@@ -38,7 +38,7 @@ find . -name '.DS_Store' -o -name 'Thumbs.db' -o -name 'desktop.ini'      # OS j
 find . -name '~$*' -o -name '*.tmp' -o -name '*.swp' -o -name '*.bak'     # editor / lock / temp
 find . -type f -empty                                                      # zero-byte
 find . \( -name '* copy*' -o -name '*([0-9])*' -o -name '*_v[0-9]*' \)    # duplicate families
-find . -name '*.lock' -o -name 'index.lock' -o -name 'HEAD.lock'           # stale git locks
+find . -path '*/.git/*' \( -name 'index.lock' -o -name 'HEAD.lock' -o -name '*.lock' -path '*/refs/*' \)  # stale git locks (inside .git/ only)
 ```
 
 Then two categories the patterns above miss:
@@ -67,7 +67,8 @@ references before proposing any move or replacement. `Working/` is not blanket d
 #### Check 3: Zero-byte and lock files
 
 - Zero-byte files: distinguish intentional placeholders (`.gitkeep`, a stub with a documented purpose) from strays.
-- Stale git locks with no process holding them: these block commits and are safe to clear — but they signal something else went wrong (a crashed process, a sync daemon fighting git — see `relocate-project.md`). Report the cause alongside the file.
+- Stale git locks with no process holding them: these block commits, but they signal something else went wrong (a crashed process, a sync daemon fighting git — see `relocate-project.md`). Report the cause alongside the file. Clear one only when no git process is running and the user approves; this is the one exception Check 6 allows inside `.git/`.
+- Dependency lockfiles (`*.lock` outside `.git/`) are source files, never clutter.
 
 #### Check 4: Ignored but still loaded
 
@@ -88,13 +89,13 @@ Look for a rule covering one artifact but not its near-identical sibling — `RE
 
 #### Check 6: Never touch
 
-Exclude from every proposal, without exception: `.git/` internals, `.env`, credentials, tokens, keys, anything secret-looking, memory and profile files, raw source data marked do-not-modify, and anything whose purpose is unclear. When unsure, leave it and flag it.
+Exclude from every proposal, without exception: `.git/` internals (except a stale git lock under `.git/`, which Check 3 may propose for deletion after confirming no git process is running), `.env`, credentials, tokens, keys, anything secret-looking, memory and profile files, raw source data marked do-not-modify, and anything whose purpose is unclear. When unsure, leave it and flag it.
 
 ### Step 3 — Present findings and the change plan
 
 A table, grouped by category: path, size, category, proposed action (`archive` / `delete` / `add to .claudeignore` / `leave — flagged`), and a one-line reason.
 
-Default every row to **archive** (move to `_archive/` inside the target). Reserve `delete` for truly worthless, regenerable files — `.DS_Store`, stale locks — and even then it needs explicit per-file approval, never a blanket yes.
+Default every row to **archive** (move to `_archive/` inside the target). Reserve `delete` for truly worthless, regenerable files — `.DS_Store`, stale git locks — and even then it needs explicit per-file approval, never a blanket yes.
 
 State the totals: how many files, how much disk, how much context the ignored-but-loaded findings would free.
 

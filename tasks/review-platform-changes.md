@@ -30,7 +30,7 @@ This is the outward-facing leg of a three-way maintenance loop:
   the sentence you write cites the relevant vendor’s official page that states it.
 - **A claim you cannot re-verify is a C finding, not an edit.** Write "re-verify" with the date, never a
   plausible replacement value.
-- **Consumed surface stays append-only** (see `CLAUDE.md`). A platform rename never renumbers a guide,
+- **Consumed surface stays append-only** (see `AGENTS.md`, *Branching and Releases*, check 4). A platform rename never renumbers a guide,
   a dimension or a task file.
 
 ---
@@ -128,7 +128,7 @@ guide, line, the claim as written, what the source says, and the URL:
 - **C. Could not verify** — no primary source either way; name the test or re-check that would settle it.
 - **D. Process** — new sources to add to the table above, name collisions, repository state.
 
-Close with a change plan grouped into PR-sized units (one branch per unit; the merge gate in `CLAUDE.md`
+Close with a change plan grouped into PR-sized units (one branch per unit; the merge gate in `AGENTS.md`
 requires each to be a whole change) and the registration touchpoints each unit needs. A unit that adds a
 `tasks/` file grows the consumed surface: say so, because the next tag is then minor, not patch.
 

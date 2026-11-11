@@ -285,6 +285,8 @@ Hooks are shell commands that fire automatically in response to Claude Code even
 }
 ```
 
+`git add -A` stages every untracked file, including credentials not yet covered by `.gitignore`. Run `tasks/setup-ignore-hygiene.md` before enabling this hook (see [Guide 11](./11_GIT_INTEGRATION.md)).
+
 **Other hook events:**
 - **PreToolUse** — fires before a tool runs. Useful for validation or logging. Unlike CLAUDE.md instructions (guidance Claude can overlook), a PreToolUse hook is an enforcement layer — it can hard-block a tool call.
 - **PostToolUse** — fires after a tool completes. Useful for follow-up actions (e.g., after a file write, trigger a view regeneration). Since Claude Code v2.1.319 it also runs, with up to 10 seconds to finish, for a tool call that completes after a new message has interrupted the turn.

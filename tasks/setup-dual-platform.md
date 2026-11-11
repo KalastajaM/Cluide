@@ -28,7 +28,7 @@ Use it when a Claude project should also be worked on from ChatGPT, Codex or Gem
 - Ask which surfaces the project must support (multi-select): **Claude Code**, **conversational Claude / Cowork**, **ChatGPT project** (uploaded or connected sources), **Codex** (local or cloud repository access), **Antigravity** (Google's repository agent), **Gemini app notebook** (uploaded sources). "Dual-platform" means at least one Claude surface plus at least one OpenAI or Google surface. Google's routes in Guide 35 §9 are documented but untested, so a Google surface is untested until its fresh-session check passes. Claude Code plus Cowork is a different combination, and this task does not apply to it.
 - **Verify the platform facts before relying on them.** For each selected surface, read the current official documentation (Anthropic for Claude, OpenAI for ChatGPT and Codex, Google for Antigravity and the Gemini app) on instruction-file discovery, precedence, and nested or override files; import support; project-instruction size limits; the project instructions and description fields; and how uploaded or connected sources refresh. Record each fact with its URL and today's date. If this session has no web access, mark every such fact **unverified** in the plan and say so. Do not fill the gap from memory.
 
-If the target already has a shared policy file and a platform adapter, this is a **review** run: Steps 1, 2 and 5–7, comparing what the files say against what the inventory finds.
+If the target already has a shared policy file and a platform adapter, this is a **review** run: Steps 1, 2 and 5–7, comparing what the files say against what the inventory finds. The exception: a project that already has the shared-policy structure but has no recorded fresh-session check for the surface being added is treated as a first run **for that surface**. Run Step 0 for it, Steps 1–2 as in a review run, Steps 3–4 limited to that surface's rows and app-side text, then Steps 5–7.
 
 ### Step 1 — Inventory (read-only)
 
@@ -43,7 +43,7 @@ List every artefact that carries instructions or binds the project to one platfo
 | State | native memory on each platform, `.auto-memory/` and profile files, run logs, scheduler registrations |
 | Generators | templates or tasks inside the project that write instruction files and would reinstall single-platform assumptions |
 
-Classify the starting point: **Claude-first** (`CLAUDE.md`, no shared file), **OpenAI-first** (`AGENTS.md`, no Claude adapter; current Claude Code reads that `AGENTS.md` natively, but the task still installs the adapter because native reading is missing on some versions and deployments and the adapter holds Claude-only rules — Guide 35 §4), **overlapping** (both exist and state the same rules twice), or **already structured** (review run).
+Classify the starting point: **Claude-first** (`CLAUDE.md`, no shared file), **OpenAI-first** (`AGENTS.md`, no Claude adapter; current Claude Code reads that `AGENTS.md` natively, but the task still installs the adapter because native reading is missing on some versions and deployments and the adapter holds Claude-only rules — Guide 35 §4), **overlapping** (both exist and state the same rules twice), or **already structured** (review run, unless Step 0's exception applies to a surface being added).
 
 ### Step 2 — Sort every rule into one home (read-only)
 
@@ -102,7 +102,7 @@ Write one check question tailored to the project. For example: "Which instructio
 
 ### Step 7 — Mirror and report
 
-Once the user confirms they have pasted the field texts, update the mirror block in `CLAUDE.md` or the setup page per Guide 25, per platform, with each field's last-verified date. If they have not pasted them, leave the mirror and say what is outstanding.
+Once the user confirms they have pasted the field texts, update the mirror per Guide 25 — the *Applied settings and sources* table in the setup page (`PLATFORM_SETUP.md`), per platform, with each field's last-verified date. A legacy mirror block in `CLAUDE.md` is read, never extended. If they have not pasted them, leave the mirror and say what is outstanding.
 
 ## Output
 

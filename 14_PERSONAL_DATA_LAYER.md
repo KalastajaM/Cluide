@@ -195,15 +195,29 @@ Example extraction script:
 
 ```javascript
 // Run in browser console on the budget app's accounts page
+
+// Locale-aware amount parser. Returns NaN (never 0) when nothing parses.
+function parseAmount(text) {
+  let t = (text || '').replace(/\u2212/g, '-').replace(/[\s\u00a0]/g, '');
+  const negative = /^\(.*\)$/.test(t) || t.includes('-');
+  t = t.replace(/[^0-9.,]/g, '');
+  if (!/\d/.test(t)) return NaN;
+  const decimalIsComma = t.lastIndexOf(',') > t.lastIndexOf('.');
+  t = decimalIsComma ? t.replace(/\./g, '').replace(',', '.') : t.replace(/,/g, '');
+  const n = parseFloat(t);
+  return negative ? -n : n;
+}
+
 const envelopes = [];
 document.querySelectorAll('.envelope-row').forEach(row => {
   envelopes.push({
     name: row.querySelector('.envelope-name')?.textContent.trim(),
-    balance: parseFloat(
-      row.querySelector('.balance')?.textContent.replace(/[^0-9.-]/g, '') || '0'
-    )
+    balance: parseAmount(row.querySelector('.balance')?.textContent)
   });
 });
+
+const unparsed = envelopes.filter(e => Number.isNaN(e.balance));
+if (unparsed.length) console.warn('Could not parse a balance for:', unparsed.map(e => e.name));
 
 const result = {
   extracted_at: new Date().toISOString().slice(0, 10),
@@ -213,6 +227,8 @@ const result = {
 copy(JSON.stringify(result, null, 2));
 console.log(`Extracted ${envelopes.length} envelopes. JSON copied to clipboard.`);
 ```
+
+`JSON.stringify` writes an unparsed `NaN` as `null`, so a missing or unreadable balance fails visibly instead of passing as zero. The parser assumes the last separator in the number is the decimal mark (`1.234,56` and `1,234.56` both read as 1234.56), so a bare `1,234` reads as 1.234: check the output against one balance you know before trusting it.
 
 What the task file says about the manual refresh step:
 
@@ -265,12 +281,17 @@ Core script structure:
 import anthropic
 import base64
 import json
+import sys
 from pathlib import Path
 from datetime import date
 
 client = anthropic.Anthropic()
 
-def extract_from_screenshot(image_path: Path) -> list[dict]:
+MEDIA_TYPES = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg"}
+
+
+def extract_from_screenshot(image_path: Path) -> list[dict] | None:
+    """Return the transactions, or None when the file could not be parsed."""
     with open(image_path, "rb") as f:
         image_data = base64.b64encode(f.read()).decode()
 
@@ -286,7 +307,7 @@ def extract_from_screenshot(image_path: Path) -> list[dict]:
                     "type": "image",
                     "source": {
                         "type": "base64",
-                        "media_type": "image/png",
+                        "media_type": MEDIA_TYPES[image_path.suffix.lower()],
                         "data": image_data
                     }
                 },
@@ -305,35 +326,50 @@ def extract_from_screenshot(image_path: Path) -> list[dict]:
     )
     if response.stop_reason == "max_tokens":
         print(f"WARNING: {image_path.name}: response truncated — skipping")
-        return []
+        return None
     try:
         # Haiku 5.5 thinks adaptively, so the first block can be a thinking block
         text = next(b.text for b in response.content if b.type == "text")
         transactions = json.loads(text)
     except json.JSONDecodeError as e:
         print(f"WARNING: {image_path.name}: malformed JSON ({e}) — skipping")
-        return []
+        return None
     if not isinstance(transactions, list):
         print(f"WARNING: {image_path.name}: expected a JSON array — skipping")
-        return []
+        return None
     return transactions
 
 
-screenshots = sorted(Path("screenshots").glob("*.png"))
+screenshots = sorted(
+    p for p in Path("screenshots").glob("*") if p.suffix.lower() in MEDIA_TYPES
+)
 all_transactions = []
+skipped = []
 for path in screenshots:
     print(f"Processing {path.name}...")
-    all_transactions.extend(extract_from_screenshot(path))
+    result = extract_from_screenshot(path)
+    if result is None:
+        skipped.append(path.name)
+    else:
+        all_transactions.extend(result)
+
+parsed = len(screenshots) - len(skipped)
+if parsed == 0:
+    # Leave any existing raw file untouched and fail loudly
+    sys.exit("ERROR: no screenshots parsed (none found, or all skipped) — raw file not written.")
 
 output = {
     "extracted_at": str(date.today()),
     "source": "vision extraction",
+    "skipped": skipped,
     "transactions": all_transactions
 }
 Path("data/bank_transactions_raw.json").write_text(
     json.dumps(output, indent=2)
 )
-print(f"Extracted {len(all_transactions)} transactions from {len(screenshots)} screenshots.")
+print(f"Extracted {len(all_transactions)} transactions from {parsed} screenshots.")
+if skipped:
+    print(f"SKIPPED {len(skipped)}: {', '.join(skipped)}")
 ```
 
 For SDK setup and API key configuration, see Anthropic's SDK quickstart at [platform.claude.com](https://platform.claude.com) (docs at docs.claude.com).
@@ -387,14 +423,15 @@ python3 scripts/extract_transactions.py
 
 ## Expected output
 - `data/bank_transactions_raw.json` created or updated
-- Console: "Extracted N transactions from M screenshots."
+- Console: "Extracted N transactions from M screenshots." plus a SKIPPED line naming any screenshot that could not be parsed
+- The raw file's `skipped` list names those screenshots; the file is not written at all if none parsed
 
 ## On failure
-1. Check ANTHROPIC_API_KEY is set: `echo $ANTHROPIC_API_KEY`
+1. Check ANTHROPIC_API_KEY is set without printing it: `[ -n "$ANTHROPIC_API_KEY" ] && echo set || echo unset`
 2. Verify screenshots directory is not empty
 3. Check PNG files open correctly (not corrupted)
-Retry once. If still failing, log the error and continue Step 3
-using the previous raw file if one exists.
+Retry once. If still failing, log the error and stop; do not run
+Step 3 on a raw file older than this run.
 ```
 
 Example master `TASK.md`:
