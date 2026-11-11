@@ -1,7 +1,7 @@
 # Task: Setup Skill
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Assistant, run tasks/setup-skill.md`
+> `Run tasks/setup-skill.md`
 > **Source guide:** `03_SKILLS.md`
 
 ## Runtime route
@@ -230,3 +230,19 @@ Tell the user:
 - The trigger phrases in the description
 - "Test it: start a fresh session on the selected surface and use one of the trigger phrases. If it doesn't activate, the description may need stronger phrasing — re-run this task or edit the description directly."
 - "To audit the skill later: run `tasks/audit-skill.md`."
+
+## Output
+
+- `[selected-skill-folder]/SKILL.md`: `.agents/skills/[name]/` on Codex, `.claude/skills/[name]/` or `~/.claude/skills/[name]/` on Claude Code; on Cowork or ChatGPT without a native installer, an explicitly invoked source artifact instead.
+- Optionally a `references/` subfolder for detailed content.
+- The result of the mechanical check on the written file: frontmatter parses, `description` length, and `name` matching the folder.
+- The Step 6 confirmation: where the skill was written, its trigger phrases, and how to test it in a fresh session.
+
+## Constraints
+
+- Collect all interview answers before writing, and show the draft and make the requested changes before writing the file (Steps 1 and 4).
+- If the skill folder already exists, read the existing `SKILL.md` and ask whether to overwrite or improve it.
+- Every section of the structure is present, each `NEVER` is paired with a positive counterpart, and there are at least three edge cases.
+- `description` stays within 1024 characters in a folded `>` block, and `name` matches the folder name; fix any defect before Step 6.
+- For a hard prohibition, document and test its actual runtime enforcement with an inert fixture. An allowlist of pre-approved tools is not a deny, and `disallowed-tools` applies to Claude Code only.
+- Add optional metadata only for the selected runtime and only where its current documentation supports it; never run the `~/.claude/skills` commands on Codex.

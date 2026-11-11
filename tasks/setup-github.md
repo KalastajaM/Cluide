@@ -1,7 +1,7 @@
 # Task: Setup GitHub
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Assistant, run tasks/setup-github.md`
+> `Run tasks/setup-github.md`
 > **Source guide:** `11_GIT_INTEGRATION.md`
 
 ## Runtime route
@@ -260,5 +260,21 @@ If sync was skipped, note: "To commit future changes manually: `git status`, the
 ## Publication boundary
 
 Before the first commit or push, check actual staged content and the repository visibility, not only filenames. Profile, memory and run logs are trackable only when their contents are approved for this repository. Ignore rules do not remove tracked content or earlier history. Export reusable templates from reviewed generic files into clean history, excluding live `.git`, operational state and verification claims. Both private and public pushes need the project’s applicable publication authority; a local setup request alone does not grant it.
+
+## Output
+
+- A git repository initialized on `main` where none existed, a connected or newly created GitHub repository, the first commit and its push.
+- A minimal `.gitignore` when none exists and the user chose to proceed without `tasks/setup-ignore-hygiene.md`.
+- Where chosen in Step 8, a SessionStart hook merged into `.claude/settings.json` (Claude Code only) and a `## Git Sync` section in the selected policy file.
+- The Step 9 confirmation: the repository URL, the commit pushed, the sync option set up, and the commands to check status.
+
+## Constraints
+
+- Inspect state first and ask before making any change; propose the plan and wait for approval (Steps 1–2).
+- Before the first commit or push, check repository visibility, ignore rules, tracked history and the actual staged content; private visibility does not itself authorise a push, and a local setup request alone does not grant publication authority (Publication boundary).
+- Show the files to be committed and ask what to exclude before the first commit (Step 6).
+- Merge into existing `.claude/settings.json` and policy files without duplicating or overwriting, and install no `.claude/settings.json` for an OpenAI session; the SessionStart hook is Claude Code only.
+- The Git Sync rule stages tracked files only (`git add -u`), stages new files only after the user confirms them, and pushes only when asked or when a standing approval names pushing.
+- Stop when `gh` is not authenticated until the user confirms it is.
 
 <!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->

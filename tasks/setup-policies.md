@@ -1,7 +1,7 @@
 # Task: Setup Company Policies
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Assistant, run tasks/setup-policies.md`
+> `Run tasks/setup-policies.md`
 > **Source guide:** `21_COMPANY_POLICIES.md` (see also `03_SKILLS.md`, `05_MCP_SERVERS.md`)
 
 ## Runtime route
@@ -29,15 +29,37 @@ Runs read-only checks first. Does not move or modify policy source files.
 
 ### Step 1 — Confirm the skill is available
 
-Check whether the `policies-validator` skill is already installed:
+Check whether the `policies-validator` skill is already installed. The skill is its whole folder, not `SKILL.md` alone: it links the guides bundled under its `references/`, so the check tests each of those files (keep the list in step with `skills/policies-validator/`):
 
 ```bash
-# Claude-only installation checks; Codex uses .agents/skills/policies-validator/SKILL.md
-ls ~/.claude/skills/policies-validator/SKILL.md 2>/dev/null && echo "installed" || echo "missing"
-ls .claude/skills/policies-validator/SKILL.md 2>/dev/null && echo "installed-project" || echo "missing-project"
+# Claude-only locations; on Codex check .agents/skills/policies-validator instead
+check_skill() {
+  d=$1
+  [ -d "$d" ] || { echo "$d: missing"; return; }
+  miss=""
+  for f in SKILL.md references/12_SECURITY.md references/21_COMPANY_POLICIES.md; do
+    [ -f "$d/$f" ] || miss="${miss:+$miss, }$f"
+  done
+  if [ -z "$miss" ]; then echo "$d: installed"; else echo "$d: incomplete (missing: $miss)"; fi
+}
+check_skill ~/.claude/skills/policies-validator
+check_skill .claude/skills/policies-validator
 ```
 
-If the skill is missing in both locations, copy it from the Cluide repo (if present locally):
+A location that reports `installed` is ready: go on to Step 2. A location that reports `incomplete` is not: reinstall the complete folder there, per the skill folder layout in Guide 03 (*The Anatomy of a Skill*). Add the missing files from the Cluide repo (if present locally) without overwriting what is already installed, because an installed `SKILL.md` may hold a Policy Registry from an earlier run:
+
+```bash
+# Claude personal-scope branch; use .claude/skills for the project-level install
+src=path/to/Cluide/skills/policies-validator
+dest=~/.claude/skills/policies-validator
+( cd "$src" && find . -type f ) | while IFS= read -r f; do
+  [ -e "$dest/$f" ] || { mkdir -p "$(dirname "$dest/$f")" && cp "$src/$f" "$dest/$f"; }
+done
+```
+
+Then re-run `check_skill` and continue only once it reports `installed`.
+
+If both locations report `missing`, copy the skill from the Cluide repo (if present locally):
 
 ```bash
 # User-level (applies across all projects)
@@ -268,3 +290,20 @@ Point the user to:
 **If any policy references were left as `[TBD]` or pointed at missing files**, flag them explicitly:
 
 > "⚠ N policies have unresolved references. The skill will emit POLICY ALERTs for these until they are fixed. Run this task again once the sources are in place."
+
+## Output
+
+- The `policies-validator` skill installed as a complete folder at the chosen location, user-level or project-level on Claude, `.agents/skills/` on Codex.
+- The installed `SKILL.md` filled in: the Policy Registry (§1), the Escalation Path (§5) and the Policy Loading Notes (§6).
+- A `## Company policies` reference in the chosen policy file.
+- Optionally, a `Policies applied` line under the title of each task the user names.
+- Three generated test prompts and the Step 9 summary of policies wired by tier, install path and files updated.
+
+## Constraints
+
+- Read-only checks come first; collect all interview answers before writing anything.
+- Never copy policy text or credentials into the project or into Cluide; the registry holds pointers only, and policy source files are never moved or modified.
+- Install the whole `policies-validator` folder; an `incomplete` install is repaired without overwriting the installed `SKILL.md`.
+- Preserve the rest of the skill (tier definitions, validation protocol, output formats, edge cases) unchanged, and append to an existing registry rather than overwriting it.
+- Never override the user's tier choice silently; flag a mismatch and ask. A tier 1 block counts as enforced only where tool grants or runtime controls enforce it.
+- Confirm before editing a task file or replacing an existing "Company policies" section, and flag every `[TBD]` or missing reference at the end.

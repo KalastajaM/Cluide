@@ -306,8 +306,8 @@ said, what changed, and on what evidence. Omit the section only if the draft sur
 
 ## How to implement
 Each fix maps to a Cluide task or skill. When you're ready, run them in the order above — for example:
-- `Assistant, run tasks/onboard-project.md` — for end-to-end setup of missing pieces
-- `Assistant, run tasks/<specific-setup-or-audit>.md` — for a single dimension
+- `Run tasks/onboard-project.md` — for end-to-end setup of missing pieces
+- `Run tasks/<specific-setup-or-audit>.md` — for a single dimension
 - the `<skill>` skill — for <deep-dive, e.g. security-review / cowork-optimizer>
 
 *The analysis stops at this plan. No changes have been made to the project.*

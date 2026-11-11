@@ -1,7 +1,7 @@
 # Task: Setup Bootstrap Folder
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Assistant, run tasks/setup-bootstrap-folder.md`
+> `Run tasks/setup-bootstrap-folder.md`
 > **Source guide:** `11_GIT_INTEGRATION.md`
 
 ## Runtime route
@@ -192,5 +192,22 @@ Tell the user:
 ## Initialization is not recovery
 
 Stubs are for a genuinely new, empty installation. Never overwrite existing state. If populated memory or operational state unexpectedly disappears, pause dependent work and recover the approved backup; do not seed blanks and report recovery complete. State this distinction in the generated bootstrap instructions and test that an existing synthetic file survives unchanged.
+
+## Output
+
+- A stub in `bootstrap/` for each approved state file: placeholder values or empty structures only.
+- `!bootstrap/[filename]` negation lines in `.gitignore` for each stub that a bare ignore pattern would otherwise hide (Step 4).
+- `bootstrap/SETUP.md` with the guarded copy commands for a fresh clone (Step 5).
+- Optionally, a first-run check at the top of each approved task's `TASK.md` (Step 6).
+- The stubs staged with `git add bootstrap/` after approval, not committed (Step 7).
+
+## Constraints
+
+- A stub never contains real names, emails, paths or company data: if it were published on GitHub, nothing personal may be exposed.
+- Existing stubs, `bootstrap/SETUP.md` and first-run checks are kept as they are; create only what is missing, and offer a change to an existing one only as a diff (Step 2).
+- Ask before adding each negation line, before each `TASK.md` insertion and before staging; skip a line already present. Stage only, never commit.
+- Copy commands and first-run checks never overwrite an existing destination, and stubs are for a new installation, not for recovery.
+- Without git, skip Steps 4 and 7 and rely on the filename patterns.
+- Test in a scratch clone, never against live state, and never delete a live state file to test.
 
 <!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->

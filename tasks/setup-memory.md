@@ -1,7 +1,7 @@
 # Task: Setup Memory
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Assistant, run tasks/setup-memory.md`
+> `Run tasks/setup-memory.md`
 > **Source guides:** `04_MEMORY_AND_PROFILE.md`, `14_PERSONAL_DATA_LAYER.md`
 
 ## Runtime route
@@ -126,5 +126,21 @@ Tell the user:
 ## Correction and recovery acceptance
 
 An explicit user correction supersedes the previous entry with its source, date and reason retained in history. Inference alone cannot replace user-confirmed information. Check source reliability and effective date when claims conflict; recency alone does not decide. For ignored memory, identify the approved backup and recovery owner. An empty bootstrap initialises a new installation; it cannot recover lost knowledge.
+
+## Output
+
+- The `.auto-memory/` folder with one markdown file per memory (`user-identity.md`, `feedback-communication.md`, `project-[slug].md`, `reference-[slug].md`, `feedback-[slug].md`), each carrying its update date, source and status.
+- `.auto-memory/MEMORY.md` as the index.
+- A `## Memory` block in the selected policy file telling the assistant to read the index at the start of every session; for a ChatGPT source project, the index and referenced files as replacement source artifacts.
+- The Step 5 confirmation: how many files were created and what the index holds.
+
+## Constraints
+
+- If `.auto-memory/MEMORY.md` already exists, review it and fill gaps; ask only what is missing.
+- Confirm the permitted destination and processing environment before collecting or writing personal data, and skip any question the user does not want to answer.
+- Store only relevant detail; never convert an inference into user confirmation, and an inference never replaces user-confirmed information.
+- Keep each index line under about 100 characters and the index to at most 30 entries.
+- An explicit user correction supersedes the earlier entry with its source, date and reason retained; an empty bootstrap initialises a new installation and cannot recover lost knowledge.
+- Create or edit the policy file only with approval, and test recall in a fresh session on each supported surface before promising persistence.
 
 <!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->

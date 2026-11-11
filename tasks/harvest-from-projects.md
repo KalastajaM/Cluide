@@ -2,7 +2,7 @@
 
 > **Cluide maintenance task** — run this when your real assistant projects have evolved and you want
 > their generalisable lessons folded back into Cluide.
-> `Assistant, run tasks/harvest-from-projects.md`
+> `Run tasks/harvest-from-projects.md`
 
 ## Runtime route
 

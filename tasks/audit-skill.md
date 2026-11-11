@@ -1,7 +1,7 @@
 # Task: Audit Skill
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Assistant, run tasks/audit-skill.md`
+> `Run tasks/audit-skill.md`
 > **Source guides:** `03_SKILLS.md`, `02_PROMPTING_BASICS.md`
 
 ## Runtime route

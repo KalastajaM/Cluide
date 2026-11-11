@@ -1,7 +1,7 @@
 # Task: Setup Security
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Assistant, run tasks/setup-security.md`
+> `Run tasks/setup-security.md`
 > **Source guide:** `12_SECURITY.md`
 
 ## Runtime route
@@ -251,3 +251,19 @@ Tell the user:
 
 **If committed secrets were found in git history**, say:
 > "⚠ A credential may have been committed to git history. Rotate it immediately — treat it as compromised. Removing it from git history alone is not sufficient if the repo has ever been pushed to a remote."
+
+## Output
+
+- The Step 5 security report covering credentials, permissions, file hygiene and prompt injection exposure, with `–` for every check that could not run.
+- Only for the fixes the user chooses in Step 6: the `.claude/hooks/security-precheck.sh` PreToolUse hook with its `.claude/settings.json` entry (Claude Code only), credential patterns appended to `.gitignore`, and a `## Security` prompt-injection guard in the selected policy file.
+- The Step 7 confirmation: what was found, what was fixed, and the items needing manual attention such as rotating a token.
+
+## Constraints
+
+- Run the read-only checks first and ask before applying any fix.
+- Report findings without showing credential values: only the files and patterns matched.
+- A check that cannot run is reported as `–` (not run), never as clean; report inaccessible history or configuration as unverified.
+- Use the canonical hook script and merge into an existing `.claude/settings.json` rather than overwriting it; a shell pattern guard is defense in depth, not proof that every dangerous command is blocked.
+- Take the credential pattern list from `tasks/setup-ignore-hygiene.md`, not from memory; if it is unreachable, say the list is partial.
+- Do not read Claude settings as evidence on Codex or ChatGPT or install Claude hooks there, and treat `.claudeignore` as advisory, not a secret-access control.
+- Treat a credential found in git history as compromised: rotate it, since removing it from history alone is not sufficient once the repo has been pushed.

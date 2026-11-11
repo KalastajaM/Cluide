@@ -143,6 +143,7 @@ Trim strategy: compress older entries, remove superseded items, archive resolved
 | Profile summary | 40 lines / ~600 tokens |
 | Run log (RUN_LOG.md) | last 20 full entries; archive older ones once past ~30 (see below) |
 | Pending actions summary | proportional to open item count; archive resolved promptly |
+| IMPROVEMENTS.md | ~150 lines; archive Applied Fixes to Archived Fixes once the table passes 10 entries |
 
 **Run log format and retention:**
 Each `RUN_LOG.md` entry uses the header `## [YYYY-MM-DD] Run #N` and includes a `**Tokens (est.):** ~XK input, ~YK output` line. Keep the last 20 entries in full — [Guide 10](./10_COST_PERFORMANCE.md)'s drift monitoring compares recent runs against the 16th–20th most recent entries, so it needs them. Once the file exceeds ~30 entries, archive older ones to `RUN_LOG_ARCHIVE.md`. Tasks that only ever need to debug the most recent run can keep a `LAST_RUN.md` instead — cheaper, but it gives up cross-run pattern detection and Guide 10's monitoring.

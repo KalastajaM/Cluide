@@ -1,7 +1,7 @@
 # Task: Setup Sibling Access
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Assistant, run tasks/setup-sibling-access.md`
+> `Run tasks/setup-sibling-access.md`
 > **Source guide:** `23_MULTI_PROJECT_SETUPS.md` ("Requesting the mount, on demand");
 > see also `17_TROUBLESHOOTING.md` for the Cowork mid-session-request mechanism this
 > task installs against.

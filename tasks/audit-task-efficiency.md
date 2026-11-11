@@ -1,7 +1,7 @@
 # Task: Audit Task Efficiency
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Assistant, run tasks/audit-task-efficiency.md` (then specify which task file to audit)
+> `Run tasks/audit-task-efficiency.md` (then specify which task file to audit)
 > **Source guide:** `06_TASK_EFFICIENCY_GUIDE.md`
 
 ## Runtime route

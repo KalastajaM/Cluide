@@ -177,7 +177,7 @@ The script handles sections (🔑/🔴/🟡/🔵/💤/✅), cross-references, de
 
 ### Step 7: Regenerate ACTIONS.md
 
-Write to `../../Actions/ACTIONS.md` (full regeneration each run). **PA sort order:** URGENT → SOON → LOW; within group: overdue → today → no deadline → ascending by date. All sections required (use "none" if empty); the full section list, the 📝 AI-disclosure line, the on-demand 📋 Meeting-Briefs note, and the 🔑 In-Your-Court collapse rule are in `TASK_REFERENCE.md §ACTIONS-Template`.
+Write to `../../Actions/ACTIONS.md` (full regeneration each run). **PA sort order:** URGENT → SOON → LOW; within group: overdue → today → no deadline → ascending by date. All sections required (use "none" if empty); the full section list and the on-demand 📋 Meeting-Briefs note are in `TASK_REFERENCE.md §ACTIONS-Template`.
 
 ---
 

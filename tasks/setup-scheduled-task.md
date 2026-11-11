@@ -1,7 +1,7 @@
 # Task: Setup Scheduled Task
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Assistant, run tasks/setup-scheduled-task.md`
+> `Run tasks/setup-scheduled-task.md`
 > **Source guides:** `06_TASK_EFFICIENCY_GUIDE.md`, `07_TASK_LEARNING_GUIDE.md` (incl. Part 9)
 
 ## Runtime route
@@ -231,3 +231,20 @@ Tell the user:
 - Run frequency and how to trigger the task
 - The scheduler-owner table row, and where it was written
 - "To audit for efficiency after a few runs: `tasks/audit-task-efficiency.md`. To add self-improvement later: `tasks/setup-self-improving-task.md`."
+
+## Output
+
+- `tasks/[name]/` with `TASK.md`, `TASK_REFERENCE.md` and `RUN_LOG.md`, plus `IMPROVEMENTS.md` when self-improvement was requested and `LESSONS.md` only when requested.
+- This job's row in the scheduler-owner table of `PLATFORM_SETUP.md`.
+- The registration made through the selected native route; on the Claude Code branch, optionally a SessionStart reminder merged into `.claude/settings.json`.
+- The Step 7 confirmation: files created, the `TASK.md` line count, whether `IMPROVEMENTS.md` and `LESSONS.md` were included, how to trigger the task, and the owner-table row.
+
+## Constraints
+
+- Collect all interview answers before writing anything, show the draft with its line count and the owner-table row, and wait for approval before writing (Steps 1, 4 and 5).
+- If the task folder already exists, read it and ask whether to continue; draft only the files that do not exist, since `RUN_LOG.md` and `IMPROVEMENTS.md` hold live history and counters.
+- Keep `TASK.md` to about 250 lines, with schemas, output templates and error handling in `TASK_REFERENCE.md`.
+- Step 0 always keeps the scheduler owner and timezone check, the run-key claim, the duplicate-run guard and state loading, and never replaces populated state with a blank.
+- Copy `IMPROVEMENTS.md` verbatim from the template as state only; create `LESSONS.md` only if requested.
+- Inventory existing registrations before creating one and update the matching job rather than duplicating it; never leave two triggers live during a handoff.
+- The SessionStart option is a reminder, not a scheduler; merge it into `.claude/settings.json` without overwriting or duplicating.

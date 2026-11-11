@@ -1,7 +1,7 @@
 # Task: Setup LLM Wiki
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Assistant, run tasks/setup-wiki.md`
+> `Run tasks/setup-wiki.md`
 > **Source guide:** `15_LLM_WIKI.md`
 
 ## Runtime route
@@ -171,3 +171,18 @@ Tell the user:
 - The wiki root path
 - The directory structure that was created
 - "The wiki is ready. Add your first source to `sources/` and ingest it to start building."
+
+## Output
+
+- The wiki root with `CLAUDE.md` as the schema, `sources/`, and `wiki/` holding `index.md`, `log.md`, `overview.md` and `entities/`.
+- Optionally, `[wiki-root]/sources/` added to `.gitignore`.
+- The Step 6 usage instructions for ingest, query, lint and schema evolution, and the Step 7 confirmation of the wiki root path and the structure created.
+
+## Constraints
+
+- Show the root path, the directory tree and the schema outline and wait for explicit approval; create nothing on assumed approval.
+- If a `CLAUDE.md` schema, index, log or overview already exists, read it, leave it unchanged and list it as existing; never overwrite an index, a log or an overview, and never reset the log to a bare setup entry. Offer to add only the schema sections it lacks.
+- Raw sources in `sources/` are immutable and never modified.
+- A source-note is not rewritten to reflect later sources; a new version of the same source supersedes the old note, which is marked `superseded-by:`.
+- A lint pass reports issues to the user before making any changes.
+- Add `sources/` to `.gitignore` only after asking, and skip the line if it is already there.

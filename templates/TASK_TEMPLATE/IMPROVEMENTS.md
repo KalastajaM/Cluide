@@ -2,6 +2,7 @@
 
 > Managed by the task. Read every run (in the "Read State" step). Updated every run (in the "Self-Improvement" step).
 > The human can respond to proposals by annotating them directly here or in the task's output file with [APPROVED], [REJECTED], or [MODIFY: ...].
+> Size cap: about 150 lines, and Applied Fixes archived once it passes 10 entries (Guide 06 §6, *Recommended caps*).
 
 ---
 

@@ -1,7 +1,7 @@
 # Task: Analyze Project
 
 > **Cluide task** — run this from a Cluide checkout to analyze *another* assistant project end-to-end:
-> `Assistant, run tasks/analyze-project.md`
+> `Run tasks/analyze-project.md`
 > **Source guides:** the full Cluide set (01–35). Per-dimension criteria and the output template live
 > in `tasks/analyze-project-reference.md` (read on demand).
 

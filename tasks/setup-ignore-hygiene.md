@@ -1,7 +1,7 @@
 # Task: Setup Ignore Hygiene
 
 > **Portable task** — copy this file to any project's `tasks/` directory and run:
-> `Assistant, run tasks/setup-ignore-hygiene.md`
+> `Run tasks/setup-ignore-hygiene.md`
 > **Source guides:** `11_GIT_INTEGRATION.md`, `12_SECURITY.md`
 
 ## Runtime route
@@ -246,5 +246,22 @@ If the user skipped enforcement, note: "You can re-run this task at any time to 
 ## Information boundary check
 
 Activate ignore rules before collecting real data or making the first commit. Inspect tracked files and staged content, not just ignore patterns. Untracking does not remove earlier history; a generic export needs a reviewed file allowlist and clean history. Include confidential archives, outboxes, rollback copies and logs in the same boundary. Valuable ignored state requires an approved backup; blank bootstrap files are not recovery.
+
+## Output
+
+- Approved entries appended to `.gitignore`, and to `.claudeignore` in Claude projects, created from the header template when missing.
+- For Claude Code, matching `Read(...)` rules merged into `permissions.deny` in `.claude/settings.json`.
+- Where chosen in Step 5, the `.claude/hooks/check-ignore.sh` PostToolUse hook with its `.claude/settings.json` entry (Claude Code only), or a `## File Hygiene` rule in the selected policy file.
+- Files removed from git tracking with `git rm --cached`, only where the user said yes.
+- The Step 6 confirmation of what was added, untracked and set up.
+
+## Constraints
+
+- Scan and propose first; ask before making any change, and apply only the approved entries (Steps 1–3).
+- Never propose removing existing entries, and append to existing ignore files rather than overwriting them.
+- Never overwrite `.claude/settings.json`: read it, add only what is missing, show the diff and write it back; do not duplicate an existing hook entry.
+- Run `git rm --cached` only when the user explicitly says yes, and note that untracking does not remove earlier history.
+- `.claudeignore` is a convention that Claude Code does not enforce, not a security boundary; the `.claudeignore` and deny-rule operations and the hook are Claude-only, and Codex and ChatGPT use the selected policy or source inventory instead.
+- Activate ignore rules before collecting real data or making the first commit, and treat blank bootstrap files as no substitute for an approved backup of valuable ignored state.
 
 <!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->
