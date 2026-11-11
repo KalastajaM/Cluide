@@ -29,8 +29,8 @@ Two questions sort any action. Can it be undone, and by whom? Does anyone other 
 |---|---|---|---|
 | **A — Local, reversible** | Stays on your disk or in your account, and a restore point or an undo brings it back | Editing a git-tracked file, writing a draft, creating an output, scratch work, reading authorised sources | **Act.** No approval; no log beyond the normal run log |
 | **B — Local, costly to reverse** | Stays with you, but undoing it is work or partly impossible | Deleting or moving many files, rewriting an instruction file, editing app configuration, changing a schedule | **Restore point, then act if explicit approval for this action or a valid standing approval covers it; otherwise propose** |
-| **C — Leaves your hands** | Reaches another person or system as an act of yours, and cannot be recalled | Sending mail or a message, posting, replying in a thread, sharing a document, submitting a form, pushing to a remote, including a private one | **Prepare and propose.** Never unattended, whatever the standing approvals say, unless one names this exact action shape |
-| **D — Binding or irreversible in the world** | Commits you, or destroys what is not yours, or records a human act as done | Payments and transfers, anything with a signature or approval field, accepting a tracked change, deleting another person's data, legal or financial submissions | **Never.** Hand back with everything prepared, and say so plainly |
+| **C — Leaves your hands** | Reaches another person or system as an act of yours, and cannot be recalled | Sending mail or a message, posting, replying in a thread, sharing a document, submitting a form, pushing to a remote, including a private one | **Prepare and propose.** Never unattended unless the project has adopted §3's narrow Class C exception by changing the §8 block, and a standing approval names this exact action shape |
+| **D — Binding or irreversible in the world** | Commits you, or destroys what is not yours, or records a human act as done | Payments and transfers, signing, or filling an approval field on your own initiative, accepting a tracked change, deleting another person's data, legal or financial submissions | **Never.** Hand back with everything prepared, and say so plainly |
 
 Four notes on the boundaries.
 
@@ -40,7 +40,7 @@ Four notes on the boundaries.
 
 **Class C is about reach, not size.** A one-line reply is Class C. A two-thousand-line routine edit of your own scratch file can be Class A when its undo is verified and no higher consequence applies. People systematically get this backwards because effort feels like risk, and it is not.
 
-**Class D is the class you do not negotiate about in the moment, and no standing approval reaches it.** [Guide 30](./30_CONTROLLED_DOCUMENTS.md) §3 explains why for accepting a tracked change: an act a model performed is indistinguishable afterwards from one a person performed, and the record is false in a way nothing can detect. The same argument covers a payment and a signature, which is why they share the class. Prepare the payment, fill the form, group the revisions for acceptance — and stop at the act. A few shapes that look like Class B carry the same property and are likewise never standing-approvable: clearing a marker a person set on a shared tracker ([Guide 30](./30_CONTROLLED_DOCUMENTS.md) §6), because the marker encodes a judgment no scope or limit can bound. Where a shape is propose-only regardless of history, say so in the block.
+**Class D is the class you do not negotiate about in the moment, and no standing approval reaches it.** [Guide 30](./30_CONTROLLED_DOCUMENTS.md) §3 explains why for accepting a tracked change: an act a model performed is indistinguishable afterwards from one a person performed, and the record is false in a way nothing can detect. The same argument covers a payment and a signature, which is why they share the class. Prepare the payment, fill the form, group the revisions for acceptance — and stop at the act. A few shapes that look like Class B carry the same property and are likewise never standing-approvable: clearing a marker a person set on a shared tracker ([Guide 30](./30_CONTROLLED_DOCUMENTS.md) §6), because the marker encodes a judgment no scope or limit can bound. Where a shape is propose-only regardless of history, say so in the block. Recording an approval you report, with its evidence, is Class B.
 
 ---
 
@@ -128,7 +128,7 @@ Test recovery with synthetic state and injected failures before the commit, afte
 A rule in the shared policy is guidance. It holds most of the time, and "most of the time" is the wrong standard for Class C and D. The strongest authority rule is a capability that does not exist, and the order of preference is fixed:
 
 1. **The capability is absent.** A Gmail connector with read and draft scopes and no send scope cannot send, whatever the task is told or whatever an injected email says ([Guide 12](./12_SECURITY.md) §6). A scheduled task with no payment app granted cannot pay; in Cowork, the per-app and per-folder grants are this tier, and withholding a grant from a task is the strongest rule it can have. That weighs more since desktop v2.19675.0 (2026-10-01): a scheduled task Claude creates defaults to "Automatically approve" where the organisation allows it, so a granted connector is used without a per-run prompt ([desktop changelog](https://claude.com/docs/cowork/changelog)). Check each task's approval setting, and do not count on a prompt to stop a Class C action. This is the only enforcement that survives prompt injection, and it is why the security-properties table in [Guide 12](./12_SECURITY.md) exists: write the absent capability down as a property, with the change that would break it, so that a future session widening the scope "to unblock a draft step" knows it is making a security decision.
-2. **A hook blocks it.** In Claude Code, a `PreToolUse` hook can refuse a tool call on a pattern. It catches the mechanical shape of an action, not its intent, and is a speed bump rather than a boundary — but a speed bump on `git push` to a public remote or on a delete outside `_archive/` catches the accident that shared policy would have talked itself past. A hook that crashes lets the action through unless it is set to fail closed (`onFailure: "block"`, Claude Code v2.1.295; see [Guide 12](./12_SECURITY.md)). For a run nobody watches, `permissions.denyInsteadOfPrompting` (Claude Code v2.1.319) turns a call that would wait on a permission prompt into a denial, so the run fails that step instead of stalling ([Guide 12](./12_SECURITY.md) §3). Codex also documents tool hooks (Guide 35 §9), with its own configuration and coverage limits. Check the actual host before relying on either implementation; no hook is a universal boundary.
+2. **A hook blocks it.** In Claude Code, a `PreToolUse` hook can refuse a tool call on a pattern. It catches the mechanical shape of an action, not its intent, and is a speed bump rather than a boundary — but a speed bump on `git push` to a public remote or on a delete outside `_archive/` catches the accident that shared policy would have talked itself past. A hook that crashes lets the action through unless it is set to fail closed (`onFailure: "block"`, Claude Code v2.1.295; see [Guide 12](./12_SECURITY.md)). For a run nobody watches, `permissions.denyInsteadOfPrompting` (Claude Code v2.1.319) turns a call that would wait on a permission prompt into a denial, so the run fails that step instead of stalling ([Guide 12](./12_SECURITY.md) §7, *Two settings for runs nobody watches*). Codex also documents tool hooks (Guide 35 §9), with its own configuration and coverage limits. Check the actual host before relying on either implementation; no hook is a universal boundary.
 3. **The instructions field and shared policy state it.** The Class D line in the app's instructions field for a project with stakes, because it survives a failed mount ([Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md)); the classes, the standing approvals and the outbox rule in the shared policy. Guidance, always loaded, versioned.
 4. **A skill states it.** Weakest, because it only exists for requests that trigger the skill. Fine for a skill's *own* actions; never the place a project-wide boundary lives.
 
@@ -168,7 +168,7 @@ The boundary is never removed by a decision. It is worn down by reasonable reque
 
 ## 8. The Shared Policy Block
 
-The classes belong at the account level, because they are true of everything. Standing approvals belong in the project, because they are about that project's tasks. The block below is the project form; the first four lines are what to lift into your account-level instructions ([Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md), *The account layers above the project*), and the Class D line alone is what to restate in the project's instructions field when the project has real-world stakes.
+The classes belong at the account level, because they are true of everything. Standing approvals belong in the project, because they are about that project's tasks. The block below is the project form; the four class bullets (A–D), without the D bullet's last sentence, are what to lift into your account-level instructions ([Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md), *The account layers above the project*), and the Class D line alone is what to restate in the project's instructions field when the project has real-world stakes.
 
 The block below deliberately forbids unattended Class C actions. A project adopting the optional narrow Class C standing approvals in §3 must explicitly change that policy, outbox/log rules and acceptance tests together. Do not silently infer an exception from a table row.
 
@@ -176,13 +176,13 @@ The block below deliberately forbids unattended Class C actions. A project adopt
 ## Action authority
 
 Actions are classed by consequence, not by tool:
-- A (local, reversible under git or with an undo): act.
+- A (local, routine, reversible under git or with a verified undo; git does not make a consequential rewrite Class A): act.
 - B (local, costly to reverse — delete, move many, rewrite an instruction file,
   edit app config): take a restore point, then act under explicit approval for this action or a valid standing approval
   below; otherwise propose.
 - C (leaves my hands — send, post, reply, share, submit, push to a remote, including private):
   prepare, put it in the outbox, propose. Never unattended.
-- D (binding or irreversible in the world — payments, signatures, approval fields,
+- D (binding or irreversible in the world — payments, signatures, filling an approval field on your own initiative,
   accepting a tracked change, others' data): never. Prepare everything and hand back.
   Clearing a marker a person set is propose-only whatever the table below says.
 
@@ -257,7 +257,7 @@ Setting up:
 Every proposal:
 
 - [ ] One row per action, irreversible rows first, restore point named, then stop
-- [ ] Only approved rows applied; a surprise stopped the run
+- [ ] Only approved rows applied; a material surprise stopped the affected action and came back as a revised scope
 
 Every unattended run:
 

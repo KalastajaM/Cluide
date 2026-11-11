@@ -8,11 +8,11 @@ This walkthrough takes you from nothing to a fully operational system with skill
 
 ## Companion Guides
 
-Every Cluide guide plays a role in this walkthrough. Here is the full set, in the order they appear:
+The guides this walkthrough draws on, in the order they appear:
 
 | Stage | Guides used |
 |---|---|
-| Foundation | [01 — CLAUDE.md](./01_PROJECT_INSTRUCTIONS.md), [02 — Prompting Basics](./02_PROMPTING_BASICS.md) |
+| Foundation | [01 — Project Instructions](./01_PROJECT_INSTRUCTIONS.md), [02 — Prompting Basics](./02_PROMPTING_BASICS.md), [25 — Project Instruction Layers](./25_PROJECT_INSTRUCTION_LAYERS.md) |
 | First Skill | [03 — Skills](./03_SKILLS.md), [05 — MCP Servers](./05_MCP_SERVERS.md) |
 | Memory | [04 — Memory & Profile](./04_MEMORY_AND_PROFILE.md) |
 | First Scheduled Task | [06 — Task Efficiency](./06_TASK_EFFICIENCY_GUIDE.md), [07 — Task Self-Improvement](./07_TASK_LEARNING_GUIDE.md) (incl. Part 9: the template) |
@@ -27,13 +27,15 @@ Supporting guides that apply throughout: [13 — Dev Execution Workflow](./13_DE
 
 Use a small, connector-free planner before adding live email or schedules. The outcome is the same on each surface: a dated plan from supplied task notes, no outbound actions, and one accepted place to save the result.
 
-**Claude local route:** open a project folder in Claude Code or connect it in Cowork. Create root `AGENTS.md` with purpose, timezone, draft-only action rule and `outputs/` as the output home; create `CLAUDE.md` with `@AGENTS.md` and an explicit read fallback. For Cowork, add the project-instructions bootstrap from [Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md).
+On every route, reuse the Quickstart's `plan-my-day/SKILL.md` and its fixed test input ([00_QUICKSTART](./00_QUICKSTART.md) Step 3). Locally, save the result to `Outputs/plan.md`. On a source-only route, supply the skill file as a source and paste the input into the prompt.
 
-**Codex local route:** open the same folder as the workspace. Codex reads the native `AGENTS.md` chain. Inspect any override, then ask it to read a small `tasks/planner/TASK.md` and `tasks/planner/INPUT.md` and save `outputs/plan.md`. The task can simply group the supplied items into must-do, focus blocks and defer; it needs no external app.
+**Claude local route:** open a project folder in Claude Code or connect it in Cowork. Create root `AGENTS.md` with purpose, timezone, draft-only action rule and `Outputs/` as the output home; create `CLAUDE.md` with `@AGENTS.md` and an explicit read fallback. For Cowork, add the project-instructions bootstrap from [Guide 25](./25_PROJECT_INSTRUCTION_LAYERS.md).
 
-**ChatGPT uploaded-source route:** create a project, add the shared policy, task and input as sources, and put a short instruction in project settings to read them first. Record their revision. Ask for the same plan as a downloadable Markdown file or reusable text; incorporate that result into the authored project explicitly. Do not ask this route to write to a laptop path it cannot access.
+**Codex local route:** open the same folder as the workspace. Codex reads the native `AGENTS.md` chain. Inspect any override, then ask it to read `plan-my-day/SKILL.md` and the Step 3 input and save `Outputs/plan.md`. The skill groups the supplied items into must-do, focus blocks and defer; it needs no external app.
 
-**Acceptance prompt for every route:** "Use the supplied planner task and input. State the input revision, apply the project's timezone, and produce the plan in the requested format. Report whether it was saved to the project or delivered for incorporation. Do not send anything."
+**ChatGPT uploaded-source route:** create a project, add the shared policy and `plan-my-day/SKILL.md` as sources, and put a short instruction in project settings to read them first. Record their revision. Ask for the same plan as a downloadable Markdown file or reusable text; incorporate that result into the authored project explicitly. Do not ask this route to write to a laptop path it cannot access.
+
+**Acceptance prompt for every route:** "Use plan-my-day/SKILL.md and the input below. State the source revision, apply the project's timezone, and produce the plan in the requested format. Report whether it was saved to the project or delivered for incorporation. Do not send anything." Paste the Step 3 input beneath it.
 
 Check against an expected plan written before running: every input item accounted for, correct timezone, correct output home/delivery, no external actions. Start a fresh session to test policy loading. Then change one source item and repeat after reloading or refreshing sources. These are documented starter procedures, not claims that your account has passed them. Record each result as passed, failed or untested.
 
@@ -285,7 +287,7 @@ After completing the applicable stages, the authored project has these homes:
     TASK_REFERENCE.md               # On-demand reference
     IMPROVEMENTS.md                  # Accepted/proposed learning
     RUN_LOG.md                      # Run history, private when personal
-  outputs/                          # Deliverables
+  Outputs/                          # Deliverables
   .gitignore                        # Version-control hygiene
 ```
 

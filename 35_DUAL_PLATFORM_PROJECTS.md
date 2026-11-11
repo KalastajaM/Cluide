@@ -137,7 +137,7 @@ The list prevents two errors.
 
 ## 7. State, Schedules and Handoffs
 
-**Native memory stays native.** Each product's memory holds what that product learned, and neither reads the other's. Anything both assistants must know goes into files: `.auto-memory/`, profile files, or the shared policy ([Guide 04](./04_MEMORY_AND_PROFILE.md)). OpenAI itself keeps two stores that do not share: ChatGPT memory, and a separate local Codex memory in the Codex home (`$CODEX_HOME/memories_v2/` on fresh profiles, `memories/` on older ones; check both), off by default (§9; [Codex memories](https://learn.chatgpt.com/codex/customization/memories)). Treat native memory as a per-platform cache. When one memory genuinely needs to cross over, [Guide 34](./34_IMPORTING_FROM_OTHER_ASSISTANTS.md) is the tool.
+**Native memory stays native.** Each product's memory holds what that product learned, and neither reads the other's. Anything both assistants must know goes into files: `.auto-memory/`, profile files, or the shared policy ([Guide 04](./04_MEMORY_AND_PROFILE.md)). OpenAI itself keeps two stores that do not share: ChatGPT memory, and a separate local Codex memory (§9). Treat native memory as a per-platform cache. When one memory genuinely needs to cross over, [Guide 34](./34_IMPORTING_FROM_OTHER_ASSISTANTS.md) is the tool.
 
 **One owner per recurring job.** Every scheduled or recurring job has exactly one owning platform, a timezone, and a stable identity (its name and the task file it runs), recorded in an owner table on the setup page. Copying a `TASK.md` does not move a registration. To move a job:
 
@@ -196,7 +196,7 @@ Checked on 2026-09-21 against official documentation, except: the Claude cells o
 
 ### Google (Gemini): the third platform
 
-Checked on 2026-11-11 against Google's official documentation, except the Gemini CLI details and the free-plan and account-type availability in the *Conversational projects* row, last checked on 2026-10-15. No Google surface has had a fresh-session check (§8), so every row here is documented, not verified; a project relying on one records its own check. Google's coding tools read the same `AGENTS.md` and `.agents/skills/` that Codex reads, which is why the shared-policy pattern carries over unchanged. The differences that matter are the limits and which surface reads which file.
+Checked on 2026-11-11 against Google's official documentation, except the Gemini CLI details and the free-plan and account-type availability in the *Conversational projects* row, last checked on 2026-10-15. No Google surface has had a fresh-session check (§8), so every row here is documented, not verified; a project relying on one records its own check. Antigravity reads the same root `AGENTS.md` and `.agents/skills/` that Codex reads; Gemini CLI and the Gemini API's managed agent read different files (rows below). The differences that matter are the limits and which surface reads which file.
 
 | Fact | Google | Sources |
 |---|---|---|
