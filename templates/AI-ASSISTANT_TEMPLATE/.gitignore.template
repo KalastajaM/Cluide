@@ -1,4 +1,10 @@
 # Rename this file to `.gitignore` after copying the template.
+#
+# What git covers here: the pre-run and post-run commits in each TASK.md capture
+# task-definition edits only (TASK.md, TASK_REFERENCE.md, CONFIG.md, the generate_*.py
+# scripts). Everything ignored below is personal runtime state. It stays out of git on
+# purpose, so a git snapshot does NOT hold it. Back it up yourself — see
+# bootstrap/SETUP.md, "Git snapshots and backup".
 
 # System / runtime status
 SYSTEM_STATUS.md
@@ -14,6 +20,7 @@ Knowledge/
 
 # Run / scan / maintenance logs
 **/RUN_LOG.md
+**/RUN_LOG_ARCHIVE.md
 **/SCAN_LOG.md
 **/MAINTENANCE_LOG.md
 

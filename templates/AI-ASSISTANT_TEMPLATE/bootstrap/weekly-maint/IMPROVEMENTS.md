@@ -7,10 +7,7 @@
 
 ```
 runs_total: 0
-runs_since_last_refactor: 0
-runs_since_last_proposal: 0
-last_refactor_date: [placeholder]
-last_self_review_date: [placeholder]
+last_maintenance_date: [placeholder]
 ```
 
 ---

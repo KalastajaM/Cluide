@@ -5,6 +5,10 @@ generate_weekplan_html.py — Renders the weekly plan HTML from a JSON data file
 Usage:
     python3 generate_weekplan_html.py --input plan.json --output weekplan.html
 
+Requires Python 3.9+ (zoneinfo) and jinja2 (pip install jinja2). The time zone comes
+from the TIMEZONE row of tasks/daily/CONFIG.md (UTC if unset); block times in the JSON
+are local times in that zone, and the ICS export converts each one to UTC for its own date.
+
 Input JSON schema:
 {
   "monday_date": "YYYY-MM-DD",
@@ -37,18 +41,54 @@ Input JSON schema:
 import argparse
 import json
 import sys
-import uuid
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
 from jinja2 import Environment
 
 # ============================================================
 # USER CONFIG — edit these for your setup
+# (the time zone is not set here: it is the TIMEZONE row of CONFIG.md)
 # ============================================================
-USER_TIMEZONE_UTC_OFFSET_HOURS = 2           # Local-time → UTC offset used by the ICS export (standard time)
 USER_EMAIL_DOMAIN = "example.com"            # Domain used in ICS UIDs
+BUSIEST_WEEKDAY = "friday"                   # Lowercase weekday your calendar is reliably packed on (shown faded); "" for none
 # ============================================================
 
-TEMPLATE = """<!DOCTYPE html>
+CONFIG_MD = Path(__file__).resolve().parent.parent / "daily" / "CONFIG.md"   # holds the TIMEZONE row shared by all four scripts
+
+
+def load_timezone():
+    """Zone named by the TIMEZONE row of CONFIG.md; UTC if the row is unset or unknown.
+    zoneinfo applies daylight saving time per date."""
+    name = ""
+    try:
+        for line in CONFIG_MD.read_text(encoding="utf-8").splitlines():
+            cells = [c.strip().strip("`") for c in line.strip().strip("|").split("|")]
+            if len(cells) >= 2 and cells[0] == "TIMEZONE":
+                name = cells[1]
+                break
+    except OSError:
+        pass
+    try:
+        from zoneinfo import ZoneInfo
+        return ZoneInfo(name)
+    except Exception:
+        print(f"Note: TIMEZONE in {CONFIG_MD.name} is unset or unknown ({name or 'missing'}); using UTC.")
+        return timezone.utc
+
+
+USER_TZ = load_timezone()
+
+
+def to_utc_ics(date_str, time_str):
+    """Local date + 'HH:MM' in USER_TZ -> ICS UTC stamp (YYYYMMDDTHHMMSSZ), DST-correct for that date.
+    Returns None if the date or time cannot be parsed."""
+    try:
+        local = datetime.strptime(f"{date_str} {time_str}", "%Y-%m-%d %H:%M").replace(tzinfo=USER_TZ)
+    except (TypeError, ValueError):
+        return None
+    return local.astimezone(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+
+TEMPLATE = r"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -67,6 +107,7 @@ TEMPLATE = """<!DOCTYPE html>
   td { padding: 7px 12px; border-bottom: 1px solid #eee; vertical-align: top; }
   tr:last-child td { border-bottom: none; }
   .badge { display: inline-block; padding: 2px 7px; border-radius: 10px; font-size: 10px; font-weight: 600; }
+  .badge-urgent { background: #fee2e2; color: #991b1b; }
   .badge-soon { background: #fef3c7; color: #92400e; }
   .badge-low  { background: #f3f4f6; color: #6b7280; }
   .badge-high { background: #fee2e2; color: #991b1b; }
@@ -76,11 +117,11 @@ TEMPLATE = """<!DOCTYPE html>
   /* Calendar grid */
   .calendar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
   .day-col { background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); overflow: hidden; }
-  .day-col.friday { opacity: 0.65; }
+  .day-col.busiest { opacity: 0.65; }
   .day-header { padding: 10px 12px; font-weight: 600; font-size: 12px; background: #374151; color: #fff; }
-  .day-header.friday { background: #9ca3af; }
+  .day-header.busiest { background: #9ca3af; }
   .day-body { padding: 8px; display: flex; flex-direction: column; gap: 6px; min-height: 120px; }
-  .friday-note { color: #9ca3af; font-style: italic; font-size: 11px; padding: 8px 4px; }
+  .busiest-note { color: #9ca3af; font-style: italic; font-size: 11px; padding: 8px 4px; }
 
   /* Blocks */
   .block { border-radius: 5px; padding: 8px 10px; font-size: 12px; }
@@ -146,13 +187,13 @@ TEMPLATE = """<!DOCTYPE html>
 <!-- Calendar -->
 <div class="calendar">
   {% for day in days %}
-  <div class="day-col{% if day.name == 'friday' %} friday{% endif %}">
-    <div class="day-header{% if day.name == 'friday' %} friday{% endif %}">
+  <div class="day-col{% if day.busiest %} busiest{% endif %}">
+    <div class="day-header{% if day.busiest %} busiest{% endif %}">
       {{ day.label }}<br><span style="font-weight:400; font-size:11px; opacity:0.8;">{{ day.date_fmt }}</span>
     </div>
     <div class="day-body">
-      {% if day.name == 'friday' and not day.blocks %}
-        <div class="friday-note">No blocks scheduled — typically packed with recurring meetings.</div>
+      {% if day.busiest and not day.blocks %}
+        <div class="busiest-note">No blocks scheduled — typically packed with recurring meetings.</div>
       {% else %}
         {% for block in day.blocks %}
         <div class="block block-{{ block.type }}">
@@ -160,8 +201,8 @@ TEMPLATE = """<!DOCTYPE html>
           <div class="block-title">{{ block.title }}</div>
           {% if block.description %}<div class="block-desc">{{ block.description }}</div>{% endif %}
           {% if block.action_ids %}<div class="block-ids">{{ block.action_ids | join(', ') }}</div>{% endif %}
-          {% if block.type != 'meeting' %}
-          <button class="ics-btn" onclick="downloadICS({{ block | tojson }})">📅 Add to Outlook</button>
+          {% if block.type != 'meeting' and block.dtstart_utc and block.dtend_utc %}
+          <button class="ics-btn" onclick='downloadICS({{ block | tojson }})'>📅 Add to Outlook</button>
           {% endif %}
         </div>
         {% endfor %}
@@ -175,42 +216,27 @@ TEMPLATE = """<!DOCTYPE html>
 </div>
 
 <script>
-var TZ_OFFSET_HOURS = {{ tz_offset_hours }};  // local-time → UTC offset (standard time)
 var ICS_UID_DOMAIN  = {{ ics_uid_domain | tojson }};
 
-function pad(n) { return String(n).padStart(2, '0'); }
-
-function toUTC(dateStr, timeStr) {
-  // dateStr = "YYYY-MM-DD", timeStr = "HH:MM" (local time)
-  var parts = dateStr.split('-');
-  var timeParts = timeStr.split(':');
-  var d = new Date(Date.UTC(
-    parseInt(parts[0]),
-    parseInt(parts[1]) - 1,
-    parseInt(parts[2]),
-    parseInt(timeParts[0]) - TZ_OFFSET_HOURS,  // subtract configured offset for local→UTC
-    parseInt(timeParts[1])
-  ));
-  return d.getUTCFullYear() + pad(d.getUTCMonth()+1) + pad(d.getUTCDate()) + 'T' +
-         pad(d.getUTCHours()) + pad(d.getUTCMinutes()) + '00Z';
+// Escape text for an ICS TEXT value (RFC 5545): backslash, semicolon, comma, line breaks.
+function icsText(s) {
+  return String(s || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
 }
 
 function downloadICS(block) {
+  // block.dtstart_utc / dtend_utc are computed by the generator for this block's own date (DST-correct)
   var uid = 'weekplan-' + block.date + '-' + block.start_time.replace(':','') + '@' + ICS_UID_DOMAIN;
-  var dtstart = toUTC(block.date, block.start_time);
-  var dtend   = toUTC(block.date, block.end_time);
-  var desc = (block.description || '').replace(/\n/g, '\\n');
   var ics = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
     'PRODID:-//WeekPlan//EN',
     'BEGIN:VEVENT',
     'UID:' + uid,
-    'DTSTAMP:' + toUTC(block.date, block.start_time),
-    'DTSTART:' + dtstart,
-    'DTEND:' + dtend,
-    'SUMMARY:' + block.title,
-    'DESCRIPTION:' + desc,
+    'DTSTAMP:' + block.dtstart_utc,
+    'DTSTART:' + block.dtstart_utc,
+    'DTEND:' + block.dtend_utc,
+    'SUMMARY:' + icsText(block.title),
+    'DESCRIPTION:' + icsText(block.description),
     'END:VEVENT',
     'END:VCALENDAR'
   ].join('\r\n');
@@ -270,15 +296,19 @@ def build_days(data):
         # Proposed blocks
         for b in proposed:
             if b.get("day", "").lower() == day_name:
+                block_date = b.get("date", day_date_str)
                 blocks.append({
                     "type": b.get("type", "deep"),
-                    "date": b.get("date", day_date_str),
+                    "date": block_date,
                     "start_time": b["start_time"],
                     "end_time": b["end_time"],
                     "duration_min": b.get("duration_min"),
                     "title": b["title"],
                     "description": b.get("description", ""),
                     "action_ids": b.get("action_ids", []),
+                    # UTC stamps for the ICS export, computed per block date (DST-correct)
+                    "dtstart_utc": to_utc_ics(block_date, b["start_time"]),
+                    "dtend_utc": to_utc_ics(block_date, b["end_time"]),
                 })
 
         # Sort by start time
@@ -286,6 +316,7 @@ def build_days(data):
 
         days.append({
             "name": day_name,
+            "busiest": day_name == BUSIEST_WEEKDAY.strip().lower(),
             "label": DAY_LABELS[day_name],
             "date_fmt": fmt_date(day_date_str),
             "blocks": blocks,
@@ -303,21 +334,22 @@ def main():
     with open(args.input, "r", encoding="utf-8") as f:
         data = json.load(f)
 
-    env = Environment()
-    env.filters["tojson"] = json.dumps
+    # Autoescape is on: meeting and action titles come from email and calendar data and are
+    # untrusted. Jinja's built-in tojson filter is HTML-safe inside a single-quoted attribute.
+    env = Environment(autoescape=True)
     template = env.from_string(TEMPLATE)
 
     days = build_days(data)
 
     html = template.render(
         week_label=data.get("week_label", "Week Plan"),
-        generated_at=datetime.now().strftime("%Y-%m-%d %H:%M"),
+        generated_at=datetime.now(USER_TZ).strftime("%Y-%m-%d %H:%M"),
         open_actions=data.get("open_actions", []),
         days=days,
-        tz_offset_hours=USER_TIMEZONE_UTC_OFFSET_HOURS,
         ics_uid_domain=USER_EMAIL_DOMAIN,
     )
 
+    Path(args.output).parent.mkdir(parents=True, exist_ok=True)
     with open(args.output, "w", encoding="utf-8") as f:
         f.write(html)
 

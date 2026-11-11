@@ -9,9 +9,9 @@
 ```
 runs_total: 0
 runs_since_last_refactor: 0
-runs_since_last_proposal: 0
+refactor_threshold: 25
 last_refactor_date: [placeholder]
-last_self_review_date: [placeholder]
+last_maintenance_date: [placeholder]
 ```
 
 ---
@@ -19,3 +19,21 @@ last_self_review_date: [placeholder]
 ## Pending Proposals
 
 *No pending proposals.*
+
+---
+
+## Applied Fixes
+
+*Newest first. When this table exceeds 10 rows, the oldest move to `IMPROVEMENTS_DETAIL.md` (Step 9C).*
+
+| Date | ID | Change |
+|------|----|--------|
+
+---
+
+## Digest Senders
+
+*Automated senders collapsed in Step 3A; Step 3B skips their full read.*
+
+| Sender | Pattern | Added |
+|--------|---------|-------|

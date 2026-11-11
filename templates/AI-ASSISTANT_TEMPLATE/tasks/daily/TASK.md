@@ -38,15 +38,16 @@ You are [USER]'s business assistant. Analyze work email, Teams, and calendar via
 cd "[PROJECT_ROOT]"
 git add -A
 git diff --cached --quiet || git commit -m "pre-run: assistant-task $(date -u +%Y-%m-%d)"
+git rev-parse HEAD
 ```
 
-Captures state entering the run. The `--quiet` guard skips silently if nothing changed. Never block the run if git fails — log and continue.
+Commits task-definition edits only (TASK.md, scripts, CONFIG.md): runtime state is git-ignored, so this snapshot does not capture it — see `../../bootstrap/SETUP.md` §Git snapshots and backup. Record the printed hash as `Restore commit` in this run's RUN_LOG entry. The `--quiet` guard skips silently if nothing changed. Never block the run if git fails — log and continue.
 
 ---
 
 ### Step 0B: Bootstrap Check
 
-Before reading state files, verify they exist. For each missing file, copy from `../../bootstrap/daily/` (`pending_actions.json`, `resolved_archive.json`, `RUN_LOG.md`, `IMPROVEMENTS.md`, `IMPROVEMENTS_DETAIL.md`, `ISSUES_LOG.md`, `LAST_RUN.txt`, `LESSONS.md`). If a bootstrap source is also missing, create the file with the empty structure shown in `bootstrap/`. Note any bootstrapped files in this run's RUN_LOG entry: "Bootstrap: first run — [files] initialised."
+Before reading state files, verify they exist. For each missing file, copy from `../../bootstrap/daily/` (`pending_actions.json`, `resolved_archive.json`, `RUN_LOG.md`, `IMPROVEMENTS.md`, `IMPROVEMENTS_DETAIL.md`, `ISSUES_LOG.md`, `LAST_RUN.txt`, `LESSONS.md`). If a bootstrap source is also missing, create the file with the empty structure shown in `bootstrap/`. Create `../../Actions/` and `../../Knowledge/` if absent, and copy `../../bootstrap/knowledge/INDEX.md` to `../../Knowledge/INDEX.md` if absent. Note any bootstrapped files in this run's RUN_LOG entry: "Bootstrap: first run — [files] initialised."
 
 ---
 
@@ -54,11 +55,11 @@ Before reading state files, verify they exist. For each missing file, copy from 
 
 1. `../../Profile/PROFILE_SUMMARY.md`
 2. `pending_actions.json`
-3. `LAST_RUN.txt` — single-line ISO 8601 UTC timestamp → store as **`LAST_RUN_UTC`**. If missing/blank, fall back to the most recent RUN_LOG.md entry and note the fallback in ACTIONS.md.
+3. `LAST_RUN.txt` — single-line ISO 8601 UTC timestamp → store as **`LAST_RUN_UTC`**. If missing/blank, fall back to the most recent RUN_LOG.md entry (`Run start`) and note the fallback in ACTIONS.md. If both are empty (first run), set `LAST_RUN_UTC` to 24 hours before `RUN_START_UTC` (Step 2) and note "first run — 24h window".
 4. `../../Knowledge/INDEX.md`
 5. `IMPROVEMENTS.md` — check for APPROVED proposals to apply in Step 9C
 6. `CONFIG.md` — tunable thresholds; values referenced by name throughout this procedure
-7. `../../SYSTEM_STATUS.md` — scan for any task showing FAIL in Last 3 or last run > 2 days ago; if found, add a ❓ item
+7. `../../SYSTEM_STATUS.md` — scan for any task showing FAIL in Last 3, a daily/midday last run earlier than the previous weekday, or a weekly-plan/weekly-maint last run > 8 days ago (ignore `[placeholder]`); if found, add a ❓ item
 
 `RUN_LOG.md` is **not** a mandatory read — read it only when needed (investigating a repeating issue, periodic self-review). Do **not** read full topic/knowledge/profile files yet — read them only when updating in Steps 4/4.5.
 
@@ -121,7 +122,7 @@ Apply the **timezone rule** and **conflict detection** per `TASK_REFERENCE.md §
 
 ### Step 4: Update Profile Files
 
-Read only files that need updating; write back in full (no partial Edits).
+Read only files that need updating. Grep the section and Edit it; full Write only for structural changes or files under ~30 lines.
 
 **Read-before-update gate:** Before reading any profile file, confirm this run produced signals warranting an update for it. If not, skip it entirely and log "Profile: [filename] skipped — no signals".
 
@@ -141,7 +142,7 @@ If changes are significant, also update `PROFILE_SUMMARY.md` (full Write; **hard
 
 ### Step 4.5: Update Knowledge Base
 
-`../../Knowledge/` captures material facts, decisions, and context by topic — not actions (→ JSON) and not relationship data (→ Profile). Material information only; skip operational chatter. Read `INDEX.md`; for each topic touched this run, read the existing file and write the updated version back (full Write); create a new file if a topic warrants it; update `INDEX.md` for any add/rename (full Write). Topic file format and filename conventions: `TASK_REFERENCE.md §Knowledge-Topic-Format`.
+`../../Knowledge/` captures material facts, decisions, and context by topic — not actions (→ JSON) and not relationship data (→ Profile). Material information only; skip operational chatter. Read `INDEX.md`; for each topic touched this run, read the existing file and update it (Step 4 edit policy); create a new file if a topic warrants it; update `INDEX.md` for any add/rename, and set the status and date on the INDEX line of every topic written this run. Topic file format and filename conventions: `TASK_REFERENCE.md §Knowledge-Topic-Format`.
 
 ---
 
@@ -155,16 +156,16 @@ Source of truth. Read in Step 1; write here in a single Write call (`tasks/daily
 
 **5C Staleness:** PA open `PA_STALENESS_DAYS`+ days (→ CONFIG.md) with no progress → `"stale": true`, surface in ❓.
 **5C-1 Portal/waiting staleness:** `PORTAL_PENDING` / `WAITING_OTHER` PA with no update and a deadline within `PORTAL_STALENESS_DAYS` days (→ CONFIG.md) → escalate to URGENT (🔴).
-**5D Snoozed:** `snoozed[].reminder_date` within 14 days of today → move to `open`.
-**5D-1 Resolved overflow:** If `resolved_last_30_days` exceeds `RESOLVED_INLINE_CAP` (→ CONFIG.md), move the excess (oldest `resolved_date` first) to `resolved_archive.json` (`archived_resolved` array) and write both files.
+**5D Snoozed:** a `snoozed` entry whose `reminder_date` is within `SNOOZE_WAKE_DAYS` (→ CONFIG.md) of today → move to `open`.
+**5D-1 Resolved retention:** Drop `resolved_last_30_days` entries older than `RESOLVED_KEEP_DAYS` (→ CONFIG.md). If the rest exceeds `RESOLVED_INLINE_CAP`, move the excess (oldest `resolved_date` first) to `resolved_archive.json` (`archived_resolved` array) and write both files.
 
-**5E Add new PAs:** For each actionable item from Step 3. Dedup against flag-sourced PAs first (enrich, don't duplicate). Prefer sender-based `resolution_check` queries; when `draft_channel` is `teams-dm`, set `resolution_check.type` to `teams_search` (the response arrives in the same channel). Full schema and 🔑/🔄 routing: `TASK_REFERENCE.md §PA-Schema`.
+**5E Add new PAs:** For each actionable item from Step 3. Dedup against flag-sourced PAs first (enrich, don't duplicate). Prefer sender-based `resolution_check` queries; when `draft_channel` is `teams-dm`, set `resolution_check.type` to `teams_search` (the response arrives in the same channel). Take the ID from `next_id` and advance it in the same Write (rule, file shape and full schema, 🔑/🔄 routing: `TASK_REFERENCE.md §PA-Schema`).
 
 ---
 
 ### Step 6: Regenerate PENDING_ACTIONS.md
 
-**Skip if** `pending_actions.json` was not modified this run (no new/resolved PAs, no status/priority/staleness changes) — note "PENDING_ACTIONS.md skipped — no PA changes" in RUN_LOG. Otherwise:
+**Skip if** this run did not modify `pending_actions.json` (no new/resolved PAs, no status/priority/staleness changes) **and** `../../Actions/PENDING_ACTIONS.md` exists and is newer than `pending_actions.json` (compare mtimes; midday and weekly-maint also write the JSON) — note "PENDING_ACTIONS.md skipped — no PA changes" in RUN_LOG. Otherwise:
 
 ```bash
 python3 [PROJECT_ROOT]/tasks/daily/generate_pending_actions_md.py
@@ -176,7 +177,7 @@ The script handles sections (🔑/🔴/🟡/🔵/💤/✅), cross-references, de
 
 ### Step 7: Regenerate ACTIONS.md
 
-Write to `../../Actions/ACTIONS.md` (full regeneration each run). **PA sort order:** URGENT → SOON → LOW; within group: overdue → today → no deadline → ascending by date. All sections required (use "none" if empty); the full section list, the 📝 AI-disclosure line, the on-demand 📋 Meeting-Briefs note, and the 🔑 In-Your-Court collapse rule (PROP-0007) are in `TASK_REFERENCE.md §ACTIONS-Template`.
+Write to `../../Actions/ACTIONS.md` (full regeneration each run). **PA sort order:** URGENT → SOON → LOW; within group: overdue → today → no deadline → ascending by date. All sections required (use "none" if empty); the full section list, the 📝 AI-disclosure line, the on-demand 📋 Meeting-Briefs note, and the 🔑 In-Your-Court collapse rule are in `TASK_REFERENCE.md §ACTIONS-Template`.
 
 ---
 
@@ -196,8 +197,8 @@ Run after ACTIONS.html is written, before RUN_LOG. For improvement proposals and
 
 - **9A Efficiency scan** — briefly assess this run's tool usage; flag wasteful patterns in 🔧.
 - **9B Issue logging** — append to `ISSUES_LOG.md` for any connector error, logic error, missed item, or 9A flag. If none: note "9B: no issues to log" in RUN_LOG.
-- **9C Apply APPROVED proposals** — for each PROP-NNN = APPROVED in IMPROVEMENTS.md: append to LESSONS.md **first** (log-first rule; format in `§LESSONS-Format`), apply the change, then mark APPLIED and move to the Applied Fixes table. If none: note "9C: no approved proposals".
-- **9D Update counters** — increment `runs_total`; write IMPROVEMENTS.md (single Write call).
+- **9C Apply APPROVED proposals** — for each PROP-NNN = APPROVED in IMPROVEMENTS.md: append to LESSONS.md **first** (log-first rule; format in `§LESSONS-Format`), apply the change, then mark APPLIED and move to the Applied Fixes table; if that table then exceeds 10 rows, move the oldest to `IMPROVEMENTS_DETAIL.md`. If none: note "9C: no approved proposals".
+- **9D Update counters** — increment `runs_total` and `runs_since_last_refactor`; if `runs_since_last_refactor` ≥ `refactor_threshold`, add a ❓ item recommending `../maintenance/TASK.md` with `target: daily` in a fresh session (that task resets the counter); write IMPROVEMENTS.md (single Write call).
 - **9E Log signals** — append to `SIGNAL_LOG.md` for any tracked signal that occurred (`YYYY-MM-DD HH:MM | TYPE | description`). Skip if nothing to log; do not create empty entries.
 
 ---
@@ -207,7 +208,7 @@ Run after ACTIONS.html is written, before RUN_LOG. For improvement proposals and
 Write `RUN_START_UTC` to `tasks/daily/LAST_RUN.txt` as a single line (overwrite) **before** appending to RUN_LOG, so the timestamp survives a mid-run interruption:
 
 ```bash
-echo "YYYY-MM-DDTHH:MM:SSZ" > /path/to/tasks/daily/LAST_RUN.txt
+echo "YYYY-MM-DDTHH:MM:SSZ" > "[PROJECT_ROOT]/tasks/daily/LAST_RUN.txt"
 ```
 
 Append a run entry to `RUN_LOG.md` (format: `TASK_REFERENCE.md §RUN_LOG-Format`). Then make a targeted Edit of **only** the `## daily` section of `../../SYSTEM_STATUS.md`:
@@ -230,6 +231,6 @@ git add -A
 git diff --cached --quiet || git commit -m "post-run: daily $(date -u +%Y-%m-%d)"
 ```
 
-The `--quiet` guard skips the commit silently if nothing changed (e.g., a pure fast-path run). Do not block completion if git fails — note the failure in RUN_LOG and continue.
+This commits task-definition edits only; the run's state files and outputs are git-ignored and are not captured (see Step 0). The `--quiet` guard skips the commit silently if nothing changed. Do not block completion if git fails — note the failure in RUN_LOG and continue.
 
 <!-- harvested: 2026-09-22 from a generic executive-support framework review; design review, not production validation -->
