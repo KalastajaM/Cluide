@@ -311,7 +311,7 @@ This is a strong description: it names the implicit trigger phrases, is specific
 
 **What it does:** Manages a project backlog across sessions using two files: `BACKLOG.md` (living idea list) and `DECISIONS.md` (architectural decision log). Runs standard sessions (`/backlog`) and grooming sessions (`/backlog groom`), handles initialization automatically, and guards against re-litigating closed decisions.
 
-**Where to use it:** Any project where you want to track ideas, improvements, and architecture decisions across assistant sessions — regardless of language or domain. Install the skill through the native route and verify that it reads the two files from the intended project.
+**Where to use it:** Any project where you want to track ideas, improvements, and architecture decisions across assistant sessions — regardless of language or domain. Cluide no longer ships this skill (removed in v1.3.0); build your own from the design choices below with `tasks/setup-skill.md`.
 
 **Key design choices:**
 - **Files are the persistence layer, not native memory** — `DECISIONS.md` plays the role that memory would in other skills. The skill explicitly states that native memory should not be used, so state never ends up in two places.

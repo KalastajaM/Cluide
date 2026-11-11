@@ -411,7 +411,7 @@ Covers: the four ways behaviour drifts without any file changing (model, platfor
 
 *What an assistant may do without asking, classified by consequence rather than by tool, and how it hands back the rest.*
 
-Covers: why authority is decided by accident, four classes by who can undo an action and who sees it (act; restore point then act under a standing approval; prepare and propose; never), standing approvals with shape, scope, limit, evidence and expiry, the proposal contract (one row per action, irreversible first, then stop; partial approval is partial apply; a surprise stops the run), the outbox and action log for unattended runs and notifications that name actions rather than runs, enforcing structurally where a capability can simply be absent, the requests that erode the boundary, and the shared-policy block.
+Covers: why authority is decided by accident, four classes by who can undo an action and who sees it (act; restore point then act under a standing approval; prepare and propose; never), standing approvals with shape, scope, limit, evidence and expiry, the proposal contract (one row per action, irreversible first, then stop; partial approval is partial apply; a surprise stops the affected action), the outbox and action log for unattended runs and notifications that name actions rather than runs, enforcing structurally where a capability can simply be absent, the requests that erode the boundary, and the shared-policy block.
 
 **Use this when:** a task can send, post, delete or move on your behalf, you keep answering the same permission question, a task did something you did not expect, or you are deciding what a scheduled task may do while you are asleep.
 

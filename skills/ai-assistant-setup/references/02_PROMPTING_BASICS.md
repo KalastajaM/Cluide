@@ -107,7 +107,7 @@ Negative constraints are as useful as positive ones. If you've corrected the ass
 | Produces walls of text | "Use bullet points and headers for any response longer than 3 sentences." |
 | Rephrases instead of edits | "When I ask you to edit text, change what needs changing — do not rewrite the whole thing." |
 | Over-explains simple tasks | "For routine requests, produce the output directly without explaining your approach." |
-| Invents information | "If you don't have enough information to answer accurately, ask me rather than guessing." |
+| Invents information | "Never present a guess as fact. If missing information would materially change the answer, ask; otherwise answer and label the assumption." |
 
 These belong in your shared policy (`AGENTS.md` in the dual-platform pattern) or app project instructions if they apply throughout that scope, or in `SKILL.md` if they apply to one specific workflow.
 
@@ -298,4 +298,4 @@ If you don't specify a format, the assistant picks one. It will be:
 > "Read 02_PROMPTING_BASICS.md and then read my [skill-name] SKILL.md. Here is when I want this skill to fire, in my own words: [situations]. Write the description that triggers on those, then compare it to mine and say what mine misses."
 
 **To add an output format to a skill or task:**
-> "Read my [task name] TASK.md. The output format section is too vague. Look at the last 3 entries in LAST_RUN.md to see what the output actually looks like, then write a proper output format template to match it."
+> "Read my [task name] TASK.md. The output format section is too vague. Look at the last 3 entries in RUN_LOG.md (or, if the task keeps only LAST_RUN.md, its latest output) to see what the output actually looks like, then write a proper output format template to match it."

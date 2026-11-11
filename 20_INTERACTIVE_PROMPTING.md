@@ -2,7 +2,7 @@
 
 > Interactive work needs resolved file references, a way to make decisions, and deliberate context boundaries. This guide gives shared patterns with separate Claude and OpenAI controls.
 
-> **Companion guides:** [Guide 02](./02_PROMPTING_BASICS.md) covers instruction quality — context, task, constraints, and output format. [Guide 13](./13_DEV_EXECUTION_WORKFLOW.md) covers Claude Code vs. Cowork — when to use each. This guide covers what to do *during* a Claude Code session.
+> **Companion guides:** [Guide 02](./02_PROMPTING_BASICS.md) covers instruction quality — context, task, constraints, and output format. [Guide 13](./13_DEV_EXECUTION_WORKFLOW.md) covers Claude Code vs. Cowork — when to use each. This guide covers what to do *during* a session.
 
 > **Giving this guide to an assistant:**
 > "Read 20_INTERACTIVE_PROMPTING.md and apply the patterns here to help me set up / improve / debug [my workflow / this task / this skill]."
@@ -309,7 +309,7 @@ Two payoffs. The session can be compacted or restarted without losing the thread
 
 Signs you're approaching the limit: responses start omitting details they'd normally include, or the assistant seems to "forget" instructions from earlier in the session.
 
-The first-line answer is `/compact` — it summarises the conversation in place, freeing context while keeping the session going.
+In Claude Code the first-line answer is `/compact` — it summarises the conversation in place, freeing context while keeping the session going. On other surfaces, save a handoff and start a fresh task (*Start a Fresh Session Between Unrelated Tasks* above).
 
 In a long session, don't wait for the limit. Every turn re-sends the whole context, so compacting at a natural break — a finished subtask, the start of a new phase — makes every later turn cheaper. Anthropic's worked example has a compaction at 150K tokens paying for itself within about ten turns ([What a task costs on Opus 5.5](https://claude.com/blog/what-a-task-costs-on-opus-5-5), 2026-09-22). Compaction also rewrites the cached prefix, so do it between steps rather than in the middle of one ([Guide 10 §Prompt Caching](./10_COST_PERFORMANCE.md#prompt-caching)).
 

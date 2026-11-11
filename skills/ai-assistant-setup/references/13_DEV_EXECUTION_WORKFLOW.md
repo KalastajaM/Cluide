@@ -242,9 +242,9 @@ Claude Code can spawn **subagents** — parallel Claude instances that work on f
 **Example:**
 > "Launch two subagents in parallel: one to read all TASK.md files and summarise their run procedures, another to read all SKILL.md files and summarise their triggers."
 
-**Important:** Subagents are best used for read-heavy exploration and analysis. For file edits, use the main session to keep changes coordinated and reviewable.
+**Important:** Subagents are best used for read-heavy exploration and analysis. Delegated edits are fine when each worker gets a disjoint file set and the main session reviews and integrates the diffs ([Guide 09 §Model-Aware Dispatch](./09_MULTI_TASK_ORCHESTRATION.md)); never let two workers edit the same file.
 
-**Subagents are not isolated by default.** A subagent inherits CLAUDE.md, project instructions, and read access to the whole folder. If you are using one for a deliberately uninformed review rather than for parallelism, it needs an explicit deny-list — see [Guide 26](./26_CONTEXT_SCOPING.md). A deny-list only governs what the subagent may read; if you briefed it after stating your own view, your framing is already inside the brief ([Guide 27](./27_INDEPENDENT_JUDGMENT.md)).
+**Subagents are not isolated by default.** A subagent inherits CLAUDE.md, project instructions, and read access to the whole folder. If you are using one for a deliberately uninformed review rather than for parallelism, it needs an explicit deny-list and a pinned non-fork subagent type (a named agent definition, or general-purpose with an explicit brief), because fork mode is on by default and a fork inherits the whole conversation — see [Guide 26](./26_CONTEXT_SCOPING.md). A deny-list only governs what the subagent may read; if you briefed it after stating your own view, your framing is already inside the brief ([Guide 27](./27_INDEPENDENT_JUDGMENT.md)).
 
 ---
 
@@ -274,7 +274,6 @@ A sustainable rhythm for this two-tool workflow:
 - Review IMPROVEMENTS.md for pending proposals and apply/reject them
 - Make any needed edits to TASK.md, SKILL.md, CLAUDE.md, or hooks in settings.json
 - Commit changes
-- Run the guide-improvement task if guides need updating
 
 **In Claude Code (as needed, on demand):**
 - Debug a broken run
@@ -289,7 +288,7 @@ A sustainable rhythm for this two-tool workflow:
 > "The email-digest task produced wrong output on the last run. Read LAST_RUN.md and TASK.md and tell me what caused it and what to fix."
 
 **To review improvement proposals:**
-> "Read guide-improvement/IMPROVEMENTS.md and my tasks/[task-name]/IMPROVEMENTS.md. For each pending proposal, summarise what it does and ask me to approve, reject, or modify."
+> "Read my tasks/[task-name]/IMPROVEMENTS.md. For each pending proposal, summarise what it does and ask me to approve, reject, or modify."
 
 **To build a new skill ready for Cowork:**
 > "Read 03_SKILLS.md and 05_MCP_SERVERS.md. Create a new skill for [what you want]. Before finishing, run through the new features checklist in 13_DEV_EXECUTION_WORKFLOW.md and confirm each item."

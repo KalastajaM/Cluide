@@ -153,7 +153,7 @@ Every size figure in this guide, and every one the `audit-*` tasks check against
 
 The band is not licence to drift. A file that lands just inside tolerance twice running is growing, and the answer is the split the cap was pointing at, not a third round of trimming.
 
-**Technical cliffs are hard caps and get no tolerance.** Where a number is enforced by something outside the project — a loader, an API, a context window — one line past it is not slightly worse, it is a different outcome. The instance in this framework is native memory's auto-load limit: only the first 200 lines / 25KB of `MEMORY.md` reaches a session, so line 201 is invisible rather than expensive (see [Guide 04](./04_MEMORY_AND_PROFILE.md)). Treat every externally enforced limit the same way. If you cannot name what enforces a number, it is a target and the band applies.
+**Technical cliffs are hard caps and get no tolerance.** Where a number is enforced by something outside the project — a loader, an API, a context window — one line past it is not slightly worse, it is a different outcome. The instance in this framework is native memory's auto-load limit: only the first 200 lines / 25KB of `MEMORY.md` reaches a session, so line 201 is invisible rather than expensive (see [Guide 04 §Claude Code auto memory](./04_MEMORY_AND_PROFILE.md#claude-code-auto-memory-as-of-september-2026)). Treat every externally enforced limit the same way. If you cannot name what enforces a number, it is a target and the band applies.
 
 ---
 

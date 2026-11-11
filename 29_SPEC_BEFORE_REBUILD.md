@@ -198,15 +198,15 @@ Both are a few lines of script, and they belong in whatever gate the project alr
 
 A Claude-only example grown over a year: one CLAUDE.md, eleven skills, four scheduled tasks. The complaint is that the assistant behaves inconsistently and the fixes have stopped working.
 
-**§1 — trigger.** Two skills whose descriptions both match "draft a message"; a CLAUDE.md rule added to suppress a behaviour a different rule causes; the same convention stated in CLAUDE.md, in two skills and in a task; eight corrections in the last month, five of them the same correction. That is compensating machinery, and it is counted rather than felt.
+**§1 — trigger.** Two skills whose descriptions both match "draft a message"; a CLAUDE.md rule added to suppress a behaviour a different rule causes; the same convention stated in CLAUDE.md, in two skills and in a task; eight corrections in the last month, falling into five recurring kinds, one of them a figure that keeps going stale. That is compensating machinery, and it is counted rather than felt.
 
-**§2 — audit.** One pass inventories every standing rule with the file it lives in. One counts corrections from conversation history by type. One maps which skills can trigger on the same request. Nothing is fixed; the eight findings go in a list.
+**§2 — audit.** One pass inventories every standing rule with the file it lives in. One counts corrections from conversation history by type. One maps which skills can trigger on the same request. Nothing is fixed; every finding goes in a list.
 
 **§3 — spec.** Normative: the behaviours the setup must produce, which surface owns each, what must never happen. Where the current setup does something wrong — a skill that fires on the wrong requests, a rule that contradicts another — that is marked inline with what it does, why it is wrong, and what must happen instead.
 
 **§4 — decisions.** *Skills own workflows, CLAUDE.md owns standing behaviour* — Locked, cost: some duplication of context inside skills. *Memory holds preferences, not project facts* — Locked, reopens if project memory stops being available.
 
-**§5 — prevention.** Of the five recurring corrections, three become structure: the overlapping skills merge so the ambiguous trigger cannot occur; the thrice-stated convention gets one owner and two pointers; the figure that kept going stale is never copied. Two stay checks, and that is written down as a known weakness rather than hidden.
+**§5 — prevention.** Of the five recurring kinds of correction, three become structure: the overlapping skills merge so the ambiguous trigger cannot occur; the thrice-stated convention gets one owner and two pointers; the figure that kept going stale is never copied. Two stay checks, and that is written down as a known weakness rather than hidden.
 
 **§6 — proof.** Ten representative prompts, run through the old setup and the new one. Six matched. Three are expected divergences — the manifest names them, each pointing at the marker that predicted it. One is unexplained, which stops the rollout until it is understood; it turns out to be a rule nobody knew was firing.
 
