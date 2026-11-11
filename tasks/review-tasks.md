@@ -1,7 +1,7 @@
 # Task: Review Tasks Against Guides
 
 > **Cluide maintenance task** — run this whenever guides in this project are updated.
-> `Assistant, run tasks/review-tasks.md`
+> `"Run tasks/review-tasks.md"`
 
 ## Runtime route
 
@@ -10,12 +10,12 @@ Name the target surface and available tools before running steps. Claude-only po
 Execute only the selected native branch. Claude commands/settings/hooks are Claude-only; never install them as an OpenAI fix. Missing access is **unverified**; an unnecessary capability is **N/A**. Use an available, permitted question tool or concise chat, reusing existing answers and authorization. Unattended runs record unresolved decisions. Report applied versus drafted changes and fresh-session verification per supported surface; untested is not passed.
 
 ## Purpose
-Detect which guides have changed since each task was last reviewed, then check whether the affected tasks need updating to stay in sync. Also runs structural drift checks: the bundled guide copies in `skills/ai-assistant-setup/references/` against the root guides, the canonical IMPROVEMENTS template against its one marked inline copy, and guide-set coverage (every guide scored or explicitly not scored, every task in the mapping table, the advertised guide range correct). Where a routing log exists, also calibrates model routing from it (step 4d), and runs the shipped security and export scripts against fail-closed fixtures (step 4e). Keeps the tasks/ collection accurate as the Cluide guides evolve.
+Detect which guides have changed since each task was last reviewed, then check whether the affected tasks need updating to stay in sync. Also runs structural drift checks: the bundled guide copies under every `skills/*/references/` against the root guides, the canonical IMPROVEMENTS template against its one marked inline copy, and guide-set coverage (every guide scored or explicitly not scored, every task in the mapping table, the advertised guide range correct). Where a routing log exists, also calibrates model routing from it (step 4d), and runs the shipped security and export scripts against fail-closed fixtures (step 4e). Keeps the tasks/ collection accurate as the Cluide guides evolve.
 
 > **Complementary task:** this keeps the framework in sync when a *guide* changes. Its inverse,
 > `tasks/harvest-from-projects.md`, goes the other way — it harvests proven patterns from your *live
 > projects* back into the guides, tasks, templates, and skills. The third leg, `tasks/review-platform-changes.md`,
-> checks the guides against what Anthropic and OpenAI have shipped. Run the three together as a quarterly
+> checks the guides against what Anthropic, OpenAI and Google have shipped. Run the three together as a quarterly
 > health check.
 
 ---
@@ -66,9 +66,15 @@ Detect which guides have changed since each task was last reviewed, then check w
 
 ### Step 1 — Find recently changed guides
 
+Run from the repository root, and report "not run" instead of "no changes" if there is no git history to read
+(a download without `.git`, a shallow clone).
+
 ```bash
-# Show guide files changed in the last 90 days with dates
-git log --since="90 days ago" --name-only --pretty=format:"%ad %s" --date=short -- '*.md' | grep -E "^[0-9]|^[0-9][0-9]_" | sort -u
+# Last change to each guide — one line per file: file, date, commit subject
+for g in [0-9][0-9]_*.md; do echo "$g $(git log -1 --format='%ad %s' --date=short -- "$g")"; done
+
+# The date each task was last reviewed, from its footer (no date printed = no footer)
+for t in tasks/*.md; do echo "$t $(grep -oE 'last reviewed: [0-9]{4}-[0-9]{2}-[0-9]{2}' "$t" | tail -1 | cut -d' ' -f3)"; done
 ```
 
 Also ask the user: "Have you edited any guide since the last commit?" A working-tree edit is invisible to
@@ -77,27 +83,32 @@ to look at gets the scrutiny and the others get skimmed (`27_INDEPENDENT_JUDGMEN
 
 Report:
 ```
-Guides changed in the last 90 days:
+Guides, with the date each last changed:
   [guide file] — last changed [date], commit: [message]
   ...
 
-No recent changes: [guides with no recent commits]
+Tasks, with the date each was last reviewed:
+  [task file] — last reviewed [date], or "no footer"
+  ...
 ```
 
 ### Step 2 — Identify affected tasks
 
-Cross-reference the changed guides with the mapping table above.
+Cross-reference the guides with the mapping table above. A source guide counts as changed for a task when its
+last-change date is later than the date in that task's `<!-- last reviewed: … -->` footer. A task with no
+footer falls back to a 90-day window: a source guide whose last change falls in the last 90 days counts as
+changed.
 
 Report:
 ```
 Tasks that may need review:
-  [task file] — depends on [guide] (changed [date])
+  [task file] — depends on [guide] (changed [date], task last reviewed [date or "no footer"])
 
 Tasks unaffected:
-  [task file] — source guides unchanged
+  [task file] — source guides unchanged since its last review
 ```
 
-If no guides changed recently, say: "No guide changes detected in the last 90 days. Run this task after updating a guide, or extend the window with a longer git log range."
+If no source guide changed since its task's last review (or, for a task with no footer, within the last 90 days), say: "No guide changes detected since the tasks were last reviewed. Run this task after updating a guide."
 
 ### Step 3 — Review each affected task
 
@@ -160,7 +171,7 @@ The IMPROVEMENTS template must exist in **exactly one canonical place** — `tem
 The checks above compare copies against copies. This one checks that the *set* is complete — it is what
 catches a new guide landing without ever being wired into the audit engine or the mapping table.
 
-Run all four assertions. `01_CLAUDE_MD.md` is a compatibility page for `01_PROJECT_INSTRUCTIONS.md`: both resolve to Guide 01, so count that number once, not as two guides.
+Run every assertion. `01_CLAUDE_MD.md` is a compatibility page for `01_PROJECT_INSTRUCTIONS.md`: both resolve to Guide 01, so count that number once, not as two guides.
 
 1. **Every guide is either scored or explicitly not scored.** For each root `NN_*.md`, confirm its number
    is cited by a dimension heading in `analyze-project-reference.md`, or that the guide appears in the
@@ -182,21 +193,48 @@ Run all four assertions. `01_CLAUDE_MD.md` is a compatibility page for `01_PROJE
    done
    ```
 3. **The advertised range matches reality.** The highest `NN_` guide on disk must equal the range stated in
-   the `analyze-project.md` mapping row above, in `analyze-project.md` itself, and in `00_INDEX.md`. Three
-   places say it; all three must agree.
-4. **Every count a document states about its own contents is true.** A figure a file asserts about the set
-   it belongs to — "28 guides", "the four homes", "eleven cross-cutting rules", "8 dimensions" — drifts
-   silently through an edit made for another reason, because nobody re-counts while changing something
-   else. These are the cheapest possible assertions and the ones most likely to be quietly wrong.
+   every place that states one. Today those include the `analyze-project.md` mapping row above,
+   `analyze-project.md` itself, `00_INDEX.md`, `skills/ai-assistant-setup/SKILL.md`, the repository-structure
+   line in `README.md` and the `skills/dispatch/evals/explicit-model-per-spawn/prompt.md` prompt, but the
+   grep is the check, not that list. It finds range strings across the tree, leaving out `CHANGELOG.md` (history)
+   and the bundled guide copies (the root files they mirror already show every hit, and step 4a keeps them in step), and prints
+   each one that does not end at the highest guide number:
    ```bash
-   grep -rnoE "\b(two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|[0-9]+)\b [a-z-]*(guides|dimensions|homes|patterns|rules|layers|skills|tasks|templates|steps|phases|checks)\b" \
-     *.md tasks/*.md skills/*/SKILL.md
+   (
+   top=$(ls [0-9][0-9]_*.md 2>/dev/null | tail -1 | cut -c1-2)
+   [ -n "$top" ] || { echo "NOT RUN: not the repo root"; exit 2; }
+   hits=$(grep -rnoE '(^|[^0-9:-])(0[01]`?(–|-)`?[0-9]{2}|01_[A-Z_]+\.md (–|-) [0-9]{2}_)' --include='*.md' \
+     --exclude-dir=.git --exclude-dir=development --exclude=CHANGELOG.md . \
+     | grep -vE '^(\./)?skills/[^/]+/references/[0-9]{2}_')
+   [ -n "$hits" ] || { echo "NOT RUN: no range string found"; exit 2; }
+   echo "$hits" | grep -vE "${top}(_|\`)?\$" | sed "s/^/RANGE DOES NOT END AT $top: /"
+   )
    ```
-   Read each hit and count the thing it names. Where the count is wrong, fix the number rather than the
-   set. Where a hit is about something outside this repo (a target project, an example), ignore it — the
+   No output means every range ends at the highest guide. Fix each line it prints, and add any range string in a
+   form the pattern does not match.
+4. **Every count a document states about its own contents is removed or true.** A figure a file asserts about
+   the set it belongs to — "28 guides", "the four homes", "eleven cross-cutting rules", "8 dimensions" — drifts
+   silently through an edit made for another reason, because nobody re-counts while changing something
+   else. These are the cheapest possible assertions and the ones most likely to be quietly wrong. The grep
+   covers the root, `tasks/`, `templates/`, `.github/` and the skills' own files, and leaves out
+   `CHANGELOG.md` and the bundled guide copies (the root guides already cover them):
+   ```bash
+   find . -name '*.md' -not -path './.git/*' -not -path './development/*' -not -name CHANGELOG.md \
+     -not -path './skills/*/references/[0-9][0-9]_*' -print0 \
+     | xargs -0 grep -HnoE "\b(two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|[0-9]+)\b [a-z-]*(guides|dimensions|homes|patterns|rules|layers|skills|tasks|templates|steps|phases|checks)\b"
+   ```
+   Read each hit and count the thing it names. A count of guides, tasks, skills or dimensions is removed and
+   replaced by a reference to the set (CONTRIBUTING rule 3); any other wrong count gets its number fixed.
+   Where a hit is about something outside this repo (a target project, an example), ignore it — the
    grep is deliberately loose, and the reading is the check.
+5. **Every root guide is bundled.** Each root `NN_*.md` must have a same-named file in
+   `skills/ai-assistant-setup/references/`. This does not depend on the skill's own claim about what it
+   bundles, which is the thing a new guide leaves stale.
+   ```bash
+   for g in [0-9][0-9]_*.md; do [ -f "skills/ai-assistant-setup/references/$g" ] || echo "NOT BUNDLED: $g"; done
+   ```
 
-Flag each failure with the specific file and the missing wiring. All four are one-line fixes individually,
+Flag each failure with the specific file and the missing wiring. Each is a one-line fix individually,
 and the check is cheap enough to run every time.
 
 #### 4d. Routing-log calibration (only where a routing log exists)

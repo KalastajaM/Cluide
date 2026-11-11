@@ -25,7 +25,7 @@ Cluide covers Claude and ChatGPT, including Codex for repository work, and Googl
 | `09_MULTI_TASK_ORCHESTRATION.md` | Coordinating multiple tasks with shared state; model-aware dispatch |
 | `10_COST_PERFORMANCE.md` | Tracking token usage, budgeting, and cost monitoring |
 | `11_GIT_INTEGRATION.md` | Git integration, `.gitignore`, `.claudeignore` |
-| `12_SECURITY.md` | Security best practices for Claude Code and Cowork |
+| `12_SECURITY.md` | Security — credentials, connector trust, native permissions and hooks across surfaces |
 | `13_DEV_EXECUTION_WORKFLOW.md` | Development execution workflow |
 | `14_PERSONAL_DATA_LAYER.md` | Personal data and profile layer |
 | `15_LLM_WIKI.md` | LLM wiki pattern |
@@ -38,7 +38,7 @@ Cluide covers Claude and ChatGPT, including Codex for repository work, and Googl
 | `22_HELPER_APPS.md` | Collaboration patterns for small locally-run tools you vibe-code for yourself — invariants, helper index, verification gates |
 | `23_MULTI_PROJECT_SETUPS.md` | When and how to split work across projects; converging overlaps, single-owner data, cross-project links |
 | `24_PROJECT_FOLDER_STRUCTURE.md` | Project folder layout — homes for definitions, state, and outputs; the `incoming/` intake queue; growth hygiene |
-| `25_PROJECT_INSTRUCTION_LAYERS.md` | Project description and instructions fields vs. CLAUDE.md — what belongs in which layer, drift control |
+| `25_PROJECT_INSTRUCTION_LAYERS.md` | App-side fields vs. shared policy and native adapters — what belongs in which layer, drift control |
 | `26_CONTEXT_SCOPING.md` | Context scoping — what a session should see; blind vs. in-context review passes; building one-shot prompts |
 | `27_INDEPENDENT_JUDGMENT.md` | Independent judgment — anchoring and agreement pressure, commit-then-reveal, blinded reconciliation, false independence |
 | `28_SECOND_BRAIN.md` | Personal knowledge layer — capture and inbox discipline, the four homes, distillation, index-first retrieval, weekly review |
@@ -97,7 +97,7 @@ Cluide is trunk-based. Work happens on a short-lived branch per change, merged i
 
 Check the current session’s GitHub connectivity and authorization. When authorized and available, push, open the PR, and merge after the gate passes. If a runtime cannot access GitHub, report the actual blocker and provide the remaining commands; do not assume that every cloud or desktop session has the same limitations.
 
-**Releases are content events, not a calendar.** Never cut a version on a schedule and never propose one. Tag when guides are added, a reading track restructures, or the consumed surface changes: minor for additions and restructures, patch for corrections. Tags are `vMAJOR.MINOR.PATCH`, continuing from `v1.0.0`. A major bump means the append-only rule in check 4 was deliberately broken, which should effectively never happen. At each tag, record what changed in `CHANGELOG.md`, built from `git log <previous tag>..HEAD`; create that file at the first tag if it does not exist. Nothing accumulates there between tags: a pull request never edits `CHANGELOG.md`, and there is no `## [Unreleased]` section to write under. That puts the whole weight of the changelog on commit subjects, which is why check 1 above grades the diff against the scope written into the branch's first commit message — an unscoped subject is a changelog entry nobody can write later.
+**Releases are content events, not a calendar.** Never cut a version on a schedule and never propose one. Tag when guides are added, a reading track restructures, or the consumed surface changes: minor for additions and restructures, patch for corrections. Tags are `vMAJOR.MINOR.PATCH`, continuing from `v1.0.0`. A major bump means the append-only rule in check 4 was deliberately broken, which should effectively never happen. At each tag, record what changed in `CHANGELOG.md`, built from `git log <previous tag>..HEAD`. Nothing accumulates there between tags: a pull request never edits `CHANGELOG.md`, and there is no `## [Unreleased]` section to write under. That puts the whole weight of the changelog on commit subjects, which is why check 1 above grades the diff against the scope written into the branch's first commit message — an unscoped subject is a changelog entry nobody can write later.
 
 **Skill bundles are release assets, never commits.** After the tag is pushed and verified, build one zip per skill from the tagged tree and attach them to a GitHub Release, so each download is tied to the version it came from: `rm -rf /tmp/rel && mkdir /tmp/rel && git archive vX.Y.Z skills | tar -x -C /tmp/rel && (cd /tmp/rel/skills && for d in */; do zip -qr -X "../${d%/}.zip" "$d"; done)`, then `gh release create vX.Y.Z --notes-file <notes> /tmp/rel/*.zip`. `skills/*.zip` and `skills/*.skill` are gitignored so a bundle built in place cannot be committed by accident.
 

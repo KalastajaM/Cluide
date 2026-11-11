@@ -68,7 +68,20 @@ The repository root holds only what a reader of the published guide would open. 
 
 A new guide is registered in more places than is obvious, and partial registration is this repository's known drift mode. A guide that exists but is not registered everywhere looks fine in review and is invisible to half the tooling.
 
-Run `tasks/review-tasks.md` step 4c, which asserts guide-set coverage mechanically and names what is missing. Then confirm by hand that every `.md` citing the previous guide's number also cites the new one, and that the root and bundled copies are byte-identical.
+Register the guide in each of these places:
+
+- the guide file itself, at the repository root;
+- its copy in `skills/ai-assistant-setup/references/`, and in any other skill's `references/` that bundles that guide;
+- `00_INDEX.md` and the bundled index variant, `skills/ai-assistant-setup/references/00_INDEX.md`: the guide's entry, its reading-track rows, and the range row;
+- the `README.md` guide table and the guide range on its repository-structure line;
+- the `AGENTS.md` guide map;
+- `skills/ai-assistant-setup/SKILL.md`: the load-when row and the guide range in its description of `references/`;
+- `tasks/analyze-project-reference.md`: a dimension for the guide, or an entry in its "not scored" list;
+- every range string that still ends at the previous highest number (grep for it as `–NN`; step 4c, assertion 3, finds them across the tree);
+- `tasks/review-platform-changes.md`, the Step 4 reference table, when the guide cites platform facts;
+- and, if the guide ships a task, the task tables in `README.md` and `00_INDEX.md` and the mapping table in `tasks/review-tasks.md`.
+
+Then run `tasks/review-tasks.md` step 4c, which asserts guide-set coverage mechanically and names what is missing. Finally, as a backstop for anything the list above misses, confirm by hand that every `.md` citing the previous guide's number also cites the new one, and that the root and bundled copies are byte-identical.
 
 ---
 
@@ -98,4 +111,4 @@ Open an issue. For anything about how to *use* Cluide rather than change it, sta
 
 ## Platform coverage
 
-State which surfaces a change applies to. Keep shared principles separate from native steps; cite and date product-specific claims. A new policy must reach its Claude adapter and its OpenAI entry point, and uploaded-source instructions must explain refresh. Record actual fixture results separately from untested surfaces. Update dependent tasks, templates and every bundled guide copy in the same change.
+State which surfaces a change applies to. Keep shared principles separate from native steps; cite and date product-specific claims. A new policy must reach its Claude adapter, its OpenAI entry point and, where Google routes are documented, the Google one, and uploaded-source instructions must explain refresh. Record actual fixture results separately from untested surfaces. Update dependent tasks, templates and every bundled guide copy in the same change.
