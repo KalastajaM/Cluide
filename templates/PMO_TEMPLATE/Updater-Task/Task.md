@@ -64,9 +64,9 @@ Flag any legacy or one-off formats (e.g. bare `A-2`, `S-1`, `PM-2`, or actions w
 
 ## Step 5 — Report, then fix
 
-Before editing, produce a short report of all findings from Steps 2–4, grouped by file. Label each ID on first mention with its title from the register (the Communication Style rule in `AGENTS.md`), so the report reads without the trackers open. Let the user confirm scope if any of the fixes look material (e.g. an ID migration that changes many references).
+Before editing, produce a short report of all findings from Steps 2–4, grouped by file. Label each ID on first mention with its title from the register (the Communication Style rule in `AGENTS.md`), so the report reads without the trackers open. Present the report as one row per proposed edit and stop. Apply only the rows the user approves. In an unattended run, write the report to `Working/` (or the output file), make no edits, and report "N fixes pending approval".
 
-Then apply the corrections. When you touch a file:
+Then apply the approved corrections. When you touch a file:
 
 - Add the missing back-link, fix the broken target, or rewrite the non-standard ID.
 - Keep the actual **content** of entries unchanged unless the fix requires it — this is a consistency audit, not a rewrite.
@@ -78,7 +78,7 @@ Then apply the corrections. When you touch a file:
 For every file you modified:
 
 - Update the `**Last updated:**` header (bump the rev number and set today's date).
-- Append a short change-log entry at the bottom describing what was fixed and why (e.g. "Added missing R-04 → ACT-F-02 back-link; migrated legacy `A-3` references to `ACT-PJ-03`").
+- Append a short entry to the file's `## Change Log` table describing what was fixed and why (e.g. "Added missing R-04 → ACT-F-02 back-link; migrated legacy `A-3` references to `ACT-PJ-03`").
 
 ---
 

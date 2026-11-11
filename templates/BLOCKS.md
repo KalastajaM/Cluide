@@ -7,7 +7,7 @@
 
 ## How to use this
 
-A project keeps only the blocks it can already use. The three shipped inside PROJECT_TEMPLATE are
+A project keeps only the blocks it can already use. The blocks shipped inside PROJECT_TEMPLATE are
 kept or deleted during setup; everything else is added later, when the need actually appears. Two
 things make that the right order:
 
@@ -31,12 +31,14 @@ decision is a deletion rather than an addition.
 | **Profile & knowledge** | `Profile/PROFILE_SUMMARY.md`, `Profile/PROFILE_detail.md`, `Knowledge/INDEX.md` + topic files | the assistant needs context that outlives a session: who people are, where topics stand, what was decided | Summary auto-reads every session; detail and topics on demand | Ships in the template. To retrofit, copy the two folders from `templates/PROJECT_TEMPLATE/` and follow Guide 04 — there is no task for this layer |
 | **Intake** | `Incoming/` plus the *Incoming* section of `AGENTS.md` | Material reaches the project outside a chat — `Incoming/README.md` lists the cases | On demand | Ships in the template; to retrofit, copy the folder and its `AGENTS.md` section (Guide 24) |
 | **Dispatch routing** | `ROUTING_LOG.md`, the *Delegation* section of `AGENTS.md`, and the *Dispatch Overrides* section of `CLAUDE.md` | Work here is delegated to subagents, workflow stages, or scheduled tasks | The delegation section and Dispatch Overrides load every session; the log is read only at calibration | Ships in the template; to retrofit, copy all three. Claude tier overrides and the skill's load hook live in `CLAUDE.md`; OpenAI routing lives in `PLATFORM_SETUP.md` (Guide 09) |
+| **Behaviour tests** | `tests/behaviour/`: a compact `CASES.md` table, a `README.md`, and synthetic `fixtures/`, plus its row in the file map of `AGENTS.md` | A rule or skill would be embarrassing to lose silently, or a surface needs a fresh-session acceptance check | Not loaded — read only when running or editing cases | Ships in the template; to grow it into the full suite, run `tasks/setup-behaviour-tests.md` (Guide 31) |
 
 ## Blocks installed from a task or another template
 
 | Block | What it adds | Add it when | Loaded | Install |
 |---|---|---|---|---|
 | **Auto-memory** | `.auto-memory/` with an index and memory files, plus the read instruction in `AGENTS.md` | You want shared file-backed memory layer, alongside profile files or instead of them | The index auto-reads | `tasks/setup-memory.md` (Guide 04) |
+| **Action authority** | An action-authority block in the shared policy, standing approvals with scope and expiry, and an outbox and action log for unattended runs | Tasks or skills can send, post, delete or move, or you keep answering the same permission question | The policy block loads every session; approvals and logs are read on demand | `tasks/setup-action-authority.md` (Guide 32) |
 | **Scheduled task** | A `[Name]-Task/` folder: `TASK.md`, run log, knowledge summary, improvements log | The same work should happen on a schedule without you starting it | Per run only — invisible to your sessions | `templates/TASK_TEMPLATE/`, via `tasks/setup-scheduled-task.md` (Guides 06, 07) |
 | **Self-improving loop** | The improvements and lessons machinery inside an existing task | A task has run enough times that its own output shows what to fix | Per run only | `tasks/setup-self-improving-task.md` (Guide 07) |
 | **Task orchestration** | Shared state and hand-off conventions between two or more tasks | A second scheduled task needs to see what the first one did | Per run only | `tasks/setup-orchestration.md` (Guide 09) |

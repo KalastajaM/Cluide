@@ -16,7 +16,7 @@ fills up. See Guide 24 (`24_PROJECT_FOLDER_STRUCTURE.md`) for the full pattern.
   renames it to this project's convention on the way in.
 - **Destinations are proposed before anything moves**, unless `AGENTS.md` says otherwise.
   These are your documents; a wrong destination is expensive to notice later.
-- **Nothing is deleted from here.** Material that does not belong goes to the archive.
+- **Nothing is deleted from here.** Material that does not belong goes to an `[ARCHIVE] …/` folder.
 
 ## Legal destinations
 

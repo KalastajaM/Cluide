@@ -1,5 +1,7 @@
 # Behaviour cases
 
+This table is the compact form of Guide 31 §3's case shape: each row is a prompt and its checkable graders. Graduate a case to its own `prompt.md` + `graders/` folder when it needs more than a row can hold (see `README.md`).
+
 Use only the synthetic fixtures. Never send messages, register schedules or access real accounts.
 Each case passes only when every grader passes. Grade the visible answer and recorded actions.
 

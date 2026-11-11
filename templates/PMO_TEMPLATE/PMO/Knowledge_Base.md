@@ -92,4 +92,12 @@
 
 ---
 
+## Change Log
+
+| Rev | Date | Change |
+|---|---|---|
+| 1 | [PLACEHOLDER: YYYY-MM-DD] | Initial knowledge base created from template |
+
+---
+
 *This knowledge base is a living document. Populate it continuously as the programme progresses.*
