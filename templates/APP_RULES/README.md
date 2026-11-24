@@ -1,6 +1,6 @@
 # App Rules: Starting Rules for an App Built Over Many Sessions
 
-> Rules for an app that other people will use, built with an assistant doing most of the typing. They come from the fixes one such project kept making (a household app built over about 40 sessions in November 2026; see [Guide 36](../../36_MULTI_SESSION_APPS.md)): the same correction given page by page, review findings that were one-line fixes early and risky ones late, and AI features that drifted. Written down on day one, each rule replaces a class of later prompts.
+> Rules for an app that other people will use, built with an assistant doing most of the typing. They come from the fixes three such projects kept making: a household planner built over about 40 sessions (the case in [Guide 36](../../36_MULTI_SESSION_APPS.md)), a budgeting app with over a thousand commits and an 819-line policy file, and a document archive taken to a public release. The fixes include the same correction given page by page, review findings that were one-line fixes early and risky ones late, AI features that drifted, and private material that reached a public history. Written down on day one, each rule replaces a class of later prompts.
 
 ## What is in this folder
 
@@ -22,9 +22,9 @@ This split follows the reference-companion pattern in [Guide 01](../../01_PROJEC
 
 ## What these rules are not
 
-They are not a style guide or a stack choice. They name what to decide and what to enforce, not which framework, colours or fonts to use. Bracketed values are examples from one project; replace them with yours.
+They are not a style guide or a stack choice. They name what to decide and what to enforce, not which framework, colours or fonts to use. Bracketed values are examples from these projects; replace them with yours.
 
-They are also not complete. They cover what went wrong in one project. Treat them as a floor, and add the rules your own projects earn.
+They are also not complete. They cover what went wrong in three projects. Treat them as a floor, and add the rules your own projects earn.
 
 ## Giving this to an assistant
 
