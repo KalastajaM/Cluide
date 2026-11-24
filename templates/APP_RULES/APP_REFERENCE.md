@@ -6,11 +6,53 @@ sections the app will never need; fill in the [brackets].
 
 # App Reference
 
-The detail behind the app rules in `AGENTS.md`. Each section is read before the kind of work it names. Each rule says why it exists, so a session can tell when it applies. The reasons come from three apps built mostly by an assistant: a household planner, a budgeting app and a document archive.
+The detail behind the app rules in `AGENTS.md`. §1 is the order of work; the other sections are read before the kind of work they name. Each rule says why it exists, so a session can tell when it applies. The reasons come from apps built mostly by an assistant: a household planner, a budgeting app, a document archive, and a regulatory checklist tool built in one long chat.
 
 ---
 
-## 1. Interface patterns
+## 1. Build sequence
+
+Read at the start of the project and whenever a phase ends. Most of the late tweaking in the source projects came from doing the work out of order: screens coded before there was a design, a design drawn before the spec said what the app keeps and exports, and a design system extracted from the code after the pages had drifted apart. Each phase ends with a gate. Do not start the next phase until the gate passes.
+
+| Phase | Produce | Gate |
+|---|---|---|
+| 0. Spec | A critically reviewed spec, the input-output map, the data lifecycle, languages and terms, first-run and empty states | The owner has answered the review's questions in one list; every input maps to an output |
+| 1. Design | One chosen direction, drawn for every main screen and state; tokens and a component list; a tested handoff | The owner has picked one direction; one screen has been built from the handoff alone |
+| 2. Foundation | Tokens, shared components, guard tests, the run script, the CI matrix, a seed generator for long and demo content | The first screen uses only shared components and passes the visual verification in §2 |
+| 3. Milestones | One milestone per session, each closed with a feedback round | The validation passes in §6 that fall due at this milestone |
+| 4. Release | §7 | The release checklist in §7 |
+
+### Phase 0: settle what goes in and what comes out
+
+- **Input-output map.** List every question or field the user fills in and the outputs each one changes. An input that changes nothing is dropped before it is built. In the checklist tool the owner had to ask, after the screens existed, whether every parameter actually mattered.
+- **Choice model.** For each question, record whether it takes one answer or several, and which questions only apply under a given answer. This decides the controls (§2) before anyone draws them. The checklist tool spent four feedback messages turning radio groups with a "both" option into checkboxes and nesting follow-up questions under their parent.
+- **Data lifecycle.** For each thing the user creates, decide yes or no for: save, rename, delete, duplicate, export, import, share, report, print and copy. Decided late, each one arrives as its own request. The checklist tool gained saving, deleting, export and import, a full report, print and cost totals over eight separate messages.
+- **Languages and terms.** Name the languages. Decide whether official or domain terms stay in their original language in the other versions, and fix the exact spelling and abbreviation of each one. The checklist tool's English version mixed in the original legal terms ("Doorlenen makes you an uitlener"), which took its own round to clean up.
+- **Rules with sources.** When the output rests on rules from documents (law, policy, a standard), encode each rule once with its source. Generate the verdict and its explanation from that one rule, so they cannot disagree. In the checklist tool two sessions gave opposite verdicts on the same question, and the owner had to check the tool's own source notes to find out which held.
+- **First run and empty states** are part of the spec, not polish.
+
+### Phase 1: one design, before code
+
+- **Mockups come before the first coded screen.** The household planner got its mockups a day after its first web interface was built, from a prompt that called its interface "very simple right now". The budgeting app went through three complete redesigns in four months, each starting from scratch, and had its design system extracted from the code afterwards. Every redesign meant another round of porting and alignment fixes.
+- **Explore once, then choose.** Compare directions during the design phase, pick one, and remove the alternatives and the toggles that switched between them. After that, change the design only by refining the system, or by a planned redesign (§2 Redesigns).
+- **Draw the hard cases.** Draw the longest language, long names, empty and full lists, errors, phone and desktop, and light and dark. A mockup that only shows the happy path leaves those decisions to whichever session meets them first.
+- **The output is a system, not pictures:** tokens, a component list with every state (default, hover, focus, selected, disabled), and which control answers which kind of question.
+- **Decide the handoff before designing,** and test it. Settle what the builder receives (a token file, component specs, a map from each mockup screen to a route), then build one screen from it before the design is called done. The owner asked "how do I give this to the builder?" in three separate design sessions.
+
+### Phase 2: the foundation before the second screen
+
+Build the tokens, the shared components listed in the policy, the guard tests (§5), the run script (§8), the CI matrix and a seed generator. The generator has two modes: long and extreme content for checks, and invented demo data for screenshots. The first screen is assembled only from shared components. A later screen that needs something new extends a component rather than building its own.
+
+### Phase 3: milestones and feedback rounds
+
+- **One milestone per session,** closed with tests, the visual verification, the user guide and changelog, and any validation pass that falls due.
+- **Feedback comes in rounds.** The owner tries the build and sends one numbered list, each item naming the page and the element. The session sorts the items before fixing anything. A one-off is fixed where it is. A pattern is anything that could happen on another page: an alignment, a button style, a control choice, a helper line. A pattern is fixed in the component or the rule, applied across the app, and added to the policy. The report says which items were patterns.
+- **A correction given twice is a rule.** In the checklist tool, seven of thirty messages asked for layout fixes: alignment, control widths, button colours, button rows, selected states, and where helper text sits. Each would have been one line in the interface rules.
+- **"Is it ready?" is answered with the gate,** not an impression: which checks ran, which passed, and what was not checked.
+
+---
+
+## 2. Interface patterns
 
 Read before any change to a page, dialog, form or layout.
 
@@ -25,6 +67,9 @@ Read before any change to a page, dialog, form or layout.
 | Navigation entries | No shortcut to something one click away elsewhere. Management actions (add, reorder, manage) sit as icons beside the list they act on, not as separate menu items | Each extra entry is one more thing to learn and keep consistent |
 | Repeated views | Every view that shows the same kind of item (a file, a record) uses one panel skeleton with one agreed block order | One app showed the same item with a different block order in three views, and one view lacked a block |
 | Card grids | Cards in a row share grid rows (CSS subgrid or equivalent), so titles, figures and actions line up across cards whatever their content | Long names and extra details pushed one card's key figure away from its neighbours' |
+| Action rows | Buttons that belong together sit on one row, left-aligned with the content above, and wrap as a group only when they do not fit. One primary (filled) button per row; the others share the secondary style | "Why are some buttons blue and some not?", and one download button that sat beside a line of text instead of its siblings |
+| Menus and panels | The button whose menu or panel is open shows as selected. A note that belongs to a row of buttons stays under that row, not under whatever panel opens | Both came up in one feedback round: an open menu that looked unselected, and a privacy note pushed below a submenu |
+| Long forms | On a long form or settings panel, the bar with the title, language and main actions stays visible while the content scrolls | The owner asked for it after scrolling away from the actions |
 
 ### Forms, controls and saving
 
@@ -34,6 +79,9 @@ Read before any change to a page, dialog, form or layout.
 | Cancel | None. Back cancels. Leaving with unsaved changes asks first | A Cancel beside Back is two ways to do one thing |
 | Autosave | Settings-like pages that change one value at a time save on change and say so briefly; long forms save explicitly | A new-user test flagged one section saving on tap beside another that needed a Save button |
 | Native controls | Global low-specificity defaults style every input, select and button, so an unwrapped control still matches. Compare a new control's background, border, radius and height with a neighbour | A bare native select beside styled controls was flagged by the owner, and fixed in a dedicated consistency pass |
+| Choice questions | A question that can take several answers uses checkboxes, never a radio group with a "both" or "mix" option. One answer from a few options uses radios or a segmented control; from many, a select | The same correction (radios to checkboxes, "both" removed) was given for eight questions over three feedback rounds |
+| Follow-up questions | A question that applies only under one answer is indented under that answer and hidden until it is chosen | Flat lists repeated the same follow-up for each case and wasted space; nesting was asked for in four rounds |
+| Control widths | Selects, text boxes and other controls in one panel share one width, and none is wider than the panel | A select sized to its longest option overflowed the panel its text boxes fitted |
 | Selection controls | One taxonomy: tabs switch sections, segmented buttons switch views of the same data, chips narrow a list. Each has fixed accessibility semantics (`aria-selected` for tabs, `aria-pressed` for toggles) | Each pattern carries different keyboard and screen-reader behaviour; choosing by what changes keeps that behaviour predictable |
 | Field rows | Fields side by side share the input line; a longer label or an "(optional)" note never pushes one box lower. Keep the label text in one inline element | One misaligned box was enough for the user to make alignment a standing rule for every form |
 | Text areas | A resizable text area never overlaps what follows it; default height fits its expected content | Resizing pushed text areas over the next field |
@@ -44,6 +92,7 @@ Read before any change to a page, dialog, form or layout.
 
 ### Text and numbers in layouts
 
+- **Short content in a fixed-height card or row is centred vertically,** not pinned to the top.
 - **Text never leaves its box.** Running text wraps; a one-line control truncates with an ellipsis and shows the full text in a tooltip; flex and grid children get `min-width: 0` so they can shrink.
 - **Figures never truncate.** Amounts and other figures shrink to fit, down to a minimum size, through named roles (hero, summary, table, inline). The sign and the unit are never clipped.
 - **Long translations** are checked in the tightest layouts (summary cards, table headers, buttons). Long compounds in some languages and a currency symbol placed after the number broke fits that worked in English.
@@ -112,7 +161,7 @@ Before changing anything, list every element that could produce what the screens
 
 ---
 
-## 2. Architecture and data
+## 3. Architecture and data
 
 Read before changing the data model, a service, background jobs or storage.
 
@@ -173,7 +222,7 @@ Measure on a synthetic large dataset ([50,000 items]) from the start, kept as a 
 
 ---
 
-## 3. AI features
+## 4. AI features
 
 Read before adding or changing anything that calls a model.
 
@@ -188,7 +237,7 @@ Read before adding or changing anything that calls a model.
 
 ---
 
-## 4. Testing
+## 5. Testing
 
 Read before adding tests or changing what a test checks.
 
@@ -209,6 +258,7 @@ Read before adding tests or changing what a test checks.
 - **Undo** is tested for every kind of data an action touches.
 - **End-to-end tests** start early, in the first month, not after the app has grown. They wait on state (the save response, the reload, the dialog's open class), not on the page looking done, and the app offers an injectable delay so races can be reproduced on purpose.
 - **Documents with counts and cross-references** (a spec, a reference) get a test that keeps the counts honest.
+- **Replacing a core** (a rewrite, a new engine behind the same app) gets a read-only comparison harness before anything switches over. Both sides read the same data with the clock pinned (a `--now` option) and are compared to the cent. Every difference is classified against a written list of expected differences, and core defects and unexplained differences are reported first. The budgeting app's engine replacement ran this way through several reruns without touching live data.
 
 ### Reliability
 
@@ -221,7 +271,7 @@ Read before adding tests or changing what a test checks.
 
 ---
 
-## 5. Validation passes
+## 6. Validation passes
 
 Read when a milestone finishes. Each runs in a fresh session that did not build the work, read-only first, findings ranked by impact and checked against the code before fixing.
 
@@ -238,7 +288,7 @@ Read when a milestone finishes. Each runs in a fresh session that did not build 
 
 ---
 
-## 6. Release and publishing
+## 7. Release and publishing
 
 Read before building a package, publishing the repository, or handing the app to someone else.
 
@@ -267,7 +317,7 @@ Read before building a package, publishing the repository, or handing the app to
 
 ---
 
-## 7. Working with the assistant
+## 8. Working with the assistant
 
 Read when setting up the project, and when the way of working changes.
 
@@ -280,4 +330,5 @@ Read when setting up the project, and when the way of working changes.
 - **Decisions record the options rejected** and the condition that would reopen them. Rejected features are not proposed again.
 - **Memory notes** are written as a rule with a dated reason and a line on how to apply it, so a later session can tell whether it still holds.
 - **The policy file holds rules, not status.** One project's policy grew 2.6 times in five weeks to 50 KB, past the size one assistant loads by default, and almost half of it was a migration changelog. Keep status in `docs/`, keep a size budget, prune when a rule is enforced by a test, and give each rule the incident it came from so it can be retired.
-- **Feedback rounds.** The owner tries the app and sends one batch of feedback; the session fixes it, then updates the user guide and changelog in the same round.
+- **Feedback rounds.** The owner tries the app and sends one batch of feedback; the session sorts it into one-offs and patterns (§1, Phase 3), fixes it, then updates the user guide and changelog in the same round.
+- **A procedure handed to the owner has been run.** Steps the owner will run (a migration, a re-vendor, a restore) are executed once, as written, by the session that wrote them. They list the full sequence with the expected output of each step. One re-vendor procedure failed at its first command because of wrong argument syntax, and the owner had to ask for the full sequence.

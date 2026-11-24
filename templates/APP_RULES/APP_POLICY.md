@@ -9,7 +9,15 @@ docs/APP_REFERENCE.md, which the triggers below point to.
 
 ## App rules
 
-Before changing an interface, a data model, an AI feature, tests or a release, read the matching section of `docs/APP_REFERENCE.md`. If a rule here conflicts with a request, say so before acting. This section holds rules, not status: migration progress and feature notes go in `docs/`, and this file stays under [24] KB.
+Work in the order set out in `docs/APP_REFERENCE.md` §1. Before changing an interface, a data model, an AI feature, tests or a release, read the matching section of that file. If a rule here conflicts with a request, say so before acting. This section holds rules, not status: migration progress and feature notes go in `docs/`, and this file stays under [24] KB.
+
+### Build order
+
+- Phases run in order, each closed by its gate: spec, design, foundation, milestones, release. No screen is coded before its design is chosen, and no second screen is built before the shared components and guard tests exist.
+- The spec maps every input to the outputs it changes; an input that changes nothing is not built. For each thing the user creates, the spec says whether it can be saved, deleted, exported, imported, shared, reported or printed.
+- One design direction is chosen before code, with the hard cases drawn (longest language, long names, empty, error, phone, dark). The handoff to the builder is defined and tested on one screen first.
+- Owner feedback is sorted before fixing: a one-off is fixed in place; a pattern (anything that could recur on another page) is fixed in the component or rule, applied app-wide, and added here. A correction given twice is a rule.
+- A procedure handed to the owner has been run once, as written, with the expected output of each step.
 
 ### Product
 
@@ -27,8 +35,10 @@ Before changing an interface, a data model, an AI feature, tests or a release, r
 - Save sits in the page header. There is no Cancel button: back cancels, and leaving with unsaved changes asks first (or the form saves as it changes).
 - Deletes: permanent ones ask first; restorable ones act at once and offer Undo. Errors are red, warnings amber; never use the error style for a warning.
 - Back links name where they go.
+- Several possible answers use checkboxes, never a "both" option. A question that applies only under an answer is indented under it and hidden until chosen. Controls in one panel share one width.
+- One primary button per action row; related buttons share a row, left-aligned. An open menu's button shows as selected.
 - Icons come only from [the shipped icon set]; check the name exists before using it. An icon-only button has an accessible label; decorative icons are hidden from screen readers.
-- Text never leaves its box, and related elements line up. Check every UI change with long seeded content at the widths, zoom levels, themes and languages in `docs/APP_REFERENCE.md` §1, measuring positions, before reporting done.
+- Text never leaves its box, and related elements line up. Check every UI change with long seeded content at the widths, zoom levels, themes and languages in `docs/APP_REFERENCE.md` §2, measuring positions, before reporting done.
 
 ### Architecture
 
