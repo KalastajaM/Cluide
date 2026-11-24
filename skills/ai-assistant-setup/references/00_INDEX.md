@@ -515,6 +515,11 @@ The catalogue of optional blocks that sit on top of the PROJECT_TEMPLATE core: w
 
 **Use this when:** deciding what a project needs beyond the core — at setup, or months later when a need shows up.
 
+### APP_RULES/
+Starting rules for an app other people will use, built over many assistant sessions, drawn from the fixes one such project kept making: `APP_POLICY.md`, a short *App rules* section for `AGENTS.md` (product, interface, architecture, languages, testing, parallel sessions), and `APP_REFERENCE.md`, the on-demand companion with the interface pattern tables, architecture and data rules, AI-feature rules, guard tests, validation passes and release checks, each with its reason.
+
+**Use this when:** starting an app that will outgrow Guide 22, or when you notice you are giving the same correction to a second page or a second session. The companion is [Guide 36](./36_MULTI_SESSION_APPS.md).
+
 ### AGENT_STARTER_PACK/
 Four Claude Code subagent definitions with the model tier pinned in frontmatter — `scout` (haiku, bulk reading and extraction), `builder` (sonnet, well-specified changes), `verifier` (opus, adversarial checking), `researcher` (sonnet, web legwork) — plus a CLAUDE.md delegation stanza. The structural Claude Code binding for the `dispatch` skill: frontmatter pins routing so it isn't re-decided per prompt. Claude Code only; Cowork sessions route via per-spawn model parameters instead.
 

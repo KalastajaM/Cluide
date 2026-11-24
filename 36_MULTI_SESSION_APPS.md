@@ -227,6 +227,8 @@ On day one:
 - [ ] Host-name allow-list, passcode throttling, durable save before success
 - [ ] One worktree per writing session, written into the shared policy
 
+`templates/APP_RULES/` holds these decisions as a ready-to-fill policy section and an on-demand reference; start from it rather than writing the rules from scratch.
+
 During the build:
 
 - [ ] Milestones sized to one session
@@ -239,4 +241,4 @@ During the build:
 
 ## Giving This to an Assistant
 
-> "We are building [app] with several sessions over the coming weeks. Read Guide 36 and Guide 22. Review the spec against §3 and ask me the questions it raises, in one list. Then draft the shared-policy additions for §4 and §5 (design-system patterns, help-text rule, verification widths, docs rule, ports, worktree rule) and show them to me before writing anything. Schedule the three validation passes from §7 as milestones in the plan."
+> "We are building [app] with several sessions over the coming weeks. Read Guide 36 and Guide 22. Review the spec against §3 and ask me the questions it raises, in one list. Then draft the shared-policy additions for §4 and §5 from `templates/APP_RULES/` (design-system patterns, help-text rule, verification widths, docs rule, ports, worktree rule) and show them to me before writing anything. Schedule the three validation passes from §7 as milestones in the plan."
