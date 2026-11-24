@@ -198,6 +198,7 @@ The copy-paste starting points in `templates/`:
 | `ACCOUNT_INSTRUCTIONS_TEMPLATE.md` | The two account-level instruction fields (preferences + Cowork-wide), ready to fill and paste |
 | `AGENT_STARTER_PACK/` | Four model-pinned Claude Code subagents (scout, builder, verifier, researcher) — the structural binding for the `dispatch` skill |
 | `BLOCKS.md` | Catalogue of the optional blocks a project adds to that core, and the task that installs each |
+| `APP_RULES/` | A build sequence and starting rules for an app built over many sessions: a short policy section for `AGENTS.md` and an on-demand reference with the phased build order, interface, architecture, AI, testing, release and working-practice rules (Guide 36) |
 
 ---
 
