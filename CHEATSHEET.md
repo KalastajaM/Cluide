@@ -24,6 +24,7 @@
 | Improve a prompt, or write one that runs in a fresh session | Prompt improver | [02](./02_PROMPTING_BASICS.md) + [26](./26_CONTEXT_SCOPING.md) + `prompt-improver` skill |
 | Route delegated work to the right model tier | Dispatch policy | [09](./09_MULTI_TASK_ORCHESTRATION.md) + `dispatch` skill |
 | Keep a repo healthy and get changes onto GitHub | Git management | [11](./11_GIT_INTEGRATION.md) + `git-guru` skill |
+| Build an app other people use, over many sessions | Design system, three validation passes, one worktree per session | [36](./36_MULTI_SESSION_APPS.md) |
 
 ---
 

@@ -2,7 +2,7 @@
 
 > Most of Cluide is about co-work — how the assistant drafts your emails, runs your briefings, files your actions. This guide is about an adjacent use-case: the small locally-run tool you build *for yourself* with the assistant's help. A budget tracker, a reading log, a data dashboard, a CLI wrapper around an API. Not a product. Not a team deliverable. One user, local data, evolves feature-by-feature over many short sessions.
 
-> **Companion guides:** [Guide 01](./01_PROJECT_INSTRUCTIONS.md) covers project instruction structure — this guide adds four patterns that are specific to helper apps. [Guide 05](./05_MCP_SERVERS.md) covers MCP servers, including Claude in Chrome, which this guide leans on for verification. [Guide 12](./12_SECURITY.md) covers permission hygiene. [Guide 13](./13_DEV_EXECUTION_WORKFLOW.md) covers the build-vs-run split. [Guide 20](./20_INTERACTIVE_PROMPTING.md) covers plan mode, which underpins the iteration loop described here.
+> **Companion guides:** [Guide 01](./01_PROJECT_INSTRUCTIONS.md) covers project instruction structure — this guide adds four patterns that are specific to helper apps. [Guide 05](./05_MCP_SERVERS.md) covers MCP servers, including Claude in Chrome, which this guide leans on for verification. [Guide 12](./12_SECURITY.md) covers permission hygiene. [Guide 13](./13_DEV_EXECUTION_WORKFLOW.md) covers the build-vs-run split. [Guide 20](./20_INTERACTIVE_PROMPTING.md) covers plan mode, which underpins the iteration loop described here. [Guide 36](./36_MULTI_SESSION_APPS.md) covers the stage after this one, when the app gains other users or is built by several sessions at once.
 
 > **Giving this guide to an assistant:**
 > "Read 22_HELPER_APPS.md and help me set up the CLAUDE.md for this helper app — interview me about the app's one invariant, the helpers I already have, and what 'done' looks like for each class of change."
@@ -26,7 +26,7 @@ This guide is about pushing both failure modes back into the shared policy layer
 
 It is not a software-engineering guide. No stack recommendations, no test framework advice, no architecture opinions. Use whatever you want — vanilla JS, Python, a single Bash script. What this guide covers is the *assistant-facing layer*: what to put in the shared policy, how to structure the iteration loop, what MCP tools to use for verification, and how to keep the permission surface tight. Everything here applies whether your helper app is 200 lines or 20,000.
 
-It is also not a guide for anything larger. If the tool grows a second user, an auth system, or a production deployment, stop treating it as a helper app — it needs real engineering discipline, which is outside Cluide's scope entirely.
+It is also not a guide for anything larger. If the tool grows a second user, an auth system, or a production deployment, stop treating it as a helper app — it needs real engineering discipline. Cluide does not teach that discipline, but [Guide 36](./36_MULTI_SESSION_APPS.md) covers the assistant-facing layer of that stage.
 
 ---
 
@@ -93,6 +93,8 @@ State, per class of change, what "done" requires. Not "run the tests" — specif
 - UI / CSS change → take a screenshot via a browser MCP such as the assistant in
   Chrome (or another preview/screenshot MCP if you have one installed),
   confirm the element looks correct. Code review alone is not enough.
+  Check phone width and the narrowest desktop width as well as full width,
+  and measure the position of elements that must line up.
 - Data mutation → reload the app, re-read the affected file, confirm the
   invariant from the Invariant section still holds.
 - New feature → run the happy path end-to-end in the browser; then try one
@@ -184,7 +186,7 @@ Eight lines in the shared policy. A few minutes on day 1. Many hours not spent l
 - **Declaring "done" before verification.** The most common false-done. Fix by making Pattern C specific enough that "done" requires a tool call with visible output, not a self-report.
 - **Broad permission grants.** "Allow all Bash" because a prompt was annoying. Fix by auditing `.claude/settings.local.json` back down to the real list the moment the session ends.
 - **Skipping the plan for "small" changes.** The change is never as small as it looks. A 60-second plan avoids a 20-minute cleanup.
-- **Treating this as a product.** The moment you think about sharing it, adding a second user, or deploying it — stop. This guide no longer applies. You are now in real-engineering territory.
+- **Treating this as a product.** The moment you think about sharing it, adding a second user, or deploying it — stop. This guide no longer applies on its own. You are now in real-engineering territory, and [Guide 36](./36_MULTI_SESSION_APPS.md) applies as well.
 
 ---
 
@@ -197,7 +199,7 @@ Helper apps have a ceiling. Signs you have hit it:
 - You are adding auth, multi-tenancy, or a server.
 - The shared policy has grown past a page and the patterns here no longer fit.
 
-At that point, the tool has graduated. It needs proper architecture, proper tests, proper deployment — and a collaboration model that goes beyond CLAUDE.md guardrails. Cluide does not cover that. Move the project to your normal engineering setup and keep only the patterns from this guide that still pay rent.
+At that point, the tool has graduated. It needs proper architecture, proper tests, proper deployment — and a collaboration model that goes beyond CLAUDE.md guardrails. Cluide does not cover the engineering itself. [Guide 36](./36_MULTI_SESSION_APPS.md) covers the collaboration model: the design system, day-one setup, validation passes and parallel sessions that an app built by many assistant sessions needs. Keep the patterns from this guide that still pay rent.
 
 ---
 

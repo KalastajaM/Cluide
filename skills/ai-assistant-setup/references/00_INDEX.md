@@ -55,6 +55,7 @@ Not sure where to start? Use this table:
 | Decide what a task may do while you are away | Action-authority block | [32](./32_ACTION_AUTHORITY.md) |
 | Bring a setup over from another assistant | Routed import | [34](./34_IMPORTING_FROM_OTHER_ASSISTANTS.md) |
 | Use one project from Claude and ChatGPT, Codex or Gemini | Shared `AGENTS.md` + thin `CLAUDE.md` | [35](./35_DUAL_PLATFORM_PROJECTS.md) |
+| Build an app others use, with many sessions | Design system first, three validation passes, one worktree per session | [36](./36_MULTI_SESSION_APPS.md) |
 
 ---
 
@@ -69,7 +70,7 @@ The guide numbers are stable addresses, not a reading order — new guides get t
 | **Scheduled tasks** | [06](./06_TASK_EFFICIENCY_GUIDE.md) → [07](./07_TASK_LEARNING_GUIDE.md) (incl. Part 9: the template) → [09](./09_MULTI_TASK_ORCHESTRATION.md) → [10](./10_COST_PERFORMANCE.md) | Once you automate anything |
 | **Operations & safety** | [12](./12_SECURITY.md) → [32](./32_ACTION_AUTHORITY.md) → [11](./11_GIT_INTEGRATION.md) → [13](./13_DEV_EXECUTION_WORKFLOW.md) → [31](./31_BEHAVIOUR_TESTS.md) → [17](./17_TROUBLESHOOTING.md) | Securing and maintaining your setup |
 | **Data & knowledge** | [14](./14_PERSONAL_DATA_LAYER.md) → [15](./15_LLM_WIKI.md) → [28](./28_SECOND_BRAIN.md) | Working with personal data, knowledge bases, and your own notes |
-| **Projects & context** | [24](./24_PROJECT_FOLDER_STRUCTURE.md) → [25](./25_PROJECT_INSTRUCTION_LAYERS.md) → [35](./35_DUAL_PLATFORM_PROJECTS.md) → [23](./23_MULTI_PROJECT_SETUPS.md) → [21](./21_COMPANY_POLICIES.md) → [22](./22_HELPER_APPS.md) → [26](./26_CONTEXT_SCOPING.md) → [27](./27_INDEPENDENT_JUDGMENT.md) → [29](./29_SPEC_BEFORE_REBUILD.md) → [30](./30_CONTROLLED_DOCUMENTS.md) → [33](./33_RETIRING_AND_LEAVING.md) | Power users structuring larger setups |
+| **Projects & context** | [24](./24_PROJECT_FOLDER_STRUCTURE.md) → [25](./25_PROJECT_INSTRUCTION_LAYERS.md) → [35](./35_DUAL_PLATFORM_PROJECTS.md) → [23](./23_MULTI_PROJECT_SETUPS.md) → [21](./21_COMPANY_POLICIES.md) → [22](./22_HELPER_APPS.md) → [36](./36_MULTI_SESSION_APPS.md) → [26](./26_CONTEXT_SCOPING.md) → [27](./27_INDEPENDENT_JUDGMENT.md) → [29](./29_SPEC_BEFORE_REBUILD.md) → [30](./30_CONTROLLED_DOCUMENTS.md) → [33](./33_RETIRING_AND_LEAVING.md) | Power users structuring larger setups |
 | **Reference — read anytime** | [16](./16_BEST_PRACTICES.md) · [17](./17_TROUBLESHOOTING.md) · [18](./18_END_TO_END_WALKTHROUGH.md) · [19](./19_OUTPUT_FORMATTING.md) · [34](./34_IMPORTING_FROM_OTHER_ASSISTANTS.md) · CHEATSHEET | Digest, walkthrough, formatting, quick lookup |
 
 ---
@@ -450,6 +451,17 @@ Covers: how coexistence differs from importing, when a second platform is worth 
 
 ---
 
+### [36 — Multi-Session App Builds](./36_MULTI_SESSION_APPS.md)
+`[Power user]` · `~14 min`
+
+*Building an app that other people use with an assistant doing most of the typing, across many sessions and often several at once: the stage after Guide 22.*
+
+Covers: the signs that an app has crossed over from a helper app, what a spec review must find before the first screen (rules that must not depend on the model, a no-AI capability table, deployment contradictions, first-run and empty states), why interfaces built by many sessions drift and the design-system decisions to make before the second screen, a help-text policy, alignment and three widths as acceptance criteria, day-one repository setup (CI, guard tests that state their gaps, a docs rule, reserved ports, demo data, local-server security basics), milestones sized to one session, three validation passes (new user, consistency, security and architecture), AI features inside the app (feedback that over-generalises, constrained output on local models, honest errors, logs that survive failure), and parallel sessions on one repository.
+
+**Use this when:** a tool you are building with the assistant gains a second user, a phone client, an AI feature with rules or an installer, or you run more than one writing session on the same repository.
+
+---
+
 ## Templates: Copy-Paste Starting Points
 
 The ready-to-copy folder structures in the `templates/` folder. Use them when you want to start a new project or task without building from scratch.
@@ -553,7 +565,7 @@ Tasks are designed to be portable: copy any task file to another project's `task
 | `tasks/audit-skill.md` | Review a `SKILL.md` — trigger quality, workflow, output format, edge cases, runtime tool-permission verification | 03, 02 |
 | `tasks/audit-file-hygiene.md` | Sweep actual clutter: OS junk, lock/temp files, duplicate families, superseded outputs, and trees that are gitignored but still loading as context | 11, 24 |
 | `tasks/audit-dual-platform.md` | Short, re-runnable sanity check for an already dual-platform project — required files, sibling-folder access and scheduler ownership still resolve, with a fix per row | 35, 23, 17 |
-| `tasks/analyze-project.md` | Whole-project sweep of *another* assistant project (local or GitHub) against the full guide set → writes a `CLUIDE_IMPROVEMENT_PLAN.md` into it; read-only, plan-only (criteria in `analyze-project-reference.md`) | All (01–35) |
+| `tasks/analyze-project.md` | Whole-project sweep of *another* assistant project (local or GitHub) against the full guide set → writes a `CLUIDE_IMPROVEMENT_PLAN.md` into it; read-only, plan-only (criteria in `analyze-project-reference.md`) | All (01–36) |
 | `tasks/reorganize-project.md` | Safely restructure a project's folders: move files and rewire every reference without breaking it; takes a restore point first | 24 |
 | `tasks/relocate-project.md` | Move a project (or a whole projects root) somewhere else — sweeps the project, scheduled-task, artifact, Claude Code state and app-config layers, and refuses streaming sync folders. Per-layer detail in `relocate-project-reference.md` | 11, 24, 05, 25 |
 | `tasks/retire-project.md` | End a project (or one task): inventory every layer that still points at it, transfer what it owned, delete registrations, freeze the folder with `RETIRED.md` — the sibling of `relocate-project.md` | 33, 23, 24 |

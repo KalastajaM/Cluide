@@ -542,6 +542,33 @@ Two habits keep a busy repository safe: build a fix for a branch that is not che
 
 ---
 
+## Several Sessions in One Checkout
+
+Give each writing session its own worktree and branch ([Guide 36 §9](./36_MULTI_SESSION_APPS.md#9-parallel-sessions-on-one-repository)). When sessions do share one checkout and all commit to the same branch, the ordinary `git add` and `git commit` are unsafe, because the index and the branch tip belong to everyone. Observed in one project in November 2026:
+
+- A session reset the shared index between another session's `git add` and its `git commit`; two commits went out without part of their changes.
+- A commit built from a temporary index read before another session committed reverted that session's commit, with no error.
+- A plain `git stash` took every session's uncommitted work.
+
+If a session must commit from a shared checkout, build the commit privately and move the branch with a compare-and-swap:
+
+```bash
+H=$(git rev-parse HEAD)                       # read the tip immediately before building
+I=/tmp/my-index                               # a private index; the shared one is never touched
+GIT_INDEX_FILE=$I git read-tree "$H"
+GIT_INDEX_FILE=$I git add -- path/one path/two  # only this session's files or hunks
+T=$(GIT_INDEX_FILE=$I git write-tree)
+C=$(git commit-tree "$T" -p "$H" -m "message")
+git update-ref refs/heads/main "$C" "$H"      # fails if anyone committed since $H
+git diff --stat "$H" "$C"                     # only this session's files
+```
+
+If `update-ref` fails, read the new tip and build again. Afterwards the shared index still holds the old versions of this session's files, which is a staged revert of the new commit that another session's plain `git commit` would include. For a file only this session touched, `git reset -q -- <file>` (without `GIT_INDEX_FILE`, so it acts on the shared index) clears it. For a file other sessions also edit, do not reset it, because that drops their staged work: if `git ls-files -s -- <file>` still shows the old tip's blob (`git rev-parse "$H:<file>"`), set the entry to the new blob with `git update-index --cacheinfo`; if it shows anything else, someone has staged work there, so leave it and say so. Run these scripts in `bash`, not `zsh`, which reads `$H:path` as a history modifier.
+
+The recipe works, and needing it is the sign to move the sessions into worktrees.
+
+---
+
 ## Giving This to an Assistant
 
 **To set up git integration for an existing task:**
