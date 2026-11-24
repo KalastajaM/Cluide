@@ -122,6 +122,7 @@ For a weekly planner, record a stable job ID such as `weekly-plan`, one schedule
 | Let recurring work improve from evidence | [07 — Task Learning](./07_TASK_LEARNING_GUIDE.md) |
 | Move from another assistant | [34 — Importing](./34_IMPORTING_FROM_OTHER_ASSISTANTS.md) |
 | Keep both platforms working on one project | [35 — Dual-Platform Projects](./35_DUAL_PLATFORM_PROJECTS.md) |
+| Build an app other people use, over many sessions | [36 — Multi-Session App Builds](./36_MULTI_SESSION_APPS.md) |
 
 ## Troubleshooting
 

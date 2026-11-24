@@ -27,6 +27,7 @@
 - [A CI Monitor Keeps Reporting Conflicts During a Merge Run](#problem-a-ci-monitor-keeps-reporting-conflicts-during-a-merge-run)
 - [Data Ingestion Script Fails](#problem-data-ingestion-script-fails)
 - [the assistant Keeps Re-Proposing an Approach You Already Ruled Out](#problem-claude-keeps-re-proposing-an-approach-you-already-ruled-out)
+- [A Local App Shows Test Data or Every Form Says It Expired](#problem-a-local-app-shows-test-data-or-every-form-says-it-expired)
 - [When to Start Fresh](#when-to-start-fresh)
 
 ---
@@ -507,6 +508,16 @@ Screenshots from mobile apps may be low resolution, cropped, or have overlapping
 - What would need to change to make it worth revisiting
 
 Undocumented dead ends get re-investigated every few sessions; documented ones cost three lines to read. This is the data-source counterpart of logging connector quirks — record the wall once, at the point where the next session will look.
+
+---
+
+## Problem: A Local App Shows Test Data or Every Form Says It Expired
+
+**Symptom:** An app you are building with the assistant, which you also use day to day, suddenly shows test people or sample records as if it had switched to a demo mode. Or, while several sessions are checking their work in a browser, every form submission fails with a message such as "Form expired, reload the page", even on a freshly loaded page.
+
+**Cause:** Local servers collide. A session started a preview server on the port your installed app uses, pointed at a scratch data folder, so the app's window now talks to the preview. Or several preview servers run on different ports of `localhost`: browsers do not separate cookies by port, so each server overwrites the others' session cookie and every form's protection token stops matching.
+
+*Fix:* Stop the stray preview server and restart the installed app. Reserve the installed app's port in the shared policy and give previews their own ports. Give each local server its own host name, for example `127.0.0.1:<port>` for a preview while the app uses `localhost`, or a per-app `name.localhost` where the browser resolves it, or its own session-cookie name; cookies are kept per host name, not per port. Have each session stop its preview server when it finishes. An "expired" form during a browser check is not by itself evidence of a bug in the change under test. See [Guide 36 §5](./36_MULTI_SESSION_APPS.md#5-day-one-repository-setup).
 
 ---
 

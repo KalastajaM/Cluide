@@ -20,7 +20,7 @@ description: >
 Help the user build or improve a persistent assistant setup by applying the bundled guides to
 their actual files. Load only the guides the request needs.
 
-**What this folder contains.** `references/` holds the complete Cluide guide set (`00`–`35`)
+**What this folder contains.** `references/` holds the complete Cluide guide set (`00`–`36`)
 and `references/00_INDEX.md`, which describes every guide and the reading tracks. Nothing else
 is needed to run the skill. The Cluide repository also has runnable `tasks/` and copy-paste
 `templates/`; they are not bundled. When they are reachable (a Cluide checkout in the working
@@ -70,6 +70,7 @@ When the request does not clearly match a row, read `references/00_INDEX.md` fir
 | `33_RETIRING_AND_LEAVING.md` | retires a project or task, or is leaving an organisation or account |
 | `34_IMPORTING_FROM_OTHER_ASSISTANTS.md` | moves a setup in from, or out to, another assistant |
 | `35_DUAL_PLATFORM_PROJECTS.md` | runs one project from more than one assistant, has `CLAUDE.md` and `AGENTS.md` drifting apart, asks whether a skill or scheduled task works in another product, or had a job run twice; §9 holds the dated product facts |
+| `36_MULTI_SESSION_APPS.md` | builds an app that other people use with the assistant over many sessions, sees the interface drift between pages, wants new-user or consistency testing, has AI features inside the app that misbehave, or runs several writing sessions on one repository |
 
 ## How to handle a request
 

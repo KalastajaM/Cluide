@@ -106,6 +106,7 @@ This repository now has shared contributor instructions in [AGENTS.md](./AGENTS.
 | 33 | [Retiring and Leaving](./33_RETIRING_AND_LEAVING.md) | Power users | Ending a task, a project or an account without live wires: the inventory of everything that still points at it, ownership transfer before archive, the freeze, and which layers of a setup were ever yours to take |
 | 34 | [Importing From Other Assistants](./34_IMPORTING_FROM_OTHER_ASSISTANTS.md) | New users | Bringing a setup in from another assistant: ask the assistant to export itself, route each category to its Cluide home, treat the export as data and as a specification to triage rather than a file to copy, and the one-paragraph reverse direction |
 | 35 | [Dual-Platform Projects](./35_DUAL_PLATFORM_PROJECTS.md) | Power users | Running one project from Claude and ChatGPT, Codex or Gemini: one shared policy with thin native adapters, capability gaps recorded rather than translated, platform-local memory and one scheduler owner per job, and a fresh-session check on each surface |
+| 36 | [Multi-Session App Builds](./36_MULTI_SESSION_APPS.md) | Power users | Building an app others use across many assistant sessions: what the spec must settle first, the design system before the second screen, day-one setup, new-user, consistency and security passes, AI features inside the app, and one writing session per worktree |
 
 **Where to start:** the Foundation track in the [Reading Tracks in 00_INDEX.md](./00_INDEX.md#reading-tracks) is the recommended starting order. The guide numbers are stable addresses, not a reading order — the same page lists tracks for other goals, or follow [Guide 18](./18_END_TO_END_WALKTHROUGH.md) for a guided path through all stages.
 
@@ -206,7 +207,7 @@ The copy-paste starting points in `templates/`:
 /
 ├── 00_INDEX.md               # Full annotated guide index
 ├── 00_QUICKSTART.md          # Start here if you're new
-├── 01_PROJECT_INSTRUCTIONS.md – 35_DUAL_PLATFORM_PROJECTS.md
+├── 01_PROJECT_INSTRUCTIONS.md – 36_MULTI_SESSION_APPS.md
 ├── CHEATSHEET.md             # One-page quick reference
 ├── tasks/                    # Setup and audit task files
 ├── skills/                   # Bundled installable skills

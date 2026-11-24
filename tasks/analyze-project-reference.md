@@ -21,6 +21,7 @@ Record **surface(s)** and **purpose** separately. Confirm the surface from the r
 | `GEMINI.md`, `.agents/rules/`, or Gemini app notebook instructions or uploaded skills (the Google surfaces Guide 35 §9 lists) | Antigravity / Gemini app (documented, untested); establish what is actually in use |
 | A shared policy file plus any two of a Claude surface, an OpenAI surface and a Google surface are confirmed | Dual- or multi-platform (Guide 35) |
 | A small local app with invariants and a helper index | Helper-app purpose (Guide 22), independent of surface |
+| An app used by more than one person or on more than one device class, or built by several sessions with worktrees or concurrent commits | Multi-session app purpose (Guide 36), independent of surface; usually also scored under Guide 22 |
 | Knowledge index, source layer and schema | Knowledge-base/wiki purpose (Guide 15), independent of surface |
 
 Inventory capabilities separately: instruction loader, skills, shell/files, connectors, enforced permissions, scheduler and metrics. Mark each **verified counterpart**, **no verified counterpart**, or **untested**, with evidence. An unavailable optional mechanism is N/A; an unavailable mechanism required for the intended workflow is a capability gap, not a demand to install Claude configuration. Unread app fields or sources are unverified coverage, never healthy by default.
@@ -219,6 +220,19 @@ Check Class A with an empty approval table, scoped one-time Class B approval, st
   conversion, a prose rule silently standing in for an enforcement mechanism the other platform lacks, the
   same scheduled job registered on both platforms, an uploaded-source copy older than the repository, and a
   surface described as supported with no check recorded. **N/A** for any single-platform project, including OpenAI-only, Google-only and Claude Code plus Cowork. Record confirmed surfaces as evidence.
+
+### 27. Multi-session app builds — guide 36 → guidance only
+- **Healthy (only for an app that has crossed the Guide 22 ceiling):** shared interface patterns exist as
+  components rather than prose; a guard test blocks the drift the project already suffered (inline styles,
+  language-file parity, layering), and each guard says what it skips; CI runs on every push; the shared
+  policy carries a docs rule, a help-text rule, the widths the verification gate checks, reserved ports and
+  the one-writer-per-worktree rule; demo seed data exists; new-user, consistency and security passes are on
+  record; AI features enforce rules in code and report failures by their real cause.
+- **Checks:** look for repeated same-shape fixes across pages in the commit history, repair commits that
+  restore another commit's lost changes, several sessions committing to one branch from one checkout, a
+  tracked screenshot or document built from real personal data, no CI configuration, and model output
+  trusted for a safety rule. **N/A** for a single-user helper app (dimension 17) and for projects that are
+  not apps.
 
 ### Guides not scored
 
