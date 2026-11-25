@@ -19,8 +19,9 @@ The steps follow the phases in `APP_REFERENCE.md` §1.
 2. **Spec (phase 0).** Have the spec reviewed critically. Write the input-output map, the choice model for each question, and the data lifecycle (save, delete, export, import, share, report, print). Answer the review's questions in one list.
 3. **Design (phase 1).** Get mockups of every main screen and its hard cases, choose one direction, and test the handoff by building one screen from it.
 4. **Foundation (phase 2).** Build the tokens, the shared components the *Interface* rules list, and the guard tests the rules name (inline styles, language-file parity, layering, interface/API parity), before the second screen.
-5. **Milestones (phase 3).** One per session. Send feedback as one numbered list per round, and have the session sort it into one-offs and patterns before fixing. Schedule the validation passes in §6.
-6. **Add a line when a correction repeats.** If you give the same instruction a second time, it belongs in `APP_POLICY.md` or, better, in a component or a test.
+5. **Hosting, if the app will serve other people.** Settle the first list in §9 of the reference during the spec, make the deployment its own milestone with the second list, and pass the third before the first outside user.
+6. **Milestones (phase 3).** One per session. Send feedback as one numbered list per round, and have the session sort it into one-offs and patterns before fixing. Schedule the validation passes in §6.
+7. **Add a line when a correction repeats.** If you give the same instruction a second time, it belongs in `APP_POLICY.md` or, better, in a component or a test.
 
 ## What these rules are not
 

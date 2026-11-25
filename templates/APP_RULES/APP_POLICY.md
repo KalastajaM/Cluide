@@ -9,7 +9,7 @@ docs/APP_REFERENCE.md, which the triggers below point to.
 
 ## App rules
 
-Work in the order set out in `docs/APP_REFERENCE.md` §1. Before changing an interface, a data model, an AI feature, tests or a release, read the matching section of that file. If a rule here conflicts with a request, say so before acting. This section holds rules, not status: migration progress and feature notes go in `docs/`, and this file stays under [24] KB.
+Work in the order set out in `docs/APP_REFERENCE.md` §1. Before changing an interface, a data model, an AI feature, tests, a release, the hosting or what the app holds about a person, read the matching section of that file. If a rule here conflicts with a request, say so before acting. This section holds rules, not status: migration progress and feature notes go in `docs/`, and this file stays under [24] KB.
 
 ### Build order
 
@@ -66,6 +66,15 @@ Work in the order set out in `docs/APP_REFERENCE.md` §1. Before changing an int
 - Tests contain no hard-coded dates and no timing assertions; CI runs in [two] timezones and on every target OS.
 - Allow-lists in guard tests may only shrink; the test pins their size.
 - When a test asserted the wrong behaviour, fix it and say so in the report. Never weaken a test to make a change pass without saying why.
+
+### Hosting and personal data
+
+Delete this section if the app only ever runs on its user's own machine.
+
+- The data-by-person table in [docs/privacy/] changes in the same commit as any new field about a person, or any change to what a prompt carries, the export or deletion.
+- The privacy notice, terms and record of processing describe the provider settings as they are. A change to retention, backups, logs, regions or a processor updates them in the same change.
+- Every command in a runbook or a reply says where it runs: laptop, container or provider console.
+- A change to data access or saving is tested with two tenants side by side and with two devices on one account.
 
 ### Working alongside other sessions
 

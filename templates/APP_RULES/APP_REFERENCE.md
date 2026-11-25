@@ -1,12 +1,12 @@
 <!--
 App rules: the on-demand part. Copy to docs/APP_REFERENCE.md in the project. APP_POLICY.md
-(in AGENTS.md) points here before interface, data, AI, testing and release work. Delete
+(in AGENTS.md) points here before interface, data, AI, testing, release and hosting work. Delete
 sections the app will never need; fill in the [brackets].
 -->
 
 # App Reference
 
-The detail behind the app rules in `AGENTS.md`. §1 is the order of work; the other sections are read before the kind of work they name. Each rule says why it exists, so a session can tell when it applies. The reasons come from apps built mostly by an assistant: a household planner, a budgeting app, a document archive, and a regulatory checklist tool built in one long chat.
+The detail behind the app rules in `AGENTS.md`. §1 is the order of work; the other sections are read before the kind of work they name. Each rule says why it exists, so a session can tell when it applies. The reasons come from apps built mostly by an assistant: a household planner, a budgeting app, a document archive, a regulatory checklist tool built in one long chat, and the household planner's move to a hosted pilot for several households.
 
 ---
 
@@ -20,7 +20,7 @@ Read at the start of the project and whenever a phase ends. Most of the late twe
 | 1. Design | One chosen direction, drawn for every main screen and state; tokens and a component list; a tested handoff | The owner has picked one direction; one screen has been built from the handoff alone |
 | 2. Foundation | Tokens, shared components, guard tests, the run script, the CI matrix, a seed generator for long and demo content | The first screen uses only shared components and passes the visual verification in §2 |
 | 3. Milestones | One milestone per session, each closed with a feedback round | The validation passes in §6 that fall due at this milestone |
-| 4. Release | §7 | The release checklist in §7 |
+| 4. Release | §7, and §9 for a hosted app | The release checklist in §7; for a hosted app, the last list in §9 |
 
 ### Phase 0: settle what goes in and what comes out
 
@@ -30,6 +30,7 @@ Read at the start of the project and whenever a phase ends. Most of the late twe
 - **Languages and terms.** Name the languages. Decide whether official or domain terms stay in their original language in the other versions, and fix the exact spelling and abbreviation of each one. The checklist tool's English version mixed in the original legal terms ("Doorlenen makes you an uitlener"), which took its own round to clean up.
 - **Rules with sources.** When the output rests on rules from documents (law, policy, a standard), encode each rule once with its source. Generate the verdict and its explanation from that one rule, so they cannot disagree. In the checklist tool two sessions gave opposite verdicts on the same question, and the owner had to check the tool's own source notes to find out which held.
 - **First run and empty states** are part of the spec, not polish.
+- **Hosting and personal data.** If the app will run on a server for other people, settle the first list in §9 here: the controller and regions, the processors' terms, the data-by-person table, the admin's tasks and the domain. Decided after launch, each one means changing prompts and data that users already depend on.
 
 ### Phase 1: one design, before code
 
@@ -48,6 +49,7 @@ Build the tokens, the shared components listed in the policy, the guard tests (�
 - **One milestone per session,** closed with tests, the visual verification, the user guide and changelog, and any validation pass that falls due.
 - **Feedback comes in rounds.** The owner tries the build and sends one numbered list, each item naming the page and the element. The session sorts the items before fixing anything. A one-off is fixed where it is. A pattern is anything that could happen on another page: an alignment, a button style, a control choice, a helper line. A pattern is fixed in the component or the rule, applied across the app, and added to the policy. The report says which items were patterns.
 - **A correction given twice is a rule.** In the checklist tool, seven of thirty messages asked for layout fixes: alignment, control widths, button colours, button rows, selected states, and where helper text sits. Each would have been one line in the interface rules.
+- **Deployment is a milestone of its own,** closed by the second list in §9, restore drill included.
 - **"Is it ready?" is answered with the gate,** not an impression: which checks ran, which passed, and what was not checked.
 
 ---
@@ -290,7 +292,7 @@ Read when a milestone finishes. Each runs in a fresh session that did not build 
 
 ## 7. Release and publishing
 
-Read before building a package, publishing the repository, or handing the app to someone else.
+Read before building a package, publishing the repository, or handing the app to someone else. A hosted app also passes the last list in §9 before its first outside user.
 
 ### Before the first public commit
 
@@ -332,3 +334,38 @@ Read when setting up the project, and when the way of working changes.
 - **The policy file holds rules, not status.** One project's policy grew 2.6 times in five weeks to 50 KB, past the size one assistant loads by default, and almost half of it was a migration changelog. Keep status in `docs/`, keep a size budget, prune when a rule is enforced by a test, and give each rule the incident it came from so it can be retired.
 - **Feedback rounds.** The owner tries the app and sends one batch of feedback; the session sorts it into one-offs and patterns (§1, Phase 3), fixes it, then updates the user guide and changelog in the same round.
 - **A procedure handed to the owner has been run.** Steps the owner will run (a migration, a re-vendor, a restore) are executed once, as written, by the session that wrote them. They list the full sequence with the expected output of each step. One re-vendor procedure failed at its first command because of wrong argument syntax, and the owner had to ask for the full sequence.
+
+---
+
+## 9. Hosting and personal data
+
+Read before an app that ran on one machine goes on a server for other people, and before changing what it holds about a person, where its data is stored or how it is backed up. The reasons come from the household planner's move to an invite-only hosted pilot for several households. It took under a day, from one plan with a fixed order and a dated checklist that was run rather than ticked: the restore test found a backup failure that nothing else would have shown. Nothing here depends on one hosting provider. It is a working checklist, not legal advice; check it against the guidance of the data protection authority where the controller is.
+
+### Before writing deployment code (phase 0)
+
+- **Decide the controller and the regions.** Once other people's data sits on a server you run, you are its controller, whatever the number of users and whether or not it is free; the household exemption covers a household's own notes, not a service run for others. Name the controller (a person or a company) and the contact address for requests. Choose the region for compute, database, file storage, backups and logs. For each provider, find its data processing agreement (DPA) and how it is accepted: some are signed, some come with the terms of service. A private person as controller carries every duty and any indemnity personally, so write down what would call for a company or a lawyer's view (more users, payment, strangers).
+- **Read each processor's terms against the plan,** before building the features they constrain. Check reselling or passing costs on to users; whether special categories of data (health, for example) are in the DPA's description of processing; retention, including longer retention for abuse checks; training on data; how notice of new subprocessors is given and how long there is to object; breach notice against your own deadline; liability and indemnity; and what users must be told. In the source project the model provider's terms set three design constraints: shared AI could not be charged on to households, users had to be told to check AI output, and health data was outside the DPA's description. So prompts name people as "Person 1" and carry a food rule as "must not eat" plus the food, never the reason. Record the date read and the section numbers, and read again when the terms change or the user base grows.
+- **List the data by person and category.** One table: the data, whom it is about (account holders, people without an account, the tenant as a whole), and notes such as "special category" or "optional". This table drives the consent text, what prompts may carry, the export and deletion, and becomes the record of processing. People whose data someone else enters (children, guests) are the weakest point: keep their fields minimal, and write the short impact assessment before the service reaches beyond people you know.
+- **Spec the admin's tasks and the account lifecycle** with the same data lifecycle as the users' (§1 Phase 0): invite, block, delete, set limits, reset. The source project's admin page grew over three feedback rounds because it was not in the spec.
+- **Tenant isolation first.** When several households or teams share one database, isolation and a cross-tenant test suite are the first milestone, and nothing else is built until the suite passes. No later phase had to reopen it.
+- **Fix the domain** before the first invite link is made. The public URL changed after setup, and every link already sent had to be checked.
+
+### While building the deployment
+
+- **The app's command-line tool is on the default `PATH` in the image.** The provider's shell reset `PATH`, so the command was not found; that cost a round and a symlink fix.
+- **The runbook says where each command runs:** laptop, container or provider console. The source instructions mixed the laptop command that opens a shell in the container with commands meant to run inside it. Creating the first admin, which needed a command inside the container, is its own runbook step.
+- **Pin the database client to the server's major version, and assert it in the build.** A dump client one major version behind refused the server, so the first nightly backup failed. The failure was only logged, and the backup folder stayed empty.
+- **Backups do not share a failure with the data.** A dump on the same volume, or with the same provider account, as the database is lost with it; copy dumps and files to separate storage in the chosen region. Show the age of the last good backup on the admin page, and have `/health` report a backup older than [26 hours] for a nightly job. A backup that fails into a log has stopped without anyone knowing.
+- **Script the restore drill and run it in this phase,** not during launch preparation. Restore into a scratch database, compare row counts with the source, then delete the scratch copy: it is a full copy of the data, outside every retention period. A hand-written restore with a placeholder address fell back to a local socket and failed.
+- **`/health` returns the deployed commit,** and a script waits until it matches the commit just pushed. "Is it deployed yet?" was asked three times.
+- **Test as hosted users meet the app:** two devices signed in to one account at once, and two tenants side by side. A recipe made on a phone did not appear in a browser signed in at the same time.
+- **A key that seals stored secrets** (for example users' own API keys) has an offline copy and a way to rotate. Lost, it makes every sealed value unreadable.
+
+### Before the first outside user (phase 4)
+
+- **The privacy documents agree with each other and with the provider settings.** The privacy notice, terms, record of processing and breach procedure describe what actually happens: retention, backups (including whether the provider's own backups are switched on), log retention as a period rather than "the provider's own", regions and transfers. A change to a provider setting updates them in the same change. In the source project the plan still said a DPA "must be signed" after the checklist recorded it as accepted with the terms, and the notice promised provider backups that the record of processing listed as "if switched on".
+- **Rights work in the app and have been tried on the live service:** the export holds only the member's own tenant (it once read whole tables past the tenant filter) and any AI log kept about them; account and tenant deletion run end to end; deleted data leaves the backups within the stated window.
+- **Demo data in anything shared** (§7). A teaser built from real family data took two rebuilds and a deletion.
+- **A spend limit on every paid API, set at the provider.** The app's own budget check comes first; the provider limit is the backstop, so a bug in the app's accounting cannot run up an open bill. A shared key gets its own workspace or project.
+- **Invites are bound to an email address** when they are made, as well as one-time, expiring and stored as a hash. An unbound link can be passed on, and the record of who holds an account goes wrong.
+- **An external uptime check,** and a way to hear about failed jobs, even an email from the provider.

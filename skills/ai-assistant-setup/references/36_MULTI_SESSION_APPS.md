@@ -227,7 +227,7 @@ On day one:
 - [ ] Host-name allow-list, passcode throttling, durable save before success
 - [ ] One worktree per writing session, written into the shared policy
 
-`templates/APP_RULES/` holds these decisions as a ready-to-fill policy section and an on-demand reference; start from it rather than writing the rules from scratch.
+`templates/APP_RULES/` holds these decisions as a ready-to-fill policy section and an on-demand reference; start from it rather than writing the rules from scratch. When the app moves to a server for other people, its §9 covers hosting and personal data: the controller and regions decided up front, processor terms read against the plan, backups that do not share a failure with the data, a scripted restore drill, and privacy documents that match the provider settings.
 
 During the build:
 
