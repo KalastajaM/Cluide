@@ -4,6 +4,80 @@ Cluide is versioned by content event, not on a calendar: a tag marks guides bein
 
 The **consumed surface** — dimension numbers in `tasks/analyze-project-reference.md`, filenames in `tasks/`, and guide numbers — is append-only. Entries below note explicitly when it grows.
 
+## [1.10.0] - 2026-11-25
+
+Twenty-four pull requests since v1.9.0 (#85 to #108), plus the changelog PR that carries this section.
+This is a minor release because it adds Guide 36 and the `templates/APP_RULES/` template. **The consumed
+surface grew:** guide number 36 and dimension 27 in `tasks/analyze-project-reference.md` were added (#106).
+Nothing was renumbered, and no `tasks/` filename was added, renamed or retired. Most of the remaining PRs
+(#87 to #103) are the fixes from the 2026-11-11 full review.
+
+### Added
+
+- **Guide 36, multi-session app builds** (#106). The stage after Guide 22, when an app built with an
+  assistant gains other users or several sessions build it at once: what the spec review settles before
+  the first screen, design-system decisions before the second, day-one repository setup, milestones sized
+  to one session, three validation passes, AI features inside the app, and parallel sessions on one
+  repository. Guide 22 points to it; Guide 11 gains "Several Sessions in One Checkout"; Guide 17 gains the
+  local-server collision problem. Registered everywhere, with dimension 27 in the analyze-project
+  reference.
+- **`templates/APP_RULES/`** (#107, #108). `APP_POLICY.md`, a short *App rules* section for `AGENTS.md`,
+  and `APP_REFERENCE.md`, its on-demand companion: a phased build sequence with a gate per phase (spec,
+  design, foundation, milestones, release), interface pattern tables, architecture and data, AI features,
+  testing, validation passes, release and publishing, working with the assistant, and (#108) hosting and
+  personal data for an app moved to a server for other people. Drawn from four apps built mostly by an
+  assistant.
+- **Writing IDs for readers** (#85). Guide 01 rule: pair a register code with a short label on first
+  mention. Guide 30, the PMO and PROJECT templates and `audit-claude-md` follow.
+- **Guide 21: what a policy line cannot stop** (#105). Policy checks cannot stop input already sent; a
+  before-send, read and act control table; tier T1 renamed "Stop and escalate" in the guide,
+  `policies-validator` and `setup-policies`. The POLICY BLOCK marker keeps its name.
+- **Guide 12: unattended `claude -p` runs** (#102). The three documented permission routes.
+- **review-tasks step 4e** (#87) runs the shipped security scripts against fixtures; step 4c gains an
+  assertion that every root guide is bundled (#93); step 4a lists links in bundled copies that leave the
+  skill folder (#99).
+
+### Changed
+
+- **Platform sweep 2026-11a** (#86). Jules removed everywhere (read-only from 2026-11-11, shut down
+  2026-12-31); Gemini 4 Carbon, Antigravity rule and skill locations, Automations and remote agents in
+  Guide 35 section 9; Ultra plan; Fable 5.2 API limits; subagent effort resolution in `dispatch`; new
+  Claude Code permission settings in Guide 12 and the security tasks.
+- **Platform facts from the full review** (#96). Claude Code does not honour `.claudeignore`; Cluide now
+  says so and proposes `Read(...)` deny rules instead. Permission modes in Guide 12 rewritten; the Customize >
+  Connectors path; Codex memory folders; Antigravity instruction discovery; the claim register covers every
+  template and skill.
+- **Shared `AGENTS.md` layout carried through** (#89). `onboard-project` fills `AGENTS.md`; one home for
+  the app-side settings mirror; `tune-instruction-layers` reads pasted fields first.
+- **Google coverage by pointer** (#100). Each guide's platform note points at Guide 35 section 9, and the
+  inventories and templates name the Google surfaces as documented and untested.
+- **Entry points** (#93). README start table per reader; the index's install section points at Guide 03;
+  one starting order.
+- **Self-improvement gate** (#94). Guide 07 applies only mechanically checkable changes, as the template
+  does; one provenance tag set and one profile cap across Guides 04, 06 and 07.
+- **Merge-gate check 5 retired** (#104). Its number is kept and not reused.
+
+### Fixed
+
+- **Security scripts that failed open** (#87): the guard hook, both secret scans and the template leak
+  checker.
+- **Git and credential safety** (#88): no key echo, no automatic push, a rollback that tells an uncommitted
+  edit from a committed one, one ignore list.
+- **Task re-run safety** (#92, #103): setup tasks never overwrite existing state, checks report "not run"
+  instead of clean, the second-brain review is report-only, and setup tasks gain Output and Constraints
+  sections.
+- **Templates** (#90, #91, #95): the AI-ASSISTANT template's git snapshots, weekly-plan page and time zone;
+  the PMO template without a second charter copy; one home for behaviour-test results; `git-guru`'s
+  merged-branch check works for squash merges; `dispatch` eval graders; `policies-validator` blocks at
+  tier 1 when a policy is unavailable.
+- **Guide and task corrections** (#97, #98, #99): approval recording in Guides 30 and 32, a working cost
+  dashboard in Guide 10, project memory versus auto memory in Guide 04, audit tasks that agree with Guides
+  04 and 06, and `relocate-project` never editing app config from a session.
+
+### Removed
+
+- **Unused Guide 11 and 12 copies in `cowork-optimizer`** (#101).
+
 ## [1.9.0] — 2026-11-08
 
 Seven pull requests since v1.8.1 (#77–#83), plus the changelog PR that carries this section. This is a
